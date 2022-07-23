@@ -1,0 +1,36 @@
+package com.fpolydatn.model;
+
+import lombok.Builder;
+import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.UUID;
+
+/**
+ * @author phongtt35
+ */
+
+@Data
+@Builder
+@Table
+@Entity
+public class ChuyenNganh implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private UUID chuyenNganhId;
+
+    @Column(nullable = false)
+    private String tenChuyenNganh;
+
+    @Column(nullable = false)
+    private String chuyenNganhMeId;
+
+    @Column(nullable = false)
+    private UUID coSoId;
+}
