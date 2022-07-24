@@ -1,4 +1,4 @@
-package com.fpolydatn.model;
+package com.fpolydatn.infrastructure.constant;
 
 /**
  * @author phongtt35
