@@ -16,7 +16,6 @@ import java.util.UUID;
  */
 
 @Data
-@Builder
 @Table
 @Entity
 public class GiangVienHuongDan implements Serializable {

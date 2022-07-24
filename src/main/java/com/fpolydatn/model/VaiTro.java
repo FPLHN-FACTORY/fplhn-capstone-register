@@ -1,6 +1,5 @@
 package com.fpolydatn.model;
 
-import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -16,7 +15,6 @@ import java.util.UUID;
  */
 
 @Data
-@Builder
 @Table
 @Entity
 public class VaiTro implements Serializable {

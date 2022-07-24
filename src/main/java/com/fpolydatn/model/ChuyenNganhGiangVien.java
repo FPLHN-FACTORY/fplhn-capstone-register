@@ -15,7 +15,6 @@ import java.util.UUID;
  */
 
 @Data
-@Builder
 @Table
 @Entity
 @IdClass(ChuyenNganhGiangVienId.class)

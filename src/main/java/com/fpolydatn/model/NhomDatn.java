@@ -17,7 +17,6 @@ import java.util.UUID;
  */
 
 @Data
-@Builder
 @Table
 @Entity
 public class NhomDatn implements Serializable {
