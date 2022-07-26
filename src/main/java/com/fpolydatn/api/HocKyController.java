@@ -1,6 +1,7 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.service.HocKyService;
+import com.fpolydatn.service.impl.HocKyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,5 +15,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class HocKyController {
 
     @Autowired
-    private HocKyService hocKyService ;
+    private HocKyServiceImpl hocKyService ;
 }
