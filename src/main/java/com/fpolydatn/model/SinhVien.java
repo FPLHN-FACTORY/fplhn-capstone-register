@@ -1,7 +1,6 @@
 package com.fpolydatn.model;
 
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
-import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Column;

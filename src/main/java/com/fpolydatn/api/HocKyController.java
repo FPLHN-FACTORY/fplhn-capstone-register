@@ -1,29 +1,18 @@
 package com.fpolydatn.api;
 
-import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.infrastructure.request.CreateHocKyRequet;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author vinhnv
  */
 
 @RestController
-@RequestMapping(value = "/api/hoc-ky")
+@RequestMapping(value = "/hoc-ky")
 public class HocKyController {
 
     @Autowired
     private HocKyService hocKyService ;
-    @GetMapping("")
-    public ResponseObject getList(@RequestParam(value = "page", defaultValue = "0") int page,
-                                  @RequestParam(value = "size", defaultValue = "10") int size){
-        int offset = page * size;
-        return new ResponseObject(hocKyService.getList(offset,size));
-    }
-    @PostMapping("")
-    public ResponseObject create(@RequestBody CreateHocKyRequet hocKyRequet){
-        return new ResponseObject(hocKyService.addNew(hocKyRequet));
-    }
 }
