@@ -16,5 +16,4 @@ public class HocKyController {
 
     @Autowired
     private HocKyService hocKyService;
-
 }
