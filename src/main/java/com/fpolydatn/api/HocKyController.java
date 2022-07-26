@@ -1,12 +1,12 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
+import com.fpolydatn.model.HocKy;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * @author vinhnv
@@ -24,5 +24,10 @@ public class HocKyController {
                                   @RequestParam(value = "size", defaultValue = "10") int size) {
         int offset = page * size;
         return new ResponseObject(hocKyService.getList(offset, size));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseObject searchById(@PathVariable UUID id){
+        return new ResponseObject(hocKyService.searchById(id));
     }
 }

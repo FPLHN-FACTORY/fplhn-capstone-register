@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author vinhnv
@@ -30,5 +31,11 @@ public class HocKyServiceImpl implements HocKyService {
     public HocKy addNew(CreateHocKyRequet hocKyRequet) {
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequet);
         return hocKyRepository.save(hocKy);
+    }
+
+    @Override
+    public HocKy searchById(UUID id) {
+        HocKy hocKy = hocKyRepository.getReferenceById(id);
+        return hocKy;
     }
 }
