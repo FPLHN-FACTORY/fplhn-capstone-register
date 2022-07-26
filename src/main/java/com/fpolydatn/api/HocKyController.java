@@ -24,5 +24,6 @@ public class HocKyController {
                                   @RequestParam(value = "size", defaultValue = "10") int size) {
         int offset = page * size;
         return new ResponseObject(hocKyService.getList(offset, size));
+
     }
 }
