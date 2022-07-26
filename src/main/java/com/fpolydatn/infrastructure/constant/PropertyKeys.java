@@ -11,5 +11,5 @@ public class PropertyKeys {
     public static final String PHONE_NUMBER_EMPTY = "phone.number.empty";
     public static final String EMAIL_FPT_EMPTY = "email.fpt.empty";
     public static final String EMAIL_FE_EMPTY = "email.fe.empty";
-
+    public static final String TEN_HOC_KY_EMPTY = "ten.hoc.ky.empty";
 }
