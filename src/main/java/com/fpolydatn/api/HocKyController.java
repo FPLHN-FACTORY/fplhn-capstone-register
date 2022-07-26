@@ -15,5 +15,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class HocKyController {
 
     @Autowired
-    private HocKyServiceImpl hocKyService ;
+    private HocKyService hocKyService;
 }
