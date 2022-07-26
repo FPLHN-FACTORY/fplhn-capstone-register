@@ -9,6 +9,7 @@ import com.fpolydatn.service.CanBoService;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -35,19 +36,19 @@ public class CanBoServiceImpl implements CanBoService {
         if (Objects.isNull(canBoRequest)) {
             throw new RestApiException(StatusCode.DATA_EMPTY);
         }
-        if (StringUtils.isEmpty(canBoRequest.getTenCanBo())) {
+        if (ObjectUtils.isEmpty(canBoRequest.getTenCanBo())) {
             throw new RestApiException(StatusCode.NAME_EMPTY);
         }
-        if (StringUtils.isEmpty(canBoRequest.getTenTaiKhoan())) {
+        if (ObjectUtils.isEmpty(canBoRequest.getTenTaiKhoan())) {
             throw new RestApiException(StatusCode.USERNAME_EMPTY);
         }
-        if (StringUtils.isEmpty(canBoRequest.getSoDienThoai())) {
+        if (ObjectUtils.isEmpty(canBoRequest.getSoDienThoai())) {
             throw new RestApiException(StatusCode.PHONE_NUMBER_EMPTY);
         }
-        if (StringUtils.isEmpty(canBoRequest.getEmailFpt())) {
+        if (ObjectUtils.isEmpty(canBoRequest.getEmailFpt())) {
             throw new RestApiException(StatusCode.EMAIL_FPT_EMPTY);
         }
-        if (StringUtils.isEmpty(canBoRequest.getEmailFe())) {
+        if (ObjectUtils.isEmpty(canBoRequest.getEmailFe())) {
             throw new RestApiException(StatusCode.EMAIL_FE_EMPTY);
         }
 
