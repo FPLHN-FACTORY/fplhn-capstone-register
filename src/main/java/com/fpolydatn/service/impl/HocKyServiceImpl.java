@@ -33,7 +33,7 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public HocKy addNew(CreateHocKyRequest hocKyRequet) {
-        if(ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())){
+        if (ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())) {
             throw new RestApiException(StatusCode.TEN_HOC_KY_EMPTY);
         }
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequet);

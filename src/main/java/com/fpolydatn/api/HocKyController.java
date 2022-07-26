@@ -28,7 +28,7 @@ import java.util.UUID;
 public class HocKyController {
 
     @Autowired
-    private HocKyService hocKyService ;
+    private HocKyService hocKyService;
 
     @Autowired
     private HocKyRepository hocKyRepository;
@@ -41,7 +41,7 @@ public class HocKyController {
     }
 
     @PostMapping("")
-    public ResponseObject create(@RequestBody CreateHocKyRequest createHocKyRequest){
+    public ResponseObject create(@RequestBody CreateHocKyRequest createHocKyRequest) {
         return new ResponseObject(hocKyService.addNew(createHocKyRequest));
     }
 

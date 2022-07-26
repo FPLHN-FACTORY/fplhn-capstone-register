@@ -10,7 +10,8 @@ import java.util.UUID;
  * @author vinhnv
  */
 public interface HocKyService {
-    List<HocKy>getList(int offset, int size);
+    List<HocKy> getList(int offset, int size);
+
     HocKy addNew(CreateHocKyRequest hocKy);
     public String delete(UUID id);
 }
