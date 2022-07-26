@@ -17,7 +17,7 @@ import java.util.List;
 public class HocKyServiceImpl implements HocKyService {
 
     @Autowired
-    private HocKyRepository hocKyRepository ;
+    private HocKyRepository hocKyRepository;
 
     private FormUtils formUtils = new FormUtils();
 
