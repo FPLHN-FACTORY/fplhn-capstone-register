@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author vinhnv
@@ -30,5 +32,17 @@ public class HocKyServiceImpl implements HocKyService {
     public HocKy addNew(CreateHocKyRequet hocKyRequet) {
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequet);
         return hocKyRepository.save(hocKy);
+    }
+
+    @Override
+    public String delete(UUID id) {
+        Optional<HocKy> hocKy = hocKyRepository.findById(id);
+
+        if(!hocKy.isPresent()){
+            return "Học kỳ này không tồn tại";
+        }
+
+        hocKyRepository.deleteById(id);
+        return "Xóa thành công";
     }
 }
