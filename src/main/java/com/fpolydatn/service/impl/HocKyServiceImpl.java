@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -38,9 +39,14 @@ public class HocKyServiceImpl implements HocKyService {
         return hocKyRepository.save(hocKy);
     }
 
+
     @Override
     public HocKy searchById(UUID id) {
-        HocKy hocKy = hocKyRepository.getReferenceById(id);
+        HocKy hocKy = new HocKy();
+        Optional<HocKy> optionalHocKy  = hocKyRepository.findById(id);
+        if(optionalHocKy.isPresent()){
+            hocKy = optionalHocKy.get();
+        }
         return hocKy;
     }
 
