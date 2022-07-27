@@ -3,6 +3,7 @@ package com.fpolydatn.service.impl;
 import com.fpolydatn.infrastructure.constant.StatusCode;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.UpdateHocKyRequest;
 import com.fpolydatn.model.HocKy;
 import com.fpolydatn.repository.HocKyRepository;
 import com.fpolydatn.service.HocKyService;
@@ -33,7 +34,7 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public HocKy addNew(CreateHocKyRequest hocKyRequet) {
-        if (ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())) {
+        if(ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())){
             throw new RestApiException(StatusCode.TEN_HOC_KY_EMPTY);
         }
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequet);
@@ -41,16 +42,14 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public String delete(UUID id) {
-        HocKy hocKy = hocKyRepository.getById(id);
-
-        if(hocKy == null){
-            return "Học kỳ này không tồn tại";
+    public HocKy updateHocKy(UpdateHocKyRequest updateHocKyRequest, UUID id) {
+        Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
+        if(!hocKyCheck.isPresent()) {
+            throw new RestApiException(StatusCode.ID_IS_NOT_PRESENT);
         }
-
-        hocKyRepository.deleteById(id);
-        return "Xóa thành công";
+        HocKy hocKy = hocKyCheck.get();
+        hocKy = formUtils.convertToObject(HocKy.class, updateHocKyRequest);
+        return hocKyRepository.save(hocKy);
     }
-
 
 }
