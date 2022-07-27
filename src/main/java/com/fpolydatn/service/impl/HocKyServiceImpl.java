@@ -42,13 +42,15 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public String delete(UUID id) {
-        Optional<HocKy> hocKy = hocKyRepository.findById(id);
+        HocKy hocKy = hocKyRepository.getById(id);
 
-        if(!hocKy.isPresent()){
+        if(hocKy == null){
             return "Học kỳ này không tồn tại";
         }
 
         hocKyRepository.deleteById(id);
         return "Xóa thành công";
     }
+
+
 }

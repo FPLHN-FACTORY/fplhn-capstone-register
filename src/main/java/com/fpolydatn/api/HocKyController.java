@@ -2,6 +2,8 @@ package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
 import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
+import com.fpolydatn.model.HocKy;
+import com.fpolydatn.repository.HocKyRepository;
 import com.fpolydatn.service.HocKyService;
 import com.fpolydatn.service.impl.HocKyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -26,6 +29,9 @@ public class HocKyController {
 
     @Autowired
     private HocKyService hocKyService ;
+
+    @Autowired
+    private HocKyRepository hocKyRepository;
 
     @GetMapping
     public ResponseObject getList(@RequestParam(value = "page", defaultValue = "0") int page,
@@ -42,5 +48,17 @@ public class HocKyController {
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable UUID id){
         return new ResponseObject(hocKyService.delete(id));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseObject findById(@PathVariable UUID id) {
+        System.out.println(id);
+        return new ResponseObject(hocKyRepository.findById(id));
+    }
+
+    @GetMapping("/test")
+    public ResponseObject get(){
+//        List<HocKy> hocKyList = hocKyRepository.findAll();
+        return new ResponseObject(hocKyRepository.findById(UUID.fromString("31000000-0000-0000-0000-000000000000")));
     }
 }
