@@ -11,7 +11,6 @@ import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,22 +33,42 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public HocKy addNew(CreateHocKyRequest hocKyRequet) {
-        if(ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())){
+        if (ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())) {
             throw new RestApiException(StatusCode.TEN_HOC_KY_EMPTY);
         }
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequet);
         return hocKyRepository.save(hocKy);
     }
 
+
     @Override
-    public HocKy updateHocKy(UpdateHocKyRequest updateHocKyRequest, UUID id) {
+    public HocKy searchById(UUID id) {
+        HocKy hocKy = new HocKy();
+        Optional<HocKy> optionalHocKy  =  hocKyRepository.findById(id);
+        if(optionalHocKy.isPresent()){
+            hocKy = optionalHocKy.get();
+        }
+        return hocKy;
+    }
+
+    @Override
+    public String delete(UUID id) {
+        HocKy hocKy = hocKyRepository.getById(id);
+        if(hocKy == null)
+            return "Học kỳ này không tồn tại";
+        hocKyRepository.deleteById(id);
+        return "Xóa thành công";
+    }
+
+    @Override
+    public HocKy update(UUID id, UpdateHocKyRequest updateHocKyRequest) {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if(!hocKyCheck.isPresent()) {
+        if(!hocKyCheck.isPresent()){
             throw new RestApiException(StatusCode.ID_IS_NOT_PRESENT);
         }
-        HocKy hocKy = hocKyCheck.get();
-        hocKy = formUtils.convertToObject(HocKy.class, updateHocKyRequest);
-        return hocKyRepository.save(hocKy);
+        HocKy hocKy = formUtils.convertToObject(HocKy.class, updateHocKyRequest);
+        hocKyCheck.get().setTenHocKy(hocKy.getTenHocKy());
+        return hocKyRepository.save(hocKyCheck.get());
     }
 
 }

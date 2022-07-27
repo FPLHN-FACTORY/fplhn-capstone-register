@@ -2,22 +2,20 @@ package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
 import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
-import com.fpolydatn.model.HocKy;
-import com.fpolydatn.repository.HocKyRepository;
+import com.fpolydatn.infrastructure.request.UpdateHocKyRequest;
 import com.fpolydatn.service.HocKyService;
-import com.fpolydatn.service.impl.HocKyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author vinhnv
@@ -30,20 +28,21 @@ public class HocKyController {
     @Autowired
     private HocKyService hocKyService ;
 
-    @Autowired
-    private HocKyRepository hocKyRepository;
 
-    @GetMapping
+
+    @GetMapping("")
     public ResponseObject getList(@RequestParam(value = "page", defaultValue = "0") int page,
                                   @RequestParam(value = "size", defaultValue = "10") int size) {
         int offset = page * size;
         return new ResponseObject(hocKyService.getList(offset, size));
+
     }
 
     @PostMapping("")
-    public ResponseObject create(@RequestBody CreateHocKyRequest createHocKyRequest){
+    public ResponseObject create(@RequestBody CreateHocKyRequest createHocKyRequest) {
         return new ResponseObject(hocKyService.addNew(createHocKyRequest));
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable UUID id){
@@ -51,14 +50,16 @@ public class HocKyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseObject findById(@PathVariable UUID id) {
-        System.out.println(id);
-        return new ResponseObject(hocKyRepository.findById(id));
+    public ResponseObject searchById(@PathVariable UUID id){
+        return new ResponseObject(hocKyService.searchById(id));
     }
 
-    @GetMapping("/test")
-    public ResponseObject get(){
-//        List<HocKy> hocKyList = hocKyRepository.findAll();
-        return new ResponseObject(hocKyRepository.findById(UUID.fromString("31000000-0000-0000-0000-000000000000")));
+    @PutMapping("/{id}")
+    public ResponseObject update(@PathVariable UUID id,
+                                 @RequestBody UpdateHocKyRequest updateHocKyRequest
+                                 )
+    {
+        return new ResponseObject(hocKyService.update(id, updateHocKyRequest));
     }
+
 }

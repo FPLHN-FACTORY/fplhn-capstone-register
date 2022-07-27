@@ -11,7 +11,14 @@ import java.util.UUID;
  * @author vinhnv
  */
 public interface HocKyService {
-    List<HocKy>getList(int offset, int size);
+
+    HocKy searchById(UUID id);
+
+    List<HocKy> getList(int offset, int size);
+
     HocKy addNew(CreateHocKyRequest hocKy);
-    HocKy updateHocKy(UpdateHocKyRequest updateHocKyRequest, UUID id);
+
+    String delete(UUID id);
+
+    HocKy update(UUID id, UpdateHocKyRequest updateHocKyRequest);
 }
