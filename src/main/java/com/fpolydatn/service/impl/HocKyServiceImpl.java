@@ -43,7 +43,7 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     public HocKy searchById(UUID id) {
         HocKy hocKy = new HocKy();
-        Optional<HocKy> optionalHocKy  = hocKyRepository.findById(id);
+        Optional<HocKy> optionalHocKy  =  hocKyRepository.findById(id);
         if(optionalHocKy.isPresent()){
             hocKy = optionalHocKy.get();
         }
@@ -53,9 +53,8 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     public String delete(UUID id) {
         HocKy hocKy = hocKyRepository.getById(id);
-        if(hocKy == null){
+        if(hocKy == null)
             return "Học kỳ này không tồn tại";
-        }
         hocKyRepository.deleteById(id);
         return "Xóa thành công";
     }
