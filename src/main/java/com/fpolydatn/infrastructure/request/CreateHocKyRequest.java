@@ -6,6 +6,6 @@ import lombok.Data;
  * @author hungpv
  */
 @Data
-public class CreateHocKyRequet {
+public class CreateHocKyRequest {
     private String tenHocKy;
 }

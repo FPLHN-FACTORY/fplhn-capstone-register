@@ -17,7 +17,10 @@ public enum StatusCode {
 
     EMAIL_FPT_EMPTY(404, PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_EMPTY)),
 
-    EMAIL_FE_EMPTY(405, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EMPTY));
+    EMAIL_FE_EMPTY(405, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EMPTY)),
+
+    TEN_HOC_KY_EMPTY(406, PropertiesReader.getProperty(PropertyKeys.TEN_HOC_KY_EMPTY));
+
 
     private Integer status;
 
