@@ -2,6 +2,8 @@ package com.fpolydatn.model;
 
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import lombok.Data;
+import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,35 +24,42 @@ public class SinhVien implements Serializable {
 
     @Id
     @GeneratedValue
+    @Column(length = 36)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID sinhVienId;
 
     @Column(nullable = false)
+    @Nationalized
     private String tenSinhVien;
 
-    @Column(nullable = false)
+    @Column(length = 10, nullable = false)
     private String maSinhVien;
 
-    @Column(nullable = false)
+    @Column(length = 20, nullable = false)
     private String soDienThoai;
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(length = 10, nullable = false)
     private String khoa;
 
     @Column
     private TrangThaiSinhVien trangThai;
 
-    @Column(nullable = false)
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID chuyenNganhId;
 
-    @Column
+    @Column(length = 36)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID nhomId;
 
-    @Column(nullable = false)
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID coSoId;
 
-    @Column(nullable = false)
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID dotDangKyId;
 }

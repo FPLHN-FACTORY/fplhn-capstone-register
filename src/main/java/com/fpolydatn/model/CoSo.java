@@ -1,6 +1,8 @@
 package com.fpolydatn.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,8 +23,11 @@ public class CoSo implements Serializable {
 
     @Id
     @GeneratedValue
+    @Column(length = 36)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID coSoId;
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
+    @Nationalized
     private String tenCoSo;
 }
