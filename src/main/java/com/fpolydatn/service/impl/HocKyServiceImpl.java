@@ -3,6 +3,7 @@ package com.fpolydatn.service.impl;
 import com.fpolydatn.infrastructure.constant.StatusCode;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.UpdateHocKyRequest;
 import com.fpolydatn.model.HocKy;
 import com.fpolydatn.repository.HocKyRepository;
 import com.fpolydatn.service.HocKyService;
@@ -57,6 +58,17 @@ public class HocKyServiceImpl implements HocKyService {
             return "Học kỳ này không tồn tại";
         hocKyRepository.deleteById(id);
         return "Xóa thành công";
+    }
+
+    @Override
+    public HocKy update(UUID id, UpdateHocKyRequest updateHocKyRequest) {
+        Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
+        if(!hocKyCheck.isPresent()){
+            throw new RestApiException(StatusCode.ID_IS_NOT_PRESENT);
+        }
+        HocKy hocKy = formUtils.convertToObject(HocKy.class, updateHocKyRequest);
+        hocKyCheck.get().setTenHocKy(hocKy.getTenHocKy());
+        return hocKyRepository.save(hocKyCheck.get());
     }
 
 }
