@@ -11,5 +11,4 @@ public interface VaiTroRepository extends JpaRepository<VaiTro, UUID> {
 
     @Query (value = "select vai_tro_id, ten_vai_tro from vai_tro limit :size offset :offset", nativeQuery = true)
     List<VaiTro> getListVaiTro(@Param("offset") int offset, @Param("size") int size);
-
 }

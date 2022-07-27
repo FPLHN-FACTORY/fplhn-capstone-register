@@ -22,6 +22,7 @@ public class VaiTroController {
                                   @RequestParam(value = "size", defaultValue = "10") int size){
         int offset = page * size;
         return new ResponseObject(vaiTroService.getList(offset,size));
+
     }
 
 }

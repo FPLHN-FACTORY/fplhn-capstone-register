@@ -7,5 +7,4 @@ import java.util.List;
 public interface VaiTroService {
 
     List<VaiTro> getList(int offset, int size);
-
 }
