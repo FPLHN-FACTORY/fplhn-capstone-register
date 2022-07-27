@@ -40,10 +40,10 @@ public class CanBoController {
 //        throw new NotImplementedException();
 //    }
 //
-//    @PostMapping
-//    public ResponseObject create(@RequestBody CreateCanBoRequest canBo) {
-//        return new ResponseObject(canBoService.addNew(canBo));
-//    }
+    @PostMapping
+    public ResponseObject create(@RequestBody CreateCanBoRequest canBo) {
+        return new ResponseObject(canBoService.addNew(canBo));
+    }
 //
 //    @PostMapping("/import")
 //    public ResponseObject importExcel(@RequestBody CreateCanBoRequest canBo) {

@@ -66,6 +66,9 @@ public class HocKyServiceImpl implements HocKyService {
         if(!hocKyCheck.isPresent()){
             throw new RestApiException(StatusCode.ID_IS_NOT_PRESENT);
         }
+        if (ObjectUtils.isEmpty(updateHocKyRequest.getTenHocKy())) {
+            throw new RestApiException(StatusCode.TEN_HOC_KY_EMPTY);
+        }
         HocKy hocKy = formUtils.convertToObject(HocKy.class, updateHocKyRequest);
         hocKyCheck.get().setTenHocKy(hocKy.getTenHocKy());
         return hocKyRepository.save(hocKyCheck.get());
