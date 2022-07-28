@@ -12,6 +12,7 @@ import java.util.UUID;
  * @author thepvph20110
  */
 public interface CoSoRepository extends JpaRepository<CoSo, UUID> {
+
     @Query(value = "Select co_so_id," +
             "ten_co_so" +
             " from co_so limit :size offset :offset", nativeQuery = true)
