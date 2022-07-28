@@ -11,6 +11,8 @@ public enum StatusCode {
 
     NAME_EMPTY(401, PropertiesReader.getProperty(PropertyKeys.NAME_EMPTY)),
 
+    TEN_CO_SO_EMPTY(401,PropertiesReader.getProperty(PropertyKeys.TEN_CO_SO_EMPTY)),
+
     USERNAME_EMPTY(402, PropertiesReader.getProperty(PropertyKeys.USERNAME_EMPTY)),
 
     PHONE_NUMBER_EMPTY(403, PropertiesReader.getProperty(PropertyKeys.PHONE_NUMBER_EMPTY)),

@@ -23,7 +23,6 @@ public class CoSo implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(length = 36)
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID coSoId;
 
