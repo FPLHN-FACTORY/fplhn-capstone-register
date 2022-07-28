@@ -18,19 +18,20 @@ public class CoSoController {
 
     @Autowired
     private CoSoService coSoService;
-    @GetMapping("/{id}")
-    public ResponseObject get(@PathVariable UUID id) {
-        return new ResponseObject(coSoService.findById(id));
-    }
+
     @GetMapping("")
     public ResponseObject getList(@RequestParam(value = "page", defaultValue = "0") int page,
                                   @RequestParam(value = "size", defaultValue = "10") int size) {
         int offset = page * size;
         return new ResponseObject(coSoService.getList(offset, size));
     }
+    @GetMapping("/{id}")
+    public ResponseObject get(@PathVariable UUID id) {
+        return new ResponseObject(coSoService.findById(id));
+    }
 
     @PostMapping("")
     public ResponseObject addNew(@RequestBody CreateCoSoRequest coSoRequest) {
-        return new ResponseObject(coSoService.addCoSo(coSoRequest));
+        return new ResponseObject(coSoService.addNew(coSoRequest));
     }
 }

@@ -7,5 +7,5 @@ import java.util.UUID;
 public interface CoSoService {
     CoSo findById(UUID id);
     List<CoSo> getList(int offset, int size);
-    CoSo addCoSo(CreateCoSoRequest coSo);
+    CoSo addNew(CreateCoSoRequest coSo);
 }

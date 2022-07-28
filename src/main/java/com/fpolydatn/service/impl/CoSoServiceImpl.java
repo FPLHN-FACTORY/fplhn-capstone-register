@@ -38,7 +38,7 @@ public class CoSoServiceImpl implements CoSoService {
     }
 
     @Override
-    public CoSo addCoSo(CreateCoSoRequest coSoRequest) {
+    public CoSo addNew(CreateCoSoRequest coSoRequest) {
         if (Objects.isNull(coSoRequest)) {
             throw new RestApiException(StatusCode.DATA_EMPTY);
         }
