@@ -19,6 +19,7 @@ import java.util.UUID;
 
 @Service
 public class CoSoServiceImpl implements CoSoService {
+
     @Autowired
     private CoSoRepository coSoRepository;
 
@@ -29,10 +30,11 @@ public class CoSoServiceImpl implements CoSoService {
     @Override
     public CoSo deleteCoSo(UUID id) {
         Optional<CoSo> coSo = coSoRepository.findById(id);
-        if(!coSo.isPresent()){
+        if (!coSo.isPresent()) {
             throw new RestApiException(StatusCode.ID_COSO_NOT_EXIST);
         }
         coSoRepository.delete(coSo.get());
         return coSo.get();
     }
+
 }

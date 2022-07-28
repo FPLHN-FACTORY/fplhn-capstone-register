@@ -19,18 +19,19 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/co-so")
 public class CoSoController {
+
     @Autowired
     private CoSoService coSoService;
 
     @GetMapping
     public ResponseObject getListCoSo(@RequestParam(value = "page", defaultValue = "0") int page,
-                                      @RequestParam(value = "size", defaultValue = "10") int size){
-        int offset = size*page;
-        return new ResponseObject(coSoService.getListCoSo(offset,size));
+                                      @RequestParam(value = "size", defaultValue = "10") int size) {
+        int offset = size * page;
+        return new ResponseObject(coSoService.getListCoSo(offset, size));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseObject deleteCoSo(@PathVariable("id")UUID id){
+    public ResponseObject deleteCoSo(@PathVariable("id") UUID id) {
         return new ResponseObject(coSoService.deleteCoSo(id));
     }
 

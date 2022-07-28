@@ -18,6 +18,7 @@ public enum StatusCode {
     EMAIL_FPT_EMPTY(404, PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_EMPTY)),
 
     EMAIL_FE_EMPTY(405, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EMPTY)),
+
     DELETE_COSO_SUCCESS(406, PropertiesReader.getProperty(PropertyKeys.DELETE_COSO_SUCCESS)),
     ID_COSO_NOT_EXIST(407, PropertiesReader.getProperty(PropertyKeys.ID_COSO_NOT_EXIST));
 

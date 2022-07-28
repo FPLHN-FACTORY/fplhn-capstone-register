@@ -9,6 +9,9 @@ import java.util.UUID;
  * @author thepvph20110
  */
 public interface CoSoService {
+
     List<CoSo> getListCoSo(int offset, int size);
+
     CoSo deleteCoSo(UUID id);
+
 }
