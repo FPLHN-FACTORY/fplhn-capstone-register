@@ -1,7 +1,8 @@
 package com.fpolydatn.model;
 
-import lombok.Builder;
 import lombok.Data;
+import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,8 +23,11 @@ public class HocKy implements Serializable {
 
     @Id
     @GeneratedValue
+    @Column(length = 36)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID hocKyId;
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
+    @Nationalized
     private String tenHocKy;
 }

@@ -7,7 +7,19 @@ public enum StatusCode {
 
     SUCCESS(200, "Success"),
     ERROR_UNKNOWN(1, "Error Unknown"),
-    ABSENT_DETAIL_NOT_EXIST(400, PropertiesReader.getProperty(PropertyKeys.ABSENT_DETAIL_NOT_EXIST));
+    DATA_EMPTY(400, PropertiesReader.getProperty(PropertyKeys.DATA_EMPTY)),
+
+    NAME_EMPTY(401, PropertiesReader.getProperty(PropertyKeys.NAME_EMPTY)),
+
+    USERNAME_EMPTY(402, PropertiesReader.getProperty(PropertyKeys.USERNAME_EMPTY)),
+
+    PHONE_NUMBER_EMPTY(403, PropertiesReader.getProperty(PropertyKeys.PHONE_NUMBER_EMPTY)),
+
+    EMAIL_FPT_EMPTY(404, PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_EMPTY)),
+
+    EMAIL_FE_EMPTY(405, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EMPTY)),
+
+    NAME_ROLE_EMPTY(405, PropertiesReader.getProperty(PropertyKeys.NAME_ROLE_EMPTY));
 
     private Integer status;
 

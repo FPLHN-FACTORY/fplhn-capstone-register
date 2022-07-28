@@ -5,6 +5,13 @@ public class PropertyKeys {
     private PropertyKeys() {
     }
 
-    public static final String ABSENT_DETAIL_NOT_EXIST = "absent.detail.not.exist";
+    public static final String DATA_EMPTY = "data.empty";
+    public static final String NAME_EMPTY = "name.empty";
+    public static final String USERNAME_EMPTY = "username.empty";
+    public static final String PHONE_NUMBER_EMPTY = "phone.number.empty";
+    public static final String EMAIL_FPT_EMPTY = "email.fpt.empty";
+    public static final String EMAIL_FE_EMPTY = "email.fe.empty";
+
+    public static final  String NAME_ROLE_EMPTY = "name.role.emty";
 
 }

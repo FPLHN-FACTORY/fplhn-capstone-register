@@ -1,8 +1,9 @@
 package com.fpolydatn.model;
 
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
-import lombok.Builder;
 import lombok.Data;
+import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,33 +24,42 @@ public class NhomDatn implements Serializable {
 
     @Id
     @GeneratedValue
+    @Column(length = 36)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID nhomId;
 
-    @Column
+    @Column(length = 100)
+    @Nationalized
     private String tenNhom;
 
-    @Column
+    @Column(length = 100)
+    @Nationalized
     private String tenDeTai;
 
     @Column
+    @Nationalized
     private String moTa;
 
-    @Column
+    @Column(length = 50)
     private String matKhau;
 
     @Column(nullable = false)
     private TrangThaiNhom trangThai;
 
-    @Column(nullable = false)
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID truongNhomId;
 
-    @Column
+    @Column(length = 36)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID giangVienId;
 
-    @Column(nullable = false)
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID dotDangKyId;
 
-    @Column(nullable = false)
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID coSoId;
 
 }
