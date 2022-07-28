@@ -1,5 +1,7 @@
 package com.fpolydatn.api.response;
 
+import com.fpolydatn.infrastructure.request.CreateVaiTroRequest;
+import com.fpolydatn.service.VaiTroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
