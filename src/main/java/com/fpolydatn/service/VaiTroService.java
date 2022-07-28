@@ -10,4 +10,5 @@ public interface VaiTroService {
     List<VaiTro> getList(int offset, int size);
 
     VaiTro addNew(CreateVaiTroRequest vaiTroRequest);
+
 }

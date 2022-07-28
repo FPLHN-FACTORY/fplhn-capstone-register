@@ -20,7 +20,7 @@ public class VaiTroServiceImpl implements VaiTroService {
     @Autowired
     private VaiTroRepository vaiTroRepository;
 
-    private FormUtils formUtils = new FormUtils();
+    private FormUtils formUtil = new FormUtils();
 
     @Override
     public List<VaiTro> getList(int offset, int size) {
@@ -35,8 +35,9 @@ public class VaiTroServiceImpl implements VaiTroService {
         if(ObjectUtils.isEmpty(vaiTroRequest.getTenVaiTro())) {
             throw new RestApiException(StatusCode.NAME_ROLE_EMPTY);
         }
-        VaiTro vaiTro = formUtils.convertToObject(VaiTro.class, vaiTroRequest);
+        VaiTro vaiTro = formUtil.convertToObject(VaiTro.class, vaiTroRequest);
         return vaiTroRepository.save(vaiTro);
     }
+
 
 }
