@@ -39,4 +39,5 @@ public class VaiTroController {
         return new ResponseObject(vaiTroService.delete(id));
     }
 
+
 }

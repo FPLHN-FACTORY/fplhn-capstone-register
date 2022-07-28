@@ -14,4 +14,5 @@ public interface VaiTroService {
 
     String delete(UUID id);
     VaiTro findByID(UUID id);
+
 }
