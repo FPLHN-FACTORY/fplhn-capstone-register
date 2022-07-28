@@ -3,7 +3,6 @@ package com.fpolydatn.service.impl;
 import com.fpolydatn.infrastructure.constant.StatusCode;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.CreateCoSoRequest;
-import com.fpolydatn.model.CanBo;
 import com.fpolydatn.model.CoSo;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.service.CoSoService;
@@ -18,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class CoSoServiceImp implements CoSoService {
+public class CoSoServiceImpl implements CoSoService {
     @Autowired
     private CoSoRepository coSoRepository;
 
@@ -46,7 +45,6 @@ public class CoSoServiceImp implements CoSoService {
         if (ObjectUtils.isEmpty(coSoRequest.getTenCoSo())) {
             throw new RestApiException(StatusCode.TEN_CO_SO_EMPTY);
         }
-
         CoSo coSo = formUtils.convertToObject(CoSo.class,coSoRequest);
         return coSoRepository.save(coSo);
     }
