@@ -23,8 +23,8 @@ public class CoSoController {
     private CoSoService coSoService;
 
     @GetMapping
-    public ResponseObject getListCoSo(@RequestParam("page") int page,
-                                      @RequestParam("size") int size){
+    public ResponseObject getListCoSo(@RequestParam(value = "page", defaultValue = "0") int page,
+                                      @RequestParam(value = "size", defaultValue = "10") int size){
         int offset = size*page;
         return new ResponseObject(coSoService.getListCoSo(offset,size));
     }
