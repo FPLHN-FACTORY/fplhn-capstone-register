@@ -12,6 +12,12 @@ public interface VaiTroService {
 
     VaiTro addNew(CreateVaiTroRequest vaiTroRequest);
 
+
+    String delete(UUID id);
+    VaiTro findByID(UUID id);
+
+
     VaiTro updateVaiTro(CreateVaiTroRequest request , UUID id);
+
 }
 
