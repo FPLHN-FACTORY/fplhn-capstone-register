@@ -17,6 +17,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 
 @Service
@@ -42,6 +43,20 @@ public class VaiTroServiceImpl implements VaiTroService {
         }
         VaiTro vaiTro = formUtil.convertToObject(VaiTro.class, vaiTroRequest);
         return vaiTroRepository.save(vaiTro);
+    }
+
+
+    @Override
+    public VaiTro updateVaiTro(CreateVaiTroRequest vaiTroRequest, UUID id) {
+        if(Objects.isNull(vaiTroRequest)){
+            throw new RestApiException(StatusCode.DATA_EMPTY);
+        }
+        if(ObjectUtils.isEmpty(vaiTroRequest.getTenVaiTro())) {
+            throw new RestApiException(StatusCode.NAME_ROLE_EMPTY);
+        }
+        VaiTro vaitro= formUtil.convertToObject(VaiTro.class, vaiTroRequest);
+        vaitro.setVaiTroId(id);
+        return vaiTroRepository.save(vaitro);
     }
 
 }
