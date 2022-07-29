@@ -6,11 +6,15 @@ import com.fpolydatn.model.VaiTro;
 import com.fpolydatn.service.VaiTroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 
 @RestController
@@ -33,5 +37,9 @@ public class VaiTroController {
         return new ResponseObject(vaiTroService.addNew(vaiTroRequest));
     }
 
+    @PutMapping("/{id}")
+    public ResponseObject update(@PathVariable UUID id,  @RequestBody CreateVaiTroRequest vaiTroRequest){
+        return new ResponseObject(vaiTroService.update(id, vaiTroRequest));
+    }
 
 }
