@@ -24,7 +24,7 @@ public class VaiTroServiceImpl implements VaiTroService {
 
     @Override
     public List<VaiTro> getList(int offset, int size) {
-        return vaiTroRepository.getListVaiTro(offset, size);
+        return vaiTroRepository.getList(offset, size);
     }
 
     @Override

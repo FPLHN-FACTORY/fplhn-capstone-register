@@ -12,7 +12,6 @@ public interface VaiTroService {
 
     VaiTro addNew(CreateVaiTroRequest vaiTroRequest);
 
-    VaiTro update(UUID id, CreateVaiTroRequest vaiTroRequest);
 
 }
 
