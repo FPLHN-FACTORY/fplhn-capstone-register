@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 /**
- *
  * @author thepvph20110
  */
+
 
 @RestController
 @RequestMapping("/api/co-so")
@@ -51,6 +51,11 @@ public class CoSoController {
     public ResponseObject update(@PathVariable UUID id,
                                  @RequestBody UpdateCoSoRequest coSo) {
         return new ResponseObject(coSoService.update(id, coSo));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseObject get(@PathVariable UUID id) {
+        return new ResponseObject(coSoService.findById(id));
     }
 
 }

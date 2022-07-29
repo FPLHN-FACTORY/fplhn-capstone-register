@@ -2,6 +2,7 @@ package com.fpolydatn.infrastructure.request;
 
 import lombok.Data;
 
+
 /**
  * @author caodinh
  */
@@ -9,4 +10,5 @@ import lombok.Data;
 public class CreateCoSoRequest {
 
     private String tenCoSo;
+
 }

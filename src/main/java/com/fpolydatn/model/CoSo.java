@@ -3,6 +3,7 @@ package com.fpolydatn.model;
 import lombok.Data;
 import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.Type;
+import org.hibernate.query.criteria.internal.expression.function.LengthFunction;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

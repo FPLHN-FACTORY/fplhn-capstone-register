@@ -17,4 +17,5 @@ public interface CoSoRepository extends JpaRepository<CoSo, UUID> {
             "ten_co_so" +
             " from co_so limit :size offset :offset", nativeQuery = true)
     List<CoSo> getListCoSo(@Param("offset") int offset, @Param("size") int size);
+
 }

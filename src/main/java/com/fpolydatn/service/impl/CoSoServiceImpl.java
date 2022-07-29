@@ -7,13 +7,16 @@ import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.service.CoSoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 import com.fpolydatn.infrastructure.request.CreateCoSoRequest;
 import com.fpolydatn.infrastructure.request.UpdateCoSoRequest;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.util.ObjectUtils;
+
 import java.util.Objects;
 
 /**
@@ -27,6 +30,18 @@ public class CoSoServiceImpl implements CoSoService {
 
     private FormUtils formUtils = new FormUtils();
 
+
+    @Override
+    public CoSo findById(UUID id) {
+        CoSo coSo = new CoSo();
+        Optional<CoSo> optionalCoSo = coSoRepository.findById(id);
+        if (optionalCoSo.isPresent()) {
+            coSo = optionalCoSo.get();
+        }
+        return coSo;
+    }
+
+    @Override
     public List<CoSo> getListCoSo(int offset, int size) {
         return coSoRepository.getListCoSo(offset, size);
     }
@@ -71,4 +86,5 @@ public class CoSoServiceImpl implements CoSoService {
         coSo.setCoSoId(uuid);
         return coSoRepository.save(coSo);
     }
+    
 }
