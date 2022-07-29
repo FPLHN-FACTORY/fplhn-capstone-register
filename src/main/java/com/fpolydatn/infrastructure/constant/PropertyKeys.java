@@ -12,4 +12,7 @@ public class PropertyKeys {
     public static final String EMAIL_FPT_EMPTY = "email.fpt.empty";
     public static final String EMAIL_FE_EMPTY = "email.fe.empty";
 
+    public static final  String NAME_ROLE_EMPTY = "name.role.emty";
+
+
 }
