@@ -1,10 +1,13 @@
 package com.fpolydatn.api;
 
+import com.fpolydatn.api.response.ResponseObject;
+import com.fpolydatn.infrastructure.request.CreateVaiTroRequest;
 import com.fpolydatn.model.VaiTro;
 import com.fpolydatn.service.VaiTroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,10 +39,19 @@ public class VaiTroController {
         return new ResponseObject(vaiTroService.addNew(vaiTroRequest));
     }
 
-    @PutMapping("/edit/{id}")
+    @DeleteMapping("/{id}")
+    public ResponseObject delete(@PathVariable UUID id) {
+        return new ResponseObject(vaiTroService.delete(id));
+    }
+
+    @PutMapping("/{id}")
     public ResponseEntity<?> editProduct(@PathVariable("id") UUID id, @RequestBody CreateVaiTroRequest vaiTroRequest){
         return new ResponseEntity<>(vaiTroService.updateVaiTro( vaiTroRequest,id), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseObject findByID(@PathVariable UUID id){
+        return new ResponseObject(vaiTroService.findByID(id));
+    }
 
 }
