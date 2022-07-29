@@ -4,6 +4,7 @@ import com.fpolydatn.infrastructure.request.CreateVaiTroRequest;
 import com.fpolydatn.model.VaiTro;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface VaiTroService {
 
@@ -11,4 +12,5 @@ public interface VaiTroService {
 
     VaiTro addNew(CreateVaiTroRequest vaiTroRequest);
 
+    VaiTro updateVaiTro(CreateVaiTroRequest request , UUID id);
 }
