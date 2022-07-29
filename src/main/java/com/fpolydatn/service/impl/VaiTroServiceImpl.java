@@ -13,8 +13,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class VaiTroServiceImpl implements VaiTroService {
@@ -39,23 +37,6 @@ public class VaiTroServiceImpl implements VaiTroService {
         }
         VaiTro vaiTro = formUtil.convertToObject(VaiTro.class, vaiTroRequest);
         return vaiTroRepository.save(vaiTro);
-    }
-
-    @Override
-    public VaiTro update(UUID id, CreateVaiTroRequest vaiTroRequest) {
-        VaiTro vaiTro = vaiTroRepository.findById(id).orElse(null);
-        if (vaiTro == null) {
-            throw new RestApiException(StatusCode.DATA_EMPTY);
-        }
-        if (Objects.isNull(vaiTroRequest)) {
-            throw new RestApiException(StatusCode.DATA_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(vaiTroRequest.getTenVaiTro())) {
-            throw new RestApiException(StatusCode.NAME_ROLE_EMPTY);
-        }
-            vaiTro.setTenVaiTro(vaiTroRequest.getTenVaiTro());
-            return vaiTroRepository.save(vaiTro);
-
     }
 
 
