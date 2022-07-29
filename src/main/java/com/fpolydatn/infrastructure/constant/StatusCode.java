@@ -21,7 +21,9 @@ public enum StatusCode {
 
     TEN_HOC_KY_EMPTY(406, PropertiesReader.getProperty(PropertyKeys.TEN_HOC_KY_EMPTY)),
 
-    ID_IS_NOT_PRESENT(407, PropertiesReader.getProperty(PropertyKeys.ID_IS_NOT_PRESENT));
+    ID_IS_NOT_PRESENT(407, PropertiesReader.getProperty(PropertyKeys.ID_IS_NOT_PRESENT)),
+
+    TEN_CHUYEN_NGANH_EMPTY(408, PropertiesReader.getProperty(PropertyKeys.TEN_CHUYEN_NGANH_EMPTY));
     private Integer status;
 
     private String message;

@@ -13,4 +13,7 @@ public class PropertyKeys {
     public static final String EMAIL_FE_EMPTY = "email.fe.empty";
     public static final String TEN_HOC_KY_EMPTY = "ten.hoc.ky.empty";
     public static final String ID_IS_NOT_PRESENT = "id.is.not.present";
+    public static final String TEN_CHUYEN_NGANH_EMPTY = "ten.chuyen.nganh.empty";
+
+
 }
