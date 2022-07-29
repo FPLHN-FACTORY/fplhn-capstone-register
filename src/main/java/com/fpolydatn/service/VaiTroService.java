@@ -12,3 +12,4 @@ public interface VaiTroService {
     VaiTro addNew(CreateVaiTroRequest vaiTroRequest);
 
 }
+
