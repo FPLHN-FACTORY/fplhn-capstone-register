@@ -1,5 +1,6 @@
 package com.fpolydatn.service.impl;
 
+
 import com.fpolydatn.infrastructure.constant.StatusCode;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.CreateVaiTroRequest;
@@ -9,11 +10,15 @@ import com.fpolydatn.service.VaiTroService;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
 
 @Service
 public class VaiTroServiceImpl implements VaiTroService {
@@ -21,11 +26,11 @@ public class VaiTroServiceImpl implements VaiTroService {
     @Autowired
     private VaiTroRepository vaiTroRepository;
 
-    private FormUtils formUtil = new FormUtils();
+    private FormUtils formUtils = new FormUtils();
 
     @Override
     public List<VaiTro> getList(int offset, int size) {
-        return vaiTroRepository.getListVaiTro(offset, size);
+        return vaiTroRepository.getList(offset, size);
     }
 
     @Override
@@ -40,6 +45,7 @@ public class VaiTroServiceImpl implements VaiTroService {
         return vaiTroRepository.save(vaiTro);
     }
 
+
     @Override
     public VaiTro updateVaiTro(CreateVaiTroRequest vaiTroRequest, UUID id) {
         if(Objects.isNull(vaiTroRequest)){
@@ -52,6 +58,5 @@ public class VaiTroServiceImpl implements VaiTroService {
         vaitro.setVaiTroId(id);
         return vaiTroRepository.save(vaitro);
     }
-
 
 }

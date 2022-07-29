@@ -14,3 +14,4 @@ public interface VaiTroService {
 
     VaiTro updateVaiTro(CreateVaiTroRequest request , UUID id);
 }
+

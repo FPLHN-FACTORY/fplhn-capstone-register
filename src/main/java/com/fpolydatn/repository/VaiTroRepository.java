@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface VaiTroRepository extends JpaRepository<VaiTro, UUID> {
 
-    @Query (value = "select vai_tro_id, ten_vai_tro from vai_tro limit :size offset :offset", nativeQuery = true)
-    List<VaiTro> getListVaiTro(@Param("offset") int offset, @Param("size") int size);
+    @Query(value = "SELECT vai_tro_id, ten_vai_tro FROM vai_tro LIMIT :size offset :offset", nativeQuery = true)
+    List<VaiTro> getList(@Param("offset") int offset, @Param("size") int size);
+
 }
