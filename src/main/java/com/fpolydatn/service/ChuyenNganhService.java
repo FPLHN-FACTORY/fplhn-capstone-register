@@ -1,16 +1,12 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.model.ChuyenNganh;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Vinhnv
  */
 public interface ChuyenNganhService {
 
-    List<ChuyenNganh> getList (int offset , int size);
+    Object getList (UUID id, int offset , int size);
 
 }
