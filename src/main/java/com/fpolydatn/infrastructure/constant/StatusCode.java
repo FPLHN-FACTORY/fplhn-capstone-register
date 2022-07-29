@@ -20,7 +20,10 @@ public enum StatusCode {
     EMAIL_FE_EMPTY(405, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EMPTY)),
 
     DELETE_COSO_SUCCESS(406, PropertiesReader.getProperty(PropertyKeys.DELETE_COSO_SUCCESS)),
-    ID_COSO_NOT_EXIST(407, PropertiesReader.getProperty(PropertyKeys.ID_COSO_NOT_EXIST));
+    ID_COSO_NOT_EXIST(407, PropertiesReader.getProperty(PropertyKeys.ID_COSO_NOT_EXIST)),
+
+    COSO_NAME_EMPTY(406, PropertiesReader.getProperty(PropertyKeys.COSO_NAME_EMPTY)),
+    UUID_EMPTY(407, PropertiesReader.getProperty(PropertyKeys.UUID_EMPTY));
 
     private Integer status;
 
