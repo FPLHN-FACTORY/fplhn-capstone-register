@@ -35,29 +35,29 @@ public class CanBoController {
         return new ResponseObject(canBoService.getList(offset, size));
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseObject get(@PathVariable UUID id) {
-//        throw new NotImplementedException();
-//    }
-//
-//    @PostMapping
-//    public ResponseObject create(@RequestBody CreateCanBoRequest canBo) {
-//        return new ResponseObject(canBoService.addNew(canBo));
-//    }
-//
-//    @PostMapping("/import")
-//    public ResponseObject importExcel(@RequestBody CreateCanBoRequest canBo) {
-//        throw new NotImplementedException();
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseObject update(@PathVariable UUID id,
-//                                 @RequestBody UpdateCanBoRequest canBo) {
-//        throw new NotImplementedException();
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseObject delete(@PathVariable UUID id) {
-//        throw new NotImplementedException();
-//    }
+    @GetMapping("/{id}")
+    public ResponseObject get(@PathVariable UUID id) {
+        throw new NotImplementedException();
+    }
+
+    @PostMapping
+    public ResponseObject create(@RequestBody CreateCanBoRequest canBo) {
+        return new ResponseObject(canBoService.addNew(canBo));
+    }
+
+    @PostMapping("/import")
+    public ResponseObject importExcel(@RequestBody CreateCanBoRequest canBo) {
+        throw new NotImplementedException();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseObject update(@PathVariable UUID id,
+                                 @RequestBody UpdateCanBoRequest canBo) {
+        throw new NotImplementedException();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseObject delete(@PathVariable UUID id) {
+        throw new NotImplementedException();
+    }
 }

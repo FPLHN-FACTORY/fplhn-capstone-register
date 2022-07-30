@@ -21,7 +21,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping(value = "/vai-tro")
+@RequestMapping(value = "/api/vai-tro")
 public class VaiTroController {
 
     @Autowired
