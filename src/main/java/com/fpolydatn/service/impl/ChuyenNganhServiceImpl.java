@@ -32,4 +32,5 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class,craCreateChuyenNganhRequest);
         return chuyenNganhRepository.save(chuyenNganh);
     }
+
 }

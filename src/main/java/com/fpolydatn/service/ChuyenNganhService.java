@@ -8,4 +8,5 @@ import com.fpolydatn.model.ChuyenNganh;
  */
 public interface ChuyenNganhService {
     ChuyenNganh insert(CreateChuyenNganhRequest craCreateChuyenNganhRequest);
+
 }

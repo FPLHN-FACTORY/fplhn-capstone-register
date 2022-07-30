@@ -16,4 +16,5 @@ public class CreateChuyenNganhRequest {
     private String chuyenNganhMeId;
 
     private UUID coSoId;
+
 }

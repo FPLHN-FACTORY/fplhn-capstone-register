@@ -24,4 +24,5 @@ public class ChuyenNganhController {
     public ResponseObject create(@RequestBody CreateChuyenNganhRequest createChuyenNganhRequest) {
         return new ResponseObject(chuyenNganhService.insert(createChuyenNganhRequest));
     }
+
 }

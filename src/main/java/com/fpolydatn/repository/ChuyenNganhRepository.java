@@ -9,4 +9,5 @@ import java.util.UUID;
  * @author Vinhnv
  */
 public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh, UUID> {
+
 }
