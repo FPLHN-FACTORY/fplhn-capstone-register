@@ -2,7 +2,6 @@ package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
 import com.fpolydatn.infrastructure.request.CreateVaiTroRequest;
-import com.fpolydatn.model.VaiTro;
 import com.fpolydatn.service.VaiTroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
