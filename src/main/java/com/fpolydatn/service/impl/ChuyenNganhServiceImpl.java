@@ -13,6 +13,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ChuyenNganhServiceImpl implements ChuyenNganhService {
@@ -31,6 +32,15 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
         }
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class,craCreateChuyenNganhRequest);
         return chuyenNganhRepository.save(chuyenNganh);
+    }
+
+    @Override
+    public ChuyenNganh search(UUID id) {
+        Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(id);
+        if(!chuyenNganh.isPresent()) {
+            throw new RestApiException(StatusCode.ID_IS_NOT_PRESENT);
+        }
+        return chuyenNganh.get();
     }
 
 }
