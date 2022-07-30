@@ -1,5 +1,7 @@
 package com.fpolydatn.service.impl;
 
+import com.fpolydatn.infrastructure.constant.StatusCode;
+import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.model.ChuyenNganh;
 import com.fpolydatn.model.CoSo;
 import com.fpolydatn.repository.ChuyenNganhRepository;
@@ -33,5 +35,14 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
            return chuyenNganhRepository.getListChuyenNganh(id,offset, size) ;
         }
         return null ;
+    }
+
+    @Override
+    public ChuyenNganh searchID(UUID id) {
+        Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(id);
+        if(!chuyenNganh.isPresent()) {
+            throw new RestApiException(StatusCode.ID_IS_NOT_PRESENT);
+        }
+        return chuyenNganh.get();
     }
 }
