@@ -6,6 +6,7 @@ import com.fpolydatn.infrastructure.request.CreateChuyenNganhRequest;
 import com.fpolydatn.model.ChuyenNganh;
 import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.service.ChuyenNganhService;
+import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -19,6 +20,8 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
     @Autowired
     private ChuyenNganhRepository chuyenNganhRepository;
 
+    private FormUtils formUtils = new FormUtils();
+
     public ChuyenNganh insert(CreateChuyenNganhRequest craCreateChuyenNganhRequest){
         if (Objects.isNull(craCreateChuyenNganhRequest)) {
             throw new RestApiException(StatusCode.DATA_EMPTY);
@@ -26,7 +29,7 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
         if (ObjectUtils.isEmpty(craCreateChuyenNganhRequest.getTenChuyenNganh())) {
             throw new RestApiException(StatusCode.TEN_CHUYEN_NGANH_EMPTY);
         }
-//        Optional<>
-        return null;
+        ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class,craCreateChuyenNganhRequest);
+        return chuyenNganhRepository.save(chuyenNganh);
     }
 }
