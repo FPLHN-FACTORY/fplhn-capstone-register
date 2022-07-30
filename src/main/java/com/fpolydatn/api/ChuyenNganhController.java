@@ -29,4 +29,9 @@ public class ChuyenNganhController {
         }
         return new ResponseObject(chuyenNganhService.getList(id, offset, size));
     }
+
+    @GetMapping("/search-chuyen-nganh/{id}")
+    public ResponseObject searchID(@PathVariable UUID id) {
+        return new ResponseObject(chuyenNganhService.searchID(id));
+    }
 }
