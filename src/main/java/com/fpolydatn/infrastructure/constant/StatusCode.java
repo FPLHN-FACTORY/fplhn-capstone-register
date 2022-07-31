@@ -33,7 +33,11 @@ public enum StatusCode {
 
     ID_FACILITIES_EMPTY(412, PropertiesReader.getProperty(PropertyKeys.ID_FACILITIES_EMPTY)),
 
-    ID_FACILITIES_NOT_FOUND(413, PropertiesReader.getProperty(PropertyKeys.ID_FACILITIES_NOT_FOUND));
+    ID_FACILITIES_NOT_FOUND(413, PropertiesReader.getProperty(PropertyKeys.ID_FACILITIES_NOT_FOUND)),
+
+    ID_CADRES_EMPTY(414, PropertiesReader.getProperty(PropertyKeys.ID_CADRES_EMPTY)),
+
+    ID_CADRES_NOT_FOUND(415, PropertiesReader.getProperty(PropertyKeys.ID_CADRES_NOT_FOUND));
     private Integer status;
 
     private String message;

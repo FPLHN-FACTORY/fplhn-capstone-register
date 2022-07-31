@@ -26,4 +26,8 @@ public class PropertyKeys {
     public  static  final String ID_FACILITIES_EMPTY = "id.facilities.empty";
 
     public static final String ID_FACILITIES_NOT_FOUND = "id.facilities.not.found";
+
+    public static final String ID_CADRES_EMPTY = "id.cadres.empty";
+
+    public static final String ID_CADRES_NOT_FOUND = "id.cadres.not.found";
 }

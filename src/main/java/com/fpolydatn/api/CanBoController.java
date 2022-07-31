@@ -39,11 +39,11 @@ public class CanBoController {
         return new ResponseObject(canBoService.addNew(canBo));
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseObject update(@PathVariable UUID id,
-//                                 @RequestBody UpdateCanBoRequest canBo) {
-//        throw new NotImplementedException();
-//    }
+    @PutMapping("/{id}")
+    public ResponseObject update(@PathVariable UUID id,
+                                 @RequestBody UpdateCanBoRequest canBo) {
+        return new ResponseObject(canBoService.update(id, canBo));
+    }
 //
 //    @DeleteMapping("/{id}")
 //    public ResponseObject delete(@PathVariable UUID id) {

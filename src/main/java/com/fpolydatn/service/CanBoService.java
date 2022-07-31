@@ -1,6 +1,7 @@
 package com.fpolydatn.service;
 
 import com.fpolydatn.infrastructure.request.CreateCanBoRequest;
+import com.fpolydatn.infrastructure.request.UpdateCanBoRequest;
 import com.fpolydatn.model.CanBo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,4 +19,6 @@ public interface CanBoService {
     CanBo addNew(CreateCanBoRequest canBo);
 
     CanBo findById(UUID canBoId);
+
+    CanBo update(UUID id, UpdateCanBoRequest canBoRequest);
 }
