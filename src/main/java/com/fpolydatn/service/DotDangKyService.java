@@ -9,5 +9,5 @@ import java.util.UUID;
  */
 public interface DotDangKyService {
 
-    DotDangKy findByID(UUID uuid);
+    DotDangKy findByID(UUID id);
 }

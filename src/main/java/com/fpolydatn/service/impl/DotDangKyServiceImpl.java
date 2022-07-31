@@ -22,8 +22,8 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     private DotDangKyRepository dotDangKyRepository;
 
     @Override
-    public DotDangKy findByID(UUID uuid) {
-        Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(uuid);
+    public DotDangKy findByID(UUID id) {
+        Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(id);
         if(!dotDangKy.isPresent()){
            throw new RestApiException(StatusCode.ID_DOTDANGKY_EMPTY);
         }
