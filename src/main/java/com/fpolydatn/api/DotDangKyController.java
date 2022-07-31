@@ -33,5 +33,10 @@ public class DotDangKyController {
     public ResponseObject deleteDotDangKy(@PathVariable("id") UUID id) {
         return new ResponseObject(dotDangKyService.deleteDotDangKy(id));
     }
+    @GetMapping("/{id}")
+    public ResponseObject get(@PathVariable("id") UUID id) {
+        return new ResponseObject(dotDangKyService.findByID(id));
+
+    }
 
 }

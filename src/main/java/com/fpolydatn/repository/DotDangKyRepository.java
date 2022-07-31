@@ -13,4 +13,5 @@ public interface DotDangKyRepository extends JpaRepository<DotDangKy, UUID> {
             "ngay_ket_thuc,ten_dot_dang_ky,co_so_id from dot_dang_ky " +
             "where co_so_id = :coSoId limit :size offset :offset",nativeQuery = true)
     List<DotDangKy> getListDotDangKy(@Param("coSoId")String coSoId,@Param("offset")int offset,@Param("size")int size);
+
 }

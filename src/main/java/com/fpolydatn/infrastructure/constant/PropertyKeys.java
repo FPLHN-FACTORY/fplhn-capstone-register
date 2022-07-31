@@ -17,6 +17,6 @@ public class PropertyKeys {
     public static final String UUID_EMPTY = "uuid.empty";
     public static final String DELETE_COSO_SUCCESS = "delete.coso.success";
     public static final String ID_COSO_NOT_EXIST = "id.coso.not.exist";
+    public static final String ID_DOTDANGKY_EMPTY = "id.dotdangky.empty";
 
-    public  static  final String ID_DOTDANGKY_NOT_EXIST="id.datdongky.not.exist";
 }

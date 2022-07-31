@@ -25,8 +25,7 @@ public enum StatusCode {
     ID_COSO_NOT_EXIST(408, PropertiesReader.getProperty(PropertyKeys.ID_COSO_NOT_EXIST)),
 
     COSO_NAME_EMPTY(409, PropertiesReader.getProperty(PropertyKeys.COSO_NAME_EMPTY)),
-    UUID_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.UUID_EMPTY)),
-    ID_DOTDANGKY_NOT_EXIST(411,PropertiesReader.getProperty(PropertyKeys.ID_DOTDANGKY_NOT_EXIST));
+    UUID_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.UUID_EMPTY));
 
     private Integer status;
 

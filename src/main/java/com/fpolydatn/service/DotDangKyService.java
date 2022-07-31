@@ -9,4 +9,8 @@ public interface DotDangKyService {
     DotDangKy deleteDotDangKy(UUID id);
 
     List<DotDangKy> getListDotDangKy(UUID coSoId,int offset,int size);
+
+    DotDangKy findByID(UUID id);
+
+
 }

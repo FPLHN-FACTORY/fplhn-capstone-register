@@ -9,15 +9,18 @@ import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.service.DotDangKyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 
 @Service
 public class DotDangKyServiceImpl implements DotDangKyService {
 
     @Autowired
     private DotDangKyRepository dotDangKyRepository;
+
     @Autowired
     private CoSoRepository coSoRepository;
 
@@ -25,7 +28,7 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     public DotDangKy deleteDotDangKy(UUID id) {
         Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(id);
         if (!dotDangKy.isPresent()) {
-            throw new RestApiException(StatusCode.ID_DOTDANGKY_NOT_EXIST);
+            throw new RestApiException(StatusCode.ID_DOTDANGKY_EMPTY);
         }
         dotDangKyRepository.delete(dotDangKy.get());
         return dotDangKy.get();
@@ -39,5 +42,14 @@ public class DotDangKyServiceImpl implements DotDangKyService {
         }
         String id = String.valueOf(coSoId);
         return dotDangKyRepository.getListDotDangKy(id, offset, size);
+    }
+
+    @Override
+    public DotDangKy findByID(UUID id) {
+        Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(id);
+        if(!dotDangKy.isPresent()){
+           throw new RestApiException(StatusCode.ID_DOTDANGKY_EMPTY);
+        }
+        return dotDangKy.get();
     }
 }
