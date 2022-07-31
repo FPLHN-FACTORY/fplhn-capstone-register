@@ -29,9 +29,11 @@ public enum StatusCode {
 
     ID_ROLE_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.ID_ROLE_EMPTY)),
 
-    ID_ROLE_NOT_FOUND(410, PropertiesReader.getProperty(PropertyKeys.ID_ROLE_NOT_FOUND)),
+    ID_ROLE_NOT_FOUND(411, PropertiesReader.getProperty(PropertyKeys.ID_ROLE_NOT_FOUND)),
 
-    ID_facilities_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.ID_facilities_EMPTY));
+    ID_FACILITIES_EMPTY(412, PropertiesReader.getProperty(PropertyKeys.ID_FACILITIES_EMPTY)),
+
+    ID_FACILITIES_NOT_FOUND(413, PropertiesReader.getProperty(PropertyKeys.ID_FACILITIES_NOT_FOUND));
     private Integer status;
 
     private String message;

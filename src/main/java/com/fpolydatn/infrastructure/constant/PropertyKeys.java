@@ -23,5 +23,7 @@ public class PropertyKeys {
     public static final String ID_ROLE_EMPTY = "id.role.empty";
 
     public static final String ID_ROLE_NOT_FOUND = "id.role.not.found";
-    public  static  final String ID_facilities_EMPTY = "id.facilities.empty";
+    public  static  final String ID_FACILITIES_EMPTY = "id.facilities.empty";
+
+    public static final String ID_FACILITIES_NOT_FOUND = "id.facilities.not.found";
 }

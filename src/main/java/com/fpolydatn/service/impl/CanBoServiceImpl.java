@@ -4,8 +4,10 @@ import com.fpolydatn.infrastructure.constant.StatusCode;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.CreateCanBoRequest;
 import com.fpolydatn.model.CanBo;
+import com.fpolydatn.model.CoSo;
 import com.fpolydatn.model.VaiTro;
 import com.fpolydatn.repository.CanBoRepository;
+import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.repository.VaiTroRepository;
 import com.fpolydatn.service.CanBoService;
 import com.fpolydatn.util.FormUtils;
@@ -31,6 +33,9 @@ public class CanBoServiceImpl implements CanBoService {
     @Autowired
     private VaiTroRepository vaiTroRepository;
 
+    @Autowired
+    private CoSoRepository coSoRepository;
+
     private FormUtils formUtils = new FormUtils();
 
     @Override
@@ -51,31 +56,35 @@ public class CanBoServiceImpl implements CanBoService {
         }
         if (ObjectUtils.isEmpty(canBoRequest.getSoDienThoai())) {
             throw new RestApiException(StatusCode.PHONE_NUMBER_EMPTY);
-        } else if (!canBoRequest.getSoDienThoai().matches("(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}")) {
+        }
+        if (!canBoRequest.getSoDienThoai().matches("(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}")) {
             throw new RestApiException(StatusCode.PHONE_NUMBER_FORMAT);
         }
         if (ObjectUtils.isEmpty(canBoRequest.getEmailFpt())) {
             throw new RestApiException(StatusCode.EMAIL_FPT_EMPTY);
-        }else if(!canBoRequest.getEmailFpt().matches("\\w+@fpt.edu.vn")){
+        }
+        if(!canBoRequest.getEmailFpt().matches("\\w+@fpt.edu.vn")){
             throw new RestApiException(StatusCode.EMAIL_FPT_FORMAT);
         }
         if (ObjectUtils.isEmpty(canBoRequest.getEmailFe())) {
             throw new RestApiException(StatusCode.EMAIL_FE_EMPTY);
-        }else if(!canBoRequest.getEmailFe().matches("\\w+@fe.edu.vn")){
+        }
+        if(!canBoRequest.getEmailFe().matches("\\w+@fe.edu.vn")){
             throw new RestApiException(StatusCode.EMAIL_FE_FORMAT);
         }
         if(ObjectUtils.isEmpty(canBoRequest.getCoSoId())){
-            throw new RestApiException(StatusCode.ID_facilities_EMPTY);
-        }else{
-
+            throw new RestApiException(StatusCode.ID_FACILITIES_EMPTY);
+        }
+        Optional<CoSo> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
+        if(!coSo.isPresent()){
+            throw new RestApiException(StatusCode.ID_FACILITIES_NOT_FOUND);
         }
         if(ObjectUtils.isEmpty(canBoRequest.getVaiTroId())){
             throw new RestApiException(StatusCode.ID_ROLE_EMPTY);
-        }else {
-            Optional<VaiTro> vaiTro = vaiTroRepository.findById(canBoRequest.getVaiTroId());
-            if(!vaiTro.isPresent()){
-                throw new RestApiException(StatusCode.ID_ROLE_NOT_FOUND);
-            }
+        }
+        Optional<VaiTro> vaiTro = vaiTroRepository.findById(canBoRequest.getVaiTroId());
+        if(!vaiTro.isPresent()) {
+            throw new RestApiException(StatusCode.ID_ROLE_NOT_FOUND);
         }
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return canBoRepository.save(canBo);
