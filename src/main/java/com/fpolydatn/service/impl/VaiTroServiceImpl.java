@@ -17,12 +17,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Objects;
-
 import java.util.Optional;
 import java.util.UUID;
-
-import java.util.UUID;
-
 
 
 @Service
@@ -40,13 +36,13 @@ public class VaiTroServiceImpl implements VaiTroService {
 
     @Override
     public VaiTro addNew(CreateVaiTroRequest vaiTroRequest) {
-        if (Objects.isNull(vaiTroRequest)) {
+        if(Objects.isNull(vaiTroRequest)){
             throw new RestApiException(StatusCode.DATA_EMPTY);
         }
-        if (ObjectUtils.isEmpty(vaiTroRequest.getTenVaiTro())) {
+        if(ObjectUtils.isEmpty(vaiTroRequest.getTenVaiTro())) {
             throw new RestApiException(StatusCode.NAME_ROLE_EMPTY);
         }
-        VaiTro vaiTro = formUtil.convertToObject(VaiTro.class, vaiTroRequest);
+        VaiTro vaiTro = formUtils.convertToObject(VaiTro.class, vaiTroRequest);
         return vaiTroRepository.save(vaiTro);
     }
 
@@ -60,17 +56,6 @@ public class VaiTroServiceImpl implements VaiTroService {
         return "Vai tro khong ton tai";
     }
 
-    @Override
-    public VaiTro findByID(UUID id) {
-        VaiTro vaiTro = new VaiTro();
-        Optional<VaiTro> optionalVaiTro = vaiTroRepository.findById(id);
-        if (optionalVaiTro.isPresent()) {
-            vaiTro = optionalVaiTro.get();
-        }
-        return vaiTro;
-    }
-
-
 
     @Override
     public VaiTro updateVaiTro(CreateVaiTroRequest vaiTroRequest, UUID id) {
@@ -80,9 +65,18 @@ public class VaiTroServiceImpl implements VaiTroService {
         if(ObjectUtils.isEmpty(vaiTroRequest.getTenVaiTro())) {
             throw new RestApiException(StatusCode.NAME_ROLE_EMPTY);
         }
-        VaiTro vaitro= formUtil.convertToObject(VaiTro.class, vaiTroRequest);
+        VaiTro vaitro= formUtils.convertToObject(VaiTro.class, vaiTroRequest);
         vaitro.setVaiTroId(id);
         return vaiTroRepository.save(vaitro);
     }
 
+    @Override
+    public VaiTro findByID(UUID id) {
+        VaiTro vaiTro = new VaiTro();
+        Optional<VaiTro> optionalVaiTro = vaiTroRepository.findById(id);
+        if (optionalVaiTro.isPresent()) {
+            vaiTro = optionalVaiTro.get();
+        }
+        return vaiTro;
+    }
 }
