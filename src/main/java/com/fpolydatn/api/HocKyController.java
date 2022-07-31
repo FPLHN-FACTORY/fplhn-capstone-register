@@ -22,7 +22,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping(value = "/api/can-bo")
-public class CanBoController {
+public class HocKyController {
 
     @Autowired
     private CanBoService canBoService;

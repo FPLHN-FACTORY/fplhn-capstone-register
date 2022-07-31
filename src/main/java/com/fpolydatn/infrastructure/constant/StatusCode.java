@@ -54,11 +54,16 @@ public enum StatusCode {
     ID_NOT_EXISTS(410, PropertiesReader.getProperty(PropertyKeys.ID_NOT_EXISTS)),
 
     COSO_NAME_EMPTY(409, PropertiesReader.getProperty(PropertyKeys.COSO_NAME_EMPTY)),
-    
+
     ID_DOTDANGKY_EMPTY(409, PropertiesReader.getProperty(PropertyKeys.ID_DOTDANGKY_EMPTY)),
 
-    UUID_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.UUID_EMPTY));
+    UUID_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.UUID_EMPTY)),
 
+    TEN_HOC_KY_EMPTY(406, PropertiesReader.getProperty(PropertyKeys.TEN_HOC_KY_EMPTY)),
+
+    ID_IS_NOT_PRESENT(407, PropertiesReader.getProperty(PropertyKeys.ID_IS_NOT_PRESENT)),
+
+    TEN_CHUYEN_NGANH_EMPTY(408, PropertiesReader.getProperty(PropertyKeys.TEN_CHUYEN_NGANH_EMPTY));
     private Integer status;
 
     private String message;

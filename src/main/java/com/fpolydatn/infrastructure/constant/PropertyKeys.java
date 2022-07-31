@@ -38,6 +38,10 @@ public class PropertyKeys {
     public  static  final String ID_FACILITIES_EMPTY = "id.facilities.empty";
 
     public static final String ID_FACILITIES_NOT_FOUND = "id.facilities.not.found";
+    public static final String TEN_HOC_KY_EMPTY = "ten.hoc.ky.empty";
+    public static final String ID_IS_NOT_PRESENT = "id.is.not.present";
+    public static final String TEN_CHUYEN_NGANH_EMPTY = "ten.chuyen.nganh.empty";
+
 
     public static final String ID_CADRES_EMPTY = "id.cadres.empty";
 
