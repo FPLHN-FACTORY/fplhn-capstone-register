@@ -26,8 +26,6 @@ public class DotDangKyController {
             @RequestParam(value = "coSoId", defaultValue = "abc") UUID coSoId
     ) {
         int offset = page * size;
-        if (dotDangKyService.getListDotDangKy(coSoId, offset, size) == null)
-            return new ResponseObject("không tìm thấy");
         return new ResponseObject(dotDangKyService.getListDotDangKy(coSoId, offset, size));
     }
 
