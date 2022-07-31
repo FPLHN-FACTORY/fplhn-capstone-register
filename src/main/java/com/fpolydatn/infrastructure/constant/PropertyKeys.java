@@ -14,5 +14,14 @@ public class PropertyKeys {
 
     public static final  String NAME_ROLE_EMPTY = "name.role.emty";
 
+    public static final String PHONE_NUMBER_FORMAT = "phone.number.format";
 
+    public static final String EMAIL_FPT_FORMAT = "email.fpt.format";
+
+    public static final String EMAIL_FE_FORMAT = "email.fe.format";
+
+    public static final String ID_ROLE_EMPTY = "id.role.empty";
+
+    public static final String ID_ROLE_NOT_FOUND = "id.role.not.found";
+    public  static  final String ID_facilities_EMPTY = "id.facilities.empty";
 }

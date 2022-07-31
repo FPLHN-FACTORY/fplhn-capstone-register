@@ -19,8 +19,19 @@ public enum StatusCode {
 
     EMAIL_FE_EMPTY(405, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EMPTY)),
 
-    NAME_ROLE_EMPTY(406, PropertiesReader.getProperty(PropertyKeys.NAME_ROLE_EMPTY));
+    NAME_ROLE_EMPTY(406, PropertiesReader.getProperty(PropertyKeys.NAME_ROLE_EMPTY)),
 
+    PHONE_NUMBER_FORMAT(407, PropertiesReader.getProperty(PropertyKeys.PHONE_NUMBER_FORMAT)),
+
+    EMAIL_FPT_FORMAT(408, PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_FORMAT)),
+
+    EMAIL_FE_FORMAT(409, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_FORMAT)),
+
+    ID_ROLE_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.ID_ROLE_EMPTY)),
+
+    ID_ROLE_NOT_FOUND(410, PropertiesReader.getProperty(PropertyKeys.ID_ROLE_NOT_FOUND)),
+
+    ID_facilities_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.ID_facilities_EMPTY));
     private Integer status;
 
     private String message;
