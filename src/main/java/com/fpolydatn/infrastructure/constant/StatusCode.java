@@ -11,13 +11,23 @@ public enum StatusCode {
 
     NAME_EMPTY(401, PropertiesReader.getProperty(PropertyKeys.NAME_EMPTY)),
 
-    USERNAME_EMPTY(402, PropertiesReader.getProperty(PropertyKeys.USERNAME_EMPTY)),
+    TEN_CO_SO_EMPTY(402, PropertiesReader.getProperty(PropertyKeys.TEN_CO_SO_EMPTY)),
 
-    PHONE_NUMBER_EMPTY(403, PropertiesReader.getProperty(PropertyKeys.PHONE_NUMBER_EMPTY)),
+    USERNAME_EMPTY(403, PropertiesReader.getProperty(PropertyKeys.USERNAME_EMPTY)),
 
-    EMAIL_FPT_EMPTY(404, PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_EMPTY)),
+    PHONE_NUMBER_EMPTY(404, PropertiesReader.getProperty(PropertyKeys.PHONE_NUMBER_EMPTY)),
 
-    EMAIL_FE_EMPTY(405, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EMPTY)),
+    EMAIL_FPT_EMPTY(405, PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_EMPTY)),
+
+    EMAIL_FE_EMPTY(406, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EMPTY)),
+
+    DELETE_COSO_SUCCESS(406, PropertiesReader.getProperty(PropertyKeys.DELETE_COSO_SUCCESS)), ID_COSO_NOT_EXIST(407, PropertiesReader.getProperty(PropertyKeys.ID_COSO_NOT_EXIST)),
+
+    NGAY_BAT_DAU_EMPTY(408, PropertiesReader.getProperty(PropertyKeys.NGAY_BAT_DAU_EMPTY)),
+
+    NGAY_KET_THUC_EMPTY(409, PropertiesReader.getProperty(PropertyKeys.NGAY_KET_THUC_EMPTY)),
+
+    NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC(410, PropertiesReader.getProperty(PropertyKeys.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC)),
 
     NAME_ROLE_EMPTY(406, PropertiesReader.getProperty(PropertyKeys.NAME_ROLE_EMPTY)),
 
@@ -37,7 +47,17 @@ public enum StatusCode {
 
     ID_CADRES_EMPTY(414, PropertiesReader.getProperty(PropertyKeys.ID_CADRES_EMPTY)),
 
-    ID_CADRES_NOT_FOUND(415, PropertiesReader.getProperty(PropertyKeys.ID_CADRES_NOT_FOUND));
+    ID_CADRES_NOT_FOUND(415, PropertiesReader.getProperty(PropertyKeys.ID_CADRES_NOT_FOUND)),
+
+    ID_CO_SO_EMPLY(410, PropertiesReader.getProperty(PropertyKeys.ID_CO_SO_EMPLY)),
+
+    ID_NOT_EXISTS(410, PropertiesReader.getProperty(PropertyKeys.ID_NOT_EXISTS)),
+
+    COSO_NAME_EMPTY(409, PropertiesReader.getProperty(PropertyKeys.COSO_NAME_EMPTY)),
+    
+    ID_DOTDANGKY_EMPTY(409, PropertiesReader.getProperty(PropertyKeys.ID_DOTDANGKY_EMPTY)),
+
+    UUID_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.UUID_EMPTY));
 
     private Integer status;
 
