@@ -1,13 +1,10 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
-import com.fpolydatn.infrastructure.request.UpdateHocKyRequest;
-import com.fpolydatn.service.HocKyService;
+import com.fpolydatn.infrastructure.request.CreateCanBoRequest;
+import com.fpolydatn.infrastructure.request.UpdateCanBoRequest;
+import com.fpolydatn.service.CanBoService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.UUID;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,48 +15,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
 
 /**
- * @author vinhnv
+ * @author nguyenvv4
  */
-
 @RestController
-@RequestMapping(value = "/api/hoc-ky")
+@RequestMapping(value = "/api/can-bo")
 public class HocKyController {
 
     @Autowired
-    private HocKyService hocKyService;
+    private CanBoService canBoService;
 
-
-    @GetMapping("")
+    @GetMapping
     public ResponseObject getList(@RequestParam(value = "page", defaultValue = "0") int page,
                                   @RequestParam(value = "size", defaultValue = "10") int size) {
         int offset = page * size;
-        return new ResponseObject(hocKyService.getList(offset, size));
-
+        return new ResponseObject(canBoService.getList(offset, size));
     }
 
-    @PostMapping("")
-    public ResponseObject create(@RequestBody CreateHocKyRequest createHocKyRequest) {
-        return new ResponseObject(hocKyService.addNew(createHocKyRequest));
+    @PostMapping
+    public ResponseObject create(@RequestBody CreateCanBoRequest canBo) {
+        return new ResponseObject(canBoService.addNew(canBo));
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable UUID id) {
-        return new ResponseObject(hocKyService.delete(id));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseObject searchById(@PathVariable UUID id) {
-        return new ResponseObject(hocKyService.searchById(id));
+        return new ResponseObject(canBoService.delete(id));
     }
 
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable UUID id,
-                                 @RequestBody UpdateHocKyRequest updateHocKyRequest
-    ) {
-        return new ResponseObject(hocKyService.update(id, updateHocKyRequest));
+                                 @RequestBody UpdateCanBoRequest canBo) {
+        return new ResponseObject(canBoService.update(id, canBo));
+    }
+
+    @GetMapping("/{canBoId}")
+    public ResponseObject findById(@PathVariable UUID canBoId){
+        return new ResponseObject(canBoService.findById(canBoId));
     }
 
 }

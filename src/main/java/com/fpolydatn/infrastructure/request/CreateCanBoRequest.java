@@ -23,4 +23,5 @@ public class CreateCanBoRequest {
     private UUID coSoId;
 
     private UUID vaiTroId;
+
 }
