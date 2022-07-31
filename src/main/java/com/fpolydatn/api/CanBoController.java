@@ -42,11 +42,11 @@ public class CanBoController {
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable UUID id,
                                  @RequestBody UpdateCanBoRequest canBo) {
-        throw new NotImplementedException();
+        return null;
     }
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable UUID id) {
-        throw new NotImplementedException();
+        return null;
     }
 }
