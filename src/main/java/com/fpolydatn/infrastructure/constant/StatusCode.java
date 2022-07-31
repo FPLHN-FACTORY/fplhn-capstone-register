@@ -5,7 +5,9 @@ import com.fpolydatn.util.PropertiesReader;
 
 public enum StatusCode {
 
-    SUCCESS(200, "Success"), ERROR_UNKNOWN(1, "Error Unknown"), DATA_EMPTY(400, PropertiesReader.getProperty(PropertyKeys.DATA_EMPTY)),
+    SUCCESS(200, "Success"),
+    ERROR_UNKNOWN(1, "Error Unknown"),
+    DATA_EMPTY(400, PropertiesReader.getProperty(PropertyKeys.DATA_EMPTY)),
 
     NAME_EMPTY(401, PropertiesReader.getProperty(PropertyKeys.NAME_EMPTY)),
 
@@ -27,13 +29,32 @@ public enum StatusCode {
 
     NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC(410, PropertiesReader.getProperty(PropertyKeys.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC)),
 
-    ID_HOC_KY_EMPLY(410, PropertiesReader.getProperty(PropertyKeys.ID_HOC_KY_EMPLY)),
+    NAME_ROLE_EMPTY(406, PropertiesReader.getProperty(PropertyKeys.NAME_ROLE_EMPTY)),
+
+    PHONE_NUMBER_FORMAT(407, PropertiesReader.getProperty(PropertyKeys.PHONE_NUMBER_FORMAT)),
+
+    EMAIL_FPT_FORMAT(408, PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_FORMAT)),
+
+    EMAIL_FE_FORMAT(409, PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_FORMAT)),
+
+    ID_ROLE_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.ID_ROLE_EMPTY)),
+
+    ID_ROLE_NOT_FOUND(411, PropertiesReader.getProperty(PropertyKeys.ID_ROLE_NOT_FOUND)),
+
+    ID_FACILITIES_EMPTY(412, PropertiesReader.getProperty(PropertyKeys.ID_FACILITIES_EMPTY)),
+
+    ID_FACILITIES_NOT_FOUND(413, PropertiesReader.getProperty(PropertyKeys.ID_FACILITIES_NOT_FOUND)),
+
+    ID_CADRES_EMPTY(414, PropertiesReader.getProperty(PropertyKeys.ID_CADRES_EMPTY)),
+
+    ID_CADRES_NOT_FOUND(415, PropertiesReader.getProperty(PropertyKeys.ID_CADRES_NOT_FOUND)),
 
     ID_CO_SO_EMPLY(410, PropertiesReader.getProperty(PropertyKeys.ID_CO_SO_EMPLY)),
 
     ID_NOT_EXISTS(410, PropertiesReader.getProperty(PropertyKeys.ID_NOT_EXISTS)),
 
     COSO_NAME_EMPTY(409, PropertiesReader.getProperty(PropertyKeys.COSO_NAME_EMPTY)),
+    
     ID_DOTDANGKY_EMPTY(409, PropertiesReader.getProperty(PropertyKeys.ID_DOTDANGKY_EMPTY)),
 
     UUID_EMPTY(410, PropertiesReader.getProperty(PropertyKeys.UUID_EMPTY));
