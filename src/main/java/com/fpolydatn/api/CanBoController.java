@@ -34,30 +34,19 @@ public class CanBoController {
         return new ResponseObject(canBoService.getList(offset, size));
     }
 
-    @GetMapping("/{id}")
-    public ResponseObject get(@PathVariable UUID id) {
-        return null;
-    }
-
     @PostMapping
     public ResponseObject create(@RequestBody CreateCanBoRequest canBo) {
         return new ResponseObject(canBoService.addNew(canBo));
     }
 
-    @PostMapping("/import")
-    public ResponseObject importExcel(@RequestBody CreateCanBoRequest canBo) {
-        return null;
-    }
-
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable UUID id,
                                  @RequestBody UpdateCanBoRequest canBo) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable UUID id) {
-        return null;
+        throw new NotImplementedException();
     }
-
 }
