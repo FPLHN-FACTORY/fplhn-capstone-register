@@ -1,6 +1,8 @@
 package com.fpolydatn.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,26 +23,31 @@ public class CanBo implements Serializable {
 
     @Id
     @GeneratedValue
+    @Column(length = 36)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID canBoId;
 
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
+    @Nationalized
     private String tenCanBo;
 
-    @Column(nullable = false)
+    @Column(length = 20, nullable = false)
     private String tenTaiKhoan;
 
-    @Column(nullable = false)
+    @Column(length = 20, nullable = false)
     private String soDienThoai;
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     private String emailFpt;
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     private String emailFe;
 
-    @Column
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID coSoId;
 
-    @Column
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID vaiTroId;
 }

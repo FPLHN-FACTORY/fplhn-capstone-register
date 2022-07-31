@@ -1,6 +1,8 @@
 package com.fpolydatn.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,9 +24,12 @@ public class DotDangKy implements Serializable {
 
     @Id
     @GeneratedValue
+    @Column(length = 36)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID dotDangKyId;
 
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
+    @Nationalized
     private String tenDotDangKy;
 
     @Column(nullable = false)
@@ -33,9 +38,11 @@ public class DotDangKy implements Serializable {
     @Column(nullable = false)
     private Date ngayKetThuc;
 
-    @Column(nullable = false)
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID hocKyId;
 
-    @Column(nullable = false)
+    @Column(length = 36, nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID coSoId;
 }
