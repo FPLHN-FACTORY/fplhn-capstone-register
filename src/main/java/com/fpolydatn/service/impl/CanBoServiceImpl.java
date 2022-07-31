@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author nguyenvv4
@@ -54,5 +56,15 @@ public class CanBoServiceImpl implements CanBoService {
 
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return canBoRepository.save(canBo);
+    }
+
+    @Override
+    public String delete(UUID id) {
+        Optional<CanBo> optionalCanBo = canBoRepository.findById(id);
+        if(optionalCanBo.isPresent()){
+            canBoRepository.deleteById(id);
+            return "Xoa thanh cong can bo";
+        }
+        return "Can bo khong ton tai";
     }
 }

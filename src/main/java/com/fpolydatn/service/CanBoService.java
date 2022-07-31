@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author nguyenvv4
@@ -15,4 +16,5 @@ public interface CanBoService {
     List<CanBo> getList(int offset, int size);
 
     CanBo addNew(CreateCanBoRequest canBo);
+    String delete(UUID id);
 }
