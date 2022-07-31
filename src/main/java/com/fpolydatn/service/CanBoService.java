@@ -18,7 +18,11 @@ public interface CanBoService {
 
     CanBo addNew(CreateCanBoRequest canBo);
 
+    String delete(UUID id);
+
+
     CanBo findById(UUID canBoId);
 
     CanBo update(UUID id, UpdateCanBoRequest canBoRequest);
+
 }

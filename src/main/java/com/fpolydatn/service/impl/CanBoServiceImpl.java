@@ -92,6 +92,14 @@ public class CanBoServiceImpl implements CanBoService {
     }
 
     @Override
+    public String delete(UUID id) {
+        Optional<CanBo> optionalCanBo = canBoRepository.findById(id);
+        if(optionalCanBo.isPresent()){
+            canBoRepository.deleteById(id);
+            return "Xoa thanh cong can bo";
+        }
+        return "Can bo khong ton tai";
+  }
     public CanBo findById(UUID canBoId) {
         CanBo canBo = canBoRepository.findById(canBoId).orElse(null);
         return canBo;
@@ -150,5 +158,5 @@ public class CanBoServiceImpl implements CanBoService {
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         updateCanBo.setCanBoId(id);
         return canBoRepository.save(updateCanBo);
-    }
+   
 }
