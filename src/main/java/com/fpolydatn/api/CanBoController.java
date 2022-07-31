@@ -34,17 +34,15 @@ public class CanBoController {
         return new ResponseObject(canBoService.getList(offset, size));
     }
 
-
     @PostMapping
     public ResponseObject create(@RequestBody CreateCanBoRequest canBo) {
         return new ResponseObject(canBoService.addNew(canBo));
     }
 
-
-
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable UUID id) {
         return new ResponseObject(canBoService.delete(id));
+    }
 
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable UUID id,
@@ -52,9 +50,9 @@ public class CanBoController {
         return new ResponseObject(canBoService.update(id, canBo));
     }
 
-
     @GetMapping("/{canBoId}")
     public ResponseObject findById(@PathVariable UUID canBoId){
         return new ResponseObject(canBoService.findById(canBoId));
     }
+
 }

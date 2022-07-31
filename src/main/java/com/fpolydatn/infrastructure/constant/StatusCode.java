@@ -38,6 +38,7 @@ public enum StatusCode {
     ID_CADRES_EMPTY(414, PropertiesReader.getProperty(PropertyKeys.ID_CADRES_EMPTY)),
 
     ID_CADRES_NOT_FOUND(415, PropertiesReader.getProperty(PropertyKeys.ID_CADRES_NOT_FOUND));
+
     private Integer status;
 
     private String message;
