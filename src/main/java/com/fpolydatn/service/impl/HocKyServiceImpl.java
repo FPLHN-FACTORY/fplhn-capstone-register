@@ -1,6 +1,6 @@
 package com.fpolydatn.service.impl;
 
-import com.fpolydatn.infrastructure.constant.StatusCode;
+import com.fpolydatn.infrastructure.constant.Mesage;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
 import com.fpolydatn.infrastructure.request.UpdateHocKyRequest;
@@ -34,7 +34,7 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     public HocKy addNew(CreateHocKyRequest hocKyRequet) {
         if (ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())) {
-            throw new RestApiException(StatusCode.TEN_HOC_KY_EMPTY);
+            throw new RestApiException(Mesage.TEN_HOC_KY_EMPTY);
         }
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequet);
         return hocKyRepository.save(hocKy);
@@ -64,10 +64,10 @@ public class HocKyServiceImpl implements HocKyService {
     public HocKy update(UUID id, UpdateHocKyRequest updateHocKyRequest) {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
         if(!hocKyCheck.isPresent()){
-            throw new RestApiException(StatusCode.ID_IS_NOT_PRESENT);
+            throw new RestApiException(Mesage.ID_IS_NOT_PRESENT);
         }
         if (ObjectUtils.isEmpty(updateHocKyRequest.getTenHocKy())) {
-            throw new RestApiException(StatusCode.TEN_HOC_KY_EMPTY);
+            throw new RestApiException(Mesage.TEN_HOC_KY_EMPTY);
         }
         HocKy hocKy = formUtils.convertToObject(HocKy.class, updateHocKyRequest);
         hocKyCheck.get().setTenHocKy(hocKy.getTenHocKy());

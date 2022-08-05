@@ -11,7 +11,6 @@ import lombok.Setter;
 @Data
 public class ApiError {
 
-    private Integer statusCode;
     private String message;
 
 }

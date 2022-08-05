@@ -1,6 +1,6 @@
 package com.fpolydatn.service.impl;
 
-import com.fpolydatn.infrastructure.constant.StatusCode;
+import com.fpolydatn.infrastructure.constant.Mesage;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.CreateDotDangKyRequest;
 import com.fpolydatn.infrastructure.response.DotDangKyResponse;
@@ -40,7 +40,7 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     public DotDangKy deleteDotDangKy(UUID id) {
         Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(id);
         if (!dotDangKy.isPresent()) {
-            throw new RestApiException(StatusCode.ID_DOTDANGKY_EMPTY);
+            throw new RestApiException(Mesage.ID_DOTDANGKY_EMPTY);
         }
         dotDangKyRepository.delete(dotDangKy.get());
         return dotDangKy.get();
@@ -50,7 +50,7 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     public List<DotDangKy> getListDotDangKy(UUID coSoId, int offset, int size) {
         Optional<CoSo> coSo = coSoRepository.findById(coSoId);
         if (!coSo.isPresent()) {
-            throw new RestApiException(StatusCode.ID_COSO_NOT_EXIST);
+            throw new RestApiException(Mesage.ID_COSO_NOT_EXIST);
         }
         String id = String.valueOf(coSoId);
         return dotDangKyRepository.getListDotDangKy(id, offset, size);
@@ -60,7 +60,7 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     public DotDangKy findByID(UUID id) {
         Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(id);
         if (!dotDangKy.isPresent()) {
-            throw new RestApiException(StatusCode.ID_DOTDANGKY_EMPTY);
+            throw new RestApiException(Mesage.ID_DOTDANGKY_EMPTY);
         }
         return dotDangKy.get();
     }
@@ -83,7 +83,7 @@ public class DotDangKyServiceImpl implements DotDangKyService {
         dotDangKy.setDotDangKyId(id);
         DotDangKy dotDangKyNew = dotDangKyRepository.save(dotDangKy);
         if (Objects.isNull(dotDangKyNew)) {
-            throw new RestApiException(StatusCode.ID_NOT_EXISTS);
+            throw new RestApiException(Mesage.ID_NOT_EXISTS);
         }
         DotDangKyResponse dotDangKyResponse = new DotDangKyResponse(dotDangKyNew.getDotDangKyId(), dotDangKyNew.getTenDotDangKy(), dotDangKyNew.getNgayBatDau(), dotDangKyNew.getNgayKetThuc(), dotDangKyNew.getHocKyId(), coSo.get());
         return dotDangKyResponse;
@@ -109,36 +109,36 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     private void Regex(CreateDotDangKyRequest dotDangKyRequest, Optional<CoSo> coSo) {
 
         if (Objects.isNull(dotDangKyRequest)) {
-            throw new RestApiException(StatusCode.DATA_EMPTY);
+            throw new RestApiException(Mesage.DATA_EMPTY);
         }
         if (ObjectUtils.isEmpty(dotDangKyRequest.getTenDotDangKy())) {
-            throw new RestApiException(StatusCode.NAME_EMPTY);
+            throw new RestApiException(Mesage.NAME_EMPTY);
         }
         if (ObjectUtils.isEmpty(dotDangKyRequest.getNgayBatDau())) {
-            throw new RestApiException(StatusCode.NGAY_BAT_DAU_EMPTY);
+            throw new RestApiException(Mesage.NGAY_BAT_DAU_EMPTY);
         }
         if (ObjectUtils.isEmpty(dotDangKyRequest.getNgayKetThuc())) {
-            throw new RestApiException(StatusCode.NGAY_KET_THUC_EMPTY);
+            throw new RestApiException(Mesage.NGAY_KET_THUC_EMPTY);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date ngayBatDau = sdf.parse(dotDangKyRequest.getNgayBatDau());
             Date ngayKetThuc = sdf.parse(dotDangKyRequest.getNgayKetThuc());
             if (ngayBatDau.after(ngayKetThuc)) {
-                throw new RestApiException(StatusCode.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC);
+                throw new RestApiException(Mesage.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC);
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
 
-        if (ObjectUtils.isEmpty(dotDangKyRequest.getHocKyId())) {
-            throw new RestApiException(StatusCode.ID_HOC_KY_EMPLY);
-        }
+//        if (ObjectUtils.isEmpty(dotDangKyRequest.getHocKyId())) {
+//            throw new RestApiException(StatusCode.ID_HOC_KY_EMPLY);
+//        }
         if (ObjectUtils.isEmpty(dotDangKyRequest.getCoSoId())) {
-            throw new RestApiException(StatusCode.ID_CO_SO_EMPLY);
+            throw new RestApiException(Mesage.ID_CO_SO_EMPLY);
         }
         if (!coSo.isPresent()) {
-            throw new RestApiException(StatusCode.ID_COSO_NOT_EXIST);
+            throw new RestApiException(Mesage.ID_COSO_NOT_EXIST);
         }
     }
 
