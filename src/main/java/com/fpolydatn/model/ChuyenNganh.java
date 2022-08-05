@@ -1,5 +1,6 @@
 package com.fpolydatn.model;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Data;
 import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.Type;
@@ -23,19 +24,15 @@ public class ChuyenNganh implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(length = 36)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID)
+    @Type(type = EntityProperties.TYPE_ID)
     private UUID chuyenNganhId;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = EntityProperties.LENGTH_NAME, nullable = false)
     @Nationalized
     private String tenChuyenNganh;
 
-    @Column(length = 36, nullable = false)
-    @Type(type="org.hibernate.type.UUIDCharType")
-    private UUID chuyenNganhMeId;
-
-    @Column(length = 36, nullable = false)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Type(type= EntityProperties.TYPE_ID)
     private UUID coSoId;
 }

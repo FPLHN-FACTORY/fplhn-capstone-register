@@ -1,5 +1,6 @@
 package com.fpolydatn.model;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
@@ -18,16 +19,16 @@ import java.util.UUID;
 @Data
 @Table
 @Entity
-@IdClass(ChuyenNganhGiangVienId.class)
-public class ChuyenNganhGiangVien implements Serializable {
+@IdClass(PhanCongHuongDanId.class)
+public class PhanCongHuongDan implements Serializable {
 
     @Id
-    @Column(length = 36)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID)
+    @Type(type = EntityProperties.TYPE_ID)
     private UUID giangVienId;
 
     @Id
-    @Column(length = 36)
-    @Type(type="org.hibernate.type.UUIDCharType")
-    private UUID chuyenNganhId;
+    @Column(length = EntityProperties.LENGTH_ID)
+    @Type(type = EntityProperties.TYPE_ID)
+    private UUID monDatnId;
 }

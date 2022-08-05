@@ -12,9 +12,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class ChuyenNganhGiangVienId implements Serializable {
+public class PhanCongHuongDanId implements Serializable {
 
     private UUID giangVienId;
 
-    private UUID chuyenNganhId;
+    private UUID monDatnId;
 }
