@@ -1,5 +1,6 @@
 package com.fpolydatn.model;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import lombok.Data;
 import org.hibernate.annotations.Nationalized;
@@ -24,42 +25,46 @@ public class SinhVien implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(length = 36)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID)
+    @Type(type = EntityProperties.TYPE_ID)
     private UUID sinhVienId;
 
-    @Column(nullable = false)
+    @Column(length = EntityProperties.LENGTH_NAME, nullable = false)
     @Nationalized
     private String tenSinhVien;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
     private String maSinhVien;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = EntityProperties.LENGTH_PHONE, nullable = false)
     private String soDienThoai;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = EntityProperties.LENGTH_EMAIL, nullable = false)
     private String email;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
     private String khoa;
 
     @Column
     private TrangThaiSinhVien trangThai;
 
-    @Column(length = 36, nullable = false)
-    @Type(type="org.hibernate.type.UUIDCharType")
-    private UUID chuyenNganhId;
-
-    @Column(length = 36)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID)
+    @Type(type = EntityProperties.TYPE_ID)
     private UUID nhomId;
 
-    @Column(length = 36, nullable = false)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID)
+    @Type(type = EntityProperties.TYPE_ID)
+    private UUID monDatnId;
+
+    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Type(type = EntityProperties.TYPE_ID)
+    private UUID chuyenNganhId;
+
+    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Type(type = EntityProperties.TYPE_ID)
     private UUID coSoId;
 
-    @Column(length = 36, nullable = false)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Type(type = EntityProperties.TYPE_ID)
     private UUID dotDangKyId;
 }

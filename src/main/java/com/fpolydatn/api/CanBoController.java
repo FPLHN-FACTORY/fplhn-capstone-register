@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.UUID;
 
@@ -35,29 +34,25 @@ public class CanBoController {
         return new ResponseObject(canBoService.getList(offset, size));
     }
 
-    @GetMapping("/{id}")
-    public ResponseObject get(@PathVariable UUID id) {
-        throw new NotImplementedException();
-    }
-
     @PostMapping
     public ResponseObject create(@RequestBody CreateCanBoRequest canBo) {
         return new ResponseObject(canBoService.addNew(canBo));
     }
 
-    @PostMapping("/import")
-    public ResponseObject importExcel(@RequestBody CreateCanBoRequest canBo) {
-        throw new NotImplementedException();
+    @DeleteMapping("/{id}")
+    public ResponseObject delete(@PathVariable UUID id) {
+        return new ResponseObject(canBoService.delete(id));
     }
 
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable UUID id,
                                  @RequestBody UpdateCanBoRequest canBo) {
-        throw new NotImplementedException();
+        return new ResponseObject(canBoService.update(id, canBo));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseObject delete(@PathVariable UUID id) {
-        throw new NotImplementedException();
+    @GetMapping("/{canBoId}")
+    public ResponseObject findById(@PathVariable UUID canBoId){
+        return new ResponseObject(canBoService.findById(canBoId));
     }
+
 }

@@ -1,5 +1,6 @@
 package com.fpolydatn.model;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Data;
 import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.Type;
@@ -23,11 +24,11 @@ public class VaiTro implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(length = 36)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID)
+    @Type(type = EntityProperties.TYPE_ID)
     private UUID vaiTroId;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
     @Nationalized
     private String tenVaiTro;
 }

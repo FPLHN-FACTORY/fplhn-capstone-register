@@ -1,5 +1,6 @@
 package com.fpolydatn.model;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import lombok.Data;
 import org.hibernate.annotations.Nationalized;
@@ -24,15 +25,15 @@ public class NhomDatn implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(length = 36)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID)
+    @Type(type = EntityProperties.TYPE_ID)
     private UUID nhomId;
 
-    @Column(length = 100)
+    @Column(length = EntityProperties.LENGTH_NAME)
     @Nationalized
     private String tenNhom;
 
-    @Column(length = 100)
+    @Column(length = EntityProperties.LENGTH_NAME)
     @Nationalized
     private String tenDeTai;
 
@@ -40,26 +41,26 @@ public class NhomDatn implements Serializable {
     @Nationalized
     private String moTa;
 
-    @Column(length = 50)
+    @Column(length = EntityProperties.LENGTH_PASSWORD)
     private String matKhau;
 
     @Column(nullable = false)
     private TrangThaiNhom trangThai;
 
-    @Column(length = 36, nullable = false)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Type(type= EntityProperties.TYPE_ID)
     private UUID truongNhomId;
 
-    @Column(length = 36)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Type(type= EntityProperties.TYPE_ID)
     private UUID giangVienId;
 
-    @Column(length = 36, nullable = false)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Type(type= EntityProperties.TYPE_ID)
     private UUID dotDangKyId;
 
-    @Column(length = 36, nullable = false)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Type(type= EntityProperties.TYPE_ID)
     private UUID coSoId;
 
 }

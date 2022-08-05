@@ -1,8 +1,10 @@
 package com.fpolydatn.model;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Data;
 import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.Type;
+import org.hibernate.query.criteria.internal.expression.function.LengthFunction;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,11 +25,11 @@ public class CoSo implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(length = 36)
-    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = EntityProperties.LENGTH_ID)
+    @Type(type = EntityProperties.TYPE_ID)
     private UUID coSoId;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
     @Nationalized
     private String tenCoSo;
 }
