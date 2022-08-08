@@ -1,7 +1,7 @@
 package com.fpolydatn.service.impl;
 
 
-import com.fpolydatn.infrastructure.constant.Mesage;
+import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.CreateVaiTroRequest;
 import com.fpolydatn.model.VaiTro;
@@ -33,10 +33,10 @@ public class VaiTroServiceImpl implements VaiTroService {
     @Override
     public VaiTro addNew(CreateVaiTroRequest vaiTroRequest) {
         if(Objects.isNull(vaiTroRequest)){
-            throw new RestApiException(Mesage.DATA_EMPTY);
+            throw new RestApiException(Message.DATA_EMPTY);
         }
         if(ObjectUtils.isEmpty(vaiTroRequest.getTenVaiTro())) {
-            throw new RestApiException(Mesage.NAME_ROLE_EMPTY);
+            throw new RestApiException(Message.NAME_ROLE_EMPTY);
         }
         VaiTro vaiTro = formUtils.convertToObject(VaiTro.class, vaiTroRequest);
         return vaiTroRepository.save(vaiTro);
@@ -56,10 +56,10 @@ public class VaiTroServiceImpl implements VaiTroService {
     @Override
     public VaiTro updateVaiTro(CreateVaiTroRequest vaiTroRequest, UUID id) {
         if(Objects.isNull(vaiTroRequest)){
-            throw new RestApiException(Mesage.DATA_EMPTY);
+            throw new RestApiException(Message.DATA_EMPTY);
         }
         if(ObjectUtils.isEmpty(vaiTroRequest.getTenVaiTro())) {
-            throw new RestApiException(Mesage.NAME_ROLE_EMPTY);
+            throw new RestApiException(Message.NAME_ROLE_EMPTY);
         }
         VaiTro vaitro= formUtils.convertToObject(VaiTro.class, vaiTroRequest);
         vaitro.setVaiTroId(id);

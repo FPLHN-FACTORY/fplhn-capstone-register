@@ -3,7 +3,7 @@ package com.fpolydatn.infrastructure.constant;
 
 import com.fpolydatn.util.PropertiesReader;
 
-public enum Mesage {
+public enum Message {
 
     SUCCESS("Success"),
 
@@ -70,7 +70,7 @@ public enum Mesage {
 
     private String message;
 
-    Mesage(String message) {
+    Message(String message) {
         this.message = message;
     }
 

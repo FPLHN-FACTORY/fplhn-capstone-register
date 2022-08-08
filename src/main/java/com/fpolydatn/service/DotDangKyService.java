@@ -1,7 +1,6 @@
 package com.fpolydatn.service;
 
 import com.fpolydatn.infrastructure.request.CreateDotDangKyRequest;
-import com.fpolydatn.infrastructure.response.DotDangKyResponse;
 import com.fpolydatn.model.DotDangKy;
 
 import java.util.List;
@@ -17,9 +16,5 @@ public interface DotDangKyService {
     List<DotDangKy> getListDotDangKy(UUID coSoId, int offset, int size);
 
     DotDangKy findByID(UUID id);
-
-    DotDangKyResponse createDotDangKy(CreateDotDangKyRequest dotDangKyRequest);
-
-    DotDangKyResponse updateDotDangKy(CreateDotDangKyRequest dotDangKyRequest, UUID id);
 
 }

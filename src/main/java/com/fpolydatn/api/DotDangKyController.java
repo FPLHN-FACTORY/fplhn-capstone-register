@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("/api/dot-dang-ky")
 public class DotDangKyController {
@@ -39,16 +38,6 @@ public class DotDangKyController {
     @GetMapping("/{id}")
     public ResponseObject getById(@PathVariable("id") UUID id) {
         return new ResponseObject(dotDangKyService.findByID(id));
-    }
-
-    @PostMapping
-    public ResponseObject createDotDangKy(@RequestBody CreateDotDangKyRequest dotDangKyRequest) {
-        return new ResponseObject(dotDangKyService.createDotDangKy(dotDangKyRequest));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseObject updateDotDangKy(@RequestBody CreateDotDangKyRequest dotDangKyRequest, @PathVariable("id") UUID id) {
-        return new ResponseObject(dotDangKyService.updateDotDangKy(dotDangKyRequest, id));
     }
 
 }

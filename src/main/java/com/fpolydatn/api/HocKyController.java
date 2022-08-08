@@ -1,54 +1,107 @@
 package com.fpolydatn.api;
 
-import com.fpolydatn.api.response.ResponseObject;
 import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
-import com.fpolydatn.infrastructure.request.UpdateHocKyRequest;
+import com.fpolydatn.model.HocKy;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
- * @author Vinhnv
+ * @author HangNT
  */
-@RestController
-@RequestMapping(value = "/api/hoc-ky")
+
+@Controller
 public class HocKyController {
 
     @Autowired
     private HocKyService hocKyService;
 
-
-    @GetMapping("")
-    public ResponseObject getList(@RequestParam(value = "page", defaultValue = "0") int page,
-                                  @RequestParam(value = "size", defaultValue = "10") int size) {
-        int offset = page * size;
-        return new ResponseObject(hocKyService.getList(offset, size));
-
+    @GetMapping("/hoc-ky/lists")
+    public String viewHocKy(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                            @RequestParam(value = "size", defaultValue = "4", required = false) int size) {
+        int offset = size * page;
+        Long count = hocKyService.getSizeListHocKy();
+        Long sizePaging = (count % size == 0 ? (count / size) : (count / size + 1));
+        List<HocKy> listHocKy = hocKyService.getList(offset, size);
+        model.addAttribute("listHocKy", listHocKy);
+        model.addAttribute("numberPaging", sizePaging);
+        model.addAttribute("number", offset);
+        return "view_hoc_ky";
     }
 
-    @PostMapping("")
-    public ResponseObject create(@RequestBody CreateHocKyRequest createHocKyRequest) {
-        return new ResponseObject(hocKyService.addNew(createHocKyRequest));
+    @GetMapping("/hoc-ky/update/{id}")
+    public String showEditHocKy(Model model, @PathVariable("id") UUID id) {
+        HocKy hocKy = null;
+        try {
+            hocKy = hocKyService.findById(id);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("hocKy", hocKy);
+        return "update_hoc_ky";
     }
 
-
-    @DeleteMapping("/{id}")
-    public ResponseObject delete(@PathVariable UUID id) {
-        return new ResponseObject(hocKyService.delete(id));
+    @PostMapping("/hoc-ky/update/{id}")
+    public String updateHocKy(Model model, @PathVariable("id") UUID id, @ModelAttribute("hocKy") HocKy updateHocKyRequest) {
+        try {
+            hocKyService.update(id, updateHocKyRequest);
+            return "redirect:/hoc-ky/lists";
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "update_hoc_ky";
+        }
     }
 
-    @GetMapping("/{id}")
-    public ResponseObject searchById(@PathVariable UUID id) {
-        return new ResponseObject(hocKyService.searchById(id));
+    @GetMapping("/hoc-ky/remove/{id}")
+    public String showRemoveHocKy(Model model, @PathVariable("id") UUID id) {
+        HocKy hocKy = null;
+        try {
+            hocKy = hocKyService.findById(id);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("hocKy", hocKy);
+        return "remove_hoc_ky";
     }
 
-    @PutMapping("/{id}")
-    public ResponseObject update(@PathVariable UUID id,
-                                 @RequestBody UpdateHocKyRequest updateHocKyRequest
-    ) {
-        return new ResponseObject(hocKyService.update(id, updateHocKyRequest));
+    @PostMapping(value = {"/hoc-ky/remove/{id}"})
+    public String deleteHocKy(
+            Model model, @PathVariable("id") UUID id, @ModelAttribute("hocKy") HocKy hocKy) {
+        try {
+            hocKyService.delete(id);
+            return "redirect:/hoc-ky/lists";
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        model.addAttribute("hocKy", hocKy);
+        return "view_hoc_ky";
     }
 
+    @GetMapping(value = {"/hoc-ky/add"})
+    public String showAddHocKy(Model model) {
+        CreateHocKyRequest hocKy = new CreateHocKyRequest();
+        model.addAttribute("hocKy", hocKy);
+        return "add_hoc_ky";
+    }
+
+    @PostMapping(value = "/hoc-ky/add")
+    public String addHocKy(Model model,
+                           @ModelAttribute("hocKy") CreateHocKyRequest hocKy) {
+        try {
+            hocKyService.addNew(hocKy);
+            return "redirect:/hoc-ky/lists";
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        return "add_hoc_ky";
+    }
 }

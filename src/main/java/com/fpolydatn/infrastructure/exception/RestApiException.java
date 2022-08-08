@@ -1,6 +1,6 @@
 package com.fpolydatn.infrastructure.exception;
 
-import com.fpolydatn.infrastructure.constant.Mesage;
+import com.fpolydatn.infrastructure.constant.Message;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +13,7 @@ public class RestApiException extends RuntimeException {
     public RestApiException() {
     }
 
-    public RestApiException(Mesage statusCode) {
+    public RestApiException(Message statusCode) {
         this.message = statusCode.getMessage();
     }
 

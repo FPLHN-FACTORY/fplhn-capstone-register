@@ -1,6 +1,6 @@
 package com.fpolydatn.service.impl;
 
-import com.fpolydatn.infrastructure.constant.Mesage;
+import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.model.CoSo;
 import com.fpolydatn.repository.CoSoRepository;
@@ -50,7 +50,7 @@ public class CoSoServiceImpl implements CoSoService {
     public CoSo deleteCoSo(UUID id) {
         Optional<CoSo> coSo = coSoRepository.findById(id);
         if (!coSo.isPresent()) {
-            throw new RestApiException(Mesage.ID_COSO_NOT_EXIST);
+            throw new RestApiException(Message.ID_COSO_NOT_EXIST);
         }
         coSoRepository.delete(coSo.get());
         return coSo.get();
@@ -59,10 +59,10 @@ public class CoSoServiceImpl implements CoSoService {
     @Override
     public CoSo addNew(CreateCoSoRequest createCoSoRequest) {
         if (Objects.isNull(createCoSoRequest)) {
-            throw new RestApiException(Mesage.DATA_EMPTY);
+            throw new RestApiException(Message.DATA_EMPTY);
         }
         if (ObjectUtils.isEmpty(createCoSoRequest.getTenCoSo())) {
-            throw new RestApiException(Mesage.COSO_NAME_EMPTY);
+            throw new RestApiException(Message.COSO_NAME_EMPTY);
         }
         CoSo coSo = formUtils.convertToObject(CoSo.class, createCoSoRequest);
         return coSoRepository.save(coSo);
@@ -71,15 +71,15 @@ public class CoSoServiceImpl implements CoSoService {
     @Override
     public CoSo update(UUID uuid, UpdateCoSoRequest coSoRequest) {
         if (Objects.isNull(coSoRequest)) {
-            throw new RestApiException(Mesage.DATA_EMPTY);
+            throw new RestApiException(Message.DATA_EMPTY);
         }
 
         if (ObjectUtils.isEmpty(uuid)) {
-            throw new RestApiException(Mesage.UUID_EMPTY);
+            throw new RestApiException(Message.UUID_EMPTY);
         }
 
         if (ObjectUtils.isEmpty(coSoRequest.getTenCoSo())) {
-            throw new RestApiException(Mesage.COSO_NAME_EMPTY);
+            throw new RestApiException(Message.COSO_NAME_EMPTY);
         }
 
         CoSo coSo = formUtils.convertToObject(CoSo.class, coSoRequest);
