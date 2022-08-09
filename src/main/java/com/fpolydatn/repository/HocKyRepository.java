@@ -14,10 +14,10 @@ import java.util.UUID;
  */
 @Repository
 public interface HocKyRepository extends JpaRepository<HocKy, UUID> {
-    @Query(value = "SELECT hoc_ky_id, ten_hoc_ky FROM hoc_ky hk LIMIT :size OFFSET :offset", nativeQuery = true)
+    @Query(value = "SELECT hoc_ky_id, ten_hoc_ky,create_at,update_at FROM hoc_ky hk ORDER BY update_at DESC LIMIT :size OFFSET :offset", nativeQuery = true)
     List<HocKy> getListHocKy(@Param("offset") int offset, @Param("size") int size);
 
-    @Query(value = "SELECT hoc_ky_id, ten_hoc_ky FROM hoc_ky hk WHERE ten_hoc_ky LIKE %:tenHocKy% LIMIT :size OFFSET :offset", nativeQuery = true)
+    @Query(value = "SELECT hoc_ky_id, ten_hoc_ky,create_at,update_at FROM hoc_ky hk WHERE ten_hoc_ky LIKE %:tenHocKy% ORDER BY update_at DESC LIMIT :size OFFSET :offset", nativeQuery = true)
     List<HocKy> searchHocKy(@Param("tenHocKy") String tenHocKy, @Param("offset") int offset, @Param("size") int size);
 
     @Query(value = "SELECT COUNT(*) FROM hoc_ky hk WHERE ten_hoc_ky LIKE %:tenHocKy% ", nativeQuery = true)

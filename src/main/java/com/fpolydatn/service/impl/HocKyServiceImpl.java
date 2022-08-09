@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,6 +33,8 @@ public class HocKyServiceImpl implements HocKyService {
             throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
         }
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequet);
+        hocKy.setCreateAt(new Date());
+        hocKy.setUpdateAt(new Date());
         return hocKyRepository.save(hocKy);
     }
 
@@ -59,6 +62,7 @@ public class HocKyServiceImpl implements HocKyService {
         }
         HocKy hocKy = hocKyCheck.get();
         hocKy.setTenHocKy(request.getTenHocKy());
+        hocKy.setUpdateAt(new Date());
         return hocKyRepository.save(hocKy);
     }
 
