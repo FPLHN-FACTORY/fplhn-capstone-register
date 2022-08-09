@@ -1,17 +1,20 @@
 package com.fpolydatn.api;
 
+import com.fpolydatn.api.response.ResponseObject;
 import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
 import com.fpolydatn.model.HocKy;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +32,7 @@ public class HocKyController {
 
     @GetMapping("/list")
     public String viewHocKy(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                            @RequestParam(value = "size", defaultValue = "10") int size, @RequestParam(value = "keyword", defaultValue = "") String tenHocKy) {
+                            @RequestParam(value = "size", defaultValue = "5") int size, @RequestParam(value = "keyword", defaultValue = "") String tenHocKy) {
         int offset = size * page;
         Long count = hocKyService.getSizeListHocKy(tenHocKy);
         Long sizePaging = (count % size == 0 ? (count / size) : (count / size + 1));
@@ -37,7 +40,7 @@ public class HocKyController {
         model.addAttribute("listHocKy", listHocKy);
         model.addAttribute("numberPaging", sizePaging);
         model.addAttribute("number", offset);
-        return "hoc_ky_view";
+        return "view_hoc_ky";
     }
 
     @PostMapping("/update/{id}")
@@ -63,15 +66,15 @@ public class HocKyController {
     }
 
     @PostMapping(value = "/add")
-    public String addHocKy(Model model, @RequestParam("tenHocKyAdd") String tenHocKy) {
+    @ResponseBody
+    public ResponseObject addHocKy(Model model, @RequestBody CreateHocKyRequest createHocKyRequest) {
+        HocKy hocKy = null;
         try {
-            CreateHocKyRequest request = new CreateHocKyRequest();
-            request.setTenHocKy(tenHocKy);
-            hocKyService.addNew(request);
-            return "redirect:/hoc-ky/list";
+            hocKy = hocKyService.addNew(createHocKyRequest);
         } catch (Exception ex) {
             model.addAttribute("errorMessage", ex.getMessage());
         }
-        return "add_hoc_ky";
+        return new ResponseObject(hocKy);
     }
+
 }
