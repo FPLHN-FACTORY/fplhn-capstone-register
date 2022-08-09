@@ -9,7 +9,9 @@ import java.util.UUID;
  * @author Vinhnv
  */
 public interface ChuyenNganhService {
+
     ChuyenNganh insert(CreateChuyenNganhRequest craCreateChuyenNganhRequest);
 
     ChuyenNganh search(UUID id);
+
 }

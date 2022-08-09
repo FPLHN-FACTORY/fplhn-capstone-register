@@ -37,6 +37,9 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public Boolean delete(UUID id) {
+        if (ObjectUtils.isEmpty(id)) {
+            throw new RestApiException(Message.UUID_EMPTY);
+        }
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.ID_IS_NOT_PRESENT);

@@ -8,7 +8,7 @@ function clearData() {
 
 $("#form_create_hoc_ky").submit(function (event) {
     event.preventDefault();
-    let tenHocKy = $("#tenHocKy").val();
+    let tenHocKy = $("#tenHocKyAdd").val();
     let hocKyRequest = {};
     hocKyRequest["tenHocKy"] = tenHocKy;
 
@@ -42,10 +42,9 @@ function openModalUpdateHocKy(hocKyId) {
         url: "/hoc-ky/detail?id=" + hocKyId,
         data: JSON.stringify(hocKyId),
         dataType: 'json',
-        success: function (data) {
-            console.log(data)
-            $("#id_hoc_ky_update").val(hocKyId);
-            $("#ten_hoc_ky_update").val(data.tenHocKy);
+        success: function (reponseData) {
+            $("#id_hoc_ky_update").val(reponseData.data.hocKyId);
+            $("#ten_hoc_ky_update").val(reponseData.data.tenHocKy);
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -59,7 +58,6 @@ $("#form_hoc_ky_update").submit(function (event) {
     let hocKyId = $("#id_hoc_ky_update").val();
     let hocKyRequest = {};
     hocKyRequest["tenHocKy"] = tenHocKy;
-    console.log(hocKyRequest);
     if (tenHocKy.length === 0) {
         $("#errorMessageUpdate").text("Tên học kỳ không được để trống");
     } else if (tenHocKy.length < 6) {
@@ -104,7 +102,7 @@ $("#form_hoc_ky_delete").submit(function (event) {
     let hocKyId = $("#remove_hoc_ky").val();
 
     $.ajax({
-        type: "POST",
+        type: "DELETE",
         contentType: "application/json",
         url: "/hoc-ky/remove/" + hocKyId,
         data: JSON.stringify(hocKyId),

@@ -81,13 +81,15 @@ public class HocKyController {
     }
 
     @DeleteMapping("/remove/{id}")
+    @ResponseBody
     public ResponseObject deleteHocKy(Model model, @PathVariable("id") UUID id) {
+        Boolean remove = false;
         try {
-            hocKyService.delete(id);
+            remove = hocKyService.delete(id);
         } catch (Exception ex) {
             model.addAttribute("errorMessage", ex.getMessage());
         }
-        return new ResponseObject(true);
+        return new ResponseObject(remove);
     }
 
 }
