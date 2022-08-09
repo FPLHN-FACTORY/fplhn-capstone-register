@@ -1,5 +1,6 @@
 package com.fpolydatn.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Data;
 import org.hibernate.annotations.Nationalized;
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -32,4 +34,12 @@ public class CoSo implements Serializable {
     @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
     @Nationalized
     private String tenCoSo;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    @Column
+    private Date createAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    @Column
+    private Date updateAt;
 }
