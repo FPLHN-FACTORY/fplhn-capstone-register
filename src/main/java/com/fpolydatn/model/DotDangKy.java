@@ -48,4 +48,12 @@ public class DotDangKy implements Serializable {
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     @Type(type = EntityProperties.TYPE_ID)
     private UUID coSoId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    @Column
+    private Date createAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    @Column
+    private Date updateAt;
 }

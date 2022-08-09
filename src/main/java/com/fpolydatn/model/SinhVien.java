@@ -1,5 +1,6 @@
 package com.fpolydatn.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import lombok.Data;
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -67,4 +69,12 @@ public class SinhVien implements Serializable {
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     @Type(type = EntityProperties.TYPE_ID)
     private UUID dotDangKyId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    @Column
+    private Date createAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    @Column
+    private Date updateAt;
 }
