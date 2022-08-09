@@ -7,9 +7,11 @@ import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,17 +44,7 @@ public class HocKyController {
         return "hoc_ky";
     }
 
-    @PostMapping("/remove/{id}")
-    public String deleteHocKy(Model model, @PathVariable("id") UUID id) {
-        try {
-            hocKyService.delete(id);
-        } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-        }
-        return "redirect:/hoc-ky/list";
-    }
-
-    @PostMapping(value = "/add")
+    @PutMapping(value = "/add")
     @ResponseBody
     public ResponseObject addHocKy(Model model, @RequestBody HocKyRequest hocKyRequest) {
         HocKy hocKy = null;
@@ -63,13 +55,39 @@ public class HocKyController {
         }
         return new ResponseObject(hocKy);
     }
-//    @PostMapping("/update/{id}")
-//    @ResponseBody
-//    public ResponseObject updateHocKy(Model model, @PathVariable("id") UUID id, @RequestBody HocKyRequest hocKyRequest) {
-//        try {
-//            hocKyService.update(id, hocKyRequest);
-//        } catch (Exception ex) {
-//            model.addAttribute("errorMessage", ex.getMessage());
-//        }
-//    }
+
+    @GetMapping("/detail")
+    @ResponseBody
+    public ResponseObject detailHocKy(Model model, @RequestParam("id") UUID uuid) {
+        HocKy hocKy = null;
+        try {
+            hocKy = hocKyService.findById(uuid);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        return new ResponseObject(hocKy);
+    }
+
+    @PostMapping("/update/{id}")
+    @ResponseBody
+    public ResponseObject updateHocKy(Model model, @PathVariable("id") UUID id, @RequestBody HocKyRequest hocKyRequest) {
+        HocKy hocKy = null;
+        try {
+            hocKy = hocKyService.update(id, hocKyRequest);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        return new ResponseObject(hocKy);
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseObject deleteHocKy(Model model, @PathVariable("id") UUID id) {
+        try {
+            hocKyService.delete(id);
+        } catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+        return new ResponseObject(true);
+    }
+
 }
