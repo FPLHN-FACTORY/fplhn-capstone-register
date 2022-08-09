@@ -2,6 +2,7 @@ package com.fpolydatn.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fpolydatn.infrastructure.constant.EntityProperties;
+import com.fpolydatn.infrastructure.constant.VaiTro;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
@@ -52,9 +53,8 @@ public class CanBo implements Serializable {
     @Type(type = EntityProperties.TYPE_ID)
     private UUID coSoId;
 
-    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    @Type(type = EntityProperties.TYPE_ID)
-    private UUID vaiTroId;
+    @Column
+    private VaiTro vaiTro;
     
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
     @Column

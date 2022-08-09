@@ -1,6 +1,7 @@
 package com.fpolydatn.repository;
 
 import com.fpolydatn.model.CanBo;
+import com.fpolydatn.model.ChuyenNganh;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

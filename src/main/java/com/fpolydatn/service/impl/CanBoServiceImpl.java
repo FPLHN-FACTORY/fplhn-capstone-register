@@ -6,10 +6,8 @@ import com.fpolydatn.infrastructure.request.CreateCanBoRequest;
 import com.fpolydatn.infrastructure.request.UpdateCanBoRequest;
 import com.fpolydatn.model.CanBo;
 import com.fpolydatn.model.CoSo;
-import com.fpolydatn.model.VaiTro;
 import com.fpolydatn.repository.CanBoRepository;
 import com.fpolydatn.repository.CoSoRepository;
-import com.fpolydatn.repository.VaiTroRepository;
 import com.fpolydatn.service.CanBoService;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +27,6 @@ public class CanBoServiceImpl implements CanBoService {
 
     @Autowired
     private CanBoRepository canBoRepository;
-
-    @Autowired
-    private VaiTroRepository vaiTroRepository;
 
     @Autowired
     private CoSoRepository coSoRepository;
@@ -79,13 +74,7 @@ public class CanBoServiceImpl implements CanBoService {
         if(!coSo.isPresent()){
             throw new RestApiException(Mesage.ID_FACILITIES_NOT_FOUND);
         }
-        if(ObjectUtils.isEmpty(canBoRequest.getVaiTroId())){
-            throw new RestApiException(Mesage.ID_ROLE_EMPTY);
-        }
-        Optional<VaiTro> vaiTro = vaiTroRepository.findById(canBoRequest.getVaiTroId());
-        if(!vaiTro.isPresent()) {
-            throw new RestApiException(Mesage.ID_ROLE_NOT_FOUND);
-        }
+
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return canBoRepository.save(canBo);
     }
@@ -150,13 +139,7 @@ public class CanBoServiceImpl implements CanBoService {
         if (!coSo.isPresent()) {
             throw new RestApiException(Mesage.ID_FACILITIES_NOT_FOUND);
         }
-        if (ObjectUtils.isEmpty(canBoRequest.getVaiTroId())) {
-            throw new RestApiException(Mesage.ID_ROLE_EMPTY);
-        }
-        Optional<VaiTro> vaiTro = vaiTroRepository.findById(canBoRequest.getVaiTroId());
-        if (!vaiTro.isPresent()) {
-            throw new RestApiException(Mesage.ID_ROLE_NOT_FOUND);
-        }
+
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         updateCanBo.setCanBoId(id);
         return canBoRepository.save(updateCanBo);
