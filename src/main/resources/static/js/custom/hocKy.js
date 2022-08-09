@@ -19,7 +19,7 @@ $("#form_create_hoc_ky").submit(function (event) {
             data: JSON.stringify(createHocKyRequest),
             dataType: 'json',
             success: function (data) {
-                $("#modal_create").modal("aria-hidden");
+                $("#modal_create").modal("hide");
             },
             error: function (e) {
                 console.log("ERROR : ", e);
