@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -20,14 +21,15 @@ import java.util.UUID;
  */
 
 @Controller
+@RequestMapping("/hoc-ky")
 public class HocKyController {
 
     @Autowired
     private HocKyService hocKyService;
 
-    @GetMapping("/hoc-ky/lists")
+    @GetMapping("/lists")
     public String viewHocKy(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                            @RequestParam(value = "size", defaultValue = "4", required = false) int size) {
+                            @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
         int offset = size * page;
         Long count = hocKyService.getSizeListHocKy();
         Long sizePaging = (count % size == 0 ? (count / size) : (count / size + 1));
@@ -38,7 +40,7 @@ public class HocKyController {
         return "view_hoc_ky";
     }
 
-    @GetMapping("/hoc-ky/update/{id}")
+    @GetMapping("/update/{id}")
     public String showEditHocKy(Model model, @PathVariable("id") UUID id) {
         HocKy hocKy = null;
         try {
@@ -50,7 +52,7 @@ public class HocKyController {
         return "update_hoc_ky";
     }
 
-    @PostMapping("/hoc-ky/update/{id}")
+    @PostMapping("/update/{id}")
     public String updateHocKy(Model model, @PathVariable("id") UUID id, @ModelAttribute("hocKy") HocKy updateHocKyRequest) {
         try {
             hocKyService.update(id, updateHocKyRequest);
@@ -61,7 +63,7 @@ public class HocKyController {
         }
     }
 
-    @GetMapping("/hoc-ky/remove/{id}")
+    @GetMapping("/remove/{id}")
     public String showRemoveHocKy(Model model, @PathVariable("id") UUID id) {
         HocKy hocKy = null;
         try {
@@ -73,7 +75,7 @@ public class HocKyController {
         return "remove_hoc_ky";
     }
 
-    @PostMapping(value = {"/hoc-ky/remove/{id}"})
+    @PostMapping(value = {"/remove/{id}"})
     public String deleteHocKy(
             Model model, @PathVariable("id") UUID id, @ModelAttribute("hocKy") HocKy hocKy) {
         try {
@@ -86,14 +88,14 @@ public class HocKyController {
         return "view_hoc_ky";
     }
 
-    @GetMapping(value = {"/hoc-ky/add"})
+    @GetMapping(value = {"/add"})
     public String showAddHocKy(Model model) {
         CreateHocKyRequest hocKy = new CreateHocKyRequest();
         model.addAttribute("hocKy", hocKy);
         return "add_hoc_ky";
     }
 
-    @PostMapping(value = "/hoc-ky/add")
+    @PostMapping(value = "/add")
     public String addHocKy(Model model,
                            @ModelAttribute("hocKy") CreateHocKyRequest hocKy) {
         try {
