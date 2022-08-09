@@ -1,11 +1,10 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.HocKyRequest;
 import com.fpolydatn.model.HocKy;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,19 +39,7 @@ public class HocKyController {
         model.addAttribute("listHocKy", listHocKy);
         model.addAttribute("numberPaging", sizePaging);
         model.addAttribute("number", offset);
-        return "view_hoc_ky";
-    }
-
-    @PostMapping("/update/{id}")
-    public String updateHocKy(Model model, @PathVariable("id") UUID id, @RequestParam("tenHocKyUpdate") String tenHocKy) {
-        try {
-            HocKy updateHocKyRequest = new HocKy();
-            updateHocKyRequest.setTenHocKy(tenHocKy);
-            hocKyService.update(id, updateHocKyRequest);
-        } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-        }
-        return "redirect:/hoc-ky/list";
+        return "hoc_ky";
     }
 
     @PostMapping("/remove/{id}")
@@ -67,14 +54,22 @@ public class HocKyController {
 
     @PostMapping(value = "/add")
     @ResponseBody
-    public ResponseObject addHocKy(Model model, @RequestBody CreateHocKyRequest createHocKyRequest) {
+    public ResponseObject addHocKy(Model model, @RequestBody HocKyRequest hocKyRequest) {
         HocKy hocKy = null;
         try {
-            hocKy = hocKyService.addNew(createHocKyRequest);
+            hocKy = hocKyService.addNew(hocKyRequest);
         } catch (Exception ex) {
             model.addAttribute("errorMessage", ex.getMessage());
         }
         return new ResponseObject(hocKy);
     }
-
+//    @PostMapping("/update/{id}")
+//    @ResponseBody
+//    public ResponseObject updateHocKy(Model model, @PathVariable("id") UUID id, @RequestBody HocKyRequest hocKyRequest) {
+//        try {
+//            hocKyService.update(id, hocKyRequest);
+//        } catch (Exception ex) {
+//            model.addAttribute("errorMessage", ex.getMessage());
+//        }
+//    }
 }

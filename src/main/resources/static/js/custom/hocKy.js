@@ -1,11 +1,16 @@
 $(document).ready(function () {
     $("#hoc_ky_error").text("");
 });
+
+function clearData() {
+    $("#keyword").val("");
+}
+
 $("#form_create_hoc_ky").submit(function (event) {
     event.preventDefault();
     let tenHocKy = $("#tenHocKy").val();
-    let createHocKyRequest = {};
-    createHocKyRequest["tenHocKy"] = $("#tenHocKy").val();
+    let hocKyRequest = {};
+    hocKyRequest["tenHocKy"] = $("#tenHocKy").val();
 
     if (tenHocKy.length === 0) {
         $("#hoc_ky_error").text("Tên học kỳ không được để trống");
@@ -16,9 +21,10 @@ $("#form_create_hoc_ky").submit(function (event) {
             type: "POST",
             contentType: "application/json",
             url: "/hoc-ky/add",
-            data: JSON.stringify(createHocKyRequest),
+            data: JSON.stringify(hocKyRequest),
             dataType: 'json',
-            success: function (data) {
+            success: function () {
+                parent.location.reload();
                 $("#modal_create").modal("hide");
             },
             error: function (e) {

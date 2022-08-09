@@ -66,7 +66,7 @@
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a href="#"
-                                               class="btn btn-danger text-white">
+                                               class="btn btn-danger text-white" onclick="clearData();">
                                                 Làm mới bộ lọc
                                             </a>
                                         </div>
@@ -167,7 +167,8 @@
                                                         tabindex="-1"
                                                         aria-labelledby="exampleModalLabel"
                                                         aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg modal-lg"
+                                                         role="document">
                                                         <div class="modal-content">
                                                             <form method="POST" id="form-hoc-ky-update"
                                                                   th:action="@{/hoc-ky/update/{id}(id=${hocKy.hocKyId})}">
@@ -225,13 +226,13 @@
                                                         tabindex="-1"
                                                         aria-labelledby="exampleModalLabel"
                                                         aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg modal-lg"
+                                                         role="document">
                                                         <div class="modal-content">
                                                             <form method="POST"
                                                                   th:action="@{/hoc-ky/remove/{id}(id=${hocKy.hocKyId})}">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title">Cập
-                                                                        nhật học kỳ</h5>
+                                                                    <h5 class="modal-title">Xoá học kỳ</h5>
                                                                     <button type="button" class="close"
                                                                             data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">&times;</span>
@@ -287,8 +288,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
 <script th:src="@{/js/custom/hocKy.js}" type="text/javascript"></script>
 </body>
 </html>

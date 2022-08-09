@@ -2,7 +2,7 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.HocKyRequest;
 import com.fpolydatn.model.HocKy;
 import com.fpolydatn.repository.HocKyRepository;
 import com.fpolydatn.service.HocKyService;
@@ -27,7 +27,7 @@ public class HocKyServiceImpl implements HocKyService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public HocKy addNew(CreateHocKyRequest hocKyRequet) {
+    public HocKy addNew(HocKyRequest hocKyRequet) {
         if (ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())) {
             throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
         }
@@ -36,21 +36,22 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public Boolean delete(UUID id) {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if(!hocKyCheck.isPresent()){
+        if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.ID_IS_NOT_PRESENT);
         }
         hocKyRepository.delete(hocKyCheck.get());
+        return true;
     }
 
     @Override
-    public HocKy update(UUID id, HocKy request) {
+    public HocKy update(UUID id, HocKyRequest request) {
         if (ObjectUtils.isEmpty(request.getTenHocKy())) {
             throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
         }
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if(!hocKyCheck.isPresent()){
+        if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.ID_IS_NOT_PRESENT);
         }
         HocKy hocKy = hocKyCheck.get();
@@ -60,11 +61,11 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public HocKy findById(UUID id) {
-        if(ObjectUtils.isEmpty(id)){
+        if (ObjectUtils.isEmpty(id)) {
             throw new RestApiException(Message.DATA_EMPTY);
         }
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if(!hocKyCheck.isPresent()){
+        if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.ID_IS_NOT_PRESENT);
         }
         return hocKyCheck.get();
