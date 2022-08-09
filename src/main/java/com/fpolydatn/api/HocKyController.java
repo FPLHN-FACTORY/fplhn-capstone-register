@@ -27,80 +27,48 @@ public class HocKyController {
     @Autowired
     private HocKyService hocKyService;
 
-    @GetMapping("/lists")
+    @GetMapping("/list")
     public String viewHocKy(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                            @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+                            @RequestParam(value = "size", defaultValue = "10") int size, @RequestParam(value = "keyword", defaultValue = "") String tenHocKy) {
         int offset = size * page;
-        Long count = hocKyService.getSizeListHocKy();
+        Long count = hocKyService.getSizeListHocKy(tenHocKy);
         Long sizePaging = (count % size == 0 ? (count / size) : (count / size + 1));
-        List<HocKy> listHocKy = hocKyService.getList(offset, size);
+        List<HocKy> listHocKy = hocKyService.searchHocKy(tenHocKy, offset, size);
         model.addAttribute("listHocKy", listHocKy);
         model.addAttribute("numberPaging", sizePaging);
         model.addAttribute("number", offset);
-        return "view_hoc_ky";
-    }
-
-    @GetMapping("/update/{id}")
-    public String showEditHocKy(Model model, @PathVariable("id") UUID id) {
-        HocKy hocKy = null;
-        try {
-            hocKy = hocKyService.findById(id);
-        } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-        }
-        model.addAttribute("hocKy", hocKy);
-        return "update_hoc_ky";
+        return "hoc_ky_view";
     }
 
     @PostMapping("/update/{id}")
-    public String updateHocKy(Model model, @PathVariable("id") UUID id, @ModelAttribute("hocKy") HocKy updateHocKyRequest) {
+    public String updateHocKy(Model model, @PathVariable("id") UUID id, @RequestParam("tenHocKyUpdate") String tenHocKy) {
         try {
+            HocKy updateHocKyRequest = new HocKy();
+            updateHocKyRequest.setTenHocKy(tenHocKy);
             hocKyService.update(id, updateHocKyRequest);
-            return "redirect:/hoc-ky/lists";
-        } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-            return "update_hoc_ky";
-        }
-    }
-
-    @GetMapping("/remove/{id}")
-    public String showRemoveHocKy(Model model, @PathVariable("id") UUID id) {
-        HocKy hocKy = null;
-        try {
-            hocKy = hocKyService.findById(id);
         } catch (Exception ex) {
             model.addAttribute("errorMessage", ex.getMessage());
         }
-        model.addAttribute("hocKy", hocKy);
-        return "remove_hoc_ky";
+        return "redirect:/hoc-ky/list";
     }
 
-    @PostMapping(value = {"/remove/{id}"})
-    public String deleteHocKy(
-            Model model, @PathVariable("id") UUID id, @ModelAttribute("hocKy") HocKy hocKy) {
+    @PostMapping("/remove/{id}")
+    public String deleteHocKy(Model model, @PathVariable("id") UUID id) {
         try {
             hocKyService.delete(id);
-            return "redirect:/hoc-ky/lists";
         } catch (Exception ex) {
             model.addAttribute("errorMessage", ex.getMessage());
         }
-        model.addAttribute("hocKy", hocKy);
-        return "view_hoc_ky";
-    }
-
-    @GetMapping(value = {"/add"})
-    public String showAddHocKy(Model model) {
-        CreateHocKyRequest hocKy = new CreateHocKyRequest();
-        model.addAttribute("hocKy", hocKy);
-        return "add_hoc_ky";
+        return "redirect:/hoc-ky/list";
     }
 
     @PostMapping(value = "/add")
-    public String addHocKy(Model model,
-                           @ModelAttribute("hocKy") CreateHocKyRequest hocKy) {
+    public String addHocKy(Model model, @RequestParam("tenHocKyAdd") String tenHocKy) {
         try {
-            hocKyService.addNew(hocKy);
-            return "redirect:/hoc-ky/lists";
+            CreateHocKyRequest request = new CreateHocKyRequest();
+            request.setTenHocKy(tenHocKy);
+            hocKyService.addNew(request);
+            return "redirect:/hoc-ky/list";
         } catch (Exception ex) {
             model.addAttribute("errorMessage", ex.getMessage());
         }

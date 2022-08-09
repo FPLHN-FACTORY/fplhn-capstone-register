@@ -27,11 +27,6 @@ public class HocKyServiceImpl implements HocKyService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public List<HocKy> getList(int offset, int size) {
-        return hocKyRepository.getListHocKy(offset, size);
-    }
-
-    @Override
     public HocKy addNew(CreateHocKyRequest hocKyRequet) {
         if (ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())) {
             throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
@@ -51,12 +46,12 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public HocKy update(UUID id, HocKy request) {
+        if (ObjectUtils.isEmpty(request.getTenHocKy())) {
+            throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
+        }
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
         if(!hocKyCheck.isPresent()){
             throw new RestApiException(Message.ID_IS_NOT_PRESENT);
-        }
-        if (ObjectUtils.isEmpty(request.getTenHocKy())) {
-            throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
         }
         HocKy hocKy = hocKyCheck.get();
         hocKy.setTenHocKy(request.getTenHocKy());
@@ -76,8 +71,13 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public long getSizeListHocKy() {
-        return hocKyRepository.count();
+    public long getSizeListHocKy(String tenHocKy) {
+        return hocKyRepository.countListHocKy(tenHocKy);
+    }
+
+    @Override
+    public List<HocKy> searchHocKy(String tenHocKy, int offset, int size) {
+        return hocKyRepository.searchHocKy(tenHocKy, offset, size);
     }
 
 }
