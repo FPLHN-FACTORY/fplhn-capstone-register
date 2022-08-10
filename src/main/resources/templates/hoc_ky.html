@@ -79,14 +79,14 @@
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="row">
-                                        <div class="col-6 d-inline">
+                                        <div class="col-6 d-inline"
+                                        >
                                             <button
                                                     data-toggle="modal"
                                                     data-target="#modal_create"
-                                                    class="col-4 btn btn-success">
+                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
                                                 Thêm học kỳ
                                             </button>
-
                                             <div class="modal fade "
                                                  id="modal_create"
                                                  tabindex="-1"
@@ -127,14 +127,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <br/>
+                                    <div class="table-responsive mt-3">
                                         <table id="custom-table"
-                                               class="table table-bordered m-table d-sm-table m-table--head-bg-primary table-responsive">
+                                               class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                             <thead>
-                                            <th scope="col" style="width: 10%;">STT</th>
+                                            <th width="50px">STT</th>
                                             <th>Tên Hoc Kỳ</th>
-                                            <th style="width: 10%;">Chức năng</th>
+                                            <th width="200px">Chức năng</th>
                                             </thead>
                                             <tbody>
                                             <th:block th:each="hocKy,i : ${listHocKy}">
@@ -151,7 +150,7 @@
                                                         </button>
                                                         <button
                                                                 type="button"
-                                                                class="btn btn-primary"
+                                                                class="btn btn-danger"
                                                                 data-toggle="modal"
                                                                 th:attr="onclick=|openModalRemoveHocKy('${hocKy.id}')|">
                                                             Xoá
