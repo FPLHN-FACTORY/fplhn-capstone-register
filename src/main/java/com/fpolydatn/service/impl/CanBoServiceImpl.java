@@ -1,5 +1,6 @@
 package com.fpolydatn.service.impl;
 
+import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.canbo.CreateCanBoRequest;
@@ -52,31 +53,34 @@ public class CanBoServiceImpl implements CanBoService {
         if (ObjectUtils.isEmpty(canBoRequest.getSoDienThoai())) {
             throw new RestApiException(Message.PHONE_NUMBER_EMPTY);
         }
-        if (!canBoRequest.getSoDienThoai().matches("(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}")) {
-            throw new RestApiException(Message.PHONE_NUMBER_FORMAT);
-        }
         if (ObjectUtils.isEmpty(canBoRequest.getEmailFpt())) {
             throw new RestApiException(Message.EMAIL_FPT_EMPTY);
-        }
-        if (!canBoRequest.getEmailFpt().matches("\\w+@fpt.edu.vn")) {
-            throw new RestApiException(Message.EMAIL_FPT_FORMAT);
         }
         if (ObjectUtils.isEmpty(canBoRequest.getEmailFe())) {
             throw new RestApiException(Message.EMAIL_FE_EMPTY);
         }
-        if (!canBoRequest.getEmailFe().matches("\\w+@fe.edu.vn")) {
-            throw new RestApiException(Message.EMAIL_FE_FORMAT);
-        }
         if (ObjectUtils.isEmpty(canBoRequest.getCoSoId())) {
             throw new RestApiException(Message.ID_FACILITIES_EMPTY);
-        }
-        Optional<CoSo> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
-        if (!coSo.isPresent()) {
-            throw new RestApiException(Message.ID_FACILITIES_NOT_FOUND);
         }
         if (ObjectUtils.isEmpty(canBoRequest.getVaiTroId())) {
             throw new RestApiException(Message.ID_ROLE_EMPTY);
         }
+
+        if (!canBoRequest.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
+            throw new RestApiException(Message.PHONE_NUMBER_FORMAT);
+        }
+        if (!canBoRequest.getEmailFpt().matches(Constants.REGEX_EMAIL_FPT)) {
+            throw new RestApiException(Message.EMAIL_FPT_FORMAT);
+        }
+        if (!canBoRequest.getEmailFe().matches(Constants.REGEX_EMAIL_FE)) {
+            throw new RestApiException(Message.EMAIL_FE_FORMAT);
+        }
+
+        Optional<CoSo> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
+        if (!coSo.isPresent()) {
+            throw new RestApiException(Message.ID_FACILITIES_NOT_FOUND);
+        }
+
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return canBoRepository.save(canBo);
     }
@@ -97,10 +101,7 @@ public class CanBoServiceImpl implements CanBoService {
         if (ObjectUtils.isEmpty(id)) {
             throw new RestApiException(Message.ID_CADRES_EMPTY);
         }
-        Optional<CanBo> canBo = canBoRepository.findById(id);
-        if (!canBo.isPresent()) {
-            throw new RestApiException(Message.ID_CADRES_NOT_FOUND);
-        }
+
         if (ObjectUtils.isEmpty(canBoRequest.getTenCanBo())) {
             throw new RestApiException(Message.NAME_EMPTY);
         }
@@ -110,23 +111,29 @@ public class CanBoServiceImpl implements CanBoService {
         if (ObjectUtils.isEmpty(canBoRequest.getSoDienThoai())) {
             throw new RestApiException(Message.PHONE_NUMBER_EMPTY);
         }
-        if (!canBoRequest.getSoDienThoai().matches("(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}")) {
-            throw new RestApiException(Message.PHONE_NUMBER_FORMAT);
-        }
         if (ObjectUtils.isEmpty(canBoRequest.getEmailFpt())) {
             throw new RestApiException(Message.EMAIL_FPT_EMPTY);
-        }
-        if (!canBoRequest.getEmailFpt().matches("\\w+@fpt.edu.vn")) {
-            throw new RestApiException(Message.EMAIL_FPT_FORMAT);
         }
         if (ObjectUtils.isEmpty(canBoRequest.getEmailFe())) {
             throw new RestApiException(Message.EMAIL_FE_EMPTY);
         }
-        if (!canBoRequest.getEmailFe().matches("\\w+@fe.edu.vn")) {
-            throw new RestApiException(Message.EMAIL_FE_FORMAT);
-        }
         if (ObjectUtils.isEmpty(canBoRequest.getCoSoId())) {
             throw new RestApiException(Message.ID_FACILITIES_EMPTY);
+        }
+
+        if (!canBoRequest.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
+            throw new RestApiException(Message.PHONE_NUMBER_FORMAT);
+        }
+        if (!canBoRequest.getEmailFpt().matches(Constants.REGEX_EMAIL_FPT)) {
+            throw new RestApiException(Message.EMAIL_FPT_FORMAT);
+        }
+        if (!canBoRequest.getEmailFe().matches(Constants.REGEX_EMAIL_FE)) {
+            throw new RestApiException(Message.EMAIL_FE_FORMAT);
+        }
+
+        Optional<CanBo> canBo = canBoRepository.findById(id);
+        if (!canBo.isPresent()) {
+            throw new RestApiException(Message.ID_CADRES_NOT_FOUND);
         }
         Optional<CoSo> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
         if (!coSo.isPresent()) {
