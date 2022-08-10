@@ -24,4 +24,5 @@ public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh, UUID> 
             " WHERE cs.co_so_id = :id"+
             " LIMIT :size OFFSET :offset", nativeQuery = true)
     List<ChuyenNganh> getListChuyenNganh(@Param("id") UUID id,@Param("offset") int offset, @Param("size") int size);
+
 }

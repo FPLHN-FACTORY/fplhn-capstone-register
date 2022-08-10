@@ -9,7 +9,6 @@ import java.util.UUID;
 /**
  * @author phongtt35
  */
-
 @Getter
 @Setter
 public class PhanCongHuongDanId implements Serializable {
@@ -17,4 +16,5 @@ public class PhanCongHuongDanId implements Serializable {
     private UUID giangVienId;
 
     private UUID monDatnId;
+
 }

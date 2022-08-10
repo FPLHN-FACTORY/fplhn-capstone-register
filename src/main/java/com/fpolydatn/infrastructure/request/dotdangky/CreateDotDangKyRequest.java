@@ -1,8 +1,7 @@
 package com.fpolydatn.infrastructure.request.dotdangky;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -10,7 +9,8 @@ import java.util.UUID;
  * @author thepvph20110
  */
 
-@Data
+@Getter
+@Setter
 public class CreateDotDangKyRequest {
 
     private String tenDotDangKy;

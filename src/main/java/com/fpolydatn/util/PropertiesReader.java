@@ -9,6 +9,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+/**
+ * @author nguyenvv4
+ */
 @Slf4j
 public class PropertiesReader {
 

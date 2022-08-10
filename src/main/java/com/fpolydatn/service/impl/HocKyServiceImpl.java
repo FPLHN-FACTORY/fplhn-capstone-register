@@ -3,7 +3,7 @@ package com.fpolydatn.service.impl;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.HocKyRequest;
-import com.fpolydatn.model.HocKy;
+import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.repository.HocKyRepository;
 import com.fpolydatn.service.HocKyService;
 import com.fpolydatn.util.FormUtils;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

@@ -2,7 +2,7 @@ package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
 import com.fpolydatn.infrastructure.request.HocKyRequest;
-import com.fpolydatn.model.HocKy;
+import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

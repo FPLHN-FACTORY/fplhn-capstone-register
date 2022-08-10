@@ -1,8 +1,10 @@
 package com.fpolydatn.infrastructure.constant;
 
-
 import com.fpolydatn.util.PropertiesReader;
 
+/**
+ * @author nguyenvv4
+ */
 public enum Message {
 
     SUCCESS("Success"),

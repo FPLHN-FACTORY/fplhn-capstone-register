@@ -1,13 +1,15 @@
 package com.fpolydatn.infrastructure.request.canbo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 /**
  * @author nguyenvv4
  */
-@Data
+@Getter
+@Setter
 public class CreateCanBoRequest {
 
     private String tenCanBo;

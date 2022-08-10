@@ -1,13 +1,13 @@
 package com.fpolydatn.service;
 
 import com.fpolydatn.infrastructure.request.HocKyRequest;
-import com.fpolydatn.model.HocKy;
+import com.fpolydatn.model.domain.HocKy;
 
 import java.util.List;
 import java.util.UUID;
 
 /**
- * @author vinhnv
+ * @author HangNT
  */
 public interface HocKyService {
 

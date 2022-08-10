@@ -23,4 +23,5 @@ public abstract class AuditEntity {
 
     @Column
     private long lastModifiedDate;
+
 }

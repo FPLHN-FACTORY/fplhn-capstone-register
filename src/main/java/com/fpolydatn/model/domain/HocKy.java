@@ -14,7 +14,6 @@ import java.io.Serializable;
 /**
  * @author phongtt35
  */
-
 @Getter
 @Setter
 @Table
@@ -24,4 +23,5 @@ public class HocKy extends PrimaryEntity implements Serializable {
     @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
     @Nationalized
     private String tenHocKy;
+
 }
