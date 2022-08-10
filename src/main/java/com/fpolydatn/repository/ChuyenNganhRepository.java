@@ -19,12 +19,9 @@ public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh, UUID> 
 
     @Modifying
     @Transactional
-    @Query(value = "SELECT chuyen_nganh_id,\n" +
-            "       chuyen_nganh_me_id,\n" +
-            "       cn.co_so_id,\n" +
-            "       ten_chuyen_nganh\n" +
-            "FROM chuyen_nganh cn join co_so cs on  cn.co_so_id = cs.co_so_id " +
-            "WHERE cs.co_so_id = :id"+
-            "limit :size offset :offset", nativeQuery = true)
+    @Query(value = "SELECT id, cn.co_so_id, ten_chuyen_nganh " +
+            " FROM chuyen_nganh cn join co_so cs ON  cn.co_so_id = cs.co_so_id " +
+            " WHERE cs.co_so_id = :id"+
+            " LIMIT :size OFFSET :offset", nativeQuery = true)
     List<ChuyenNganh> getListChuyenNganh(@Param("id") UUID id,@Param("offset") int offset, @Param("size") int size);
 }

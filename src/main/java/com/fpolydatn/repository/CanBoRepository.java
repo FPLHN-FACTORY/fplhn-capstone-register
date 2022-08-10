@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public interface CanBoRepository extends JpaRepository<CanBo, UUID> {
 
-    @Query(value = "SELECT can_bo_id , " +
+    @Query(value = "SELECT id , " +
             " co_so_id , " +
             " email_fe ," +
             " email_fpt ," +

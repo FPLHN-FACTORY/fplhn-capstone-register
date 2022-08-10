@@ -14,6 +14,6 @@ import java.util.UUID;
  */
 @Repository
 public interface HocKyRepository extends JpaRepository<HocKy, UUID> {
-    @Query(value = "SELECT hoc_ky_id, ten_hoc_ky FROM hoc_ky hk limit :size offset :offset", nativeQuery = true)
+    @Query(value = "SELECT id, ten_hoc_ky FROM hoc_ky hk LIMIT :size OFFSET :offset", nativeQuery = true)
     List<HocKy>getListHocKy(@Param("offset") int offset, @Param("size") int size);
 }
