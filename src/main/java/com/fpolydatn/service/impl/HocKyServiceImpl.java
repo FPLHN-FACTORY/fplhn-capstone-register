@@ -2,9 +2,9 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Mesage;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
-import com.fpolydatn.infrastructure.request.UpdateHocKyRequest;
-import com.fpolydatn.model.HocKy;
+import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
+import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.repository.HocKyRepository;
 import com.fpolydatn.service.HocKyService;
 import com.fpolydatn.util.FormUtils;

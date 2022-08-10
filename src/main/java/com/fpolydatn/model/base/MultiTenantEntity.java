@@ -1,4 +1,4 @@
-package com.fpolydatn.model;
+package com.fpolydatn.model.base;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;

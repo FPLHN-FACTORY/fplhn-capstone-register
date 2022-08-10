@@ -1,6 +1,6 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.model.DotDangKy;
+import com.fpolydatn.model.domain.DotDangKy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

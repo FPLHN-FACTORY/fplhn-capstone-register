@@ -1,8 +1,7 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.infrastructure.request.CreateChuyenNganhRequest;
-import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.chuyennganh.CreateChuyenNganhRequest;
 import com.fpolydatn.service.ChuyenNganhService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

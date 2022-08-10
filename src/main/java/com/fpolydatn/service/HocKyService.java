@@ -1,8 +1,8 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
-import com.fpolydatn.infrastructure.request.UpdateHocKyRequest;
-import com.fpolydatn.model.HocKy;
+import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
+import com.fpolydatn.model.domain.HocKy;
 
 import java.util.List;
 import java.util.UUID;

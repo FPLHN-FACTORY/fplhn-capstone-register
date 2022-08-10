@@ -1,4 +1,4 @@
-package com.fpolydatn.infrastructure.request;
+package com.fpolydatn.infrastructure.request.hocky;
 
 import lombok.Data;
 

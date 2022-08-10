@@ -1,7 +1,7 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.request.CreateChuyenNganhRequest;
-import com.fpolydatn.model.ChuyenNganh;
+import com.fpolydatn.infrastructure.request.chuyennganh.CreateChuyenNganhRequest;
+import com.fpolydatn.model.domain.ChuyenNganh;
 
 import java.util.UUID;
 

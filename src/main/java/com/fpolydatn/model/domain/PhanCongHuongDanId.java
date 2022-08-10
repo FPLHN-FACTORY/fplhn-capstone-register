@@ -1,4 +1,4 @@
-package com.fpolydatn.model;
+package com.fpolydatn.model.domain;
 
 import lombok.Getter;
 import lombok.Setter;

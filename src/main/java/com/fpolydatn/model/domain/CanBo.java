@@ -1,6 +1,8 @@
-package com.fpolydatn.model;
+package com.fpolydatn.model.domain;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
+import com.fpolydatn.infrastructure.constant.VaiTro;
+import com.fpolydatn.model.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
@@ -20,14 +22,11 @@ import java.util.UUID;
 @Setter
 @Table
 @Entity
-public class GiangVienHuongDan extends MultiTenantEntity implements Serializable {
+public class CanBo extends MultiTenantEntity implements Serializable {
 
     @Column(length = EntityProperties.LENGTH_NAME, nullable = false)
     @Nationalized
-    private String tenGvhd;
-
-    @Column(nullable = false)
-    private Short soNhomHuongDanToiDa;
+    private String tenCanBo;
 
     @Column(length = EntityProperties.LENGTH_ACCOUNT, nullable = false)
     private String tenTaiKhoan;
@@ -43,5 +42,9 @@ public class GiangVienHuongDan extends MultiTenantEntity implements Serializable
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     @Type(type = EntityProperties.TYPE_ID)
-    private UUID dotDangKyId;
+    private UUID coSoId;
+
+    @Column
+    private VaiTro vaiTro;
+
 }

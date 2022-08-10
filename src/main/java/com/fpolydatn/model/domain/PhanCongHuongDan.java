@@ -1,6 +1,7 @@
-package com.fpolydatn.model;
+package com.fpolydatn.model.domain;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
+import com.fpolydatn.model.base.AuditEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;

@@ -1,7 +1,7 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.infrastructure.request.CreateDotDangKyRequest;
+import com.fpolydatn.infrastructure.request.dotdangky.CreateDotDangKyRequest;
 import com.fpolydatn.service.DotDangKyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

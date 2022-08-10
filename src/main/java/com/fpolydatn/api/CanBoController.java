@@ -1,8 +1,8 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.infrastructure.request.CreateCanBoRequest;
-import com.fpolydatn.infrastructure.request.UpdateCanBoRequest;
+import com.fpolydatn.infrastructure.request.canbo.CreateCanBoRequest;
+import com.fpolydatn.infrastructure.request.canbo.UpdateCanBoRequest;
 import com.fpolydatn.service.CanBoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

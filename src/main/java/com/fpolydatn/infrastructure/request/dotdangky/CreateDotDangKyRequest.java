@@ -1,4 +1,4 @@
-package com.fpolydatn.infrastructure.request;
+package com.fpolydatn.infrastructure.request.dotdangky;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

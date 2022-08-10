@@ -1,8 +1,8 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.infrastructure.request.CreateHocKyRequest;
-import com.fpolydatn.infrastructure.request.UpdateHocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

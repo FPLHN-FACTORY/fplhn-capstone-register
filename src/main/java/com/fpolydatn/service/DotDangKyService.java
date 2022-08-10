@@ -1,8 +1,8 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.request.CreateDotDangKyRequest;
-import com.fpolydatn.infrastructure.response.DotDangKyResponse;
-import com.fpolydatn.model.DotDangKy;
+import com.fpolydatn.infrastructure.request.dotdangky.CreateDotDangKyRequest;
+import com.fpolydatn.infrastructure.response.dotdangky.DotDangKyResponse;
+import com.fpolydatn.model.domain.DotDangKy;
 
 import java.util.List;
 import java.util.UUID;

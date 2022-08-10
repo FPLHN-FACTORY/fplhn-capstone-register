@@ -2,10 +2,10 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Mesage;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.request.CreateDotDangKyRequest;
-import com.fpolydatn.infrastructure.response.DotDangKyResponse;
-import com.fpolydatn.model.CoSo;
-import com.fpolydatn.model.DotDangKy;
+import com.fpolydatn.infrastructure.request.dotdangky.CreateDotDangKyRequest;
+import com.fpolydatn.infrastructure.response.dotdangky.DotDangKyResponse;
+import com.fpolydatn.model.domain.CoSo;
+import com.fpolydatn.model.domain.DotDangKy;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.service.DotDangKyService;

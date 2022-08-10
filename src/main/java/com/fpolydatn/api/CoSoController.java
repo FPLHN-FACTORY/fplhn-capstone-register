@@ -1,8 +1,8 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.infrastructure.request.CreateCoSoRequest;
-import com.fpolydatn.infrastructure.request.UpdateCoSoRequest;
+import com.fpolydatn.infrastructure.request.coso.CreateCoSoRequest;
+import com.fpolydatn.infrastructure.request.coso.UpdateCoSoRequest;
 import com.fpolydatn.service.CoSoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
