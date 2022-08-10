@@ -13,14 +13,12 @@ import java.util.UUID;
 @Projection(types = { ChuyenNganh.class, CoSo.class })
 public interface ChuyenNganhResponse {
 
-      UUID getId();
+    UUID getId();
 
     @Value("#{target.ten_chuyen_nganh}")
-     String getTenChuyenNganh();
+    String getTenChuyenNganh();
 
     @Value("#{target.ten_co_so}")
-     String getTenCoSo();
-
-
+    String getTenCoSo();
 
 }

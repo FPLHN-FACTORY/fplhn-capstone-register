@@ -1,4 +1,4 @@
-package com.fpolydatn.api.response;
+package com.fpolydatn.api;
 
 import com.fpolydatn.infrastructure.response.ChuyenNganhResponse;
 import com.fpolydatn.service.ChuyenNganhService;
