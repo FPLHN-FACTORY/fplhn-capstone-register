@@ -83,7 +83,7 @@ public class CoSoServiceImpl implements CoSoService {
         }
 
         CoSo coSo = formUtils.convertToObject(CoSo.class, coSoRequest);
-        coSo.setCoSoId(uuid);
+        coSo.setId(uuid);
         return coSoRepository.save(coSo);
     }
     

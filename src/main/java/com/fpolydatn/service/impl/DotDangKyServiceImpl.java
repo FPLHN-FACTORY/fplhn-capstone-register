@@ -71,8 +71,8 @@ public class DotDangKyServiceImpl implements DotDangKyService {
             Date ngayBatDau = sdf.parse(dotDangKyRequest.getNgayBatDau());
             Date ngayKetThuc = sdf.parse(dotDangKyRequest.getNgayKetThuc());
             dotDangKy.setTenDotDangKy(dotDangKyRequest.getTenDotDangKy());
-            dotDangKy.setNgayBatDau(ngayBatDau);
-            dotDangKy.setNgayKetThuc(ngayKetThuc);
+            dotDangKy.setNgayBatDau(ngayBatDau.getTime());
+            dotDangKy.setNgayKetThuc(ngayKetThuc.getTime());
             dotDangKy.setHocKyId(dotDangKyRequest.getHocKyId());
             dotDangKy.setCoSoId(dotDangKyRequest.getCoSoId());
         } catch (Exception e) {
