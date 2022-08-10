@@ -1,7 +1,8 @@
-package com.fpolydatn.model;
+package com.fpolydatn.model.domain;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
+import com.fpolydatn.model.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;

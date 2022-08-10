@@ -2,8 +2,8 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.request.CreateChuyenNganhRequest;
-import com.fpolydatn.model.ChuyenNganh;
+import com.fpolydatn.infrastructure.request.chuyennganh.CreateChuyenNganhRequest;
+import com.fpolydatn.model.domain.ChuyenNganh;
 import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.service.ChuyenNganhService;
 import com.fpolydatn.util.FormUtils;

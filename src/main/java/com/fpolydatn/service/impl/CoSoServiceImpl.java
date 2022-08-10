@@ -2,7 +2,7 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.model.CoSo;
+import com.fpolydatn.model.domain.CoSo;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.service.CoSoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.fpolydatn.infrastructure.request.CreateCoSoRequest;
-import com.fpolydatn.infrastructure.request.UpdateCoSoRequest;
+import com.fpolydatn.infrastructure.request.coso.CreateCoSoRequest;
+import com.fpolydatn.infrastructure.request.coso.UpdateCoSoRequest;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.util.ObjectUtils;
 

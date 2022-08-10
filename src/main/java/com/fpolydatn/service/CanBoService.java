@@ -1,8 +1,8 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.request.CreateCanBoRequest;
-import com.fpolydatn.infrastructure.request.UpdateCanBoRequest;
-import com.fpolydatn.model.CanBo;
+import com.fpolydatn.infrastructure.request.canbo.CreateCanBoRequest;
+import com.fpolydatn.infrastructure.request.canbo.UpdateCanBoRequest;
+import com.fpolydatn.model.domain.CanBo;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,7 +1,7 @@
 package com.fpolydatn.service;
-import com.fpolydatn.infrastructure.request.CreateCoSoRequest;
-import com.fpolydatn.infrastructure.request.UpdateCoSoRequest;
-import com.fpolydatn.model.CoSo;
+import com.fpolydatn.infrastructure.request.coso.CreateCoSoRequest;
+import com.fpolydatn.infrastructure.request.coso.UpdateCoSoRequest;
+import com.fpolydatn.model.domain.CoSo;
 
 import java.util.List;
 import java.util.UUID;

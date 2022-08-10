@@ -2,10 +2,10 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.request.CreateCanBoRequest;
-import com.fpolydatn.infrastructure.request.UpdateCanBoRequest;
-import com.fpolydatn.model.CanBo;
-import com.fpolydatn.model.CoSo;
+import com.fpolydatn.infrastructure.request.canbo.CreateCanBoRequest;
+import com.fpolydatn.infrastructure.request.canbo.UpdateCanBoRequest;
+import com.fpolydatn.model.domain.CanBo;
+import com.fpolydatn.model.domain.CoSo;
 import com.fpolydatn.repository.CanBoRepository;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.service.CanBoService;
