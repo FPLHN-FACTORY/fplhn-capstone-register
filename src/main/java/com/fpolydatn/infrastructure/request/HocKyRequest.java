@@ -1,12 +1,10 @@
 package com.fpolydatn.infrastructure.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@Validated
 @Getter
 @Setter
 public class HocKyRequest {

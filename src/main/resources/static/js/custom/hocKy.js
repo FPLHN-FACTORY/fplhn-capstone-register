@@ -70,7 +70,7 @@ $("#form_hoc_ky_update").submit(function (event) {
             data: JSON.stringify(hocKyRequest),
             dataType: 'json',
             success: function () {
-                parent.location.reload();
+                window.open("/hoc-ky/list", '_self');
                 $("#modal_update_hoc_ky").modal("hide");
             },
             error: function (e) {
