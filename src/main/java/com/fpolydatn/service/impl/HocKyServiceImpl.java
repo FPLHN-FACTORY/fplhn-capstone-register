@@ -27,6 +27,12 @@ public class HocKyServiceImpl implements HocKyService {
 
     private FormUtils formUtils = new FormUtils();
 
+
+    @Override
+    public List<HocKy> searchHocKy(String tenHocKy, int offset, int size) {
+        return hocKyRepository.searchHocKy(tenHocKy, offset, size);
+    }
+
     @Override
     public HocKy addNew(@Valid HocKyRequest hocKyRequest) {
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequest);
@@ -47,7 +53,7 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public HocKy update(UUID id, HocKyRequest request) {
+    public HocKy update(UUID id, @Valid HocKyRequest request) {
         if (ObjectUtils.isEmpty(request.getTenHocKy())) {
             throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
         }
@@ -75,11 +81,6 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     public long getSizeListHocKy(String tenHocKy) {
         return hocKyRepository.countListHocKy(tenHocKy);
-    }
-
-    @Override
-    public List<HocKy> searchHocKy(String tenHocKy, int offset, int size) {
-        return hocKyRepository.searchHocKy(tenHocKy, offset, size);
     }
 
 }
