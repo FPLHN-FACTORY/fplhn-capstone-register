@@ -77,11 +77,6 @@ public class CanBoServiceImpl implements CanBoService {
         if (ObjectUtils.isEmpty(canBoRequest.getVaiTroId())) {
             throw new RestApiException(Message.ID_ROLE_EMPTY);
         }
-        Optional<VaiTro> vaiTro = vaiTroRepository.findById(canBoRequest.getVaiTroId());
-        if (!vaiTro.isPresent()) {
-            throw new RestApiException(Message.ID_ROLE_NOT_FOUND);
-        }
-
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return canBoRepository.save(canBo);
     }

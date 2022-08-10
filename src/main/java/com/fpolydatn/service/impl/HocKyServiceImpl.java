@@ -33,8 +33,6 @@ public class HocKyServiceImpl implements HocKyService {
             throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
         }
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequet);
-        hocKy.setCreateAt(new Date());
-        hocKy.setUpdateAt(new Date());
         return hocKyRepository.save(hocKy);
     }
 
@@ -62,7 +60,6 @@ public class HocKyServiceImpl implements HocKyService {
         }
         HocKy hocKy = hocKyCheck.get();
         hocKy.setTenHocKy(request.getTenHocKy());
-        hocKy.setUpdateAt(new Date());
         return hocKyRepository.save(hocKy);
     }
 

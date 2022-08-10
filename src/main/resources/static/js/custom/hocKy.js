@@ -24,7 +24,7 @@ $("#form_create_hoc_ky").submit(function (event) {
             data: JSON.stringify(hocKyRequest),
             dataType: 'json',
             success: function () {
-                parent.location.reload();
+                window.open("/hoc-ky/list", '_self');
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
@@ -42,9 +42,9 @@ function openModalUpdateHocKy(hocKyId) {
         url: "/hoc-ky/detail?id=" + hocKyId,
         data: JSON.stringify(hocKyId),
         dataType: 'json',
-        success: function (reponseData) {
-            $("#id_hoc_ky_update").val(reponseData.data.hocKyId);
-            $("#ten_hoc_ky_update").val(reponseData.data.tenHocKy);
+        success: function (responseData) {
+            $("#id_hoc_ky_update").val(responseData.data.id);
+            $("#ten_hoc_ky_update").val(responseData.data.tenHocKy);
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -108,7 +108,7 @@ $("#form_hoc_ky_delete").submit(function (event) {
         data: JSON.stringify(hocKyId),
         dataType: 'json',
         success: function () {
-            parent.location.reload();
+            window.open("/hoc-ky/list", '_self');
             $("#modal_update_hoc_ky").modal("hide");
         },
         error: function (e) {
