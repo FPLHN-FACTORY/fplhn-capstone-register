@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,11 +28,8 @@ public class HocKyServiceImpl implements HocKyService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public HocKy addNew(HocKyRequest hocKyRequet) {
-        if (ObjectUtils.isEmpty(hocKyRequet.getTenHocKy())) {
-            throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
-        }
-        HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequet);
+    public HocKy addNew(@Valid HocKyRequest hocKyRequest) {
+        HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequest);
         return hocKyRepository.save(hocKy);
     }
 

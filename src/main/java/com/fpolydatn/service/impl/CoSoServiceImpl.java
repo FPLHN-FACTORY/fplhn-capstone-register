@@ -60,7 +60,7 @@ public class CoSoServiceImpl implements CoSoService {
             throw new RestApiException(Message.DATA_EMPTY);
         }
         if (ObjectUtils.isEmpty(createCoSoRequest.getTenCoSo())) {
-            throw new RestApiException(Message.COSO_NAME_EMPTY);
+            throw new RestApiException(Message.CO_SO_NAME_EMPTY);
         }
         CoSo coSo = formUtils.convertToObject(CoSo.class, createCoSoRequest);
         return coSoRepository.save(coSo);
@@ -77,7 +77,7 @@ public class CoSoServiceImpl implements CoSoService {
         }
 
         if (ObjectUtils.isEmpty(coSoRequest.getTenCoSo())) {
-            throw new RestApiException(Message.COSO_NAME_EMPTY);
+            throw new RestApiException(Message.CO_SO_NAME_EMPTY);
         }
 
         CoSo coSo = formUtils.convertToObject(CoSo.class, coSoRequest);

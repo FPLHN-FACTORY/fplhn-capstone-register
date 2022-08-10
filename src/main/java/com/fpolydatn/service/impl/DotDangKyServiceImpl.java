@@ -31,7 +31,7 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     public DotDangKy deleteDotDangKy(UUID id) {
         Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(id);
         if (!dotDangKy.isPresent()) {
-            throw new RestApiException(Message.ID_DOTDANGKY_EMPTY);
+            throw new RestApiException(Message.ID_DOT_DANG_KY_EMPTY);
         }
         dotDangKyRepository.delete(dotDangKy.get());
         return dotDangKy.get();

@@ -14,7 +14,7 @@ public class PropertyKeys {
 
     public static final String USERNAME_EMPTY = "username.empty";
 
-    public static final String TEN_CO_SO_EMPTY = "tencoso.empty";
+    public static final String TEN_CO_SO_EMPTY = "ten.co.so.empty";
 
     public static final String PHONE_NUMBER_EMPTY = "phone.number.empty";
 
@@ -26,25 +26,21 @@ public class PropertyKeys {
 
     public static final String UUID_EMPTY = "uuid.empty";
 
-    public static final String DELETE_COSO_SUCCESS = "delete.coso.success";
+    public static final String ID_COSO_NOT_EXIST = "id.co.so.not.exist";
 
-    public static final String ID_COSO_NOT_EXIST = "id.coso.not.exist";
+    public static final String NGAY_BAT_DAU_EMPTY = "ngay.bat.dau.empty";
 
-    public static final String NGAY_BAT_DAU_EMPTY = "ngay.bat.dau.emply";
-
-    public static final String NGAY_KET_THUC_EMPTY = "ngay.ket.thuc.emply";
+    public static final String NGAY_KET_THUC_EMPTY = "ngay.ket.thuc.empty";
 
     public static final String NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC = "ngay.bat.dau.before.ngay.ket.thuc";
 
-    public static final String ID_HOC_KY_EMPLY = "id.hoc.ky.emply";
+    public static final String ID_CO_SO_EMPTY = "id.co.so.empty";
 
-    public static final String ID_CO_SO_EMPLY = "id.co.so.emply";
+    public static final String ID_NOT_EXIST = "id.not.exist";
 
-    public static final String ID_NOT_EXISTS = "id.not.exists";
+    public static final String ID_DOT_DANG_KY_EMPTY = "id.dot.dang.ky.empty";
 
-    public static final String ID_DOTDANGKY_EMPTY = "id.dotdangky.empty";
-
-    public static final String NAME_ROLE_EMPTY = "name.role.emty";
+    public static final String NAME_ROLE_EMPTY = "name.role.empty";
 
     public static final String PHONE_NUMBER_FORMAT = "phone.number.format";
 
@@ -69,4 +65,5 @@ public class PropertyKeys {
     public static final String ID_CADRES_EMPTY = "id.cadres.empty";
 
     public static final String ID_CADRES_NOT_FOUND = "id.cadres.not.found";
+
 }

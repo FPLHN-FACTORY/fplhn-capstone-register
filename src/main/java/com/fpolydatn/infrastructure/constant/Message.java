@@ -24,8 +24,6 @@ public enum Message {
 
     EMAIL_FE_EMPTY(PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EMPTY)),
 
-    DELETE_COSO_SUCCESS(PropertiesReader.getProperty(PropertyKeys.DELETE_COSO_SUCCESS)),
-
     ID_COSO_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.ID_COSO_NOT_EXIST)),
 
     NGAY_BAT_DAU_EMPTY(PropertiesReader.getProperty(PropertyKeys.NGAY_BAT_DAU_EMPTY)),
@@ -54,13 +52,13 @@ public enum Message {
 
     ID_CADRES_NOT_FOUND(PropertiesReader.getProperty(PropertyKeys.ID_CADRES_NOT_FOUND)),
 
-    ID_CO_SO_EMPLY(PropertiesReader.getProperty(PropertyKeys.ID_CO_SO_EMPLY)),
+    ID_CO_SO_EMPTY(PropertiesReader.getProperty(PropertyKeys.ID_CO_SO_EMPTY)),
 
-    ID_NOT_EXISTS(PropertiesReader.getProperty(PropertyKeys.ID_NOT_EXISTS)),
+    ID_NOT_EXISTS(PropertiesReader.getProperty(PropertyKeys.ID_NOT_EXIST)),
 
-    COSO_NAME_EMPTY(PropertiesReader.getProperty(PropertyKeys.COSO_NAME_EMPTY)),
+    CO_SO_NAME_EMPTY(PropertiesReader.getProperty(PropertyKeys.COSO_NAME_EMPTY)),
 
-    ID_DOTDANGKY_EMPTY(PropertiesReader.getProperty(PropertyKeys.ID_DOTDANGKY_EMPTY)),
+    ID_DOT_DANG_KY_EMPTY(PropertiesReader.getProperty(PropertyKeys.ID_DOT_DANG_KY_EMPTY)),
 
     UUID_EMPTY(PropertiesReader.getProperty(PropertyKeys.UUID_EMPTY)),
 

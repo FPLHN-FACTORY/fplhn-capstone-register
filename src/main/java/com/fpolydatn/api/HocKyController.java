@@ -23,7 +23,6 @@ import java.util.UUID;
 /**
  * @author HangNT
  */
-
 @Controller
 @RequestMapping("/hoc-ky")
 public class HocKyController {
