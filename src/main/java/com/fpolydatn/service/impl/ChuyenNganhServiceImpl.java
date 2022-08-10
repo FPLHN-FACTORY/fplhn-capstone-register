@@ -3,6 +3,7 @@ package com.fpolydatn.service.impl;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.chuyennganh.CreateChuyenNganhRequest;
+import com.fpolydatn.infrastructure.response.ChuyenNganhResponse;
 import com.fpolydatn.model.domain.ChuyenNganh;
 import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.service.ChuyenNganhService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,6 +37,11 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
         return chuyenNganh.get();
+    }
+
+    @Override
+    public List<ChuyenNganhResponse> getListChuyenNganhCustom() {
+        return chuyenNganhRepository.getListChuyenNganhCustom();
     }
 
 }
