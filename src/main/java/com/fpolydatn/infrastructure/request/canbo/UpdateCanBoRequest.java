@@ -10,20 +10,7 @@ import java.util.UUID;
  */
 @Getter
 @Setter
-public class UpdateCanBoRequest {
+public class UpdateCanBoRequest extends BaseCanBoRequest {
 
-    private String tenCanBo;
-
-    private String tenTaiKhoan;
-
-    private String soDienThoai;
-
-    private String emailFpt;
-
-    private String emailFe;
-
-    private UUID coSoId;
-
-    private UUID vaiTroId;
-
+    private UUID id;
 }

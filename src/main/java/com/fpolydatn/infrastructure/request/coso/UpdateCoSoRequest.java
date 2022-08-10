@@ -3,13 +3,14 @@ package com.fpolydatn.infrastructure.request.coso;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
 
 /**
  * @author caodinh
  */
 @Getter
 @Setter
-public class UpdateCoSoRequest {
+public class UpdateCoSoRequest extends BaseCoSoRequest {
 
-    private String tenCoSo;
+    private UUID id;
 }

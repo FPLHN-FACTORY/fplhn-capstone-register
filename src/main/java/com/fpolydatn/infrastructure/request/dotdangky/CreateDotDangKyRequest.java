@@ -11,16 +11,5 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class CreateDotDangKyRequest {
-
-    private String tenDotDangKy;
-
-    private String ngayBatDau;
-
-    private String ngayKetThuc;
-
-    private UUID hocKyId;
-
-    private UUID coSoId;
-
+public class CreateDotDangKyRequest extends BaseDotDangKyRequest {
 }
