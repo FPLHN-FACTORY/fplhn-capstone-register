@@ -141,7 +141,7 @@ public class CanBoServiceImpl implements CanBoService {
         }
 
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
-        updateCanBo.setCanBoId(id);
+        updateCanBo.setId(id);
         return canBoRepository.save(updateCanBo);
     }
 }

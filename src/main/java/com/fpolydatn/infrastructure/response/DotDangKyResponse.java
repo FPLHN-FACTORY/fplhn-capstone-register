@@ -21,9 +21,9 @@ public class DotDangKyResponse {
 
     private String tenDotDangKy;
 
-    private Date ngayBatDau;
+    private Long ngayBatDau;
 
-    private Date ngayKetThuc;
+    private Long ngayKetThuc;
 
     private UUID hocKyId;
 

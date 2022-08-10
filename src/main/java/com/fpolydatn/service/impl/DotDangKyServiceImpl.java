@@ -71,7 +71,9 @@ public class DotDangKyServiceImpl implements DotDangKyService {
         Regex(dotDangKyRequest, coSo);
         DotDangKy dotDangKy = convertToDotDangKy(dotDangKyRequest);
         DotDangKy dotDangKyNew = dotDangKyRepository.save(dotDangKy);
-        DotDangKyResponse dotDangKyResponse = new DotDangKyResponse(dotDangKyNew.getDotDangKyId(), dotDangKyNew.getTenDotDangKy(), dotDangKyNew.getNgayBatDau(), dotDangKyNew.getNgayKetThuc(), dotDangKyNew.getHocKyId(), coSo.get());
+        DotDangKyResponse dotDangKyResponse = new DotDangKyResponse(dotDangKyNew.getId(), dotDangKyNew.getTenDotDangKy(),
+                dotDangKyNew.getNgayBatDau(), dotDangKyNew.getNgayKetThuc(),
+                dotDangKyNew.getHocKyId(), coSo.get());
         return dotDangKyResponse;
     }
 
@@ -80,12 +82,12 @@ public class DotDangKyServiceImpl implements DotDangKyService {
         Optional<CoSo> coSo = coSoRepository.findById(dotDangKyRequest.getCoSoId());
         Regex(dotDangKyRequest, coSo);
         DotDangKy dotDangKy = convertToDotDangKy(dotDangKyRequest);
-        dotDangKy.setDotDangKyId(id);
+        dotDangKy.setId(id);
         DotDangKy dotDangKyNew = dotDangKyRepository.save(dotDangKy);
         if (Objects.isNull(dotDangKyNew)) {
             throw new RestApiException(Mesage.ID_NOT_EXISTS);
         }
-        DotDangKyResponse dotDangKyResponse = new DotDangKyResponse(dotDangKyNew.getDotDangKyId(), dotDangKyNew.getTenDotDangKy(), dotDangKyNew.getNgayBatDau(), dotDangKyNew.getNgayKetThuc(), dotDangKyNew.getHocKyId(), coSo.get());
+        DotDangKyResponse dotDangKyResponse = new DotDangKyResponse(dotDangKyNew.getId(), dotDangKyNew.getTenDotDangKy(), dotDangKyNew.getNgayBatDau(), dotDangKyNew.getNgayKetThuc(), dotDangKyNew.getHocKyId(), coSo.get());
         return dotDangKyResponse;
     }
 
@@ -96,8 +98,8 @@ public class DotDangKyServiceImpl implements DotDangKyService {
             Date ngayBatDau = sdf.parse(dotDangKyRequest.getNgayBatDau());
             Date ngayKetThuc = sdf.parse(dotDangKyRequest.getNgayKetThuc());
             dotDangKy.setTenDotDangKy(dotDangKyRequest.getTenDotDangKy());
-            dotDangKy.setNgayBatDau(ngayBatDau);
-            dotDangKy.setNgayKetThuc(ngayKetThuc);
+            dotDangKy.setNgayBatDau(ngayBatDau.getTime());
+            dotDangKy.setNgayKetThuc(ngayKetThuc.getTime());
             dotDangKy.setHocKyId(dotDangKyRequest.getHocKyId());
             dotDangKy.setCoSoId(dotDangKyRequest.getCoSoId());
         } catch (Exception e) {
