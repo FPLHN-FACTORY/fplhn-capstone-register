@@ -17,7 +17,6 @@ import java.util.UUID;
 /**
  * @author phongtt35
  */
-
 @Getter
 @Setter
 @Table
@@ -58,4 +57,5 @@ public class SinhVien extends MultiTenantEntity implements Serializable {
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     @Type(type = EntityProperties.TYPE_ID)
     private UUID dotDangKyId;
+
 }

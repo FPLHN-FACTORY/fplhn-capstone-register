@@ -21,4 +21,5 @@ public abstract class MultiTenantEntity extends PrimaryEntity {
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     @Type(type= EntityProperties.TYPE_ID)
     private UUID coSoId;
+
 }

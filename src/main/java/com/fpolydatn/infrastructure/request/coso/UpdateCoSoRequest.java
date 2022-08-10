@@ -1,12 +1,14 @@
 package com.fpolydatn.infrastructure.request.coso;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
  * @author caodinh
  */
-@Data
+@Getter
+@Setter
 public class UpdateCoSoRequest {
 
     private String tenCoSo;

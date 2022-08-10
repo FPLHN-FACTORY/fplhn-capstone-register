@@ -1,6 +1,6 @@
 package com.fpolydatn.service.impl;
 
-import com.fpolydatn.infrastructure.constant.Mesage;
+import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.chuyennganh.CreateChuyenNganhRequest;
 import com.fpolydatn.model.domain.ChuyenNganh;
@@ -25,10 +25,10 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
 
     public ChuyenNganh insert(CreateChuyenNganhRequest craCreateChuyenNganhRequest){
         if (Objects.isNull(craCreateChuyenNganhRequest)) {
-            throw new RestApiException(Mesage.DATA_EMPTY);
+            throw new RestApiException(Message.DATA_EMPTY);
         }
         if (ObjectUtils.isEmpty(craCreateChuyenNganhRequest.getTenChuyenNganh())) {
-            throw new RestApiException(Mesage.TEN_CHUYEN_NGANH_EMPTY);
+            throw new RestApiException(Message.TEN_CHUYEN_NGANH_EMPTY);
         }
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class,craCreateChuyenNganhRequest);
         return chuyenNganhRepository.save(chuyenNganh);
@@ -38,7 +38,7 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
     public ChuyenNganh search(UUID id) {
         Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(id);
         if(!chuyenNganh.isPresent()) {
-            throw new RestApiException(Mesage.ID_IS_NOT_PRESENT);
+            throw new RestApiException(Message.ID_IS_NOT_PRESENT);
         }
         return chuyenNganh.get();
     }

@@ -1,14 +1,15 @@
 package com.fpolydatn.infrastructure.request.chuyennganh;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
 import java.util.UUID;
 
 /**
  * @author thangncph26123
  */
-@Data
+@Getter
+@Setter
 public class CreateChuyenNganhRequest {
 
     private String tenChuyenNganh;

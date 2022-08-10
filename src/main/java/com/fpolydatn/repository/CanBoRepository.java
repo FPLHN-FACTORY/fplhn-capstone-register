@@ -23,4 +23,5 @@ public interface CanBoRepository extends JpaRepository<CanBo, UUID> {
             " vai_tro_id  " +
             " FROM can_bo cb limit :size offset :offset", nativeQuery = true)
     List<CanBo> getListCanBo(@Param("offset") int offset, @Param("size") int size);
+
 }

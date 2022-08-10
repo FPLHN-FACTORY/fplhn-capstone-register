@@ -1,5 +1,8 @@
 package com.fpolydatn.infrastructure.constant;
 
+/**
+ * @author nguyenvv4
+ */
 public class PropertyKeys {
 
     private PropertyKeys() {

@@ -25,4 +25,5 @@ public abstract class PrimaryEntity extends AuditEntity {
     @Column(length = EntityProperties.LENGTH_ID, updatable = false)
     @Type(type = EntityProperties.TYPE_ID)
     private UUID id;
+
 }

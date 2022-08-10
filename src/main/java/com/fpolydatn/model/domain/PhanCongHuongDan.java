@@ -17,7 +17,6 @@ import java.util.UUID;
 /**
  * @author phongtt35
  */
-
 @Getter
 @Setter
 @Table
@@ -34,4 +33,5 @@ public class PhanCongHuongDan extends AuditEntity implements Serializable {
     @Column(length = EntityProperties.LENGTH_ID)
     @Type(type = EntityProperties.TYPE_ID)
     private UUID monDatnId;
+
 }

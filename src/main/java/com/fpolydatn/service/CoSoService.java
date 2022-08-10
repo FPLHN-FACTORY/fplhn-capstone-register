@@ -21,5 +21,4 @@ public interface CoSoService {
 
     CoSo findById(UUID id);
 
-
 }

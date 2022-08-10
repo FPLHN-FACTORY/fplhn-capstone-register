@@ -8,6 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @author tamh
+ */
 public interface DotDangKyRepository extends JpaRepository<DotDangKy, UUID> {
 
     @Query(value = "SELECT id, co_so_id, hoc_ky_id, ngay_bat_dau," +

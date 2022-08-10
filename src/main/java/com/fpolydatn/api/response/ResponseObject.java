@@ -1,11 +1,13 @@
 package com.fpolydatn.api.response;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author nguyenvv4
  */
-@Data
+@Getter
+@Setter
 public class ResponseObject {
 
     private boolean isSuccess = false;
@@ -20,7 +22,6 @@ public class ResponseObject {
         if (obj != null) {
             this.isSuccess = true;
             this.data = obj;
-//            this.errorCode = ErrorCode.SUCCESS.toString();
         }
     }
 }

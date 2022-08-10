@@ -17,7 +17,6 @@ import java.util.UUID;
 /**
  * @author phongtt35
  */
-
 @Getter
 @Setter
 @Table

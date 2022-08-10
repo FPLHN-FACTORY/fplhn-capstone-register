@@ -1,24 +1,26 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
-import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
+import com.fpolydatn.infrastructure.request.HocKyRequest;
 import com.fpolydatn.model.domain.HocKy;
 
 import java.util.List;
 import java.util.UUID;
 
 /**
- * @author vinhnv
+ * @author HangNT
  */
 public interface HocKyService {
 
-    HocKy searchById(UUID id);
+    HocKy addNew(HocKyRequest hocKy);
 
-    List<HocKy> getList(int offset, int size);
+    Boolean delete(UUID id);
 
-    HocKy addNew(CreateHocKyRequest hocKy);
+    HocKy update(UUID id, HocKyRequest hocKy);
 
-    String delete(UUID id);
+    HocKy findById(UUID id);
 
-    HocKy update(UUID id, UpdateHocKyRequest updateHocKyRequest);
+    long getSizeListHocKy(String tenHocKy);
+
+    List<HocKy> searchHocKy(String tenHocKy, int offset, int size);
+
 }
