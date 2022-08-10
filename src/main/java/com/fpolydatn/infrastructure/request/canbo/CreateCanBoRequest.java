@@ -9,5 +9,4 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateCanBoRequest extends BaseCanBoRequest {
-
 }

@@ -12,6 +12,6 @@ public interface DotDangKyService {
 
     DotDangKy deleteDotDangKy(UUID id);
 
-    List<DotDangKy> getListDotDangKy(UUID coSoId, int offset, int size);
+    List<DotDangKy> getListDotDangKy(UUID id, int offset, int size);
 
 }

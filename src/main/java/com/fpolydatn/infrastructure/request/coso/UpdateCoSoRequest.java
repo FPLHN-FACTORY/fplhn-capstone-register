@@ -3,6 +3,8 @@ package com.fpolydatn.infrastructure.request.coso;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 /**
@@ -12,6 +14,8 @@ import java.util.UUID;
 @Setter
 public class UpdateCoSoRequest extends BaseCoSoRequest {
 
+    @NotEmpty
+    @NotBlank
     private UUID id;
 
 }

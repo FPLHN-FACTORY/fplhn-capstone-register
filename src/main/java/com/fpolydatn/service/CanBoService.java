@@ -16,8 +16,7 @@ public interface CanBoService {
 
     CanBo addNew(CreateCanBoRequest canBo);
 
-
-    CanBo findById(UUID canBoId);
+    CanBo findById(UUID id);
 
     CanBo update(UUID id, UpdateCanBoRequest canBoRequest);
 

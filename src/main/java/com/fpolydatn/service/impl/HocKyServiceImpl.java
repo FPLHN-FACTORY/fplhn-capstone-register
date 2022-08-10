@@ -10,10 +10,10 @@ import com.fpolydatn.service.HocKyService;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,12 +42,9 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public Boolean delete(UUID id) {
-        if (ObjectUtils.isEmpty(id)) {
-            throw new RestApiException(Message.UUID_EMPTY);
-        }
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if (!hocKyCheck.isPresent()) {
-            throw new RestApiException(Message.ID_IS_NOT_PRESENT);
+        if (Objects.isNull(hocKyCheck)) {
+            throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
         hocKyRepository.delete(hocKyCheck.get());
         return true;
@@ -55,12 +52,9 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public HocKy update(UUID id, UpdateHocKyRequest request) {
-        if (ObjectUtils.isEmpty(request.getTenHocKy())) {
-            throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
-        }
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if (!hocKyCheck.isPresent()) {
-            throw new RestApiException(Message.ID_IS_NOT_PRESENT);
+        if (Objects.isNull(hocKyCheck)) {
+            throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
         HocKy hocKy = hocKyCheck.get();
         hocKy.setTenHocKy(request.getTenHocKy());
@@ -69,12 +63,9 @@ public class HocKyServiceImpl implements HocKyService {
 
     @Override
     public HocKy findById(UUID id) {
-        if (ObjectUtils.isEmpty(id)) {
-            throw new RestApiException(Message.DATA_EMPTY);
-        }
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if (!hocKyCheck.isPresent()) {
-            throw new RestApiException(Message.ID_IS_NOT_PRESENT);
+        if (Objects.isNull(hocKyCheck)) {
+            throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
         return hocKyCheck.get();
     }

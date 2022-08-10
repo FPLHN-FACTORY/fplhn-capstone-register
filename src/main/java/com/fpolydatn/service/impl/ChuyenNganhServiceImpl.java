@@ -9,8 +9,8 @@ import com.fpolydatn.service.ChuyenNganhService;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
+import javax.validation.Valid;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,22 +23,16 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
 
     private FormUtils formUtils = new FormUtils();
 
-    public ChuyenNganh insert(CreateChuyenNganhRequest craCreateChuyenNganhRequest){
-        if (Objects.isNull(craCreateChuyenNganhRequest)) {
-            throw new RestApiException(Message.DATA_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(craCreateChuyenNganhRequest.getTenChuyenNganh())) {
-            throw new RestApiException(Message.TEN_CHUYEN_NGANH_EMPTY);
-        }
-        ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class,craCreateChuyenNganhRequest);
+    public ChuyenNganh insert(@Valid CreateChuyenNganhRequest createChuyenNganhRequest){
+        ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class,createChuyenNganhRequest);
         return chuyenNganhRepository.save(chuyenNganh);
     }
 
     @Override
     public ChuyenNganh search(UUID id) {
         Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(id);
-        if(!chuyenNganh.isPresent()) {
-            throw new RestApiException(Message.ID_IS_NOT_PRESENT);
+        if(Objects.isNull(chuyenNganh)) {
+            throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
         return chuyenNganh.get();
     }

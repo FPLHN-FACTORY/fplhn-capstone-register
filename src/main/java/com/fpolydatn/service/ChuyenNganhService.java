@@ -10,7 +10,7 @@ import java.util.UUID;
  */
 public interface ChuyenNganhService {
 
-    ChuyenNganh insert(CreateChuyenNganhRequest craCreateChuyenNganhRequest);
+    ChuyenNganh insert(CreateChuyenNganhRequest createChuyenNganhRequest);
 
     ChuyenNganh search(UUID id);
 

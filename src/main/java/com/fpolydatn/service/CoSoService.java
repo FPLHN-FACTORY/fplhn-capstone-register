@@ -17,7 +17,7 @@ public interface CoSoService {
 
     CoSo addNew(CreateCoSoRequest canBo);
 
-    CoSo update(UUID uuid, UpdateCoSoRequest coSo);
+    CoSo update(UUID id, UpdateCoSoRequest coSo);
 
     CoSo findById(UUID id);
 

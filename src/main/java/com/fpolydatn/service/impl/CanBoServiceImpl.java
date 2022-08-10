@@ -1,6 +1,5 @@
 package com.fpolydatn.service.impl;
 
-import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.canbo.CreateCanBoRequest;
@@ -13,8 +12,8 @@ import com.fpolydatn.service.CanBoService;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,42 +39,10 @@ public class CanBoServiceImpl implements CanBoService {
     }
 
     @Override
-    public CanBo addNew(CreateCanBoRequest canBoRequest) {
-        if (Objects.isNull(canBoRequest)) {
-            throw new RestApiException(Message.DATA_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getTenCanBo())) {
-            throw new RestApiException(Message.NAME_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getTenTaiKhoan())) {
-            throw new RestApiException(Message.USERNAME_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getSoDienThoai())) {
-            throw new RestApiException(Message.PHONE_NUMBER_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getEmailFpt())) {
-            throw new RestApiException(Message.EMAIL_FPT_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getEmailFe())) {
-            throw new RestApiException(Message.EMAIL_FE_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getCoSoId())) {
-            throw new RestApiException(Message.ID_FACILITIES_EMPTY);
-        }
-
-        if (!canBoRequest.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
-            throw new RestApiException(Message.PHONE_NUMBER_FORMAT);
-        }
-        if (!canBoRequest.getEmailFpt().matches(Constants.REGEX_EMAIL_FPT)) {
-            throw new RestApiException(Message.EMAIL_FPT_FORMAT);
-        }
-        if (!canBoRequest.getEmailFe().matches(Constants.REGEX_EMAIL_FE)) {
-            throw new RestApiException(Message.EMAIL_FE_FORMAT);
-        }
-
+    public CanBo addNew(@Valid CreateCanBoRequest canBoRequest) {
         Optional<CoSo> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
-        if (!coSo.isPresent()) {
-            throw new RestApiException(Message.ID_FACILITIES_NOT_FOUND);
+        if (Objects.isNull(coSo)) {
+            throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
 
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
@@ -84,57 +51,21 @@ public class CanBoServiceImpl implements CanBoService {
 
     public CanBo findById(UUID canBoId) {
         Optional<CanBo> canBo = canBoRepository.findById(canBoId);
-        if (!canBo.isPresent()) {
-            throw new RestApiException(Message.ID_CADRES_NOT_FOUND);
+        if (Objects.isNull(canBo)) {
+            throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
         return canBo.get();
     }
 
     @Override
-    public CanBo update(UUID id, UpdateCanBoRequest canBoRequest) {
-        if (Objects.isNull(canBoRequest)) {
-            throw new RestApiException(Message.DATA_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(id)) {
-            throw new RestApiException(Message.ID_CADRES_EMPTY);
-        }
-
-        if (ObjectUtils.isEmpty(canBoRequest.getTenCanBo())) {
-            throw new RestApiException(Message.NAME_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getTenTaiKhoan())) {
-            throw new RestApiException(Message.USERNAME_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getSoDienThoai())) {
-            throw new RestApiException(Message.PHONE_NUMBER_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getEmailFpt())) {
-            throw new RestApiException(Message.EMAIL_FPT_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getEmailFe())) {
-            throw new RestApiException(Message.EMAIL_FE_EMPTY);
-        }
-        if (ObjectUtils.isEmpty(canBoRequest.getCoSoId())) {
-            throw new RestApiException(Message.ID_FACILITIES_EMPTY);
-        }
-
-        if (!canBoRequest.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
-            throw new RestApiException(Message.PHONE_NUMBER_FORMAT);
-        }
-        if (!canBoRequest.getEmailFpt().matches(Constants.REGEX_EMAIL_FPT)) {
-            throw new RestApiException(Message.EMAIL_FPT_FORMAT);
-        }
-        if (!canBoRequest.getEmailFe().matches(Constants.REGEX_EMAIL_FE)) {
-            throw new RestApiException(Message.EMAIL_FE_FORMAT);
-        }
-
+    public CanBo update(UUID id, @Valid UpdateCanBoRequest canBoRequest) {
         Optional<CanBo> canBo = canBoRepository.findById(id);
-        if (!canBo.isPresent()) {
-            throw new RestApiException(Message.ID_CADRES_NOT_FOUND);
+        if (Objects.isNull(canBo)) {
+            throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
         Optional<CoSo> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
-        if (!coSo.isPresent()) {
-            throw new RestApiException(Message.ID_FACILITIES_NOT_FOUND);
+        if (Objects.isNull(coSo)) {
+            throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
 
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
