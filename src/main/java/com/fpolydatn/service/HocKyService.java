@@ -1,6 +1,7 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.request.HocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
 import com.fpolydatn.model.domain.HocKy;
 
 import java.util.List;
@@ -11,11 +12,11 @@ import java.util.UUID;
  */
 public interface HocKyService {
 
-    HocKy addNew(HocKyRequest hocKy);
+    HocKy addNew(CreateHocKyRequest hocKy);
 
     Boolean delete(UUID id);
 
-    HocKy update(UUID id, HocKyRequest hocKy);
+    HocKy update(UUID id, UpdateHocKyRequest hocKy);
 
     HocKy findById(UUID id);
 

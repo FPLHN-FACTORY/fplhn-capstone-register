@@ -62,9 +62,6 @@ public class CanBoServiceImpl implements CanBoService {
         if (ObjectUtils.isEmpty(canBoRequest.getCoSoId())) {
             throw new RestApiException(Message.ID_FACILITIES_EMPTY);
         }
-        if (ObjectUtils.isEmpty(canBoRequest.getVaiTroId())) {
-            throw new RestApiException(Message.ID_ROLE_EMPTY);
-        }
 
         if (!canBoRequest.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
             throw new RestApiException(Message.PHONE_NUMBER_FORMAT);

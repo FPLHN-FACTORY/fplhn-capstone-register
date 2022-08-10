@@ -12,9 +12,11 @@ import java.util.UUID;
 @Getter
 @Setter
 public abstract class BaseChuyenNganhRequest {
+
     private String tenChuyenNganh;
 
     private String chuyenNganhMeId;
 
     private UUID coSoId;
+
 }

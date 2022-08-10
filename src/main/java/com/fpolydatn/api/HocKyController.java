@@ -1,7 +1,8 @@
 package com.fpolydatn.api;
 
 import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.infrastructure.request.HocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
 import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class HocKyController {
 
     @PutMapping(value = "/add")
     @ResponseBody
-    public ResponseObject addHocKy(Model model, @RequestBody HocKyRequest hocKyRequest) {
+    public ResponseObject addHocKy(Model model, @RequestBody CreateHocKyRequest hocKyRequest) {
         HocKy hocKy = null;
         try {
             hocKy = hocKyService.addNew(hocKyRequest);
@@ -69,7 +70,7 @@ public class HocKyController {
 
     @PostMapping("/update/{id}")
     @ResponseBody
-    public ResponseObject updateHocKy(Model model, @PathVariable("id") UUID id, @RequestBody HocKyRequest hocKyRequest) {
+    public ResponseObject updateHocKy(Model model, @PathVariable("id") UUID id, @RequestBody UpdateHocKyRequest hocKyRequest) {
         HocKy hocKy = null;
         try {
             hocKy = hocKyService.update(id, hocKyRequest);

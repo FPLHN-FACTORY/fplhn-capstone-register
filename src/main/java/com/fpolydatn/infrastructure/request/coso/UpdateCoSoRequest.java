@@ -13,4 +13,5 @@ import java.util.UUID;
 public class UpdateCoSoRequest extends BaseCoSoRequest {
 
     private UUID id;
+
 }

@@ -8,7 +8,6 @@ import java.util.UUID;
 /**
  * @author phongtt35
  */
-
 @Getter
 @Setter
 public abstract class BaseDotDangKyRequest {
@@ -22,4 +21,5 @@ public abstract class BaseDotDangKyRequest {
     private UUID hocKyId;
 
     private UUID coSoId;
+
 }

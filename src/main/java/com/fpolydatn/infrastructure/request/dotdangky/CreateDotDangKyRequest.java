@@ -8,7 +8,6 @@ import java.util.UUID;
 /**
  * @author thepvph20110
  */
-
 @Getter
 @Setter
 public class CreateDotDangKyRequest extends BaseDotDangKyRequest {

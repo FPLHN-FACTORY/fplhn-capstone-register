@@ -1,4 +1,4 @@
-package com.fpolydatn.infrastructure.request;
+package com.fpolydatn.infrastructure.request.hocky;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @Getter
 @Setter
-public class HocKyRequest {
+public abstract class BaseHocKyRequest {
 
     @NotNull(message = "Ten Hoc Ky Chua Khoang Trang")
     @NotEmpty(message = "Ten Hoc Ky Trong")

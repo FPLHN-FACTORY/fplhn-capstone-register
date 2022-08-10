@@ -6,10 +6,10 @@ import lombok.Setter;
 /**
  * @author phongtt35
  */
-
 @Getter
 @Setter
 public abstract class BaseCoSoRequest {
 
     private String tenCoSo;
+
 }

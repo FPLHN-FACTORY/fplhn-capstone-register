@@ -2,7 +2,8 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.request.HocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
+import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
 import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.repository.HocKyRepository;
 import com.fpolydatn.service.HocKyService;
@@ -34,7 +35,7 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public HocKy addNew(@Valid HocKyRequest hocKyRequest) {
+    public HocKy addNew(@Valid CreateHocKyRequest hocKyRequest) {
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequest);
         return hocKyRepository.save(hocKy);
     }
@@ -53,7 +54,7 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public HocKy update(UUID id, @Valid HocKyRequest request) {
+    public HocKy update(UUID id, UpdateHocKyRequest request) {
         if (ObjectUtils.isEmpty(request.getTenHocKy())) {
             throw new RestApiException(Message.TEN_HOC_KY_EMPTY);
         }

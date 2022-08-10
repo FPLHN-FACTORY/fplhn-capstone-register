@@ -13,4 +13,5 @@ import java.util.UUID;
 public class UpdateCanBoRequest extends BaseCanBoRequest {
 
     private UUID id;
+
 }

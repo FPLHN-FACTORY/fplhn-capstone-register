@@ -27,4 +27,5 @@ public abstract class BaseCanBoRequest {
     private UUID coSoId;
 
     private VaiTro vaiTro;
+
 }
