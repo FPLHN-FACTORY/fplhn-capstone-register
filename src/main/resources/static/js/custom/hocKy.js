@@ -1,3 +1,6 @@
+const hocKyApi = '/api/admin/hoc-ky';
+const hocKyView = '/admin/hoc-ky';
+
 $(document).ready(function () {
     $("#hoc_ky_error").text("");
 });
@@ -18,13 +21,13 @@ $("#form_create_hoc_ky").submit(function (event) {
         $("#hoc_ky_error").text("Tên học kỳ tối thiếu 6 ký tự");
     } else {
         $.ajax({
-            type: "PUT",
+            type: "POST",
             contentType: "application/json",
-            url: "/hoc-ky/add",
+            url: hocKyApi,
             data: JSON.stringify(hocKyRequest),
             dataType: 'json',
             success: function () {
-                window.open("/hoc-ky/list", '_self');
+                window.open(hocKyView, '_self');
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
@@ -39,7 +42,7 @@ function openModalUpdateHocKy(hocKyId) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/hoc-ky/detail?id=" + hocKyId,
+        url: hocKyApi + "/" + hocKyId,
         data: JSON.stringify(hocKyId),
         dataType: 'json',
         success: function (responseData) {
@@ -64,13 +67,13 @@ $("#form_hoc_ky_update").submit(function (event) {
         $("#errorMessageUpdate").text("Tên học kỳ tối thiếu 6 ký tự");
     } else {
         $.ajax({
-            type: "POST",
+            type: "PUT",
             contentType: "application/json",
-            url: "/hoc-ky/update/" + hocKyId,
+            url: hocKyApi + "/" + hocKyId,
             data: JSON.stringify(hocKyRequest),
             dataType: 'json',
             success: function () {
-                window.open("/hoc-ky/list", '_self');
+                window.open(hocKyView, '_self');
                 $("#modal_update_hoc_ky").modal("hide");
             },
             error: function (e) {
@@ -85,7 +88,7 @@ function openModalRemoveHocKy(hocKyId) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/hoc-ky/detail?id=" + hocKyId,
+        url: hocKyApi + "/" + hocKyId,
         data: JSON.stringify(hocKyId),
         dataType: 'json',
         success: function () {
@@ -104,11 +107,11 @@ $("#form_hoc_ky_delete").submit(function (event) {
     $.ajax({
         type: "DELETE",
         contentType: "application/json",
-        url: "/hoc-ky/remove/" + hocKyId,
+        url: hocKyApi + "/" + hocKyId,
         data: JSON.stringify(hocKyId),
         dataType: 'json',
         success: function () {
-            window.open("/hoc-ky/list", '_self');
+            window.open(hocKyView, '_self');
             $("#modal_update_hoc_ky").modal("hide");
         },
         error: function (e) {
