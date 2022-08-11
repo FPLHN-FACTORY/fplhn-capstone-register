@@ -22,10 +22,11 @@ import java.util.UUID;
 @Entity
 public class MonDatn extends MultiTenantEntity implements Serializable {
 
+    @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
+    private String maMon;
     @Column(length = EntityProperties.LENGTH_NAME, nullable = false)
     @Nationalized
     private String tenMonDatn;
-
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     @Type(type = EntityProperties.TYPE_ID)
     private UUID chuyenNganhId;
