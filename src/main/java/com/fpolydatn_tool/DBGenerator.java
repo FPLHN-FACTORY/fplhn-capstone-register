@@ -1,7 +1,6 @@
-package com.fpolydatn;
+package com.fpolydatn_tool;
 
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
-import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.model.domain.CanBo;
 import com.fpolydatn.model.domain.ChuyenNganh;
@@ -30,9 +29,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.web.context.support.GenericWebApplicationContext;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -42,8 +43,13 @@ import java.util.Properties;
  */
 
 @SpringBootApplication
+@EnableJpaRepositories(
+        basePackages = "com.fpolydatn.repository"
+)
 public class DBGenerator implements CommandLineRunner {
 
+    @Autowired
+    private GenericWebApplicationContext context;
     @Autowired
     private CoSoRepository coSoRepository;
     @Autowired
@@ -242,26 +248,4 @@ public class DBGenerator implements CommandLineRunner {
         ctx.close();
     }
 
-}
-
-@Configuration
-class DBConfig {
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource);
-        em.setPackagesToScan(new String[] { "com.fpolydatn" });
-
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create");
-        properties.setProperty("hibernate.physical_naming_strategy",
-                "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
-        properties.setProperty("hibernate.show_sql", "true");
-        em.setJpaProperties(properties);
-
-        return em;
-    }
 }
