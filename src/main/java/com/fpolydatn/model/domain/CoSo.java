@@ -20,6 +20,9 @@ import java.io.Serializable;
 @Entity
 public class CoSo extends PrimaryEntity implements Serializable {
 
+    @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
+    private String maCoSo;
+
     @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
     @Nationalized
     private String tenCoSo;

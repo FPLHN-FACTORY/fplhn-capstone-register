@@ -22,7 +22,7 @@ import java.util.UUID;
 @Table
 @Entity
 @IdClass(PhanCongHuongDanId.class)
-public class PhanCongHuongDan extends AuditEntity implements Serializable {
+public class PhanCongHuongDan implements Serializable {
 
     @Id
     @Column(length = EntityProperties.LENGTH_ID)
