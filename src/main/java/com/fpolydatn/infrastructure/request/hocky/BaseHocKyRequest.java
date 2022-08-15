@@ -16,8 +16,8 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public abstract class BaseHocKyRequest {
 
-    @NotEmpty
-    @NotBlank
+    @NotEmpty()
+    @NotBlank()
     @Min(6)
     private String tenHocKy;
 

@@ -6,7 +6,9 @@ import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
 import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 /**
@@ -30,7 +33,7 @@ public class HocKyRestController {
     private HocKyService hocKyService;
 
     @PostMapping
-    public ResponseObject addHocKy(Model model, @RequestBody CreateHocKyRequest hocKyRequest) {
+    public ResponseObject addHocKy(Model model, @Valid @RequestBody CreateHocKyRequest hocKyRequest) {
         HocKy hocKy = null;
         try {
             hocKy = hocKyService.addNew(hocKyRequest);
@@ -53,7 +56,7 @@ public class HocKyRestController {
 
     @PutMapping("/{id}")
     public ResponseObject updateHocKy(Model model, @PathVariable("id") UUID id,
-                                      @RequestBody UpdateHocKyRequest hocKyRequest) {
+                                      @Valid @RequestBody UpdateHocKyRequest hocKyRequest) {
         HocKy hocKy = null;
         try {
             hocKy = hocKyService.update(id, hocKyRequest);

@@ -35,7 +35,7 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public HocKy addNew(@Valid CreateHocKyRequest hocKyRequest) {
+    public HocKy addNew(CreateHocKyRequest hocKyRequest) {
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequest);
         return hocKyRepository.save(hocKy);
     }
