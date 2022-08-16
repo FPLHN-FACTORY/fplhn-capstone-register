@@ -40,8 +40,8 @@ public class CoSoServiceImpl implements CoSoService {
     }
 
     @Override
-    public List<CoSo> getListCoSo(int offset, int size) {
-        return coSoRepository.getListCoSo(offset, size);
+    public List<CoSo> getListCoSo() {
+        return coSoRepository.getListCoSo();
     }
 
     @Override

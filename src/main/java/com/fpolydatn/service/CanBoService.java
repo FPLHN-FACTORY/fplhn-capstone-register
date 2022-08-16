@@ -2,6 +2,7 @@ package com.fpolydatn.service;
 
 import com.fpolydatn.infrastructure.request.canbo.CreateCanBoRequest;
 import com.fpolydatn.infrastructure.request.canbo.UpdateCanBoRequest;
+import com.fpolydatn.infrastructure.response.CanBoResponse;
 import com.fpolydatn.model.domain.CanBo;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface CanBoService {
     CanBo findById(UUID id);
 
     CanBo update(UUID id, UpdateCanBoRequest canBoRequest);
+
+    CanBoResponse findCanBoBYEmailAndCoSo(String coSoID, String email);
 
 }

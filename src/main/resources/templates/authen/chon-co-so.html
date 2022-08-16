@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8"/>
+
+    <title>FPT Polytechnic</title>
+    <meta name="description" content="Login page example">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--begin::Page Custom Styles(used by this page) -->
+    <link href="https://gv.poly.edu.vn/theme/admin_v1/css/demo1/pages/login/login-3.css" rel="stylesheet"
+          type="text/css"/>
+    <!--end::Page Custom Styles -->
+
+    <!--begin::Global Theme Styles(used by all pages) -->
+    <link href="https://gv.poly.edu.vn/theme/admin_v1/vendors/global/vendors.bundle.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://gv.poly.edu.vn/theme/admin_v1/css/demo1/style.bundle.css" rel="stylesheet" type="text/css"/>
+    <!--end::Global Theme Styles -->
+    <link href="https://gv.poly.edu.vn/css/web.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://gv.poly.edu.vn/images/favicon.ico"/>
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
+</head>
+<!-- end::Head -->
+
+<!-- begin::Body -->
+<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+
+<!-- begin:: Page -->
+<div class="kt-grid kt-grid--ver kt-grid--root">
+    <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v3 kt-login--signin" id="kt_login">
+        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor"
+             style="background-image: url(https://gv.poly.edu.vn/theme/admin_v1/media//bg/bg-3.jpg);">
+            <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
+
+
+                <div class="kt-login__container">
+                    <div class="kt-login__logo" style="margin: 0 auto">
+                        <a href="#">
+                            <img alt="Logo" src="https://gv.poly.edu.vn/images/logo.png" width="200"/>
+                        </a>
+                    </div>
+                    <div class="kt-login__signin">
+                        <div class="kt-login__head" style="margin-bottom: 0">
+                        </div>
+                        <form class="kt-form" id="form-chon-co-so" method="post">
+                            <input type="hidden" name="_token" value="UwetQJLrHz3NM9BhafwCLd2gRcOScRjk2k76jUP2">
+                            <div class="input-group">
+                                <select class="form-control" name="campus_id" id="campus_id">
+                                    <option value="">Lựa chọn cơ sở</option>
+                                    <th:block th:each="coSo,i : ${listCoSo}">
+                                        <option th:value="${coSo.id}" th:text="${coSo.tenCoSo}"></option>
+                                    </th:block>
+                                </select>
+                            </div>
+                            <div th:if="${errorMessage}" th:utext="${errorMessage}" id="error" class="error" style="font-size: 0.9rem;
+    padding-left: 1.6rem;">
+                            </div>
+                            <div class="kt-login__divider" style="margin: 15px 0">
+                                <div class="kt-divider">
+                                    <span></span>
+                                    <span>SOCIAL</span>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="kt-login__options text-center">
+                                <button type="button" id="btn_login_google" class="btn btn-danger kt-btn btn-block">
+                                    Google
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://gv.poly.edu.vn/theme/admin_v1/vendors/global/vendors.bundle.js" type="text/javascript"></script>
+<script src="https://gv.poly.edu.vn/theme/admin_v1/js/demo1/scripts.bundle.js" type="text/javascript"></script>
+<script>
+    $('#btn_login_google').click(function (e) {
+        let r = $(this).closest("form");
+        let coSoSelected = $("#campus_id option:selected").val();
+        r.validate({
+            rules: {
+                campus_id: {required: !0,},
+            },
+            messages: {
+                campus_id: {required: 'Bạn chưa chọn cơ sở',},
+            },
+        });
+        r.valid() && (location.href = '/oauth2/authorization?coSoID=' + coSoSelected);
+    });
+</script>
+</body>
+</html>
