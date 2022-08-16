@@ -1,5 +1,6 @@
 package com.fpolydatn.service;
 
+import com.fpolydatn.infrastructure.interactor.admin.SearchHocKyInteractor;
 import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
 import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
 import com.fpolydatn.model.domain.HocKy;
@@ -22,6 +23,6 @@ public interface HocKyService {
 
     long getSizeListHocKy(String tenHocKy);
 
-    List<HocKy> searchHocKy(String tenHocKy, int offset, int size);
+    List<HocKy> search(SearchHocKyInteractor interactor);
 
 }

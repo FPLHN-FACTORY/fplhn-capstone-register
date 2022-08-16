@@ -6,7 +6,7 @@ $(document).ready(function () {
 });
 
 function clearData() {
-    $("#keyword").val("");
+    $("#ten-hoc-ky").val("");
 }
 
 $("#form_create_hoc_ky").submit(function (event) {

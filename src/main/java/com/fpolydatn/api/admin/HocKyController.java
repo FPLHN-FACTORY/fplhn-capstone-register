@@ -1,13 +1,16 @@
 package com.fpolydatn.api.admin;
 
+import com.fpolydatn.infrastructure.interactor.admin.SearchHocKyInteractor;
 import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.service.HocKyService;
+import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -22,17 +25,15 @@ public class HocKyController {
     private HocKyService hocKyService;
 
     @GetMapping
-    public String viewHocKy(Model model,
-                            @RequestParam(value = "page", defaultValue = "0") int page,
-                            @RequestParam(value = "size", defaultValue = "5") int size,
-                            @RequestParam(value = "keyword", defaultValue = "") String tenHocKy) {
-        int offset = size * page;
-        Long count = hocKyService.getSizeListHocKy(tenHocKy);
-        Long sizePaging = (count % size == 0 ? (count / size) : (count / size + 1));
-        List<HocKy> listHocKy = hocKyService.searchHocKy(tenHocKy, offset, size);
+    public String viewHocKy(Model model, FindHocKyRequest request) {
+        Long totalRecords = hocKyService.getSizeListHocKy(request.getTenHocKy());
+        long sizePaging = PaginationUtil.calculateTotalPages(totalRecords, request.getSize());
+        SearchHocKyInteractor interactor = FormUtils.convert(SearchHocKyInteractor.class, request);
+
+        List<HocKy> listHocKy = hocKyService.search(interactor);
         model.addAttribute("listHocKy", listHocKy);
         model.addAttribute("numberPaging", sizePaging);
-        model.addAttribute("number", offset);
+        model.addAttribute("number", interactor.getOffset());
         return "admin/hoc_ky";
     }
 
