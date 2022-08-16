@@ -34,7 +34,7 @@ public class HocKyController {
         model.addAttribute("listHocKy", listHocKy);
         model.addAttribute("numberPaging", sizePaging);
         model.addAttribute("number", interactor.getOffset());
-        return "admin/hoc_ky";
+        return "admin/hoc-ky";
     }
 
 }
