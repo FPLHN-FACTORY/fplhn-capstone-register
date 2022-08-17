@@ -4,7 +4,6 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.request.canbo.CreateCanBoRequest;
 import com.fpolydatn.infrastructure.request.canbo.UpdateCanBoRequest;
-import com.fpolydatn.infrastructure.response.CanBoResponse;
 import com.fpolydatn.model.domain.CanBo;
 import com.fpolydatn.model.domain.CoSo;
 import com.fpolydatn.repository.CanBoRepository;
@@ -75,8 +74,8 @@ public class CanBoServiceImpl implements CanBoService {
     }
 
     @Override
-    public CanBoResponse findCanBoBYEmailAndCoSo(String coSoID, String email) {
-        CanBoResponse canBo = canBoRepository.findCanBoByEmailAndCoSo(coSoID, email);
+    public CanBo findCanBoBYEmailAndCoSo(String coSoID, String email) {
+        CanBo canBo = canBoRepository.findCanBoByEmailAndCoSo(coSoID, email);
         if (Objects.isNull(canBo)) {
             throw new RestApiException(Message.TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG);
         }

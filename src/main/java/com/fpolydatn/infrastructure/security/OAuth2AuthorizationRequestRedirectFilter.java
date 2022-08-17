@@ -19,8 +19,8 @@ public class OAuth2AuthorizationRequestRedirectFilter extends OncePerRequestFilt
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(Objects.isNull(authentication)){
-
+        if (Objects.isNull(authentication)) {
+            response.sendRedirect("/index");
         }
     }
 

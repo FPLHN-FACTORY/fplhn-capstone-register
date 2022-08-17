@@ -1,6 +1,5 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.infrastructure.response.SinhVienResponse;
 import com.fpolydatn.model.domain.SinhVien;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,9 +14,10 @@ import java.util.UUID;
 @Repository
 public interface SinhVienRepository extends JpaRepository<SinhVien, UUID> {
 
-    @Query(value = "SELECT sv.id,sv.email,sv.ten_sinh_vien,cs.ten_co_so FROM sinh_vien sv INNER JOIN co_so cs " +
-            "ON sv.co_so_id = cs.id " +
-            "WHERE sv.email =:emailFPT AND cs.id = :coSoId", nativeQuery = true)
-    SinhVienResponse findSinhVienByEmailAndCoSo(@Param("coSoId") String id, @Param("emailFPT") String emailFPT);
+    @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, chuyen_nganh_id, dot_dang_ky_id, email, " +
+            "  khoa, ma_sinh_vien, mon_datn_id, nhom_id, so_dien_thoai, ten_sinh_vien, trang_thai FROM sinh_vien sv " +
+            "   WHERE sv.email =:emailFPT " +
+            "  AND sv.co_so_id = :coSoId", nativeQuery = true)
+    SinhVien findSinhVienByEmailAndCoSo(@Param("coSoId") String id, @Param("emailFPT") String emailFPT);
 
 }

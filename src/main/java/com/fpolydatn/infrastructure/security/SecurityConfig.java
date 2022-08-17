@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 /**
  * @author HangNT
@@ -15,9 +16,6 @@ import javax.servlet.http.HttpSession;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private CustomOAuth2UserService oauthUserService;
 
     @Autowired
     private UserService userService;
@@ -29,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/", "/index", "/gv-chon-co-so", "/cb-chon-co-so", "/sv-chon-co-so", "/check-authen", "/login-co-so", "/test", "/login-co-so-check")
+                .antMatchers("/", "/login-co-so", "/gv-chon-co-so", "/cb-chon-co-so", "/sv-chon-co-so")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -37,8 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2Login()
                 .successHandler((request, response, authentication) -> {
                     DefaultOidcUser oauthUser = (DefaultOidcUser) authentication.getPrincipal();
+                    String role = (String) session.getAttribute("role");
                     String coSoID = (String) session.getAttribute("coSoIDSelected");
-                    userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail());
+                    if (Objects.isNull(role) || Objects.isNull(coSoID)) {
+                        response.sendRedirect("/");
+                    } else {
+                        userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), role);
+                    }
                 })
                 .failureHandler((request, response, exception) -> {
 

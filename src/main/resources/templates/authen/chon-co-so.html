@@ -87,7 +87,7 @@
             data: JSON.stringify(coSoSelected),
             dataType: 'json',
             success: function () {
-                window.open("/login-co-so-check", '_self');
+                window.open("/oauth2/authorization/google", '_self');
             },
             error: function (e) {
                 console.log("ERROR : ", e);
