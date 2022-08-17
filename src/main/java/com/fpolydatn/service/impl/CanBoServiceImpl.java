@@ -2,10 +2,10 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.request.canbo.CreateCanBoRequest;
-import com.fpolydatn.infrastructure.request.canbo.UpdateCanBoRequest;
-import com.fpolydatn.model.domain.CanBo;
-import com.fpolydatn.model.domain.CoSo;
+import com.fpolydatn.infrastructure.command.canbo.CreateCanBoCommand;
+import com.fpolydatn.infrastructure.command.canbo.UpdateCanBoCommand;
+import com.fpolydatn.model.entity.CanBoEntity;
+import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.repository.CanBoRepository;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.service.CanBoService;
@@ -34,23 +34,23 @@ public class CanBoServiceImpl implements CanBoService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public List<CanBo> getList(int offset, int size) {
+    public List<CanBoEntity> getList(int offset, int size) {
         return canBoRepository.getListCanBo(offset, size);
     }
 
     @Override
-    public CanBo addNew(@Valid CreateCanBoRequest canBoRequest) {
-        Optional<CoSo> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
+    public CanBoEntity addNew(@Valid CreateCanBoCommand canBoRequest) {
+        Optional<CoSoEntity> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
 
-        CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
-        return canBoRepository.save(canBo);
+        CanBoEntity canBoEntity = formUtils.convertToObject(CanBoEntity.class, canBoRequest);
+        return canBoRepository.save(canBoEntity);
     }
 
-    public CanBo findById(UUID canBoId) {
-        Optional<CanBo> canBo = canBoRepository.findById(canBoId);
+    public CanBoEntity findById(UUID canBoId) {
+        Optional<CanBoEntity> canBo = canBoRepository.findById(canBoId);
         if (Objects.isNull(canBo)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
@@ -58,18 +58,18 @@ public class CanBoServiceImpl implements CanBoService {
     }
 
     @Override
-    public CanBo update(UUID id, @Valid UpdateCanBoRequest canBoRequest) {
-        Optional<CanBo> canBo = canBoRepository.findById(id);
+    public CanBoEntity update(UUID id, @Valid UpdateCanBoCommand canBoRequest) {
+        Optional<CanBoEntity> canBo = canBoRepository.findById(id);
         if (Objects.isNull(canBo)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
-        Optional<CoSo> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
+        Optional<CoSoEntity> coSo = coSoRepository.findById(canBoRequest.getCoSoId());
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
 
-        CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
-        updateCanBo.setId(id);
-        return canBoRepository.save(updateCanBo);
+        CanBoEntity updateCanBoEntity = formUtils.convertToObject(CanBoEntity.class, canBoRequest);
+        updateCanBoEntity.setId(id);
+        return canBoRepository.save(updateCanBoEntity);
     }
 }

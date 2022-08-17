@@ -1,6 +1,6 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.model.domain.CanBo;
+import com.fpolydatn.model.entity.CanBoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +11,7 @@ import java.util.UUID;
 /**
  * @author nguyenvv4
  */
-public interface CanBoRepository extends JpaRepository<CanBo, UUID> {
+public interface CanBoRepository extends JpaRepository<CanBoEntity, UUID> {
 
     @Query(value = "SELECT id , " +
             " co_so_id , " +
@@ -22,6 +22,6 @@ public interface CanBoRepository extends JpaRepository<CanBo, UUID> {
             " ten_tai_khoan ," +
             " vai_tro_id  " +
             " FROM can_bo cb limit :size offset :offset", nativeQuery = true)
-    List<CanBo> getListCanBo(@Param("offset") int offset, @Param("size") int size);
+    List<CanBoEntity> getListCanBo(@Param("offset") int offset, @Param("size") int size);
 
 }

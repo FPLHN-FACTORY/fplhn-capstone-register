@@ -1,8 +1,8 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.request.canbo.CreateCanBoRequest;
-import com.fpolydatn.infrastructure.request.canbo.UpdateCanBoRequest;
-import com.fpolydatn.model.domain.CanBo;
+import com.fpolydatn.infrastructure.command.canbo.CreateCanBoCommand;
+import com.fpolydatn.infrastructure.command.canbo.UpdateCanBoCommand;
+import com.fpolydatn.model.entity.CanBoEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,12 +12,12 @@ import java.util.UUID;
  */
 public interface CanBoService {
 
-    List<CanBo> getList(int offset, int size);
+    List<CanBoEntity> getList(int offset, int size);
 
-    CanBo addNew(CreateCanBoRequest canBo);
+    CanBoEntity addNew(CreateCanBoCommand canBo);
 
-    CanBo findById(UUID id);
+    CanBoEntity findById(UUID id);
 
-    CanBo update(UUID id, UpdateCanBoRequest canBoRequest);
+    CanBoEntity update(UUID id, UpdateCanBoCommand canBoRequest);
 
 }

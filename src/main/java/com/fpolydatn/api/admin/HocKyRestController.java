@@ -1,12 +1,12 @@
 package com.fpolydatn.api.admin;
 
+import com.fpolydatn.api.base.BaseController;
 import com.fpolydatn.api.base.ResponseObject;
 import com.fpolydatn.infrastructure.command.hocky.CreateHocKyCommand;
 import com.fpolydatn.infrastructure.command.hocky.UpdateHocKyCommand;
-import com.fpolydatn.model.domain.HocKy;
+import com.fpolydatn.model.entity.HocKyEntity;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,47 +25,48 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/admin/hoc-ky")
-public final class HocKyRestController {
+public final class HocKyRestController extends BaseController {
 
     @Autowired
     private HocKyService hocKyService;
 
     @PostMapping
-    public ResponseObject addHocKy(@Valid @RequestBody CreateHocKyCommand hocKyRequest) {
-        HocKy hocKy = null;
+    public ResponseObject add(@RequestBody CreateHocKyCommand hocKyRequest) {
+        HocKyEntity hocKyEntity = null;
         try {
-            hocKy = hocKyService.create(hocKyRequest);
+            hocKyEntity = hocKyService.create(hocKyRequest);
         } catch (Exception ex) {
             // Ghi log
+            System.out.println(ex.getMessage());
         }
-        return new ResponseObject(hocKy);
+        return new ResponseObject(hocKyEntity);
     }
 
     @GetMapping("/{id}")
-    public ResponseObject detailHocKy(@PathVariable("id") UUID uuid) {
-        HocKy hocKy = null;
+    public ResponseObject detail(@PathVariable("id") UUID uuid) {
+        HocKyEntity hocKyEntity = null;
         try {
             System.out.println(uuid);
-            hocKy = hocKyService.findById(uuid);
+            hocKyEntity = hocKyService.findById(uuid);
         } catch (Exception ex) {
             // Ghi log
         }
-        return new ResponseObject(hocKy);
+        return new ResponseObject(hocKyEntity);
     }
 
     @PutMapping("/{id}")
-    public ResponseObject updateHocKy(@Valid @RequestBody UpdateHocKyCommand cmd) {
-        HocKy hocKy = null;
+    public ResponseObject update(@RequestBody UpdateHocKyCommand cmd) {
+        HocKyEntity hocKyEntity = null;
         try {
-            hocKy = hocKyService.update(cmd.getId(), cmd);
+            hocKyEntity = hocKyService.update(cmd);
         } catch (Exception ex) {
             // Ghi log
         }
-        return new ResponseObject(hocKy);
+        return new ResponseObject(hocKyEntity);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseObject deleteHocKy(@PathVariable("id") UUID id) {
+    public ResponseObject delete(@PathVariable("id") UUID id) {
         Boolean remove = false;
         try {
             remove = hocKyService.delete(id);

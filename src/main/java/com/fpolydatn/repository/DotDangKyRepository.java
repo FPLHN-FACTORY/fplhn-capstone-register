@@ -1,6 +1,6 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.model.domain.DotDangKy;
+import com.fpolydatn.model.entity.DotDangKyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,11 +11,11 @@ import java.util.UUID;
 /**
  * @author tamh
  */
-public interface DotDangKyRepository extends JpaRepository<DotDangKy, UUID> {
+public interface DotDangKyRepository extends JpaRepository<DotDangKyEntity, UUID> {
 
     @Query(value = "SELECT id, co_so_id, hoc_ky_id, ngay_bat_dau," +
             " ngay_ket_thuc,ten_dot_dang_ky,co_so_id FROM dot_dang_ky " +
             " WHERE co_so_id = :coSoId LIMIT :size OFFSET :offset", nativeQuery = true)
-    List<DotDangKy> getListDotDangKy(@Param("coSoId") String coSoId, @Param("offset") int offset, @Param("size") int size);
+    List<DotDangKyEntity> getListDotDangKy(@Param("coSoId") String coSoId, @Param("offset") int offset, @Param("size") int size);
 
 }

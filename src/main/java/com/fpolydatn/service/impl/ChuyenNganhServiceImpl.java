@@ -2,9 +2,9 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.request.chuyennganh.CreateChuyenNganhRequest;
-import com.fpolydatn.infrastructure.response.ChuyenNganhResponse;
+import com.fpolydatn.infrastructure.command.chuyennganh.CreateChuyenNganhCommand;
 import com.fpolydatn.model.domain.ChuyenNganh;
+import com.fpolydatn.model.entity.ChuyenNganhEntity;
 import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.service.ChuyenNganhService;
 import com.fpolydatn.util.FormUtils;
@@ -25,14 +25,14 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
 
     private FormUtils formUtils = new FormUtils();
 
-    public ChuyenNganh insert(@Valid CreateChuyenNganhRequest createChuyenNganhRequest){
-        ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class,createChuyenNganhRequest);
-        return chuyenNganhRepository.save(chuyenNganh);
+    public ChuyenNganhEntity insert(@Valid CreateChuyenNganhCommand createChuyenNganhRequest){
+        ChuyenNganhEntity chuyenNganhEntity = formUtils.convertToObject(ChuyenNganhEntity.class,createChuyenNganhRequest);
+        return chuyenNganhRepository.save(chuyenNganhEntity);
     }
 
     @Override
-    public ChuyenNganh search(UUID id) {
-        Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(id);
+    public ChuyenNganhEntity search(UUID id) {
+        Optional<ChuyenNganhEntity> chuyenNganh = chuyenNganhRepository.findById(id);
         if(Objects.isNull(chuyenNganh)) {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
@@ -40,7 +40,7 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
     }
 
     @Override
-    public List<ChuyenNganhResponse> getListChuyenNganhCustom() {
+    public List<ChuyenNganh> getListChuyenNganhCustom() {
         return chuyenNganhRepository.getListChuyenNganhCustom();
     }
 

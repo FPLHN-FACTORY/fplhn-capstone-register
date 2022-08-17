@@ -1,6 +1,6 @@
 package com.fpolydatn.api.base;
 
-import com.fpolydatn.infrastructure.mapper.IObjectMapper;
+import com.fpolydatn.infrastructure.mapper.FpolyDatnMapper;
 import com.fpolydatn.infrastructure.session.IFpolyDatnSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,5 +13,5 @@ public abstract class BaseController {
     protected IFpolyDatnSession session;
 
     @Autowired
-    protected IObjectMapper mapper;
+    protected FpolyDatnMapper mapper;
 }

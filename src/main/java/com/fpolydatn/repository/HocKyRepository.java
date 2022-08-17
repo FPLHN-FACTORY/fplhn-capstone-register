@@ -1,36 +1,43 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.infrastructure.query.HocKyQuery;
+import com.fpolydatn.infrastructure.query.hocky.HocKyQuery;
 import com.fpolydatn.model.domain.HocKy;
+import com.fpolydatn.model.entity.HocKyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
  * @author vinhnv
  */
 @Repository
-public interface HocKyRepository extends JpaRepository<HocKy, UUID> {
+public interface HocKyRepository extends JpaRepository<HocKyEntity, UUID> {
 
     @Query(value = """
-        SELECT id, ten_hoc_ky,created_date,last_modified_date 
+        SELECT id, ten_hoc_ky, last_modified_date 
             FROM hoc_ky hk 
             WHERE 
-                ( :#{#request.tenHocKy} IS NULL 
-                    OR :#{#request.tenHocKy} LIKE '' 
-                    OR ten_hoc_ky LIKE %:#{#request.tenHocKy}% ) 
+                ( :#{#query.tenHocKy} IS NULL 
+                    OR :#{#query.tenHocKy} LIKE '' 
+                    OR ten_hoc_ky LIKE %:#{#query.tenHocKy}% ) 
             ORDER BY last_modified_date DESC 
-            LIMIT :#{#request.limit} OFFSET :#{#request.offset}
+            LIMIT :#{#query.limit} OFFSET :#{#query.offset}
         """, nativeQuery = true)
-    List<HocKy> findByName(@Param("request") HocKyQuery request);
+    List<HocKy> findByName(@Param("query") HocKyQuery query);
 
     @Query(value = """
         SELECT COUNT(1) FROM hoc_ky hk WHERE ten_hoc_ky LIKE %:tenHocKy%
         """, nativeQuery = true)
     Long countByName(@Param("tenHocKy") String tenHocKy);
 
+    @Query(value = """
+            SELECT * FROM hoc_ky 
+            WHERE id = :id
+            """, nativeQuery = true)
+    HocKyEntity findByIdHIHI(@Param("id") String id);
 }

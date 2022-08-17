@@ -1,7 +1,7 @@
 package com.fpolydatn.service;
-import com.fpolydatn.infrastructure.request.coso.CreateCoSoRequest;
-import com.fpolydatn.infrastructure.request.coso.UpdateCoSoRequest;
-import com.fpolydatn.model.domain.CoSo;
+import com.fpolydatn.infrastructure.command.coso.CreateCoSoCommand;
+import com.fpolydatn.infrastructure.command.coso.UpdateCoSoCommand;
+import com.fpolydatn.model.entity.CoSoEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,14 +11,14 @@ import java.util.UUID;
  */
 public interface CoSoService {
 
-    List<CoSo> getListCoSo(int offset, int size);
+    List<CoSoEntity> getListCoSo(int offset, int size);
 
-    CoSo deleteCoSo(UUID id);
+    CoSoEntity deleteCoSo(UUID id);
 
-    CoSo addNew(CreateCoSoRequest canBo);
+    CoSoEntity addNew(CreateCoSoCommand canBo);
 
-    CoSo update(UUID id, UpdateCoSoRequest coSo);
+    CoSoEntity update(UUID id, UpdateCoSoCommand coSo);
 
-    CoSo findById(UUID id);
+    CoSoEntity findById(UUID id);
 
 }

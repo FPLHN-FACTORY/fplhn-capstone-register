@@ -1,7 +1,7 @@
 package com.fpolydatn.api.daotao;
 
 import com.fpolydatn.api.base.ResponseObject;
-import com.fpolydatn.infrastructure.response.ChuyenNganhResponse;
+import com.fpolydatn.model.domain.ChuyenNganh;
 import com.fpolydatn.service.ChuyenNganhService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class ChuyenNganhRestController {
 
     @GetMapping
     public ResponseObject getListCoSo() {
-        List<ChuyenNganhResponse> list = chuyenNganhService.getListChuyenNganhCustom();
+        List<ChuyenNganh> list = chuyenNganhService.getListChuyenNganhCustom();
         return new ResponseObject(list);
     }
 }

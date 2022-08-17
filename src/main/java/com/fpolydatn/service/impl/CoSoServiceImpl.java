@@ -2,9 +2,9 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.request.coso.CreateCoSoRequest;
-import com.fpolydatn.infrastructure.request.coso.UpdateCoSoRequest;
-import com.fpolydatn.model.domain.CoSo;
+import com.fpolydatn.infrastructure.command.coso.CreateCoSoCommand;
+import com.fpolydatn.infrastructure.command.coso.UpdateCoSoCommand;
+import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.service.CoSoService;
 import com.fpolydatn.util.FormUtils;
@@ -30,23 +30,23 @@ public class CoSoServiceImpl implements CoSoService {
 
 
     @Override
-    public CoSo findById(UUID id) {
-        CoSo coSo = new CoSo();
-        Optional<CoSo> optionalCoSo = coSoRepository.findById(id);
+    public CoSoEntity findById(UUID id) {
+        CoSoEntity coSoEntity = new CoSoEntity();
+        Optional<CoSoEntity> optionalCoSo = coSoRepository.findById(id);
         if (optionalCoSo.isPresent()) {
-            coSo = optionalCoSo.get();
+            coSoEntity = optionalCoSo.get();
         }
-        return coSo;
+        return coSoEntity;
     }
 
     @Override
-    public List<CoSo> getListCoSo(int offset, int size) {
+    public List<CoSoEntity> getListCoSo(int offset, int size) {
         return coSoRepository.getListCoSo(offset, size);
     }
 
     @Override
-    public CoSo deleteCoSo(UUID id) {
-        Optional<CoSo> coSo = coSoRepository.findById(id);
+    public CoSoEntity deleteCoSo(UUID id) {
+        Optional<CoSoEntity> coSo = coSoRepository.findById(id);
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
@@ -55,20 +55,20 @@ public class CoSoServiceImpl implements CoSoService {
     }
 
     @Override
-    public CoSo addNew(@Valid CreateCoSoRequest createCoSoRequest) {
-        CoSo coSo = formUtils.convertToObject(CoSo.class, createCoSoRequest);
-        return coSoRepository.save(coSo);
+    public CoSoEntity addNew(@Valid CreateCoSoCommand createCoSoRequest) {
+        CoSoEntity coSoEntity = formUtils.convertToObject(CoSoEntity.class, createCoSoRequest);
+        return coSoRepository.save(coSoEntity);
     }
 
     @Override
-    public CoSo update(UUID id, @Valid UpdateCoSoRequest coSoRequest) {
-        Optional<CoSo>searchCoSo = coSoRepository.findById(id);
+    public CoSoEntity update(UUID id, @Valid UpdateCoSoCommand coSoRequest) {
+        Optional<CoSoEntity>searchCoSo = coSoRepository.findById(id);
         if(Objects.isNull(searchCoSo)){
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
-        CoSo coSo = formUtils.convertToObject(CoSo.class, coSoRequest);
-        coSo.setId(id);
-        return coSoRepository.save(coSo);
+        CoSoEntity coSoEntity = formUtils.convertToObject(CoSoEntity.class, coSoRequest);
+        coSoEntity.setId(id);
+        return coSoRepository.save(coSoEntity);
     }
     
 }

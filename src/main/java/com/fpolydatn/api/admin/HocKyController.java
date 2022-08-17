@@ -2,7 +2,7 @@ package com.fpolydatn.api.admin;
 
 import com.fpolydatn.api.base.BaseController;
 import com.fpolydatn.api.base.PageableObject;
-import com.fpolydatn.infrastructure.query.HocKyQuery;
+import com.fpolydatn.infrastructure.query.hocky.HocKyQuery;
 import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.service.HocKyService;
 import com.fpolydatn.util.PaginationUtil;
@@ -26,7 +26,7 @@ public final class HocKyController extends BaseController {
     private HocKyService hocKyService;
 
     @GetMapping
-    public String viewHocKy(Model model, @Valid final FindHocKyDto dto) {
+    public String viewHocKy(Model model, @Valid final FindHocKyRequest dto) {
         Long totalRecords = hocKyService.getSizeListHocKy(dto.getTenHocKy());
         long sizePaging = PaginationUtil.calculateTotalPages(totalRecords, dto.getSize());
 

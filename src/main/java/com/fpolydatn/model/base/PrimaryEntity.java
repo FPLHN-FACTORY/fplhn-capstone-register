@@ -18,7 +18,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class PrimaryEntity extends AuditEntity {
+public abstract class PrimaryEntity extends AuditEntity
+    implements IsIdentified {
 
     @Id
     @GeneratedValue

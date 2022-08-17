@@ -1,27 +1,17 @@
 package com.fpolydatn.model.domain;
 
-import com.fpolydatn.infrastructure.constant.EntityProperties;
-import com.fpolydatn.model.base.PrimaryEntity;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Nationalized;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
+import com.fpolydatn.model.base.IsIdentified;
+import com.fpolydatn.model.entity.HocKyEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.rest.core.config.Projection;
 
 /**
  * @author phongtt35
  */
-@Getter
-@Setter
-@Table
-@Entity
-public class HocKy extends PrimaryEntity implements Serializable {
 
-    @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
-    @Nationalized
-    private String tenHocKy;
+@Projection(types = {HocKyEntity.class})
+public interface HocKy extends IsIdentified {
 
+    @Value("#{target.ten_hoc_ky}")
+    String getTenHocKy();
 }

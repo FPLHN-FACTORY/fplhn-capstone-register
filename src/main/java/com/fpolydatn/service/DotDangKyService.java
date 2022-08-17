@@ -1,6 +1,6 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.model.domain.DotDangKy;
+import com.fpolydatn.model.entity.DotDangKyEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,8 +10,8 @@ import java.util.UUID;
  */
 public interface DotDangKyService {
 
-    DotDangKy deleteDotDangKy(UUID id);
+    DotDangKyEntity deleteDotDangKy(UUID id);
 
-    List<DotDangKy> getListDotDangKy(UUID id, int offset, int size);
+    List<DotDangKyEntity> getListDotDangKy(UUID id, int offset, int size);
 
 }

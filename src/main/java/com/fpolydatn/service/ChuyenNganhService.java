@@ -1,8 +1,8 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.request.chuyennganh.CreateChuyenNganhRequest;
-import com.fpolydatn.infrastructure.response.ChuyenNganhResponse;
+import com.fpolydatn.infrastructure.command.chuyennganh.CreateChuyenNganhCommand;
 import com.fpolydatn.model.domain.ChuyenNganh;
+import com.fpolydatn.model.entity.ChuyenNganhEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,10 +12,10 @@ import java.util.UUID;
  */
 public interface ChuyenNganhService {
 
-    ChuyenNganh insert(CreateChuyenNganhRequest createChuyenNganhRequest);
+    ChuyenNganhEntity insert(CreateChuyenNganhCommand createChuyenNganhRequest);
 
-    ChuyenNganh search(UUID id);
+    ChuyenNganhEntity search(UUID id);
 
-    List<ChuyenNganhResponse> getListChuyenNganhCustom();
+    List<ChuyenNganh> getListChuyenNganhCustom();
 
 }

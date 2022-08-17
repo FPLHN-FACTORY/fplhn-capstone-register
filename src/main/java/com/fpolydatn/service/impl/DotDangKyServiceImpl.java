@@ -2,8 +2,8 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.model.domain.CoSo;
-import com.fpolydatn.model.domain.DotDangKy;
+import com.fpolydatn.model.entity.CoSoEntity;
+import com.fpolydatn.model.entity.DotDangKyEntity;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.service.DotDangKyService;
@@ -29,8 +29,8 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     private CoSoRepository coSoRepository;
 
     @Override
-    public DotDangKy deleteDotDangKy(UUID id) {
-        Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(id);
+    public DotDangKyEntity deleteDotDangKy(UUID id) {
+        Optional<DotDangKyEntity> dotDangKy = dotDangKyRepository.findById(id);
         if (Objects.isNull(dotDangKy)) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
@@ -39,8 +39,8 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     }
 
     @Override
-    public List<DotDangKy> getListDotDangKy(UUID coSoId, int offset, int size) {
-        Optional<CoSo> coSo = coSoRepository.findById(coSoId);
+    public List<DotDangKyEntity> getListDotDangKy(UUID coSoId, int offset, int size) {
+        Optional<CoSoEntity> coSo = coSoRepository.findById(coSoId);
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }

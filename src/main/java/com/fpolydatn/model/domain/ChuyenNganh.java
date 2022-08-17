@@ -1,34 +1,23 @@
 package com.fpolydatn.model.domain;
 
-import com.fpolydatn.infrastructure.constant.EntityProperties;
-import com.fpolydatn.model.base.MultiTenantEntity;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Nationalized;
-import org.hibernate.annotations.Type;
+import com.fpolydatn.model.base.IsIdentified;
+import com.fpolydatn.model.entity.ChuyenNganhEntity;
+import com.fpolydatn.model.entity.CoSoEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.rest.core.config.Projection;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * @author phongtt35
+ * @author thangncph26123
  */
+@Projection(types = { ChuyenNganhEntity.class, CoSoEntity.class })
+public interface ChuyenNganh extends IsIdentified {
 
-@Getter
-@Setter
-@Table
-@Entity
-public class ChuyenNganh extends MultiTenantEntity implements Serializable {
+    @Value("#{target.ten_chuyen_nganh}")
+    String getTenChuyenNganh();
 
-    @Column(length = EntityProperties.LENGTH_NAME, nullable = false)
-    @Nationalized
-    private String tenChuyenNganh;
-
-    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    @Type(type= EntityProperties.TYPE_ID)
-    private UUID chuNhiemBoMon;
+    @Value("#{target.ten_co_so}")
+    String getTenCoSo();
 
 }
