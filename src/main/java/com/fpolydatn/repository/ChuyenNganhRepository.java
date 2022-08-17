@@ -22,9 +22,9 @@ public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh, UUID> 
     @Transactional
     @Query(value = "SELECT id, cn.co_so_id, ten_chuyen_nganh " +
             " FROM chuyen_nganh cn join co_so cs ON  cn.co_so_id = cs.id " +
-            " WHERE cs.co_so_id = :id"+
+            " WHERE cs.co_so_id = :id" +
             " LIMIT :size OFFSET :offset", nativeQuery = true)
-    List<ChuyenNganh> getListChuyenNganh(@Param("id") UUID id,@Param("offset") int offset, @Param("size") int size);
+    List<ChuyenNganh> getListChuyenNganh(@Param("id") UUID id, @Param("offset") int offset, @Param("size") int size);
 
     @Query(value = "SELECT cn.id, cn.ten_chuyen_nganh , cs.ten_co_so " +
             " FROM chuyen_nganh cn join co_so cs ON  cn.co_so_id = cs.id "

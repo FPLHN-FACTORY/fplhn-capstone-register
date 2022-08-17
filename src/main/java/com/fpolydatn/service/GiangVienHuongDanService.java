@@ -1,12 +1,12 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.response.GiangVienHuongDanResponse;
+import com.fpolydatn.model.domain.GiangVienHuongDan;
 
 /**
  * @author HangNT
  */
 public interface GiangVienHuongDanService {
 
-    GiangVienHuongDanResponse findGiangVienByEmailAndCoSo(String coSoID, String emailFPT);
+    GiangVienHuongDan findGiangVienByEmailAndCoSo(String coSoID, String emailFPT);
 
 }
