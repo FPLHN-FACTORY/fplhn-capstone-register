@@ -1,10 +1,11 @@
-package com.fpolydatn.infrastructure.request.hocky;
+package com.fpolydatn.infrastructure.command.hocky;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
@@ -14,11 +15,11 @@ import javax.validation.constraints.NotEmpty;
 @Validated
 @Getter
 @Setter
-public abstract class BaseHocKyRequest {
+public abstract class BaseHocKyCommand {
 
     @NotEmpty()
     @NotBlank()
-    @Min(6)
+    @Length(min = 6, max = EntityProperties.LENGTH_NAME_SHORT)
     private String tenHocKy;
 
 }

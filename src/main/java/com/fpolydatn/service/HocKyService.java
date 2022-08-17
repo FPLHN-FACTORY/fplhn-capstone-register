@@ -1,8 +1,8 @@
 package com.fpolydatn.service;
 
-import com.fpolydatn.infrastructure.interactor.admin.SearchHocKyInteractor;
-import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
-import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
+import com.fpolydatn.infrastructure.query.HocKyQuery;
+import com.fpolydatn.infrastructure.command.hocky.CreateHocKyCommand;
+import com.fpolydatn.infrastructure.command.hocky.UpdateHocKyCommand;
 import com.fpolydatn.model.domain.HocKy;
 
 import java.util.List;
@@ -13,16 +13,16 @@ import java.util.UUID;
  */
 public interface HocKyService {
 
-    HocKy addNew(CreateHocKyRequest hocKy);
+    HocKy create(CreateHocKyCommand hocKy);
 
     Boolean delete(UUID id);
 
-    HocKy update(UUID id, UpdateHocKyRequest hocKy);
+    HocKy update(UUID id, UpdateHocKyCommand hocKy);
 
     HocKy findById(UUID id);
 
     long getSizeListHocKy(String tenHocKy);
 
-    List<HocKy> search(SearchHocKyInteractor interactor);
+    List<HocKy> search(HocKyQuery interactor);
 
 }

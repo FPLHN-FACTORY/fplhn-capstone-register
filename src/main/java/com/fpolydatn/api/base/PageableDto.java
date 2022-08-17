@@ -1,4 +1,4 @@
-package com.fpolydatn.api;
+package com.fpolydatn.api.base;
 
 import com.fpolydatn.infrastructure.constant.PaginationConstant;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class PageableRequest {
+public abstract class PageableDto {
 
     private int page = PaginationConstant.DEFAULT_PAGE;
     private int size = PaginationConstant.DEFAULT_SIZE;

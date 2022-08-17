@@ -1,6 +1,6 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.infrastructure.interactor.admin.SearchHocKyInteractor;
+import com.fpolydatn.infrastructure.query.HocKyQuery;
 import com.fpolydatn.model.domain.HocKy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,13 +20,13 @@ public interface HocKyRepository extends JpaRepository<HocKy, UUID> {
         SELECT id, ten_hoc_ky,created_date,last_modified_date 
             FROM hoc_ky hk 
             WHERE 
-                ( :#{#interactor.tenHocKy} IS NULL 
-                    OR :#{#interactor.tenHocKy} LIKE '' 
-                    OR ten_hoc_ky LIKE %:#{#interactor.tenHocKy}% ) 
+                ( :#{#request.tenHocKy} IS NULL 
+                    OR :#{#request.tenHocKy} LIKE '' 
+                    OR ten_hoc_ky LIKE %:#{#request.tenHocKy}% ) 
             ORDER BY last_modified_date DESC 
-            LIMIT :#{#interactor.limit} OFFSET :#{#interactor.offset}
+            LIMIT :#{#request.limit} OFFSET :#{#request.offset}
         """, nativeQuery = true)
-    List<HocKy> findByName(@Param("interactor") SearchHocKyInteractor interactor);
+    List<HocKy> findByName(@Param("request") HocKyQuery request);
 
     @Query(value = """
         SELECT COUNT(1) FROM hoc_ky hk WHERE ten_hoc_ky LIKE %:tenHocKy%

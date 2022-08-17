@@ -1,6 +1,6 @@
 package com.fpolydatn.api.daotao;
 
-import com.fpolydatn.api.response.ResponseObject;
+import com.fpolydatn.api.base.ResponseObject;
 import com.fpolydatn.infrastructure.response.ChuyenNganhResponse;
 import com.fpolydatn.service.ChuyenNganhService;
 import org.springframework.beans.factory.annotation.Autowired;

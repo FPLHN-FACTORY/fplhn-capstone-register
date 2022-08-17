@@ -2,9 +2,9 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.interactor.admin.SearchHocKyInteractor;
-import com.fpolydatn.infrastructure.request.hocky.CreateHocKyRequest;
-import com.fpolydatn.infrastructure.request.hocky.UpdateHocKyRequest;
+import com.fpolydatn.infrastructure.query.HocKyQuery;
+import com.fpolydatn.infrastructure.command.hocky.CreateHocKyCommand;
+import com.fpolydatn.infrastructure.command.hocky.UpdateHocKyCommand;
 import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.repository.HocKyRepository;
 import com.fpolydatn.service.HocKyService;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,12 +29,12 @@ public class HocKyServiceImpl implements HocKyService {
 
 
     @Override
-    public List<HocKy> search(SearchHocKyInteractor interactor) {
-        return hocKyRepository.findByName(interactor);
+    public List<HocKy> search(HocKyQuery request) {
+        return hocKyRepository.findByName(request);
     }
 
     @Override
-    public HocKy addNew(CreateHocKyRequest hocKyRequest) {
+    public HocKy create(CreateHocKyCommand hocKyRequest) {
         HocKy hocKy = formUtils.convertToObject(HocKy.class, hocKyRequest);
         return hocKyRepository.save(hocKy);
     }
@@ -43,7 +42,7 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     public Boolean delete(UUID id) {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if (Objects.isNull(hocKyCheck)) {
+        if (hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
         hocKyRepository.delete(hocKyCheck.get());
@@ -51,9 +50,9 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public HocKy update(UUID id, UpdateHocKyRequest request) {
+    public HocKy update(UUID id, UpdateHocKyCommand request) {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if (Objects.isNull(hocKyCheck)) {
+        if (hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
         HocKy hocKy = hocKyCheck.get();
@@ -64,7 +63,7 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     public HocKy findById(UUID id) {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if (Objects.isNull(hocKyCheck)) {
+        if (hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
         return hocKyCheck.get();

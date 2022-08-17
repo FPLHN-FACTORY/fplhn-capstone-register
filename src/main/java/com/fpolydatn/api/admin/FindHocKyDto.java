@@ -1,6 +1,6 @@
 package com.fpolydatn.api.admin;
 
-import com.fpolydatn.api.PageableRequest;
+import com.fpolydatn.api.base.PageableDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FindHocKyRequest extends PageableRequest {
+public final class FindHocKyDto extends PageableDto {
 
     private String tenHocKy;
 }

@@ -1,4 +1,4 @@
-package com.fpolydatn.api.response;
+package com.fpolydatn.api.base;
 
 import lombok.Getter;
 import lombok.Setter;
