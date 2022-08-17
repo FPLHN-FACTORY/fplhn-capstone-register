@@ -6,8 +6,6 @@ import com.fpolydatn.model.entity.CoSoEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-import java.util.UUID;
-
 /**
  * @author thangncph26123
  */

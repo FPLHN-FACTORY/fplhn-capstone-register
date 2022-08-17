@@ -5,13 +5,11 @@ import com.fpolydatn.model.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * @author phongtt35
@@ -28,7 +26,6 @@ public class ChuyenNganhEntity extends MultiTenantEntity implements Serializable
     private String tenChuyenNganh;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    @Type(type= EntityProperties.TYPE_ID)
-    private UUID chuNhiemBoMon;
+    private String chuNhiemBoMon;
 
 }

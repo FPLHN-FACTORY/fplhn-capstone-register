@@ -3,10 +3,8 @@ package com.fpolydatn.repository;
 import com.fpolydatn.model.entity.GiangVienHuongDanEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.UUID;
-
 /**
  * @author phongtt35
  */
-public interface GiangVienHuongDanRepository extends JpaRepository<GiangVienHuongDanEntity, UUID> {
+public interface GiangVienHuongDanRepository extends JpaRepository<GiangVienHuongDanEntity, String> {
 }

@@ -10,13 +10,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author vinhnv
  */
 @Repository
-public interface HocKyRepository extends JpaRepository<HocKyEntity, UUID> {
+public interface HocKyRepository extends JpaRepository<HocKyEntity, String> {
 
     @Query(value = """
         SELECT id, ten_hoc_ky, last_modified_date 
@@ -35,9 +34,4 @@ public interface HocKyRepository extends JpaRepository<HocKyEntity, UUID> {
         """, nativeQuery = true)
     Long countByName(@Param("tenHocKy") String tenHocKy);
 
-    @Query(value = """
-            SELECT * FROM hoc_ky 
-            WHERE id = :id
-            """, nativeQuery = true)
-    HocKyEntity findByIdHIHI(@Param("id") String id);
 }

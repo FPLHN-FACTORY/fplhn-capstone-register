@@ -6,12 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author nguyenvv4
  */
-public interface CanBoRepository extends JpaRepository<CanBoEntity, UUID> {
+public interface CanBoRepository extends JpaRepository<CanBoEntity, String> {
 
     @Query(value = "SELECT id , " +
             " co_so_id , " +

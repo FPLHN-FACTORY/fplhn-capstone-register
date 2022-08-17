@@ -29,7 +29,7 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     private CoSoRepository coSoRepository;
 
     @Override
-    public DotDangKyEntity deleteDotDangKy(UUID id) {
+    public DotDangKyEntity deleteDotDangKy(String id) {
         Optional<DotDangKyEntity> dotDangKy = dotDangKyRepository.findById(id);
         if (Objects.isNull(dotDangKy)) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
@@ -39,7 +39,7 @@ public class DotDangKyServiceImpl implements DotDangKyService {
     }
 
     @Override
-    public List<DotDangKyEntity> getListDotDangKy(UUID coSoId, int offset, int size) {
+    public List<DotDangKyEntity> getListDotDangKy(String coSoId, int offset, int size) {
         Optional<CoSoEntity> coSo = coSoRepository.findById(coSoId);
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);

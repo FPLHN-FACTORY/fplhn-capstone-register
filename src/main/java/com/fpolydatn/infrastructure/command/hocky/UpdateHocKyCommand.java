@@ -13,5 +13,5 @@ import java.util.UUID;
 @Setter
 public class UpdateHocKyCommand extends BaseHocKyCommand implements UpdateCommand {
 
-    private UUID id;
+    private String id;
 }

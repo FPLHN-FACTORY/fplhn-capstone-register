@@ -13,12 +13,12 @@ public interface CoSoService {
 
     List<CoSoEntity> getListCoSo(int offset, int size);
 
-    CoSoEntity deleteCoSo(UUID id);
+    CoSoEntity deleteCoSo(String id);
 
     CoSoEntity addNew(CreateCoSoCommand canBo);
 
-    CoSoEntity update(UUID id, UpdateCoSoCommand coSo);
+    CoSoEntity update(String id, UpdateCoSoCommand coSo);
 
-    CoSoEntity findById(UUID id);
+    CoSoEntity findById(String id);
 
 }

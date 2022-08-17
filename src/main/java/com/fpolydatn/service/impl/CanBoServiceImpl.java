@@ -1,9 +1,9 @@
 package com.fpolydatn.service.impl;
 
-import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.command.canbo.CreateCanBoCommand;
 import com.fpolydatn.infrastructure.command.canbo.UpdateCanBoCommand;
+import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.model.entity.CanBoEntity;
 import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.repository.CanBoRepository;
@@ -49,7 +49,7 @@ public class CanBoServiceImpl implements CanBoService {
         return canBoRepository.save(canBoEntity);
     }
 
-    public CanBoEntity findById(UUID canBoId) {
+    public CanBoEntity findById(String canBoId) {
         Optional<CanBoEntity> canBo = canBoRepository.findById(canBoId);
         if (Objects.isNull(canBo)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
@@ -58,7 +58,7 @@ public class CanBoServiceImpl implements CanBoService {
     }
 
     @Override
-    public CanBoEntity update(UUID id, @Valid UpdateCanBoCommand canBoRequest) {
+    public CanBoEntity update(String id, @Valid UpdateCanBoCommand canBoRequest) {
         Optional<CanBoEntity> canBo = canBoRepository.findById(id);
         if (Objects.isNull(canBo)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);

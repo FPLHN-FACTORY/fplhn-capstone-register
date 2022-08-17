@@ -14,7 +14,7 @@ public interface ChuyenNganhService {
 
     ChuyenNganhEntity insert(CreateChuyenNganhCommand createChuyenNganhRequest);
 
-    ChuyenNganhEntity search(UUID id);
+    ChuyenNganhEntity search(String id);
 
     List<ChuyenNganh> getListChuyenNganhCustom();
 

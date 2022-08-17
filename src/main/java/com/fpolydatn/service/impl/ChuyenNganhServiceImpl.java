@@ -1,8 +1,8 @@
 package com.fpolydatn.service.impl;
 
+import com.fpolydatn.infrastructure.command.chuyennganh.CreateChuyenNganhCommand;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.RestApiException;
-import com.fpolydatn.infrastructure.command.chuyennganh.CreateChuyenNganhCommand;
 import com.fpolydatn.model.domain.ChuyenNganh;
 import com.fpolydatn.model.entity.ChuyenNganhEntity;
 import com.fpolydatn.repository.ChuyenNganhRepository;
@@ -31,7 +31,7 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
     }
 
     @Override
-    public ChuyenNganhEntity search(UUID id) {
+    public ChuyenNganhEntity search(String id) {
         Optional<ChuyenNganhEntity> chuyenNganh = chuyenNganhRepository.findById(id);
         if(Objects.isNull(chuyenNganh)) {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);

@@ -10,8 +10,8 @@ import java.util.UUID;
  */
 public interface DotDangKyService {
 
-    DotDangKyEntity deleteDotDangKy(UUID id);
+    DotDangKyEntity deleteDotDangKy(String id);
 
-    List<DotDangKyEntity> getListDotDangKy(UUID id, int offset, int size);
+    List<DotDangKyEntity> getListDotDangKy(String id, int offset, int size);
 
 }

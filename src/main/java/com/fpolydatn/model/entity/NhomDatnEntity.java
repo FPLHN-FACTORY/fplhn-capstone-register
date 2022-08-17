@@ -2,26 +2,26 @@ package com.fpolydatn.model.entity;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
+import com.fpolydatn.model.base.IsBelongToPeriod;
 import com.fpolydatn.model.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * @author phongtt35
  */
 @Getter
 @Setter
-@Table
+@Table(name = "nhom_datn")
 @Entity
-public class NhomDatnEntity extends MultiTenantEntity implements Serializable {
+public class NhomDatnEntity extends MultiTenantEntity
+        implements Serializable, IsBelongToPeriod {
 
     @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
     private String maNhom;
@@ -45,15 +45,12 @@ public class NhomDatnEntity extends MultiTenantEntity implements Serializable {
     private TrangThaiNhom trangThai;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    @Type(type= EntityProperties.TYPE_ID)
-    private UUID truongNhomId;
+    private String truongNhomId;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    @Type(type= EntityProperties.TYPE_ID)
-    private UUID giangVienId;
+    private String giangVienId;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    @Type(type= EntityProperties.TYPE_ID)
-    private UUID dotDangKyId;
+    private String dotDangKyId;
 
 }

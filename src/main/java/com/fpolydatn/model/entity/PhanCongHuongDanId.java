@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * @author phongtt35
@@ -13,8 +12,8 @@ import java.util.UUID;
 @Setter
 public class PhanCongHuongDanId implements Serializable {
 
-    private UUID giangVienId;
+    private String giangVienId;
 
-    private UUID monDatnId;
+    private String monDatnId;
 
 }

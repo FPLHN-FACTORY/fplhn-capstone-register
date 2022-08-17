@@ -16,8 +16,8 @@ public interface CanBoService {
 
     CanBoEntity addNew(CreateCanBoCommand canBo);
 
-    CanBoEntity findById(UUID id);
+    CanBoEntity findById(String id);
 
-    CanBoEntity update(UUID id, UpdateCanBoCommand canBoRequest);
+    CanBoEntity update(String id, UpdateCanBoCommand canBoRequest);
 
 }

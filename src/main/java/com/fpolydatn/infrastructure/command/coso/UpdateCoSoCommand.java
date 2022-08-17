@@ -17,6 +17,6 @@ public class UpdateCoSoCommand extends BaseCoSoCommand implements UpdateCommand 
 
     @NotEmpty
     @NotBlank
-    private UUID id;
+    private String id;
 
 }

@@ -1,17 +1,16 @@
 package com.fpolydatn.model.entity;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
+import com.fpolydatn.model.base.HasPeriod;
 import com.fpolydatn.model.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * @author phongtt35
@@ -20,7 +19,8 @@ import java.util.UUID;
 @Setter
 @Table(name = "dot_dang_ky")
 @Entity
-public class DotDangKyEntity extends MultiTenantEntity implements Serializable {
+public class DotDangKyEntity extends MultiTenantEntity
+        implements Serializable, HasPeriod {
 
     @Column(length = EntityProperties.LENGTH_NAME, nullable = false)
     @Nationalized
@@ -33,7 +33,6 @@ public class DotDangKyEntity extends MultiTenantEntity implements Serializable {
     private Long ngayKetThuc;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    @Type(type = EntityProperties.TYPE_ID)
-    private UUID hocKyId;
+    private String hocKyId;
 
 }

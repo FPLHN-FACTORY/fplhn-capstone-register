@@ -16,7 +16,7 @@ import java.util.UUID;
  * @author Vinhnv
  */
 @Repository
-public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganhEntity, UUID> {
+public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganhEntity, String> {
 
     @Modifying
     @Transactional

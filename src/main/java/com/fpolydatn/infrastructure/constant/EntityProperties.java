@@ -16,6 +16,6 @@ public class EntityProperties {
     public static final byte LENGTH_EMAIL = 30;
     public static final byte LENGTH_PHONE = 20;
 
-    public static final String TYPE_ID = "org.hibernate.type.UUIDCharType";
+//    public static final String TYPE_ID = "org.hibernate.type.UUIDCharType";
 
 }

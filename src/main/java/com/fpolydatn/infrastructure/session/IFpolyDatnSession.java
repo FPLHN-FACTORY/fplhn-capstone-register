@@ -7,5 +7,5 @@ import java.util.UUID;
  */
 public interface IFpolyDatnSession {
 
-    UUID getCoSoId();
+    String getCoSoId();
 }

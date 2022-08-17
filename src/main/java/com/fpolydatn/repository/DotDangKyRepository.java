@@ -6,12 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author tamh
  */
-public interface DotDangKyRepository extends JpaRepository<DotDangKyEntity, UUID> {
+public interface DotDangKyRepository extends JpaRepository<DotDangKyEntity, String> {
 
     @Query(value = "SELECT id, co_so_id, hoc_ky_id, ngay_bat_dau," +
             " ngay_ket_thuc,ten_dot_dang_ky,co_so_id FROM dot_dang_ky " +

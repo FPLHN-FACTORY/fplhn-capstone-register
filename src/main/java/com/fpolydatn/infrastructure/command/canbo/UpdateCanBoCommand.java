@@ -13,6 +13,6 @@ import java.util.UUID;
 @Setter
 public class UpdateCanBoCommand extends BaseCanBoCommand implements UpdateCommand {
 
-    private UUID id;
+    private String id;
 
 }

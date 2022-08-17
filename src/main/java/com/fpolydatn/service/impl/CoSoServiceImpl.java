@@ -1,9 +1,9 @@
 package com.fpolydatn.service.impl;
 
-import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.infrastructure.command.coso.CreateCoSoCommand;
 import com.fpolydatn.infrastructure.command.coso.UpdateCoSoCommand;
+import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.service.CoSoService;
@@ -30,7 +30,7 @@ public class CoSoServiceImpl implements CoSoService {
 
 
     @Override
-    public CoSoEntity findById(UUID id) {
+    public CoSoEntity findById(String id) {
         CoSoEntity coSoEntity = new CoSoEntity();
         Optional<CoSoEntity> optionalCoSo = coSoRepository.findById(id);
         if (optionalCoSo.isPresent()) {
@@ -45,7 +45,7 @@ public class CoSoServiceImpl implements CoSoService {
     }
 
     @Override
-    public CoSoEntity deleteCoSo(UUID id) {
+    public CoSoEntity deleteCoSo(String id) {
         Optional<CoSoEntity> coSo = coSoRepository.findById(id);
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
@@ -61,7 +61,7 @@ public class CoSoServiceImpl implements CoSoService {
     }
 
     @Override
-    public CoSoEntity update(UUID id, @Valid UpdateCoSoCommand coSoRequest) {
+    public CoSoEntity update(String id, @Valid UpdateCoSoCommand coSoRequest) {
         Optional<CoSoEntity>searchCoSo = coSoRepository.findById(id);
         if(Objects.isNull(searchCoSo)){
             throw new RestApiException(Message.CO_SO_NOT_EXIST);

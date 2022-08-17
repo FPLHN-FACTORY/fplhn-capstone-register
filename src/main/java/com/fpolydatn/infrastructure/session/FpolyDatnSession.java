@@ -17,7 +17,7 @@ class FpolyDatnSession implements IFpolyDatnSession {
     private CoSoRepository coSoRepository;
 
     @Override
-    public UUID getCoSoId() {
+    public String getCoSoId() {
         return coSoRepository.findAll().get(0).getId();
     }
 }

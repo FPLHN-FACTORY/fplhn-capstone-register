@@ -43,7 +43,7 @@ public abstract class BaseCanBoCommand {
 
     @NotEmpty
     @NotBlank
-    private UUID coSoId;
+    private String coSoId;
 
     private VaiTro vaiTro;
 

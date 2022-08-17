@@ -1,17 +1,16 @@
 package com.fpolydatn.model.entity;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
+import com.fpolydatn.model.base.IsBelongToPeriod;
 import com.fpolydatn.model.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * @author phongtt35
@@ -20,7 +19,8 @@ import java.util.UUID;
 @Setter
 @Table(name = "giang_vien_huong_dan")
 @Entity
-public class GiangVienHuongDanEntity extends MultiTenantEntity implements Serializable {
+public class GiangVienHuongDanEntity extends MultiTenantEntity
+        implements Serializable, IsBelongToPeriod {
 
     @Column(length = EntityProperties.LENGTH_NAME, nullable = false)
     @Nationalized
@@ -42,7 +42,6 @@ public class GiangVienHuongDanEntity extends MultiTenantEntity implements Serial
     private String emailFe;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    @Type(type = EntityProperties.TYPE_ID)
-    private UUID dotDangKyId;
+    private String dotDangKyId;
 
 }

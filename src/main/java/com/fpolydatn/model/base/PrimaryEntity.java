@@ -1,15 +1,14 @@
 package com.fpolydatn.model.base;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
+import com.fpolydatn.infrastructure.listener.CreatePrimaryEntityListener;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.util.UUID;
 
 /**
  * @author phongtt35
@@ -18,13 +17,12 @@ import java.util.UUID;
 @Getter
 @Setter
 @MappedSuperclass
+@EntityListeners(CreatePrimaryEntityListener.class)
 public abstract class PrimaryEntity extends AuditEntity
     implements IsIdentified {
 
     @Id
-    @GeneratedValue
     @Column(length = EntityProperties.LENGTH_ID, updatable = false)
-    @Type(type = EntityProperties.TYPE_ID)
-    private UUID id;
+    private String id;
 
 }
