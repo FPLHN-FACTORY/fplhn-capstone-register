@@ -38,8 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((request, response, authentication) -> {
                     DefaultOidcUser oauthUser = (DefaultOidcUser) authentication.getPrincipal();
                     String coSoID = (String) session.getAttribute("coSoIDSelected");
-                    userService.processOAuthPostLogin(response,coSoID, oauthUser.getEmail());
-                    response.sendRedirect("/admin/hoc-ky");
+                    userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail());
                 })
                 .failureHandler((request, response, exception) -> {
 

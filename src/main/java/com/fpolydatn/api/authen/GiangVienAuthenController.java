@@ -71,19 +71,4 @@ public class GiangVienAuthenController {
         return "test";
     }
 
-    @GetMapping("/check-authen")
-    public String checkAuthen(Model model, OAuth2AuthenticationToken token, HttpSession session) {
-        MyUserDetails userDetails = userDetailsService.getUserDetails(token);
-        String coSoIDSelected = (String) session.getAttribute("coSoIDSelected");
-        try {
-            GiangVienHuongDan giangVienHuongDan = giangVienHuongDanService.findGiangVienByEmailAndCoSo(coSoIDSelected, userDetails.getEmail());
-            session.setAttribute("giangVienHuongDang", giangVienHuongDan);
-            return "redirect:/admin/hoc-ky";
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            List<CoSo> listCoSo = coSoService.getListCoSo();
-            model.addAttribute("listCoSo", listCoSo);
-            return "authen/chon-co-so";
-        }
-    }
 }
