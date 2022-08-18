@@ -28,4 +28,8 @@ public interface CanBoRepository extends JpaRepository<CanBo, UUID> {
             "WHERE cb.email_fpt=:emailFPT AND cb.co_so_id =:coSoId", nativeQuery = true)
     CanBo findCanBoByEmailAndCoSo(@Param("coSoId") String id, @Param("emailFPT") String emailFPT);
 
+
+    @Query(value = "SELECT FROM ",nativeQuery = true)
+    CanBo get();
+
 }
