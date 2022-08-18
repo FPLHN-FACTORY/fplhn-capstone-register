@@ -83,7 +83,7 @@
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/login-co-so?coSoID=" + coSoSelected,
+            url: "/authentication/" + coSoSelected,
             data: JSON.stringify(coSoSelected),
             dataType: 'json',
             success: function () {

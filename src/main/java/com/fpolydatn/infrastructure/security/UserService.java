@@ -38,7 +38,7 @@ public class UserService {
         switch (role.toLowerCase()) {
             case "gv": {
                 if (gvhdRepository.existsByEmailFptAndCoSoId(coSoID, email)) {
-                    response.sendRedirect("/gv-chon-co-so");
+                    response.sendRedirect("/authentication/giao-vien");
                 } else {
                     response.sendRedirect("/admin/hoc-ky");
                 }
@@ -46,7 +46,7 @@ public class UserService {
             }
             case "sv": {
                 if (sinhVienRepository.existsByEmailAndCoSoId(coSoID, email)) {
-                    response.sendRedirect("/sv-chon-co-so");
+                    response.sendRedirect("/authentication/sinh-vien");
                 } else {
                     response.sendRedirect("/admin/hoc-ky");
                 }
@@ -54,7 +54,7 @@ public class UserService {
             }
             case "cb": {
                 if (canBoRepository.existsByEmailFptAndCoSoId(coSoID, email)) {
-                    response.sendRedirect("/cb-chon-co-so");
+                    response.sendRedirect("/authentication/can-bo");
                 } else {
                     response.sendRedirect("/admin/hoc-ky");
                 }
