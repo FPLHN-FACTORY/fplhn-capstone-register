@@ -4,8 +4,6 @@ import com.fpolydatn.api.base.BaseController;
 import com.fpolydatn.api.base.ResponseObject;
 import com.fpolydatn.infrastructure.command.hocky.CreateHocKyCommand;
 import com.fpolydatn.infrastructure.command.hocky.UpdateHocKyCommand;
-import com.fpolydatn.model.domain.HocKy;
-import com.fpolydatn.model.entity.HocKyEntity;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,45 +27,24 @@ public final class HocKyRestController extends BaseController {
     private HocKyService hocKyService;
 
     @PostMapping
-    public ResponseObject add(@RequestBody CreateHocKyCommand hocKyRequest) {
-        HocKyEntity hocKyEntity = null;
-        try {
-            hocKyEntity = hocKyService.create(hocKyRequest);
-        } catch (Exception ex) {
-            // Ghi log
-            System.out.println(ex.getMessage());
-        }
-        return new ResponseObject(hocKyEntity);
+    public ResponseObject add(@RequestBody CreateHocKyCommand cmd) {
+        return new ResponseObject(hocKyService.create(cmd));
     }
 
     @GetMapping("/{id}")
     public ResponseObject detail(@PathVariable("id") String id) {
-        HocKyEntity hocKy = null;
-        try {
-            hocKy = hocKyService.findById(id);
-        } catch (Exception ex) {
-            // Ghi log
-        }
-        return new ResponseObject(hocKy);
+        return new ResponseObject(hocKyService.findById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable("id") String id,
                                  @RequestBody UpdateHocKyCommand cmd) {
-        HocKy hocKyEntity = null;
         cmd.setId(id);
-        hocKyEntity = hocKyService.update(cmd);
-        return new ResponseObject(hocKyEntity);
+        return new ResponseObject(hocKyService.update(cmd));
     }
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
-        Boolean remove = false;
-        try {
-            remove = hocKyService.delete(id);
-        } catch (Exception ex) {
-            // Ghi log
-        }
-        return new ResponseObject(remove);
+        return new ResponseObject(hocKyService.delete(id));
     }
 }

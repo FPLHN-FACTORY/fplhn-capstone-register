@@ -39,8 +39,8 @@ public class CoSoServiceImpl implements CoSoService {
     }
 
     @Override
-    public List<CoSoEntity> getListCoSo(int offset, int size) {
-        return coSoRepository.getListCoSo(offset, size);
+    public List<CoSoEntity> getListCoSo() {
+        return coSoRepository.findAll();
     }
 
     @Override

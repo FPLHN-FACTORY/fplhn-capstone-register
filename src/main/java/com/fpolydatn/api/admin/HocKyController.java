@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -26,7 +25,7 @@ public final class HocKyController extends BaseController {
     private HocKyService hocKyService;
 
     @GetMapping
-    public String viewHocKy(Model model, @Valid final FindHocKyRequest dto) {
+    public String viewHocKy(Model model, final FindHocKyRequest dto) {
         Long totalRecords = hocKyService.getSizeListHocKy(dto.getTenHocKy());
         long sizePaging = PaginationUtil.calculateTotalPages(totalRecords, dto.getSize());
 
@@ -36,11 +35,6 @@ public final class HocKyController extends BaseController {
         model.addAttribute("page",
                 new PageableObject<HocKy>(listHocKy, sizePaging, req.getOffset()));
         return "admin/hoc-ky";
-    }
-
-    @GetMapping("test")
-    public String test() {
-        throw new UnsupportedOperationException("HIHI");
     }
 
 }

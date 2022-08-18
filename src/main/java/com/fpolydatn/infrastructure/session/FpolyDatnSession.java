@@ -1,8 +1,9 @@
 package com.fpolydatn.infrastructure.session;
 
-import com.fpolydatn.repository.CoSoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author phongtt35
@@ -12,10 +13,10 @@ import org.springframework.stereotype.Component;
 class FpolyDatnSession implements IFpolyDatnSession {
 
     @Autowired
-    private CoSoRepository coSoRepository;
+    private HttpSession session;
 
     @Override
     public String getCoSoId() {
-        return coSoRepository.findAll().get(0).getId();
+        return String.valueOf(session.getAttribute("coSoIDSelected"));
     }
 }

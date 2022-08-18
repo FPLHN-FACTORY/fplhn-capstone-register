@@ -1,9 +1,6 @@
 package com.fpolydatn.infrastructure.security;
 
-import com.fpolydatn.model.domain.CanBo;
-import com.fpolydatn.model.domain.CoSo;
-import com.fpolydatn.model.domain.GiangVienHuongDan;
-import com.fpolydatn.model.domain.SinhVien;
+import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.repository.CanBoRepository;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
@@ -13,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author HangNT
@@ -21,7 +18,7 @@ import java.util.Objects;
 @Service
 public class UserService {
     @Autowired
-    private GiangVienHuongDanRepository giangVienHuongDanRepository;
+    private GiangVienHuongDanRepository gvhdRepository;
 
     @Autowired
     private SinhVienRepository sinhVienRepository;
@@ -32,33 +29,39 @@ public class UserService {
     @Autowired
     private CoSoRepository coSoRepository;
 
-    public void processOAuthPostLogin(HttpServletResponse response, String coSoID, String username, String role) throws IOException {
-        CoSo coSo = coSoRepository.findCoSoByID(coSoID);
-        if (Objects.isNull(coSo)) {
+    public void processOAuthPostLogin(HttpServletResponse response,
+                                      String coSoID, String email, String role) throws IOException {
+        Optional<CoSoEntity> coSo = coSoRepository.findById(coSoID);
+        if (!coSo.isPresent()) {
             response.sendRedirect("/");
         }
-        if (role.equalsIgnoreCase("gv")) {
-            GiangVienHuongDan giangVienHuongDan = giangVienHuongDanRepository.findGiangVienByEmailAndCoSo(coSoID, username);
-            if (Objects.isNull(giangVienHuongDan)) {
-                response.sendRedirect("/gv-chon-co-so");
-            } else {
-                response.sendRedirect("/admin/hoc-ky");
+        switch (role.toLowerCase()) {
+            case "gv": {
+                if (gvhdRepository.existsByEmailFptAndCoSoId(coSoID, email)) {
+                    response.sendRedirect("/gv-chon-co-so");
+                } else {
+                    response.sendRedirect("/admin/hoc-ky");
+                }
+                break;
             }
-        }
-        if (role.equalsIgnoreCase("sv")) {
-            SinhVien sinhVien = sinhVienRepository.findSinhVienByEmailAndCoSo(coSoID, username);
-            if (Objects.isNull(sinhVien)) {
-                response.sendRedirect("/sv-chon-co-so");
-            } else {
-                response.sendRedirect("/admin/hoc-ky");
+            case "sv": {
+                if (sinhVienRepository.existsByEmailAndCoSoId(coSoID, email)) {
+                    response.sendRedirect("/sv-chon-co-so");
+                } else {
+                    response.sendRedirect("/admin/hoc-ky");
+                }
+                break;
             }
-        }
-        if (role.equalsIgnoreCase("cb")) {
-            CanBo canBo = canBoRepository.findCanBoByEmailAndCoSo(coSoID, username);
-            if (Objects.isNull(canBo)) {
-                response.sendRedirect("/cb-chon-co-so");
-            } else {
-                response.sendRedirect("/admin/hoc-ky");
+            case "cb": {
+                if (canBoRepository.existsByEmailFptAndCoSoId(coSoID, email)) {
+                    response.sendRedirect("/cb-chon-co-so");
+                } else {
+                    response.sendRedirect("/admin/hoc-ky");
+                }
+                break;
+            }
+            default: {
+                response.sendRedirect("/");
             }
         }
     }

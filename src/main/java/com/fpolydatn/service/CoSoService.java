@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface CoSoService {
 
-    List<CoSoEntity> getListCoSo(int offset, int size);
+    List<CoSoEntity> getListCoSo();
 
     CoSoEntity deleteCoSo(String id);
 

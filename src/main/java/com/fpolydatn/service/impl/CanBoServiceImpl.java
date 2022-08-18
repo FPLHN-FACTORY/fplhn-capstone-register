@@ -72,12 +72,4 @@ public class CanBoServiceImpl implements CanBoService {
         return canBoRepository.save(updateCanBoEntity);
     }
 
-    @Override
-    public CanBo findCanBoBYEmailAndCoSo(String coSoID, String email) {
-        CanBo canBo = canBoRepository.findCanBoByEmailAndCoSo(coSoID, email);
-        if (Objects.isNull(canBo)) {
-            throw new RestApiException(Message.TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG);
-        }
-        return canBo;
-    }
 }

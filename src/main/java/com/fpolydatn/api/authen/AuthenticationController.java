@@ -1,7 +1,7 @@
 package com.fpolydatn.api.authen;
 
-import com.fpolydatn.api.response.ResponseObject;
-import com.fpolydatn.model.domain.CoSo;
+import com.fpolydatn.api.base.ResponseObject;
+import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.service.CoSoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +14,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
- * @author HangNT
+ * @author phongtt35
  */
-@Controller
-public class GiangVienAuthenController {
 
+@Controller
+public class AuthenticationController {
     @Autowired
     private CoSoService coSoService;
 
@@ -28,10 +28,26 @@ public class GiangVienAuthenController {
     }
 
     @GetMapping("/gv-chon-co-so")
-    public String getCoSo(Model model, HttpSession session) {
-        List<CoSo> listCoSo = coSoService.getListCoSo();
+    public String gvChonCoSo(Model model, HttpSession session) {
+        List<CoSoEntity> listCoSo = coSoService.getListCoSo();
         model.addAttribute("listCoSo", listCoSo);
         session.setAttribute("role", "gv");
+        return "authen/chon-co-so";
+    }
+
+    @GetMapping("/sv-chon-co-so")
+    public String svChonCoSo(Model model, HttpSession session) {
+        List<CoSoEntity> listCoSo = coSoService.getListCoSo();
+        model.addAttribute("listCoSo", listCoSo);
+        session.setAttribute("role", "sv");
+        return "authen/chon-co-so";
+    }
+
+    @GetMapping("/cb-chon-co-so")
+    public String getCoSo(Model model, HttpSession session) {
+        List<CoSoEntity> listCoSo = coSoService.getListCoSo();
+        model.addAttribute("listCoSo", listCoSo);
+        session.setAttribute("role", "cb");
         return "authen/chon-co-so";
     }
 
@@ -41,5 +57,4 @@ public class GiangVienAuthenController {
         session.setAttribute("coSoIDSelected", coSoId);
         return new ResponseObject(true);
     }
-
 }
