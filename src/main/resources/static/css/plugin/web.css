@@ -1,0 +1,253 @@
+@media screen and (max-width: 1170px) {
+    .navbar-header {
+        visibility: hidden;
+        width: 0 !important;
+    }
+}
+
+.dark-logo {
+    height: 70px;
+}
+
+body, .subheader, .card-title, .card-subtitle, .tooltip, .popover {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 400 !important;
+}
+
+th {
+    font-weight: 700 !important;
+}
+
+.profile-img-2 img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.search-listing li a {
+    color: #0275d8;
+}
+
+.search-listing li p {
+    font-size: 14px;
+    font-style: italic;
+}
+
+.search-listing li {
+    padding-bottom: 0;
+}
+
+@media (min-width: 768px) {
+    .mini-sidebar .sidebar-nav #sidebarnav > li > ul {
+        position: absolute;
+        left: 60px;
+        top: 51.42px;
+        width: 200px;
+        z-index: 1001;
+        background: #e8eff0;
+        display: none;
+        padding-left: 1px;
+    }
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.posted_by {
+    font-size: 14px;
+    font-style: italic;
+}
+
+.green {
+    color: rgb(0, 128, 0);
+}
+
+.red {
+    color: rgb(255, 0, 0);
+}
+
+.blue {
+    color: rgb(0, 0, 255);
+}
+
+.orange {
+    color: rgb(255, 165, 0);
+}
+
+.dt-buttons {
+    margin-bottom: 5px;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 400px;
+        margin: 1.75rem auto;
+    }
+}
+
+.error {
+    color: red;
+    margin-top: 3px;
+}
+
+.form-group {
+    margin-bottom: 0.5rem;
+}
+
+label {
+    margin-bottom: 0;
+}
+
+#btn_login {
+    margin-top: 10px;
+}
+
+/*.kt-content {*/
+/*padding: 0;*/
+/*}*/
+#footer {
+    background: #192041;
+    color: #fff;
+    border-top: 10px solid #f7941d;
+    /*margin-top: 10px;*/
+    font-size: 13px;
+}
+
+footer > div > div:nth-child(2) h6 {
+    text-decoration: underline;
+    color: #f7941d;
+}
+
+footer {
+    margin: 10px auto 0 auto;
+}
+
+.navbar {
+    margin-bottom: 150px;
+}
+
+.home-nav {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* Footer CSS */
+.column {
+    /* text-align: center; */
+    float: left;
+    width: 50%;
+}
+
+.poly-logo {
+    width: 35%;
+    padding: 30px 0px;
+}
+
+#poly-logo {
+    width: 200px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+    margin: 0 auto;
+}
+
+.address {
+    font-size: 12px;
+}
+
+.footer-filter-by-campus {
+    width: 100%;
+}
+
+.campus-contact-information {
+    border-left: 1px solid;
+    padding-left: 20px;
+}
+
+.campus-contact-information h3 {
+    font-weight: bold;
+    padding-left: 15px;
+}
+
+.campus-contact-content {
+    font-size: 12px;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.break-line::before {
+    content: "\a";
+    white-space: pre;
+}
+
+.contact-title {
+    font-size: 16px;
+}
+
+#kt_footer {
+    /* position: sticky; */
+    /* position: -webkit-sticky; */
+    bottom: 0;
+    border-top: 1px solid #C4CFF9;
+}
+
+.kt-widget1__title {
+    margin-top: 5px;
+}
+
+.footer-filter-by-campus-mobile {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    #poly-logo {
+        width: 150px;
+    }
+
+    .footer-filter-by-campus {
+        display: none;
+    }
+
+    .footer-filter-by-campus-mobile {
+        display: block;
+        opacity: 1;
+    }
+
+    .address {
+        font-size: 10px;
+    }
+
+    .brand-logo {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .campus-contact-content {
+        font-size: 10px;
+        text-align: left;
+        padding: 0;
+    }
+
+    #kt_footer {
+        position: relative;
+    }
+
+    ul {
+        margin-bottom: 0;
+    }
+}
+
+/* SMS OTP Confirmation Modal CSS */
+.phone-number-input {
+    min-height: 50px !important;
+}
+
+/* End SMS OTP Confirmation Modal CSS */

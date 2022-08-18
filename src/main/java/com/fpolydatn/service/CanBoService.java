@@ -19,4 +19,6 @@ public interface CanBoService {
 
     CanBoEntity update(String id, UpdateCanBoCommand canBoRequest);
 
+    CanBo findCanBoBYEmailAndCoSo(String coSoID, String email);
+
 }
