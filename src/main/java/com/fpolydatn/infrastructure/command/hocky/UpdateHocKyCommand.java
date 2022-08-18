@@ -4,8 +4,6 @@ import com.fpolydatn.infrastructure.command.UpdateCommand;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
 /**
  * @author HangNT
  */

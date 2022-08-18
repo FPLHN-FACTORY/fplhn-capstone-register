@@ -38,4 +38,9 @@ public final class HocKyController extends BaseController {
         return "admin/hoc-ky";
     }
 
+    @GetMapping("test")
+    public String test() {
+        throw new UnsupportedOperationException("HIHI");
+    }
+
 }

@@ -4,8 +4,6 @@ import com.fpolydatn.repository.CoSoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 /**
  * @author phongtt35
  */

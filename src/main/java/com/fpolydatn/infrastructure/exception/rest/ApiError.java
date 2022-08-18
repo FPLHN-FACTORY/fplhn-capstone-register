@@ -1,15 +1,13 @@
-package com.fpolydatn.infrastructure.exception;
+package com.fpolydatn.infrastructure.exception.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * @author nguyenvv4
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class ApiError {

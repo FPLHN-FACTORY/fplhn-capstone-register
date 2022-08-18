@@ -4,22 +4,18 @@ import com.fpolydatn.api.base.BaseController;
 import com.fpolydatn.api.base.ResponseObject;
 import com.fpolydatn.infrastructure.command.hocky.CreateHocKyCommand;
 import com.fpolydatn.infrastructure.command.hocky.UpdateHocKyCommand;
-import com.fpolydatn.infrastructure.exception.RestApiException;
 import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.model.entity.HocKyEntity;
 import com.fpolydatn.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 /**
  * @author phongtt35

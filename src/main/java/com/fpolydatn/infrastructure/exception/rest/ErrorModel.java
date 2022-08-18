@@ -1,4 +1,4 @@
-package com.fpolydatn.infrastructure.exception;
+package com.fpolydatn.infrastructure.exception.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ErrorModel {
 
-    private String fileError;
+    private String fieldError;
 
     private String message;
 

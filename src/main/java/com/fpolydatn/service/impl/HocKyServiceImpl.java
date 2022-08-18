@@ -3,7 +3,7 @@ package com.fpolydatn.service.impl;
 import com.fpolydatn.infrastructure.command.hocky.CreateHocKyCommand;
 import com.fpolydatn.infrastructure.command.hocky.UpdateHocKyCommand;
 import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.exception.RestApiException;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.query.hocky.HocKyQuery;
 import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.model.domain.HocKyImpl;
@@ -15,23 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.swing.text.html.Option;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import javax.validation.Validator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author vinhnv
  */
 @Service
 @Validated
-public final class HocKyServiceImpl implements HocKyService {
+public class HocKyServiceImpl implements HocKyService {
 
     @Autowired
     private HocKyRepository hocKyRepository;
@@ -66,6 +59,7 @@ public final class HocKyServiceImpl implements HocKyService {
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
+
         HocKyEntity hocKyEntity = hocKyCheck.get();
         hocKyEntity.setTenHocKy(cmd.getTenHocKy());
 

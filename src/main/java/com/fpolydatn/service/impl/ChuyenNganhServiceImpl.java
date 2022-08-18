@@ -2,7 +2,7 @@ package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.command.chuyennganh.CreateChuyenNganhCommand;
 import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.exception.RestApiException;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.model.domain.ChuyenNganh;
 import com.fpolydatn.model.entity.ChuyenNganhEntity;
 import com.fpolydatn.repository.ChuyenNganhRepository;
@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ChuyenNganhServiceImpl implements ChuyenNganhService {

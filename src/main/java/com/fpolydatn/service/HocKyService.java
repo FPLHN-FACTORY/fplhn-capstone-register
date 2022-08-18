@@ -5,12 +5,9 @@ import com.fpolydatn.infrastructure.command.hocky.UpdateHocKyCommand;
 import com.fpolydatn.infrastructure.query.hocky.HocKyQuery;
 import com.fpolydatn.model.domain.HocKy;
 import com.fpolydatn.model.entity.HocKyEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author HangNT

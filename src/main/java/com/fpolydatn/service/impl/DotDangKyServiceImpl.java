@@ -1,7 +1,7 @@
 package com.fpolydatn.service.impl;
 
 import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.exception.RestApiException;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.model.entity.DotDangKyEntity;
 import com.fpolydatn.repository.CoSoRepository;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author thepvph20110

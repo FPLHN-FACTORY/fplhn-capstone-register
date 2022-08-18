@@ -1,10 +1,10 @@
 package com.fpolydatn.service;
+
 import com.fpolydatn.infrastructure.command.coso.CreateCoSoCommand;
 import com.fpolydatn.infrastructure.command.coso.UpdateCoSoCommand;
 import com.fpolydatn.model.entity.CoSoEntity;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author thepvph20110

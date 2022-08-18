@@ -3,7 +3,7 @@ package com.fpolydatn.service.impl;
 import com.fpolydatn.infrastructure.command.canbo.CreateCanBoCommand;
 import com.fpolydatn.infrastructure.command.canbo.UpdateCanBoCommand;
 import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.exception.RestApiException;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.model.entity.CanBoEntity;
 import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.repository.CanBoRepository;
@@ -17,7 +17,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author nguyenvv4

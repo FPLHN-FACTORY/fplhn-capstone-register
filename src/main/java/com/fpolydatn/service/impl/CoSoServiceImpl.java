@@ -3,7 +3,7 @@ package com.fpolydatn.service.impl;
 import com.fpolydatn.infrastructure.command.coso.CreateCoSoCommand;
 import com.fpolydatn.infrastructure.command.coso.UpdateCoSoCommand;
 import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.exception.RestApiException;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.service.CoSoService;
@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author caodinh

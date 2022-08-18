@@ -5,7 +5,6 @@ import com.fpolydatn.infrastructure.command.canbo.UpdateCanBoCommand;
 import com.fpolydatn.model.entity.CanBoEntity;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author nguyenvv4

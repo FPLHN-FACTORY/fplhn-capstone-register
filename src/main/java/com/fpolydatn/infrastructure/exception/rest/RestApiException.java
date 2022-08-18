@@ -1,12 +1,10 @@
-package com.fpolydatn.infrastructure.exception;
+package com.fpolydatn.infrastructure.exception.rest;
 
 import com.fpolydatn.infrastructure.constant.Message;
-import org.springframework.stereotype.Component;
 
 /**
  * @author nguyenvv4
  */
-@Component
 public class RestApiException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

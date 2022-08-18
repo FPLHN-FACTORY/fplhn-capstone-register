@@ -3,7 +3,6 @@ package com.fpolydatn.service;
 import com.fpolydatn.model.entity.DotDangKyEntity;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author thepvph20110
