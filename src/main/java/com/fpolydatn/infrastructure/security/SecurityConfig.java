@@ -27,7 +27,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
+        http.csrf().disable().authorizeRequests()
                 .antMatchers("/", "/login-co-so", "/gv-chon-co-so", "/cb-chon-co-so", "/sv-chon-co-so")
                 .permitAll()
                 .anyRequest()
@@ -44,7 +44,7 @@ public class SecurityConfig {
                         userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), role);
                     }
                 })
-                .and().logout().permitAll();
+                .and().logout().logoutSuccessUrl("/").permitAll();
 
         return http.build();
     }
