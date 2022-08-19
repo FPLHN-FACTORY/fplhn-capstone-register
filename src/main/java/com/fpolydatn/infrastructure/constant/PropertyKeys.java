@@ -5,6 +5,9 @@ package com.fpolydatn.infrastructure.constant;
  */
 public class PropertyKeys {
 
+
+
+
     private PropertyKeys() {
     }
 
@@ -15,7 +18,7 @@ public class PropertyKeys {
     public static final String CAN_BO_NOT_EXIST = "can.bo.not.exist";
     public static final String DOT_DANG_KY_NOT_EXIST = "dot.dang.ky.not.exist";
     public static final String HOC_KY_NOT_EXIST = "hoc.ky.not.exist";
-
     public static final String TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG = "tai.khoan.khong.the.dang.nhap";
-
+    public static final String STUDENT_NOT_EXIST = "Khong tim thay sinh vien nao";
+    public static final String STUDENT_HAVE_GROUP ="Sinh vien nay da co nhom" ;
 }
