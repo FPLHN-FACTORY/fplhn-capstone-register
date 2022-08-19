@@ -1,8 +1,6 @@
 package com.fpolydatn.infrastructure.security;
 
-import com.fpolydatn.model.entity.CoSoEntity;
 import com.fpolydatn.repository.CanBoRepository;
-import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * @author HangNT
@@ -26,26 +24,19 @@ public class UserService {
     @Autowired
     private CanBoRepository canBoRepository;
 
-    @Autowired
-    private CoSoRepository coSoRepository;
-
     public void processOAuthPostLogin(HttpServletResponse response,
                                       String coSoID, String email, String role) throws IOException {
-        Optional<CoSoEntity> coSo = coSoRepository.findById(coSoID);
-        if (!coSo.isPresent()) {
-            response.sendRedirect("/");
-        }
         switch (role.toLowerCase()) {
             case "gv": {
-                if (gvhdRepository.existsByEmailFptAndCoSoId(coSoID, email)) {
-                    response.sendRedirect("/authentication/giao-vien");
+                if (Objects.isNull(gvhdRepository.findGiangVienByEmailAndCoSo(coSoID, email))) {
+                    response.sendRedirect("/authentication/giang-vien");
                 } else {
                     response.sendRedirect("/admin/hoc-ky");
                 }
                 break;
             }
             case "sv": {
-                if (sinhVienRepository.existsByEmailAndCoSoId(coSoID, email)) {
+                if (Objects.isNull(sinhVienRepository.findSinhVienByEmailAndCoSo(coSoID, email))) {
                     response.sendRedirect("/authentication/sinh-vien");
                 } else {
                     response.sendRedirect("/admin/hoc-ky");
@@ -53,7 +44,7 @@ public class UserService {
                 break;
             }
             case "cb": {
-                if (canBoRepository.existsByEmailFptAndCoSoId(coSoID, email)) {
+                if (Objects.isNull(canBoRepository.findCanBoByEmailAndCoSo(coSoID, email))) {
                     response.sendRedirect("/authentication/can-bo");
                 } else {
                     response.sendRedirect("/admin/hoc-ky");

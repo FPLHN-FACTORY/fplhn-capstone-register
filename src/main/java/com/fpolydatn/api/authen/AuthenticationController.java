@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -30,7 +29,7 @@ public final class AuthenticationController {
         return "index";
     }
 
-    @GetMapping("/giao-vien")
+    @GetMapping("/giang-vien")
     public String gvChonCoSo(Model model, HttpSession session) {
         List<CoSoEntity> listCoSo = coSoService.getListCoSo();
         model.addAttribute("listCoSo", listCoSo);

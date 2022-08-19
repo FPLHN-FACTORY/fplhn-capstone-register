@@ -27,7 +27,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf().disable().authorizeRequests()
+        http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/authentication/*")
                 .permitAll()
                 .anyRequest()
@@ -36,6 +36,9 @@ public class SecurityConfig {
                 .oauth2Login()
                 .successHandler((request, response, authentication) -> {
                     DefaultOidcUser oauthUser = (DefaultOidcUser) authentication.getPrincipal();
+                    if (Objects.isNull(oauthUser)) {
+                        response.sendRedirect("/");
+                    }
                     String role = (String) session.getAttribute("role");
                     String coSoID = (String) session.getAttribute("coSoIDSelected");
                     if (Objects.isNull(role) || Objects.isNull(coSoID)) {

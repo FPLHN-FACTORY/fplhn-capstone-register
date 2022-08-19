@@ -2,17 +2,21 @@ package com.fpolydatn.repository;
 
 import com.fpolydatn.model.entity.SinhVienEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 
 /**
  * @author phongtt35
  */
+@Repository
 public interface SinhVienRepository extends JpaRepository<SinhVienEntity, String> {
 
-//    @Query(value = """
-//            SELECT COUNT(1) > 0 FROM sinh_vien sv
-//            WHERE sv.co_so_id=:coSoId AND sv.email=:email
-//           """, nativeQuery = true)
-    boolean existsByEmailAndCoSoId(@Param("coSoId") String id, @Param("email") String email);
+    @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, chuyen_nganh_id, dot_dang_ky_id, email, " +
+            "  khoa, ma_sinh_vien, mon_datn_id, nhom_id, so_dien_thoai, ten_sinh_vien, trang_thai FROM sinh_vien sv " +
+            "   WHERE sv.email =:emailFPT " +
+            "  AND sv.co_so_id = :coSoId", nativeQuery = true)
+    SinhVienEntity findSinhVienByEmailAndCoSo(@Param("coSoId") String id, @Param("emailFPT") String emailFPT);
+
 }
