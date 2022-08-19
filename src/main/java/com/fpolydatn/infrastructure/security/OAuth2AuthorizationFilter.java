@@ -13,19 +13,14 @@ import java.io.IOException;
  * @author HangNT
  */
 @Component
-public class OAuth2AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
+public class OAuth2AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String path = request.getServletPath();
         if (!path.contains("/authentication") || !"/".equals(path)) {
             filterChain.doFilter(request, response);
         }
-//        if (Objects.isNull(authentication)) {
-//            response.sendRedirect("/");
-//            filterChain.doFilter(request,response);
-//        }
     }
 
 }

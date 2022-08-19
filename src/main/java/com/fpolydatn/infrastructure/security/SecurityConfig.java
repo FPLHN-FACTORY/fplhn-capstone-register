@@ -36,9 +36,6 @@ public class SecurityConfig {
                 .oauth2Login()
                 .successHandler((request, response, authentication) -> {
                     DefaultOidcUser oauthUser = (DefaultOidcUser) authentication.getPrincipal();
-                    if (Objects.isNull(oauthUser)) {
-                        response.sendRedirect("/");
-                    }
                     String role = (String) session.getAttribute("role");
                     String coSoID = (String) session.getAttribute("coSoIDSelected");
                     if (Objects.isNull(role) || Objects.isNull(coSoID)) {
@@ -47,6 +44,7 @@ public class SecurityConfig {
                         userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), role);
                     }
                 })
+                .failureUrl("/error")
                 .and().logout().logoutSuccessUrl("/").permitAll();
 
         return http.build();
