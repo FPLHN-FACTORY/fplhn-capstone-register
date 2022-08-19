@@ -2,7 +2,7 @@ package com.fpolydatn.core.common.authen;
 
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.entity.CoSo;
-import com.fpolydatn.service.CoSoService;
+import com.fpolydatn.repository.CoSoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("/authentication")
 public final class AuthenticationController {
     @Autowired
-    private CoSoService coSoService;
+    private CoSoRepository coSoRepository;
 
     @GetMapping
     public String index() {
@@ -31,7 +31,7 @@ public final class AuthenticationController {
 
     @GetMapping("/giang-vien")
     public String gvChonCoSo(Model model, HttpSession session) {
-        List<CoSo> listCoSo = coSoService.getListCoSo();
+        List<CoSo> listCoSo = coSoRepository.findAll();
         model.addAttribute("listCoSo", listCoSo);
         session.setAttribute("role", "gv");
         return "authen/chon-co-so";
@@ -39,7 +39,7 @@ public final class AuthenticationController {
 
     @GetMapping("/sinh-vien")
     public String svChonCoSo(Model model, HttpSession session) {
-        List<CoSo> listCoSo = coSoService.getListCoSo();
+        List<CoSo> listCoSo = coSoRepository.findAll();
         model.addAttribute("listCoSo", listCoSo);
         session.setAttribute("role", "sv");
         return "authen/chon-co-so";
@@ -47,7 +47,7 @@ public final class AuthenticationController {
 
     @GetMapping("/can-bo")
     public String getCoSo(Model model, HttpSession session) {
-        List<CoSo> listCoSo = coSoService.getListCoSo();
+        List<CoSo> listCoSo = coSoRepository.findAll();
         model.addAttribute("listCoSo", listCoSo);
         session.setAttribute("role", "cb");
         return "authen/chon-co-so";

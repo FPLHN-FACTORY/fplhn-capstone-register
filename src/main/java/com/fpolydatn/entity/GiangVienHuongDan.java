@@ -5,6 +5,7 @@ import com.fpolydatn.entity.base.IsBelongToPeriod;
 import com.fpolydatn.entity.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.Column;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Setter
 @Table(name = "giang_vien_huong_dan")
 @Entity
+@ToString
 public class GiangVienHuongDan extends MultiTenantEntity
         implements Serializable, IsBelongToPeriod {
 

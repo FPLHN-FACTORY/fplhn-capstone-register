@@ -2,17 +2,16 @@ package com.fpolydatn.core.admin.repository;
 
 import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
-import com.fpolydatn.entity.HocKy;
+import com.fpolydatn.repository.HocKyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
  * @author phongtt35
  */
-public interface AdHocKyRepository extends JpaRepository<HocKy, String> {
+public interface AdHocKyRepository extends HocKyRepository {
 
     @Query(value = """
         SELECT id, ten_hoc_ky, last_modified_date 

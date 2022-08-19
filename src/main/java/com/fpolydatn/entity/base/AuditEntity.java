@@ -19,9 +19,9 @@ import javax.persistence.MappedSuperclass;
 public abstract class AuditEntity {
 
     @Column(updatable = false)
-    private long createdDate;
+    private Long createdDate;
 
     @Column
-    private long lastModifiedDate;
+    private Long lastModifiedDate;
 
 }
