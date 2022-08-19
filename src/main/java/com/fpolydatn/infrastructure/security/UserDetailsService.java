@@ -21,10 +21,8 @@ import java.net.URI;
 public class UserDetailsService {
     private final OAuth2AuthorizedClientService authorizedClientService;
 
-
     private OAuth2AuthorizedClient createClient(OAuth2AuthenticationToken token){
-        return
-                authorizedClientService.loadAuthorizedClient(
+        return authorizedClientService.loadAuthorizedClient(
                         token.getAuthorizedClientRegistrationId(), token.getPrincipal().getName());
     }
 
@@ -32,8 +30,7 @@ public class UserDetailsService {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION,
                 String.format("Bearer %s",
-                        createClient(token)
-                                .getAccessToken().getTokenValue()));
+                        createClient(token).getAccessToken().getTokenValue()));
         return headers;
     }
 
@@ -49,8 +46,7 @@ public class UserDetailsService {
         RestTemplate restTemplate = new RestTemplate();
 
         RequestEntity<String> request = new RequestEntity<>("", createHeader(token),
-                HttpMethod.GET,
-                getEndpoint(token));
+                HttpMethod.GET, getEndpoint(token));
 
         ResponseEntity<MyUserDetails> response = restTemplate.exchange(request, MyUserDetails.class);
         return response.getBody();
