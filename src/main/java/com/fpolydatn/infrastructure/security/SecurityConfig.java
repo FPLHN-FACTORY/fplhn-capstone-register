@@ -1,12 +1,12 @@
 package com.fpolydatn.infrastructure.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-import org.springframework.security.web.SecurityFilterChain;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+//import org.springframework.security.web.SecurityFilterChain;
 
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
@@ -14,8 +14,8 @@ import java.util.Objects;
 /**
  * @author HangNT
  */
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 public class SecurityConfig {
 
 //    @Autowired
