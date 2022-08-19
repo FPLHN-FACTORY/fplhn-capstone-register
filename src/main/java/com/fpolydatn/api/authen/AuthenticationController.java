@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("authentication")
+@RequestMapping("/authentication")
 public final class AuthenticationController {
     @Autowired
     private CoSoService coSoService;

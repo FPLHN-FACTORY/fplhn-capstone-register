@@ -23,6 +23,7 @@ $("#form_create_hoc_ky").submit(function (event) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
+            // header:""
             url: hocKyApi,
             data: JSON.stringify(hocKyRequest),
             dataType: 'json',
