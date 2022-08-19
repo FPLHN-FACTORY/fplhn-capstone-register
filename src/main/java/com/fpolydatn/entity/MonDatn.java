@@ -1,7 +1,7 @@
-package com.fpolydatn.model.entity;
+package com.fpolydatn.entity;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
-import com.fpolydatn.model.base.MultiTenantEntity;
+import com.fpolydatn.entity.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
@@ -14,18 +14,19 @@ import java.io.Serializable;
 /**
  * @author phongtt35
  */
-
 @Getter
 @Setter
-@Table(name = "chuyen_nganh")
+@Table(name = "mon_datn")
 @Entity
-public class ChuyenNganhEntity extends MultiTenantEntity implements Serializable {
+public class MonDatn extends MultiTenantEntity implements Serializable {
+
+    @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
+    private String maMon;
 
     @Column(length = EntityProperties.LENGTH_NAME, nullable = false)
     @Nationalized
-    private String tenChuyenNganh;
+    private String tenMonDatn;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    private String chuNhiemBoMon;
-
+    private String chuyenNganhId;
 }

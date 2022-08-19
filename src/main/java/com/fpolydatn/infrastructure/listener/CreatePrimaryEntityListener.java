@@ -1,6 +1,6 @@
 package com.fpolydatn.infrastructure.listener;
 
-import com.fpolydatn.model.base.PrimaryEntity;
+import com.fpolydatn.entity.base.PrimaryEntity;
 
 import javax.persistence.PrePersist;
 import java.util.UUID;

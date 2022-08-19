@@ -1,6 +1,6 @@
 package com.fpolydatn.infrastructure.listener;
 
-import com.fpolydatn.model.base.AuditEntity;
+import com.fpolydatn.entity.base.AuditEntity;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;

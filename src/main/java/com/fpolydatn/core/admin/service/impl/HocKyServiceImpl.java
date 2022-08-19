@@ -8,7 +8,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
-import com.fpolydatn.model.entity.HocKyEntity;
+import com.fpolydatn.entity.HocKy;
 import com.fpolydatn.core.admin.service.HocKyService;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +41,14 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public HocKyEntity create(@Valid final CreateHocKyRequest cmd) {
-        HocKyEntity hocKyEntity = formUtils.convertToObject(HocKyEntity.class, cmd);
-        return hocKyRepository.save(hocKyEntity);
+    public HocKy create(@Valid final CreateHocKyRequest cmd) {
+        HocKy hocKy = formUtils.convertToObject(HocKy.class, cmd);
+        return hocKyRepository.save(hocKy);
     }
 
     @Override
     public Boolean delete(final String id) {
-        Optional<HocKyEntity> hocKyCheck = hocKyRepository.findById(id);
+        Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
@@ -57,21 +57,21 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public HocKyEntity update(@Valid final UpdateHocKyRequest cmd) {
-        Optional<HocKyEntity> hocKyCheck = hocKyRepository.findById(cmd.getId());
+    public HocKy update(@Valid final UpdateHocKyRequest cmd) {
+        Optional<HocKy> hocKyCheck = hocKyRepository.findById(cmd.getId());
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
 
-        HocKyEntity hocKyEntity = hocKyCheck.get();
-        hocKyEntity.setTenHocKy(cmd.getTenHocKy());
+        HocKy hocKy = hocKyCheck.get();
+        hocKy.setTenHocKy(cmd.getTenHocKy());
 
-        return hocKyRepository.save(hocKyEntity);
+        return hocKyRepository.save(hocKy);
     }
 
     @Override
-    public HocKyEntity findById(String id) {
-        Optional<HocKyEntity> hocKyCheck = hocKyRepository.findById(id);
+    public HocKy findById(String id) {
+        Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }

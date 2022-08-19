@@ -1,8 +1,8 @@
-package com.fpolydatn.model.entity;
+package com.fpolydatn.entity;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
-import com.fpolydatn.model.base.IsBelongToPeriod;
-import com.fpolydatn.model.base.MultiTenantEntity;
+import com.fpolydatn.entity.base.IsBelongToPeriod;
+import com.fpolydatn.entity.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Setter
 @Table(name = "giang_vien_huong_dan")
 @Entity
-public class GiangVienHuongDanEntity extends MultiTenantEntity
+public class GiangVienHuongDan extends MultiTenantEntity
         implements Serializable, IsBelongToPeriod {
 
     @Column(length = EntityProperties.LENGTH_NAME, nullable = false)

@@ -1,7 +1,7 @@
-package com.fpolydatn.model.entity;
+package com.fpolydatn.entity;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
-import com.fpolydatn.model.base.PrimaryEntity;
+import com.fpolydatn.entity.base.PrimaryEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Setter
 @Table(name = "co_so")
 @Entity
-public class CoSoEntity extends PrimaryEntity implements Serializable {
+public class CoSo extends PrimaryEntity implements Serializable {
 
     @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
     private String maCoSo;

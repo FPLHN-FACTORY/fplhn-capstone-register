@@ -1,7 +1,7 @@
-package com.fpolydatn.model.entity;
+package com.fpolydatn.entity;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
-import com.fpolydatn.model.base.PrimaryEntity;
+import com.fpolydatn.entity.base.PrimaryEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,7 +20,7 @@ import java.io.Serializable;
 @Table(name = "hoc_ky")
 @Entity
 @ToString
-public class HocKyEntity extends PrimaryEntity implements Serializable {
+public class HocKy extends PrimaryEntity implements Serializable {
 
     @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
     @Nationalized

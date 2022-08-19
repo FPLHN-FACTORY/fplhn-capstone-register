@@ -1,4 +1,4 @@
-package com.fpolydatn.model.entity;
+package com.fpolydatn.entity;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Table(name = "phan_cong_huong_dan")
 @Entity
 @IdClass(PhanCongHuongDanId.class)
-public class PhanCongHuongDanEntity implements Serializable {
+public class PhanCongHuongDan implements Serializable {
 
     @Id
     @Column(length = EntityProperties.LENGTH_ID)

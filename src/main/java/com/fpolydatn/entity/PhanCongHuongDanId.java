@@ -1,4 +1,4 @@
-package com.fpolydatn.model.entity;
+package com.fpolydatn.entity;
 
 import lombok.Getter;
 import lombok.Setter;

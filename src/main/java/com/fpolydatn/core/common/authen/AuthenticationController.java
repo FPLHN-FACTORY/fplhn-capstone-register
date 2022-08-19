@@ -1,7 +1,7 @@
 package com.fpolydatn.core.common.authen;
 
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.model.entity.CoSoEntity;
+import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.service.CoSoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,7 @@ public final class AuthenticationController {
 
     @GetMapping("/giang-vien")
     public String gvChonCoSo(Model model, HttpSession session) {
-        List<CoSoEntity> listCoSo = coSoService.getListCoSo();
+        List<CoSo> listCoSo = coSoService.getListCoSo();
         model.addAttribute("listCoSo", listCoSo);
         session.setAttribute("role", "gv");
         return "authen/chon-co-so";
@@ -39,7 +39,7 @@ public final class AuthenticationController {
 
     @GetMapping("/sinh-vien")
     public String svChonCoSo(Model model, HttpSession session) {
-        List<CoSoEntity> listCoSo = coSoService.getListCoSo();
+        List<CoSo> listCoSo = coSoService.getListCoSo();
         model.addAttribute("listCoSo", listCoSo);
         session.setAttribute("role", "sv");
         return "authen/chon-co-so";
@@ -47,7 +47,7 @@ public final class AuthenticationController {
 
     @GetMapping("/can-bo")
     public String getCoSo(Model model, HttpSession session) {
-        List<CoSoEntity> listCoSo = coSoService.getListCoSo();
+        List<CoSo> listCoSo = coSoService.getListCoSo();
         model.addAttribute("listCoSo", listCoSo);
         session.setAttribute("role", "cb");
         return "authen/chon-co-so";

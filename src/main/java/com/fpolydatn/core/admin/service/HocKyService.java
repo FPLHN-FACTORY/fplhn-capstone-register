@@ -5,7 +5,7 @@ import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
 import com.fpolydatn.core.admin.model.request.UpdateHocKyRequest;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.model.entity.HocKyEntity;
+import com.fpolydatn.entity.HocKy;
 
 import javax.validation.Valid;
 
@@ -15,13 +15,13 @@ import javax.validation.Valid;
 
 public interface HocKyService {
 
-    HocKyEntity create(@Valid final CreateHocKyRequest command);
+    HocKy create(@Valid final CreateHocKyRequest command);
 
     Boolean delete(final String id);
 
-    HocKyEntity update(@Valid final UpdateHocKyRequest command);
+    HocKy update(@Valid final UpdateHocKyRequest command);
 
-    HocKyEntity findById(final String id);
+    HocKy findById(final String id);
 
     long getSizeListHocKy(String tenHocKy);
 

@@ -6,6 +6,6 @@ import java.util.UUID;
  * @author phongtt35
  */
 
-public interface IHaveCampus {
+public interface HaveCampus {
     UUID getCoSoId();
 }

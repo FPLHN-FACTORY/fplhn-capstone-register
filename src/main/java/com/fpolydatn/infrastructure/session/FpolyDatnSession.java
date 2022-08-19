@@ -1,22 +1,9 @@
 package com.fpolydatn.infrastructure.session;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpSession;
-
 /**
  * @author phongtt35
  */
+public interface FpolyDatnSession {
 
-@Component
-class FpolyDatnSession implements IFpolyDatnSession {
-
-    @Autowired
-    private HttpSession session;
-
-    @Override
-    public String getCoSoId() {
-        return String.valueOf(session.getAttribute("coSoIDSelected"));
-    }
+    String getCoSoId();
 }
