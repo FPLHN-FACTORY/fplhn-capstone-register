@@ -23,6 +23,7 @@ public class DTSinhVienController extends BaseController {
 
     @GetMapping
     public String findAllSinhVien(Model model,final FindDTSinhVienRequest req) {
+        req.setGetCoSoId(session.getCoSoId());
         PageableObject<DTSinhVienResponse> listSinhVien = sinhVienService.findAllSinhVien(req);
         model.addAttribute("page", listSinhVien);
         return "daotao/sinh-vien";

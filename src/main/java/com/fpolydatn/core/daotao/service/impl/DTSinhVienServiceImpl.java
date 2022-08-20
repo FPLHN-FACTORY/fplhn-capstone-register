@@ -26,12 +26,14 @@ public class DTSinhVienServiceImpl implements DTSinhVienService {
     @Override
     public PageableObject<DTSinhVienResponse> findAllSinhVien(final FindDTSinhVienRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<DTSinhVienResponse> res = sinhVienRepository.findAllSinhVien(pageable);
+        Page<DTSinhVienResponse> res = sinhVienRepository.findAllSinhVien(pageable,request);
         return new PageableObject(res);
     }
 
     @Override
-    public List searchStudent(FindDTSinhVienRequest findDTSinhVienRequest) {
-        return null;
+    public PageableObject<DTSinhVienResponse> searchStudent(final FindDTSinhVienRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Page<DTSinhVienResponse> res = sinhVienRepository.searchStudent(request,pageable);
+        return new PageableObject<>(res);
     }
 }

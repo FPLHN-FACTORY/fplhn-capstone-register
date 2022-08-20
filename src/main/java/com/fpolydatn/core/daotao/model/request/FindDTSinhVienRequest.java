@@ -15,5 +15,6 @@ public class FindDTSinhVienRequest extends PageableRequest {
     private String getTenChuyenNganh;
     private String getTrangThaiNhom;
     private String getTenDotDangKy;
+    private String getCoSoId;
 
 }

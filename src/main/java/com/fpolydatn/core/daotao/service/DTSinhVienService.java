@@ -14,6 +14,6 @@ public interface DTSinhVienService {
 
     PageableObject<DTSinhVienResponse> findAllSinhVien(final FindDTSinhVienRequest request);
 
-    List searchStudent(final  FindDTSinhVienRequest request);
+    PageableObject<DTSinhVienResponse> searchStudent(final  FindDTSinhVienRequest request);
 
 }
