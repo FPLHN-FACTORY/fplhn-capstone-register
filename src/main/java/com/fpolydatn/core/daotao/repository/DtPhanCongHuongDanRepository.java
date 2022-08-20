@@ -20,22 +20,24 @@ import java.util.List;
 public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository {
 
     @Query(value = """
-            SELECT gv.id, gv.ten_gvhd FROM do_an_tot_nghiep.phan_cong_huong_dan pc
+            SELECT ROW_NUMBER() OVER(ORDER BY last_modified_date DESC) AS stt, gv.id, gv.ten_gvhd FROM do_an_tot_nghiep.phan_cong_huong_dan pc
             JOIN do_an_tot_nghiep.giang_vien_huong_dan gv on pc.giang_vien_id = gv.id
             WHERE pc.mon_datn_id = :monID AND
                 ( :#{#req.tenGV} IS NULL 
                     OR :#{#req.tenGV} LIKE '' 
                     OR gv.ten_gvhd LIKE %:#{#req.tenGV}% ) 
                     ORDER BY last_modified_date DESC 
-            """, nativeQuery = true)
+            """,countQuery = """
+            SELECT  COUNT(pc.giang_vien_id) FROM do_an_tot_nghiep.phan_cong_huong_dan pc
+            JOIN do_an_tot_nghiep.giang_vien_huong_dan gv on pc.giang_vien_id = gv.id
+            WHERE pc.mon_datn_id = :monID AND
+                ( :#{#req.tenGV} IS NULL 
+                    OR :#{#req.tenGV} LIKE '' 
+                    OR gv.ten_gvhd LIKE %:#{#req.tenGV}% ) 
+                    ORDER BY last_modified_date DESC 
+            """
+            , nativeQuery = true)
     Page<PhanCongHuongDanResponse> findByName(@Param("monID") String id , @Param("req") FindPhanCongHuongDanRequest req, Pageable page);
-
-    @Query(value = """
-            SELECT COUNT(1) FROM do_an_tot_nghiep.phan_cong_huong_dan pc
-            WHERE ten_hoc_ky LIKE %:tenHocKy% AND
-            pc.mon_datn_id = :monID
-            """, nativeQuery = true)
-    Long countByName(@Param("tenHocKy") String tenHocKy, @Param("monID") String id);
 
     @Query(value = "SELECT a.id, a.created_date, a.last_modified_date, c.ten_co_so,\n" +
             "a.ma_mon, a.ten_mon_datn, b.ten_chuyen_nganh, a.co_so_id, a.chuyen_nganh_id \n" +

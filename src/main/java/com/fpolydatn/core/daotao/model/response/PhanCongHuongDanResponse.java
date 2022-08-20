@@ -10,6 +10,7 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(types = {PhanCongHuongDan.class})
 public interface PhanCongHuongDanResponse {
 
+    Integer getStt();
     @Value("#{target.id}")
     String getId();
 
