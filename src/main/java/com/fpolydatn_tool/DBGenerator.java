@@ -155,19 +155,19 @@ public class DBGenerator implements CommandLineRunner {
         dungna29.setTenGvhd("Nguyễn Anh Dũng");
         dungna29.setId(giangVienHuongDanRepository.save(dungna29).getId());
 
-        // thêm
-        GiangVienHuongDan vinhnv = new GiangVienHuongDan();
-        vinhnv.setEmailFe("vinhnv@fe.edu.vn");
-        vinhnv.setSoDienThoai("0988888888");
-        vinhnv.setTenTaiKhoan("vinhnv");
-        vinhnv.setEmailFpt("vinhnvph23845@fpt.edu.vn");
-        vinhnv.setCoSoId(csHN.getId());
-        vinhnv.setDotDangKyId(dot1.getId());
-        vinhnv.setSoNhomHuongDanToiDa((short)5);
-        vinhnv.setTenTaiKhoan("vinhnv");
-        vinhnv.setTenGvhd("Nguyễn Văn Vinh");
-        vinhnv.setId(giangVienHuongDanRepository.save(vinhnv).getId());
-        //////
+//        // thêm
+//        GiangVienHuongDan vinhnv = new GiangVienHuongDan();
+//        vinhnv.setEmailFe("vinhnv@fe.edu.vn");
+//        vinhnv.setSoDienThoai("0988888888");
+//        vinhnv.setTenTaiKhoan("vinhnv");
+//        vinhnv.setEmailFpt("vinhnvph23845@fpt.edu.vn");
+//        vinhnv.setCoSoId(csHN.getId());
+//        vinhnv.setDotDangKyId(dot1.getId());
+//        vinhnv.setSoNhomHuongDanToiDa((short)5);
+//        vinhnv.setTenTaiKhoan("vinhnv");
+//        vinhnv.setTenGvhd("Nguyễn Văn Vinh");
+//        vinhnv.setId(giangVienHuongDanRepository.save(vinhnv).getId());
+//        //////
         PhanCongHuongDan tienNHJava = new PhanCongHuongDan();
         tienNHJava.setGiangVienId(tiennh21.getId());
         tienNHJava.setMonDatnId(java.getId());

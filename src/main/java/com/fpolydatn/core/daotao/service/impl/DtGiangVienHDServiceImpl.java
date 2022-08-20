@@ -1,14 +1,12 @@
 package com.fpolydatn.core.daotao.service.impl;
 
-import com.fpolydatn.core.admin.model.response.HocKyResponse;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.common.base.PageableRequest;
-import com.fpolydatn.core.daotao.model.request.CreateGiangVienHDRequest;
-import com.fpolydatn.core.daotao.model.request.FindGiangVienHDRequest;
-import com.fpolydatn.core.daotao.model.request.UpdateGiangVienHDRequest;
-import com.fpolydatn.core.daotao.model.response.GiangVienHDResponse;
+import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
+import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
+import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
+import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.reopsitory.DtGiangVienHDRepository;
-import com.fpolydatn.core.daotao.service.GiangVienHDService;
+import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
@@ -27,7 +25,7 @@ import java.util.Optional;
  */
 @Service
 @Validated
-public class GiangVienHDServiceImpl implements GiangVienHDService {
+public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     @Autowired
     private DtGiangVienHDRepository dtGiangVienHDRepository;
@@ -35,7 +33,7 @@ public class GiangVienHDServiceImpl implements GiangVienHDService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public GiangVienHuongDan create(CreateGiangVienHDRequest command) {
+    public GiangVienHuongDan create(DtCreateGiangVienHDRequest command) {
         GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class,command);
         return dtGiangVienHDRepository.save(gvhd);
     }
@@ -51,7 +49,7 @@ public class GiangVienHDServiceImpl implements GiangVienHDService {
     }
 
     @Override
-    public GiangVienHuongDan update(UpdateGiangVienHDRequest command) {
+    public GiangVienHuongDan update(DtUpdateGiangVienHDRequest command) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(command.getId());
         if(!gvhdCheck.isPresent()){
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
@@ -60,6 +58,7 @@ public class GiangVienHDServiceImpl implements GiangVienHDService {
         giangVien.setTenGvhd(command.getTenGvhd());
         giangVien.setSoNhomHuongDanToiDa(command.getSoNhomHuongDanToiDa());
         giangVien.setTenTaiKhoan(command.getTenTaiKhoan());
+        giangVien.setSoDienThoai(command.getSoDienThoai());
         giangVien.setEmailFpt(command.getEmailFpt());
         giangVien.setEmailFe(command.getEmailFe());
         giangVien.setDotDangKyId(command.getDotDangKyId());
@@ -81,9 +80,11 @@ public class GiangVienHDServiceImpl implements GiangVienHDService {
     }
 
     @Override
-    public PageableObject<GiangVienHDResponse> search(final FindGiangVienHDRequest request) {
+    public PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GiangVienHDResponse> res = dtGiangVienHDRepository.findByName(request, pageable);
+        Page<DtGiangVienHDResponse> res = dtGiangVienHDRepository.findByName(request, pageable);
         return new PageableObject<>(res);
     }
+
+
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public final class UpdateGiangVienHDRequest extends BaseGiangVienHDRequest{
+public final class DtUpdateGiangVienHDRequest extends DtBaseGiangVienHDRequest {
 
     private String id;
 

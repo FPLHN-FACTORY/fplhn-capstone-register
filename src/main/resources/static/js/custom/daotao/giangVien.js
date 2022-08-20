@@ -26,38 +26,51 @@ $("#form_create_giang_vien").submit(function (event) {
     giangVienRequest["emailFpt"] = emailFpt;
     giangVienRequest["emailFe"] = emailFe;
     giangVienRequest["dotDangKyId"] = dotDangKyId;
-    giangVienRequest["coSoId"] = coSoId;
 
     let index = 0;
-    if (tenGvhd.length === 0) {
-         $("#errorMessageUpdate").text( " Tên giang viên không được để trống");
-         index++;
-    }
-    if (soNhomHuongDanToiDa.length === 0) {
-          $("#errorMessageUpdate").text( " Số nhóm không được để trống");
-          index++;
-    }
-    if (tenTaiKhoan.length === 0) {
-          $("#errorMessageUpdate").text( " Tên tài khoản không được để trống");
-          index++;
-    }
-    if (soDienThoai.length === 0) {
-          $("#errorMessageUpdate").text( " Số điện thoại không được để trống");
-          index++;
-    }
-    if (emailFpt.length === 0) {
-          $("#errorMessageUpdate").text( " EmailFpt không được để trống");
-          index++;
-    }
-    if (emailFe.length === 0) {
-          $("#errorMessageUpdate").text( " EmailFe không được để trống");
-          index++;
-    }
-    if (dotDangKyId.length === 0) {
-          $("#errorMessageUpdate").text(" Đợt đăng ký không được để trống");
-          index++;
-    }
-    if(index ==0){
+            if (tenGvhd.length === 0) {
+                 $("#errorTenGiangVien").text( " Tên giang viên không được để trống");
+                  index++;
+            }else{
+                 $("#errorTenGiangVien").text( "");
+            }
+            if (soNhomHuongDanToiDa.length === 0) {
+                  $("#errorSoNhomHD").text( " Số nhóm không được để trống");
+                   index++;
+            }else{
+                $("#errorSoNhomHD").text( "");
+            }
+            if (tenTaiKhoan.length === 0) {
+                  $("#errorTenTaiKhoan").text( " Tên tài khoản không được để trống");
+                  index++;
+            }else{
+                $("#errorTenTaiKhoan").text( "");
+            }
+            if (soDienThoai.length === 0) {
+                   $("#errorSDT").text( " Số điện thoại không được để trống");
+                   index++;
+            }else{
+                $("#errorSDT").text( "");
+            }
+            if (emailFpt.length === 0) {
+                   $("#errorEmailFpt").text( " EmailFpt không được để trống");
+                   index++;
+            }else{
+                $("#errorEmailFpt").text( "");
+            }
+            if (emailFe.length === 0) {
+                   $("#errorEmailFe").text( " EmailFe không được để trống");
+                   index++;
+            }else{
+                 $("#errorEmailFe").text( "");
+            }
+            if (dotDangKyId == "Chọn đợt đăng kí") {
+                   $("#errorDotDangKy").text(" Đợt đăng ký không được để trống");
+                   index++;
+            }else{
+                $("#errorDotDangKy").text("");
+            }
+    if(index == 0){
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -75,8 +88,9 @@ $("#form_create_giang_vien").submit(function (event) {
     }
 });
 
-function openModalUpdateGiangVien(giangVienId) {
+function openModalUpdateGiangVien(giangVienId , item ) {
     $("#modal_update_giang_vien").modal('show');
+    $("#update_giang_vien_item").val(item);
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -110,6 +124,7 @@ $("#form_giang_vien_update").submit(function (event) {
         let emailFe = $("#emailFe_update").val();
         let dotDangKyId = $("#dot_dang_ky_update").val();
         let giangVienId = $("#giangVienId").val();
+        let item = $("#update_giang_vien_item").val();
         let giangVienRequest = {};
         giangVienRequest["tenGvhd"] = tenGvhd;
         giangVienRequest["soNhomHuongDanToiDa"] = soNhomHuongDanToiDa;
@@ -118,45 +133,58 @@ $("#form_giang_vien_update").submit(function (event) {
         giangVienRequest["emailFpt"] = emailFpt;
         giangVienRequest["emailFe"] = emailFe;
         giangVienRequest["dotDangKyId"] = dotDangKyId;
-        giangVienRequest["coSoId"] = coSoId;
         let index = 0;
         if (tenGvhd.length === 0) {
-             $("#errorMessageUpdate").text( " Tên giang viên không được để trống");
+             $("#errorTenGiangVienUpdate").text( " Tên giang viên không được để trống");
               index++;
+        }else{
+            $("#errorTenGiangVienUpdate").text( "");
         }
         if (soNhomHuongDanToiDa.length === 0) {
-              $("#errorMessageUpdate").text( " Số nhóm không được để trống");
+              $("#errorSoNhomHDUpdate").text( " Số nhóm không được để trống");
                index++;
+        }else{
+             $("#errorSoNhomHDUpdate").text( "");
         }
         if (tenTaiKhoan.length === 0) {
-              $("#errorMessageUpdate").text( " Tên tài khoản không được để trống");
+              $("#errorTenTaiKhoanUpdate").text( " Tên tài khoản không được để trống");
               index++;
+        }else{
+             $("#errorTenTaiKhoanUpdate").text( "");
         }
         if (soDienThoai.length === 0) {
-               $("#errorMessageUpdate").text( " Số điện thoại không được để trống");
+               $("#errorSDTUpdate").text( " Số điện thoại không được để trống");
                index++;
+        }else{
+             $("#errorSDTUpdate").text( "");
         }
         if (emailFpt.length === 0) {
-               $("#errorMessageUpdate").text( " EmailFpt không được để trống");
+               $("#errorEmailFptUpdate").text( " EmailFpt không được để trống");
                index++;
+        }else{
+             $("#errorEmailFptUpdate").text( "");
         }
         if (emailFe.length === 0) {
-               $("#errorMessageUpdate").text( " EmailFe không được để trống");
+               $("#errorEmailFeUpdate").text( " EmailFe không được để trống");
                index++;
+        }else{
+            $("#errorĐotangKyUpdate").text("");
         }
         if (dotDangKyId.length === 0) {
-               $("#errorMessageUpdate").text(" Đợt đăng ký không được để trống");
+               $("#errorĐotangKyUpdate").text(" Đợt đăng ký không được để trống");
                index++;
+        }else{
+            $("#errorĐotangKyUpdate").text("");
         }
-        if(index ==0) {
+        if(index == 0) {
         $.ajax({
             type: "PUT",
             contentType: "application/json",
-            url: giangVienHuongDanApi + "/" + giangVienId,
+            url: giangVienHuongDanApi + "/" + giangVienId ,
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
-            success: function () {
-                window.open(giangVienHuongDanView, '_self');
+            success: function (responseData) {
+                 loadTable(item);
                 $("#modal_update_giang_vien").modal("hide");
             },
             error: function (e) {
@@ -167,8 +195,9 @@ $("#form_giang_vien_update").submit(function (event) {
 
 });
 
-function openModalRemoveGiangVien(giangVienId) {
+function openModalRemoveGiangVien(giangVienId ,  item) {
     $("#modal_giang_vien_remove").modal('show');
+    $("#remove_giang_vien_item").val(item);
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -187,7 +216,7 @@ function openModalRemoveGiangVien(giangVienId) {
 $("#form_giang_vien_delete").submit(function (event) {
     event.preventDefault();
     let giangVienId = $("#remove_giang_vien").val();
-
+    let item =$("#remove_giang_vien_item").val();
     $.ajax({
         type: "DELETE",
         contentType: "application/json",
@@ -195,7 +224,7 @@ $("#form_giang_vien_delete").submit(function (event) {
         data: JSON.stringify(giangVienId),
         dataType: 'json',
         success: function () {
-            window.open(giangVienHuongDanView, '_self');
+            loadTable(item);
             $("#modal_giang_vien_remove").modal("hide");
         },
         error: function (e) {
@@ -207,16 +236,19 @@ $("#form_giang_vien_delete").submit(function (event) {
 
 $("#searchGvhd").submit(function (event){
     event.preventDefault();
-    let tenGiangVien = $("#tenGiangVien").val();
+    loadTable(0);
+})
 
+function loadTable(count){
+    let tenGiangVien = $("#tenGiangVien").val();
     $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: giangVienHuongDanApi + "/search"+"?tenGiangVien=" + tenGiangVien ,
+            url: giangVienHuongDanApi + "/search"+"?tenGiangVien=" + tenGiangVien + "&page=" + count ,
             dataType: 'json',
             success: function (responseData) {
                console.log(responseData)
-               $("#searchListGvhd").html(responseData.data.map(function (item){
+               $("#searchListGvhd").html(responseData.data.data.data.map(function (item){
                return `
                <tr>
                    <td >${item.stt}</td>
@@ -228,12 +260,40 @@ $("#searchGvhd").submit(function (event){
                    <td >${item.soDienThoai}</td>
                    <td >${item.emailFpt}</td>
                    <td >${item.emailFe}</td>
+                   <td>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        onclick="openModalUpdateGiangVien('${item.id}','${count}')">
+                          Sửa
+                     </button>
+                     </button>
+                     <button
+                         type="button"
+                         class="btn btn-danger"
+                         data-toggle="modal"
+                         onclick="openModalRemoveGiangVien('${item.id}','${count}')">
+                         Xoá
+                     </button>
+                    </td>
+
                </tr>
                `
+               }))
+               $("#page").html(``)
+               $("#page").html(responseData.data.list.map(function(item, index){
+               if(responseData.data.list.length == 1){
+                  return ``
+               }
+                  return `
+                     <li class="page-item">
+                          <a class="page-link" onclick="loadTable('${index}')" >${item}</a>
+                     </li>
+                        `
                }))
             },
             error: function (e) {
                 console.log("ERROR : ", e);
             }
         });
-})
+        }

@@ -3,20 +3,17 @@ package com.fpolydatn.core.daotao.model.response;
 import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.GiangVienHuongDan;
+import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
-
-import java.util.UUID;
 
 /**
  * @author Vinhnv
  */
 @Projection(types = {GiangVienHuongDan.class, DotDangKy.class, CoSo.class})
-public interface GiangVienHDResponse {
+public interface DtGiangVienHDResponse extends IsIdentified {
 
     Integer getSTT();
-
-    UUID getId();
 
     @Value("#{target.ten_co_so}")
     String getTenCoSo();

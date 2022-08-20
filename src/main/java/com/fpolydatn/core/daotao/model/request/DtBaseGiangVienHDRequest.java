@@ -7,21 +7,18 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.UUID;
 
 /**
  * @author Vinhnv
  */
 @Getter
 @Setter
-public abstract class BaseGiangVienHDRequest {
+public abstract class DtBaseGiangVienHDRequest {
 
     @NotEmpty
     @NotBlank
     private String tenGvhd;
 
-    @NotEmpty
-    @NotBlank
     private Short soNhomHuongDanToiDa;
 
     @NotEmpty
