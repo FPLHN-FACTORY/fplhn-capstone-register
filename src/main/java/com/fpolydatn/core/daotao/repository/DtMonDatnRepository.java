@@ -1,7 +1,7 @@
 package com.fpolydatn.core.daotao.repository;
 
-import com.fpolydatn.core.daotao.model.request.FindMonDatnRequest;
-import com.fpolydatn.core.daotao.model.response.MonDatnResponse;
+import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
+import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.repository.MonDatnRepository;
 import org.springframework.data.domain.Page;
@@ -34,7 +34,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                         OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
                 ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
-    Page<MonDatnResponse> findByName(@Param("req") FindMonDatnRequest req, Pageable page);
+    Page<DtMonDatnResponse> findByName(@Param("req") DtFindMonDatnRequest req, Pageable page);
 
     MonDatn findByMaMon(String maMon);
 }

@@ -2,8 +2,8 @@ package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.core.daotao.model.request.CreateMonDatnRequest;
-import com.fpolydatn.core.daotao.model.request.UpdateMonDatnRequest;
+import com.fpolydatn.core.daotao.model.request.DtCreateMonDatnRequest;
+import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,13 +37,13 @@ public class DtMonDatnRestController extends BaseController {
 
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable("id") String id,
-                                        @RequestBody UpdateMonDatnRequest monDatnRequest) {
+                                        @RequestBody DtUpdateMonDatnRequest monDatnRequest) {
         monDatnRequest.setId(id);
         return new ResponseObject(monDatnService.update(monDatnRequest));
     }
 
     @PostMapping
-    public ResponseObject add(@RequestBody CreateMonDatnRequest monDatnRequest) {
+    public ResponseObject add(@RequestBody DtCreateMonDatnRequest monDatnRequest) {
         monDatnRequest.setCoSoId(session.getCoSoId());
         return new ResponseObject(monDatnService.add(monDatnRequest));
         }

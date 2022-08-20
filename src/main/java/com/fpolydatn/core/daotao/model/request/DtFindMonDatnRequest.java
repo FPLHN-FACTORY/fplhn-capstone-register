@@ -1,5 +1,6 @@
 package com.fpolydatn.core.daotao.model.request;
 
+import com.fpolydatn.core.common.base.PageableRequest;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class UpdateMonDatnRequest extends BaseMonDatnRequest {
-    private String id;
+public class DtFindMonDatnRequest extends PageableRequest {
+
     private String coSoId;
+    private String tenMonDatn;
+
 }

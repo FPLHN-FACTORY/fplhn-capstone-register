@@ -8,5 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class CreateChuyenNganhRequest extends BaseChuyenNganhRequest {
+public class DtUpdateChuyenNganhRequest extends DtBaseChuyenNganhRequest {
+
+    private String id;
 }

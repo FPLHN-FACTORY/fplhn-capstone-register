@@ -1,10 +1,10 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.CreateMonDatnRequest;
-import com.fpolydatn.core.daotao.model.request.FindMonDatnRequest;
-import com.fpolydatn.core.daotao.model.request.UpdateMonDatnRequest;
-import com.fpolydatn.core.daotao.model.response.MonDatnResponse;
+import com.fpolydatn.core.daotao.model.request.DtCreateMonDatnRequest;
+import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
+import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
+import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.entity.MonDatn;
@@ -33,9 +33,9 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     private FormUtils formUtils = new FormUtils();
     @Override
-    public PageableObject<MonDatnResponse> search(@Valid final FindMonDatnRequest req) {
+    public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
-        Page<MonDatnResponse> res = monDatnRepository.findByName(req, pageable);
+        Page<DtMonDatnResponse> res = monDatnRepository.findByName(req, pageable);
         return new PageableObject(res);
     }
 
@@ -59,7 +59,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
-    public MonDatn update(@Valid final UpdateMonDatnRequest command) {
+    public MonDatn update(@Valid final DtUpdateMonDatnRequest command) {
         Optional<MonDatn> monDatnCheck = monDatnRepository.findById(command.getId());
         if (!monDatnCheck.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
@@ -71,7 +71,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
-    public Boolean add(@Valid final CreateMonDatnRequest command) {
+    public Boolean add(@Valid final DtCreateMonDatnRequest command) {
         MonDatn monDatn = formUtils.convertToObject(MonDatn.class, command);
         MonDatn monDatnInDb = monDatnRepository.findByMaMon(monDatn.getMaMon());
         if (!Objects.isNull(monDatnInDb)) {

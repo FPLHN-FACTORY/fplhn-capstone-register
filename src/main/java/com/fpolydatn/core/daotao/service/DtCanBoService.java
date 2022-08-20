@@ -1,6 +1,6 @@
 package com.fpolydatn.core.daotao.service;
 
-import com.fpolydatn.core.daotao.model.response.TenCanBoResponse;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface DtCanBoService {
 
-    List<TenCanBoResponse> getTenCanBo();
+    List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
 }

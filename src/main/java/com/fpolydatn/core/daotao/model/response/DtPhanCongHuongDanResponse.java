@@ -9,7 +9,7 @@ import org.springframework.data.rest.core.config.Projection;
  * @author huynq
  */
 @Projection(types = {PhanCongHuongDan.class})
-public interface PhanCongHuongDanResponse extends IsIdentified {
+public interface DtPhanCongHuongDanResponse extends IsIdentified {
 
     Integer getStt();
 

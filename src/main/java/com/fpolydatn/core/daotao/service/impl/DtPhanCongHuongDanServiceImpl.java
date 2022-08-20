@@ -1,10 +1,10 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.FindPhanCongHuongDanRequest;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanGiaoVienResponse;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanMonDatnResponse;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanResponse;
+import com.fpolydatn.core.daotao.model.request.DtFindPhanCongHuongDanRequest;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanGiaoVienResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanMonDatnResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.core.daotao.repository.DtPhanCongHuongDanRepository;
 import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
 import com.fpolydatn.entity.PhanCongHuongDan;
@@ -30,14 +30,14 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     private DtPhanCongHuongDanRepository phanCongHuongDanRepository;
 
     @Override
-    public PageableObject<PhanCongHuongDanResponse> search(String id, final FindPhanCongHuongDanRequest req) {
+    public PageableObject<DtPhanCongHuongDanResponse> search(String id, final DtFindPhanCongHuongDanRequest req) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
-        Page<PhanCongHuongDanResponse> res = phanCongHuongDanRepository.findByName(id, req, pageable);
+        Page<DtPhanCongHuongDanResponse> res = phanCongHuongDanRepository.findByName(id, req, pageable);
         return new PageableObject(res);
     }
 
     @Override
-    public PhanCongHuongDanMonDatnResponse getMon(String id) {
+    public DtPhanCongHuongDanMonDatnResponse getMon(String id) {
         return phanCongHuongDanRepository.getMon(id);
     }
 
@@ -61,7 +61,7 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
-    public List<PhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(String coSoId, String maMonId) {
+    public List<DtPhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(String coSoId, String maMonId) {
         return phanCongHuongDanRepository.getPhanCongGiaoVien(coSoId, maMonId);
     }
 

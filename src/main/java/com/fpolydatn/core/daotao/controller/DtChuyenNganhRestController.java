@@ -2,8 +2,8 @@ package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.core.daotao.model.request.CreateChuyenNganhRequest;
-import com.fpolydatn.core.daotao.model.request.UpdateChuyenNganhRequest;
+import com.fpolydatn.core.daotao.model.request.DtCreateChuyenNganhRequest;
+import com.fpolydatn.core.daotao.model.request.DtUpdateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.ChuyenNganh;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class DtChuyenNganhRestController extends BaseController {
     }
 
     @PostMapping
-    public ResponseObject add(@RequestBody CreateChuyenNganhRequest request){
+    public ResponseObject add(@RequestBody DtCreateChuyenNganhRequest request){
         String coSoId = session.getCoSoId();
         request.setCoSoId(coSoId);
         ChuyenNganh chuyenNganh = chuyenNganhService.add(request);
@@ -46,7 +46,7 @@ public class DtChuyenNganhRestController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseObject update(@PathVariable("id") String id, @RequestBody UpdateChuyenNganhRequest request){
+    public ResponseObject update(@PathVariable("id") String id, @RequestBody DtUpdateChuyenNganhRequest request){
         request.setId(id);
         return new ResponseObject(chuyenNganhService.update(request));
     }

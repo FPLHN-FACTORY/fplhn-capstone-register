@@ -1,10 +1,10 @@
 package com.fpolydatn.core.daotao.service;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.FindPhanCongHuongDanRequest;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanGiaoVienResponse;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanMonDatnResponse;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanResponse;
+import com.fpolydatn.core.daotao.model.request.DtFindPhanCongHuongDanRequest;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanGiaoVienResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanMonDatnResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.entity.PhanCongHuongDan;
 
 import javax.validation.Valid;
@@ -15,15 +15,15 @@ import java.util.List;
  */
 public interface DtPhanCongHuongDanService {
 
-    PageableObject<PhanCongHuongDanResponse> search(String id, final FindPhanCongHuongDanRequest req);
+    PageableObject<DtPhanCongHuongDanResponse> search(String id, final DtFindPhanCongHuongDanRequest req);
 
-    PhanCongHuongDanMonDatnResponse getMon(String id);
+    DtPhanCongHuongDanMonDatnResponse getMon(String id);
 
     PhanCongHuongDan findId(String id);
 
     Boolean delete(String id);
 
-    List<PhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(String coSoId, String maMonId);
+    List<DtPhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(String coSoId, String maMonId);
 
     PhanCongHuongDan add(@Valid PhanCongHuongDan phanCongHuongDan);
 

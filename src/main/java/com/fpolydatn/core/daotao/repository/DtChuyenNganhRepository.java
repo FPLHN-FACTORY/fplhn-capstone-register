@@ -7,8 +7,8 @@ import com.fpolydatn.repository.ChuyenNganhRepository;
  * @author hungpv
  */
 
-import com.fpolydatn.core.daotao.model.request.FindChuyenNganhRequest;
-import com.fpolydatn.core.daotao.model.response.ChuyenNganhResponse;
+import com.fpolydatn.core.daotao.model.request.DtFindChuyenNganhRequest;
+import com.fpolydatn.core.daotao.model.response.DtChuyenNganhResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -33,6 +33,6 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
                         OR ten_chuyen_nganh LIKE %:#{#req.tenChuyenNganh}% ) 
                 ORDER BY cn.last_modified_date DESC
             """, nativeQuery = true)
-    Page<ChuyenNganhResponse> findByName(@Param("req")FindChuyenNganhRequest req, Pageable page);
+    Page<DtChuyenNganhResponse> findByName(@Param("req") DtFindChuyenNganhRequest req, Pageable page);
 
 }

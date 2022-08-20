@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public final class FindPhanCongHuongDanRequest extends PageableRequest {
+public final class DtFindPhanCongHuongDanRequest extends PageableRequest {
 
     private String tenGV;
 }

@@ -1,9 +1,10 @@
 package com.fpolydatn.core.daotao.service.impl;
 
-import com.fpolydatn.core.daotao.model.response.TenCanBoResponse;
-import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.repository.CanBoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,11 @@ import java.util.List;
 public class DtCanBoServiceImpl implements DtCanBoService {
 
     @Autowired
-    private DtCanBoRepository canBoRepository;
+    @Qualifier(CanBoRepository.NAME)
+    private CanBoRepository canBoRepository;
 
     @Override
-    public List<TenCanBoResponse> getTenCanBo() {
-        return canBoRepository.findCanBoByVaiTro();
+    public List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro) {
+        return canBoRepository.findAllSimpleEntityByTenCanBo(id,vaiTro);
     }
 }

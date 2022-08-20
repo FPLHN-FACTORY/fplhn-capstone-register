@@ -1,9 +1,9 @@
 package com.fpolydatn.core.daotao.repository;
 
-import com.fpolydatn.core.daotao.model.request.FindPhanCongHuongDanRequest;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanGiaoVienResponse;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanMonDatnResponse;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanResponse;
+import com.fpolydatn.core.daotao.model.request.DtFindPhanCongHuongDanRequest;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanGiaoVienResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanMonDatnResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.repository.PhanCongHuongDanRepository;
 import org.springframework.data.domain.Page;
@@ -36,7 +36,7 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
                     ORDER BY last_modified_date DESC 
             """
             , nativeQuery = true)
-    Page<PhanCongHuongDanResponse> findByName(@Param("monID") String id, @Param("req") FindPhanCongHuongDanRequest req, Pageable page);
+    Page<DtPhanCongHuongDanResponse> findByName(@Param("monID") String id, @Param("req") DtFindPhanCongHuongDanRequest req, Pageable page);
 
     @Query(value = """
             SELECT a.id, a.created_date, a.last_modified_date, c.ten_co_so,
@@ -45,7 +45,7 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
                         JOIN do_an_tot_nghiep.chuyen_nganh b ON a.chuyen_nganh_id = b.id
                         JOIN do_an_tot_nghiep.co_so c ON a.co_so_id = c.id
                         WHERE a.id = :maMonId""", nativeQuery = true)
-    PhanCongHuongDanMonDatnResponse getMon(@Param("maMonId") String maMonId);
+    DtPhanCongHuongDanMonDatnResponse getMon(@Param("maMonId") String maMonId);
 
     @Query(value = """
             SELECT a.giang_vien_id, a.mon_datn_id
@@ -62,5 +62,5 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
             HAVING COUNT(c.giang_vien_id) <= gv.so_nhom_huong_dan_toi_da)
             """
             , nativeQuery = true)
-    List<PhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(@Param("coSoId") String coSoId, @Param("maMonId") String maMonId);
+    List<DtPhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(@Param("coSoId") String coSoId, @Param("maMonId") String maMonId);
 }

@@ -2,8 +2,8 @@ package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.FindMonDatnRequest;
-import com.fpolydatn.core.daotao.model.response.MonDatnResponse;
+import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
+import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -27,13 +27,13 @@ public class DtMonDatnController extends BaseController {
     @Autowired
     private DtChuyenNganhService chuyenNganhService;
     @GetMapping
-    public String viewMonDatn(Model model, final FindMonDatnRequest req){
+    public String viewMonDatn(Model model, final DtFindMonDatnRequest req){
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        PageableObject<MonDatnResponse>pageMonDatn = monDatnService.search(req);
+        PageableObject<DtMonDatnResponse>pageMonDatn = monDatnService.search(req);
         List<SimpleEntityProj>listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
-        return "/daotao/mon-datn";
+        return "/daotao/dt-mon-datn";
     }
 }

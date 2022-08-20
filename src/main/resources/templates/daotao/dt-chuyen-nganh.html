@@ -117,8 +117,8 @@
                                                                         <select id="tenCNBMhAdd" class="combobox">
                                                                             <option value="0" hidden></option>
                                                                             <option th:each="canBo : ${listCanBo}"
-                                                                                    th:value="${canBo.getId()}"
-                                                                                    th:text="${canBo.getTenCanBo()}"></option>
+                                                                                    th:value="${canBo.id}"
+                                                                                    th:text="${canBo.name}"></option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -237,8 +237,8 @@
                             <label class="col-form-label">Chủ nhiệm bộ môn: </label>
                             <select id="tenCNBMhUpdate" class="combobox">
                                 <option th:each="canBo : ${listCanBo}"
-                                        th:value="${canBo.getId()}"
-                                        th:text="${canBo.getTenCanBo()}"></option>
+                                        th:value="${canBo.id}"
+                                        th:text="${canBo.name}"></option>
                             </select>
                         </div>
                     </div>

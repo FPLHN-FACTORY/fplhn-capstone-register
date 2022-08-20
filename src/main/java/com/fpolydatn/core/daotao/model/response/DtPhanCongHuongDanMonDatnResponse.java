@@ -9,7 +9,7 @@ import org.springframework.data.rest.core.config.Projection;
  * @author huynq
  */
 @Projection(types = {MonDatn.class})
-public interface PhanCongHuongDanMonDatnResponse extends IsIdentified {
+public interface DtPhanCongHuongDanMonDatnResponse extends IsIdentified {
 
     @Value("#{target.created_date}")
     String getCreateDate();

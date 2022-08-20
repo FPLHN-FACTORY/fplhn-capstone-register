@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @Getter
 @Setter
-public abstract class BaseChuyenNganhRequest {
+public abstract class DtBaseChuyenNganhRequest {
 
     private String coSoId;
 

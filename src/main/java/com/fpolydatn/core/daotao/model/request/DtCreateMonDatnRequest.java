@@ -11,13 +11,11 @@ import javax.validation.constraints.NotEmpty;
  */
 @Getter
 @Setter
-public abstract class BaseMonDatnRequest {
+public class DtCreateMonDatnRequest extends DtBaseMonDatnRequest {
     @NotEmpty
     @NotBlank
-    private String maMon;
+    private String chuyenNganhId;
 
-    @NotEmpty
-    @NotBlank
-    private String tenMonDatn;
+    private String coSoId;
 
 }

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @Getter
 @Setter
-public abstract class BasePhanCongHuongDanRequest {
+public abstract class DtBasePhanCongHuongDanRequest {
 
     @NotEmpty()
     @NotBlank()

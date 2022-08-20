@@ -11,7 +11,7 @@ import org.springframework.data.rest.core.config.Projection;
  * @author hoangnt
  */
 @Projection(types = { ChuyenNganh.class, CoSo.class, CanBo.class})
-public interface ChuyenNganhResponse extends IsIdentified {
+public interface DtChuyenNganhResponse extends IsIdentified {
 
     Integer getStt();
 

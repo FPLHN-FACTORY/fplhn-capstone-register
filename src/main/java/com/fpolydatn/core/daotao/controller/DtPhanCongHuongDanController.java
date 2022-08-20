@@ -2,10 +2,10 @@ package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.FindPhanCongHuongDanRequest;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanGiaoVienResponse;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanMonDatnResponse;
-import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanResponse;
+import com.fpolydatn.core.daotao.model.request.DtFindPhanCongHuongDanRequest;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanGiaoVienResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanMonDatnResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,20 +28,20 @@ public final class DtPhanCongHuongDanController extends BaseController {
 
     @GetMapping("/{id}")
     public String viewPhanCongHuongDan(Model model
-                                        , final FindPhanCongHuongDanRequest req
+                                        , final DtFindPhanCongHuongDanRequest req
                                         , @PathVariable("id") String id) {
-        PageableObject<PhanCongHuongDanResponse> listPhanCong = phanCongHuongDanService.search(id, req);
-        for (PhanCongHuongDanResponse a : listPhanCong.getData()
+        PageableObject<DtPhanCongHuongDanResponse> listPhanCong = phanCongHuongDanService.search(id, req);
+        for (DtPhanCongHuongDanResponse a : listPhanCong.getData()
         ) {
             System.out.println(a.getTenGV());
         }
-        PhanCongHuongDanMonDatnResponse monDatnResponse = phanCongHuongDanService.getMon(id);
-        List<PhanCongHuongDanGiaoVienResponse> phanCongHuongDanGiaoViens = phanCongHuongDanService.getPhanCongGiaoVien(monDatnResponse.getCoSoId(), id);
+        DtPhanCongHuongDanMonDatnResponse monDatnResponse = phanCongHuongDanService.getMon(id);
+        List<DtPhanCongHuongDanGiaoVienResponse> phanCongHuongDanGiaoViens = phanCongHuongDanService.getPhanCongGiaoVien(monDatnResponse.getCoSoId(), id);
 
         model.addAttribute("page", listPhanCong);
         model.addAttribute("monDatn", monDatnResponse);
         model.addAttribute("phanCongHuongDanGiaoViens", phanCongHuongDanGiaoViens);
-        return "daotao/phan-cong-huong-dan";
+        return "daotao/dt-phan-cong-huong-dan";
     }
 
 }

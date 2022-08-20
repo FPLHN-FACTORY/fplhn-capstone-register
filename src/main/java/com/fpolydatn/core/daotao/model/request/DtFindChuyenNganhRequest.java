@@ -5,13 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author hungpv
+ * @author hoangnt
  */
 @Getter
 @Setter
-public class FindMonDatnRequest extends PageableRequest {
+public class DtFindChuyenNganhRequest extends PageableRequest {
 
     private String coSoId;
-    private String tenMonDatn;
-
+    private String tenChuyenNganh;
 }
