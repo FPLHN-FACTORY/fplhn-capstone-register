@@ -20,5 +20,4 @@ public abstract class BaseMonDatnRequest {
     @NotBlank
     private String tenMonDatn;
 
-    private String coSoId;
 }
