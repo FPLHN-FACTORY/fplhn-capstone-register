@@ -31,8 +31,50 @@
             <!-- END: Subheader -->
             <div>
                 <div class="m-content">
-                    <h3>Quản lý Môn DATN</h3>
+                    <h3>Quản lý chuyên ngành</h3>
                     <div class="mt-5">
+                        <section class="fillter-area  mb-5">
+                            <div class="m-portlet">
+                                <div class="m-portlet__head">
+                                    <div class="m-portlet__head-caption">
+                                        <div class="m-portlet__head-title">
+                                <span class="m-portlet__head-icon">
+                                    <i class="m-menu__link-icon flaticon-web"></i>
+                                </span>
+                                            <h3 class="m-portlet__head-text">
+                                                Bộ lọc
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form
+                                        th:action="@{/dao-tao/chuyen-nganh}"
+                                        method="GET"
+                                        class="m-portlet__body">
+                                    <div class="row">
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Tên chuyên ngành</span>
+                                            <input type="text" class="form-control col-8"
+                                                   name="tenChuyenNganh" id="ten-chuyen-nganh-search" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center pt-2">
+                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                        </div>
+                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                            <a href="#"
+                                               class="btn btn-danger text-white" onclick="clearData();">
+                                                Làm mới bộ lọc
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
@@ -41,7 +83,7 @@
                                             <button data-toggle="modal"
                                                     data-target="#modal_create"
                                                     class="col-12 col-sm-8 col-md-4 btn btn-success">
-                                                Tạo môn
+                                                Thêm chuyên ngành
                                             </button>
                                             <div class="modal fade "
                                                  id="modal_create"
@@ -50,10 +92,10 @@
                                                  aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
-                                                        <form id="form_create_mon_datn">
+                                                        <form id="form_create_chuyen_nganh">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Tạo
-                                                                    môn </h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Thêm chuyên
+                                                                    ngành</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
@@ -61,38 +103,32 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label class="col-form-label">Mã môn</label>
+                                                                    <label class="col-form-label">Chuyên ngành</label>
                                                                     <input
                                                                             type="text"
                                                                             class="form-control"
-                                                                            id="maMon">
-                                                                    <label class="col-form-label">Tên môn</label>
-                                                                    <input
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="tenMonDatn">
+                                                                            id="tenChuyenNganhAdd">
+                                                                    <span class="text-danger"
+                                                                          id="chuyen_nganh_error"></span>
+                                                                </div>
+                                                                <div class="form-group">
                                                                     <div>
-                                                                        <label class="col-form-label">Chuyên
-                                                                            ngành: </label>
-                                                                        <select id="chuyenNganh" class="combobox">
+                                                                        <label class="col-form-label">Chủ nhiệm bộ môn: </label>
+                                                                        <select id="tenCNBMhAdd" class="combobox">
                                                                             <option value="0" hidden></option>
-                                                                            <div th:each="chuyenNganh : ${tenChuyenNganh}">
-                                                                                <option th:value="${chuyenNganh.id}"
-                                                                                        th:text="${chuyenNganh.name}"></option>
-                                                                            </div>
+                                                                            <option th:each="canBo : ${listCanBo}"
+                                                                                    th:value="${canBo.getId()}"
+                                                                                    th:text="${canBo.getTenCanBo()}"></option>
                                                                         </select>
                                                                     </div>
-                                                                    <span class="text-danger"
-                                                                          id="mon_datn_error"></span>
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Hủy
-                                                                </button>
-                                                                <button type="submit" class="btn btn-primary">Thêm mới
-                                                                </button>
-                                                            </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">Hủy
+                                                                    </button>
+                                                                    <button type="submit" class="btn btn-primary">Thêm mới
+                                                                    </button>
+                                                                </div>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -106,40 +142,30 @@
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead>
                                                 <th width="50px">STT</th>
-                                                <th width="200px">Mã môn</th>
-                                                <th width="200px">Tên môn</th>
-                                                <th width="200px">Giảng viên</th>
-                                                <th width="200px">CN bộ môn</th>
+                                                <th width="200px">Tên Chuyên Ngành</th>
+                                                <th width="200px">Tên Cơ Sở</th>
+                                                <th width="200px">Tên CNBM</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
                                                 <tbody>
-                                                <th:block th:each="monDatn,i : ${page.data}">
+                                                <th:block th:each="chuyenNganh,i : ${page.data}">
                                                     <tr>
-                                                        <td th:text="${monDatn.stt}"></td>
-                                                        <td th:text="${monDatn.maMon}"></td>
-                                                        <td th:text="${monDatn.tenMon}"></td>
-                                                        <td>
-                                                            <a
-                                                                    type="button"
-                                                                    class="btn btn-primary"
-                                                                    th:href="@{'/dao-tao/mon-datn/'+ ${monDatn.getId()}}">
-                                                                Chi tiết giảng viên
-                                                            </a>
-                                                        </td>
-                                                        <td th:text="${monDatn.chuNhiemBoMon}"></td>
+                                                        <td th:text="${chuyenNganh.getStt()}"></td>
+                                                        <td th:text="${chuyenNganh.getTenChuyenNganh()}"></td>
+                                                        <td th:text="${chuyenNganh.getTenCoSo()}"></td>
+                                                        <td th:text="${chuyenNganh.getTenCanBo()}"></td>
                                                         <td>
                                                             <button
                                                                     type="button"
                                                                     class="btn btn-primary"
-                                                                    th:attr="onclick=|openModalUpdateMonDatn('${monDatn.getId()}')|">
+                                                                    th:attr="onclick=|openModalUpdateChuyenNganh('${chuyenNganh.getId()}')|">
                                                                 Sửa
-                                                            </button>
                                                             </button>
                                                             <button
                                                                     type="button"
                                                                     class="btn btn-danger"
                                                                     data-toggle="modal"
-                                                                    th:attr="onclick=|openModalRemoveMonDatn('${monDatn.getId()}')|">
+                                                                    th:attr="onclick=|openModalRemoveChuyenNganh('${chuyenNganh.getId()}')|">
                                                                 Xoá
                                                             </button>
                                                         </td>
@@ -153,7 +179,7 @@
                                                     <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                         <li class="page-item">
                                                             <a class="page-link"
-                                                               th:href="@{/dao-tao/mon-datn?page={page.currentPage}(page.currentPage=${i}-1)}"
+                                                               th:href="@{/dao-tao/chuyen-nganh?page={page.currentPage}(page.currentPage=${i}-1)}"
                                                                th:text="${i}">
                                                             </a>
                                                         </li>
@@ -180,43 +206,43 @@
 <div
         class="modal fade"
         tabindex="-1"
-        id="modal_update_mon_datn"
+        id="modal_update_chuyen_nganh"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true">
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
-            <form id="form_mon_datn_update">
+            <form id="form_chuyen_nganh_update">
                 <div class="modal-header">
                     <h5 class="modal-title">Cập
-                        nhật mon DATN</h5>
+                        nhật chuyên ngành</h5>
                     <button type="button" class="close"
                             data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <span id="id_mon_datn_update" style="color:red;"></span>
-
+                    <span id="id_chuyen_nganh_update" style="color:red;"></span>
                     <div class="form-group">
-                        <label
-                                class="col-form-label">Mã môn</label>
+                        <label class="col-form-label">Chuyên ngành</label>
                         <input
                                 type="text"
                                 class="form-control"
-                                id="ma_mon_datn_update"/>
-                        <br>
-                        <label
-                                class="col-form-label">Tên môn</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="ten_mon_datn_update"/>
+                                id="tenChuyenNganhUpdate">
                         <span class="text-danger"
-                              id="errorMessageUpdate"></span>
+                              id="chuyennganh_error"></span>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <label class="col-form-label">Chủ nhiệm bộ môn: </label>
+                            <select id="tenCNBMhUpdate" class="combobox">
+                                <option th:each="canBo : ${listCanBo}"
+                                        th:value="${canBo.getId()}"
+                                        th:text="${canBo.getTenCanBo()}"></option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
                             data-dismiss="modal">Hủy
@@ -234,16 +260,16 @@
 <!--  Start Modal Remove-->
 <div
         class="modal fade"
-        id="modal_mon_datn_remove"
+        id="modal_chuyen_nganh_remove"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true">
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
-            <form id="form_mon_datn_delete">
+            <form id="form_chuyen_nganh_delete">
                 <div class="modal-header">
-                    <h5 class="modal-title">Xoá môn DATN</h5>
+                    <h5 class="modal-title">Xoá chuyên ngành</h5>
                     <button type="button" class="close"
                             data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -251,7 +277,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Bạn có muốn xoá không ?</p>
-                    <span id="remove_mon_datn" style="color:red;"></span>
+                    <span id="remove_chuyen_nganh" style="color:red;"></span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
@@ -272,6 +298,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script th:src="@{/js/custom/daotao/monDatn.js}" type="text/javascript"></script>
+<script th:src="@{/js/custom/daotao/dtChuyenNganh.js}" type="text/javascript"></script>
 </body>
 </html>
