@@ -55,6 +55,7 @@ public class MonDatnRestController extends BaseController {
     @PostMapping
     public ResponseObject add(Model model, @RequestBody CreateMonDatnRequest monDatnRequest) {
         Boolean add = false;
+        monDatnRequest.setCoSoId(session.getCoSoId());
         try {
             add = monDatnService.create(monDatnRequest);
             return new ResponseObject(add);
