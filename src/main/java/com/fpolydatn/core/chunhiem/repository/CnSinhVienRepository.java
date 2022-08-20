@@ -28,7 +28,7 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
             JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id 
             WHERE e.id = :#{#req.idNhom} AND a.co_so_id = :#{#req.coSoId} ORDER BY ten_sinh_vien """,
             countQuery = """ 
-                    SELECT count(a.id) FROM sinh_vien a
+                    SELECT COUNT(a.id) FROM sinh_vien a
                     JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
                     JOIN mon_datn c ON c.id = a.mon_datn_id
                     JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id
@@ -68,16 +68,20 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
     LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
     LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
     LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
-    WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId} ORDER BY ten_sinh_vien
+    WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId} 
+    AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
+    OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%) ORDER BY ten_sinh_vien
     """,countQuery = """
-    SELECT COUNT(a.ma_sinh_vien)
+    SELECT COUNT(a.id)
     FROM sinh_vien a
     LEFT JOIN chuyen_nganh b  ON b.id = a.chuyen_nganh_id
     LEFT JOIN mon_datn c ON c.id = a.mon_datn_id
     LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
     LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
     LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
-    WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId} ORDER BY ten_sinh_vien
+    WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId}
+    AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
+    OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%) ORDER BY ten_sinh_vien
      """,nativeQuery = true)
     Page<CnSinhVienTheoDotResponse> searchSinhVien(@Param("req") CnFindSinhVienTheoDotRequest req, Pageable page);
 

@@ -36,6 +36,6 @@ public class CnNhomDatnController extends BaseController {
         List<SimpleEntityProj> listTenChuyenNganh = chuyenNganhService.listTenChuyenNganh(coSoId);
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listTenChuyenNganh", listTenChuyenNganh);
-        return "chunhiem/nhom-datn";
+        return "chunhiem/cn-nhom-datn";
     }
 }

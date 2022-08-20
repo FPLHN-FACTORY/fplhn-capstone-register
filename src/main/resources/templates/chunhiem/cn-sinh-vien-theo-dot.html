@@ -48,29 +48,30 @@
                                     </div>
                                 </div>
                                 <form
-                                       id ="search"
+                                        id="search"
                                         class="m-portlet__body">
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center ">
                                             <span for="" class="fillter-name col-4 text-right">Tên sinh viên</span>
-                                            <input oninput="searchByTenSinhVien()" type="text" class="form-control col-10 "
-                                                   name="tenHocKy" id="ten-hoc-ky" value="">
+                                            <input type="text" class="form-control col-10 "
+                                                   name="tenHocKy" oninput="loadDataToTable(0)" id="ten-hoc-ky"
+                                                   value="">
                                             <button type="submit" class="btn btn-primary ml-3">Tìm kiếm</button>
                                         </div>
                                     </div>
 
-<!--                                    <div class="row justify-content-center pt-2">-->
-<!--                                        <div class="col-sm-2 col-12 text-center mt-2">-->
-<!--                                           -->
-<!--                                        </div>-->
-<!--&lt;!&ndash;                                        <div class="col-sm-2 col-12 text-center mt-2">&ndash;&gt;-->
-<!--&lt;!&ndash;                                            <a href="#"&ndash;&gt;-->
-<!--&lt;!&ndash;                                               class="btn btn-danger text-white" onclick="clearData();">&ndash;&gt;-->
-<!--&lt;!&ndash;                                                Làm mới bộ lọc&ndash;&gt;-->
-<!--&lt;!&ndash;                                            </a>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        </div>&ndash;&gt;-->
-<!--                                    </div>-->
+                                    <!--                                    <div class="row justify-content-center pt-2">-->
+                                    <!--                                        <div class="col-sm-2 col-12 text-center mt-2">-->
+                                    <!--                                           -->
+                                    <!--                                        </div>-->
+                                    <!--&lt;!&ndash;                                        <div class="col-sm-2 col-12 text-center mt-2">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;                                            <a href="#"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;                                               class="btn btn-danger text-white" onclick="clearData();">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;                                                Làm mới bộ lọc&ndash;&gt;-->
+                                    <!--&lt;!&ndash;                                            </a>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;                                        </div>&ndash;&gt;-->
+                                    <!--                                    </div>-->
                                 </form>
                             </div>
                         </section>
@@ -80,11 +81,18 @@
                                 <div class="m-portlet__body">
                                     <div class="row">
                                         <div class="col-6 d-inline">
-<!--                                            <button data-toggle="modal"-->
-<!--                                                    data-target="#modal_create"-->
-<!--                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">-->
-<!--                                                Thêm sinh viên-->
-<!--                                            </button>-->
+                                            <!--                                            <button data-toggle="modal"-->
+                                            <!--                                                    data-target="#modal_create"-->
+                                            <!--                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">-->
+                                            <!--                                                Thêm sinh viên-->
+                                            <!--                                            </button>-->
+                                            <a href="/chu-nhiem/nhom-datn">
+                                                <button
+                                                        class="col-12 col-sm-8 col-md-4 btn btn-success">
+
+                                                    Trở lại
+                                                </button>
+                                            </a>
                                             <div class="modal fade "
                                                  id="modal_create"
                                                  tabindex="-1"
@@ -140,20 +148,21 @@
                                                 <th>Tên đề tài</th>
                                                 <th>Tên giáo viên hướng dẫn</th>
                                                 </thead>
-                                                <tbody id="print">
+                                                <tbody id="listSV">
                                                 <th:block th:each="sinhVien,i : ${page.data}">
-                                                    <tr >
+                                                    <tr>
                                                         <td th:text="${sinhVien.stt}"></td>
                                                         <td th:text="${sinhVien.maSinhVien}"></td>
                                                         <td th:text="${sinhVien.tenSinhVien}"></td>
                                                         <td th:text="${sinhVien.tenChuyenNganh}"></td>
                                                         <td th:text="${sinhVien.maMon}"></td>
-                                                        <td  th:switch="${sinhVien.maNhom}">
+                                                        <td th:switch="${sinhVien.maNhom}">
                                                             <button th:case=null
                                                                     data-toggle="modal"
-                                                                    th:attr="onclick=|openModalRemoveNhom('${sinhVien.maSinhVien}')|"
+                                                                    th:attr="onclick=|openModalAddSinhVien('${sinhVien.maSinhVien}','${page.currentPage}')|"
                                                                     class=" btn btn-success">
-                                                            Thêm nhóm</button>
+                                                                Thêm nhóm
+                                                            </button>
                                                             <p th:case="*" th:text="${sinhVien.maNhom}"></p>
                                                         </td>
                                                         <td th:text="${sinhVien.tenDeTai}==null?'Chưa có':${sinhVien.tenDeTai}"></td>
@@ -163,8 +172,9 @@
                                                 </tbody>
                                             </table>
                                             <!-- Paging-->
-                                            <nav id="pageing" th:if="${page.totalPages > 1}" aria-label="Page navigation">
-                                                <ul class="pagination justify-content-end">
+                                            <nav id="pageing" th:if="${page.totalPages > 1}"
+                                                 aria-label="Page navigation">
+                                                <ul class="pagination justify-content-end" id="page">
                                                     <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                         <li class="page-item">
                                                             <a class="page-link" id="currentPage"
@@ -176,8 +186,10 @@
                                                 </ul>
                                             </nav>
                                         </div>
-                                        <div th:if="${page.data.isEmpty()}">
-                                            <h3>Không có dữ liệu</h3>
+                                        <div id="empty">
+                                            <div th:if="${page.data.isEmpty()}">
+                                                <h3>Không có dữ liệu</h3>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -211,6 +223,7 @@
                     <div class="form-group">
                         <label class="col-form-label">Mã nhóm</label>
                         <span id="addSinhVienTheoNhom" style="color:red;"></span>
+                        <span id="currentPaging" style="color:red;"></span>
                         <input
                                 type="text"
                                 class="form-control"

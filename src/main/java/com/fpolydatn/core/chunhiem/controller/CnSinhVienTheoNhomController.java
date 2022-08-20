@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/chu-nhiem/sinh-vien")
@@ -19,14 +21,14 @@ public class CnSinhVienTheoNhomController extends BaseController {
     private CnSinhVienTheoNhomService sinhVienTheoNhomService;
 
     @GetMapping
-    public String viewSinhVienTheoNhom(Model model, final CnFindSinhVienTheoNhomRequest req) {
-        req.setIdNhom("428a005e-0418-49b1-ad1e-fb379e62a81d");
+    public String viewSinhVienTheoNhom(Model model, @RequestParam("id") String id, final CnFindSinhVienTheoNhomRequest req) {
         String coSoId = session.getCoSoId();
+        req.setIdNhom(id);
         req.setCoSoId(coSoId);
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         model.addAttribute("page", pageSinhVien);
         model.addAttribute("idNhom",req.getIdNhom());
-        return "chunhiem/sinh-vien-theo-nhom";
+        return "chunhiem/cn-sinh-vien-theo-nhom";
     }
 
 }

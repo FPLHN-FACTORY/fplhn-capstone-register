@@ -31,9 +31,16 @@ function loadDataNhomDatn(count) {
             + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
+            console.log(responseData)
             let array = responseData.data.data.data
-            $("#listNhomDatn").html(array.map(function (item) {
-                return `
+            if (array.length == 0) {
+                $("#listNhomDatn").html(``)
+                $("#page").html(``)
+                $("#empty").html(`<h3>Không có dữ liệu</h3>`)
+            } else {
+                $("#empty").html(``)
+                $("#listNhomDatn").html(array.map(function (item) {
+                    return `
                 <tr>
                 <td>${item.stt}</td>
                 <td>${item.tenNhom}</td>
@@ -48,20 +55,18 @@ function loadDataNhomDatn(count) {
                 <td><button style="${item.trangThai == 2 ? 'display : none' : 'display : block'}" type="button" class="btn btn-danger text-white" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">Xóa</button>
                 </tr>
                 `
-            }))
-            $("#page").html(``)
-            $("#page").html(
-                responseData.data.list.map(function (item, index) {
-                    if (responseData.data.list.length == 1) {
-                        return ``
-                    }
-                    return `<li class="page-item" >
+                }))
+                $("#page").html(``)
+                $("#page").html(
+                    responseData.data.list.map(function (item, index) {
+                        if (responseData.data.list.length == 1) {
+                            return ``
+                        }
+                        return `<li class="page-item" >
                                 <a class="page-link" onclick="loadDataNhomDatn(${index})">${item}</a>
                             </li>`
-                })
-            )
-            if (array.isEmpty()) {
-                $("#empty").html(`aaaaa`)
+                    })
+                )
             }
         },
         error: function (e) {
@@ -89,7 +94,6 @@ function CNChotDuLieu(id, count) {
         });
     }
 }
-
 
 function openModalRemoveNhomDatn(id, count) {
     $("#modal_nhom_datn_remove").modal('show');

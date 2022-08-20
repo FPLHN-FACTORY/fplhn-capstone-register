@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class ApiResponse<T> {
+public class CnApiResponse<T> {
 
     PageableObject<T> data;
 

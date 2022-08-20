@@ -16,12 +16,12 @@ $("#form_create_ma_nhom").submit(function (event) {
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: sinhVienApi + "/addSinhVien?idNhom=" + idNhom + "&maSinhVien=" + maSinhVien,
+        url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + maSinhVien,
         data: JSON.stringify(maSinhVien,idNhom),
         success: function (responseData) {
             console.log(responseData)
             if (responseData.data==true) {
-                window.open(sinhVienTheoNhomView+ "?idNhom=" + idNhom, '_self');
+                window.open(sinhVienTheoNhomView+ "?id=" + idNhom, '_self');
             } else alert(responseData.data.message)
         },
         error: function (responseData) {
@@ -44,7 +44,7 @@ $("#form_hoc_ky_delete").submit(function (event) {
         contentType: "application/json",
         url: sinhVienApi + "/" + maSinhVien,
         success: function () {
-            window.open(sinhVienTheoNhomView+ "?idNhom=" + idNhom, '_self');
+            window.open(sinhVienTheoNhomView+ "?id=" + idNhom, '_self');
         },
         error: function (e) {
             console.log("ERROR : ", e);

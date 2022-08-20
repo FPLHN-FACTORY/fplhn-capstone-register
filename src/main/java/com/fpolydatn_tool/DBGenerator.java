@@ -1,7 +1,5 @@
 package com.fpolydatn_tool;
 
-import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.TrangThaiNhom;
-import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.VaiTro;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.CoSo;
@@ -12,6 +10,8 @@ import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
+import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.repository.CanBoRepository;
 import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.repository.CoSoRepository;

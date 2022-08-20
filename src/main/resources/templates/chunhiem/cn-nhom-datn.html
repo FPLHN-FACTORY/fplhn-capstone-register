@@ -53,25 +53,30 @@
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Tên nhóm:</span>
-                                            <input type="text" oninput="loadDataNhomDatn(0)" class="form-control col-7" name="tenNhom" id="tenNhom"
+                                            <input type="text" oninput="loadDataNhomDatn(0)" class="form-control col-7"
+                                                   name="tenNhom" id="tenNhom"
                                                    value="">
                                         </div>
                                         <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Chuyên ngành:</span>
-                                            <select onchange="loadDataNhomDatn(0)" class="form-control col-7" id="chuyenNganhId" name="tenChuyenNganh">
+                                            <select onchange="loadDataNhomDatn(0)" class="form-control col-7"
+                                                    id="chuyenNganhId" name="tenChuyenNganh">
                                                 <option value="" hidden>Chọn chuyên ngành</option>
-                                                <option th:each="item : ${listTenChuyenNganh}" th:value="${item.getId()}" th:text="${item.getName()}"></option>
+                                                <option th:each="item : ${listTenChuyenNganh}"
+                                                        th:value="${item.getId()}" th:text="${item.getName()}"></option>
                                             </select>
                                         </div>
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Tên GVHD:</span>
-                                            <input oninput="loadDataNhomDatn(0)" type="text" class="form-control col-7" name="tenNhom" id="tenGvhd"
+                                            <input oninput="loadDataNhomDatn(0)" type="text" class="form-control col-7"
+                                                   name="tenNhom" id="tenGvhd"
                                                    value="">
                                         </div>
                                         <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Trạng thái:</span>
-                                            <select class="form-control col-7" onchange="loadDataNhomDatn(0)" id="trangThai" name="trangThai">
+                                            <select class="form-control col-7" onchange="loadDataNhomDatn(0)"
+                                                    id="trangThai" name="trangThai">
                                                 <option value="" hidden>Trạng thái</option>
                                                 <option value="0">Chưa chốt đề tài</option>
                                                 <option value="1">Giáo viên đã chốt</option>
@@ -107,6 +112,10 @@
                                                     class="col-12 col-sm-8 col-md-4 btn btn-success">
                                                 Tạo nhóm
                                             </button>
+                                            <a th:href="@{/chu-nhiem/sinh-vien-dot-dang-ky}"
+                                               class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                Danh sách sinh viên theo đợt
+                                            </a>
                                             <div class="modal fade "
                                                  id="modal_create"
                                                  tabindex="-1"
@@ -149,52 +158,58 @@
                                     </div>
                                     <div class="table-responsive mt-3">
                                         <div th:unless="${page.data.isEmpty()}">
-                                        <table id="custom-table"
-                                               class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
-                                            <thead>
-                                            <th width="50px">STT</th>
-                                            <th>Tên nhóm</th>
-                                            <th>Tên đề tài</th>
-                                            <th>Chuyên ngành</th>
-                                            <th>Số lượng thành viên</th>
-                                            <th>Trưởng nhóm</th>
-                                            <th>GVHD</th>
-                                            <th>Trạng thái</th>
-                                            <th>Chi tiết nhóm</th>
-                                            <th>Chốt đề tài</th>
-                                            <th>Xóa</th>
-                                            <!--                                            <th width="200px">Chức năng</th>-->
-                                            </thead>
-                                            <tbody id="listNhomDatn">
-                                            <th:block th:each="nhomDatn : ${page.data}">
-                                                <tr>
-                                                    <td th:text="${nhomDatn.getStt()}"></td>
-                                                    <td th:text="${nhomDatn.getTenNhom()}"></td>
-                                                    <td th:text="${nhomDatn.getTenDeTai()}"></td>
-                                                    <td th:text="${nhomDatn.getTenChuyenNganh()}"></td>
-                                                    <td th:text="${nhomDatn.getTotal()}"></td>
-                                                    <td th:text="${nhomDatn.getMaSinhVien()}"></td>
-                                                    <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></td>
-                                                    <td th:text="${nhomDatn.getTrangThai()}==0?'Chưa chốt đề tài':(${nhomDatn.getTrangThai()}==1?'Giáo viên đã chốt':'CNBM đã chốt')"></td>
-                                                    <td>
-                                                        <a class="btn btn-primary"  th:href="@{/chu-nhiem/sinh-vien(idNhom=${nhomDatn.getId()})}">Chi tiết nhóm</a>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" th:style="${nhomDatn.getTrangThai()}==1?'display: block':'display: none'"
-                                                                th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">Chốt đề tài
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger text-white" th:style="${nhomDatn.getTrangThai()}==2?'display: none':'display: block'"
-                                                                th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">Xóa
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </th:block>
-                                            </tbody>
-                                        </table>
+                                            <table id="custom-table"
+                                                   class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                                <thead>
+                                                <th width="50px">STT</th>
+                                                <th>Tên nhóm</th>
+                                                <th>Tên đề tài</th>
+                                                <th>Chuyên ngành</th>
+                                                <th>Số lượng thành viên</th>
+                                                <th>Trưởng nhóm</th>
+                                                <th>GVHD</th>
+                                                <th>Trạng thái</th>
+                                                <th>Chi tiết nhóm</th>
+                                                <th>Chốt đề tài</th>
+                                                <th>Xóa</th>
+                                                <!--                                            <th width="200px">Chức năng</th>-->
+                                                </thead>
+                                                <tbody id="listNhomDatn">
+                                                <th:block th:each="nhomDatn : ${page.data}">
+                                                    <tr>
+                                                        <td th:text="${nhomDatn.getStt()}"></td>
+                                                        <td th:text="${nhomDatn.getTenNhom()}"></td>
+                                                        <td th:text="${nhomDatn.getTenDeTai()}"></td>
+                                                        <td th:text="${nhomDatn.getTenChuyenNganh()}"></td>
+                                                        <td th:text="${nhomDatn.getTotal()}"></td>
+                                                        <td th:text="${nhomDatn.getMaSinhVien()}"></td>
+                                                        <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></td>
+                                                        <td th:text="${nhomDatn.getTrangThai()}==0?'Chưa chốt đề tài':(${nhomDatn.getTrangThai()}==1?'Giáo viên đã chốt':'CNBM đã chốt')"></td>
+                                                        <td>
+                                                            <a class="btn btn-primary"
+                                                               th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}">Chi
+                                                                tiết nhóm</a>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary"
+                                                                    th:style="${nhomDatn.getTrangThai()}==1?'display: block':'display: none'"
+                                                                    th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                Chốt đề tài
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger text-white"
+                                                                    th:style="${nhomDatn.getTrangThai()}==2?'display: none':'display: block'"
+                                                                    th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                Xóa
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
 
-                                        <!-- Paging-->
+                                            <!-- Paging-->
                                             <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
                                                 <ul class="pagination justify-content-end" id="page">
                                                     <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
@@ -208,8 +223,10 @@
                                                 </ul>
                                             </nav>
                                         </div>
-                                        <div th:if="${page.data.isEmpty()}" id="empty">
-                                            <h3>Không có dữ liệu</h3>
+                                        <div id="empty">
+                                            <div th:if="${page.data.isEmpty()}">
+                                                <h3>Không có dữ liệu</h3>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

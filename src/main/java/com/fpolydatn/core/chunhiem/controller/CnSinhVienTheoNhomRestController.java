@@ -28,7 +28,7 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
         }
     }
     @PostMapping("/addSinhVien")
-    public ResponseObject addSinhVienByNhom(@RequestParam("idNhom") String idNhom, @RequestParam("maSinhVien") String maSinhVien) {
+    public ResponseObject addSinhVienByNhom(@RequestParam("id") String idNhom, @RequestParam("maSinhVien") String maSinhVien) {
         boolean add = false;
         try {
             add = sinhVienTheoNhomService.addSinhVienTheoNhom(idNhom, maSinhVien);
