@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/dao-tao/giang-vien-huong-dan")
-public class GiangVienRestController extends BaseController {
+public class DtGiangVienRestController extends BaseController {
 
     @Autowired
     private DtGiangVienHDService giangVienHDService;

@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/dao-tao/giang-vien-huong-dan")
-public class GiangVienController extends BaseController {
+public class DtGiangVienController extends BaseController {
 
     @Autowired
     private DtGiangVienHDService giangVienHDService;
@@ -35,6 +35,6 @@ public class GiangVienController extends BaseController {
         List<SimpleEntityProj> listDotDangKy = dangKyService.findAllSimpleEntity(coSoid);
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("page",listGiangVien);
-        return "daotao/giang-vien-huong-dan";
+        return "daotao/dt-giang-vien-huong-dan";
     }
 }
