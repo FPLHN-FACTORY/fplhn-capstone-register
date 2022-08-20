@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
 @Projection(types = {NhomDatn.class, SinhVien.class})
-public interface NhomSinhVienResponse {
+public interface SvNhomSinhVienResponse {
 
     @Value("#{target.stt}")
     String getStt();

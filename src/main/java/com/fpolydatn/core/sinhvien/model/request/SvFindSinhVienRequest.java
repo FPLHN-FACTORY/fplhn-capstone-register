@@ -1,4 +1,4 @@
-package com.fpolydatn.core.giangvien.model.request;
+package com.fpolydatn.core.sinhvien.model.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public final class UpdateNhomDatnRequest {
+public final class SvFindSinhVienRequest {
 
     private String maNhom;
 

@@ -1,7 +1,7 @@
 package com.fpolydatn.core.giangvien.repository;
 
-import com.fpolydatn.core.giangvien.model.request.FindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.response.NhomDatnResponse;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +39,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
                            OR ten_dot_dang_ky LIKE %:#{#request.tenDotDangKy}% )\s
             GROUP BY nd.id
             """, nativeQuery = true)
-    Page<NhomDatnResponse> fillAllNhomDatn(@Param("request")  FindNhomDatnRequest request, Pageable page);
+    Page<GvNhomDatnResponse> fillAllNhomDatn(@Param("request") GvFindNhomDatnRequest request, Pageable page);
 
     @Query(value = """
             SELECT  ten_dot_dang_ky

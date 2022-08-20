@@ -63,7 +63,7 @@ function chotDuLieu(maNhom) {
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: nhomDatnAPI + "/" + maNhom,
+        url: nhomDatnAPI + "?maNhom=" + maNhom,
         success: function () {
             window.location.reload(true);
         },

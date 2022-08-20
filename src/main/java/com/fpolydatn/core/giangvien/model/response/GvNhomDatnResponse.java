@@ -12,7 +12,7 @@ import org.springframework.data.rest.core.config.Projection;
  */
 
 @Projection(types = {NhomDatn.class, SinhVien.class, ChuyenNganh.class, GiangVienHuongDan.class})
-public interface NhomDatnResponse {
+public interface GvNhomDatnResponse {
 
     @Value("#{target.stt}")
     Integer getStt();
