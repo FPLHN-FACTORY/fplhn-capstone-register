@@ -7,6 +7,7 @@ import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanResponse;
 import com.fpolydatn.entity.PhanCongHuongDan;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -24,6 +25,6 @@ public interface DtPhanCongHuongDanService {
 
     List<PhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(String coSoId, String maMonId);
 
-    PhanCongHuongDan add(PhanCongHuongDan phanCongHuongDan);
+    PhanCongHuongDan add(@Valid PhanCongHuongDan phanCongHuongDan);
 
 }

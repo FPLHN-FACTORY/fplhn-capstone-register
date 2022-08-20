@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,7 +66,7 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
-    public PhanCongHuongDan add(PhanCongHuongDan phanCongHuongDan) {
+    public PhanCongHuongDan add(@Valid PhanCongHuongDan phanCongHuongDan) {
         return phanCongHuongDanRepository.save(phanCongHuongDan);
     }
 
