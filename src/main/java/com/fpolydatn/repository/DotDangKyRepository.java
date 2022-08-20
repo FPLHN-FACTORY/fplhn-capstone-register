@@ -18,7 +18,7 @@ public interface DotDangKyRepository extends JpaRepository<DotDangKy, String> {
     public static final String NAME = "BaseDotDangKyRepository";
 
     @Query(value = """
-            SELECT id, ten_dot_dang_ky AS 'name' FROM hoc_ky
+            SELECT id, ten_dot_dang_ky AS 'name' FROM dot_dang_ky
             WHERE co_so_id = :coSoId
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntity(@Param("coSoId") String coSoId);
