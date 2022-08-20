@@ -1,5 +1,7 @@
 const giangVienHuongDanApi = '/api/dao-tao/giang-vien-huong-dan';
 const giangVienHuongDanView = '/dao-tao/giang-vien-huong-dan';
+const regexFE = new RegExp('[a-z0-9]+@fe.edu.vn');
+const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
 
 $(document).ready(function () {
     $("#giang_vien_error").text("");
@@ -52,18 +54,27 @@ $("#form_create_giang_vien").submit(function (event) {
             }else{
                 $("#errorSDT").text( "");
             }
+
             if (emailFpt.length === 0) {
                    $("#errorEmailFpt").text( " EmailFpt không được để trống");
                    index++;
-            }else{
-                $("#errorEmailFpt").text( "");
+            }else if (regexFPT.test(emailFpt) == false) {
+                   $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
+                   check = false;
+             }else{
+                   $("#errorEmailFpt").text( "");
             }
+
             if (emailFe.length === 0) {
                    $("#errorEmailFe").text( " EmailFe không được để trống");
+                   index++;
+            } else if (regexFE.test(emailFe) == false) {
+                   $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
                    index++;
             }else{
                  $("#errorEmailFe").text( "");
             }
+
             if (dotDangKyId == "Chọn đợt đăng kí") {
                    $("#errorDotDangKy").text(" Đợt đăng ký không được để trống");
                    index++;
@@ -158,18 +169,27 @@ $("#form_giang_vien_update").submit(function (event) {
         }else{
              $("#errorSDTUpdate").text( "");
         }
+
         if (emailFpt.length === 0) {
-               $("#errorEmailFptUpdate").text( " EmailFpt không được để trống");
-               index++;
+              $("#errorEmailFptUpdate").text( " EmailFpt không được để trống");
+              index++;
+        }else if (regexFPT.test(emailFpt) == false) {
+              $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
+              check = false;
         }else{
-             $("#errorEmailFptUpdate").text( "");
+              $("#errorEmailFptUpdate").text( "");
         }
+
         if (emailFe.length === 0) {
-               $("#errorEmailFeUpdate").text( " EmailFe không được để trống");
+              $("#errorEmailFeUpdate").text( " EmailFe không được để trống");
+                           index++;
+        } else if (regexFE.test(emailFe) == false) {
+              $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
                index++;
         }else{
-            $("#errorĐotangKyUpdate").text("");
+               $("#errorEmailFeUpdate").text( "");
         }
+
         if (dotDangKyId.length === 0) {
                $("#errorĐotangKyUpdate").text(" Đợt đăng ký không được để trống");
                index++;
