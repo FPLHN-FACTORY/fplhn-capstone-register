@@ -58,8 +58,7 @@ public class GiangVienRestController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseObject search (@RequestParam(value = ("tenGiangVien") ,defaultValue = "") String tenGiangVien,
-                                 final DtFindGiangVienHDRequest rep){
+    public ResponseObject search ( final DtFindGiangVienHDRequest rep){
         DtApiResponse<DtGiangVienHDResponse> apiResponse = new DtApiResponse<>();
         PageableObject<DtGiangVienHDResponse> listGiangVienHD = giangVienHDService.search(rep);
         apiResponse.setData(listGiangVienHD);
