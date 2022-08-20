@@ -14,11 +14,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import com.fpolydatn.repository.ChuyenNganhRepository;
-import com.fpolydatn.repository.DotDangKyRepository;
-import com.fpolydatn.repository.HocKyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -66,8 +62,8 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public List<SimpleEntityProj> getListDotDangKy() {
-        return dotDangKyRepository.findAllSimpleEntity();
+    public List<SimpleEntityProj> getListDotDangKy(String coSoId) {
+        return dotDangKyRepository.findAllSimpleEntity(coSoId);
     }
 
     @Override

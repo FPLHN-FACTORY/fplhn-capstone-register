@@ -18,15 +18,15 @@ $(document).ready(function () {
 function fillter(){
 
     $('#tenChuyenNganh').change(function (){
-        seachNhomdatn();
+        seachNhomdatn(0);
     })
 
     $("#tenHocKy").on('change', function (){
-        seachNhomdatn();
+        seachNhomdatn(0);
     });
 
     $("#tenDotDangKy").on('change', function (){
-        seachNhomdatn();
+        seachNhomdatn(0);
     });
 
 }
@@ -40,7 +40,6 @@ function showDetail(maNhom) {
             url: nhomDatnAPI + "?maNhom=" + maNhom,
             dataType: 'json',
             success: function (responseData) {
-                console.log(responseData)
                 $("#table_body_dssv").html(responseData.data.map(function (item) {
                     return `
                     <tr>
@@ -65,15 +64,22 @@ function chotDuLieu(maNhom) {
         contentType: "application/json",
         url: nhomDatnAPI + "?maNhom=" + maNhom,
         success: function () {
-            window.location.reload(true);
+            var index = $("#currentPage").text()
+            seachNhomdatn(index)
         },
         error: function (e) {
             console.log("ERROR : ", e);
         }
     });
 }
+$("#form_list_giang_vien").submit(function (event){
+    event.preventDefault();
+})
 
-function seachNhomdatn() {
+function seachNhomdatn(index) {
+    if(index == undefined){
+        index =0
+    }
     let tenChuyenNganh = $("#tenChuyenNganh").val()
     let tenHocKy = $("#tenHocKy").val()
     let tenDotDangKy = $("#tenDotDangKy").val()
@@ -81,10 +87,9 @@ function seachNhomdatn() {
         type: "GET",
         contentType: "application/json",
         url: nhomDatnAPI + "/search" + "?chuyenNganhId=" + tenChuyenNganh
-            + "&hocKyId=" + tenHocKy + "&dotDangKyId=" + tenDotDangKy,
+            + "&hocKyId=" + tenHocKy + "&dotDangKyId=" + tenDotDangKy + "&page="+index,
         success: function (responseData) {
-            console.log(responseData)
-            $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
+            $("#list_nhom_datn").html(responseData.listNhomDatn.data.map(function (item) {
                 return `
                 <tr>
                 <td>${item.stt}</td>
@@ -114,9 +119,19 @@ function seachNhomdatn() {
                 </tr>
                 `
             }))
+            $("#page").html(``)
+            $("#page").html(
+                responseData.list.map(function (item, index){
+                    if(responseData.list.length == 1){
+                        return ``
+                    }
+                    return `<li class="page-item" >
+                                <a class="page-link" onclick="seachNhomdatn(${index})">${item +1}</a>
+                            </li>`
+                })
+            )
         },
         error: function (e) {
-            console.log(e)
             console.log("ERROR : ", e);
         }
     });

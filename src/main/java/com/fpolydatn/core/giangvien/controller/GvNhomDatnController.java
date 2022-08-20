@@ -29,7 +29,7 @@ public class GvNhomDatnController extends BaseController {
     public String viewNhomDatn(final GvFindNhomDatnRequest request, Model model) {
         String coSoId = session.getCoSoId();
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
-        List<SimpleEntityProj> listDotDangKy = nhomDatnService.getListDotDangKy();
+        List<SimpleEntityProj> listDotDangKy = nhomDatnService.getListDotDangKy(coSoId);
         List<SimpleEntityProj> listChuyenNganh = nhomDatnService.getListChuyenNganh(coSoId);
         List<SimpleEntityProj> listHocKy =  nhomDatnService.getListHocKy();
         model.addAttribute("page", listNhomDatn);
