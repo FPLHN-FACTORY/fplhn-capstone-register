@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * @author HangNT
  */
-@Configuration
+//@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
