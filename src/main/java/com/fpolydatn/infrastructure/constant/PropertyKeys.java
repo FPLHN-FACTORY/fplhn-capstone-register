@@ -16,6 +16,7 @@ public class PropertyKeys {
     public static final String DOT_DANG_KY_NOT_EXIST = "dot.dang.ky.not.exist";
     public static final String HOC_KY_NOT_EXIST = "hoc.ky.not.exist";
     public static final String MON_DATN_NOT_EXIST = "hoc.ky.not.exist";
+    public static final String PHAN_CONG_HUONG_DAN_NOT_EXIST = "phan.cong.huong.dan.not.exist";
     public static final String TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG = "tai.khoan.khong.the.dang.nhap";
     public static final String MON_DATN_ALREADY_EXIST = "mon.datn.already.exist";
 
