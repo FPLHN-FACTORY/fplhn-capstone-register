@@ -62,8 +62,8 @@ $("#form_dot_dang_ky_update").submit(function (event) {
             data: JSON.stringify(dotDangKyRequest),
             dataType: 'json',
             success: function () {
-                // window.open(dotDangKyView, '_self');
-                location.reload()
+                window.open(dotDangKyView, '_self');
+                // location.reload();
                 $("#modal_update_dot_dang_ky").modal("hide");
             },
             error: function (e) {
@@ -101,8 +101,8 @@ $("#form_create_dot_dang_ky").submit(function (event) {
             data: JSON.stringify(dotDangKyRequest),
             dataType: 'json',
             success: function (responseData) {
-                // window.open(dotDangKyView, '_self');
-                location.reload();
+                window.open(dotDangKyView, '_self');
+                // location.reload();
                 $("#modal_create").modal("hide");
             },
             error: function (e) {

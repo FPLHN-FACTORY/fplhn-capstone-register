@@ -18,4 +18,6 @@ public class PropertyKeys {
 
     public static final String TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG = "tai.khoan.khong.the.dang.nhap";
 
+    public static final String GIANG_VIEN_HUONG_DAN_EXIST = "giang.vien.huong.dan.exist";
+
 }

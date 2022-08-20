@@ -12,6 +12,7 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.HocKy;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -71,5 +73,10 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
         return dotDangKyCheck.get();
+    }
+
+    @Override
+    public List<SimpleEntityProj> findAllSimpleEntity(String coSoId) {
+        return dtDotDangKyRepository.findAllSimpleEntity(coSoId);
     }
 }
