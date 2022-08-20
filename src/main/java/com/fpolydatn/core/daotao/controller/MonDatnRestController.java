@@ -57,6 +57,8 @@ public class MonDatnRestController extends BaseController {
         Boolean add = false;
         monDatnRequest.setCoSoId(session.getCoSoId());
         try {
+            String coSoId = session.getCoSoId();
+            monDatnRequest.setCoSoId(coSoId);
             add = monDatnService.create(monDatnRequest);
             return new ResponseObject(add);
         } catch (Exception e) {
