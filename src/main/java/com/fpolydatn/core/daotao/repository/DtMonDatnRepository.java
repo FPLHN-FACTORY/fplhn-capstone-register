@@ -20,7 +20,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 JOIN mon_datn m on m.chuyen_nganh_id = cn.id 
-                WHERE m.co_so_id = :coSoId and
+                WHERE m.co_so_id = :#{#req.coSoId} and
                     ( :#{#req.tenMonDatn} IS NULL 
                         OR :#{#req.tenMonDatn} LIKE '' 
                         OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
@@ -30,13 +30,13 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 JOIN mon_datn m on m.chuyen_nganh_id = cn.id 
-                WHERE m.co_so_id = :coSoId and
+                WHERE m.co_so_id = :#{#req.coSoId} and
                     ( :#{#req.tenMonDatn} IS NULL 
                         OR :#{#req.tenMonDatn} LIKE '' 
                         OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
                 ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
-    Page<MonDatnResponse> findByName(@Param("req") FindMonDatnRequest req, Pageable page, @Param("coSoId") String coSoId);
+    Page<MonDatnResponse> findByName(@Param("req") FindMonDatnRequest req, Pageable page);
 
     MonDatn findByMaMon(String maMon);
 }

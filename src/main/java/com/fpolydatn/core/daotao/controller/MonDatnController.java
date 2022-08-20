@@ -29,7 +29,8 @@ public class MonDatnController extends BaseController {
     @GetMapping
     public String viewMonDatn(Model model, final FindMonDatnRequest req){
         String coSoId = session.getCoSoId();
-        PageableObject<MonDatnResponse>pageMonDatn = monDatnService.search(req, coSoId);
+        req.setCoSoId(coSoId);
+        PageableObject<MonDatnResponse>pageMonDatn = monDatnService.search(req);
         List<SimpleEntityProj>tenChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("tenChuyenNganh", tenChuyenNganh);

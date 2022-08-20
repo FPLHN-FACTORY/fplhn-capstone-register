@@ -11,12 +11,10 @@ $("#form_create_mon_datn").submit(function (event) {
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
-    let coSoId = new String('a855ce4f-a41b-46b6-8fd9-93840996b285');
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
-    monDatnRequest["coSoId"] = coSoId;
     if (maMon.trim().length === 0) {
         $("#mon_datn_error").text("Mã môn DATN không được để trống");
     }
