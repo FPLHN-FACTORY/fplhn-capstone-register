@@ -5,5 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateDotDangKyRequest {
+public class DtUpdateDotDangKyRequest extends DtBaseDotDangKyRequest {
+    String id;
 }

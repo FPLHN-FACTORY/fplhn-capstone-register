@@ -1,0 +1,17 @@
+package com.fpolydatn.core.daotao.model.request;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
+@Getter
+@Setter
+public class DtCreateDotDangKyRequest extends DtBaseDotDangKyRequest {
+    @NotEmpty
+    @NotBlank
+    private String hocKyId;
+
+    private String coSoId;
+}

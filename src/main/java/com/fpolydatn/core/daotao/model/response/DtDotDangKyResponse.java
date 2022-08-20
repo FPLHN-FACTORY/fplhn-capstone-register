@@ -5,14 +5,12 @@ import com.fpolydatn.entity.HocKy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-import java.util.UUID;
-
 @Projection(types = {DotDangKy.class, HocKy.class})
-public interface DotDangKyResponse {
+public interface DtDotDangKyResponse {
 
     Integer getSTT();
 
-    UUID getId();
+    String getId();
 
     @Value("#{target.ten_hoc_ky}")
     String getTenHocKy();
