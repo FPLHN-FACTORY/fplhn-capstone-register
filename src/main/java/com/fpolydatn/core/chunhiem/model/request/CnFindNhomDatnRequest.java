@@ -9,14 +9,16 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public final class FindNhomDatnRequest extends PageableRequest {
+public final class CnFindNhomDatnRequest extends PageableRequest {
 
     private String tenNhom;
 
-    private String tenChuyenNganh;
+    private String chuyenNganhId;
 
     private String tenGvhd;
 
     private String trangThai;
+
+    private String coSoId;
 
 }

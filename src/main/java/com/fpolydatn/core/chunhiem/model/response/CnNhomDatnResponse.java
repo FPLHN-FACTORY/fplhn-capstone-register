@@ -5,17 +5,14 @@ import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.entity.base.IsIdentified;
-import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
-
-import java.util.UUID;
 
 /**
  * @author thangncph26123
  */
 @Projection(types = {NhomDatn.class, SinhVien.class, ChuyenNganh.class, GiangVienHuongDan.class})
-public interface NhomDatnResponse extends IsIdentified {
+public interface CnNhomDatnResponse extends IsIdentified {
 
     @Value("#{target.stt}")
     Integer getStt();
@@ -37,6 +34,9 @@ public interface NhomDatnResponse extends IsIdentified {
 
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
+
+    @Value("#{target.ten_tai_khoan}")
+    String getTenTaiKhoan();
 
     @Value("#{target.trang_thai}")
     int getTrangThai();
