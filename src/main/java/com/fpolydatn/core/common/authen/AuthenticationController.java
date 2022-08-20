@@ -3,8 +3,10 @@ package com.fpolydatn.core.common.authen;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.CoSoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import java.util.List;
 @RequestMapping("/authentication")
 public final class AuthenticationController {
     @Autowired
+    @Qualifier(CoSoRepository.NAME)
     private CoSoRepository coSoRepository;
 
     @GetMapping
@@ -51,7 +54,7 @@ public final class AuthenticationController {
     }
 
     private String getCoSo(Model model, HttpSession session, String role) {
-        List<CoSo> listCoSo = coSoRepository.findAll();
+        List<SimpleEntityProj> listCoSo = coSoRepository.findAllSimpleEntity();
         model.addAttribute("listCoSo", listCoSo);
         session.setAttribute("role", role);
         return "authen/chon-co-so";
