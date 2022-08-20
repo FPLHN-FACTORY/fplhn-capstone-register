@@ -244,18 +244,18 @@ public class DBGenerator implements CommandLineRunner {
         khanhpg.setNhomId(null);
         khanhpg.setId(sinhVienRepository.save(khanhpg).getId());
 
-        SinhVien sonptph19600 =  new SinhVien();
-        sonptph19600.setChuyenNganhId(ptpm.getId());
-        sonptph19600.setDotDangKyId(dot1.getId());
-        sonptph19600.setMonDatnId(java.getId());
-        sonptph19600.setSoDienThoai("0856515185");
-        sonptph19600.setCoSoId(csHN.getId());
-        sonptph19600.setEmail("sonptph19600@fpt.edu.vn");
-        sonptph19600.setKhoa("K17.3.1");
-        sonptph19600.setTenSinhVien("Phạm Trường Sơn");
-        sonptph19600.setMaSinhVien("PH19600");
-        sonptph19600.setNhomId(nhom1.getId());
-        sonptph19600.setId(sinhVienRepository.save(sonptph19600).getId());
+        SinhVien caond =  new SinhVien();
+        caond.setChuyenNganhId(ptpm.getId());
+        caond.setDotDangKyId(dot1.getId());
+        caond.setMonDatnId(cSharp.getId());
+        caond.setSoDienThoai("0943232913");
+        caond.setCoSoId(csHN.getId());
+        caond.setEmail("caondph20015@fpt.edu.vn");
+        caond.setKhoa("K17.3");
+        caond.setTenSinhVien("Nguyen Dinh Cao");
+        caond.setMaSinhVien("PH20015");
+        caond.setNhomId(null);
+        caond.setId(sinhVienRepository.save(caond).getId());
     }
 
     public static void main(String[] args) {

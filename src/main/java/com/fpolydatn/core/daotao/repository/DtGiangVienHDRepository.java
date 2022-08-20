@@ -1,4 +1,4 @@
-package com.fpolydatn.core.daotao.reopsitory;
+package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
