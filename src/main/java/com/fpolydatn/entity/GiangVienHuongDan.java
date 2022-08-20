@@ -1,6 +1,6 @@
 package com.fpolydatn.entity;
 
-import com.fpolydatn.infrastructure.constant.EntityProperties;
+import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.EntityProperties;
 import com.fpolydatn.entity.base.IsBelongToPeriod;
 import com.fpolydatn.entity.base.MultiTenantEntity;
 import lombok.Getter;

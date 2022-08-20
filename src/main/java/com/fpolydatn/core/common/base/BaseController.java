@@ -1,6 +1,6 @@
 package com.fpolydatn.core.common.base;
 
-import com.fpolydatn.infrastructure.session.FpolyDatnSession;
+import com.fpolydatn.core.chunhiem.controller.infrastructure.session.FpolyDatnSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

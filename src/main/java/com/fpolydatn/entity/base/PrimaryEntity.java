@@ -1,7 +1,7 @@
 package com.fpolydatn.entity.base;
 
-import com.fpolydatn.infrastructure.constant.EntityProperties;
-import com.fpolydatn.infrastructure.listener.CreatePrimaryEntityListener;
+import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.EntityProperties;
+import com.fpolydatn.core.chunhiem.controller.infrastructure.listener.CreatePrimaryEntityListener;
 import lombok.Getter;
 import lombok.Setter;
 

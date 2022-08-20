@@ -1,7 +1,7 @@
 package com.fpolydatn.entity;
 
-import com.fpolydatn.infrastructure.constant.EntityProperties;
-import com.fpolydatn.infrastructure.constant.VaiTro;
+import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.EntityProperties;
+import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.VaiTro;
 import com.fpolydatn.entity.base.MultiTenantEntity;
 import lombok.Getter;
 import lombok.Setter;

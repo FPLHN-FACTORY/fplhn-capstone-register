@@ -1,6 +1,6 @@
 package com.fpolydatn.util;
 
-import com.fpolydatn.infrastructure.constant.Constants;
+import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 
