@@ -5,8 +5,6 @@ import com.fpolydatn.infrastructure.constant.VaiTro;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-import java.util.UUID;
-
 /**
  * @author caodinh
  */

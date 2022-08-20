@@ -43,7 +43,6 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     let tenDotDangKy = $("#ten_dot_dang_ky_update").val();
     let ngayBatDau = new Date($("#ngay_bat_dau_update").val());
     let ngayKetThuc = new Date($("#ngay_ket_thuc_update").val());
-
     let dotDangKyRequest = {};
     dotDangKyRequest["tenDotDangKy"] = tenDotDangKy;
     dotDangKyRequest["ngayBatDau"] = ngayBatDau.getTime();
@@ -73,12 +72,22 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     }
 });
 
+function clearData() {
+    $("#tenDotDangKyAdd").val('');
+    $("#ngayBatDauAdd").val('');
+    $("#ngayKetThucAdd").val('');
+    $("#errorMessageAddTenDot").text("");
+    $("#errorMessageAddNgayBatDau").text("");
+    $("#errorMessageAddNgayKetThuc").text("");
+}
+
 $("#form_create_dot_dang_ky").submit(function (event) {
     event.preventDefault();
-
     let tenDotDangKy = $("#tenDotDangKyAdd").val();
-    let ngayBatDau = new Date($("#ngayBatDauAdd").val());
-    let ngayKetThuc = new Date($("#ngayKetThucAdd").val());
+    let ngayBatDauStr = $("#ngayBatDauAdd").val();
+    let ngayBatDau = new Date(ngayBatDauStr);
+    let ngayKetThucStr = $("#ngayKetThucAdd").val();
+    let ngayKetThuc = new Date(ngayKetThucStr);
     let hocKyId = new String('1fd27bfb-1afd-4c56-92cf-00a727aa0778');
 
     let dotDangKyRequest = {};
@@ -86,14 +95,35 @@ $("#form_create_dot_dang_ky").submit(function (event) {
     dotDangKyRequest["ngayBatDau"] = ngayBatDau.getTime();
     dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.getTime();
     dotDangKyRequest["hocKyId"] = hocKyId;
-
+    let check = 0;
     if (tenDotDangKy.length === 0) {
-        $("#errorMessageAdd").text("Tên đợt đăng ký không được để trống");
+        $("#errorMessageAddTenDot").text("Tên đợt đăng ký không được để trống");
+        check += 1;
     } else if (tenDotDangKy.length < 6) {
-        $("#errorMessageAdd").text("Tên đợt đăng ký tối thiếu 6 ký tự");
-    } else if (ngayBatDau >= ngayKetThuc){
-        $("#errorMessageAdd").text("Ngày giờ kết thúc phải sau ngày bắt đầu");
+        $("#errorMessageAddTenDot").text("Tên đợt đăng ký tối thiếu 6 ký tự");
+        check += 1;
     } else {
+        $("#errorMessageAddTenDot").text("");
+    }
+
+    if (ngayBatDauStr === "") {
+        $("#errorMessageAddNgayBatDau").text("Ngày giờ bắt đầu không được để trống");
+        check += 1;
+    } else {
+        $("#errorMessageAddNgayBatDau").text("");
+    }
+
+    if (ngayKetThucStr === ""){
+        $("#errorMessageAddNgayKetThuc").text("Ngày giờ kết thúc không được để trống");
+        check += 1;
+    } else if (ngayBatDau >= ngayKetThuc){
+        $("#errorMessageAddNgayKetThuc").text("Ngày giờ kết thúc phải sau ngày bắt đầu");
+        check += 1;
+    } else {
+        $("#errorMessageAddNgayKetThuc").text("");
+    }
+
+    if (check == 0){
         $.ajax({
             type: "POST",
             contentType: "application/json",

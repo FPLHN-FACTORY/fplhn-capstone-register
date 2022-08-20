@@ -1,6 +1,5 @@
 package com.fpolydatn.core.daotao.model.response;
 
-
 import com.fpolydatn.entity.CanBo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;

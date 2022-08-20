@@ -6,7 +6,6 @@ import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
-import com.fpolydatn.infrastructure.session.FpolyDatnSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
