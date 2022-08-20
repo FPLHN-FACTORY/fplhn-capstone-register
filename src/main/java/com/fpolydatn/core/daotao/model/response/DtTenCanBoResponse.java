@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.config.Projection;
 import java.util.UUID;
 
 @Projection(types = {CanBo.class})
-public interface TenCanBoResponse {
+public interface DtTenCanBoResponse {
 
     UUID getId();
 

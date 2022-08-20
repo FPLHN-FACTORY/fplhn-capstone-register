@@ -8,5 +8,5 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class CreateCanBoRequest extends BaseCanBoRequest {
+public class DtCreateCanBoRequest extends DtBaseCanBoRequest {
 }

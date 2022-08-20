@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public abstract class BaseCanBoRequest {
+public abstract class DtBaseCanBoRequest {
 
     @NotEmpty
     @NotBlank

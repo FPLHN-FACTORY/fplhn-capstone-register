@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class FindCanBoRequest extends PageableRequest {
+public class DtFindCanBoRequest extends PageableRequest {
 
     private String tenCanBo;
 

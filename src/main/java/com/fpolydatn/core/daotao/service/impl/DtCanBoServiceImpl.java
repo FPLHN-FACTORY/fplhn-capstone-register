@@ -1,12 +1,12 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.CreateCanBoRequest;
-import com.fpolydatn.core.daotao.model.request.FindCanBoRequest;
-import com.fpolydatn.core.daotao.model.request.UpdateCanBoRequest;
-import com.fpolydatn.core.daotao.model.response.CanBoResponse;
-import com.fpolydatn.core.daotao.model.response.TenCanBoResponse;
-import com.fpolydatn.core.daotao.repository.DTCanBoRepository;
+import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
+import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
+import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
+import com.fpolydatn.core.daotao.model.response.DtTenCanBoResponse;
+import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.CoSo;
@@ -37,7 +37,7 @@ import java.util.UUID;
 public class DtCanBoServiceImpl implements DtCanBoService {
 
     @Autowired
-    private DTCanBoRepository dtCanBoRepository;
+    private DtCanBoRepository dtCanBoRepository;
 
     @Autowired
     private CoSoRepository coSoRepository;
@@ -45,14 +45,14 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public PageableObject<CanBoResponse> search(final FindCanBoRequest canBoRequest) {
+    public PageableObject<DtCanBoResponse> search(final DtFindCanBoRequest canBoRequest) {
         Pageable pageable = PageRequest.of(canBoRequest.getPage(), canBoRequest.getSize());
-        Page<CanBoResponse> res = dtCanBoRepository.findAllByName(canBoRequest, pageable);
+        Page<DtCanBoResponse> res = dtCanBoRepository.findAllByName(canBoRequest, pageable);
         return new PageableObject(res);
     }
 
     @Override
-    public CanBo create(@Valid final CreateCanBoRequest canBoRequest) {
+    public CanBo create(@Valid final DtCreateCanBoRequest canBoRequest) {
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return dtCanBoRepository.save(canBo);
     }
@@ -78,7 +78,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     }
 
     @Override
-    public CanBo update(UUID id, UpdateCanBoRequest canBoRequest) {
+    public CanBo update(UUID id, DtUpdateCanBoRequest canBoRequest) {
         Optional<CanBo> canBo = dtCanBoRepository.findById(id.toString());
         if (Objects.isNull(canBo)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
@@ -99,7 +99,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
 
 
     @Override
-    public List<TenCanBoResponse> findCanBoByVaiTro() {
+    public List<DtTenCanBoResponse> findCanBoByVaiTro() {
         return dtCanBoRepository.findCanBoByVaiTro();
     }
 

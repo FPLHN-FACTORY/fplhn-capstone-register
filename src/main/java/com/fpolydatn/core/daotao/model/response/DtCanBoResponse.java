@@ -11,7 +11,7 @@ import java.util.UUID;
  * @author caodinh
  */
 @Projection(types = {VaiTro.class, CoSo.class})
-public interface CanBoResponse {
+public interface DtCanBoResponse {
 
     Integer getSTT();
 

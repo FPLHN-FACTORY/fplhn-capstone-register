@@ -1,7 +1,7 @@
 package com.fpolydatn.core.daotao.repository;
 
-import com.fpolydatn.core.daotao.model.request.FindCanBoRequest;
-import com.fpolydatn.core.daotao.model.response.CanBoResponse;
+import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.repository.CanBoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author caodinh
  */
-public interface DTCanBoRepository extends CanBoRepository {
+public interface DtCanBoRepository extends CanBoRepository {
 
 
     @Query(value = """
@@ -25,6 +25,6 @@ public interface DTCanBoRepository extends CanBoRepository {
                            OR ten_can_bo LIKE %:#{#req.tenCanBo}% )
                        ORDER BY last_modified_date DESC 
             """, nativeQuery = true)
-    Page<CanBoResponse> findAllByName(@Param("req") FindCanBoRequest canBoRequest, Pageable page);
+    Page<DtCanBoResponse> findAllByName(@Param("req") DtFindCanBoRequest canBoRequest, Pageable page);
 
 }
