@@ -50,7 +50,7 @@
                             <div class="input-group">
                                 <select class="form-control" name="campus_id" id="campus_id">
                                     <th:block th:each="coSo,i : ${listCoSo}">
-                                        <option th:value="${coSo.id}" th:text="${coSo.tenCoSo}"></option>
+                                        <option th:value="${coSo.id}" th:text="${coSo.name}"></option>
                                     </th:block>
                                 </select>
                             </div>
