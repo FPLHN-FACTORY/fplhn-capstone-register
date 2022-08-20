@@ -14,10 +14,10 @@ import java.util.List;
 public class ApiResponse {
 
     private PageableObject<GvNhomDatnResponse> listNhomDatn;
-    private List<Integer> list;
+    private List<Integer> listPage;
 
-    public ApiResponse(PageableObject<GvNhomDatnResponse> listNhomDatn, List<Integer> list) {
+    public ApiResponse(PageableObject<GvNhomDatnResponse> listNhomDatn, List<Integer> listPage) {
         this.listNhomDatn = listNhomDatn;
-        this.list = list;
+        this.listPage = listPage;
     }
 }
