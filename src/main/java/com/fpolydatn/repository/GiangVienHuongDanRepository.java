@@ -1,6 +1,6 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.core.entity.GiangVienHuongDan;
+import com.fpolydatn.entity.GiangVienHuongDan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

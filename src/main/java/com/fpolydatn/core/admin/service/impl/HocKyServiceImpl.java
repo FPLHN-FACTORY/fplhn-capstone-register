@@ -8,7 +8,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
-import com.fpolydatn.core.entity.HocKy;
+import com.fpolydatn.entity.HocKy;
 import com.fpolydatn.core.admin.service.HocKyService;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;

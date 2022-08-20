@@ -24,6 +24,6 @@ class FpolyDatnSessionImpl implements FpolyDatnSession {
     @Override
     public String getCoSoId() {
         return repository.findAll().get(0).getId();
-//        return String.valueOf(session.getAttribute("coSoIDSelected"));
+        //return String.valueOf(session.getAttribute("coSoIDSelected"));
     }
 }

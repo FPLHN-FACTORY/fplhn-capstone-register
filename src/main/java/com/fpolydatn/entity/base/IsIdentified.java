@@ -1,4 +1,4 @@
-package com.fpolydatn.core.entity.base;
+package com.fpolydatn.entity.base;
 
 /**
  * @author phongtt35

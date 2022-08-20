@@ -1,7 +1,6 @@
-package com.fpolydatn.core.entity;
+package com.fpolydatn.entity;
 
-import com.fpolydatn.core.entity.base.HasPeriod;
-import com.fpolydatn.core.entity.base.MultiTenantEntity;
+import com.fpolydatn.entity.base.MultiTenantEntity;
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,22 +16,17 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@Table(name = "dot_dang_ky")
+@Table(name = "mon_datn")
 @Entity
-public class DotDangKy extends MultiTenantEntity
-        implements Serializable, HasPeriod {
+public class MonDatn extends MultiTenantEntity implements Serializable {
+
+    @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
+    private String maMon;
 
     @Column(length = EntityProperties.LENGTH_NAME, nullable = false)
     @Nationalized
-    private String tenDotDangKy;
-
-    @Column(nullable = false)
-    private Long ngayBatDau;
-
-    @Column(nullable = false)
-    private Long ngayKetThuc;
+    private String tenMonDatn;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
-    private String hocKyId;
-
+    private String chuyenNganhId;
 }

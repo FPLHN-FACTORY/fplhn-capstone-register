@@ -1,4 +1,4 @@
-package com.fpolydatn.core.entity.base;
+package com.fpolydatn.entity.base;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import com.fpolydatn.infrastructure.listener.CreatePrimaryEntityListener;

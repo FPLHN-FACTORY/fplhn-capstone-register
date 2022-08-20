@@ -1,9 +1,10 @@
-package com.fpolydatn.core.entity;
+package com.fpolydatn.entity;
 
-import com.fpolydatn.core.entity.base.PrimaryEntity;
+import com.fpolydatn.entity.base.PrimaryEntity;
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.Column;
@@ -16,15 +17,13 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@Table(name = "co_so")
+@Table(name = "hoc_ky")
 @Entity
-public class CoSo extends PrimaryEntity implements Serializable {
-
-    @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
-    private String maCoSo;
+@ToString
+public class HocKy extends PrimaryEntity implements Serializable {
 
     @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
     @Nationalized
-    private String tenCoSo;
+    private String tenHocKy;
 
 }

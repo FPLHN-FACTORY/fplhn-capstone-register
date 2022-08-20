@@ -1,7 +1,7 @@
-package com.fpolydatn.core.entity;
+package com.fpolydatn.entity;
 
-import com.fpolydatn.core.entity.base.IsBelongToPeriod;
-import com.fpolydatn.core.entity.base.MultiTenantEntity;
+import com.fpolydatn.entity.base.IsBelongToPeriod;
+import com.fpolydatn.entity.base.MultiTenantEntity;
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
 import lombok.Setter;
