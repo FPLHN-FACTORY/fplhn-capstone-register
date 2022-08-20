@@ -5,9 +5,7 @@ import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.CreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.UpdateCanBoRequest;
 import com.fpolydatn.core.daotao.service.CanBoService;
-import com.fpolydatn.entity.CanBo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,48 +29,26 @@ public class CanBoRestController {
     private CanBoService canBoService;
 
     @GetMapping("/{id}")
-    public ResponseObject detailHocKy(Model model, @PathVariable("id") UUID id) {
-        CanBo canBo = null;
-        try {
-            canBo = canBoService.findById(id);
-        } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-        }
-        return new ResponseObject(canBo);
+    public ResponseObject detail(@PathVariable("id") UUID id) {
+        return new ResponseObject(canBoService.findById(id));
     }
 
     @PostMapping
-    public ResponseObject addHocKy(Model model, @RequestBody CreateCanBoRequest createCanBoRequest) {
-        CanBo canBo = null;
-        try {
-            canBo = canBoService.addNew(createCanBoRequest);
-        } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-        }
-        return new ResponseObject(canBo);
+    public ResponseObject add(@RequestBody CreateCanBoRequest createCanBoRequest) {
+        return new ResponseObject(canBoService.create(createCanBoRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseObject updateHocKy(Model model, @PathVariable("id") UUID id,
-                                      @RequestBody UpdateCanBoRequest canBoRequest) {
-        CanBo canBo = null;
-        try {
-            canBo = canBoService.update(id, canBoRequest);
-        } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-        }
-        return new ResponseObject(canBo);
+    public ResponseObject update(@PathVariable("id") UUID id,
+                                 @RequestBody UpdateCanBoRequest updateCanBoRequest) {
+        updateCanBoRequest.setId(id);
+        return new ResponseObject(canBoService.update(id, updateCanBoRequest));
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseObject deleteHocKy(Model model, @PathVariable("id") UUID id) {
-        Boolean remove = false;
-        try {
-            remove = canBoService.delete(id);
-        } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-        }
-        return new ResponseObject(remove);
+    public ResponseObject delete(@PathVariable("id") UUID id) {
+        return new ResponseObject(canBoService.delete(id));
     }
 
 }

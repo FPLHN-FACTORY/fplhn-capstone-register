@@ -230,6 +230,19 @@ public class DBGenerator implements CommandLineRunner {
         khanhpg.setMaSinhVien("PH45678");
         khanhpg.setNhomId(null);
         khanhpg.setId(sinhVienRepository.save(khanhpg).getId());
+
+        SinhVien caond =  new SinhVien();
+        caond.setChuyenNganhId(ptpm.getId());
+        caond.setDotDangKyId(dot1.getId());
+        caond.setMonDatnId(cSharp.getId());
+        caond.setSoDienThoai("0943232913");
+        caond.setCoSoId(csHN.getId());
+        caond.setEmail("caondph20015@fpt.edu.vn");
+        caond.setKhoa("K17.3");
+        caond.setTenSinhVien("Nguyen Dinh Cao");
+        caond.setMaSinhVien("PH20015");
+        caond.setNhomId(null);
+        caond.setId(sinhVienRepository.save(caond).getId());
     }
 
     public static void main(String[] args) {

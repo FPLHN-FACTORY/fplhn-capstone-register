@@ -28,7 +28,7 @@ $("#form_create_can_bo").submit(function (event) {
     let soDienThoai = $("#sodienthoai").val();
     let tenCanBo = $("#tenCanBo").val();
     let tenTaiKhoan = $("#tentaikhoan").val();
-    let coSoId = $("#coSoId").val();
+    let coSoId = new String("228d4e39-6633-416b-9ae0-4b9e015516f6");
     let vaitro = $("#vaiTro").val();
 
     let canBoRequest = {};
@@ -38,7 +38,7 @@ $("#form_create_can_bo").submit(function (event) {
     canBoRequest["soDienThoai"] = soDienThoai;
     canBoRequest["tenCanBo"] = tenCanBo;
     canBoRequest["tenTaiKhoan"] = tenTaiKhoan;
-    canBoRequest["coSoId"] = new String("78d1e5c6-a9d8-43be-a6a0-deb1f45c116d");
+    canBoRequest["coSoId"] = coSoId;
     canBoRequest["vaiTro"] = vaitro;
     let check = true;
 
@@ -133,7 +133,7 @@ $("#form_hoc_ky_update").submit(function (event) {
     let soDienThoai = $("#so_dien_thoai_Update").val();
     let tenCanBo = $("#ten_Can_Bo_Update").val();
     let tenTaiKhoan = $("#ten_tai_khoan_Update").val();
-    let coSoId = new String("78d1e5c6-a9d8-43be-a6a0-deb1f45c116d");
+    let coSoId = new String("228d4e39-6633-416b-9ae0-4b9e015516f6");
     let vaiTro = $("#vai_Tro_Update").val();
     let canBoId = $("#id_can_bo_update").val();
     let canBoRequest = {};

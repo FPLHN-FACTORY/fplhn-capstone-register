@@ -1,6 +1,8 @@
 package com.fpolydatn.core.daotao.service.impl;
 
+import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.CreateCanBoRequest;
+import com.fpolydatn.core.daotao.model.request.FindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.UpdateCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.CanBoResponse;
 import com.fpolydatn.core.daotao.model.response.TenCanBoResponse;
@@ -13,7 +15,11 @@ import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,6 +33,7 @@ import java.util.UUID;
  * @author nguyenvv4
  */
 @Service
+@Validated
 public class CanBoServiceImpl implements CanBoService {
 
     @Autowired
@@ -38,21 +45,18 @@ public class CanBoServiceImpl implements CanBoService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public List<CanBoResponse> findAllCanBoResponse(UUID coSoId, int offset, int size) {
-        String id = String.valueOf(coSoId);
-        return dtCanBoRepository.findAllCanBoResponse(id, offset, size);
+    public PageableObject<CanBoResponse> search(final FindCanBoRequest canBoRequest) {
+        Pageable pageable = PageRequest.of(canBoRequest.getPage(), canBoRequest.getSize());
+        Page<CanBoResponse> res = dtCanBoRepository.findAllByName(canBoRequest, pageable);
+        return new PageableObject(res);
     }
 
     @Override
-    public CanBo addNew(@Valid CreateCanBoRequest canBoRequest) {
-        Optional<CoSo> coSo = coSoRepository.findById(canBoRequest.getCoSoId().toString());
-        if (Objects.isNull(coSo)) {
-            throw new RestApiException(Message.CO_SO_NOT_EXIST);
-        }
-
+    public CanBo create(@Valid final CreateCanBoRequest canBoRequest) {
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return dtCanBoRepository.save(canBo);
     }
+
 
     @Override
     public Boolean delete(UUID id) {
@@ -88,11 +92,10 @@ public class CanBoServiceImpl implements CanBoService {
         return dtCanBoRepository.save(updateCanBo);
     }
 
-    @Override
-    public Long countCanBoByCoSoId(UUID coSoId) {
-        String id = String.valueOf(coSoId);
-        return dtCanBoRepository.countCanBoByCoSoID(id);
-    }
+//    @Override
+//    public Long countCanBoByCoSoId(String tenCanBo) {
+//        return dtCanBoRepository.countByName(tenCanBo);
+//    }
 
 
     @Override

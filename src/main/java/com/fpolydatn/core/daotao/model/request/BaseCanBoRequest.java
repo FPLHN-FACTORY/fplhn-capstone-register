@@ -41,8 +41,6 @@ public abstract class BaseCanBoRequest {
     @Pattern(regexp = Constants.REGEX_EMAIL_FE)
     private String emailFe;
 
-    @NotEmpty
-    @NotBlank
     private UUID coSoId;
 
     private VaiTro vaiTro;
