@@ -4,8 +4,8 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
-import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
-import com.fpolydatn.core.daotao.service.DtDotDangKyService;
+import com.fpolydatn.core.daotao.service.DtSvChuyenNganhService;
+import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +27,10 @@ public class DtSinhVienTheoDotController extends BaseController {
     private DtSinhVienTheoDotService sinhVienService;
 
     @Autowired
-    private DtChuyenNganhService chuyenNganhService;
+    private DtSvChuyenNganhService chuyenNganhService;
 
     @Autowired
-    private DtDotDangKyService dotDangKyService;
+    private DtSvDotDangKyService dotDangKyService;
     @GetMapping
     public String findAllSinhVien(Model model,final FindDtSinhVienTheoDotRequest req) {
         req.setCoSoId(session.getCoSoId());

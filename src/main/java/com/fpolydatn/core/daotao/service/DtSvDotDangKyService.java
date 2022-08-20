@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author thepvph20110
  */
-public interface DtDotDangKyService {
+public interface DtSvDotDangKyService {
 
     List<SimpleEntityProj> listDotDangKy(String coSoId);
 }
