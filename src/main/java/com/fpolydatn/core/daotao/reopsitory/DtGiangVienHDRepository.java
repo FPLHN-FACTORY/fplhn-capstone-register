@@ -18,14 +18,26 @@ import org.springframework.stereotype.Repository;
 public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
 
     @Query(value = """
-        SELECT id, ten_hoc_ky, last_modified_date 
-            FROM hoc_ky hk 
-            WHERE 
-                ( :#{#req.tenGiangVien} IS NULL 
-                    OR :#{#req.tenGiangVien} LIKE '' 
-                    OR ten_gvhd LIKE %:#{#req.tenGiangVien}% ) 
-            ORDER BY last_modified_date DESC 
-        """, nativeQuery = true)
+                SELECT ROW_NUMBER() OVER() AS stt," +
+                gvhd.id,
+                cs.ten_co_so,
+                ddk.ten_dot_dang_ky,
+                gvhd.ten_gvhd ,
+                gvhd.so_nhom_huong_dan_toi_da,
+                gvhd.ten_tai_khoan, 
+                gvhd.so_dien_thoai,
+                gvhd.email_fpt,
+                gvhd.email_fe 
+                FROM giang_vien_huong_dan gvhd 
+                JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
+                JOIN co_so cs ON gvhd.co_so_id = cs.id  
+                WHERE gvhd.ten_gvhd LIKE %:tenGiangVien% AND cs.id LIKE %:coSoId%
+                WHERE 
+                    ( :#{#req.tenGiangVien} IS NULL 
+                        OR :#{#req.tenGiangVien} LIKE '' 
+                        OR ten_gvhd LIKE %:#{#req.tenGiangVien}% ) 
+                ORDER BY last_modified_date DESC 
+            """, nativeQuery = true)
     Page<GiangVienHDResponse> findByName(@Param("req") FindGiangVienHDRequest req, Pageable page);
 
     @Query(value = """

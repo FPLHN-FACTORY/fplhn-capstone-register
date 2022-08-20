@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 /**
  * @author phongtt35
  */
-@Repository("BaseGiangVienHuongDanRepository")
+@Repository(GiangVienHuongDanRepository.NAME)
 public interface GiangVienHuongDanRepository extends JpaRepository<GiangVienHuongDan, String> {
+
+    public static final String NAME = "BaseGiangVienHuongDanRepository";
 }
