@@ -24,7 +24,7 @@ public final class DtDotDangKyController extends BaseController {
         PageableObject<DtDotDangKyResponse> listDotDangKy = dotDangKyService.findByCoSo(request);
         model.addAttribute("page", listDotDangKy);
         System.out.println(listDotDangKy.getTotalPages());
-        return "daotao/dot-dang-ky";
+        return "daotao/dt-dot-dang-ky";
     }
 
 }
