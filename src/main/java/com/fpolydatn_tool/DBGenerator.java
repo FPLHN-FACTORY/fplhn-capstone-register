@@ -80,7 +80,6 @@ public class DBGenerator implements CommandLineRunner {
         yenlh5.setTenTaiKhoan("yenlh5");
         yenlh5.setVaiTro(VaiTro.DAO_TAO);
         yenlh5.setId(canBoRepository.save(yenlh5).getId());
-
         CanBo minhdq8 = new CanBo();
         minhdq8.setCoSoId(csHN.getId());
         minhdq8.setEmailFe("minhdq8@fe.edu.vn");
@@ -90,7 +89,6 @@ public class DBGenerator implements CommandLineRunner {
         minhdq8.setTenTaiKhoan("minhdq8");
         minhdq8.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
         minhdq8.setId(canBoRepository.save(minhdq8).getId());
-
         CanBo thienth3 = new CanBo();
         thienth3.setCoSoId(csHN.getId());
         thienth3.setEmailFe("thienth3@fe.edu.vn");
@@ -100,16 +98,6 @@ public class DBGenerator implements CommandLineRunner {
         thienth3.setTenTaiKhoan("thienth3");
         thienth3.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
         thienth3.setId(canBoRepository.save(thienth3).getId());
-
-        CanBo tamhv4 = new CanBo();
-        tamhv4.setCoSoId(csHN.getId());
-        tamhv4.setEmailFe("tamhvph21131@fe.edu.vn");
-        tamhv4.setEmailFpt("tamhvph21131@fpt.edu.vn");
-        tamhv4.setSoDienThoai("0326235071");
-        tamhv4.setTenCanBo("Hoàng văn tám");
-        tamhv4.setTenTaiKhoan("tamhv4");
-        tamhv4.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
-        tamhv4.setId(canBoRepository.save(thienth3).getId());
 
         ChuyenNganh ptpm = new ChuyenNganh();
         ptpm.setCoSoId(csHN.getId());
@@ -242,19 +230,6 @@ public class DBGenerator implements CommandLineRunner {
         khanhpg.setMaSinhVien("PH45678");
         khanhpg.setNhomId(null);
         khanhpg.setId(sinhVienRepository.save(khanhpg).getId());
-
-        SinhVien tamhv =  new SinhVien();
-        tamhv.setChuyenNganhId(ptpm.getId());
-        tamhv.setDotDangKyId(dot1.getId());
-        tamhv.setMonDatnId(cSharp.getId());
-        tamhv.setSoDienThoai("0326235071");
-        tamhv.setCoSoId(csHN.getId());
-        tamhv.setEmail("tamhvph21131@fpt.edu.vn");
-        tamhv.setKhoa("K17");
-        tamhv.setTenSinhVien("Hoàng văn tám");
-        tamhv.setMaSinhVien("PH21131");
-        tamhv.setNhomId(null);
-        tamhv.setId(sinhVienRepository.save(tamhv).getId());
     }
 
     public static void main(String[] args) {
