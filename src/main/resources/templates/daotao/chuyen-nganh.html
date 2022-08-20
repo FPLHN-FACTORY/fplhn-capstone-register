@@ -56,7 +56,7 @@
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Tên chuyên ngành</span>
                                             <input type="text" class="form-control col-8"
-                                                   name="tenHocKy" id="ten-hoc-ky" value="">
+                                                   name="tenChuyenNganh" id="ten-chuyen-nganh-search" value="">
                                         </div>
                                     </div>
 
@@ -150,7 +150,7 @@
                                                 <tbody>
                                                 <th:block th:each="chuyenNganh,i : ${page.data}">
                                                     <tr>
-                                                        <td th:text="${i.count}"></td>
+                                                        <td th:text="${chuyenNganh.getStt()}"></td>
                                                         <td th:text="${chuyenNganh.getTenChuyenNganh()}"></td>
                                                         <td th:text="${chuyenNganh.getTenCoSo()}"></td>
                                                         <td th:text="${chuyenNganh.getTenCanBo()}"></td>

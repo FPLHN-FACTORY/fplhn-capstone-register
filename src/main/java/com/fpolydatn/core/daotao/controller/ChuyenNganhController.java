@@ -27,6 +27,8 @@ public class ChuyenNganhController extends BaseController {
 
     @GetMapping
     public String viewChuyenNganh(Model model, final FindChuyenNganhRequest request){
+        String coSoId = session.getCoSoId();
+        request.setCoSoId(coSoId);
         PageableObject<ChuyenNganhResponse> listChuyenNganh = chuyenNganhService.search(request);
         List<TenCanBoResponse> listCanBo = canBoService.getTenCanBo();
         model.addAttribute("page",listChuyenNganh);

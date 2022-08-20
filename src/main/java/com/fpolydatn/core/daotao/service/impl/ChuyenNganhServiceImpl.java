@@ -28,8 +28,8 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public ChuyenNganh update(String id, UpdateChuyenNganhRequest req) {
-        Optional<ChuyenNganh> chuyenNganhCheck = chuyenNganhRepository.findById(id);
+    public ChuyenNganh update(UpdateChuyenNganhRequest req) {
+        Optional<ChuyenNganh> chuyenNganhCheck = chuyenNganhRepository.findById(req.getId());
         if (!chuyenNganhCheck.isPresent()){
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }

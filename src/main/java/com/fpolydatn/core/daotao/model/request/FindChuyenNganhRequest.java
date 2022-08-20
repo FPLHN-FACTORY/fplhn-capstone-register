@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 public class FindChuyenNganhRequest extends PageableRequest {
 
+    private String coSoId;
     private String tenChuyenNganh;
 }

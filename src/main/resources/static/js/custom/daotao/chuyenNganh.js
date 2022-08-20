@@ -6,17 +6,14 @@ $(document).ready(function () {
 });
 
 function clearData() {
-    $("#keyword").val("");
+    $("#ten-chuyen-nganh-search").val("");
 }
 
 $("#form_create_chuyen_nganh").submit(function (event) {
     event.preventDefault();
     let tenchuyenNganh = $("#tenChuyenNganhAdd").val();
     let CNBMId = $("#tenCNBMhAdd").val();
-    let CoSoId = new String('d72e1efa-17e6-4d42-8b51-6350cc8c125d');
     let chuyenNganhRequest = {};
-
-    chuyenNganhRequest["coSoId"] = CoSoId;
     chuyenNganhRequest["chuNhiemBoMon"] = CNBMId;
     chuyenNganhRequest["tenChuyenNganh"] = tenchuyenNganh;
     if (tenchuyenNganh.length === 0) {
@@ -48,8 +45,8 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
         data: JSON.stringify(chuyenNganhId),
         dataType: 'json',
         success: function (responseData) {
-            // $("#id_chuyen_nganh_update").val(responseData.data.id);
-            // $("#tenChuyenNganhUpdate").val(responseData.data.tenChuyenNganh);
+            $("#id_chuyen_nganh_update").val(responseData.data.id);
+            $("#tenChuyenNganhUpdate").val(responseData.data.tenChuyenNganh);
         },
         error: function (e) {
             console.log("ERROR : ", e);

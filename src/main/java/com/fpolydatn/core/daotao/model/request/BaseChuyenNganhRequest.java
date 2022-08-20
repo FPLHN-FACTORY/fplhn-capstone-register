@@ -10,7 +10,7 @@ import java.util.UUID;
 @Setter
 public abstract class BaseChuyenNganhRequest {
 
-    private UUID coSoId;
+    private String coSoId;
 
     @NotEmpty
     @NotBlank

@@ -10,6 +10,7 @@ import java.util.UUID;
 @Projection(types = { ChuyenNganh.class, CoSo.class, CanBo.class})
 public interface ChuyenNganhResponse {
 
+    Integer getStt();
     UUID getId();
 
     @Value("#{target.ten_chuyen_nganh}")

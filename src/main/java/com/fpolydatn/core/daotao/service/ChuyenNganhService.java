@@ -10,7 +10,7 @@ import javax.validation.Valid;
 
 public interface ChuyenNganhService {
 
-    ChuyenNganh update(@Valid String id, final UpdateChuyenNganhRequest req);
+    ChuyenNganh update(final UpdateChuyenNganhRequest req);
 
     ChuyenNganh add(@Valid final CreateChuyenNganhRequest req);
     Boolean delete(String id);

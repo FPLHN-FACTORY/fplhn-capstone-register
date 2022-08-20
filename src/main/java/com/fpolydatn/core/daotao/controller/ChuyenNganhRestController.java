@@ -25,11 +25,14 @@ public class ChuyenNganhRestController extends BaseController {
 
     @GetMapping("/{id}")
     public ResponseObject detail(@PathVariable("id") String id){
-        return new ResponseObject(id);
+        ChuyenNganh chuyenNganh = chuyenNganhService.findById(id);
+        return new ResponseObject(chuyenNganh);
     }
 
     @PostMapping
     public ResponseObject add(@RequestBody CreateChuyenNganhRequest request){
+        String coSoId = session.getCoSoId();
+        request.setCoSoId(coSoId);
         ChuyenNganh chuyenNganh = chuyenNganhService.add(request);
         return new ResponseObject(chuyenNganh);
     }
@@ -41,7 +44,8 @@ public class ChuyenNganhRestController extends BaseController {
 
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable("id") String id, @RequestBody UpdateChuyenNganhRequest request){
-        return new ResponseObject(chuyenNganhService.update(id,request));
+        request.setId(id);
+        return new ResponseObject(chuyenNganhService.update(request));
     }
 
 }
