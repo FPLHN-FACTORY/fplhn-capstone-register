@@ -55,14 +55,4 @@ public class CnSinhVienTheoDotRestController extends BaseController {
         }
     }
 
-//    @GetMapping
-//    public ResponseObject getSinhVienByTenSinhVien(@RequestParam("tenSinhVien") String tenSinhVien) {
-//        try {
-//            String coSoId = session.getCoSoId();
-//            List<CnSinhVienTheoDotResponse> listSinhVien = cnSinhVienTheoDotService.getSinhVienByTenSinhVien(tenSinhVien, coSoId);
-//            return new ResponseObject(listSinhVien);
-//        } catch (Exception e) {
-//            return new ResponseObject(e);
-//        }
-//    }
 }
