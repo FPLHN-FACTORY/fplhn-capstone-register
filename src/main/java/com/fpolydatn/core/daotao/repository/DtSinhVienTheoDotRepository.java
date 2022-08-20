@@ -15,7 +15,7 @@ import org.springframework.data.repository.query.Param;
 public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
 
     @Query(value = """
-            SELECT ROW_NUMBER() OVER() AS stt,
+            SELECT ROW_NUMBER() OVER(ORDER BY s.last_modified_date DESC) AS stt,
             s.id,
             s.ma_sinh_vien,
             s.ten_sinh_vien,
@@ -35,7 +35,8 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             (s.chuyen_nganh_id = :#{#req.idChuyenNganh} or  :#{#req.idChuyenNganh} is null or :#{#req.idChuyenNganh} like '')
             and (if('b'= :#{#req.idTrangThaiNhom},nhom_id is null,if('a'= :#{#req.idTrangThaiNhom},nhom_id is not null, s.ten_sinh_vien like %:#{#req.tenSinhVien}%)))
             and  (s.dot_dang_ky_id = :#{#req.idDotDangKy} or :#{#req.idDotDangKy} is null or :#{#req.idDotDangKy} like '' ) and s.co_so_id = :#{#req.coSoId}
-            GROUP BY s.id """ ,countQuery = """
+            GROUP BY s.id 
+            ORDER BY s.last_modified_date DESC """ ,countQuery = """
              SELECT count(s.id) 
             FROM do_an_tot_nghiep.sinh_vien s 
             left join do_an_tot_nghiep.nhom_datn n on n.id= s.nhom_id 
@@ -52,7 +53,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
     Page<DtSinhVienTheoDotResponse> searchStudent(@Param("req") FindDtSinhVienTheoDotRequest req, Pageable page);
 
     @Query(value = """ 
-            SELECT ROW_NUMBER() OVER() AS stt,
+            SELECT ROW_NUMBER() OVER(ORDER BY s.last_modified_date DESC) AS stt,
             s.id,
             s.ma_sinh_vien,
             s.ten_sinh_vien,
@@ -69,7 +70,8 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             left join do_an_tot_nghiep.giang_vien_huong_dan g on g.id = n.giang_vien_id 
             left join do_an_tot_nghiep.dot_dang_ky d on d.id =s.dot_dang_ky_id 
             WHERE s.co_so_id = :#{#req.coSoId}
-            GROUP BY s.id """,
+            GROUP BY s.id 
+            ORDER BY s.last_modified_date DESC """,
             countQuery = """
             SELECT count(s.id) 
             FROM do_an_tot_nghiep.sinh_vien s
