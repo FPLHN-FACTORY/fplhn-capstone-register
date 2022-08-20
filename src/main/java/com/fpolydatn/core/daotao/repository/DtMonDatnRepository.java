@@ -20,15 +20,15 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 JOIN mon_datn m on m.chuyen_nganh_id = cn.id 
                 WHERE 
-                    ( :#{#req.tenMon} IS NULL 
-                        OR :#{#req.tenMon} LIKE '' 
-                        OR ten_hoc_ky LIKE %:#{#req.tenMon}% ) 
-                ORDER BY last_modified_date DESC 
+                    ( :#{#req.tenMonDatn} IS NULL 
+                        OR :#{#req.tenMonDatn} LIKE '' 
+                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
+                ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
     Page<MonDatnResponse> findByName(@Param("req") FindMonDatnRequest req, Pageable page);
 
     @Query(value = """
-            SELECT COUNT(1) FROM mon_datn m WHERE  LIKE %:tenHocKy%
+            SELECT COUNT(1) FROM mon_datn m WHERE ten_mon_datn  LIKE %:tenMonDatn%
             """, nativeQuery = true)
-    Long countByName(@Param("tenHocKy") String tenHocKy);
+    Long countByName(@Param("tenMonDatn") String tenMonDatn);
 }
