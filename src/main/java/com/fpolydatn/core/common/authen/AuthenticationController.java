@@ -1,6 +1,7 @@
 package com.fpolydatn.core.common.authen;
 
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.CoSoRepository;

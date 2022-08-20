@@ -1,7 +1,7 @@
 package com.fpolydatn.entity;
 
-import com.fpolydatn.entity.base.PrimaryEntity;
 import com.fpolydatn.infrastructure.constant.EntityProperties;
+import com.fpolydatn.entity.base.PrimaryEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

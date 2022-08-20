@@ -1,10 +1,10 @@
 package com.fpolydatn.infrastructure.security;
 
-import com.fpolydatn.infrastructure.constant.ActorConstant;
-import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.ActorConstant;
+import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.repository.CanBoRepository;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import com.fpolydatn.repository.SinhVienRepository;

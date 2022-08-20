@@ -1,8 +1,8 @@
 package com.fpolydatn.entity;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import com.fpolydatn.entity.base.HasPeriod;
 import com.fpolydatn.entity.base.MultiTenantEntity;
-import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
