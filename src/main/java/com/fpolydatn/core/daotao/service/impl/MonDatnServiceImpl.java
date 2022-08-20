@@ -38,9 +38,9 @@ public class MonDatnServiceImpl implements MonDatnService {
 
     private FormUtils formUtils = new FormUtils();
     @Override
-    public PageableObject<MonDatnResponse> search(final FindMonDatnRequest req, String coSoId) {
+    public PageableObject<MonDatnResponse> search(final FindMonDatnRequest req) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
-        Page<MonDatnResponse> res = monDatnRepository.findByName(req, pageable,coSoId);
+        Page<MonDatnResponse> res = monDatnRepository.findByName(req, pageable);
         return new PageableObject(res);
     }
 

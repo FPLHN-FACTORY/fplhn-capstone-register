@@ -13,7 +13,7 @@ import com.fpolydatn.entity.MonDatn;
  * @author hungpv
  */
 public interface MonDatnService {
-    PageableObject<MonDatnResponse> search(final FindMonDatnRequest req, String coSoId);
+    PageableObject<MonDatnResponse> search(final FindMonDatnRequest req);
 
     Boolean deleteMonDatn(final String id);
 

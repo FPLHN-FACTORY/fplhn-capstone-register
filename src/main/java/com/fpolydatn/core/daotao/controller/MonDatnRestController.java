@@ -55,8 +55,9 @@ public class MonDatnRestController extends BaseController {
     @PostMapping
     public ResponseObject add(Model model, @RequestBody CreateMonDatnRequest monDatnRequest) {
         Boolean add = false;
-        System.out.println("dfsghjsdfghj" + monDatnRequest.getChuyenNganhId());
         try {
+            String coSoId = session.getCoSoId();
+            monDatnRequest.setCoSoId(coSoId);
             add = monDatnService.create(monDatnRequest);
             return new ResponseObject(add);
         } catch (Exception e) {

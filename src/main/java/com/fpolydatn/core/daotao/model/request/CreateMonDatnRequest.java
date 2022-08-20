@@ -15,4 +15,5 @@ public class CreateMonDatnRequest extends BaseMonDatnRequest {
     @NotEmpty
     @NotBlank
     private String chuyenNganhId;
+
 }
