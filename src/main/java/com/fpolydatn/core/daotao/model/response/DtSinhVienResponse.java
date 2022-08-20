@@ -16,7 +16,7 @@ import java.util.UUID;
  */
 @Projection(types = {SinhVien.class, NhomDatn.class,
         ChuyenNganh.class, MonDatn.class, GiangVienHuongDan.class, DotDangKy.class})
-public interface DTSinhVienResponse {
+public interface DtSinhVienResponse {
 
     @Value("#{target.stt}")
     int getStt();
