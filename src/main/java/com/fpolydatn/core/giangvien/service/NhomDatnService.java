@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface NhomDatnService {
 
-    PageableObject<NhomDatnResponse> fillAllNhomDatn( FindNhomDatnRequest request);
+    PageableObject<NhomDatnResponse> fillAllNhomDatn(final FindNhomDatnRequest request);
 
     List<String> listHocKy();
 
@@ -23,5 +23,5 @@ public interface NhomDatnService {
 
     List<String> listChuyenNganh();
 
-    NhomDatn updateTrangThaiNhom( UpdateNhomDatnRequest request);
+    NhomDatn updateTrangThaiNhom(final UpdateNhomDatnRequest request);
 }

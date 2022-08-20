@@ -39,7 +39,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
                            OR ten_dot_dang_ky LIKE %:#{#request.tenDotDangKy}% )\s
             GROUP BY nd.id
             """, nativeQuery = true)
-    Page<NhomDatnResponse> fillAllNhomDatn(@Param("request") FindNhomDatnRequest request, Pageable page);
+    Page<NhomDatnResponse> fillAllNhomDatn(@Param("request")  FindNhomDatnRequest request, Pageable page);
 
     @Query(value = """
             SELECT  ten_dot_dang_ky

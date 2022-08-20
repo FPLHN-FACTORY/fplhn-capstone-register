@@ -31,17 +31,17 @@ public class GVNhomDatnRestController {
     private SinhVienService sinhVienService;
 
     @GetMapping()
-    public ResponseObject detailToTalSinhVien(@RequestBody()  FindSinhVienRequest request) {
+    public ResponseObject detailToTalSinhVien(final FindSinhVienRequest request) {
         return new ResponseObject(sinhVienService.findByNhomId(request));
     }
 
     @PutMapping()
-    public ResponseObject chotDuLieu(@RequestBody()  UpdateNhomDatnRequest request) {
+    public ResponseObject chotDuLieu(final UpdateNhomDatnRequest request) {
         return new ResponseObject(nhomDatnService.updateTrangThaiNhom(request));
     }
 
     @GetMapping("/search")
-    public ResponseObject viewSeachNhomDatn(@RequestBody()  FindNhomDatnRequest request) {
+    public ResponseObject viewSeachNhomDatn(final FindNhomDatnRequest request) {
         PageableObject<NhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
         return new ResponseObject(listNhomDatn);
     }

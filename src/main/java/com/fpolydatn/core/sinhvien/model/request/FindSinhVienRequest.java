@@ -12,4 +12,5 @@ import lombok.Setter;
 public final class FindSinhVienRequest {
 
     private String maNhom;
+
 }

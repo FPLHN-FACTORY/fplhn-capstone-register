@@ -20,7 +20,7 @@ public class SinhVienServiceImpl implements SinhVienService {
     private SvSinhVienRepository sinhVienRepository;
 
     @Override
-    public List<NhomSinhVienResponse> findByNhomId( FindSinhVienRequest request) {
+    public List<NhomSinhVienResponse> findByNhomId(final FindSinhVienRequest request) {
         return sinhVienRepository.findByNhomId(request);
     }
 }

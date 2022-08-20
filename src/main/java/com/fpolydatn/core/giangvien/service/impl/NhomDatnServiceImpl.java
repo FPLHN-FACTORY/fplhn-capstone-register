@@ -31,7 +31,7 @@ public class NhomDatnServiceImpl implements NhomDatnService {
     private GvNhomDatnRepository nhomDatnRepository;
 
     @Override
-    public PageableObject<NhomDatnResponse> fillAllNhomDatn( FindNhomDatnRequest request) {
+    public PageableObject<NhomDatnResponse> fillAllNhomDatn(final FindNhomDatnRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<NhomDatnResponse> responses = nhomDatnRepository.fillAllNhomDatn(request, pageable);
         return new PageableObject(responses);

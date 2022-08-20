@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateNhomDatnRequest {
+public final class UpdateNhomDatnRequest {
 
     private String maNhom;
 

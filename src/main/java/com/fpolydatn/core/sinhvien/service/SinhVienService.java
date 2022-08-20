@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface SinhVienService {
 
-    List<NhomSinhVienResponse> findByNhomId( FindSinhVienRequest request);
+    List<NhomSinhVienResponse> findByNhomId(final FindSinhVienRequest request);
 
 }
