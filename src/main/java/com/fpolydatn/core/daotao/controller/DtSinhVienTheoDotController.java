@@ -40,6 +40,6 @@ public class DtSinhVienTheoDotController extends BaseController {
         model.addAttribute("page", listSinhVien);
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("listDotDangKy", listDotDangKy);
-        return "daotao/sinh-vien-theo-dot";
+        return "daotao/dt-sinh-vien-theo-dot";
     }
 }
