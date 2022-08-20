@@ -130,6 +130,5 @@ $("#form_nhom_datn_delete").submit(function (event) {
 
         }
     });
-
 });
 
