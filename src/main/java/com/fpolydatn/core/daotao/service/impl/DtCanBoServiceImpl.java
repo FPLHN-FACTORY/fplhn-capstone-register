@@ -7,7 +7,7 @@ import com.fpolydatn.core.daotao.model.request.UpdateCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.CanBoResponse;
 import com.fpolydatn.core.daotao.model.response.TenCanBoResponse;
 import com.fpolydatn.core.daotao.repository.DTCanBoRepository;
-import com.fpolydatn.core.daotao.service.CanBoService;
+import com.fpolydatn.core.daotao.service.DtCanBoService;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.infrastructure.constant.Message;
@@ -34,7 +34,7 @@ import java.util.UUID;
  */
 @Service
 @Validated
-public class CanBoServiceImpl implements CanBoService {
+public class DtCanBoServiceImpl implements DtCanBoService {
 
     @Autowired
     private DTCanBoRepository dtCanBoRepository;

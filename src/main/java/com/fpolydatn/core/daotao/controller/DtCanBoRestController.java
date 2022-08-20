@@ -4,7 +4,8 @@ package com.fpolydatn.core.daotao.controller;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.CreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.UpdateCanBoRequest;
-import com.fpolydatn.core.daotao.service.CanBoService;
+import com.fpolydatn.core.daotao.service.DtCanBoService;
+import com.fpolydatn.infrastructure.session.FpolyDatnSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +24,14 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/dao-tao/can-bo")
-public class CanBoRestController {
+public class DtCanBoRestController {
 
     @Autowired
-    private CanBoService canBoService;
+    private DtCanBoService canBoService;
+
+    @Autowired
+    private FpolyDatnSession fpolyDatnSession;
+
 
     @GetMapping("/{id}")
     public ResponseObject detail(@PathVariable("id") UUID id) {
@@ -35,6 +40,7 @@ public class CanBoRestController {
 
     @PostMapping
     public ResponseObject add(@RequestBody CreateCanBoRequest createCanBoRequest) {
+        createCanBoRequest.setCoSoId(UUID.fromString( fpolyDatnSession.getCoSoId()));
         return new ResponseObject(canBoService.create(createCanBoRequest));
     }
 
@@ -42,6 +48,7 @@ public class CanBoRestController {
     public ResponseObject update(@PathVariable("id") UUID id,
                                  @RequestBody UpdateCanBoRequest updateCanBoRequest) {
         updateCanBoRequest.setId(id);
+        updateCanBoRequest.setCoSoId(UUID.fromString( fpolyDatnSession.getCoSoId()));
         return new ResponseObject(canBoService.update(id, updateCanBoRequest));
     }
 

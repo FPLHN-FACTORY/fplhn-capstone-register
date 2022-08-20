@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * @author nguyenvv4
  */
-public interface CanBoService {
+public interface DtCanBoService {
 
     PageableObject<CanBoResponse> search(final FindCanBoRequest canBoRequest);
 
