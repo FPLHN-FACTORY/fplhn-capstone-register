@@ -1,6 +1,6 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.core.entity.SinhVien;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

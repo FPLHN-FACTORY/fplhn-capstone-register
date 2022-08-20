@@ -1,6 +1,6 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.core.entity.NhomDatn;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

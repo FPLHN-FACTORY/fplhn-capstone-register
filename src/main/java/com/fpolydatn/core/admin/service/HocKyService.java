@@ -5,7 +5,7 @@ import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
 import com.fpolydatn.core.admin.model.request.UpdateHocKyRequest;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.entity.HocKy;
+import com.fpolydatn.core.entity.HocKy;
 
 import javax.validation.Valid;
 

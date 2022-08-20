@@ -21,6 +21,8 @@ public class CnSinhVienTheoNhomController extends BaseController {
     @GetMapping
     public String viewSinhVienTheoNhom(Model model, final CnFindSinhVienTheoNhomRequest req) {
         req.setIdNhom("428a005e-0418-49b1-ad1e-fb379e62a81d");
+        String coSoId = session.getCoSoId();
+        req.setCoSoId(coSoId);
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         model.addAttribute("page", pageSinhVien);
         model.addAttribute("idNhom",req.getIdNhom());

@@ -1,10 +1,10 @@
 package com.fpolydatn.core.chunhiem.model.response;
 
-import com.fpolydatn.entity.ChuyenNganh;
-import com.fpolydatn.entity.DotDangKy;
-import com.fpolydatn.entity.GiangVienHuongDan;
-import com.fpolydatn.entity.NhomDatn;
-import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.core.entity.ChuyenNganh;
+import com.fpolydatn.core.entity.DotDangKy;
+import com.fpolydatn.core.entity.GiangVienHuongDan;
+import com.fpolydatn.core.entity.NhomDatn;
+import com.fpolydatn.core.entity.SinhVien;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 

@@ -1,8 +1,8 @@
 package com.fpolydatn.core.common.authen;
 
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.entity.CoSo;
-import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.ActorConstant;
+import com.fpolydatn.core.entity.CoSo;
+import com.fpolydatn.infrastructure.constant.ActorConstant;
 import com.fpolydatn.repository.CoSoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

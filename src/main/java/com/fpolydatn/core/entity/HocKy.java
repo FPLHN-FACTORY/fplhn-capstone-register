@@ -1,0 +1,29 @@
+package com.fpolydatn.core.entity;
+
+import com.fpolydatn.core.entity.base.PrimaryEntity;
+import com.fpolydatn.infrastructure.constant.EntityProperties;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.Nationalized;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.io.Serializable;
+
+/**
+ * @author phongtt35
+ */
+@Getter
+@Setter
+@Table(name = "hoc_ky")
+@Entity
+@ToString
+public class HocKy extends PrimaryEntity implements Serializable {
+
+    @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
+    @Nationalized
+    private String tenHocKy;
+
+}

@@ -1,6 +1,7 @@
 package com.fpolydatn.core.chunhiem.controller;
 
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
+import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/chu-nhiem/sinh-vien")
-public class CnSinhVienTheoNhomRestController {
+public class CnSinhVienTheoNhomRestController extends BaseController {
     @Autowired
     private CnSinhVienTheoNhomService sinhVienTheoNhomService;
 

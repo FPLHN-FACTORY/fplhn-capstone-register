@@ -9,4 +9,5 @@ import lombok.Setter;
 public class CnFindSinhVienTheoDotRequest extends PageableRequest {
     private String idDotDangKy;
     private String tenSinhVien;
+    private String coSoId;
 }

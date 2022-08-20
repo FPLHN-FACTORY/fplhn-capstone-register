@@ -1,6 +1,6 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.entity.CoSo;
+import com.fpolydatn.core.entity.CoSo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

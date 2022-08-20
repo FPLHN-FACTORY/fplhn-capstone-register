@@ -1,6 +1,6 @@
 package com.fpolydatn.core.admin.model.request;
 
-import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.EntityProperties;
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;

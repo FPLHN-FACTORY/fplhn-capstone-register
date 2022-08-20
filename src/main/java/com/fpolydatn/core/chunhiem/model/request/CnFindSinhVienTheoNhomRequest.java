@@ -8,4 +8,5 @@ import lombok.Setter;
 @Setter
 public final class CnFindSinhVienTheoNhomRequest extends PageableRequest {
     private String idNhom;
+    private String coSoId;
 }

@@ -14,5 +14,5 @@ public interface CnSinhVienTheoDotService {
 
     boolean addSinhVienTheoNhom(String maNhom,String maSinhVien);
 
-    List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(String tenSinhVien);
+    List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(String tenSinhVien,String coSoId);
 }

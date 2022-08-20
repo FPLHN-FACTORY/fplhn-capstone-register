@@ -1,7 +1,7 @@
 package com.fpolydatn.core.chunhiem.service.impl;
 
-import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.Message;
-import com.fpolydatn.core.chunhiem.controller.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
@@ -47,7 +47,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
     }
 
     @Override
-    public List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(String tenSinhVien) {
-       return cnSinhVienTheoNhomRepository.getSinhVienByTenSinhVien(tenSinhVien);
+    public List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(String tenSinhVien,String coSoId) {
+       return cnSinhVienTheoNhomRepository.getSinhVienByTenSinhVien(tenSinhVien,coSoId);
     }
 }

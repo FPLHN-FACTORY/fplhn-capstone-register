@@ -4,7 +4,7 @@ import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoNhomRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
-import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.core.entity.SinhVien;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,7 +26,7 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
             JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id 
             JOIN nhom_datn e ON e.id= a.nhom_id 
             JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id 
-            WHERE e.id = :#{#req.idNhom} ORDER BY ten_sinh_vien """,
+            WHERE e.id = :#{#req.idNhom} AND a.co_so_id = :#{#req.coSoId} ORDER BY ten_sinh_vien """,
             countQuery = """ 
                     SELECT count(a.id) FROM sinh_vien a
                     JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
@@ -34,7 +34,7 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
                     JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id
                     JOIN nhom_datn e ON e.id= a.nhom_id
                     JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id
-                    WHERE e.id =  :#{#req.idNhom} ORDER BY ten_sinh_vien""", nativeQuery = true)
+                    WHERE e.id =  :#{#req.idNhom} AND a.co_so_id = :#{#req.coSoId}  ORDER BY ten_sinh_vien""", nativeQuery = true)
     Page<CnSinhVienTheoNhomResponse> searchSinhVien(@Param("req") CnFindSinhVienTheoNhomRequest req, Pageable page);
 
     @Query(value = "SELECT COUNT(1) FROM sinh_vien a WHERE a.nhom_id  LIKE %:id_nhom% ", nativeQuery = true)
@@ -68,7 +68,7 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
     LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
     LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
     LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
-    WHERE f.id = :#{#req.idDotDangKy} ORDER BY ten_sinh_vien
+    WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId} ORDER BY ten_sinh_vien
     """,countQuery = """
     SELECT COUNT(a.ma_sinh_vien)
     FROM sinh_vien a
@@ -77,7 +77,7 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
     LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
     LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
     LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
-    WHERE f.id = :#{#req.idDotDangKy} ORDER BY ten_sinh_vien
+    WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId} ORDER BY ten_sinh_vien
      """,nativeQuery = true)
     Page<CnSinhVienTheoDotResponse> searchSinhVien(@Param("req") CnFindSinhVienTheoDotRequest req, Pageable page);
 
@@ -90,7 +90,7 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
          LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
          LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
          LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
-         where a.ten_sinh_vien LIKE  CONCAT('%',:tenSinhVien,'%')  ORDER BY ten_sinh_vien
+         where a.ten_sinh_vien LIKE  CONCAT('%',:tenSinhVien,'%') AND a.co_so_id = :coSoId  ORDER BY ten_sinh_vien
          """,nativeQuery = true)
-    List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(@Param("tenSinhVien") String tenSinhVien);
+    List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(@Param("tenSinhVien") String tenSinhVien,@Param("coSoId") String coSoId);
 }

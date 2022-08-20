@@ -1,7 +1,7 @@
 package com.fpolydatn.repository;
 
-import com.fpolydatn.entity.PhanCongHuongDan;
-import com.fpolydatn.entity.PhanCongHuongDanId;
+import com.fpolydatn.core.entity.PhanCongHuongDan;
+import com.fpolydatn.core.entity.PhanCongHuongDanId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

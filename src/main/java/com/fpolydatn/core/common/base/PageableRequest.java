@@ -1,6 +1,6 @@
 package com.fpolydatn.core.common.base;
 
-import com.fpolydatn.core.chunhiem.controller.infrastructure.constant.PaginationConstant;
+import com.fpolydatn.infrastructure.constant.PaginationConstant;
 import lombok.Getter;
 import lombok.Setter;
 

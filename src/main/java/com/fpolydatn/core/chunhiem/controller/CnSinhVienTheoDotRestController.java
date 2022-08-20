@@ -2,6 +2,7 @@ package com.fpolydatn.core.chunhiem.controller;
 
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoDotService;
+import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/chu-nhiem/sinh-vien-dot-dang-ky")
-public class CnSinhVienTheoDotRestController {
+public class CnSinhVienTheoDotRestController extends BaseController {
     @Autowired
     private CnSinhVienTheoDotService cnSinhVienTheoDotService;
 
@@ -28,10 +29,12 @@ public class CnSinhVienTheoDotRestController {
             return new ResponseObject(e);
         }
     }
+
     @GetMapping
-    public ResponseObject getSinhVienByTenSinhVien( @RequestParam("tenSinhVien") String tenSinhVien) {
+    public ResponseObject getSinhVienByTenSinhVien(@RequestParam("tenSinhVien") String tenSinhVien) {
         try {
-            List<CnSinhVienTheoDotResponse> listSinhVien = cnSinhVienTheoDotService.getSinhVienByTenSinhVien(tenSinhVien);
+            String coSoId = session.getCoSoId();
+            List<CnSinhVienTheoDotResponse> listSinhVien = cnSinhVienTheoDotService.getSinhVienByTenSinhVien(tenSinhVien, coSoId);
             return new ResponseObject(listSinhVien);
         } catch (Exception e) {
             return new ResponseObject(e);

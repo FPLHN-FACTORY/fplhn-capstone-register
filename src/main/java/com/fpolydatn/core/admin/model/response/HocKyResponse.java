@@ -1,7 +1,7 @@
 package com.fpolydatn.core.admin.model.response;
 
-import com.fpolydatn.entity.base.IsIdentified;
-import com.fpolydatn.entity.HocKy;
+import com.fpolydatn.core.entity.base.IsIdentified;
+import com.fpolydatn.core.entity.HocKy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
