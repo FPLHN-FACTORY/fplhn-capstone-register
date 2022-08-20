@@ -38,15 +38,10 @@ public class MonDatnServiceImpl implements MonDatnService {
 
     private FormUtils formUtils = new FormUtils();
     @Override
-    public PageableObject<MonDatnResponse> search(final FindMonDatnRequest req) {
+    public PageableObject<MonDatnResponse> search(final FindMonDatnRequest req, String coSoId) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
-        Page<MonDatnResponse> res = monDatnRepository.findByName(req, pageable);
+        Page<MonDatnResponse> res = monDatnRepository.findByName(req, pageable,coSoId);
         return new PageableObject(res);
-    }
-
-    @Override
-    public long getSizeListMonDatn(String tenMonDatn) {
-        return monDatnRepository.countByName(tenMonDatn);
     }
 
     @Override
@@ -69,7 +64,7 @@ public class MonDatnServiceImpl implements MonDatnService {
     }
 
     @Override
-    public MonDatn update(@Valid final UpdateMonDatnRequest command) {
+    public MonDatn update(final UpdateMonDatnRequest command) {
         Optional<MonDatn> monDatnCheck = monDatnRepository.findById(command.getId());
         if (!monDatnCheck.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
@@ -81,8 +76,15 @@ public class MonDatnServiceImpl implements MonDatnService {
     }
 
     @Override
-    public MonDatn create(CreateMonDatnRequest command) {
-        return null;
+    public Boolean create(final CreateMonDatnRequest command) {
+        MonDatn monDatn = formUtils.convertToObject(MonDatn.class, command);
+        MonDatn monDatnInDb = monDatnRepository.findByMaMon(monDatn.getMaMon());
+        if (!Objects.isNull(monDatnInDb)) {
+            throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
+        } else {
+            monDatnRepository.save(monDatn);
+            return true;
+        }
     }
 
 }

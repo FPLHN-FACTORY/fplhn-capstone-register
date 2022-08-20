@@ -33,48 +33,6 @@
                 <div class="m-content">
                     <h3>Quản lý Môn DATN</h3>
                     <div class="mt-5">
-                        <section class="fillter-area  mb-5">
-                            <div class="m-portlet">
-                                <div class="m-portlet__head">
-                                    <div class="m-portlet__head-caption">
-                                        <div class="m-portlet__head-title">
-                                <span class="m-portlet__head-icon">
-                                    <i class="m-menu__link-icon flaticon-web"></i>
-                                </span>
-                                            <h3 class="m-portlet__head-text">
-                                                Bộ lọc
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                                <form
-                                        th:action="@{/dao-tao/mon-datn}"
-                                        method="GET"
-                                        class="m-portlet__body">
-                                    <div class="row">
-                                        <div
-                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Tên môn DATN</span>
-                                            <input type="text" class="form-control col-8"
-                                                   name="tenHocKy" id="ten-mon-datn" value="">
-                                        </div>
-                                    </div>
-
-                                    <div class="row justify-content-center pt-2">
-                                        <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                                        </div>
-                                        <div class="col-sm-2 col-12 text-center mt-2">
-                                            <a href="#"
-                                               class="btn btn-danger text-white" onclick="clearData();">
-                                                Làm mới bộ lọc
-                                            </a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </section>
-
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
@@ -118,9 +76,9 @@
                                                                             ngành: </label>
                                                                         <select id="chuyenNganh" class="combobox">
                                                                             <option value="0" hidden></option>
-                                                                            <div th:each="chuyenNganh : ${listChuyenNganh}">
-                                                                                <option th:value="${chuyenNganh.getId()}"
-                                                                                        th:text="${chuyenNganh.getTenChuyenNganh()}"></option>
+                                                                            <div th:each="chuyenNganh : ${tenChuyenNganh}">
+                                                                                <option th:value="${chuyenNganh.id}"
+                                                                                        th:text="${chuyenNganh.name}"></option>
                                                                             </div>
                                                                         </select>
                                                                     </div>
@@ -157,7 +115,7 @@
                                                 <tbody>
                                                 <th:block th:each="monDatn,i : ${page.data}">
                                                     <tr>
-                                                        <td th:text="${i.count}"></td>
+                                                        <td th:text="${monDatn.stt}"></td>
                                                         <td th:text="${monDatn.maMon}"></td>
                                                         <td th:text="${monDatn.tenMon}"></td>
                                                         <td>

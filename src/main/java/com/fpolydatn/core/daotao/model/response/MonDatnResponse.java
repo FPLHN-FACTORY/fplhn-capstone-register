@@ -13,6 +13,7 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(types = {MonDatn.class, CanBo.class, ChuyenNganh.class})
 public interface MonDatnResponse extends IsIdentified {
 
+    Integer getStt();
     String getId();
 
     @Value("#{target.ma_mon}")

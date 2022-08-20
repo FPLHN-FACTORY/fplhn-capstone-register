@@ -1,6 +1,8 @@
 package com.fpolydatn.core.daotao.controller;
 
+import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.core.daotao.model.request.CreateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.UpdateMonDatnRequest;
 import com.fpolydatn.core.daotao.service.MonDatnService;
 import com.fpolydatn.entity.MonDatn;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +24,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/dao-tao/mon-datn")
-public class MonDatnRestController {
+public class MonDatnRestController extends BaseController {
 
     @Autowired
     private MonDatnService monDatnService;
@@ -49,4 +52,16 @@ public class MonDatnRestController {
         return new ResponseObject(monDatnService.update(monDatnRequest));
     }
 
+    @PostMapping
+    public ResponseObject add(Model model, @RequestBody CreateMonDatnRequest monDatnRequest) {
+        Boolean add = false;
+        System.out.println("dfsghjsdfghj" + monDatnRequest.getChuyenNganhId());
+        try {
+            add = monDatnService.create(monDatnRequest);
+            return new ResponseObject(add);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return new ResponseObject(e);
+        }
+    }
 }
