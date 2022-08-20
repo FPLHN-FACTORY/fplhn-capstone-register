@@ -1,13 +1,12 @@
 package com.fpolydatn.core.daotao.service.impl;
 
-import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.FindPhanCongHuongDanRequest;
 import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanGiaoVienResponse;
 import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanResponse;
 import com.fpolydatn.core.daotao.repository.DtPhanCongHuongDanRepository;
-import com.fpolydatn.core.daotao.service.PhanCongHuongDanService;
+import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
@@ -24,7 +23,7 @@ import java.util.Objects;
  * @author huynq
  */
 @Service
-public class PhanCongHuongDanServiceImpl implements PhanCongHuongDanService {
+public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService {
 
     @Autowired
     private DtPhanCongHuongDanRepository phanCongHuongDanRepository;
@@ -42,7 +41,7 @@ public class PhanCongHuongDanServiceImpl implements PhanCongHuongDanService {
     }
 
     @Override
-    public PhanCongHuongDan findID(String id) {
+    public PhanCongHuongDan findId(String id) {
         PhanCongHuongDan phanCongHuongDan = phanCongHuongDanRepository.finId(id);
         if(phanCongHuongDan == null) {
             throw new RestApiException(Message.PHAN_CONG_HUONG_DAN_NOT_EXIST);
@@ -66,7 +65,7 @@ public class PhanCongHuongDanServiceImpl implements PhanCongHuongDanService {
     }
 
     @Override
-    public PhanCongHuongDan addMon(PhanCongHuongDan phanCongHuongDan) {
+    public PhanCongHuongDan add(PhanCongHuongDan phanCongHuongDan) {
         return phanCongHuongDanRepository.save(phanCongHuongDan);
     }
 

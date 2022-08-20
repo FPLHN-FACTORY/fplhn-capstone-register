@@ -4,8 +4,8 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.FindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.MonDatnResponse;
-import com.fpolydatn.core.daotao.service.ChuyenNganhService;
-import com.fpolydatn.core.daotao.service.MonDatnService;
+import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
+import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,20 +20,20 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/dao-tao/mon-datn")
-public class MonDatnController extends BaseController {
+public class DtMonDatnController extends BaseController {
     @Autowired
-    private MonDatnService monDatnService;
+    private DtMonDatnService monDatnService;
 
     @Autowired
-    private ChuyenNganhService chuyenNganhService;
+    private DtChuyenNganhService chuyenNganhService;
     @GetMapping
     public String viewMonDatn(Model model, final FindMonDatnRequest req){
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<MonDatnResponse>pageMonDatn = monDatnService.search(req);
-        List<SimpleEntityProj>tenChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
+        List<SimpleEntityProj>listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("page", pageMonDatn);
-        model.addAttribute("tenChuyenNganh", tenChuyenNganh);
+        model.addAttribute("tenChuyenNganh", listChuyenNganh);
         return "/daotao/mon-datn";
     }
 }

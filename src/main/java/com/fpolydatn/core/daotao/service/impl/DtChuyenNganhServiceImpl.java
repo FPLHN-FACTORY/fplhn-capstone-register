@@ -1,7 +1,7 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
-import com.fpolydatn.core.daotao.service.ChuyenNganhService;
+import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,8 @@ import com.fpolydatn.util.FormUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.List;
 
@@ -24,7 +26,7 @@ import java.util.List;
  * @author hungpv
  */
 @Service
-public class ChuyenNganhServiceImpl implements ChuyenNganhService {
+public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     @Autowired
     private DtChuyenNganhRepository dtChuyenNganhRepository;
     private FormUtils formUtils = new FormUtils();
@@ -34,7 +36,7 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
         return dtChuyenNganhRepository.findAllSimpleEntityByCoSo(id);
     }
     @Override
-    public ChuyenNganh update(UpdateChuyenNganhRequest req) {
+    public ChuyenNganh update(@Valid UpdateChuyenNganhRequest req) {
         Optional<ChuyenNganh> chuyenNganhCheck = dtChuyenNganhRepository.findById(req.getId());
         if (!chuyenNganhCheck.isPresent()){
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
@@ -47,7 +49,7 @@ public class ChuyenNganhServiceImpl implements ChuyenNganhService {
     }
 
     @Override
-    public ChuyenNganh add(CreateChuyenNganhRequest req) {
+    public ChuyenNganh add(@Valid CreateChuyenNganhRequest req) {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class,req);
 
         return dtChuyenNganhRepository.save(chuyenNganh);

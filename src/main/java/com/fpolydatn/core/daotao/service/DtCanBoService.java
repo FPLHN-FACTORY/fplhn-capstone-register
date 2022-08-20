@@ -4,7 +4,10 @@ import com.fpolydatn.core.daotao.model.response.TenCanBoResponse;
 
 import java.util.List;
 
-public interface CanBoService {
+/**
+ * @author hoangnt
+ */
+public interface DtCanBoService {
 
     List<TenCanBoResponse> getTenCanBo();
 }

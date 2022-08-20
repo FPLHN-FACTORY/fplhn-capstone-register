@@ -14,7 +14,6 @@ import org.springframework.data.rest.core.config.Projection;
 public interface MonDatnResponse extends IsIdentified {
 
     Integer getStt();
-    String getId();
 
     @Value("#{target.ma_mon}")
     String getMaMon();

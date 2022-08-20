@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * @author hungpv
  */
-public interface ChuyenNganhService {
+public interface DtChuyenNganhService {
 
     List<SimpleEntityProj> findAllSimpleEntityByCoSo(String id);
 
-    ChuyenNganh update(final UpdateChuyenNganhRequest req);
+    ChuyenNganh update(@Valid final UpdateChuyenNganhRequest req);
 
     ChuyenNganh add(@Valid final CreateChuyenNganhRequest req);
     Boolean delete(String id);

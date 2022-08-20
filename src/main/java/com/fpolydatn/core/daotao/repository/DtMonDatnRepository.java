@@ -1,7 +1,5 @@
 package com.fpolydatn.core.daotao.repository;
 
-import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
-import com.fpolydatn.core.admin.model.response.HocKyResponse;
 import com.fpolydatn.core.daotao.model.request.FindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.MonDatnResponse;
 import com.fpolydatn.entity.MonDatn;
@@ -19,8 +17,8 @@ public interface DtMonDatnRepository extends MonDatnRepository {
             SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, cb.ten_tai_khoan 
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
-                JOIN mon_datn m on m.chuyen_nganh_id = cn.id 
-                WHERE m.co_so_id = :#{#req.coSoId} and
+                JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
+                WHERE m.co_so_id = :#{#req.coSoId} AND
                     ( :#{#req.tenMonDatn} IS NULL 
                         OR :#{#req.tenMonDatn} LIKE '' 
                         OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
@@ -29,8 +27,8 @@ public interface DtMonDatnRepository extends MonDatnRepository {
             SELECT COUNT(m.id)
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
-                JOIN mon_datn m on m.chuyen_nganh_id = cn.id 
-                WHERE m.co_so_id = :#{#req.coSoId} and
+                JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
+                WHERE m.co_so_id = :#{#req.coSoId} AND
                     ( :#{#req.tenMonDatn} IS NULL 
                         OR :#{#req.tenMonDatn} LIKE '' 
                         OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 

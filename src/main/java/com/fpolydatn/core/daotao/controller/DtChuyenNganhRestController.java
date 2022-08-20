@@ -4,7 +4,7 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.CreateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.model.request.UpdateChuyenNganhRequest;
-import com.fpolydatn.core.daotao.service.ChuyenNganhService;
+import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.ChuyenNganh;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author hoangnt
+ */
 @RestController
 @RequestMapping("/api/dao-tao/chuyen-nganh")
-public class ChuyenNganhRestController extends BaseController {
+public class DtChuyenNganhRestController extends BaseController {
 
     @Autowired
-    private ChuyenNganhService chuyenNganhService;
+    private DtChuyenNganhService chuyenNganhService;
 
     @GetMapping("/{id}")
     public ResponseObject detail(@PathVariable("id") String id){

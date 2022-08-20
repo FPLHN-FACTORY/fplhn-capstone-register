@@ -1,15 +1,12 @@
 package com.fpolydatn.core.daotao.controller;
 
-import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
-import com.fpolydatn.core.admin.model.response.HocKyResponse;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.BasePhanCongHuongDanRequest;
 import com.fpolydatn.core.daotao.model.request.FindPhanCongHuongDanRequest;
 import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanGiaoVienResponse;
 import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.PhanCongHuongDanResponse;
-import com.fpolydatn.core.daotao.service.PhanCongHuongDanService;
+import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,16 +21,15 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/dao-tao/mon-datn")
-public final class PhanCongHuongDanController extends BaseController {
+public final class DtPhanCongHuongDanController extends BaseController {
 
     @Autowired
-    private PhanCongHuongDanService phanCongHuongDanService;
+    private DtPhanCongHuongDanService phanCongHuongDanService;
 
     @GetMapping("/{id}")
     public String viewPhanCongHuongDan(Model model
                                         , final FindPhanCongHuongDanRequest req
                                         , @PathVariable("id") String id) {
-        System.out.println(id);
         PageableObject<PhanCongHuongDanResponse> listPhanCong = phanCongHuongDanService.search(id, req);
         for (PhanCongHuongDanResponse a : listPhanCong.getData()
         ) {

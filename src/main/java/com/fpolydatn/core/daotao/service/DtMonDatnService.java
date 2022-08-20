@@ -8,18 +8,20 @@ import com.fpolydatn.core.daotao.model.response.MonDatnResponse;
 
 import com.fpolydatn.entity.MonDatn;
 
+import javax.validation.Valid;
+
 
 /**
  * @author hungpv
  */
-public interface MonDatnService {
-    PageableObject<MonDatnResponse> search(final FindMonDatnRequest req);
+public interface DtMonDatnService {
+    PageableObject<MonDatnResponse> search(@Valid final FindMonDatnRequest req);
 
-    Boolean deleteMonDatn(final String id);
+    Boolean delete(final String id);
 
     MonDatn findById(String id);
 
-    MonDatn update(final UpdateMonDatnRequest command);
+    MonDatn update(@Valid final UpdateMonDatnRequest command);
 
-    Boolean create(final CreateMonDatnRequest command);
+    Boolean add(@Valid final CreateMonDatnRequest command);
 }

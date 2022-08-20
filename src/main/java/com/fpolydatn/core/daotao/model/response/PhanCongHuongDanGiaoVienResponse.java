@@ -1,7 +1,7 @@
 package com.fpolydatn.core.daotao.model.response;
 
-import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.PhanCongHuongDan;
+import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -9,12 +9,9 @@ import org.springframework.data.rest.core.config.Projection;
  * @author huynq
  */
 @Projection(types = {PhanCongHuongDan.class})
-public interface PhanCongHuongDanGiaoVienResponse {
+public interface PhanCongHuongDanGiaoVienResponse extends IsIdentified {
     @Value("#{target.stt}")
     Integer getStt();
-
-    @Value("#{target.id}")
-    String getId();
 
     @Value("#{target.ten_gvhd}")
     String getTenGiaoVienHuongDan();
