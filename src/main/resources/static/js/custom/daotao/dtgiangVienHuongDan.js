@@ -2,6 +2,8 @@ const giangVienHuongDanApi = '/api/dao-tao/giang-vien-huong-dan';
 const giangVienHuongDanView = '/dao-tao/giang-vien-huong-dan';
 const regexFE = new RegExp('[a-z0-9]+@fe.edu.vn');
 const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
+const regexSDT = new RegExp('(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}');
+const regexSoNhom =  new RegExp('[0-9]+');
 
 $(document).ready(function () {
     $("#giang_vien_error").text("");
@@ -39,6 +41,12 @@ $("#form_create_giang_vien").submit(function (event) {
             if (soNhomHuongDanToiDa.length === 0) {
                   $("#errorSoNhomHD").text( " Số nhóm không được để trống");
                    index++;
+            } else if (regexSoNhom.test(soNhomHuongDanToiDa)==false ) {
+                   $("#errorSoNhomHD").text( " Số nhóm phải là số ");
+                   index++;
+            } else if (Number(soNhomHuongDanToiDa) <= 0 ) {
+                    $("#errorSoNhomHD").text( " Số nhóm phải lớn hơn 0");
+                    index++;
             }else{
                 $("#errorSoNhomHD").text( "");
             }
@@ -51,7 +59,10 @@ $("#form_create_giang_vien").submit(function (event) {
             if (soDienThoai.length === 0) {
                    $("#errorSDT").text( " Số điện thoại không được để trống");
                    index++;
-            }else{
+            } else if (regexSDT.test(soDienThoai)==false) {
+                   $("#errorSDT").text( " Số điện thoại sai ");
+                    index++;
+            } else{
                 $("#errorSDT").text( "");
             }
 

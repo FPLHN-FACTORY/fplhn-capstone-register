@@ -5,5 +5,5 @@ import com.fpolydatn.repository.DotDangKyRepository;
 /**
  * @author Vinhnv
  */
-public interface DtDotDangKyreposiroy extends DotDangKyRepository {
+public interface DtDotDangKyReposiroy extends DotDangKyRepository {
 }
