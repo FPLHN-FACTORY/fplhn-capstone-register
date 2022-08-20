@@ -26,36 +26,19 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN giang_vien_huong_dan gvhd ON gvhd.id = nd.giang_vien_id
             JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
-            WHERE   ( :#{#request.tenHocKy} IS NULL\s
-                          OR :#{#request.tenHocKy} LIKE ''\s
-                          OR ten_hoc_ky LIKE %:#{#request.tenHocKy}% )\s
+            WHERE   ( :#{#request.hocKyId} IS NULL\s
+                          OR :#{#request.hocKyId} LIKE ''\s
+                          OR hk.id LIKE %:#{#request.hocKyId}% )\s
                   AND 
-                      ( :#{#request.tenChuyenNganh} IS NULL\s
-                          OR :#{#request.tenChuyenNganh} LIKE ''\s
-                          OR ten_chuyen_nganh LIKE %:#{#request.tenChuyenNganh}% )\s
+                      ( :#{#request.chuyenNganhId} IS NULL\s
+                          OR :#{#request.chuyenNganhId} LIKE ''\s
+                          OR cn.id LIKE %:#{#request.chuyenNganhId}% )\s
                    AND                                              
-                        ( :#{#request.tenDotDangKy} IS NULL\s
-                           OR :#{#request.tenDotDangKy} LIKE ''\s
-                           OR ten_dot_dang_ky LIKE %:#{#request.tenDotDangKy}% )\s
+                        ( :#{#request.dotDangKyId} IS NULL\s
+                           OR :#{#request.dotDangKyId} LIKE ''\s
+                           OR ddk.id LIKE %:#{#request.dotDangKyId}% )\s
             GROUP BY nd.id
             """, nativeQuery = true)
     Page<GvNhomDatnResponse> fillAllNhomDatn(@Param("request") GvFindNhomDatnRequest request, Pageable page);
-
-    @Query(value = """
-            SELECT  ten_dot_dang_ky
-            FROM dot_dang_ky
-                        """, nativeQuery = true)
-    List<String> getAllDotdangKy();
-
-    @Query(value = """
-            SELECT  ten_hoc_ky
-            FROM hoc_ky
-                        """, nativeQuery = true)
-    List<String> getAllHocKy();
-
-    @Query(value = """
-           SELECT ten_chuyen_nganh
-            FROM chuyen_nganh
-                        """, nativeQuery = true)
-    List<String> getAllChuyenNganh();
+    
 }

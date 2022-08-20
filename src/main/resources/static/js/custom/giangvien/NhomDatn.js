@@ -80,8 +80,8 @@ function seachNhomdatn() {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: nhomDatnAPI + "/search" + "?tenChuyenNganh=" + tenChuyenNganh
-            + "&tenHocKy=" + tenHocKy + "&tenDotDangKy=" + tenDotDangKy,
+        url: nhomDatnAPI + "/search" + "?chuyenNganhId=" + tenChuyenNganh
+            + "&hocKyId=" + tenHocKy + "&dotDangKyId=" + tenDotDangKy,
         success: function (responseData) {
             console.log(responseData)
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {

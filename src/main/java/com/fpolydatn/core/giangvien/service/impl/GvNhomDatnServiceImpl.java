@@ -1,6 +1,9 @@
 package com.fpolydatn.core.giangvien.service.impl;
 
+import com.fpolydatn.core.admin.repository.AdHocKyRepository;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
+import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
@@ -10,12 +13,18 @@ import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.repository.ChuyenNganhRepository;
+import com.fpolydatn.repository.DotDangKyRepository;
+import com.fpolydatn.repository.HocKyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,6 +37,16 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
 
     @Autowired
     private GvNhomDatnRepository nhomDatnRepository;
+
+    @Autowired
+    private DtDotDangKyRepository dotDangKyRepository;
+
+    @Autowired
+    private DtChuyenNganhRepository chuyenNganhRepository;
+
+    @Autowired
+    private AdHocKyRepository hocKyRepository;
+
 
     @Override
     public PageableObject<GvNhomDatnResponse> fillAllNhomDatn(final GvFindNhomDatnRequest request) {
@@ -44,6 +63,21 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT_DE_TAI);
         return nhomDatnRepository.save(nhomDatnCheck.get());
+    }
+
+    @Override
+    public List<SimpleEntityProj> getListDotDangKy() {
+        return dotDangKyRepository.findAllSimpleEntity();
+    }
+
+    @Override
+    public List<SimpleEntityProj> getListChuyenNganh(String coSoId) {
+        return chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
+    }
+
+    @Override
+    public List<SimpleEntityProj> getListHocKy() {
+        return hocKyRepository.findAllSimpleEntity();
     }
 
 }
