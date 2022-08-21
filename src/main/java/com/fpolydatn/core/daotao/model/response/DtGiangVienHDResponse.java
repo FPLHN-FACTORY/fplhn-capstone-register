@@ -38,4 +38,5 @@ public interface DtGiangVienHDResponse extends IsIdentified {
 
     @Value("#{target.email_fe}")
     String getEmailFe();
+
 }

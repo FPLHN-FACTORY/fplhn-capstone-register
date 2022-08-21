@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
  */
 
 public interface DtDotDangKyRepository extends DotDangKyRepository {
+
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY ddk.last_modified_date DESC) AS STT, ddk.id, hk.ten_hoc_ky, 
             ddk.ten_dot_dang_ky, ddk.ngay_bat_dau, ddk.ngay_ket_thuc, 
@@ -23,4 +24,5 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
             """, nativeQuery = true)
     Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest requ, Pageable page);
+
 }

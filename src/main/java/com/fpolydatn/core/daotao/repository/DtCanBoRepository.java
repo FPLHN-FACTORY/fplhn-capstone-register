@@ -13,7 +13,6 @@ import org.springframework.data.repository.query.Param;
  */
 public interface DtCanBoRepository extends CanBoRepository {
 
-
     @Query(value = """
             SELECT  ROW_NUMBER() OVER(ORDER BY cb.last_modified_date DESC) AS STT, cb.id,cb.email_fe,
                     cb.email_fpt,cb.so_dien_thoai,cb.last_modified_date,
@@ -26,14 +25,14 @@ public interface DtCanBoRepository extends CanBoRepository {
                     ORDER BY cb.last_modified_date DESC 
             """,
             countQuery = """
-            SELECT  COUNT(cb.id)
-                    FROM do_an_tot_nghiep.can_bo cb 
-                    JOIN do_an_tot_nghiep.co_so cs
-                    ON cb.co_so_id= cs.id  WHERE (:#{#req.tenCanBo} IS NULL
-                    OR :#{#req.tenCanBo} LIKE ''
-                    OR ten_can_bo LIKE %:#{#req.tenCanBo}% )
-                    ORDER BY cb.last_modified_date DESC 
-            """,
+                    SELECT  COUNT(cb.id)
+                            FROM do_an_tot_nghiep.can_bo cb 
+                            JOIN do_an_tot_nghiep.co_so cs
+                            ON cb.co_so_id= cs.id  WHERE (:#{#req.tenCanBo} IS NULL
+                            OR :#{#req.tenCanBo} LIKE ''
+                            OR ten_can_bo LIKE %:#{#req.tenCanBo}% )
+                            ORDER BY cb.last_modified_date DESC 
+                    """,
             nativeQuery = true)
     Page<DtCanBoResponse> findAllByTenCanBo(@Param("req") DtFindCanBoRequest canBoRequest, Pageable page);
 

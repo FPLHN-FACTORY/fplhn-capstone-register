@@ -14,5 +14,6 @@ public interface DtTenCanBoResponse extends IsIdentified {
 
     @Value("#{target.ten_can_bo}")
     String getTenCanBo();
+
 }
 

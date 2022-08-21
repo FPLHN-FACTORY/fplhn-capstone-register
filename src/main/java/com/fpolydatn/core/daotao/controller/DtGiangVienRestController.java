@@ -57,13 +57,13 @@ public class DtGiangVienRestController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseObject search ( final DtFindGiangVienHDRequest rep){
+    public ResponseObject search(final DtFindGiangVienHDRequest rep) {
         DtApiResponse<DtGiangVienHDResponse> apiResponse = new DtApiResponse<>();
         PageableObject<DtGiangVienHDResponse> listGiangVienHD = giangVienHDService.search(rep);
         apiResponse.setData(listGiangVienHD);
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < listGiangVienHD.getTotalPages(); i++) {
-            list.add(i+1);
+            list.add(i + 1);
         }
         apiResponse.setList(list);
         return new ResponseObject(apiResponse);

@@ -52,14 +52,12 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                         OR :#{#req.coSoId} LIKE '' 
                         OR cs.id   LIKE %:#{#req.coSoId}% ) 
                 ORDER BY gvhd.last_modified_date DESC 
-            """,nativeQuery = true)
+            """, nativeQuery = true)
     Page<DtGiangVienHDResponse> findByName(@Param("req") DtFindGiangVienHDRequest req, Pageable page);
 
     @Query(value = """
             SELECT COUNT(1) FROM giang_vien_huong_dan gvhd WHERE gvhd.ten_gvhd LIKE %:tenGiangVien%
             """, nativeQuery = true)
     Long countByName(@Param("tenGiangVien") String tenGiangVien);
-
-
 
 }

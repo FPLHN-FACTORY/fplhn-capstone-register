@@ -11,5 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DtFindDotDangKyRequest extends PageableRequest {
-    private  String coSoId;
+
+    private String coSoId;
+
 }

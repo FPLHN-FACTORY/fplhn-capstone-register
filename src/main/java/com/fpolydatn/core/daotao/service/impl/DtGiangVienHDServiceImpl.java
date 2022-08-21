@@ -34,14 +34,14 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     @Override
     public GiangVienHuongDan create(DtCreateGiangVienHDRequest command) {
-        GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class,command);
+        GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class, command);
         return dtGiangVienHDRepository.save(gvhd);
     }
 
     @Override
     public Boolean delete(String id) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(id);
-        if(!gvhdCheck.isPresent()){
+        if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
         dtGiangVienHDRepository.delete(gvhdCheck.get());
@@ -51,7 +51,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public GiangVienHuongDan update(DtUpdateGiangVienHDRequest command) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(command.getId());
-        if(!gvhdCheck.isPresent()){
+        if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
         GiangVienHuongDan giangVien = gvhdCheck.get();
@@ -68,7 +68,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public GiangVienHuongDan findById(String id) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(id);
-        if(!gvhdCheck.isPresent()){
+        if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
         return gvhdCheck.get();
@@ -85,6 +85,5 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         Page<DtGiangVienHDResponse> res = dtGiangVienHDRepository.findByName(request, pageable);
         return new PageableObject<>(res);
     }
-
 
 }
