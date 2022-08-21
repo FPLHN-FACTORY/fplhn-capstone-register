@@ -12,6 +12,10 @@ import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * @author SonPT
+ */
+
 public interface DtDotDangKyService {
 
     PageableObject<DtDotDangKyResponse> findByCoSo(DtFindDotDangKyRequest request);

@@ -11,6 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * @author SonPT
+ */
+
 @Controller
 @RequestMapping("/dao-tao/dot-dang-ky")
 public final class DtDotDangKyController extends BaseController {
@@ -23,7 +27,6 @@ public final class DtDotDangKyController extends BaseController {
         request.setCoSoId(session.getCoSoId());
         PageableObject<DtDotDangKyResponse> listDotDangKy = dotDangKyService.findByCoSo(request);
         model.addAttribute("page", listDotDangKy);
-        System.out.println(listDotDangKy.getTotalPages());
         return "daotao/dt-dot-dang-ky";
     }
 

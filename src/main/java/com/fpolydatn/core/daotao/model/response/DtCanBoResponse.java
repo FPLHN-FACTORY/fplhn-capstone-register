@@ -1,6 +1,7 @@
 package com.fpolydatn.core.daotao.model.response;
 
 import com.fpolydatn.entity.CoSo;
+import com.fpolydatn.entity.base.IsIdentified;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
@@ -9,11 +10,9 @@ import org.springframework.data.rest.core.config.Projection;
  * @author caodinh
  */
 @Projection(types = {VaiTro.class, CoSo.class})
-public interface DtCanBoResponse {
+public interface DtCanBoResponse extends IsIdentified {
 
     Integer getSTT();
-
-    String getId();
 
     @Value("#{target.email_fe}")
     String getEmailFE();

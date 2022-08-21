@@ -45,7 +45,7 @@ public final class DtCanBoRestController extends BaseController {
                                  @RequestBody DtUpdateCanBoRequest updateCanBoRequest) {
         updateCanBoRequest.setId(id);
         updateCanBoRequest.setCoSoId(session.getCoSoId());
-        return new ResponseObject(canBoService.update(id, updateCanBoRequest));
+        return new ResponseObject(canBoService.update(updateCanBoRequest));
     }
 
 

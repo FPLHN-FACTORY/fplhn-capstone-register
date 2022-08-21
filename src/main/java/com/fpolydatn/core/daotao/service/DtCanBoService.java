@@ -24,6 +24,6 @@ public interface DtCanBoService {
 
     CanBo findById(String id);
 
-    CanBo update(String id, DtUpdateCanBoRequest canBoRequest);
+    CanBo update(DtUpdateCanBoRequest canBoRequest);
 
 }
