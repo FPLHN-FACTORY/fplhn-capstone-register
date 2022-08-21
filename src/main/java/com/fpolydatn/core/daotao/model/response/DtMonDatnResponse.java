@@ -23,5 +23,4 @@ public interface DtMonDatnResponse extends IsIdentified {
 
     @Value("#{target.ten_tai_khoan}")
     String getChuNhiemBoMon();
-
 }

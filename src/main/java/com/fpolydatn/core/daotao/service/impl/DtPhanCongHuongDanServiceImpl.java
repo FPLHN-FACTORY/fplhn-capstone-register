@@ -44,7 +44,7 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     @Override
     public PhanCongHuongDan findId(String id) {
         PhanCongHuongDan phanCongHuongDan = phanCongHuongDanRepository.finId(id);
-        if(phanCongHuongDan == null) {
+        if (phanCongHuongDan == null) {
             throw new RestApiException(Message.PHAN_CONG_HUONG_DAN_NOT_EXIST);
         }
         return phanCongHuongDan;

@@ -1,6 +1,5 @@
 package com.fpolydatn.core.daotao.repository;
 
-import com.fpolydatn.core.daotao.model.response.TenCanBoResponse;
 import com.fpolydatn.repository.CanBoRepository;
 import org.springframework.data.jpa.repository.Query;
 

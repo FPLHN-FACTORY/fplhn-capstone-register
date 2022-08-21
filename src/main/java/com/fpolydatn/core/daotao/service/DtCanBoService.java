@@ -10,4 +10,5 @@ import java.util.List;
 public interface DtCanBoService {
 
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
+
 }
