@@ -18,7 +18,9 @@ public enum Message {
     DOT_DANG_KY_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.DOT_DANG_KY_NOT_EXIST)),
     PHAN_CONG_HUONG_DAN_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.PHAN_CONG_HUONG_DAN_NOT_EXIST)),
     HOC_KY_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.HOC_KY_NOT_EXIST)),
-    TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG(PropertiesReader.getProperty(PropertyKeys.TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG))
+    TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG(PropertiesReader.getProperty(PropertyKeys.TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG)),
+
+    NHOM_DATN_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.NHOM_DATN_NOT_EXIST)),
 
     GIANG_VIEN_HUONG_DAN_EXIST(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_HUONG_DAN_EXIST)),
 
