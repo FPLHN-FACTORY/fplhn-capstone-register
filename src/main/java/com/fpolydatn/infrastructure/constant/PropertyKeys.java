@@ -22,4 +22,6 @@ public class PropertyKeys {
 
     public static final String NHOM_DATN_NOT_EXIST = "nhom.datn.not.exist";
 
+    public static final String GIANG_VIEN_HUONG_DAN_EXIST = "giang.vien.huong.dan.exist";
+
 }
