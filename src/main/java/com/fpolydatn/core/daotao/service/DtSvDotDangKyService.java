@@ -10,4 +10,6 @@ import java.util.List;
 public interface DtSvDotDangKyService {
 
     List<SimpleEntityProj> listDotDangKy(String coSoId);
+
+    List<SimpleEntityProj> getListDotDangKy(String coSoId);
 }

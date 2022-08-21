@@ -4,6 +4,7 @@ import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -12,12 +13,10 @@ import org.springframework.data.rest.core.config.Projection;
  */
 
 @Projection(types = {NhomDatn.class, SinhVien.class, ChuyenNganh.class, GiangVienHuongDan.class})
-public interface GvNhomDatnResponse {
+public interface GvNhomDatnResponse extends IsIdentified {
 
     @Value("#{target.stt}")
     Integer getStt();
-
-    String getId();
 
     @Value("#{target.ten_nhom}")
     String getTenNhom();

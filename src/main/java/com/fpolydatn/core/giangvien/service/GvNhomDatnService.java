@@ -20,9 +20,4 @@ public interface GvNhomDatnService {
 
     NhomDatn updateTrangThaiNhom(final GvUpdateNhomDatnRequest request);
 
-    List<SimpleEntityProj> getListDotDangKy(String coSoId);
-
-    List<SimpleEntityProj> getListChuyenNganh(String coSoId);
-
-    List<SimpleEntityProj> getListHocKy();
 }

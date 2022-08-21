@@ -60,20 +60,5 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT_DE_TAI);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
-
-    @Override
-    public List<SimpleEntityProj> getListDotDangKy(String coSoId) {
-        return dotDangKyRepository.findAllSimpleEntity(coSoId);
-    }
-
-    @Override
-    public List<SimpleEntityProj> getListChuyenNganh(String coSoId) {
-        return chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
-    }
-
-    @Override
-    public List<SimpleEntityProj> getListHocKy() {
-        return hocKyRepository.findAllSimpleEntity();
-    }
-
+    
 }

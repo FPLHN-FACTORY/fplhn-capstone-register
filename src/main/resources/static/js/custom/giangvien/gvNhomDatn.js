@@ -64,8 +64,7 @@ function chotDuLieu(maNhom) {
         contentType: "application/json",
         url: nhomDatnAPI + "?maNhom=" + maNhom,
         success: function () {
-            var index = $("#currentPage").text()
-            seachNhomdatn(index)
+            window.location.reload(false)
         },
         error: function (e) {
             console.log("ERROR : ", e);
