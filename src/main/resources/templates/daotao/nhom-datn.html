@@ -55,7 +55,7 @@
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-5 text-center">Tìm tên</span>
-                                            <input type="text" class="form-control col-6" name="keyword" id="keyword"
+                                            <input type="text" class="form-control col-6" name="tenNhom" id="tenNhom"
                                             >
                                         </div>
                                         <div
@@ -69,15 +69,14 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <div
-                                                class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-5 text-center">Trạng thái</span>
-                                            <select name="trangThai" id="trangThai" class="form-control col-6">
-                                                <option value="">chọn trạng thái</option>
-                                                <option value="a">Đã có nhóm
-                                                </option>
-                                                <option value="b">Chưa có nhóm
-                                                </option>
+                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Trạng thái:</span>
+                                            <select class="form-control col-7"
+                                                    id="trangThai" name="trangThai">
+                                                <option value="" hidden>Trạng thái</option>
+                                                <option value="0">Chưa chốt đề tài</option>
+                                                <option value="1">Giáo viên đã chốt</option>
+                                                <option value="2">CNBM đã chốt</option>
                                             </select>
                                         </div>
                                         <div

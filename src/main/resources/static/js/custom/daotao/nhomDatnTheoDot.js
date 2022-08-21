@@ -38,15 +38,15 @@ $("#form_list_nhom_datn").submit(function (event) {
     loadDataNhomDatn(0);
 })
 function loadDataNhomDatn(count) {
-    let tenNhom = $("#keyword").val()
-    let chuyenNganhId = $("#chuyenNganhId").val()
-    let tenGvhd = $("#tenGvhd").val()
+    let tenNhom = $("#tenNhom").val()
+    let chuyenNganhId = $("#chuyenNganh").val()
+    let dotDangKyId = $("#dotDangKy").val()
     let trangThai = $("#trangThai").val()
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: DTNhomDatnApi + "/search" + "?keyword=" + tenNhom + "&chuyenNganhId=" + chuyenNganhId
-            + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&page=" + count,
+        url: DTNhomDatnApi + "/search" + "?tenNhom=" + tenNhom + "&chuyenNganhId=" + chuyenNganhId
+            + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId  + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)
@@ -55,7 +55,7 @@ function loadDataNhomDatn(count) {
             if (array.length == 0) {
                 console.log(array.length)
                 $("#listNhomDatn").html(``)
-                $("#page").html(``)
+                $("#list_page").html(``)
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`)
             } else {
                 $("#empty").html(``)
@@ -76,8 +76,8 @@ function loadDataNhomDatn(count) {
                 </tr>
                 `
                 }))
-                $("#page").html(``)
-                $("#page").html(
+                $("#list_page").html(``)
+                $("#list_page").html(
                     responseData.data.list.map(function (item, index) {
                         if (responseData.data.list.length == 1) {
                             return ``

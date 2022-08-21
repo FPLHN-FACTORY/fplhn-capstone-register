@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/dao-tao/nhom-datn")
 public class DtNhomDatnTheoDotRestController extends BaseController {
@@ -24,13 +25,14 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     private DtNhomDatnTheoDotService dtNhomDatnTheoDotService;
 
     @GetMapping("")
-    public ResponseObject showDanhSachSinhVien( @RequestParam("keyword") String id, final FindSinhVienRequest req) {
+    public ResponseObject showDanhSachSinhVien(@RequestParam("keyword") String id, final FindSinhVienRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         req.setId(id);
         PageableObject<DtSinhVienResponse> listDanhSachSinhVien = dtNhomDatnTheoDotService.showDanhSachSinhVien(req);
         return new ResponseObject(listDanhSachSinhVien);
     }
+
     @GetMapping("/search")
     public ResponseObject viewHocKy(final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
@@ -40,7 +42,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         dtApiResponse.setData(listNhomDatn);
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < listNhomDatn.getTotalPages(); i++) {
-            list.add(i+1);
+            list.add(i + 1);
         }
         dtApiResponse.setList(list);
         return new ResponseObject(dtApiResponse);
