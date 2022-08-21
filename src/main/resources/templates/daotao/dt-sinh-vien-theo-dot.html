@@ -128,15 +128,15 @@
                                             <tbody id="list">
                                             <th:block th:each="sinhVien :  ${page.data}">
                                                 <tr>
-                                                    <td th:text="${sinhVien.getStt()}"/>
-                                                    <td th:text="${sinhVien.getMaSinhVien}"/>
-                                                    <td th:text="${sinhVien.getTenSinhVien}"/>
-                                                    <td th:text="${sinhVien.getTenChuyenNganh}"/>
-                                                    <td th:text="${sinhVien.getTenMonDatn}==null? 'chưa có ': ${sinhVien.getTenMonDatn}"/>
-                                                    <td th:text="${sinhVien.getMaNhom} ==null? 'chưa có ': ${sinhVien.getMaNhom}"/>
-                                                    <td th:text="${sinhVien.getTenDeTai}==null? 'chưa có ':${sinhVien.getTenDeTai}"/>
-                                                    <td th:text="${sinhVien.getTenGvhd}==null? 'chưa có ':${sinhVien.getTenGvhd}"/>
-                                                    <td th:text="${sinhVien.getTenDotDangKy}"/>
+                                                    <td th:text="${sinhVien.getStt}"/>
+                                                    <td th:text="${sinhVien.maSinhVien}"/>
+                                                    <td th:text="${sinhVien.tenSinhVien}"/>
+                                                    <td th:text="${sinhVien.tenChuyenNganh}"/>
+                                                    <td th:text="${sinhVien.tenMonDatn}==null? 'chưa có ': ${sinhVien.tenMonDatn}"/>
+                                                    <td th:text="${sinhVien.maNhom} ==null? 'chưa có ': ${sinhVien.maNhom}"/>
+                                                    <td th:text="${sinhVien.tenDeTai}==null? 'chưa có ':${sinhVien.tenDeTai}"/>
+                                                    <td th:text="${sinhVien.tenGvhd}==null? 'chưa có ':${sinhVien.tenGvhd}"/>
+                                                    <td th:text="${sinhVien.tenDotDangKy}"/>
                                                 </tr>
                                             </th:block>
                                             </tbody>
