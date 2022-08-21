@@ -33,7 +33,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if(id==null){
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
-        String idExist = cnSinhVienTheoNhomRepository.getIdbyMaSinhVienAndMaNhom(maSinhVien);
+        String idExist = cnSinhVienTheoNhomRepository.getIdByMaSinhVienAndMaNhom(maSinhVien);
         if(idExist == null){
             throw new RestApiException(Message.STUDENT_HAVE_GROUP);
         }

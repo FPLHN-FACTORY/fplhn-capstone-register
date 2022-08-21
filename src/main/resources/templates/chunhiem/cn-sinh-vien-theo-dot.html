@@ -178,7 +178,7 @@
                                                     <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                         <li class="page-item">
                                                             <a class="page-link" id="currentPage"
-                                                               th:href="@{/chu-nhiem/sinh-vien-dot-dang-ky?page={page.currentPage}(page.currentPage=${i}-1)}"
+                                                               th:href="@{/chu-nhiem/dot-dang-ky/sinh-vien?page={page.currentPage}(page.currentPage=${i}-1)}"
                                                                th:text="${i}">
                                                             </a>
                                                         </li>

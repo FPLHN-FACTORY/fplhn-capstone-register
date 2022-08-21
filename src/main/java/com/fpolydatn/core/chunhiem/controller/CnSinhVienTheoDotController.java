@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/chu-nhiem/sinh-vien-dot-dang-ky")
+@RequestMapping("chu-nhiem/dot-dang-ky/sinh-vien")
 public class CnSinhVienTheoDotController extends BaseController {
     @Autowired
     private CnSinhVienTheoDotService cnSinhVienTheoDotService;

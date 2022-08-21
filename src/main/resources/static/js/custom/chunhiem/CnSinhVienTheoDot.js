@@ -1,5 +1,5 @@
-const sinhVienApi = '/api/chu-nhiem/sinh-vien-dot-dang-ky'
-const sinhVienTheoDotDangKyView = '/chu-nhiem/sinh-vien-dot-dang-ky';
+const sinhVienApi = '/api/chu-nhiem/dot-dang-ky/sinh-vien';
+const sinhVienTheoDotDangKyView = '/chu-nhiem/dot-dang-ky/sinh-vien';
 
 function openModalAddSinhVien(maSinhVien, count) {
     $("#modal_create_nhom").modal('show');

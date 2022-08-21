@@ -47,37 +47,37 @@ public class CnNhomDatnRestController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseObject updateTrangThaiNhom(Model model, @PathVariable("id") String id, @RequestParam("page") int page) {
+    public ResponseObject updateTrangThaiNhom(@PathVariable("id") String id, @RequestParam("page") int page) {
         String coSoId = session.getCoSoId();
         Boolean update = false;
         try {
             update = nhomDatnService.updateTrangThaiNhom(id, coSoId);
+            return new ResponseObject(update);
         } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
+            return new ResponseObject(ex);
         }
-        return new ResponseObject(update);
     }
 
     @GetMapping("/{id}")
-    public ResponseObject detailNhomDatn(Model model, @PathVariable("id") String id) {
+    public ResponseObject detailNhomDatn(@PathVariable("id") String id) {
         NhomDatn nhomDatn = null;
         try {
             nhomDatn = nhomDatnService.findById(id);
+            return new ResponseObject(nhomDatn);
         } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
+            return new ResponseObject(ex);
         }
-        return new ResponseObject(nhomDatn);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseObject deleteNhomDatn(Model model, @PathVariable("id") String id) {
+    public ResponseObject deleteNhomDatn(@PathVariable("id") String id) {
         Boolean remove = false;
         try {
             remove = nhomDatnService.delete(id);
+            return new ResponseObject(remove);
         } catch (Exception ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
+            return new ResponseObject(ex);
         }
-        return new ResponseObject(remove);
     }
 
 

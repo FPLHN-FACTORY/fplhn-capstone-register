@@ -47,7 +47,7 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
     String getIdSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien);
 
     @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien and nhom_id is null",nativeQuery = true)
-    String getIdbyMaSinhVienAndMaNhom(@Param("maSinhVien")String maSinhVien);
+    String getIdByMaSinhVienAndMaNhom(@Param("maSinhVien")String maSinhVien);
 
     @Modifying
     @Transactional

@@ -50,7 +50,7 @@ function loadDataNhomDatn(count) {
                 <td>${item.maSinhVien}</td>
                 <td>${item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
                 <td>${item.trangThai == 0 ? 'Chưa chốt đề tài' : (item.trangThai == 1 ? 'Giáo viên đã chốt' : 'CNBM đã chốt')}</td>
-                <td><a class="btn btn-primary"  href="/chu-nhiem/sinh-vien?idNhom=${item.id}">Chi tiết nhóm</a></td>
+                <td><a class="btn btn-primary"  href="/chu-nhiem/sinh-vien?id=${item.id}">Chi tiết nhóm</a></td>
                 <td><button style="${item.trangThai == 1 ? 'display : block' : 'display : none'}" type="button" class="btn btn-primary" onclick="CNChotDuLieu('${item.id}','${count}')">Chốt đề tài</button></td>
                 <td><button style="${item.trangThai == 2 ? 'display : none' : 'display : block'}" type="button" class="btn btn-danger text-white" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">Xóa</button>
                 </tr>

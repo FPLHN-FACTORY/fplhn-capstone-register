@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/chu-nhiem/sinh-vien-dot-dang-ky")
+@RequestMapping("/api/chu-nhiem/dot-dang-ky/sinh-vien")
 public class CnSinhVienTheoDotRestController extends BaseController {
     @Autowired
     private CnSinhVienTheoDotService cnSinhVienTheoDotService;
