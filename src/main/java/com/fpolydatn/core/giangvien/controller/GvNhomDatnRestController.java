@@ -4,7 +4,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.response.ApiResponse;
+import com.fpolydatn.core.giangvien.model.response.GvApiResponse;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
@@ -44,13 +44,13 @@ public class GvNhomDatnRestController {
     }
 
     @GetMapping("/search")
-    public ApiResponse viewSeachNhomDatn(final GvFindNhomDatnRequest request) {
+    public GvApiResponse viewSeachNhomDatn(final GvFindNhomDatnRequest request) {
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
         List<Integer> listPage = new ArrayList<>();
         for(int index = 0; index < listNhomDatn.getTotalPages(); index++){
             listPage.add(index);
         }
-        ApiResponse apiRespone = new ApiResponse(listNhomDatn,listPage);
+        GvApiResponse apiRespone = new GvApiResponse(listNhomDatn,listPage);
         return apiRespone;
     }
 }

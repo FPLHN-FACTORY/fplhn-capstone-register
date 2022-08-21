@@ -11,12 +11,12 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class ApiResponse {
+public class GvApiResponse {
 
     private PageableObject<GvNhomDatnResponse> listNhomDatn;
     private List<Integer> listPage;
 
-    public ApiResponse(PageableObject<GvNhomDatnResponse> listNhomDatn, List<Integer> listPage) {
+    public GvApiResponse(PageableObject<GvNhomDatnResponse> listNhomDatn, List<Integer> listPage) {
         this.listNhomDatn = listNhomDatn;
         this.listPage = listPage;
     }
