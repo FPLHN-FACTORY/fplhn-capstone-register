@@ -41,7 +41,8 @@
                                             <button
                                                     data-toggle="modal"
                                                     data-target="#modal_create"
-                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                    class="col-12 col-sm-8 col-md-4 btn btn-success"
+                                                    onclick="clearData()">
                                                 Tạo đợt đăng ký
                                             </button>
                                             <!--Start Model Create-->
@@ -67,18 +68,25 @@
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="tenDotDangKyAdd">
+                                                                    <span class="text-danger"
+                                                                          id="errorMessageAddTenDot"></span>
+                                                                    <br>
                                                                     <label class="col-form-label">Ngày bắt đầu</label>
                                                                     <input
                                                                             type="datetime-local"
                                                                             class="form-control"
                                                                             id="ngayBatDauAdd">
+                                                                    <span class="text-danger"
+                                                                          id="errorMessageAddNgayBatDau"></span>
+                                                                    <br>
                                                                     <label class="col-form-label">Ngày kết thúc</label>
                                                                     <input
                                                                             type="datetime-local"
                                                                             class="form-control"
                                                                             id="ngayKetThucAdd">
                                                                     <span class="text-danger"
-                                                                          id="errorMessageAdd"></span>
+                                                                          id="errorMessageAddNgayKetThuc"></span>
+                                                                    <br>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -172,8 +180,7 @@
         <div class="modal-content">
             <form id="form_dot_dang_ky_update">
                 <div class="modal-header">
-                    <h5 class="modal-title">Cập
-                        nhật học kỳ</h5>
+                    <h5 class="modal-title">Cập nhật đợt đăng ký</h5>
                     <button type="button" class="close"
                             data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

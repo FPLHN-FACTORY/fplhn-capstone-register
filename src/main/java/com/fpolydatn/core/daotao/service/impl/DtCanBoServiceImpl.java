@@ -73,8 +73,8 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     }
 
     @Override
-    public CanBo update(String id, DtUpdateCanBoRequest canBoRequest) {
-        Optional<CanBo> canBo = dtCanBoRepository.findById(id);
+    public CanBo update(DtUpdateCanBoRequest canBoRequest) {
+        Optional<CanBo> canBo = dtCanBoRepository.findById(canBoRequest.getId());
         if (Objects.isNull(canBo)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
@@ -83,7 +83,6 @@ public class DtCanBoServiceImpl implements DtCanBoService {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
-        updateCanBo.setId(id);
         return dtCanBoRepository.save(updateCanBo);
     }
 }

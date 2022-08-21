@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author SonPT
+ */
+
 @RestController
 @RequestMapping("/api/dao-tao/dot-dang-ky")
 public final class DtDotDangKyRestController extends BaseController {

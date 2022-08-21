@@ -4,6 +4,10 @@ import com.fpolydatn.core.common.base.PageableRequest;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author SonPT
+ */
+
 @Getter
 @Setter
 public class DtFindDotDangKyRequest extends PageableRequest {

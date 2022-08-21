@@ -48,6 +48,9 @@ $("#form_create_giang_vien").submit(function (event) {
     } else if (Number.parseInt(soNhomHuongDanToiDa) <= 0) {
         $("#errorSoNhomHD").text("Số nhóm phải lớn hơn 0");
         index++;
+    } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
+        $("#errorSoNhomHD").text("Số nhóm chỉ từ 1 đến 7");
+        index++;
     } else {
         $("#errorSoNhomHD").text("");
     }

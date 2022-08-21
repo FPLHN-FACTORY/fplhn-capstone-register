@@ -8,6 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * @author SonPT
+ */
+
 public interface DtDotDangKyRepository extends DotDangKyRepository {
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY ddk.last_modified_date DESC) AS STT, ddk.id, hk.ten_hoc_ky, 

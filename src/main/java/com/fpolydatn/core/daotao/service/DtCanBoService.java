@@ -7,12 +7,9 @@ import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
-import com.fpolydatn.core.daotao.model.response.DtTenCanBoResponse;
 import com.fpolydatn.entity.CanBo;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author nguyenvv4
@@ -27,6 +24,6 @@ public interface DtCanBoService {
 
     CanBo findById(String id);
 
-    CanBo update(String id, DtUpdateCanBoRequest canBoRequest);
+    CanBo update(DtUpdateCanBoRequest canBoRequest);
 
 }

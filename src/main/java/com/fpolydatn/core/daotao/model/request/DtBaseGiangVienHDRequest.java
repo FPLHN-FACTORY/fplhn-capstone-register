@@ -4,6 +4,8 @@ import com.fpolydatn.infrastructure.constant.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -19,6 +21,8 @@ public abstract class DtBaseGiangVienHDRequest {
     @NotBlank
     private String tenGvhd;
 
+    @Min(value = 1)
+    @Max(value = 7)
     private Short soNhomHuongDanToiDa;
 
     @NotEmpty
