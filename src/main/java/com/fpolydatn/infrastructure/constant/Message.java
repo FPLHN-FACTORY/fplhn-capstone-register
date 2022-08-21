@@ -22,7 +22,6 @@ public enum Message {
     MON_DATN_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.MON_DATN_NOT_EXIST)),
     MON_DATN_ALREADY_EXIST(PropertiesReader.getProperty(PropertyKeys.MON_DATN_ALREADY_EXIST)),;
 
-
     private String message;
 
     Message(String message) {

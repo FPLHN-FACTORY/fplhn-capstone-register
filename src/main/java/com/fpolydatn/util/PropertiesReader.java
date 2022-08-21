@@ -22,6 +22,7 @@ public class PropertiesReader {
     private static Properties validationProperties = new Properties();
     private static Logger logger = Logger.getLogger(PropertiesReader.class);
 
+
     static {
         // Load application properties file
         try (
