@@ -9,8 +9,4 @@ import java.util.List;
  * @author hoangnt
  */
 public interface DtCanBoRepository extends CanBoRepository {
-
-    @Query(value = """
-            SELECT id,ten_can_bo FROM can_bo WHERE vai_tro = 2""", nativeQuery = true)
-    List<TenCanBoResponse> findCanBoByVaiTro();
 }
