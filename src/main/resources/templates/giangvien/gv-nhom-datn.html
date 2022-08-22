@@ -136,7 +136,6 @@
                                         </table>
                                         <!-- Paging-->
                                         <nav th:if="${page.totalPages > 1}" aria-label="Page navigation" >
-                                            <li th:text="${page.totalPages}" hidden id="totalPages"></li>
                                             <ul class="pagination justify-content-end" id="page">
                                                 <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}" >
                                                     <li class="page-item">
