@@ -22,7 +22,14 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             FROM dot_dang_ky ddk LEFT JOIN sinh_vien sv ON ddk.id = sv.dot_dang_ky_id 
             INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id WHERE ddk.co_so_id = :#{#req.coSoId} 
             GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
-            """, nativeQuery = true)
+            """,
+            countQuery = """
+            SELECT COUNT(ddk.id) 
+            FROM dot_dang_ky ddk LEFT JOIN sinh_vien sv ON ddk.id = sv.dot_dang_ky_id 
+            INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id WHERE ddk.co_so_id = :#{#req.coSoId} 
+            GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
+            """,
+            nativeQuery = true)
     Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest requ, Pageable page);
 
 }
