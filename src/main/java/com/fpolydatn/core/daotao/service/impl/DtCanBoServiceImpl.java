@@ -12,6 +12,7 @@ import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -84,5 +86,10 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         }
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return dtCanBoRepository.save(updateCanBo);
+    }
+
+    @Override
+    public List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro) {
+        return dtCanBoRepository.findAllSimpleEntityByTenCanBo(id,vaiTro);
     }
 }

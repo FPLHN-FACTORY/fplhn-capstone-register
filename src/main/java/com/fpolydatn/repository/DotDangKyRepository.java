@@ -15,7 +15,7 @@ import java.util.List;
 @Repository(DotDangKyRepository.NAME)
 public interface DotDangKyRepository extends JpaRepository<DotDangKy, String> {
 
-    public static final String NAME = "BaseDotDangKyRepository";
+    String NAME = "BaseDotDangKyRepository";
 
     @Query(value = """
             SELECT id, ten_dot_dang_ky AS 'name' FROM dot_dang_ky
