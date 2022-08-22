@@ -88,7 +88,7 @@ $("#form_create_dot_dang_ky").submit(function (event) {
     let ngayBatDau = new Date(ngayBatDauStr);
     let ngayKetThucStr = $("#ngayKetThucAdd").val();
     let ngayKetThuc = new Date(ngayKetThucStr);
-    let hocKyId = new String('0079f7ff-0e62-4e08-bf87-6c879b2c6703');
+    let hocKyId = new String('1a597a09-e917-474c-9e84-e4fedafe1bb3');
 
     let dotDangKyRequest = {};
     dotDangKyRequest["tenDotDangKy"] = tenDotDangKy;

@@ -10,6 +10,7 @@ import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
 import com.fpolydatn.entity.HocKy;
 import com.fpolydatn.core.admin.service.HocKyService;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,7 +33,7 @@ public class HocKyServiceImpl implements HocKyService {
     @Autowired
     private AdHocKyRepository hocKyRepository;
 
-    private FormUtils formUtils = new FormUtils();
+    private final FormUtils formUtils = new FormUtils();
 
     @Override
     public PageableObject<HocKyResponse> search(final FindHocKyRequest request) {
@@ -81,6 +83,11 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     public long getSizeListHocKy(String tenHocKy) {
         return hocKyRepository.countByName(tenHocKy);
+    }
+
+    @Override
+    public List<SimpleEntityProj> getListHocKy() {
+        return hocKyRepository.findAllSimpleEntity();
     }
 
 }

@@ -6,8 +6,10 @@ import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.entity.CanBo;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author nguyenvv4
@@ -24,4 +26,5 @@ public interface DtCanBoService {
 
     CanBo update(DtUpdateCanBoRequest canBoRequest);
 
+    List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
 }
