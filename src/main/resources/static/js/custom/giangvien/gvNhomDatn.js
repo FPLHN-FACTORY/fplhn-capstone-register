@@ -8,9 +8,6 @@ function clearDataGVHD() {
 }
 
 $(document).ready(function () {
-    $("#hoc_ky_error").text("");
-    $("#id_nhom_datn_update").text("");
-    $("#ten_de_tai_update").text("");
 
     fillter()
 
