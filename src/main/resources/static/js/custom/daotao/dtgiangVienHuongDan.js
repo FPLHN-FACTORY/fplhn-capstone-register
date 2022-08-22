@@ -77,7 +77,7 @@ $("#form_create_giang_vien").submit(function (event) {
         index++;
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
-        check = false;
+       index++;
     } else {
         $("#errorEmailFpt").text("");
     }
@@ -175,9 +175,9 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexSoNhom.test(soNhomHuongDanToiDa) == false) {
         $("#errorSoNhomHDUpdate").text(" Số nhóm phải là số");
         index++;
-    } else if (Number.parseInt(soNhomHuongDanToiDa) <= 0) {
-        $("#errorSoNhomHD").text("Số nhóm phải lớn hơn 0");
-        index++;
+    } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
+        $("#errorSoNhomHDUpdate").text("Số nhóm chỉ từ 1 đến 7");
+         index++;
     } else {
         $("#errorSoNhomHD").text("");
     }
@@ -204,7 +204,7 @@ $("#form_giang_vien_update").submit(function (event) {
         index++;
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
-        check = false;
+        index ++;
     } else {
         $("#errorEmailFpt").text("");
     }
