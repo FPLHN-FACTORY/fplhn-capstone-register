@@ -1,7 +1,7 @@
 let DTNhomDatnApi = '/api/dao-tao/nhom-datn';
 
 function clearform() {
-    $("#keyword").val("");
+    $("#tenNhom").val("");
     $("#chuyenNganh").val("");
     $("#trangThai").val("");
     $("#dotDangKy").val("");
