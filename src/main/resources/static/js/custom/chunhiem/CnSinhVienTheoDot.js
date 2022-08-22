@@ -37,8 +37,7 @@ function loadDataToTable(count) {
         contentType: "application/json",
         url: sinhVienApi + "/search" + "?tenSinhVien=" + tenSinhVien + "&page=" + count,
         success: function (responseData) {
-            // console.log(responseData)
-            let array = responseData.data.data.data
+            let array = responseData.data.data
             var text = "";
             var text1 = "";
             var text2 = "";
@@ -63,7 +62,7 @@ function loadDataToTable(count) {
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <button 
+                  <button
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">
@@ -74,7 +73,7 @@ function loadDataToTable(count) {
                     <p>${sinhVien.maNhom}</p>
                 </td>
                 `;
-                    text3 = `    
+                    text3 = `
                     <td>${tenDeTai}</td>
                     <td>${tenGvhd}</td>
                     </tr >
@@ -83,16 +82,16 @@ function loadDataToTable(count) {
                 });
                 $("#listSV").html(text);
                 $("#page").html(``)
-                $("#page").html(
-                    responseData.data.list.map(function (item, index) {
-                        if (responseData.data.list.length == 1) {
-                            return ``
-                        }
-                        return `<li class="page-item" >
-                                <a class="page-link" onclick="loadDataToTable(${index})">${item}</a>
-                            </li>`
-                    })
-                )
+                let templateHtml = ``;
+                for (let i = 0; i < responseData.data.totalPages; i++) {
+                    templateHtml += `<li class="page-item" >
+                                        <a class="page-link" onclick="loadDataToTable(${i})">${i+1}</a>
+                                    </li>`
+                }
+                if(responseData.data.totalPages == 1){
+                    templateHtml = ``;
+                }
+                $("#page").html(templateHtml);
             }
         },
         error: function (responseData) {

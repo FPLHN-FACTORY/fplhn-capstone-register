@@ -31,8 +31,7 @@ function loadDataNhomDatn(count) {
             + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData)
-            let array = responseData.data.data.data
+            let array = responseData.data.data
             if (array.length == 0) {
                 $("#listNhomDatn").html(``)
                 $("#page").html(``)
@@ -57,16 +56,16 @@ function loadDataNhomDatn(count) {
                 `
                 }))
                 $("#page").html(``)
-                $("#page").html(
-                    responseData.data.list.map(function (item, index) {
-                        if (responseData.data.list.length == 1) {
-                            return ``
-                        }
-                        return `<li class="page-item" >
-                                <a class="page-link" onclick="loadDataNhomDatn(${index})">${item}</a>
-                            </li>`
-                    })
-                )
+                let templateHtml = ``;
+                for (let i = 0; i < responseData.data.totalPages; i++) {
+                    templateHtml += `<li class="page-item" >
+                                        <a class="page-link" onclick="loadDataNhomDatn(${i})">${i+1}</a>
+                                    </li>`
+                }
+                if(responseData.data.totalPages == 1){
+                    templateHtml = ``;
+                }
+                $("#page").html(templateHtml);
             }
         },
         error: function (e) {

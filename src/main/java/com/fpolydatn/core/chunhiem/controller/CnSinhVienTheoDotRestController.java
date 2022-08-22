@@ -36,14 +36,7 @@ public class CnSinhVienTheoDotRestController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<CnSinhVienTheoDotResponse> listSinhVienTheoDot = cnSinhVienTheoDotService.searchByIdDotDangKy(req);
-        CnApiResponse<CnSinhVienTheoDotResponse> apiResponse = new CnApiResponse<>();
-        apiResponse.setData(listSinhVienTheoDot);
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < listSinhVienTheoDot.getTotalPages(); i++) {
-            list.add(i+1);
-        }
-        apiResponse.setList(list);
-        return new ResponseObject(apiResponse);
+        return new ResponseObject(listSinhVienTheoDot);
     }
 
     @PostMapping("/addSinhVien")
