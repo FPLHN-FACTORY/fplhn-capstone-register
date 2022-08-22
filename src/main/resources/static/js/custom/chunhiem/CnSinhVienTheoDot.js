@@ -37,6 +37,7 @@ function loadDataToTable(count) {
         contentType: "application/json",
         url: sinhVienApi + "/search" + "?tenSinhVien=" + tenSinhVien + "&page=" + count,
         success: function (responseData) {
+
             let array = responseData.data.data
             var text = "";
             var text1 = "";

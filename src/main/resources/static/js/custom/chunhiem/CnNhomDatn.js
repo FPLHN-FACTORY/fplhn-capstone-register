@@ -31,6 +31,7 @@ function loadDataNhomDatn(count) {
             + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
+            
             let array = responseData.data.data
             if (array.length == 0) {
                 $("#listNhomDatn").html(``)
