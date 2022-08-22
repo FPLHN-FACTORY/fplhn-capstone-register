@@ -34,16 +34,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     @Autowired
     private GvNhomDatnRepository nhomDatnRepository;
 
-    @Autowired
-    private DtDotDangKyRepository dotDangKyRepository;
-
-    @Autowired
-    private DtChuyenNganhRepository chuyenNganhRepository;
-
-    @Autowired
-    private AdHocKyRepository hocKyRepository;
-
-
     @Override
     public PageableObject<GvNhomDatnResponse> fillAllNhomDatn(final GvFindNhomDatnRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());

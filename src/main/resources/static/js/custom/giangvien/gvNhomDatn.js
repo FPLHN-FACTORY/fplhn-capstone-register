@@ -13,6 +13,7 @@ $(document).ready(function () {
     $("#ten_de_tai_update").text("");
 
     fillter()
+
 });
 
 function fillter(){
@@ -88,7 +89,7 @@ function seachNhomdatn(index) {
         url: nhomDatnAPI + "/search" + "?chuyenNganhId=" + tenChuyenNganh
             + "&hocKyId=" + tenHocKy + "&dotDangKyId=" + tenDotDangKy + "&page="+index,
         success: function (responseData) {
-            $("#list_nhom_datn").html(responseData.listNhomDatn.data.map(function (item) {
+            $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
                 <tr>
                 <td>${item.stt}</td>
@@ -119,16 +120,17 @@ function seachNhomdatn(index) {
                 `
             }))
             $("#page").html(``)
-            $("#page").html(
-                responseData.list.map(function (item, index){
-                    if(responseData.list.length == 1){
-                        return ``
-                    }
-                    return `<li class="page-item" >
-                                <a class="page-link" onclick="seachNhomdatn(${index})">${item +1}</a>
+            let templateHtml = ``;
+            for(let i =0; i < responseData.data.totalPages; i++){
+                templateHtml += `<li class="page-item" >
+                                <a class="page-link" onclick="seachNhomdatn(${i})">${i +1}</a>
                             </li>`
-                })
-            )
+            }
+            if(responseData.data.totalPages == 1){
+                templateHtml = ``;
+            }
+            $("#page").html(templateHtml)
+
         },
         error: function (e) {
             console.log("ERROR : ", e);
