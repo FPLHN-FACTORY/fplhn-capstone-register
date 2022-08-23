@@ -69,7 +69,6 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         dotDangKy.setNgayKetThuc(dtUpdateDotDangKyRequest.getNgayKetThuc());
         return dtDotDangKyRepository.save(dotDangKy);
     }
-
     @Override
     public DotDangKy findById(String id) {
         Optional<DotDangKy> dotDangKyCheck = dtDotDangKyRepository.findById(id);
