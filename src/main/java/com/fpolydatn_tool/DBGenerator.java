@@ -98,6 +98,15 @@ public class DBGenerator implements CommandLineRunner {
         thienth3.setTenTaiKhoan("thienth3");
         thienth3.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
         thienth3.setId(canBoRepository.save(thienth3).getId());
+        CanBo hungpv = new CanBo();
+        hungpv.setCoSoId(csHN.getId());
+        hungpv.setEmailFe("hungpvph25929@fe.edu.vn");
+        hungpv.setEmailFpt("hungpvph25929@fpt.edu.vn");
+        hungpv.setSoDienThoai("0345424622");
+        hungpv.setTenCanBo("Phùng Việt Hùng");
+        hungpv.setTenTaiKhoan("hungpv");
+        hungpv.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
+        hungpv.setId(canBoRepository.save(hungpv).getId());
 
         ChuyenNganh ptpm = new ChuyenNganh();
         ptpm.setCoSoId(csHN.getId());
