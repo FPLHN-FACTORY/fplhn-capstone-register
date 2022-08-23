@@ -36,14 +36,7 @@ public class CnNhomDatnRestController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req);
-        CnApiResponse<CnNhomDatnResponse> apiResponse = new CnApiResponse<>();
-        apiResponse.setData(listNhomDatn);
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < listNhomDatn.getTotalPages(); i++) {
-            list.add(i+1);
-        }
-        apiResponse.setList(list);
-        return new ResponseObject(apiResponse);
+        return new ResponseObject(listNhomDatn);
     }
 
     @PutMapping("/{id}")
