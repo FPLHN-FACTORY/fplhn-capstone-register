@@ -4,7 +4,6 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.response.GvApiResponse;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
@@ -14,9 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -44,13 +40,9 @@ public class GvNhomDatnRestController {
     }
 
     @GetMapping("/search")
-    public GvApiResponse viewSeachNhomDatn(final GvFindNhomDatnRequest request) {
+    public ResponseObject viewSeachNhomDatn(final GvFindNhomDatnRequest request) {
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
-        List<Integer> listPage = new ArrayList<>();
-        for(int index = 0; index < listNhomDatn.getTotalPages(); index++){
-            listPage.add(index);
-        }
-        GvApiResponse apiRespone = new GvApiResponse(listNhomDatn,listPage);
-        return apiRespone;
+        return new ResponseObject(listNhomDatn);
     }
+
 }
