@@ -18,7 +18,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER( ORDER BY nd.last_modified_date DESC ) AS stt, nd.id, nd.ten_nhom ,nd.ten_de_tai , cn.ten_chuyen_nganh,
-                   COUNT(sv.ma_sinh_vien) AS total_ma_sinh_vien, sv.ma_sinh_vien, gvhd.ten_gvhd, nd.trang_thai
+                   COUNT(sv.ma_sinh_vien) AS total_ma_sinh_vien, c.ten_sinh_vien, c.ma_sinh_vien, gvhd.ten_gvhd, gvhd.ten_tai_khoan, nd.trang_thai
             FROM nhom_datn nd
             JOIN sinh_vien c ON nd.truong_nhom_id = c.id
             JOIN sinh_vien sv ON sv.nhom_id = nd.id
