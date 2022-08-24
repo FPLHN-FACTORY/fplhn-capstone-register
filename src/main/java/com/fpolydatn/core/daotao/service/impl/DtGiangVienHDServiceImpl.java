@@ -63,7 +63,6 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public GiangVienHuongDan update(DtUpdateGiangVienHDRequest command) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(command.getId());
-        String id = gvhdCheck.get().getId();
         if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
