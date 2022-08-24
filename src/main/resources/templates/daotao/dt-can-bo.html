@@ -114,12 +114,9 @@
                                                                     <br>
                                                                     <label class="col-form-label">Vai Trò</label>
                                                                     <select id="vaiTro" class="form-control col-8">
-                                                                        <option value="NONE">None</option>
                                                                         <option value="DAO_TAO">Đào Tạo</option>
                                                                         <option value="CHU_NHIEM_BO_MON">Chủ Nhiệm Bộ
                                                                             Môn
-                                                                        </option>
-                                                                        <option value="QUAN_TRI_VIEN">Quản Trị Viên
                                                                         </option>
                                                                     </select>
 
@@ -128,7 +125,7 @@
                                                                     <button type="button" class="btn btn-secondary"
                                                                             data-dismiss="modal">Hủy
                                                                     </button>
-                                                                    <button type="submit" class="btn btn-primary" >Thêm
+                                                                    <button type="submit" class="btn btn-primary">Thêm
                                                                         mới
                                                                     </button>
                                                                 </div>
@@ -148,7 +145,7 @@
                                             <th width="100px">Số Điện Thoại</th>
                                             <th width="100px">Tên Cán Bộ</th>
                                             <th width="100px">Tên Tài Khoản</th>
-                                            <th width="100px">Tên Cơ Sở</th>
+                                            <th width="100px">Vai Trò</th>
                                             <th width="150px">Chức Năng</th>
                                             </thead>
                                             <tbody>
@@ -160,7 +157,10 @@
                                                     <td th:text="${canbo.getSoDienThoai}"></td>
                                                     <td th:text="${canbo.getTenCanBo}"></td>
                                                     <td th:text="${canbo.getTenTaiKhoan}"></td>
-                                                    <td th:text="${canbo.getTenCoSo}"></td>
+                                                    <td th:switch="${canbo.getVaiTro}">
+                                                        <span th:case="'1'">Đào Tạo</span>
+                                                        <span th:case="'2'">Chủ Nhiệm Bộ Môn</span>
+                                                    </td>
                                                     <td>
                                                         <button
                                                                 type="button"
@@ -274,12 +274,10 @@
                         <span class="text-danger"
                               id="ten_tai_khoan_error_update"></span>
                         <br>
-                        <label class="col-form-label" >Vai Trò</label>
+                        <label class="col-form-label">Vai Trò</label>
                         <select id="vai_Tro_Update" class="form-control col-8">
-                            <option value="NONE">None</option>
                             <option value="DAO_TAO">Đào Tạo</option>
                             <option value="CHU_NHIEM_BO_MON">Chủ Nhiệm Bộ Môn</option>
-                            <option value="QUAN_TRI_VIEN">Quản Trị Viên</option>
                         </select>
 
                     </div>
