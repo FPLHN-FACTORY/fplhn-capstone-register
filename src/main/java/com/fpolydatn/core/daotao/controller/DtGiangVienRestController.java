@@ -34,9 +34,13 @@ public class DtGiangVienRestController extends BaseController {
 
     @PostMapping
     public ResponseObject add(@RequestBody DtCreateGiangVienHDRequest cmd) {
-        String coSoid = session.getCoSoId();
-        cmd.setCoSoId(coSoid);
-        return new ResponseObject(giangVienHDService.create(cmd));
+        try {
+            String coSoid = session.getCoSoId();
+            cmd.setCoSoId(coSoid);
+            return new ResponseObject(giangVienHDService.create(cmd));
+        } catch (Exception e) {
+            return new ResponseObject(e);
+        }
     }
 
     @GetMapping("/{id}")
@@ -47,25 +51,26 @@ public class DtGiangVienRestController extends BaseController {
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable("id") String id,
                                  @RequestBody DtUpdateGiangVienHDRequest cmd) {
-        cmd.setId(id);
-        return new ResponseObject(giangVienHDService.update(cmd));
+        try {
+            cmd.setId(id);
+            return new ResponseObject(giangVienHDService.update(cmd));
+        } catch (Exception e) {
+            return new ResponseObject(e);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
-        return new ResponseObject(giangVienHDService.delete(id));
+        try {
+            return new ResponseObject(giangVienHDService.delete(id));
+        }catch (Exception e){
+            return new ResponseObject(e);
+        }
     }
 
     @GetMapping("/search")
-    public ResponseObject search ( final DtFindGiangVienHDRequest rep){
-        DtApiResponse<DtGiangVienHDResponse> apiResponse = new DtApiResponse<>();
+    public ResponseObject search(final DtFindGiangVienHDRequest rep) {
         PageableObject<DtGiangVienHDResponse> listGiangVienHD = giangVienHDService.search(rep);
-        apiResponse.setData(listGiangVienHD);
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < listGiangVienHD.getTotalPages(); i++) {
-            list.add(i+1);
-        }
-        apiResponse.setList(list);
-        return new ResponseObject(apiResponse);
+        return new ResponseObject(listGiangVienHD);
     }
 }
