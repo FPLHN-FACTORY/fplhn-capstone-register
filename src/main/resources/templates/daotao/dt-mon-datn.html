@@ -38,11 +38,13 @@
                                 <div class="m-portlet__body">
                                     <div class="row">
                                         <div class="col-6 d-inline">
-                                            <button data-toggle="modal"
+                                            <a
+                                                    data-toggle="modal"
                                                     data-target="#modal_create"
-                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                    class="col-12 col-sm-8 col-md-4 btn btn-success"
+                                                    th:href="@{/dao-tao/mon-datn/}">
                                                 Tạo môn
-                                            </button>
+                                            </a>
                                             <div class="modal fade "
                                                  id="modal_create"
                                                  tabindex="-1"
