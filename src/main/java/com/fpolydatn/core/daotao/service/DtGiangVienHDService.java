@@ -26,5 +26,4 @@ public interface DtGiangVienHDService {
 
     PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest req);
 
-
 }

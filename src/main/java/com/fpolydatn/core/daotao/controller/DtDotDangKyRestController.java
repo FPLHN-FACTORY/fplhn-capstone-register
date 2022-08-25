@@ -26,19 +26,19 @@ public final class DtDotDangKyRestController extends BaseController {
     private DtDotDangKyService dotDangKyService;
 
     @PostMapping
-    public ResponseObject add(@RequestBody DtCreateDotDangKyRequest createDotDangKyRequest){
+    public ResponseObject add(@RequestBody DtCreateDotDangKyRequest createDotDangKyRequest) {
         createDotDangKyRequest.setCoSoId(session.getCoSoId());
         return new ResponseObject(dotDangKyService.create(createDotDangKyRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseObject update(@PathVariable String id, @RequestBody DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest){
+    public ResponseObject update(@PathVariable String id, @RequestBody DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest) {
         dtUpdateDotDangKyRequest.setId(id);
         return new ResponseObject(dotDangKyService.update(dtUpdateDotDangKyRequest));
     }
 
     @GetMapping("/{id}")
-    public ResponseObject detail(@PathVariable("id") String id){
+    public ResponseObject detail(@PathVariable("id") String id) {
         return new ResponseObject(dotDangKyService.findById(id));
     }
 }

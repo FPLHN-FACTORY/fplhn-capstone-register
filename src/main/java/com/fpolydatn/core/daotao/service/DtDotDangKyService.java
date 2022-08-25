@@ -26,5 +26,6 @@ public interface DtDotDangKyService {
 
     DotDangKy findById(String id);
 
-    List<SimpleEntityProj> findAllSimpleEntity(String coSoId );
+    List<SimpleEntityProj> findAllSimpleEntity(String coSoId);
+
 }

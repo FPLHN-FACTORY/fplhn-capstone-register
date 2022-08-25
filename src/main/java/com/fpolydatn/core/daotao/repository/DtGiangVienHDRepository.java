@@ -78,5 +78,4 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id", nativeQuery = true)
     String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan ,@Param("id") String id );
 
-
 }

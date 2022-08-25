@@ -29,12 +29,12 @@ public class DtGiangVienController extends BaseController {
     private DtDotDangKyService dangKyService;
 
     @GetMapping("")
-    public String viewGiangVienHD(Model model , final DtFindGiangVienHDRequest rep){
+    public String viewGiangVienHD(Model model, final DtFindGiangVienHDRequest rep) {
         String coSoid = session.getCoSoId();
         PageableObject<DtGiangVienHDResponse> listGiangVien = giangVienHDService.search(rep);
         List<SimpleEntityProj> listDotDangKy = dangKyService.findAllSimpleEntity(coSoid);
         model.addAttribute("listDotDangKy", listDotDangKy);
-        model.addAttribute("page",listGiangVien);
+        model.addAttribute("page", listGiangVien);
         return "daotao/dt-giang-vien-huong-dan";
     }
 }

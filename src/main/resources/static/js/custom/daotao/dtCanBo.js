@@ -232,5 +232,4 @@ $("#form_can_bo_delete").submit(function (event) {
             console.log("ERROR : ", e);
         }
     });
-
 });

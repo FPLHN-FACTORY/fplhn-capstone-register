@@ -50,7 +50,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Override
     public DotDangKy create(@Valid DtCreateDotDangKyRequest createDotDangKyRequest) {
         Optional<HocKy> hocKyCheck = dtHocKyRepository.findById(createDotDangKyRequest.getHocKyId());
-        if (!hocKyCheck.isPresent()){
+        if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
         DotDangKy dotDangKy = formUtils.convertToObject(DotDangKy.class, createDotDangKyRequest);
@@ -60,7 +60,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Override
     public DotDangKy update(DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest) {
         Optional<DotDangKy> dotDangKyCheck = dtDotDangKyRepository.findById(dtUpdateDotDangKyRequest.getId());
-        if (!dotDangKyCheck.isPresent()){
+        if (!dotDangKyCheck.isPresent()) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
         DotDangKy dotDangKy = dotDangKyCheck.get();
