@@ -19,4 +19,9 @@ public class DtSvDotDangKyServiceImpl implements DtSvDotDangKyService {
     public List<SimpleEntityProj> listDotDangKy(String coSoId) {
         return dotDangKyRepository.findAllSimpleEntity(coSoId);
     }
+
+    @Override
+    public List<SimpleEntityProj> getListDotDangKy(String coSoId) {
+        return dotDangKyRepository.findAllSimpleEntity(coSoId);
+    }
 }

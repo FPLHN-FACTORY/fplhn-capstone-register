@@ -1,7 +1,7 @@
 package com.fpolydatn.core.sinhvien.service;
 
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
-import com.fpolydatn.core.sinhvien.model.response.SvNhomSinhVienResponse;
+import com.fpolydatn.core.sinhvien.model.response.SvSinhVienTheoNhomResponse;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface SvSinhVienService {
 
-    List<SvNhomSinhVienResponse> findByNhomId(final SvFindSinhVienRequest request);
+    List<SvSinhVienTheoNhomResponse> findByNhomId(final SvFindSinhVienRequest request);
 
 }

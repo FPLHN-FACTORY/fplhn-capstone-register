@@ -5,7 +5,6 @@ import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.entity.NhomDatn;
-import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 
 import java.util.List;
 
@@ -20,9 +19,4 @@ public interface GvNhomDatnService {
 
     NhomDatn updateTrangThaiNhom(final GvUpdateNhomDatnRequest request);
 
-    List<SimpleEntityProj> getListDotDangKy(String coSoId);
-
-    List<SimpleEntityProj> getListChuyenNganh(String coSoId);
-
-    List<SimpleEntityProj> getListHocKy();
 }

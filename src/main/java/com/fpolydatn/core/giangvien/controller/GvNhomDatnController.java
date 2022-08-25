@@ -1,7 +1,10 @@
 package com.fpolydatn.core.giangvien.controller;
 
+import com.fpolydatn.core.admin.service.HocKyService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.service.DtSvChuyenNganhService;
+import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
@@ -25,13 +28,22 @@ public class GvNhomDatnController extends BaseController {
     @Autowired
     private GvNhomDatnService nhomDatnService;
 
+    @Autowired
+    private HocKyService hocKyService;
+
+    @Autowired
+    private DtSvChuyenNganhService chuyenNganhService;
+
+    @Autowired
+    private DtSvDotDangKyService dotDangKyService;
+
     @GetMapping()
     public String viewNhomDatn(final GvFindNhomDatnRequest request, Model model) {
         String coSoId = session.getCoSoId();
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
-        List<SimpleEntityProj> listDotDangKy = nhomDatnService.getListDotDangKy(coSoId);
-        List<SimpleEntityProj> listChuyenNganh = nhomDatnService.getListChuyenNganh(coSoId);
-        List<SimpleEntityProj> listHocKy =  nhomDatnService.getListHocKy();
+        List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
+        List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.getListChuyenNganh(coSoId);
+        List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("listChuyenNganh", listChuyenNganh);

@@ -6,8 +6,10 @@ import com.fpolydatn.core.admin.model.request.UpdateHocKyRequest;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.HocKy;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author HangNT
@@ -26,5 +28,7 @@ public interface HocKyService {
     long getSizeListHocKy(String tenHocKy);
 
     PageableObject<HocKyResponse> search(final FindHocKyRequest req);
+
+    List<SimpleEntityProj> getListHocKy();
 
 }

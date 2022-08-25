@@ -1,7 +1,7 @@
 package com.fpolydatn.core.sinhvien.repository;
 
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
-import com.fpolydatn.core.sinhvien.model.response.SvNhomSinhVienResponse;
+import com.fpolydatn.core.sinhvien.model.response.SvSinhVienTheoNhomResponse;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,5 +20,5 @@ public interface SvSinhVienRepository extends SinhVienRepository {
             FROM sinh_vien
             WHERE  nhom_id LIKE :#{#request.maNhom}
             """, nativeQuery = true)
-    List<SvNhomSinhVienResponse> findByNhomId(@Param("request") SvFindSinhVienRequest request);
+    List<SvSinhVienTheoNhomResponse> findByNhomId(@Param("request") SvFindSinhVienRequest request);
 }
