@@ -29,7 +29,7 @@ public interface DtCanBoResponse extends IsIdentified {
     @Value("#{target.ten_tai_khoan}")
     String getTenTaiKhoan();
 
-    @Value("#{target.ten_co_so}")
-    String getTenCoSo();
+    @Value("#{target.vai_tro}")
+    int getVaiTro();
 
 }
