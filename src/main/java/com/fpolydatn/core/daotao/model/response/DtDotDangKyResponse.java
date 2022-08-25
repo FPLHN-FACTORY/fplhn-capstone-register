@@ -35,4 +35,5 @@ public interface DtDotDangKyResponse extends IsIdentified {
 
     @Value("#{target.trang_thai}")
     Integer getTrangThai();
+
 }

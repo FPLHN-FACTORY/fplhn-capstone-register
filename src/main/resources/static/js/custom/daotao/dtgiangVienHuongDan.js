@@ -32,6 +32,7 @@ $("#form_create_giang_vien").submit(function (event) {
     giangVienRequest["dotDangKyId"] = dotDangKyId;
 
     let index = 0;
+
     if (tenGvhd.length === 0) {
         $("#errorTenGiangVien").text(" Tên giang viên không được để trống");
         index++;
@@ -76,7 +77,7 @@ $("#form_create_giang_vien").submit(function (event) {
         index++;
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
-        check = false;
+       index++;
     } else {
         $("#errorEmailFpt").text("");
     }
@@ -104,9 +105,15 @@ $("#form_create_giang_vien").submit(function (event) {
             url: giangVienHuongDanApi,
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
-            success: function () {
-                window.open(giangVienHuongDanView, '_self');
-                $("#modal_create").modal("hide");
+            success: function ( responseData) {
+            console.log(responseData)
+                if(responseData.data.message == null){
+                    window.open(giangVienHuongDanView, '_self');
+                    $("#modal_create").modal("hide");
+                }else{
+                    alert(responseData.data.message)
+                }
+
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -174,9 +181,9 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexSoNhom.test(soNhomHuongDanToiDa) == false) {
         $("#errorSoNhomHDUpdate").text(" Số nhóm phải là số");
         index++;
-    } else if (Number.parseInt(soNhomHuongDanToiDa) <= 0) {
-        $("#errorSoNhomHD").text("Số nhóm phải lớn hơn 0");
-        index++;
+    } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
+        $("#errorSoNhomHDUpdate").text("Số nhóm chỉ từ 1 đến 7");
+         index++;
     } else {
         $("#errorSoNhomHD").text("");
     }
@@ -203,7 +210,7 @@ $("#form_giang_vien_update").submit(function (event) {
         index++;
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
-        check = false;
+        index ++;
     } else {
         $("#errorEmailFpt").text("");
     }
@@ -232,8 +239,13 @@ $("#form_giang_vien_update").submit(function (event) {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                loadTable(item);
-                $("#modal_update_giang_vien").modal("hide");
+                if(responseData.data.message == null){
+                    loadTable(item);
+                    $("#modal_update_giang_vien").modal("hide");
+                }else{
+                    alert(responseData.data.message)
+                }
+
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -296,7 +308,7 @@ function loadTable(count) {
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)
-            $("#searchListGvhd").html(responseData.data.data.data.map(function (item) {
+            $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                 return `
                <tr>
                    <td >${item.stt}</td>
@@ -329,16 +341,16 @@ function loadTable(count) {
                `
             }))
             $("#page").html(``)
-            $("#page").html(responseData.data.list.map(function (item, index) {
-                if (responseData.data.list.length == 1) {
-                    return ``
-                }
-                return `
-                     <li class="page-item">
-                          <a class="page-link" onclick="loadTable('${index}')" >${item}</a>
-                     </li>
-                        `
-            }))
+            let templateHtml = ``;
+            for (let i = 0; i < responseData.data.totalPages; i++) {
+                    templateHtml += `<li class="page-item" >
+                                         <a class="page-link" onclick="loadTable(${i})">${i+1}</a>
+                                     </li>`
+            }
+            if(responseData.data.totalPages == 1){
+                    templateHtml = ``;
+            }
+            $("#page").html(templateHtml);
         },
         error: function (e) {
             console.log("ERROR : ", e);
