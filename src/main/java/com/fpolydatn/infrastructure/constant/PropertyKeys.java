@@ -21,12 +21,15 @@ public class PropertyKeys {
     public static final String NUMBER_FORMAT_EXCEPTION = "number.format.exception";
     public static final String NHOM_DATN_NOT_EXIST = "nhom.datn.not.exist";
     public static final String STUDENT_NOT_EXIST = "student.not.exist";
-    public static final String STUDENT_HAVE_GROUP ="student.have.group" ;
+    public static final String STUDENT_HAVE_GROUP = "student.have.group";
     public static final String OVERLOADED_GROUP = "overloaded.group";
     public static final String GROUP_NO_EXIST = "group.no.exist";
 
     public static final String MON_DATN_ALREADY_EXIST = "mon.datn.already.exist";
 
     public static final String GIANG_VIEN_HUONG_DAN_EXIST = "giang.vien.huong.dan.exist";
+    public static final String EMAIL_FPT_EXIST = "email.fpt.exist";
+    public static final String EMAIL_FE_EXIST = "email.fe.exist";
+    public static final String TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST = "ten.tai.khoan.giang.vien.huong.dan.exist";
 
 }
