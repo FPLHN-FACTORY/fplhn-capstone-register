@@ -22,8 +22,6 @@ public interface DtSinhVienTheoDotResponse extends IsIdentified {
     @Value("#{target.stt}")
     int getStt();
 
-    String getId();
-
     @Value("#{target.ma_sinh_vien}")
     String getMaSinhVien();
 
