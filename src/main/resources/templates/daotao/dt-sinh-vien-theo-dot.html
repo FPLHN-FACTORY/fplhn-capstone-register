@@ -123,7 +123,6 @@
                                             <th>Id nhóm</th>
                                             <th>Tên Đề tài</th>
                                             <th>GV hướng dẫn</th>
-                                            <th>Đợt đăng ký</th>
                                             </thead>
                                             <tbody id="list">
                                             <th:block th:each="sinhVien :  ${page.data}">
@@ -136,7 +135,6 @@
                                                     <td th:text="${sinhVien.maNhom} ==null? 'chưa có ': ${sinhVien.maNhom}"/>
                                                     <td th:text="${sinhVien.tenDeTai}==null? 'chưa có ':${sinhVien.tenDeTai}"/>
                                                     <td th:text="${sinhVien.tenGvhd}==null? 'chưa có ':${sinhVien.tenGvhd}"/>
-                                                    <td th:text="${sinhVien.tenDotDangKy}"/>
                                                 </tr>
                                             </th:block>
                                             </tbody>

@@ -26,7 +26,6 @@ function viewTable(page) {
                                 <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
                                 <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
                                 <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
-                                <td>${item.tenDotDangKy}</td>
                         </tr>`
             }));
             console.log(responseData.data.totalPages)

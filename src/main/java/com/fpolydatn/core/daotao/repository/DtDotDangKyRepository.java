@@ -2,6 +2,7 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindDotDangKyRequest;
 import com.fpolydatn.core.daotao.model.response.DtDotDangKyResponse;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.DotDangKyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,4 +33,7 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             nativeQuery = true)
     Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest requ, Pageable page);
 
+    @Query(value = "SELECT d.id , d.ten_dot_dang_ky " +
+            "FROM do_an_tot_nghiep.dot_dang_ky d  order by d.ngay_bat_dau desc limit 1", nativeQuery = true)
+    SimpleEntityProj DotDangKyHienTai();
 }

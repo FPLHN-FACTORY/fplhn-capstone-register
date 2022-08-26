@@ -12,4 +12,6 @@ public interface DtSvDotDangKyService {
     List<SimpleEntityProj> listDotDangKy(String coSoId);
 
     List<SimpleEntityProj> getListDotDangKy(String coSoId);
+
+    SimpleEntityProj DotDangKyHienTai();
 }
