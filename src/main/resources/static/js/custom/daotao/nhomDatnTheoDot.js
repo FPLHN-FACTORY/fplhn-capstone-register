@@ -16,7 +16,7 @@ function openModalDanhSachSinhVien(id) {
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData.data.data)
-                var text = "";
+            var text = "";
             responseData.data.data.map(function (item) {
                 text += `
                 <tr>
@@ -32,11 +32,13 @@ function openModalDanhSachSinhVien(id) {
         }
     });
 }
+
 // mới
 $("#form_list_nhom_datn").submit(function (event) {
     event.preventDefault();
     loadDataNhomDatn(0);
 })
+
 function loadDataNhomDatn(count) {
     let tenNhom = $("#tenNhom").val()
     let chuyenNganhId = $("#chuyenNganh").val()
@@ -45,8 +47,7 @@ function loadDataNhomDatn(count) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: DTNhomDatnApi + "/search" + "?tenNhom=" + tenNhom + "&chuyenNganhId=" + chuyenNganhId
-            + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId  + "&page=" + count,
+        url: DTNhomDatnApi + "/search" + "?tenNhom=" + tenNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)
@@ -77,16 +78,14 @@ function loadDataNhomDatn(count) {
                 `
                 }))
                 $("#list_page").html(``)
-                $("#list_page").html(
-                    responseData.data.list.map(function (item, index) {
-                        if (responseData.data.list.length == 1) {
-                            return ``
-                        }
-                        return `<li class="page-item" >
+                $("#list_page").html(responseData.data.list.map(function (item, index) {
+                    if (responseData.data.list.length == 1) {
+                        return ``
+                    }
+                    return `<li class="page-item" >
                                 <a class="page-link" onclick="loadDataNhomDatn(${index})">${item}</a>
                             </li>`
-                    })
-                )
+                }))
             }
         },
         error: function (e) {
