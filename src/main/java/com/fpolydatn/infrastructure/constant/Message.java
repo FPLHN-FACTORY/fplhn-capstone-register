@@ -31,7 +31,9 @@ public enum Message {
     MON_DATN_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.MON_DATN_NOT_EXIST)),
     MON_DATN_ALREADY_EXIST(PropertiesReader.getProperty(PropertyKeys.MON_DATN_ALREADY_EXIST)),
 
-    ;
+    EMAIL_FPT_EXIST(PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_EXIST)),
+    TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST(PropertiesReader.getProperty(PropertyKeys.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST)),
+    EMAIL_FE_EXIST(PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EXIST));
 
     private String message;
 

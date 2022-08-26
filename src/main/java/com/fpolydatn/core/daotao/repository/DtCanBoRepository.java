@@ -20,7 +20,7 @@ public interface DtCanBoRepository extends CanBoRepository {
     @Query(value = """
             SELECT  ROW_NUMBER() OVER(ORDER BY cb.last_modified_date DESC) AS STT, cb.id,cb.email_fe,
                     cb.email_fpt,cb.so_dien_thoai,cb.last_modified_date,
-                    cb.ten_can_bo,cb.ten_tai_khoan ,cs.ten_co_so
+                    cb.ten_can_bo,cb.ten_tai_khoan ,cb.vai_tro
                     FROM do_an_tot_nghiep.can_bo cb 
                     JOIN do_an_tot_nghiep.co_so cs
                     ON cb.co_so_id= cs.id  WHERE (:#{#req.tenCanBo} IS NULL

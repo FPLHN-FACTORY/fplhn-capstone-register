@@ -105,9 +105,15 @@ $("#form_create_giang_vien").submit(function (event) {
             url: giangVienHuongDanApi,
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
-            success: function () {
-                window.open(giangVienHuongDanView, '_self');
-                $("#modal_create").modal("hide");
+            success: function ( responseData) {
+            console.log(responseData)
+                if(responseData.data.message == null){
+                    window.open(giangVienHuongDanView, '_self');
+                    $("#modal_create").modal("hide");
+                }else{
+                    alert(responseData.data.message)
+                }
+
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -233,8 +239,13 @@ $("#form_giang_vien_update").submit(function (event) {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                loadTable(item);
-                $("#modal_update_giang_vien").modal("hide");
+                if(responseData.data.message == null){
+                    loadTable(item);
+                    $("#modal_update_giang_vien").modal("hide");
+                }else{
+                    alert(responseData.data.message)
+                }
+
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -297,7 +308,7 @@ function loadTable(count) {
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)
-            $("#searchListGvhd").html(responseData.data.data.data.map(function (item) {
+            $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                 return `
                <tr>
                    <td >${item.stt}</td>
@@ -330,16 +341,16 @@ function loadTable(count) {
                `
             }))
             $("#page").html(``)
-            $("#page").html(responseData.data.list.map(function (item, index) {
-                if (responseData.data.list.length == 1) {
-                    return ``
-                }
-                return `
-                     <li class="page-item">
-                          <a class="page-link" onclick="loadTable('${index}')" >${item}</a>
-                     </li>
-                        `
-            }))
+            let templateHtml = ``;
+            for (let i = 0; i < responseData.data.totalPages; i++) {
+                    templateHtml += `<li class="page-item" >
+                                         <a class="page-link" onclick="loadTable(${i})">${i+1}</a>
+                                     </li>`
+            }
+            if(responseData.data.totalPages == 1){
+                    templateHtml = ``;
+            }
+            $("#page").html(templateHtml);
         },
         error: function (e) {
             console.log("ERROR : ", e);

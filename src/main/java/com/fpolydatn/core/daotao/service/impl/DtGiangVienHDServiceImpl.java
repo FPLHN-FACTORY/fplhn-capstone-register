@@ -34,6 +34,18 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     @Override
     public GiangVienHuongDan create(DtCreateGiangVienHDRequest command) {
+        String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim());
+        if (idByEmailFpt != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+        String idByEmailFe = dtGiangVienHDRepository.getIdByEmailFe(command.getEmailFe());
+        if (idByEmailFe != null) {
+            throw new RestApiException(Message.EMAIL_FE_EXIST);
+        }
+        String idByTenTaiKhoan = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan());
+        if (idByTenTaiKhoan != null) {
+            throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
+        }
         GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class, command);
         return dtGiangVienHDRepository.save(gvhd);
     }
@@ -53,6 +65,19 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(command.getId());
         if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
+        }
+
+        String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId());
+        if (idByEmailFpt != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+        String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId());
+        if (idByEmailFe != null) {
+            throw new RestApiException(Message.EMAIL_FE_EXIST);
+        }
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId());
+        if (idByTenGiangVien != null) {
+            throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
         GiangVienHuongDan giangVien = gvhdCheck.get();
         giangVien.setTenGvhd(command.getTenGvhd());
