@@ -8,11 +8,13 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.infrastructure.validation.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +32,9 @@ public class CnNhomDatnRestController extends BaseController {
 
     @Autowired
     private CnNhomDatnService nhomDatnService;
+
+    @Autowired
+    private ValidationUtils validationUtils;
 
     @GetMapping("/search")
     public ResponseObject viewHocKy(final CnFindNhomDatnRequest req) {
@@ -73,5 +78,13 @@ public class CnNhomDatnRestController extends BaseController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseObject updateGvhd() {
+        try {
+            return new ResponseObject(nhomDatnService.updateGvhd("",""));
+        } catch (Exception ex) {
+            return new ResponseObject(ex);
+        }
+    }
 
 }

@@ -22,4 +22,6 @@ public interface CnNhomDatnService {
 
     NhomDatn findById(String id);
 
+    NhomDatn updateGvhd(String idNhom, String idGvhd);
+
 }

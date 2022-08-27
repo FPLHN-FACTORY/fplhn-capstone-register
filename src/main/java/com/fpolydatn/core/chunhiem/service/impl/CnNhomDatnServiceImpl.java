@@ -9,6 +9,7 @@ import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.validation.ValidationUtils;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Autowired
     private CnNhomDatnRepository cnNhomDatnRepository;
+
+    @Autowired
+    private ValidationUtils validationUtils;
 
     private FormUtils formUtils = new FormUtils();
 
@@ -67,6 +71,19 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
         return nhomdatnCheck.get();
+    }
+
+    @Override
+    public NhomDatn updateGvhd(String idNhom, String idGvhd) {
+        Boolean checkSoNhomHuongDanToiDa = validationUtils.isMaximumGroup(idGvhd);
+        if (checkSoNhomHuongDanToiDa) {
+            throw new RestApiException(Message.NHOM_HUONG_DAN_TOI_DA);
+        } else {
+            NhomDatn nhomDatn = cnNhomDatnRepository.findById(idNhom).get();
+            nhomDatn.setGiangVienId(idGvhd);
+            cnNhomDatnRepository.save(nhomDatn);
+            return nhomDatn;
+        }
     }
 
 

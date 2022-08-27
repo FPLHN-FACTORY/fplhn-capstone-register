@@ -33,7 +33,9 @@ public enum Message {
 
     EMAIL_FPT_EXIST(PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_EXIST)),
     TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST(PropertiesReader.getProperty(PropertyKeys.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST)),
-    EMAIL_FE_EXIST(PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EXIST));
+    EMAIL_FE_EXIST(PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EXIST)),
+    NHOM_HUONG_DAN_TOI_DA(PropertiesReader.getProperty(PropertyKeys.NHOM_HUONG_DAN_TOI_DA));
+
 
     private String message;
 

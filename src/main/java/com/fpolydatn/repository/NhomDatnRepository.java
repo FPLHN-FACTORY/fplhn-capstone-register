@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
 
     public static final String NAME = "BaseNhomDatnRepository";
+
+    public int countByGiangVienId(String giangVienId);
 }
