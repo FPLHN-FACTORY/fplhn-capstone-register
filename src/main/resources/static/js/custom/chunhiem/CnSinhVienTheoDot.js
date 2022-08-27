@@ -63,11 +63,11 @@ function loadDataToTable(count) {
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <button
+                  <a
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">
-                      Thêm nhóm</button>
+                      Thêm nhóm</a>
                       </td>
                 ` : `
                 <td>

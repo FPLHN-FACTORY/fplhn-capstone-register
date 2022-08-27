@@ -157,12 +157,12 @@
                                                         <td th:text="${sinhVien.tenChuyenNganh}"></td>
                                                         <td th:text="${sinhVien.maMon}"></td>
                                                         <td th:switch="${sinhVien.maNhom}">
-                                                            <button th:case=null
+                                                            <a th:case=null
                                                                     data-toggle="modal"
                                                                     th:attr="onclick=|openModalAddSinhVien('${sinhVien.maSinhVien}','${page.currentPage}')|"
                                                                     class=" btn btn-success">
                                                                 Thêm nhóm
-                                                            </button>
+                                                            </a>
                                                             <p th:case="*" th:text="${sinhVien.maNhom}"></p>
                                                         </td>
                                                         <td th:text="${sinhVien.tenDeTai}==null?'Chưa có':${sinhVien.tenDeTai}"></td>
