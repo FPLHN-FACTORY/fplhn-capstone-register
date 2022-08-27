@@ -1,7 +1,7 @@
 package com.fpolydatn.core.chunhiem.controller;
 
+import com.fpolydatn.core.chunhiem.model.request.UpdateGvhdNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
-import com.fpolydatn.core.chunhiem.model.response.CnApiResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
@@ -10,18 +10,15 @@ import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.validation.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author thangncph26123
@@ -78,10 +75,12 @@ public class CnNhomDatnRestController extends BaseController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseObject updateGvhd() {
+    @PostMapping("/updateGvhd")
+    public ResponseObject updateGvhd(@RequestBody UpdateGvhdNhomDatnRequest updateGvhdNhomDatnRequest) {
         try {
-            return new ResponseObject(nhomDatnService.updateGvhd("",""));
+            return new ResponseObject(nhomDatnService.updateGvhd(
+                    updateGvhdNhomDatnRequest.getIdNhom(),
+                    updateGvhdNhomDatnRequest.getIdGvhd()));
         } catch (Exception ex) {
             return new ResponseObject(ex);
         }

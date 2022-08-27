@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class AddNhomDatnRequest {
+public class UpdateGvhdNhomDatnRequest {
 
     private String idNhom;
 
