@@ -6,6 +6,8 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
 import com.fpolydatn.core.admin.service.HocKyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +20,14 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/admin/hoc-ky")
+//@PreAuthorize("hasAuthority('admin')")
 public final class HocKyController extends BaseController {
 
     @Autowired
     private HocKyService hocKyService;
 
     @GetMapping
+//    @Secured("admin")
     public String viewHocKy(Model model, final FindHocKyRequest req) {
         PageableObject<HocKyResponse> listHocKy = hocKyService.search(req);
         model.addAttribute("page", listHocKy);

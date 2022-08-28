@@ -1,7 +1,6 @@
 package com.fpolydatn.core.common.authen;
 
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.CoSoRepository;
@@ -66,4 +65,10 @@ public final class AuthenticationController {
         session.setAttribute("coSoIDSelected", coSoId);
         return new ResponseObject(true);
     }
+
+    @GetMapping("/403")
+    public String prohibitedAccess() {
+        return "403";
+    }
+
 }
