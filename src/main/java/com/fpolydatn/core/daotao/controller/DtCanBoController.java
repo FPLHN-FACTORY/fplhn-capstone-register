@@ -26,7 +26,6 @@ public final class DtCanBoController extends BaseController {
     private DtCanBoService canBoService;
 
     @GetMapping
-//    @Secured("dao-tao")
     public String viewHocKy(Model model, final DtFindCanBoRequest canBoRequest) {
         PageableObject<DtCanBoResponse> listCanBo = canBoService.search(canBoRequest);
         model.addAttribute("page", listCanBo);

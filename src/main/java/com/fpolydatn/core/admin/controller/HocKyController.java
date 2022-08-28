@@ -20,14 +20,13 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/admin/hoc-ky")
-@PreAuthorize("hasAuthority('admin')")
+//@PreAuthorize("hasAuthority('admin')")
 public final class HocKyController extends BaseController {
 
     @Autowired
     private HocKyService hocKyService;
 
     @GetMapping
-//    @Secured("admin")
     public String viewHocKy(Model model, final FindHocKyRequest req) {
         PageableObject<HocKyResponse> listHocKy = hocKyService.search(req);
         model.addAttribute("page", listHocKy);
