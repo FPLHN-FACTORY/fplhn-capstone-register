@@ -18,4 +18,5 @@ public class DtCreateMonDatnRequest extends DtBaseMonDatnRequest {
     private String chuyenNganhId;
 
     private String coSoId;
+
 }

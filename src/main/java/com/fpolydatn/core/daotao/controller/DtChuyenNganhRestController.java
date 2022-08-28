@@ -27,13 +27,13 @@ public class DtChuyenNganhRestController extends BaseController {
     private DtChuyenNganhService chuyenNganhService;
 
     @GetMapping("/{id}")
-    public ResponseObject detail(@PathVariable("id") String id) {
+    public ResponseObject detail(@PathVariable("id") String id){
         ChuyenNganh chuyenNganh = chuyenNganhService.findById(id);
         return new ResponseObject(chuyenNganh);
     }
 
     @PostMapping
-    public ResponseObject add(@RequestBody DtCreateChuyenNganhRequest request) {
+    public ResponseObject add(@RequestBody DtCreateChuyenNganhRequest request){
         String coSoId = session.getCoSoId();
         request.setCoSoId(coSoId);
         ChuyenNganh chuyenNganh = chuyenNganhService.add(request);
@@ -41,12 +41,12 @@ public class DtChuyenNganhRestController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseObject delete(@PathVariable("id") String id) {
+    public ResponseObject delete(@PathVariable("id") String id){
         return new ResponseObject(chuyenNganhService.delete(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseObject update(@PathVariable("id") String id, @RequestBody DtUpdateChuyenNganhRequest request) {
+    public ResponseObject update(@PathVariable("id") String id, @RequestBody DtUpdateChuyenNganhRequest request){
         request.setId(id);
         return new ResponseObject(chuyenNganhService.update(request));
     }

@@ -14,4 +14,5 @@ public class DtFindMonDatnRequest extends PageableRequest {
     private String coSoId;
 
     private String tenMonDatn;
+    
 }
