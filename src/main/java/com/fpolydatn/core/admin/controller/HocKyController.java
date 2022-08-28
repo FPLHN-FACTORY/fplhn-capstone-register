@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/admin/hoc-ky")
-//@PreAuthorize("hasAuthority('admin')")
+@PreAuthorize("hasAuthority('admin')")
 public final class HocKyController extends BaseController {
 
     @Autowired

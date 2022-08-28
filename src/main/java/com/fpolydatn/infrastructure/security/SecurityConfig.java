@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.servlet.http.HttpSession;
@@ -33,16 +33,16 @@ public class SecurityConfig {
                 .antMatchers("/authentication/*", "/")
                 .permitAll()
                 .antMatchers("/chu-nhiem").hasAuthority("chu-nhiem")
-                .antMatchers("/dao-tao").hasAnyAuthority("dao-tao")
-                .antMatchers("/giang-vien").hasAnyAuthority("giang-vien")
-                .antMatchers("/sinh-vien").hasAnyAuthority("sinh-vien")
-                .antMatchers("/admin").hasAnyAuthority("admin")
+                .antMatchers("/dao-tao").hasAuthority("dao-tao")
+                .antMatchers("/giang-vien").hasAuthority("giang-vien")
+                .antMatchers("/sinh-vien").hasAuthority("sinh-vien")
+                .antMatchers("/admin").hasAuthority("admin")
                 .anyRequest()
                 .authenticated()
                 .and()
                 .oauth2Login()
                 .successHandler((request, response, authentication) -> {
-                    DefaultOidcUser oauthUser = (DefaultOidcUser) authentication.getPrincipal();
+                    CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
                     String role = (String) session.getAttribute("role");
                     String coSoID = (String) session.getAttribute("coSoIDSelected");
                     if (Objects.isNull(role) || Objects.isNull(coSoID)) {
@@ -58,7 +58,12 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
                 .permitAll().invalidateHttpSession(true).and().exceptionHandling().accessDeniedPage("/authentication/403");
 
+        http.headers().frameOptions().sameOrigin();
         return http.build();
+    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**","/css/**");
     }
 
 }
