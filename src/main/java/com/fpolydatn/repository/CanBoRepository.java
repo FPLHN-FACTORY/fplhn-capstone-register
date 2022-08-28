@@ -19,8 +19,21 @@ public interface CanBoRepository extends JpaRepository<CanBo, String> {
 
     @Query(value = """
             SELECT id, ten_can_bo AS 'name' FROM can_bo
-            WHERE co_so_id = :coSoId and vai_tro = :vaiTro
+            WHERE co_so_id = :coSoId AND vai_tro = :vaiTro
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(@Param("coSoId") String coSoId,
                                                          @Param("vaiTro") int vaiTro);
+
+    @Query(value = """
+            SELECT cb.id, cb.ten_can_bo AS 'name'
+            FROM can_bo cb INNER JOIN co_so cs
+            ON cb.co_so_id = cs.id
+            AND cb.co_so_id=:coSoId
+            WHERE cb.co_so_id = :coSoId
+            AND cb.email_fpt=:emailFPT
+            AND cb.vai_tro = :vaiTro
+            """, nativeQuery = true)
+    SimpleEntityProj findSimpleEntityByTenCanBo(@Param("coSoId") String coSoId, @Param("emailFPT") String emailFPT,
+                                                @Param("vaiTro") int vaiTro);
+
 }

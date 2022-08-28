@@ -43,7 +43,7 @@ public final class AuthenticationController {
         return getCoSo(model, session, ActorConstant.SINH_VIEN);
     }
 
-    @GetMapping("/can-bo")
+    @GetMapping("/dao-tao")
     public String dtGetCoSo(Model model, HttpSession session) {
         return getCoSo(model, session, ActorConstant.DAO_TAO);
     }
