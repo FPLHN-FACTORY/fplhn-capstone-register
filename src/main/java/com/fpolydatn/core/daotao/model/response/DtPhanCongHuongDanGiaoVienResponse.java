@@ -15,6 +15,4 @@ public interface DtPhanCongHuongDanGiaoVienResponse extends IsIdentified {
 
     @Value("#{target.ten_gvhd}")
     String getTenGiaoVienHuongDan();
-
-
 }

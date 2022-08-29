@@ -28,8 +28,8 @@ public final class DtPhanCongHuongDanController extends BaseController {
 
     @GetMapping("/{id}")
     public String viewPhanCongHuongDan(Model model
-                                        , final DtFindPhanCongHuongDanRequest req
-                                        , @PathVariable("id") String id) {
+            , final DtFindPhanCongHuongDanRequest req
+            , @PathVariable("id") String id) {
         PageableObject<DtPhanCongHuongDanResponse> listPhanCong = phanCongHuongDanService.search(id, req);
         for (DtPhanCongHuongDanResponse a : listPhanCong.getData()
         ) {
@@ -43,5 +43,4 @@ public final class DtPhanCongHuongDanController extends BaseController {
         model.addAttribute("phanCongHuongDanGiaoViens", phanCongHuongDanGiaoViens);
         return "daotao/dt-phan-cong-huong-dan";
     }
-
 }

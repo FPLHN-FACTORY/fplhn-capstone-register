@@ -27,4 +27,5 @@ public interface DtCanBoService {
     CanBo update(DtUpdateCanBoRequest canBoRequest);
 
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
+
 }

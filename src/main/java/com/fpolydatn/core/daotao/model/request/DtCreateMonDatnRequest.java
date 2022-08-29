@@ -12,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 public class DtCreateMonDatnRequest extends DtBaseMonDatnRequest {
+
     @NotEmpty
     @NotBlank
     private String chuyenNganhId;
