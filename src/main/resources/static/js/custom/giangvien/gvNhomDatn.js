@@ -94,25 +94,25 @@ function seachNhomdatn(index) {
                 <td>${item.tenDeTai}</td>
                 <td>${item.tenChuyenNganh}</td>
                 <td>${item.totalMaSinhVien}</td>
-                 <td>
-                           <button
+                <td>${item.tenTruongNhom } - ${item.maTruongNhom} </td>
+                <td>${item.tenGvhd} - ${item.accountGvhd} </td>
+                <td>${item.trangThai == 0 ? 'Chưa chốt đề tài' : (item.trangThai == 1 ? 'Giáo viên đã chốt' : 'CNBM đã chốt')}</td>
+                <td>
+                     <button
                                     type="button"
                                     class="btn btn-primary"
                                     onclick= "showDetail('${item.id}')">
                                     chi tiết nhóm
-                            </button>
-                       </td>
-                <td>${item.maSinhVien}</td>
-                <td>${item.tenGvhd}</td>
-                <td>${item.trangThai == 0 ? 'Chưa chốt đề tài' : (item.trangThai == 1 ? 'Giáo viên đã chốt' : 'CNBM đã chốt')}</td>
-                       <td>
-                           <button
+                     </button>
+                 </td>
+                 <td>
+                     <button
                                     type="button"
                                     class="btn btn-primary"
                                     id="chotDuLieu" style="${item.trangThai == 1 ? 'display : none' : 'display : block'}"
                                     onclick="chotDuLieu('${item.id}')">Chốt
-                           </button>
-                      </td>
+                     </button>
+                 </td>
                 </tr>
                 `
             }))
