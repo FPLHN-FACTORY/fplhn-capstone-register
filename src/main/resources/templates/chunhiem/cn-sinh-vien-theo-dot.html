@@ -24,7 +24,7 @@
     <!-- begin::Body -->
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
 
-        <div th:insert="~{fragment/menu-fragment :: menu}"></div>
+        <div th:insert="~{fragment/menu-fragment-chu-nhiem :: menu}"></div>
 
         <!-- END: Left Aside -->
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
@@ -60,18 +60,6 @@
                                             <button type="submit" class="btn btn-primary ml-3">Tìm kiếm</button>
                                         </div>
                                     </div>
-
-                                    <!--                                    <div class="row justify-content-center pt-2">-->
-                                    <!--                                        <div class="col-sm-2 col-12 text-center mt-2">-->
-                                    <!--                                           -->
-                                    <!--                                        </div>-->
-                                    <!--&lt;!&ndash;                                        <div class="col-sm-2 col-12 text-center mt-2">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;                                            <a href="#"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;                                               class="btn btn-danger text-white" onclick="clearData();">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;                                                Làm mới bộ lọc&ndash;&gt;-->
-                                    <!--&lt;!&ndash;                                            </a>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;                                        </div>&ndash;&gt;-->
-                                    <!--                                    </div>-->
                                 </form>
                             </div>
                         </section>
@@ -81,18 +69,6 @@
                                 <div class="m-portlet__body">
                                     <div class="row">
                                         <div class="col-6 d-inline">
-                                            <!--                                            <button data-toggle="modal"-->
-                                            <!--                                                    data-target="#modal_create"-->
-                                            <!--                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">-->
-                                            <!--                                                Thêm sinh viên-->
-                                            <!--                                            </button>-->
-                                            <a href="/chu-nhiem/nhom-datn">
-                                                <button
-                                                        class="col-12 col-sm-8 col-md-4 btn btn-success">
-
-                                                    Trở lại
-                                                </button>
-                                            </a>
                                             <div class="modal fade "
                                                  id="modal_create"
                                                  tabindex="-1"
