@@ -28,7 +28,6 @@ function viewTable(page) {
                                 <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
                         </tr>`
             }));
-            console.log(responseData.data.totalPages)
             var arr = new Array();
             if (responseData.data.totalPages > 1) {
                 for (let i = 1; i <= responseData.data.totalPages; i++) {

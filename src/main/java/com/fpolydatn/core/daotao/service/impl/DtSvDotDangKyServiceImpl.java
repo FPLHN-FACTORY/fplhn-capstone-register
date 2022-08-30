@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author thepvph20110
@@ -27,6 +28,6 @@ public class DtSvDotDangKyServiceImpl implements DtSvDotDangKyService {
 
     @Override
     public SimpleEntityProj DotDangKyHienTai() {
-        return dotDangKyRepository.DotDangKyHienTai();
+        return dotDangKyRepository.DotDangKyHienTai().get();
     }
 }

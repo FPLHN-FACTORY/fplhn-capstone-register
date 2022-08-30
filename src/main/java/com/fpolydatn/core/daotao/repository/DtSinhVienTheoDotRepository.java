@@ -34,7 +34,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             WHERE s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% AND 
             (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
             AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)))
-            AND  (s.dot_dang_ky_id = :#{#req.idDotDangKy} OR :#{#req.idDotDangKy} IS NULL OR :#{#req.idDotDangKy} LIKE '' ) AND s.co_so_id = :#{#req.coSoId}
+            AND  d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
             GROUP BY s.id 
             ORDER BY s.last_modified_date DESC """,
             countQuery = """
@@ -48,7 +48,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                     WHERE s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% AND 
                     (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
                     AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)))
-                    AND  (s.dot_dang_ky_id = :#{#req.idDotDangKy} OR :#{#req.idDotDangKy} IS NULL OR :#{#req.idDotDangKy} LIKE '' ) AND s.co_so_id = :#{#req.coSoId}
+                    AND  d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
                     GROUP BY s.id  
                     """, nativeQuery = true)
     Page<DtSinhVienTheoDotResponse> searchStudent(@Param("req") FindDtSinhVienTheoDotRequest req, Pageable page);

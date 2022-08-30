@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 /**
  * @author SonPT
  */
@@ -36,5 +38,5 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
     @Query(value = "SELECT d.id , d.ten_dot_dang_ky " +
             "FROM do_an_tot_nghiep.dot_dang_ky d " +
             "WHERE UNIX_TIMESTAMP(localtime())*1000 BETWEEN d.ngay_bat_dau AND d.ngay_ket_thuc LIMIT 1", nativeQuery = true)
-    SimpleEntityProj DotDangKyHienTai();
+    Optional<SimpleEntityProj> DotDangKyHienTai();
 }

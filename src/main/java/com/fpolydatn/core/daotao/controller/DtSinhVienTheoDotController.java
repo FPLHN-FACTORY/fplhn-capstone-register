@@ -34,7 +34,6 @@ public class DtSinhVienTheoDotController extends BaseController {
     @GetMapping
     public String findAllSinhVien(Model model,final FindDtSinhVienTheoDotRequest req) {
         req.setCoSoId(session.getCoSoId());
-        req.setIdDotDangKy(dotDangKyService.DotDangKyHienTai().getId());
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(req.getCoSoId());
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(req.getCoSoId());
         PageableObject<DtSinhVienTheoDotResponse> listSinhVien = sinhVienService.findAllSinhVien(req);
