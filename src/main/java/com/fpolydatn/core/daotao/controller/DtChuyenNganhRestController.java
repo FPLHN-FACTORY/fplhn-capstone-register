@@ -50,5 +50,4 @@ public class DtChuyenNganhRestController extends BaseController {
         request.setId(id);
         return new ResponseObject(chuyenNganhService.update(request));
     }
-
 }

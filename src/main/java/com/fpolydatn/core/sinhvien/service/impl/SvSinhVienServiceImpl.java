@@ -23,4 +23,5 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
     public List<SvSinhVienTheoNhomResponse> findByNhomId(final SvFindSinhVienRequest request) {
         return sinhVienRepository.findByNhomId(request);
     }
+
 }

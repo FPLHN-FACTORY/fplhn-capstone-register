@@ -34,5 +34,4 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
                 ORDER BY cn.last_modified_date DESC
             """, nativeQuery = true)
     Page<DtChuyenNganhResponse> findByName(@Param("req") DtFindChuyenNganhRequest req, Pageable page);
-
 }
