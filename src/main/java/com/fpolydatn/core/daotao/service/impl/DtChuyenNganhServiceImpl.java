@@ -35,10 +35,11 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     public List<SimpleEntityProj> findAllSimpleEntityByCoSo(String id) {
         return dtChuyenNganhRepository.findAllSimpleEntityByCoSo(id);
     }
+
     @Override
     public ChuyenNganh update(@Valid DtUpdateChuyenNganhRequest req) {
         Optional<ChuyenNganh> chuyenNganhCheck = dtChuyenNganhRepository.findById(req.getId());
-        if (!chuyenNganhCheck.isPresent()){
+        if (!chuyenNganhCheck.isPresent()) {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
         ChuyenNganh chuyenNganh = chuyenNganhCheck.get();
@@ -50,7 +51,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
 
     @Override
     public ChuyenNganh add(@Valid DtCreateChuyenNganhRequest req) {
-        ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class,req);
+        ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
 
         return dtChuyenNganhRepository.save(chuyenNganh);
     }
@@ -58,10 +59,10 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     @Override
     public Boolean delete(String id) {
         Optional<ChuyenNganh> chuyenNganhCheck = dtChuyenNganhRepository.findById(id);
-        if (!chuyenNganhCheck.isPresent()){
+        if (!chuyenNganhCheck.isPresent()) {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
-            dtChuyenNganhRepository.delete(chuyenNganhCheck.get());
+        dtChuyenNganhRepository.delete(chuyenNganhCheck.get());
 
         return true;
     }
@@ -69,7 +70,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     @Override
     public ChuyenNganh findById(String id) {
         Optional<ChuyenNganh> chuyenNganhCheck = dtChuyenNganhRepository.findById(id);
-        if (!chuyenNganhCheck.isPresent()){
+        if (!chuyenNganhCheck.isPresent()) {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
 
@@ -79,7 +80,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     @Override
     public PageableObject<DtChuyenNganhResponse> search(final DtFindChuyenNganhRequest req) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
-        Page<DtChuyenNganhResponse> res = dtChuyenNganhRepository.findByName(req,pageable);
+        Page<DtChuyenNganhResponse> res = dtChuyenNganhRepository.findByName(req, pageable);
 
         return new PageableObject(res);
     }

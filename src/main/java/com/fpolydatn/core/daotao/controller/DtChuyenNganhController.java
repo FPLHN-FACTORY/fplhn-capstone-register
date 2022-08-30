@@ -30,14 +30,14 @@ public class DtChuyenNganhController extends BaseController {
     private DtCanBoService canBoService;
 
     @GetMapping
-    public String viewChuyenNganh(Model model, final DtFindChuyenNganhRequest request){
+    public String viewChuyenNganh(Model model, final DtFindChuyenNganhRequest request) {
         String coSoId = session.getCoSoId();
         request.setCoSoId(coSoId);
         int vaiTro = VaiTro.CHU_NHIEM_BO_MON.ordinal();
         PageableObject<DtChuyenNganhResponse> listChuyenNganh = chuyenNganhService.search(request);
-        List<SimpleEntityProj> listTenCanBo = canBoService.findAllSimpleEntityByTenCanBo(coSoId,vaiTro);
-        model.addAttribute("page",listChuyenNganh);
-        model.addAttribute("listCanBo",listTenCanBo);
+        List<SimpleEntityProj> listTenCanBo = canBoService.findAllSimpleEntityByTenCanBo(coSoId, vaiTro);
+        model.addAttribute("page", listChuyenNganh);
+        model.addAttribute("listCanBo", listTenCanBo);
         return "daotao/dt-chuyen-nganh";
     }
 }

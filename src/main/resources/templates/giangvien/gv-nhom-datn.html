@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
@@ -13,6 +13,7 @@
 </head>
 <!-- end::Head -->
 
+<!-- begin::Body -->
 <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 
 <!-- begin:: Page -->
@@ -23,7 +24,7 @@
     <!-- begin::Body -->
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
 
-        <div th:insert="~{fragment/menu-fragment :: menu}"></div>
+        <div th:insert="~{fragment/menu-fragment-chu-nhiem :: menu}"></div>
 
         <!-- END: Left Aside -->
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
@@ -98,10 +99,10 @@
                                             <th>Tên đề tài</th>
                                             <th>Chuyên ngành</th>
                                             <th>Số thành viên</th>
-                                            <th>Chi tiết nhóm</th>
                                             <th>Trưởng nhóm</th>
                                             <th>GV hướng dẫn</th>
                                             <th>Trạng thái</th>
+                                            <th>Chi tiết nhóm</th>
                                             <th>Hành động</th>
                                             </thead>
                                             <tbody id = "list_nhom_datn">
@@ -112,6 +113,10 @@
                                                     <td th:text="${nhomDatn.getTenDeTai()}"></td>
                                                     <td th:text="${nhomDatn.getTenChuyenNganh()}"></td>
                                                     <td th:text="${nhomDatn.getTotalMaSinhVien()}"></td>
+                                                    <td th:text="${nhomDatn.getTenTruongNhom()} + ' - '+ ${nhomDatn.getMaTruongNhom()} ">
+                                                    </td>
+                                                    <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()} "></td>
+                                                    <td th:text="${nhomDatn.getTrangThai()}==0?'Chưa chốt đề tài':(${nhomDatn.getTrangThai()}==1?'Giáo viên đã chốt':'CNBM đã chốt')"></td>
                                                     <td>
                                                         <button
                                                                 type="button"
@@ -120,9 +125,6 @@
                                                             chi tiết nhóm
                                                         </button>
                                                     </td>
-                                                    <td th:text="${nhomDatn.getMaSinhVien()}"></td>
-                                                    <td th:text="${nhomDatn.getTenGvhd()}"></td>
-                                                    <td th:text="${nhomDatn.getTrangThai()}==0?'Chưa chốt đề tài':(${nhomDatn.getTrangThai()}==1?'Giáo viên đã chốt':'CNBM đã chốt')"></td>
                                                     <td>
                                                         <button
                                                                 type="button"

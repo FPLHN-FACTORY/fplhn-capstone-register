@@ -7,6 +7,7 @@ import com.fpolydatn.core.daotao.model.request.DtFindChuyenNganhRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.model.response.DtChuyenNganhResponse;
 import com.fpolydatn.entity.ChuyenNganh;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -20,9 +21,11 @@ public interface DtChuyenNganhService {
     ChuyenNganh update(@Valid final DtUpdateChuyenNganhRequest req);
 
     ChuyenNganh add(@Valid final DtCreateChuyenNganhRequest req);
+
     Boolean delete(String id);
 
     ChuyenNganh findById(String id);
 
     PageableObject<DtChuyenNganhResponse> search(final DtFindChuyenNganhRequest req);
+
 }

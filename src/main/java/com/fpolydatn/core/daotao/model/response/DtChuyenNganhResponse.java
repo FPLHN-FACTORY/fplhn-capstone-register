@@ -10,7 +10,7 @@ import org.springframework.data.rest.core.config.Projection;
 /**
  * @author hoangnt
  */
-@Projection(types = { ChuyenNganh.class, CoSo.class, CanBo.class})
+@Projection(types = {ChuyenNganh.class, CoSo.class, CanBo.class})
 public interface DtChuyenNganhResponse extends IsIdentified {
 
     Integer getStt();
@@ -23,5 +23,4 @@ public interface DtChuyenNganhResponse extends IsIdentified {
 
     @Value("#{target.ten_can_bo}")
     String getTenCanBo();
-
 }

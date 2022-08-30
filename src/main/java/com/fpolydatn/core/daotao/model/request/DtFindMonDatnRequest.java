@@ -12,6 +12,7 @@ import lombok.Setter;
 public class DtFindMonDatnRequest extends PageableRequest {
 
     private String coSoId;
-    private String tenMonDatn;
 
+    private String tenMonDatn;
+    
 }

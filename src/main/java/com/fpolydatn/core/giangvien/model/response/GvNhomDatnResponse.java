@@ -27,11 +27,17 @@ public interface GvNhomDatnResponse extends IsIdentified {
     @Value("#{target.ten_chuyen_nganh}")
     String getTenChuyenNganh();
 
+    @Value("#{target.ten_sinh_vien}")
+    String getTenTruongNhom();
+
     @Value("#{target.ma_sinh_vien}")
-    String getMaSinhVien();
+    String getMaTruongNhom();
 
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
+
+    @Value("#{target.ten_tai_khoan}")
+    String getAccountGvhd();
 
     @Value("#{target.trang_thai}")
     int getTrangThai();

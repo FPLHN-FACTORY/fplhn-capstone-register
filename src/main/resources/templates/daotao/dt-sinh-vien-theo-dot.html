@@ -24,7 +24,7 @@
     <!-- begin::Body -->
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
 
-        <div th:insert="~{fragment/menu-fragment :: menu}"></div>
+        <div th:insert="~{fragment/menu-fragment-dao-tao :: menu}"></div>
 
         <!-- END: Left Aside -->
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
@@ -123,20 +123,18 @@
                                             <th>Id nhóm</th>
                                             <th>Tên Đề tài</th>
                                             <th>GV hướng dẫn</th>
-                                            <th>Đợt đăng ký</th>
                                             </thead>
                                             <tbody id="list">
                                             <th:block th:each="sinhVien :  ${page.data}">
                                                 <tr>
-                                                    <td th:text="${sinhVien.getStt()}"/>
-                                                    <td th:text="${sinhVien.getMaSinhVien}"/>
-                                                    <td th:text="${sinhVien.getTenSinhVien}"/>
-                                                    <td th:text="${sinhVien.getTenChuyenNganh}"/>
-                                                    <td th:text="${sinhVien.getTenMonDatn}==null? 'chưa có ': ${sinhVien.getTenMonDatn}"/>
-                                                    <td th:text="${sinhVien.getMaNhom} ==null? 'chưa có ': ${sinhVien.getMaNhom}"/>
-                                                    <td th:text="${sinhVien.getTenDeTai}==null? 'chưa có ':${sinhVien.getTenDeTai}"/>
-                                                    <td th:text="${sinhVien.getTenGvhd}==null? 'chưa có ':${sinhVien.getTenGvhd}"/>
-                                                    <td th:text="${sinhVien.getTenDotDangKy}"/>
+                                                    <td th:text="${sinhVien.getStt}"/>
+                                                    <td th:text="${sinhVien.maSinhVien}"/>
+                                                    <td th:text="${sinhVien.tenSinhVien}"/>
+                                                    <td th:text="${sinhVien.tenChuyenNganh}"/>
+                                                    <td th:text="${sinhVien.tenMonDatn}==null? 'chưa có ': ${sinhVien.tenMonDatn}"/>
+                                                    <td th:text="${sinhVien.maNhom} ==null? 'chưa có ': ${sinhVien.maNhom}"/>
+                                                    <td th:text="${sinhVien.tenDeTai}==null? 'chưa có ':${sinhVien.tenDeTai}"/>
+                                                    <td th:text="${sinhVien.tenGvhd}==null? 'chưa có ':${sinhVien.tenGvhd}"/>
                                                 </tr>
                                             </th:block>
                                             </tbody>
