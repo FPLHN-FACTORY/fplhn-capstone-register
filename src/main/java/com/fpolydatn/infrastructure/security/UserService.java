@@ -63,7 +63,7 @@ public class UserService {
                 if (Objects.isNull(canBoRepository.findSimpleEntityByTenCanBo(coSoID, email, 2))) {
                     response.sendRedirect("/authentication/chu-nhiem");
                 } else {
-                    response.sendRedirect("/dao-tao/can-bo");
+                    response.sendRedirect("/chu-nhiem/dot-dang-ky/sinh-vien");
                 }
                 break;
             }
@@ -71,7 +71,7 @@ public class UserService {
                 if (Objects.isNull(canBoRepository.findSimpleEntityByTenCanBo(coSoID, email, 1))) {
                     response.sendRedirect("/authentication/dao-tao");
                 } else {
-                    response.sendRedirect("/dao-tao/can-bo");
+                    response.sendRedirect("/dao-tao/mon-datn");
                 }
                 break;
             }
