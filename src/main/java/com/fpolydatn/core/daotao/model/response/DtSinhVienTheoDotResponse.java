@@ -6,6 +6,7 @@ import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -16,12 +17,10 @@ import java.util.UUID;
  */
 @Projection(types = {SinhVien.class, NhomDatn.class,
         ChuyenNganh.class, MonDatn.class, GiangVienHuongDan.class, DotDangKy.class})
-public interface DtSinhVienTheoDotResponse {
+public interface DtSinhVienTheoDotResponse extends IsIdentified {
 
     @Value("#{target.stt}")
     int getStt();
-
-    UUID getId();
 
     @Value("#{target.ma_sinh_vien}")
     String getMaSinhVien();

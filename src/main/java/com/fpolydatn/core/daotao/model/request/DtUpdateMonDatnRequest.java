@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DtUpdateMonDatnRequest extends DtBaseMonDatnRequest {
+
     private String id;
+
     private String coSoId;
 }

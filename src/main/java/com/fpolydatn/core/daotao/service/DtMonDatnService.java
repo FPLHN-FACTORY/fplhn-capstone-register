@@ -24,4 +24,5 @@ public interface DtMonDatnService {
     MonDatn update(@Valid final DtUpdateMonDatnRequest command);
 
     Boolean add(@Valid final DtCreateMonDatnRequest command);
+
 }

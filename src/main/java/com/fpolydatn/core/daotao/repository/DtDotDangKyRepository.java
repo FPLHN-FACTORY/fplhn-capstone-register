@@ -2,11 +2,14 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindDotDangKyRequest;
 import com.fpolydatn.core.daotao.model.response.DtDotDangKyResponse;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.DotDangKyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.Optional;
 
 /**
  * @author SonPT
@@ -32,4 +35,8 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             nativeQuery = true)
     Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest requ, Pageable page);
 
+    @Query(value = "SELECT d.id , d.ten_dot_dang_ky " +
+            "FROM do_an_tot_nghiep.dot_dang_ky d " +
+            "WHERE UNIX_TIMESTAMP(localtime())*1000 BETWEEN d.ngay_bat_dau AND d.ngay_ket_thuc LIMIT 1", nativeQuery = true)
+    Optional<SimpleEntityProj> DotDangKyHienTai();
 }

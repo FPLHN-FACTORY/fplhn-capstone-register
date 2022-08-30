@@ -32,6 +32,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     private DtMonDatnRepository monDatnRepository;
 
     private FormUtils formUtils = new FormUtils();
+
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
