@@ -9,6 +9,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+/**
+ * @author nguyenvv4
+ */
 @Slf4j
 public class PropertiesReader {
 
@@ -18,6 +21,7 @@ public class PropertiesReader {
     private static Properties applicationProperties = new Properties();
     private static Properties validationProperties = new Properties();
     private static Logger logger = Logger.getLogger(PropertiesReader.class);
+
 
     static {
         // Load application properties file

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8"/>
+    <title>Project Register System</title>
+    <meta name="description" content="Static table examples">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
+    <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
+</head>
+<!-- end::Head -->
+
+<!-- begin::Body -->
+<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+
+<!-- begin:: Page -->
+<div class="m-grid m-grid--hor m-grid--root m-page">
+
+    <div th:insert="~{fragment/header-fragment :: header}"></div>
+
+    <!-- begin::Body -->
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+
+        <div th:insert="~{fragment/menu-fragment-dao-tao :: menu}"></div>
+
+
+        <!-- END: Left Aside -->
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+            <!-- END: Subheader -->
+            <div>
+                <div class="m-content">
+                    <h3>Quản lý cán bộ</h3>
+                    <div class="mt-5">
+                        <div class="m-portlet">
+                            <div class="m-portlet">
+                                <div class="m-portlet__body">
+                                    <div class="row">
+                                        <div class="col-6 d-inline"
+                                        >
+                                            <button
+                                                    data-toggle="modal"
+                                                    data-target="#modal_create"
+                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                Thêm cán bộ
+                                            </button>
+                                            <div class="modal fade "
+                                                 id="modal_create"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form id="form_create_can_bo">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Thêm cán
+                                                                    bộ</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label">Cán Bộ</label>
+
+                                                                    <br>
+                                                                    <label class="col-form-label">Email FE</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="emailfe">
+                                                                    <span class="text-danger"
+                                                                          id="email_fe_error"></span>
+
+                                                                    <br>
+                                                                    <label class="col-form-label">Email FPT</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="emailfpt">
+                                                                    <span class="text-danger"
+                                                                          id="email_fpt_error"></span>
+
+                                                                    <br>
+                                                                    <label class="col-form-label">Số Điện Thoại</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="sodienthoai">
+                                                                    <span class="text-danger"
+                                                                          id="so_dien_thoai_error"></span>
+
+                                                                    <br>
+                                                                    <label class="col-form-label">Tên Cán Bộ</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="tenCanBo">
+                                                                    <span class="text-danger"
+                                                                          id="ten_can_bo_error"></span>
+
+                                                                    <br>
+                                                                    <label class="col-form-label">Tên Tài Khoản</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="tentaikhoan">
+                                                                    <span class="text-danger"
+                                                                          id="ten_tai_khoan_error"></span>
+
+                                                                    <br>
+                                                                    <label class="col-form-label">Vai Trò</label>
+                                                                    <select id="vaiTro" class="form-control col-8">
+                                                                        <option value="DAO_TAO">Đào Tạo</option>
+                                                                        <option value="CHU_NHIEM_BO_MON">Chủ Nhiệm Bộ
+                                                                            Môn
+                                                                        </option>
+                                                                    </select>
+
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">Hủy
+                                                                    </button>
+                                                                    <button type="submit" class="btn btn-primary">Thêm
+                                                                        mới
+                                                                    </button>
+                                                                </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive mt-3">
+                                        <table id="custom-table"
+                                               class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                            <thead>
+                                            <th width="50px">STT</th>
+                                            <th width="100px">Email FE</th>
+                                            <th width="100px">Email FPT</th>
+                                            <th width="100px">Số Điện Thoại</th>
+                                            <th width="100px">Tên Cán Bộ</th>
+                                            <th width="100px">Tên Tài Khoản</th>
+                                            <th width="100px">Vai Trò</th>
+                                            <th width="150px">Chức Năng</th>
+                                            </thead>
+                                            <tbody>
+                                            <th:block th:each="canbo,i : ${page.data}">
+                                                <tr>
+                                                    <td th:text="${canbo.getSTT()}"></td>
+                                                    <td th:text="${canbo.getEmailFE}"></td>
+                                                    <td th:text="${canbo.getEmailFPT}"></td>
+                                                    <td th:text="${canbo.getSoDienThoai}"></td>
+                                                    <td th:text="${canbo.getTenCanBo}"></td>
+                                                    <td th:text="${canbo.getTenTaiKhoan}"></td>
+                                                    <td th:switch="${canbo.getVaiTro}">
+                                                        <span th:case="'1'">Đào Tạo</span>
+                                                        <span th:case="'2'">Chủ Nhiệm Bộ Môn</span>
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                                type="button"
+                                                                class="btn btn-primary"
+                                                                th:attr="onclick=|openModalUpdateCanBo('${canbo.getId}')|">
+                                                            Sửa
+                                                        </button>
+                                                        </button>
+                                                        <button
+                                                                type="button"
+                                                                class="btn btn-danger"
+                                                                data-toggle="modal"
+                                                                th:attr="onclick=|openModalRemoveCanBo('${canbo.getId}')|">
+                                                            Xoá
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                        <!-- Paging-->
+                                        <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
+                                            <ul class="pagination justify-content-end">
+                                                <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           th:href="@{/dao-tao/can-bo?page={page.currentPage}(page.currentPage=${i}-1)}"
+                                                           th:text="${i}">
+                                                        </a>
+                                                    </li>
+                                                </div>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end:: Body -->
+</div>
+<!--  Start Modal Update-->
+<div
+        class="modal fade"
+        tabindex="-1"
+        id="modal_update_can_bo"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_hoc_ky_update">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cập
+                        nhật cán bộ</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span id="id_can_bo_update" style="color:red;"></span>
+
+                    <div class="form-group">
+                        <br>
+                        <label class="col-form-label">Email FE</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="email_fe_update">
+                        <span class="text-danger"
+                              id="email_fe_error_update"></span>
+
+                        <br>
+                        <label class="col-form-label">Email FPT</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="email_fpt_update">
+                        <span class="text-danger"
+                              id="email_fpt_error_update"></span>
+
+                        <br>
+                        <label class="col-form-label">Số Điện Thoại</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="so_dien_thoai_Update">
+                        <span class="text-danger"
+                              id="so_dien_thoai_error_update"></span>
+
+                        <br>
+                        <label class="col-form-label">Tên Cán Bộ</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="ten_Can_Bo_Update">
+                        <span class="text-danger"
+                              id="ten_can_bo_error_update"></span>
+
+                        <br>
+                        <label class="col-form-label">Tên Tài Khoản</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="ten_tai_khoan_Update">
+                        <span class="text-danger"
+                              id="ten_tai_khoan_error_update"></span>
+                        <br>
+                        <label class="col-form-label">Vai Trò</label>
+                        <select id="vai_Tro_Update" class="form-control col-8">
+                            <option value="DAO_TAO">Đào Tạo</option>
+                            <option value="CHU_NHIEM_BO_MON">Chủ Nhiệm Bộ Môn</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Hủy
+                    </button>
+                    <button type="submit" class="btn btn-primary">Cập
+                        nhật
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--   End Modal Update -->
+
+<!--  Start Modal Remove-->
+<div
+        class="modal fade"
+        id="modal_can_bo_remove"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_can_bo_delete">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xoá Cán Bộ</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có muốn xoá không ?</p>
+                    <span id="remove_can_bo" style="color:red;"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Hủy
+                    </button>
+                    <button type="submit" class="btn btn-primary">Xoá
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--   End Modal Remove -->
+<script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
+<script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script th:src="@{/js/custom/daotao/dtCanBo.js}" type="text/javascript"></script>
+</body>
+</html>
