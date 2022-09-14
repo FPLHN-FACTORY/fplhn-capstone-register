@@ -16,10 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author thangncph26123
@@ -45,7 +43,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CNBM_CHOT_DE_TAI);
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CNBM_CHOT);
         cnNhomDatnRepository.save(nhomDatnCheck.get());
         return true;
     }

@@ -192,7 +192,7 @@ public class DBGenerator implements CommandLineRunner {
         nhom1.setTruongNhomId(phongtt35.getId());
         nhom1.setCoSoId(csHN.getId());
         nhom1.setMatKhau("123456");
-        nhom1.setTrangThai(TrangThaiNhom.CHUA_CHOT_DE_TAI);
+        nhom1.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
         nhom1.setTenDeTai("Tool Đăng ký DATN");
         nhom1.setTenNhom("Thích cho tạch");
         nhom1.setId(nhomDatnRepository.save(nhom1).getId());

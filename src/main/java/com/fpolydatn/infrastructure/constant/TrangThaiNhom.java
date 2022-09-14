@@ -5,7 +5,10 @@ package com.fpolydatn.infrastructure.constant;
  */
 
 public enum TrangThaiNhom {
-    CHUA_CHOT_DE_TAI,
-    GVHD_CHOT_DE_TAI,
-    CNBM_CHOT_DE_TAI
+    MOI_THANH_LAP,
+    DA_LIEN_HE_GV,
+    SAN_SANG_PHE_DUYET,
+    CAN_SUA,
+    GVHD_CHOT,
+    CNBM_CHOT
 }

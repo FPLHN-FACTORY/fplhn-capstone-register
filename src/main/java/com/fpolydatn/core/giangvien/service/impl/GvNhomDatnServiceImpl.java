@@ -42,7 +42,7 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT_DE_TAI);
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
     

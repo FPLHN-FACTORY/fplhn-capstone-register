@@ -39,8 +39,8 @@ public class SinhVien extends MultiTenantEntity
     @Column(length = EntityProperties.LENGTH_CODE, nullable = false)
     private String khoa;
 
-    @Column
-    private TrangThaiSinhVien trangThai;
+    @Column(nullable = false)
+    private TrangThaiSinhVien trangThai = TrangThaiSinhVien.DU_DIEU_KIEN;
 
     @Column(length = EntityProperties.LENGTH_ID)
     private String nhomId;

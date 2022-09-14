@@ -47,8 +47,12 @@ public class NhomDatn extends MultiTenantEntity
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     private String truongNhomId;
 
-    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Column(length = EntityProperties.LENGTH_ID)
     private String giangVienId;
+
+    @Column
+    @Nationalized
+    private String nhanXet;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     private String dotDangKyId;
