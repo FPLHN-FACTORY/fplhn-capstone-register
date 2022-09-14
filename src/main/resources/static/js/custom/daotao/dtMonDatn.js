@@ -77,11 +77,20 @@ $("#form_mon_datn_update").submit(function (event) {
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
-    if (maMon.length === 0) {
-        $("#errorMessageUpdate").text("Mã môn DATN không được để trống");
-    } else if (tenMonDatn.length === 0) {
-        $("#errorMessageUpdate").text("Tên môn DATN không được để trống");
+    let index = 0;
+    if (maMon.trim().length === 0) {
+        $("#errorMaMonUpdate").text("Mã môn DATN không được để trống");
+        index ++;
     } else {
+        $("#errorMaMonUpdate").text("");
+    }
+    if (tenMonDatn.trim().length === 0) {
+        $("#errorTenMonUpdate").text("Tên môn DATN không được để trống");
+        index ++;
+    } else {
+        $("#errorTenMonUpdate").text("");
+    }
+    if (index == 0) {
         $.ajax({
             type: "PUT",
             contentType: "application/json",
