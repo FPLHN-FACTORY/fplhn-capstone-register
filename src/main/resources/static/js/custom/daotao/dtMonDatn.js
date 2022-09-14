@@ -15,12 +15,20 @@ $("#form_create_mon_datn").submit(function (event) {
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
+    let index = 0;
     if (maMon.trim().length === 0) {
-        $("#mon_datn_error").text("Mã môn DATN không được để trống");
-    }
-    else if (tenMonDatn.trim().length === 0) {
-        $("#mon_datn_error").text("Tên môn DATN không được để trống");
+        $("#ma_mon_datn_error").text("Mã môn DATN không được để trống");
+        index ++;
     } else {
+        $("#ma_mon_datn_error").text("");
+    }
+    if (tenMonDatn.trim().length === 0) {
+        $("#ten_mon_datn_error").text("Tên môn DATN không được để trống");
+        index ++;
+    } else {
+        $("#ten_mon_datn_error").text("");
+    }
+    if (index == 0) {
         $.ajax({
             type: "POST",
             contentType: "application/json",

@@ -68,24 +68,25 @@
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="maMon">
+                                                                    <span class="text-danger"
+                                                                          id="ma_mon_datn_error"></span><br>
                                                                     <label class="col-form-label">Tên môn</label>
                                                                     <input
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="tenMonDatn">
+                                                                    <span class="text-danger"
+                                                                          id="ten_mon_datn_error"></span><br>
                                                                     <div>
                                                                         <label class="col-form-label">Chuyên
                                                                             ngành: </label>
                                                                         <select id="chuyenNganh" class="combobox">
-                                                                            <option value="0" hidden></option>
                                                                             <div th:each="chuyenNganh : ${tenChuyenNganh}">
                                                                                 <option th:value="${chuyenNganh.id}"
                                                                                         th:text="${chuyenNganh.name}"></option>
                                                                             </div>
                                                                         </select>
                                                                     </div>
-                                                                    <span class="text-danger"
-                                                                          id="mon_datn_error"></span>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
