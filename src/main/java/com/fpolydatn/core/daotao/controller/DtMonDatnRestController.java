@@ -41,8 +41,7 @@ public class DtMonDatnRestController extends BaseController {
         monDatnRequest.setId(id);
         try {
             return new ResponseObject(monDatnService.update(monDatnRequest));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResponseObject(e);
         }
     }
@@ -52,9 +51,8 @@ public class DtMonDatnRestController extends BaseController {
         monDatnRequest.setCoSoId(session.getCoSoId());
         try {
             return new ResponseObject(monDatnService.add(monDatnRequest));
-        }
-       catch (Exception e){
+        } catch (Exception e) {
             return new ResponseObject(e);
-       }
+        }
     }
 }
