@@ -39,12 +39,22 @@ public class DtMonDatnRestController extends BaseController {
     public ResponseObject update(@PathVariable("id") String id,
                                  @RequestBody DtUpdateMonDatnRequest monDatnRequest) {
         monDatnRequest.setId(id);
-        return new ResponseObject(monDatnService.update(monDatnRequest));
+        try {
+            return new ResponseObject(monDatnService.update(monDatnRequest));
+        }
+        catch (Exception e){
+            return new ResponseObject(e);
+        }
     }
 
     @PostMapping
     public ResponseObject add(@RequestBody DtCreateMonDatnRequest monDatnRequest) {
         monDatnRequest.setCoSoId(session.getCoSoId());
-        return new ResponseObject(monDatnService.add(monDatnRequest));
+        try {
+            return new ResponseObject(monDatnService.add(monDatnRequest));
+        }
+       catch (Exception e){
+            return new ResponseObject(e);
+       }
     }
 }

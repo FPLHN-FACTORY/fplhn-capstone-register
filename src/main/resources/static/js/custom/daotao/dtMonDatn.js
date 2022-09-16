@@ -17,13 +17,13 @@ $("#form_create_mon_datn").submit(function (event) {
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
     let index = 0;
     if (maMon.trim().length === 0) {
-        $("#ma_mon_datn_error").text("Mã môn DATN không được để trống");
+        $("#ma_mon_datn_error").text("Ma mon DATN khong duoc de trong");
         index ++;
     } else {
         $("#ma_mon_datn_error").text("");
     }
     if (tenMonDatn.trim().length === 0) {
-        $("#ten_mon_datn_error").text("Tên môn DATN không được để trống");
+        $("#ten_mon_datn_error").text("Ten mon DATN khong duoc de trong");
         index ++;
     } else {
         $("#ten_mon_datn_error").text("");
@@ -40,7 +40,7 @@ $("#form_create_mon_datn").submit(function (event) {
                     window.open(monDatnView, '_self');
                     $("#modal_create").modal("hide");
                 } else {
-                    alert(e.data.localizedMessage)
+                    $("#ma_mon_datn_error").text(e.data.localizedMessage);
                 }
             },
             error: function (e) {
@@ -79,13 +79,13 @@ $("#form_mon_datn_update").submit(function (event) {
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     let index = 0;
     if (maMon.trim().length === 0) {
-        $("#errorMaMonUpdate").text("Mã môn DATN không được để trống");
+        $("#errorMaMonUpdate").text("Ma mon DATN khong duoc de trong");
         index ++;
     } else {
         $("#errorMaMonUpdate").text("");
     }
     if (tenMonDatn.trim().length === 0) {
-        $("#errorTenMonUpdate").text("Tên môn DATN không được để trống");
+        $("#errorTenMonUpdate").text("Ten mon DATN khong duoc de trong");
         index ++;
     } else {
         $("#errorTenMonUpdate").text("");
