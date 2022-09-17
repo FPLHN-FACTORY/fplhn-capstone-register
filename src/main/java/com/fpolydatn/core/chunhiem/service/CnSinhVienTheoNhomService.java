@@ -13,4 +13,5 @@ public interface CnSinhVienTheoNhomService {
 
     boolean deleteFromIdSinhVien(String maSinhVien);
 
+    boolean addGvhd(String giangVienId,String idNhom);
 }

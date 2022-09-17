@@ -2,7 +2,6 @@ package com.fpolydatn.core.chunhiem.repository;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
-import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,6 +65,13 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             SELECT count(a.ma_sinh_vien) as so_luong FROM sinh_vien a
             WHERE nhom_id = :idNhom""",nativeQuery = true)
     int getSoLuongThanhVienNhom(@Param("idNhom")String idNhom);
+
+    @Modifying
+    @Transactional
+    @Query(value = """
+      UPDATE nhom_datn SET giang_vien_id = :giangVienId where id = :idNhom
+      """,nativeQuery = true)
+    void addGvhd(@Param("giangVienId")String giangVienId,@Param("idNhom")String idNhom);
 
     @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien AND nhom_id IS NULL",nativeQuery = true)
     String getSinhVienByMaSinhVienAndMaNhom(@Param("maSinhVien") String maSinhVien);
