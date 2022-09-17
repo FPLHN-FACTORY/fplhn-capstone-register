@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -57,12 +58,13 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public NhomDatn updateTenDeTai(GvUpdateTenDeTaiRequest request) {
+    public NhomDatn updateTenDeTai(@Valid final GvUpdateTenDeTaiRequest request) {
         Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
         nhomDatnCheck.get().setTenDeTai(request.getTenDeTai());
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.SAN_SANG_PHE_DUYET);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
