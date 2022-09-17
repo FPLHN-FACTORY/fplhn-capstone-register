@@ -121,15 +121,14 @@ function seachNhomdatn(index) {
                  <td>
                      <button
                                     type="button"
-                                    class="btn btn-primary"
+                                    class="btn btn-primary "
                                     id="chotDuLieu" 
-                                    style="${item.trangThai == 4 ? 'display : none' : 'display : block'}"
-                                    style="${item.trangThai == 5 ? 'display : none' : 'display : block'}"
+                                    style="${item.trangThai == 2 ? 'display : block' : 'display : none'}"
                                     onclick="chotDuLieu('${item.id}')">Chốt
                      </button>
                      <button
                                     type="button"
-                                    class="btn btn-primary"
+                                    class="btn btn-primary "
                                     id="chotDuLieu" style="${item.trangThai == 5 ? 'display : none' : 'display : block'}"
                                     onclick="updateTenDeTai('${item.id}')">update 
                      </button>

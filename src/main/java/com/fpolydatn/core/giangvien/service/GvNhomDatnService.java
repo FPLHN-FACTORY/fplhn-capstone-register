@@ -7,6 +7,8 @@ import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.entity.NhomDatn;
 
+import javax.validation.Valid;
+
 
 /**
  * @author thangdt
@@ -21,6 +23,6 @@ public interface GvNhomDatnService {
 
     NhomDatn findById(String maNhom);
 
-    NhomDatn updateTenDeTai(final GvUpdateTenDeTaiRequest request);
+    NhomDatn updateTenDeTai(@Valid final GvUpdateTenDeTaiRequest request);
 
 }
