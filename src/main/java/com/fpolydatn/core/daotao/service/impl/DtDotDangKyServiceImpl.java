@@ -53,6 +53,16 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
+        if (createDotDangKyRequest.getNgayKetThuc() < createDotDangKyRequest.getNgayBatDau()) {
+            throw new RestApiException((Message.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC));
+        }
+        List<DotDangKy> listDotDangKy = dtDotDangKyRepository.findAll();
+        for (DotDangKy dotDangKy : listDotDangKy) {
+            if (createDotDangKyRequest.getNgayBatDau() < dotDangKy.getNgayKetThuc()
+                    && createDotDangKyRequest.getNgayKetThuc() > dotDangKy.getNgayBatDau()) {
+                throw new RestApiException(Message.DOT_DANG_KY_OVERLAP);
+            }
+        }
         DotDangKy dotDangKy = formUtils.convertToObject(DotDangKy.class, createDotDangKyRequest);
         return dtDotDangKyRepository.save(dotDangKy);
     }
@@ -63,12 +73,25 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         if (!dotDangKyCheck.isPresent()) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
+        if (dtUpdateDotDangKyRequest.getNgayKetThuc() < dtUpdateDotDangKyRequest.getNgayBatDau()) {
+            throw new RestApiException((Message.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC));
+        }
+        List<DotDangKy> listDotDangKy = dtDotDangKyRepository.findAll();
+        for (DotDangKy dotDangKy : listDotDangKy) {
+            if (dotDangKy.getId().equals(dtUpdateDotDangKyRequest.getId())){
+                continue;
+            }
+            if (dtUpdateDotDangKyRequest.getNgayBatDau() < dotDangKy.getNgayKetThuc()
+                    && dtUpdateDotDangKyRequest.getNgayKetThuc() > dotDangKy.getNgayBatDau()) {
+                throw new RestApiException(Message.DOT_DANG_KY_OVERLAP);
+            }
+        }
         DotDangKy dotDangKy = dotDangKyCheck.get();
-        dotDangKy.setTenDotDangKy(dtUpdateDotDangKyRequest.getTenDotDangKy());
         dotDangKy.setNgayBatDau(dtUpdateDotDangKyRequest.getNgayBatDau());
         dotDangKy.setNgayKetThuc(dtUpdateDotDangKyRequest.getNgayKetThuc());
         return dtDotDangKyRepository.save(dotDangKy);
     }
+
     @Override
     public DotDangKy findById(String id) {
         Optional<DotDangKy> dotDangKyCheck = dtDotDangKyRepository.findById(id);
@@ -86,5 +109,10 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Override
     public List<SimpleEntityProj> findAllSimpleEntityByCoSo(String coSoId) {
         return dtDotDangKyRepository.findAllSimpleEntity(coSoId);
+    }
+
+    @Override
+    public List<DotDangKy> getAllByCoSo(String coSoId) {
+        return dtDotDangKyRepository.getAllByCoSo(coSoId);
     }
 }

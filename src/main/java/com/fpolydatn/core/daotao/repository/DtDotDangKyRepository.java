@@ -2,6 +2,7 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindDotDangKyRequest;
 import com.fpolydatn.core.daotao.model.response.DtDotDangKyResponse;
+import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.DotDangKyRepository;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,10 +35,15 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
             """,
             nativeQuery = true)
-    Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest requ, Pageable page);
+    Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest req, Pageable page);
 
     @Query(value = "SELECT d.id , d.ten_dot_dang_ky " +
             "FROM do_an_tot_nghiep.dot_dang_ky d " +
-            "WHERE UNIX_TIMESTAMP(localtime())*1000 BETWEEN d.ngay_bat_dau AND d.ngay_ket_thuc LIMIT 1", nativeQuery = true)
+            "WHERE UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN d.ngay_bat_dau AND d.ngay_ket_thuc LIMIT 1", nativeQuery = true)
     Optional<SimpleEntityProj> DotDangKyHienTai();
+
+    @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, " +
+            "hoc_ky_id, ngay_bat_dau, ngay_ket_thuc, ten_dot_dang_ky FROM dot_dang_ky WHERE co_so_id = :coSoId"
+            ,nativeQuery = true)
+    List<DotDangKy> getAllByCoSo(@Param("coSoId") String coSoId);
 }
