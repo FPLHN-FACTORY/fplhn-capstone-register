@@ -37,10 +37,6 @@ public class CnNhomDatnRestController extends BaseController {
     @Autowired
     private CnNhomDatnService nhomDatnService;
 
-    @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;//hiện tại chưa lấy đợt nên bọn em fix cứng cái dot_dang_ky_id thầy ạ
-
     @GetMapping("/search")
     public ResponseObject viewHocKy(final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
@@ -52,7 +48,6 @@ public class CnNhomDatnRestController extends BaseController {
     @PostMapping
     public ResponseObject create(@RequestBody CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
         cnCreateNhomDatnRequest.setCoSoId(session.getCoSoId());
-        cnCreateNhomDatnRequest.setDotDangKyId(dotDangKyRepository.findAll().get(0).getId());
         Boolean update = false;
         try {
             update = nhomDatnService.create(cnCreateNhomDatnRequest);

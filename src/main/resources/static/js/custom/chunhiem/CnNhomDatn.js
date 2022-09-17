@@ -23,12 +23,13 @@ function loadDataNhomDatn(count) {
     let chuyenNganhId = $("#chuyenNganhId").val()
     let tenGvhd = $("#tenGvhd").val()
     let trangThai = $("#trangThai").val()
+    let dotDangKyId = $("#dotDangKyId").val()
 
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: CNNhomDatnApi + "/search" + "?tenNhom=" + tenNhom + "&chuyenNganhId=" + chuyenNganhId
-            + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&page=" + count,
+            + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
 
