@@ -68,24 +68,25 @@
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="maMon">
+                                                                    <span class="text-danger"
+                                                                          id="ma_mon_datn_error"></span><br>
                                                                     <label class="col-form-label">Tên môn</label>
                                                                     <input
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="tenMonDatn">
+                                                                    <span class="text-danger"
+                                                                          id="ten_mon_datn_error"></span><br>
                                                                     <div>
                                                                         <label class="col-form-label">Chuyên
                                                                             ngành: </label>
-                                                                        <select id="chuyenNganh" class="combobox">
-                                                                            <option value="0" hidden></option>
+                                                                        <select id="chuyenNganh" class="form-control">
                                                                             <div th:each="chuyenNganh : ${tenChuyenNganh}">
                                                                                 <option th:value="${chuyenNganh.id}"
                                                                                         th:text="${chuyenNganh.name}"></option>
                                                                             </div>
                                                                         </select>
                                                                     </div>
-                                                                    <span class="text-danger"
-                                                                          id="mon_datn_error"></span>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -191,7 +192,7 @@
             <form id="form_mon_datn_update">
                 <div class="modal-header">
                     <h5 class="modal-title">Cập
-                        nhật mon DATN</h5>
+                        nhật môn DATN</h5> c4
                     <button type="button" class="close"
                             data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -207,7 +208,8 @@
                                 type="text"
                                 class="form-control"
                                 id="ma_mon_datn_update"/>
-                        <br>
+                        <span class="text-danger"
+                              id="errorMaMonUpdate"></span><br>
                         <label
                                 class="col-form-label">Tên môn</label>
                         <input
@@ -215,7 +217,7 @@
                                 class="form-control"
                                 id="ten_mon_datn_update"/>
                         <span class="text-danger"
-                              id="errorMessageUpdate"></span>
+                              id="errorTenMonUpdate"></span><br>
                     </div>
                 </div>
 

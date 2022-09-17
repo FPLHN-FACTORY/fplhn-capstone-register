@@ -15,12 +15,20 @@ $("#form_create_mon_datn").submit(function (event) {
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
+    let index = 0;
     if (maMon.trim().length === 0) {
-        $("#mon_datn_error").text("Mã môn DATN không được để trống");
-    }
-    else if (tenMonDatn.trim().length === 0) {
-        $("#mon_datn_error").text("Tên môn DATN không được để trống");
+        $("#ma_mon_datn_error").text("Ma mon DATN khong duoc de trong");
+        index++;
     } else {
+        $("#ma_mon_datn_error").text("");
+    }
+    if (tenMonDatn.trim().length === 0) {
+        $("#ten_mon_datn_error").text("Ten mon DATN khong duoc de trong");
+        index++;
+    } else {
+        $("#ten_mon_datn_error").text("");
+    }
+    if (index == 0) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -32,7 +40,7 @@ $("#form_create_mon_datn").submit(function (event) {
                     window.open(monDatnView, '_self');
                     $("#modal_create").modal("hide");
                 } else {
-                    alert(e.data.localizedMessage)
+                    $("#ma_mon_datn_error").text(e.data.localizedMessage);
                 }
             },
             error: function (e) {
@@ -69,11 +77,20 @@ $("#form_mon_datn_update").submit(function (event) {
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
-    if (maMon.length === 0) {
-        $("#errorMessageUpdate").text("Mã môn DATN không được để trống");
-    } else if (tenMonDatn.length === 0) {
-        $("#errorMessageUpdate").text("Tên môn DATN không được để trống");
+    let index = 0;
+    if (maMon.trim().length === 0) {
+        $("#errorMaMonUpdate").text("Ma mon DATN khong duoc de trong");
+        index++;
     } else {
+        $("#errorMaMonUpdate").text("");
+    }
+    if (tenMonDatn.trim().length === 0) {
+        $("#errorTenMonUpdate").text("Ten mon DATN khong duoc de trong");
+        index++;
+    } else {
+        $("#errorTenMonUpdate").text("");
+    }
+    if (index == 0) {
         $.ajax({
             type: "PUT",
             contentType: "application/json",

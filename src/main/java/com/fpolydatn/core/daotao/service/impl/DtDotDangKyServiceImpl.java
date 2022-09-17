@@ -7,7 +7,6 @@ import com.fpolydatn.core.daotao.model.request.DtUpdateDotDangKyRequest;
 import com.fpolydatn.core.daotao.model.response.DtDotDangKyResponse;
 import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
 import com.fpolydatn.core.daotao.repository.DtHocKyRepository;
-import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.HocKy;
@@ -104,6 +103,11 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
 
     @Override
     public List<SimpleEntityProj> findAllSimpleEntity(String coSoId) {
+        return dtDotDangKyRepository.findAllSimpleEntity(coSoId);
+    }
+
+    @Override
+    public List<SimpleEntityProj> findAllSimpleEntityByCoSo(String coSoId) {
         return dtDotDangKyRepository.findAllSimpleEntity(coSoId);
     }
 
