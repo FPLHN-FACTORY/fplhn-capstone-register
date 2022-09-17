@@ -15,6 +15,10 @@ $(document).ready(function () {
 
 function fillter(){
 
+    $("#ten_de_tai_update").on('change', function (){
+        $("#errorMessageUpdate").text("");
+    });
+
     $('#tenChuyenNganh').change(function (){
         seachNhomdatn(0);
     })
@@ -134,3 +138,50 @@ function seachNhomdatn(index) {
         }
     });
 }
+
+function updateTenDeTai(maNhom){
+    $("#modal_update_ten_de_tai").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/" + maNhom,
+        dataType: 'json',
+        success: function (responseData) {
+            $("#id_nhom_datn_update").val(responseData.data.id);
+            $("#ten_de_tai_update").val(responseData.data.tenDeTai);
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+$("#form_nhom_datn_update").submit(function (event) {
+    event.preventDefault();
+    let tenDeTai = $("#ten_de_tai_update").val();
+    let maNhom = $("#id_nhom_datn_update").val();
+    let NhomDatnRequest = {};
+    NhomDatnRequest["tenDeTai"] = tenDeTai;
+    NhomDatnRequest["maNhom"] = maNhom;
+
+
+    if (tenDeTai.trim().length  == 0 ) {
+        $("#errorMessageUpdate").text("Tên đề tài không được để trống");
+    } else if (tenDeTai.length < 6) {
+        $("#errorMessageUpdate").text("Tên đề tài tối thiếu 6 ký tự");
+    } else {
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: nhomDatnAPI + "/update-ten-de-tai/" + maNhom,
+            data: JSON.stringify(NhomDatnRequest),
+            dataType: 'json',
+            success: function () {
+                window.location.reload(false)
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+});
