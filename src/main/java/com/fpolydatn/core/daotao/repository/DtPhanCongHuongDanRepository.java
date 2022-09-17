@@ -50,16 +50,14 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
     @Query(value = """
             SELECT a.giang_vien_id, a.mon_datn_id
             FROM do_an_tot_nghiep.phan_cong_huong_dan a
-            WHERE a.giang_vien_id = :maGV""", nativeQuery = true)
-    PhanCongHuongDan finId(@Param("maGV") String id);
+            WHERE a.giang_vien_id = :maGV AND a.mon_datn_id = :maMon""", nativeQuery = true)
+    PhanCongHuongDan finId(@Param("maGV") String idGV, @Param("maMon") String idMon);
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER() AS stt, gv.id, gv.ten_gvhd FROM do_an_tot_nghiep.giang_vien_huong_dan gv
             WHERE gv.co_so_id = :coSoId 
             AND gv.id NOT IN (SELECT giang_vien_id FROM do_an_tot_nghiep.phan_cong_huong_dan WHERE mon_datn_id = :maMonId)
-            AND gv.id NOT IN (SELECT c.giang_vien_id FROM do_an_tot_nghiep.phan_cong_huong_dan c WHERE c.giang_vien_id = gv.id
-            GROUP BY c.giang_vien_id
-            HAVING COUNT(c.giang_vien_id) <= gv.so_nhom_huong_dan_toi_da)
+            
             """
             , nativeQuery = true)
     List<DtPhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(@Param("coSoId") String coSoId, @Param("maMonId") String maMonId);
