@@ -4,6 +4,7 @@ import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,5 +37,16 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
         } catch (Exception e) {
             return new ResponseObject(e);
         }
+    }
+    @PostMapping("/addGvhd")
+    public ResponseObject addGvhd(@RequestParam("giangVienId")String giangVienId, @RequestParam("idNhom")String idNhom){
+        boolean add = false;
+        try {
+            add = sinhVienTheoNhomService.addGvhd(giangVienId,idNhom);
+            return new ResponseObject(true);
+        }catch (Exception e){
+            return  new ResponseObject(e);
+        }
+
     }
 }

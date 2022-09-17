@@ -22,7 +22,7 @@ $("#form_create_ma_nhom").submit(function (event) {
             console.log(responseData)
             if (responseData.data==true) {
                 window.open(sinhVienTheoNhomView+ "?id=" + idNhom, '_self');
-            } else alert(responseData.data.message)
+            } else $("#idStudentError").html(responseData.data.message)
         },
         error: function (responseData) {
         }
@@ -51,7 +51,30 @@ $("#form_hoc_ky_delete").submit(function (event) {
         }
     });
 });
+function openModalChangeGvhd(){
+    $('#modal_change_gvhd').modal('show');
+}
+$('#form_change_gvhd').submit(function (event){
+    event.preventDefault();
+    let idGroup = $("#idNhom").val();
+    let giangVienId = $("#giangVienId").val();
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: sinhVienApi + "/addGvhd?" + "giangVienId="+giangVienId+"&idNhom="+idGroup,
+        success: function (responseData) {
+            if (responseData.data==true) {
+                window.open(sinhVienTheoNhomView+ "?id=" + idGroup, '_self');
+            } else{
+                $("#change_gvhd").html(responseData.data.message)
+                console.log('hi')
+            }
+        },
+        error: function (e) {
+        }
+    });
 
+})
 
 
 

@@ -5,9 +5,11 @@ import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -64,4 +66,10 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             WHERE nhom_id = :idNhom""",nativeQuery = true)
     int getSoLuongThanhVienNhom(@Param("idNhom")String idNhom);
 
+    @Modifying
+    @Transactional
+    @Query(value = """
+      UPDATE nhom_datn SET giang_vien_id = :giangVienId where id = :idNhom
+      """,nativeQuery = true)
+    void addGvhd(@Param("giangVienId")String giangVienId,@Param("idNhom")String idNhom);
 }
