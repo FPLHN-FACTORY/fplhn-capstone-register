@@ -35,6 +35,6 @@ public class DtMonDatnController extends BaseController {
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
-        return "/daotao/dt-mon-datn";
+        return "daotao/dt-mon-datn";
     }
 }
