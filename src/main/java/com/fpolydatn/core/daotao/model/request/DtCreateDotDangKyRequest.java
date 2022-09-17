@@ -13,6 +13,11 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 public class DtCreateDotDangKyRequest extends DtBaseDotDangKyRequest {
+
+    @NotEmpty
+    @NotBlank
+    private String tenDotDangKy;
+
     @NotEmpty
     @NotBlank
     private String hocKyId;

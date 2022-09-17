@@ -6,6 +6,7 @@ import com.fpolydatn.core.daotao.model.request.DtCreateDotDangKyRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateDotDangKyRequest;
 import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,5 +41,10 @@ public final class DtDotDangKyRestController extends BaseController {
     @GetMapping("/{id}")
     public ResponseObject detail(@PathVariable("id") String id) {
         return new ResponseObject(dotDangKyService.findById(id));
+    }
+
+    @GetMapping
+    public ResponseObject getListDotDangKy() {
+        return new ResponseObject(dotDangKyService.getAllByCoSo(session.getCoSoId()));
     }
 }
