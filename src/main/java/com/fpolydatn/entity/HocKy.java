@@ -1,5 +1,6 @@
 package com.fpolydatn.entity;
 
+import com.fpolydatn.entity.base.HasPeriod;
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import com.fpolydatn.entity.base.PrimaryEntity;
 import lombok.Getter;
@@ -20,10 +21,16 @@ import java.io.Serializable;
 @Table(name = "hoc_ky")
 @Entity
 @ToString
-public class HocKy extends PrimaryEntity implements Serializable {
+public class HocKy extends PrimaryEntity
+        implements Serializable, HasPeriod {
 
     @Column(length = EntityProperties.LENGTH_NAME_SHORT, nullable = false)
     @Nationalized
     private String tenHocKy;
 
+    @Column(nullable = false)
+    private Long ngayBatDau;
+
+    @Column(nullable = false)
+    private Long ngayKetThuc;
 }

@@ -69,6 +69,8 @@ public class DBGenerator implements CommandLineRunner {
 
         HocKy su22 = new HocKy();
         su22.setTenHocKy("Summer 2022");
+        su22.setNgayBatDau(1652115600000L);
+        su22.setNgayKetThuc(1652979600000L);
         su22.setId(hocKyRepository.save(su22).getId());
 
         CanBo yenlh5 = new CanBo();
@@ -183,7 +185,7 @@ public class DBGenerator implements CommandLineRunner {
         nhom1.setTruongNhomId(phongtt35.getId());
         nhom1.setCoSoId(csHN.getId());
         nhom1.setMatKhau("123456");
-        nhom1.setTrangThai(TrangThaiNhom.CHUA_CHOT_DE_TAI);
+        nhom1.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
         nhom1.setTenDeTai("Tool Đăng ký DATN");
         nhom1.setTenNhom("Thích cho tạch");
         nhom1.setId(nhomDatnRepository.save(nhom1).getId());
@@ -230,6 +232,7 @@ public class DBGenerator implements CommandLineRunner {
         khanhpg.setMaSinhVien("PH45678");
         khanhpg.setNhomId(null);
         khanhpg.setId(sinhVienRepository.save(khanhpg).getId());
+
     }
 
     public static void main(String[] args) {

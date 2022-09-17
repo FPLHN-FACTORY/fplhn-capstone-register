@@ -15,7 +15,21 @@ public class PropertyKeys {
     public static final String CAN_BO_NOT_EXIST = "can.bo.not.exist";
     public static final String DOT_DANG_KY_NOT_EXIST = "dot.dang.ky.not.exist";
     public static final String HOC_KY_NOT_EXIST = "hoc.ky.not.exist";
-
+    public static final String MON_DATN_NOT_EXIST = "hoc.ky.not.exist";
+    public static final String PHAN_CONG_HUONG_DAN_NOT_EXIST = "phan.cong.huong.dan.not.exist";
     public static final String TAI_KHOANG_KHONG_THE_DANG_NHAP_VAO_HE_THONG = "tai.khoan.khong.the.dang.nhap";
+    public static final String NUMBER_FORMAT_EXCEPTION = "number.format.exception";
+    public static final String NHOM_DATN_NOT_EXIST = "nhom.datn.not.exist";
+    public static final String STUDENT_NOT_EXIST = "student.not.exist";
+    public static final String STUDENT_HAVE_GROUP = "student.have.group";
+    public static final String OVERLOADED_GROUP = "overloaded.group";
+    public static final String GROUP_NO_EXIST = "group.no.exist";
+
+    public static final String MON_DATN_ALREADY_EXIST = "mon.datn.already.exist";
+
+    public static final String GIANG_VIEN_HUONG_DAN_EXIST = "giang.vien.huong.dan.exist";
+    public static final String EMAIL_FPT_EXIST = "email.fpt.exist";
+    public static final String EMAIL_FE_EXIST = "email.fe.exist";
+    public static final String TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST = "ten.tai.khoan.giang.vien.huong.dan.exist";
 
 }
