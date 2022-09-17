@@ -2,12 +2,15 @@ package com.fpolydatn.core.chunhiem.repository;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -19,12 +22,12 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ten_nhom
             ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien)
             AS total_ma_sinh_vien, c.ma_sinh_vien, e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
-            FROM nhom_datn b JOIN sinh_vien c ON b.truong_nhom_id = c.id
-            JOIN sinh_vien d ON d.nhom_id = b.id
-            JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
-            JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
-            JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
-            JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
             OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
@@ -37,12 +40,12 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             GROUP BY b.id ORDER BY b.last_modified_date DESC 
             """, countQuery = """
             SELECT count(b.id)
-            FROM nhom_datn b JOIN sinh_vien c ON b.truong_nhom_id = c.id
-            JOIN sinh_vien d ON d.nhom_id = b.id
-            JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
-            JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
-            JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
-            JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
             OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
@@ -63,5 +66,19 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             SELECT count(a.ma_sinh_vien) as so_luong FROM sinh_vien a
             WHERE nhom_id = :idNhom""",nativeQuery = true)
     int getSoLuongThanhVienNhom(@Param("idNhom")String idNhom);
+
+    @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien AND nhom_id IS NULL",nativeQuery = true)
+    String getSinhVienByMaSinhVienAndMaNhom(@Param("maSinhVien") String maSinhVien);
+
+    @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien",nativeQuery = true)
+    String getSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien);
+
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan",nativeQuery = true)
+    String getIdByTenTaiKhoanGvhd(@Param("tenTaiKhoan") String tenTaiKhoan);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE sinh_vien SET nhom_id = :nhomId WHERE id = :id",nativeQuery = true)
+    void setNhomForTruongNhom(@Param("nhomId") String nhomId, @Param("id") String id);
 
 }
