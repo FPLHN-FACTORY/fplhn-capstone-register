@@ -82,4 +82,9 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     public List<SimpleEntityProj> findAllSimpleEntity(String coSoId) {
         return dtDotDangKyRepository.findAllSimpleEntity(coSoId);
     }
+
+    @Override
+    public List<SimpleEntityProj> findAllSimpleEntityByCoSo(String coSoId) {
+        return dtDotDangKyRepository.findAllSimpleEntity(coSoId);
+    }
 }

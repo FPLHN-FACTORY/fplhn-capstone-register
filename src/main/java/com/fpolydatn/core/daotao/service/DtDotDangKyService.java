@@ -28,4 +28,6 @@ public interface DtDotDangKyService {
 
     List<SimpleEntityProj> findAllSimpleEntity(String coSoId);
 
+    List<SimpleEntityProj> findAllSimpleEntityByCoSo(String coSoId);
+
 }

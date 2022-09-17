@@ -16,8 +16,11 @@ function viewTable(page) {
         url: "/api/dao-tao/sinh-vien?page=" + page + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy,
         dataType: 'json',
         success: function (responseData) {
-            $("#list").html(responseData.data.data.map(function (item) {
-                return ` <tr>
+            console.log(responseData.data.data.length)
+            if(responseData.data.data.length > 0){
+                $("#is_empty").html('')
+                $("#list").html(responseData.data.data.map(function (item) {
+                    return ` <tr>
                                 <td>${item.stt}</td>
                                 <td>${item.maSinhVien}</td>
                                 <td>${item.tenSinhVien}</td>
@@ -27,14 +30,14 @@ function viewTable(page) {
                                 <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
                                 <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
                         </tr>`
-            }));
-            var arr = new Array();
-            if (responseData.data.totalPages > 1) {
-                for (let i = 1; i <= responseData.data.totalPages; i++) {
-                    arr.push(i)
-                }
-                $("#list_page").html(arr.map(function (value) {
-                    return `
+                }));
+                var arr = new Array();
+                if (responseData.data.totalPages > 1) {
+                    for (let i = 1; i <= responseData.data.totalPages; i++) {
+                        arr.push(i)
+                    }
+                    $("#list_page").html(arr.map(function (value) {
+                        return `
                         <div>
                             <li class="page-item">
                                   <a class="page-link"
@@ -44,10 +47,14 @@ function viewTable(page) {
                               </li>
                         </div>
                     `
-                }));
-            } else {
-                $("#list_page").html('')
-            }
+                    }));
+                } else {
+                    $("#list_page").html('')
+                }
+            }else (
+                $("#list").html(''),
+                $("#is_empty").html('không có dữ liệu')
+            )
         },
         error: function (e) {
             console.log("ERROR : ", e);
