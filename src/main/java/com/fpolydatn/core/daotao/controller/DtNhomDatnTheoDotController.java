@@ -38,6 +38,6 @@ public class DtNhomDatnTheoDotController extends BaseController {
         List<SimpleEntityProj> listDotDangKy = dtDotDangKyService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("page", listNhomDatn);
-        return "daotao/nhom-datn";
+        return "daotao/dt-nhom-datn";
     }
 }

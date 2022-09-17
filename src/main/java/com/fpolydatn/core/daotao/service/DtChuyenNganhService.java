@@ -7,7 +7,6 @@ import com.fpolydatn.core.daotao.model.request.DtFindChuyenNganhRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.model.response.DtChuyenNganhResponse;
 import com.fpolydatn.entity.ChuyenNganh;
-import com.fpolydatn.entity.ChuyenNganh;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,5 +28,4 @@ public interface DtChuyenNganhService {
 
     PageableObject<DtChuyenNganhResponse> search(final DtFindChuyenNganhRequest req);
 
-    List<SimpleEntityProj> findAllSimpleEntityByCoSo(String coSoId);
 }

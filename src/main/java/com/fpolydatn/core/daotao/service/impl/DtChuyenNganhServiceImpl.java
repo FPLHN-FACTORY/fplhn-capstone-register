@@ -84,9 +84,4 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
 
         return new PageableObject(res);
     }
-
-    @Override
-    public List<SimpleEntityProj> findAllSimpleEntityByCoSo(String coSoId) {
-        return chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
-    }
 }
