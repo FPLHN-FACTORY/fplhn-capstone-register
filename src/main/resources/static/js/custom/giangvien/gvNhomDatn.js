@@ -1,6 +1,7 @@
 const nhomDatnAPI = '/api/giang-vien/nhom-datn';
 const nhomDatnView = '/giang-vien/nhom-datn';
 
+
 function clearDataGVHD() {
     $("#tenHocKy").val("");
     $("#tenChuyenNganh").val("");
@@ -8,6 +9,11 @@ function clearDataGVHD() {
 }
 
 $(document).ready(function () {
+
+    $("#checkAll").click(function(){
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+
 
     fillter()
 
@@ -93,6 +99,9 @@ function seachNhomdatn(index) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
                 <tr>
+                <td><input type="checkbox" class="checkbox"
+                            value="${item.id}">
+                 </td>
                 <td>${item.stt}</td>
                 <td>${item.tenNhom}</td>
                 <td>${item.tenDeTai}</td>
@@ -100,7 +109,7 @@ function seachNhomdatn(index) {
                 <td>${item.totalMaSinhVien}</td>
                 <td>${item.tenTruongNhom } - ${item.maTruongNhom} </td>
                 <td>${item.tenGvhd} - ${item.accountGvhd} </td>
-                <td>${item.trangThai == 0 ? 'Chưa chốt đề tài' : (item.trangThai == 1 ? 'Giáo viên đã chốt' : 'CNBM đã chốt')}</td>
+                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'cần sửa' : (item.trangThai == 4 ? 'Giáo viên đã chốt':'CNBM đã chốt'))))}</td>
                 <td>
                      <button
                                     type="button"
@@ -113,8 +122,16 @@ function seachNhomdatn(index) {
                      <button
                                     type="button"
                                     class="btn btn-primary"
-                                    id="chotDuLieu" style="${item.trangThai == 1 ? 'display : none' : 'display : block'}"
+                                    id="chotDuLieu" 
+                                    style="${item.trangThai == 4 ? 'display : none' : 'display : block'}"
+                                    style="${item.trangThai == 5 ? 'display : none' : 'display : block'}"
                                     onclick="chotDuLieu('${item.id}')">Chốt
+                     </button>
+                     <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    id="chotDuLieu" style="${item.trangThai == 5 ? 'display : none' : 'display : block'}"
+                                    onclick="updateTenDeTai('${item.id}')">update 
                      </button>
                  </td>
                 </tr>
@@ -185,3 +202,10 @@ $("#form_nhom_datn_update").submit(function (event) {
         });
     }
 });
+
+function chotAll(){
+    var data = Array.from(document.querySelectorAll('.checkbox'))
+        .filter((checkbox) => checkbox.checked)
+        .map((checkbox) => checkbox.value);
+    data.map(function (item){chotDuLieu(item)} )
+}
