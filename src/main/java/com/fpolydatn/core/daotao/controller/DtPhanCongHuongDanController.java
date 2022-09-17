@@ -31,10 +31,6 @@ public final class DtPhanCongHuongDanController extends BaseController {
                                         , final DtFindPhanCongHuongDanRequest req
                                         , @PathVariable("id") String id) {
         PageableObject<DtPhanCongHuongDanResponse> listPhanCong = phanCongHuongDanService.search(id, req);
-        for (DtPhanCongHuongDanResponse a : listPhanCong.getData()
-        ) {
-            System.out.println(a.getTenGV());
-        }
         DtPhanCongHuongDanMonDatnResponse monDatnResponse = phanCongHuongDanService.getMon(id);
         List<DtPhanCongHuongDanGiaoVienResponse> phanCongHuongDanGiaoViens = phanCongHuongDanService.getPhanCongGiaoVien(monDatnResponse.getCoSoId(), id);
 

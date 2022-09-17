@@ -19,12 +19,12 @@ public interface DtPhanCongHuongDanService {
 
     DtPhanCongHuongDanMonDatnResponse getMon(String id);
 
-    PhanCongHuongDan findId(String id);
+    PhanCongHuongDan findId(String idGV, String idMon);
 
-    Boolean delete(String id);
+    Boolean delete(String idMon, String idGV);
 
     List<DtPhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(String coSoId, String maMonId);
 
-    PhanCongHuongDan add(@Valid PhanCongHuongDan phanCongHuongDan);
+    List<PhanCongHuongDan> addAll(List<PhanCongHuongDan> list);
 
 }
