@@ -124,8 +124,6 @@ function seachNhomdatn(index) {
                                     class="btn btn-primary "
                                     id="chotDuLieu" 
                                     style="${item.trangThai == 2 ? 'display : block' : 'display : none'}"
-                                    style="${item.trangThai == 4 ? 'display : none' : 'display : block'}"
-                                    style="${item.trangThai == 5 ? 'display : none' : 'display : block'}"
                                     onclick="chotDuLieu('${item.id}')">Chốt
                      </button>
                      <button
