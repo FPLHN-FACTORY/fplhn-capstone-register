@@ -31,6 +31,9 @@ public interface DtNhomDatnTheoDotResponse {
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
 
+    @Value("#{target.ten_tai_khoan}")
+    String getTenTaiKhoan();
+
     @Value("#{target.trang_thai}")
     int getTrangThai();
 }

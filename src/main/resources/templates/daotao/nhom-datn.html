@@ -162,28 +162,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-13 text-right">
-                                        <div class="dt-buttons btn-group">
-                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn-import" type="button">
-                                                <img src="http://inews.gtimg.com/newsapp_match/0/13880654414/0.jpg" alt="" style="height:36px ;">
-                                            </a>
-                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-print buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                                                <span>Print</span>
-                                            </a>
-                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-copy buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                                                <span>Copy</span>
-                                            </a>
-                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-excel buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                                                <span>Excel</span>
-                                            </a>
-                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-csv buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                                                <span>CSV</span>
-                                            </a>
-                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-pdf buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                                                <span>PDF</span>
-                                            </a>
-                                        </div>
-                                    </div>
+<!--                                    <div class="col-sm-13 text-right">-->
+<!--                                        <div class="dt-buttons btn-group">-->
+<!--                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn-import" type="button">-->
+<!--                                                <img src="http://inews.gtimg.com/newsapp_match/0/13880654414/0.jpg" alt="" style="height:36px ;">-->
+<!--                                            </a>-->
+<!--                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-print buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">-->
+<!--                                                <span>Print</span>-->
+<!--                                            </a>-->
+<!--                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-copy buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">-->
+<!--                                                <span>Copy</span>-->
+<!--                                            </a>-->
+<!--                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-excel buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">-->
+<!--                                                <span>Excel</span>-->
+<!--                                            </a>-->
+<!--                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-csv buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">-->
+<!--                                                <span>CSV</span>-->
+<!--                                            </a>-->
+<!--                                            <a th:href="@{/dao-tao/mon-datn/911e73ba-104d-41ad-9817-3404425f5275}" class="btn btn-export buttons-pdf buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" type="button">-->
+<!--                                                <span>PDF</span>-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <!--                                    begin-->
                                     <div class="table-responsive mt-3">
                                         <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
@@ -208,7 +208,7 @@
                                                     <td th:text="${nhomDatn.tenChuyenNganh}"></td>
                                                     <td th:text="${nhomDatn.countSinhVien}"></td>
                                                     <td th:text="${nhomDatn.maSinhVien}"></td>
-                                                    <td th:text="${nhomDatn.tenGvhd}"></td>
+                                                    <td th:text="${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></td>
                                                     <td th:text="${nhomDatn.getTrangThai()}==0?'Chưa chốt đề tài':(${nhomDatn.getTrangThai()}==1?'Giáo viên đã chốt':'CNBM đã chốt')"></td>
                                                     <td>
                                                         <div class="row">
