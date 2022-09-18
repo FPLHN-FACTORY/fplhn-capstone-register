@@ -8,6 +8,7 @@ import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.GiangVienHuongDan;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -70,6 +72,25 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         }
         cnNhomDatnRepository.addGvhd(idGiangVien,idNhom);
         return true;
+    }
+
+    @Override
+    public boolean changeCaptain(String idCaptain, String idNhom) {
+        cnNhomDatnRepository.changeCaptainByTruongNhomId(idCaptain, idNhom);
+        return true;
+    }
+
+    @Override
+    public SinhVien getOldCaptain(String idGroup) {
+       String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup);
+       Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(idOldCaptain);
+       return captain.get();
+    }
+
+    @Override
+    public List<SinhVien> getStudentNotCaptain(String idCaptain, String idGroup) {
+        List<SinhVien> listStudentNotCaptain = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCaptain, idGroup);
+        return listStudentNotCaptain;
     }
 
 }

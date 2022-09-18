@@ -11,6 +11,7 @@
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <script src="../../static/js/custom/chunhiem/CnSinhVienTheoNhom.js"></script>
+    <script src="../../static/js/custom/chunhiem/CnNhomDatn.js"></script>
 </head>
 <!-- end::Head -->
 
@@ -49,20 +50,31 @@
                                                     class=" btn btn-success">
                                                 Thêm thành viên
                                             </button>
+                                            <!--                                            them giao vien huong dan -->
+
+                                            <a> <button
+                                                    data-toggle="modal"
+                                                    onclick="openModalChangeGvhd()"
+                                                    class=" btn btn-success">
+                                                Thay đổi giảng viên hướng dẫn
+                                            </button>
+                                            </a>
+<!--                                            thay đổi trưởng nhóm-->
+                                            <a> <button
+                                                    data-toggle="modal"
+                                                    onclick="openModalChangeCaptain()"
+                                                    class=" btn btn-success">
+                                                Thay đổi trưởng nhóm
+                                            </button>
+                                            </a>
+
+
                                             <a href="/chu-nhiem/nhom-datn" > <button
                                                     class="btn btn-success">
 
                                                 Trở lại
                                             </button> </a>
-<!--                                            them giao vien huong dan -->
 
-                                            <a> <button
-                                               data-toggle="modal"
-                                               onclick="openModalChangeGvhd()"
-                                               class=" btn btn-success">
-                                                Thay đổi giảng viên hướng dẫn
-                                            </button>
-                                            </a>
                                             <div class="modal fade "
                                                  id="modal_create"
                                                  tabindex="-1"
@@ -267,6 +279,74 @@
 
 <!--  End Modal change gvhd-->
 
+
+
+<!--  Start Modal change Captain-->
+<div
+        class="modal fade"
+        id="modal_change_captain"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_change_captain">
+             <input hidden   th:value="${captain}" id="captain">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thay đổi trưởng nhóm</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Trưởng nhóm hiện tại</p>
+                    <div id="oldCaptain"></div>
+                    <p>Thành viên trong nhóm</p>
+                    <div id="manofteam"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--  End Modal change captain-->
+
+<!--  Start modal change captain confirm-->
+<div
+        class="modal fade"
+        id="modal_change_captain_confirm"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_change_captain_confirm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thay đổi trưởng nhóm</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có muốn thay đổi trưởng nhóm không?</p>
+                    <span id="change_captain_confirm" style="color:red;"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Không
+                    </button>
+                    <button type="submit" class="btn btn-primary">Có
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--   End Modal change captain confirm -->
 
 
 <!--  Start Modal Remove-->
