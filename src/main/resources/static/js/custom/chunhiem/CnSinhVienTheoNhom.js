@@ -84,7 +84,6 @@ function openModalChangeCaptain(){
         contentType: "application/json",
         url:sinhVienApi+"/oldCaptain?idGroup=" + idGroup,
         success:function (captain) {
-            console.log(captain)
             $("#oldCaptain").html(`
               <table 
                class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
@@ -111,7 +110,6 @@ function openModalChangeCaptain(){
         contentType: "application/json",
         url: sinhVienApi + "/listStudentNotCaptain?idGroup=" + idGroup,
         success: function (responseData) {
-          console.log(responseData)
             var text = `
               <table 
                class="table table-bordered m-table d-sm-table m-table--head-bg-primary"

@@ -27,7 +27,6 @@ public class CnSinhVienTheoNhomController extends BaseController {
         req.setIdNhom(id);
         req.setCoSoId(coSoId);
         SinhVien captain = sinhVienTheoNhomService.getOldCaptain(req.getIdNhom());
-
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         model.addAttribute("page", pageSinhVien);
         model.addAttribute("idNhom",req.getIdNhom());
