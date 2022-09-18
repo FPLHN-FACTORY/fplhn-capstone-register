@@ -144,6 +144,13 @@ function openModalChangeCaptain(){
     })
 }
 function changeCaptain(idCaptain) {
+
+    $("#modal_change_captain_confirm").modal('show')
+    $("#change_captain_confirm").val(idCaptain)
+}
+$("#form_change_captain_confirm").submit(function (event) {
+    event.preventDefault();
+    let idCaptain = $("#change_captain_confirm").val();
     let idGroup = $("#idNhom").val();
     $.ajax({
         type:"PUT",
@@ -157,7 +164,8 @@ function changeCaptain(idCaptain) {
 
         }
     })
-}
+
+})
 
 
 
