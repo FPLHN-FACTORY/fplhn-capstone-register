@@ -16,10 +16,6 @@ public abstract class DtBaseDotDangKyRequest {
 
     @NotEmpty
     @NotBlank
-    private String tenDotDangKy;
-
-    @NotEmpty
-    @NotBlank
     private Long ngayBatDau;
 
     @NotEmpty

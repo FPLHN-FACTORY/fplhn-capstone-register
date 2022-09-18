@@ -41,4 +41,9 @@ public final class DtDotDangKyRestController extends BaseController {
     public ResponseObject detail(@PathVariable("id") String id) {
         return new ResponseObject(dotDangKyService.findById(id));
     }
+
+    @GetMapping
+    public ResponseObject getListDotDangKy() {
+        return new ResponseObject(dotDangKyService.getAllByCoSo(session.getCoSoId()));
+    }
 }

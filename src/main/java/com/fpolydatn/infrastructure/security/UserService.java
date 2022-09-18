@@ -5,9 +5,7 @@ import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
 import com.fpolydatn.infrastructure.constant.VaiTro;
-import com.fpolydatn.repository.CanBoRepository;
-import com.fpolydatn.repository.GiangVienHuongDanRepository;
-import com.fpolydatn.repository.SinhVienRepository;
+import com.fpolydatn.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
@@ -26,6 +24,13 @@ public class UserService {
     @Qualifier(GiangVienHuongDanRepository.NAME)
     private GiangVienHuongDanRepository gvhdRepository;
 
+    @Autowired
+    @Qualifier(ChuyenNganhRepository.NAME)
+    private ChuyenNganhRepository chuyenNganhRepository;
+
+    @Autowired
+    @Qualifier(DotDangKyRepository.NAME)
+    private DotDangKyRepository dotDangKyRepository;
     @Autowired
     @Qualifier(SinhVienRepository.NAME)
     private SinhVienRepository sinhVienRepository;
