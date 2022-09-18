@@ -94,4 +94,9 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
          where a.ten_sinh_vien LIKE  CONCAT('%',:tenSinhVien,'%') AND a.co_so_id = :coSoId  ORDER BY ten_sinh_vien
          """,nativeQuery = true)
     List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(@Param("tenSinhVien") String tenSinhVien,@Param("coSoId") String coSoId);
+
+    @Query(value = """
+     SELECT * FROM sinh_vien WHERE id != :idCaptain and nhom_id = :idGroup
+    """,nativeQuery = true)
+    List<SinhVien> getListSinhVienNotCaptain(@Param("idCaptain")String idCaptain,@Param("idGroup")String idGroup);
 }

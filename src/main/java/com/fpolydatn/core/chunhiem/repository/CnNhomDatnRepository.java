@@ -87,4 +87,16 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
     @Query(value = "UPDATE sinh_vien SET nhom_id = :nhomId WHERE id = :id",nativeQuery = true)
     void setNhomForTruongNhom(@Param("nhomId") String nhomId, @Param("id") String id);
 
+    @Query(value = """
+    SELECT truong_nhom_id FROM nhom_datn where id = :idNhom
+     """,nativeQuery = true)
+    String findIDTruongNhom(String idNhom);
+
+    @Modifying
+    @Transactional
+    @Query(value = """
+      UPDATE nhom_datn SET truong_nhom_id = :truongNhomId WHERE id = :idNhom
+    """,nativeQuery = true)
+    void changeCaptainByTruongNhomId(@Param("truongNhomId")String truongNhomId,@Param("idNhom")String idNhom);
+
 }

@@ -3,6 +3,9 @@ package com.fpolydatn.core.chunhiem.service;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoNhomRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.entity.SinhVien;
+
+import java.util.List;
 
 public interface CnSinhVienTheoNhomService {
     PageableObject<CnSinhVienTheoNhomResponse> searchByIdNhom(final CnFindSinhVienTheoNhomRequest req);
@@ -14,4 +17,10 @@ public interface CnSinhVienTheoNhomService {
     boolean deleteFromIdSinhVien(String maSinhVien);
 
     boolean addGvhd(String giangVienId,String idNhom);
+
+    boolean changeCaptain(String idCaptainOwn,String idNhom);
+
+    SinhVien getOldCaptain(String idNhom);
+
+    List<SinhVien> getStudentNotCaptain(String idCaptain,String idGroup);
 }

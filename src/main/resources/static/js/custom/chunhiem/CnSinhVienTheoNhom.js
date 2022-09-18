@@ -74,8 +74,94 @@ $('#form_change_gvhd').submit(function (event){
         error: function (e) {
         }
     });
-
 })
+
+function openModalChangeCaptain(){
+    $("#modal_change_captain").modal('show');
+    let idGroup = $("#idNhom").val();
+    $.ajax({
+        type:"GET",
+        contentType: "application/json",
+        url:sinhVienApi+"/oldCaptain?idGroup=" + idGroup,
+        success:function (captain) {
+            console.log(captain)
+            $("#oldCaptain").html(`
+              <table 
+               class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+              >
+              <thead>
+              <th>Mã sinh viên</th>
+              <th>Họ tên</th>
+              <th>Chức vụ</th>
+              </thead>
+              <tr>
+              <td>${captain.data.maSinhVien}</td>
+              <td>${captain.data.tenSinhVien}</td>
+              <td>Trưởng nhóm</td>
+              </tr>
+              </table>
+         `)
+        },
+        error: function (){
+
+        }
+    })
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: sinhVienApi + "/listStudentNotCaptain?idGroup=" + idGroup,
+        success: function (responseData) {
+          console.log(responseData)
+            var text = `
+              <table 
+               class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+              >
+              <thead>
+              <th>Mã sinh viên</th>
+              <th>Họ tên</th>
+              <th>Chức năng</th>
+              </thead>
+            `;
+         responseData.data.map(function (sinhVien){
+             text+=`
+            
+              <tr>
+              <td>${sinhVien.maSinhVien}</td>
+              <td>${sinhVien.tenSinhVien}</td>
+              <td>
+              <a onclick="changeCaptain('${sinhVien.id}')"
+              class="btn btn-success"
+              >
+              Thay đổi
+              </a>
+              </td>
+              </tr>
+             `
+         })
+            text +=`</table>`
+            $("#manofteam").html(text)
+        },
+        error: function (responseData) {
+         }
+    })
+}
+function changeCaptain(idCaptain) {
+    let idGroup = $("#idNhom").val();
+    $.ajax({
+        type:"PUT",
+        contentType:"application/json",
+        url:sinhVienApi+"/changeCaptain?idCaptain="+idCaptain +"&idGroup="+idGroup,
+        success:function (){
+            alert("Thay đổi trưởng nhóm thành công");
+            window.open(sinhVienTheoNhomView+ "?id=" + idGroup, '_self');
+        },
+        error: function (){
+
+        }
+    })
+}
+
+
 
 
 
