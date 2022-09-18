@@ -122,7 +122,6 @@ function openModalChangeCaptain(){
             `;
          responseData.data.map(function (sinhVien){
              text+=`
-            
               <tr>
               <td>${sinhVien.maSinhVien}</td>
               <td>${sinhVien.tenSinhVien}</td>
