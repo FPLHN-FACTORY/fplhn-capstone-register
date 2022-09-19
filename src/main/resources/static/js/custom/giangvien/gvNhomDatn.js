@@ -9,12 +9,7 @@ function clearDataGVHD() {
 }
 
 $(document).ready(function () {
-
-    $("#checkAll").click(function(){
-        $('input:checkbox').not(this).prop('checked', this.checked);
-    });
-
-
+    $('.enityNhomDatn[value="1"]').closest("tr").hide()
     fillter()
 
 });
@@ -71,6 +66,20 @@ function chotDuLieu(maNhom) {
         type: "PUT",
         contentType: "application/json",
         url: nhomDatnAPI + "?maNhom=" + maNhom,
+        success: function () {
+            window.location.reload(false)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+function pheDuyetNhomDatn(maNhom) {
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + maNhom,
         success: function () {
             window.location.reload(false)
         },
@@ -202,9 +211,44 @@ $("#form_nhom_datn_update").submit(function (event) {
     }
 });
 
-function chotAll(){
-    var data = Array.from(document.querySelectorAll('.checkbox'))
-        .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => checkbox.value);
-    data.map(function (item){chotDuLieu(item)} )
+function chotDeTaiNhomDatn(maNhom) {
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/phe-duyet-de-tai-nhom?maNhom=" + maNhom,
+        success: function () {
+            window.location.reload(false)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+function converTrangThai( trangThai){
+    var trangThai = ""
+    switch (trangThai) {
+        case 0:
+            trangThai = "Mới thành lập";
+            $('.enityNhomDatn[value="0"]').closest("tr").html(trangThai)
+            break;
+        case 1:
+            $('.enityNhomDatn[value="1"]').closest("tr").html(trangThai)
+            trangThai = "Đã liên hệ giảng viên";
+            break;
+        case 2:
+            $('.enityNhomDatn[value="2"]').closest("tr").html(trangThai)
+            trangThai = "sẵn sàng phê duyệt";
+            break;
+        case 3:
+            trangThai = "cần sửa";
+            break;
+        case 4:
+            trangThai = "Giáo viên đã chốt";
+            break;
+        case 5:
+            trangThai = "CNBM đã chốt";
+            break;
+    }
+    return trangThai
 }

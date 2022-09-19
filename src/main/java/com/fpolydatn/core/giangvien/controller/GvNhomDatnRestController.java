@@ -2,6 +2,7 @@ package com.fpolydatn.core.giangvien.controller;
 
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
@@ -60,6 +61,18 @@ public class GvNhomDatnRestController {
     public ResponseObject updateTenDeTaiNhomDatn(@PathVariable("maNhom") String maNhom,
                                                  @RequestBody GvUpdateTenDeTaiRequest request) {
         NhomDatn nhomDatnResponse = nhomDatnService.updateTenDeTai(request);
+        return new ResponseObject(nhomDatnResponse);
+    }
+
+    @PutMapping("/phe-duyet-nhom")
+    public ResponseObject pheDuyetNhomDatn(final GvChotNhomDatnRequest request) {
+        NhomDatn nhomDatnResponse = nhomDatnService.pheDuyetNhomDatn(request);
+        return new ResponseObject(nhomDatnResponse);
+    }
+
+    @PutMapping("/phe-duyet-de-tai-nhom")
+    public ResponseObject pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request) {
+        NhomDatn nhomDatnResponse = nhomDatnService.pheDuyetDeTaiNhomDatn(request);
         return new ResponseObject(nhomDatnResponse);
     }
 }

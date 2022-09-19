@@ -6,6 +6,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.service.DtSvChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -51,4 +52,17 @@ public class GvNhomDatnController extends BaseController {
         return "/giangvien/gv-nhom-datn";
     }
 
+    @GetMapping("/phe-duyet-nhom")
+    public String viewNhomDatnTheoId(final GvNhomDatnRequest request, Model model) {
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnGroupCanPheDuyet(request);
+        model.addAttribute("page", listNhomDatn);
+        return "/giangvien/gv-phe-duyet-nhom-datn";
+    }
+
+    @GetMapping("/thong-tin-nhom-datn")
+    public String viewNhomDatnDuyetDeTai(final GvNhomDatnRequest request, Model model) {
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnGroupById(request);
+        model.addAttribute("page", listNhomDatn);
+        return "/giangvien/gv-thong-tin-nhom-datn";
+    }
 }
