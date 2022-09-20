@@ -19,6 +19,8 @@ public final class CnFindNhomDatnRequest extends PageableRequest {
 
     private String trangThai;
 
+    private String dotDangKyId;
+
     private String coSoId;
 
 }

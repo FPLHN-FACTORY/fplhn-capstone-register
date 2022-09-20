@@ -3,6 +3,7 @@ package com.fpolydatn.core.chunhiem.controller;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.service.CnChuyenNganhService;
+import com.fpolydatn.core.chunhiem.service.CnDotDangKyService;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
@@ -28,14 +29,20 @@ public class CnNhomDatnController extends BaseController {
     @Autowired
     private CnChuyenNganhService chuyenNganhService;
 
+    @Autowired
+    private CnDotDangKyService dotDangKyService;
+
     @GetMapping
     public String viewHocKy(Model model, final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
+        req.setDotDangKyId(dotDangKyService.listDotDangKy(coSoId).get(0).getId());
         PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req);
         List<SimpleEntityProj> listTenChuyenNganh = chuyenNganhService.listTenChuyenNganh(coSoId);
+        List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listTenChuyenNganh", listTenChuyenNganh);
+        model.addAttribute("listDotDangKy", listDotDangKy);
         return "chunhiem/cn-nhom-datn";
     }
 }
