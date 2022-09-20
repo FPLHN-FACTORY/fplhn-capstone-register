@@ -109,9 +109,6 @@ function seachNhomdatn(index) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
                 <tr>
-                <td><input type="checkbox" class="checkbox"
-                            value="${item.id}">
-                 </td>
                 <td>${item.stt}</td>
                 <td>${item.tenNhom}</td>
                 <td>${item.tenDeTai}</td>
@@ -226,26 +223,3 @@ function chotDeTaiNhomDatn(maNhom) {
     });
 }
 
-var items = [{id:1, name: "thanh cong"}]
-
-function converTrangThai( ){
-
-
-    items.map(function (a){
-        var b = ""+a.id
-        console.log(b)
-        var c = a.name
-        console.log(c)
-        console.log( $('.trangThai[value=b]').closest("td"))
-        $('.trangThai[value=b]').innerHTML().html(c)    })
-
-
-}
-
-
-function f() {
-    var trangThais = document.querySelectorAll(".trangThai")
-    for(var i =0; i< trangThais.length; i++){
-        converTrangThai();
-    }
-}

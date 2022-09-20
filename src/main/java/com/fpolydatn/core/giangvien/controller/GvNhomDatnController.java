@@ -53,15 +53,17 @@ public class GvNhomDatnController extends BaseController {
     }
 
     @GetMapping("/phe-duyet-nhom")
-    public String viewNhomDatnTheoId(final GvNhomDatnRequest request, Model model) {
-        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnGroupCanPheDuyet(request);
+    public String viewAllNhomDatnCanChot(final GvNhomDatnRequest request, Model model) {
+        String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnGroupCanPheDuyet(maGvhd, request);
         model.addAttribute("page", listNhomDatn);
         return "/giangvien/gv-phe-duyet-nhom-datn";
     }
 
     @GetMapping("/thong-tin-nhom-datn")
-    public String viewNhomDatnDuyetDeTai(final GvNhomDatnRequest request, Model model) {
-        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnGroupById(request);
+    public String viewAllNhomDatnHuongDan(final GvNhomDatnRequest request, Model model) {
+        String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnHuongDan(maGvhd, request);
         model.addAttribute("page", listNhomDatn);
         return "/giangvien/gv-thong-tin-nhom-datn";
     }

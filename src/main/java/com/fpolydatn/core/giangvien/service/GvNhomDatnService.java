@@ -27,11 +27,11 @@ public interface GvNhomDatnService {
 
     NhomDatn updateTenDeTai(@Valid final GvUpdateTenDeTaiRequest request);
 
-    PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupCanPheDuyet(final GvNhomDatnRequest request);
+    PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupCanPheDuyet(String maGvhd, final GvNhomDatnRequest request);
 
     NhomDatn pheDuyetNhomDatn(final GvChotNhomDatnRequest request);
 
-    PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupById(final GvNhomDatnRequest request);
+    PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvNhomDatnRequest request);
 
     NhomDatn pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request);
 }

@@ -71,9 +71,9 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupCanPheDuyet(final GvNhomDatnRequest request) {
+    public PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupCanPheDuyet(String maGvhd, final GvNhomDatnRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnGroupCanPheDuyet(request, pageable);
+        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnGroupCanPheDuyet(maGvhd, pageable);
         return new PageableObject(responses);
     }
 
@@ -88,9 +88,9 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public  PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupById(final GvNhomDatnRequest request) {
+    public  PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvNhomDatnRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnGroupById(request, pageable);
+        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnHuongDan(maGvhd, pageable);
         return new PageableObject(responses);
     }
 

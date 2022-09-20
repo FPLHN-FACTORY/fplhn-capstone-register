@@ -96,16 +96,6 @@
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
-                                    <div class="row">
-                                        <div class="col-6 d-inline">
-                                            <button data-toggle="modal"
-                                                    data-target="#modal_create"
-                                                    class="col-12 col-sm-8 col-md-4 btn btn-success"
-                                                    th:attr="onclick=|chotAll()|">
-                                                chốt all
-                                            </button>
-                                        </div>
-                                    </div>
                                     <div class="table-responsive mt-3">
                                         <table id="custom-table"
                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
@@ -131,7 +121,7 @@
                                                     <td th:text="${nhomDatn.getTenTruongNhom()} + ' - '+ ${nhomDatn.getMaTruongNhom()} ">
                                                     </td>
                                                     <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()} "></td>
-                                                    <td th:text="${nhomDatn.getTrangThai()}==0?'Mới thành lập':(${nhomDatn.getTrangTtTrangThai()}==2 ? 'sẵn sàng phê duyệt': (${nhomDatn.getTrangThai()}==3 ? 'cần sửa': (${nhomDatn.getTrangThai()}==4 ?'Giáo viên đã chốt':'CNBM đã chốt')))"></td>
+                                                    <td th:text="${nhomDatn.getTrangThai()}==0?'Mới thành lập':(${nhomDatn.getTrangThai()}==2 ? 'sẵn sàng phê duyệt': (${nhomDatn.getTrangThai()}==3 ? 'cần sửa': (${nhomDatn.getTrangThai()}==4 ?'Giáo viên đã chốt':'CNBM đã chốt')))"></td>
                                                     <td>
                                                         <button
                                                                 type="button"
