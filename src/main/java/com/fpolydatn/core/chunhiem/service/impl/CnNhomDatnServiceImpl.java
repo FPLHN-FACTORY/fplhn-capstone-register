@@ -1,5 +1,6 @@
 package com.fpolydatn.core.chunhiem.service.impl;
 
+import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,12 +40,24 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     }
 
     @Override
-    public boolean updateTrangThaiNhom(String id, String coSoId) {
+    public boolean chotDeTai(String id) {
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CNBM_CHOT);
+        cnNhomDatnRepository.save(nhomDatnCheck.get());
+        return true;
+    }
+
+    @Override
+    public boolean tuChoiChotDeTai(String id, String nhanXet) {
+        Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
+        if (Objects.isNull(nhomDatnCheck)) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CAN_SUA);
+        nhomDatnCheck.get().setNhanXet(nhanXet);
         cnNhomDatnRepository.save(nhomDatnCheck.get());
         return true;
     }
@@ -67,5 +81,31 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         return nhomdatnCheck.get();
     }
 
+    @Override
+    public boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
+        String idGiangVien = cnNhomDatnRepository.getIdByTenTaiKhoanGvhd(cnCreateNhomDatnRequest.getMaGiangVien());
+        if (idGiangVien == null) {
+            throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
+        }
+        String idTruongNhomCheck = cnNhomDatnRepository.getSinhVienByMaSinhVien(cnCreateNhomDatnRequest.getMaSinhVien());
+        if (idTruongNhomCheck == null) {
+            throw new RestApiException(Message.STUDENT_NOT_EXIST);
+        }
+        String idTruongNhom = cnNhomDatnRepository.getSinhVienByMaSinhVienAndMaNhom(cnCreateNhomDatnRequest.getMaSinhVien());
+        if (idTruongNhom == null) {
+            throw new RestApiException(Message.STUDENT_HAVE_GROUP);
+        }
+        NhomDatn nhomDatn = new NhomDatn();
+        nhomDatn.setTruongNhomId(idTruongNhom);
+        nhomDatn.setGiangVienId(idGiangVien);
+        nhomDatn.setMaNhom(cnCreateNhomDatnRequest.getMaNhom());
+        nhomDatn.setMatKhau(cnCreateNhomDatnRequest.getMatKhau());
+        nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
+        nhomDatn.setCoSoId(cnCreateNhomDatnRequest.getCoSoId());
+        nhomDatn.setDotDangKyId(cnCreateNhomDatnRequest.getDotDangKyId());
+        nhomDatn.setId(cnNhomDatnRepository.save(nhomDatn).getId());
+        cnNhomDatnRepository.setNhomForTruongNhom(cnNhomDatnRepository.save(nhomDatn).getId(), idTruongNhom);
+        return true;
+    }
 
 }

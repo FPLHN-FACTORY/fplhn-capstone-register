@@ -5,6 +5,7 @@ import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.entity.SinhVien;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ public class CnSinhVienTheoNhomController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setIdNhom(id);
         req.setCoSoId(coSoId);
+        SinhVien captain = sinhVienTheoNhomService.getOldCaptain(req.getIdNhom());
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         model.addAttribute("page", pageSinhVien);
         model.addAttribute("idNhom",req.getIdNhom());

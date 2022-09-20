@@ -21,27 +21,24 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT, ma_sinh_vien,ten_sinh_vien,
             b.ten_chuyen_nganh,d.ten_dot_dang_ky,e.ten_nhom,f.ten_gvhd FROM sinh_vien a 
-            JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id 
-            JOIN mon_datn c ON c.id = a.mon_datn_id 
-            JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id 
-            JOIN nhom_datn e ON e.id= a.nhom_id 
-            JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id 
+            LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id 
+            LEFT JOIN mon_datn c ON c.id = a.mon_datn_id 
+            LEFT JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id 
+            LEFT JOIN nhom_datn e ON e.id= a.nhom_id 
+            LEFT JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id 
             WHERE e.id = :#{#req.idNhom} AND a.co_so_id = :#{#req.coSoId} ORDER BY ten_sinh_vien """,
             countQuery = """ 
                     SELECT COUNT(a.id) FROM sinh_vien a
-                    JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
-                    JOIN mon_datn c ON c.id = a.mon_datn_id
-                    JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id
-                    JOIN nhom_datn e ON e.id= a.nhom_id
-                    JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id
+                    LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
+                    LEFT JOIN mon_datn c ON c.id = a.mon_datn_id
+                    LEFT JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id
+                    LEFT JOIN nhom_datn e ON e.id= a.nhom_id
+                    LEFT JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id
                     WHERE e.id =  :#{#req.idNhom} AND a.co_so_id = :#{#req.coSoId}  ORDER BY ten_sinh_vien""", nativeQuery = true)
     Page<CnSinhVienTheoNhomResponse> searchSinhVien(@Param("req") CnFindSinhVienTheoNhomRequest req, Pageable page);
 
     @Query(value = "SELECT COUNT(1) FROM sinh_vien a WHERE a.nhom_id  LIKE %:id_nhom% ", nativeQuery = true)
     Long countListSinhVien(@Param("id_nhom")String id_nhom);
-
-    @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien AND nhom_id IS NULL",nativeQuery = true)
-    String  getSinhVienByMaSinhVienandMaNhom(@Param("maSinhVien") String maSinhVien);
 
     @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien LIKE :maSinhVien",nativeQuery = true)
     String getIdSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien);
@@ -97,4 +94,9 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
          where a.ten_sinh_vien LIKE  CONCAT('%',:tenSinhVien,'%') AND a.co_so_id = :coSoId  ORDER BY ten_sinh_vien
          """,nativeQuery = true)
     List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(@Param("tenSinhVien") String tenSinhVien,@Param("coSoId") String coSoId);
+
+    @Query(value = """
+     SELECT * FROM sinh_vien WHERE id != :idCaptain and nhom_id = :idGroup
+    """,nativeQuery = true)
+    List<SinhVien> getListSinhVienNotCaptain(@Param("idCaptain")String idCaptain,@Param("idGroup")String idGroup);
 }
