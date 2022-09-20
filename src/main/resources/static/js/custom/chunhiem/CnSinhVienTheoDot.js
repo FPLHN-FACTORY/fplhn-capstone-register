@@ -22,7 +22,7 @@ $("#form_create_group").submit(function (event) {
                 loadDataToTable(count)
                 $("#modal_create_nhom").modal('hide');
                 alert("Thêm thành công")
-            } else alert(responseData.data.message)
+            } else $("#idNhom_error").html(responseData.data.message)
         },
         error: function (responseData) {
         }
@@ -63,11 +63,11 @@ function loadDataToTable(count) {
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <button
+                  <a
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">
-                      Thêm nhóm</button>
+                      Thêm nhóm</a>
                       </td>
                 ` : `
                 <td>
