@@ -14,7 +14,8 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
     public static final String NAME = "BaseNhomDatnRepository";
 
     @Query(value = """
-                select max(substring(ma_nhom, 3)) from nhom_datn
+                SELECT IF(COUNT(id) = 0, 0, MAX(SUBSTRING(ma_nhom, 3))) FROM nhom_datn 
+                WHERE dot_dang_ky_id = '4be72a55-cab6-4eac-a810-089fbb6c0097'
             """, nativeQuery = true)
     String genMaNhomTuDong();
 }
