@@ -221,7 +221,7 @@
                                                             <p th:case="*"
                                                                th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></p>
                                                         </td>
-                                                        <td th:text="${nhomDatn.getTrangThai()}==0?'Mới thành lập':(${nhomDatn.getTrangThai()}==1?'Đã liên hệ giảng viên':(${nhomDatn.getTrangThai()}==2?'Sẵn sàng phê duyệt':(${nhomDatn.getTrangThai()}==3?'Cần sửa':(${nhomDatn.getTrangThai()}==4?'Giảng viên đã chốt':'Chủ nhiệm bộ môn đã chốt'))))"></td>
+                                                        <td th:text="${T(com.fpolydatn.util.TrangThaiNhomUtils).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                         <td>
                                                             <a class="btn btn-primary"
                                                                th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}">Chi
