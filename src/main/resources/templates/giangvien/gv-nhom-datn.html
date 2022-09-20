@@ -131,7 +131,7 @@
                                                     <td th:text="${nhomDatn.getTenTruongNhom()} + ' - '+ ${nhomDatn.getMaTruongNhom()} ">
                                                     </td>
                                                     <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()} "></td>
-                                                    <td th:text=""></td>
+                                                    <td th:text="${nhomDatn.getTrangThai()}==0?'Mới thành lập':(${nhomDatn.getTrangTtTrangThai()}==2 ? 'sẵn sàng phê duyệt': (${nhomDatn.getTrangThai()}==3 ? 'cần sửa': (${nhomDatn.getTrangThai()}==4 ?'Giáo viên đã chốt':'CNBM đã chốt')))"></td>
                                                     <td>
                                                         <button
                                                                 type="button"

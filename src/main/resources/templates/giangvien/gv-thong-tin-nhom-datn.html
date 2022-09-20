@@ -84,8 +84,7 @@
                                                                 type="button"
                                                                 class="btn btn-primary "
                                                                 id="updateTenDeTai"
-                                                                th:style="${nhomDatn.getTrangThai()} == 5 ? 'display: none' : 'display: block'"
-                                                                th:style="${nhomDatn.getTrangThai()} == 4 ? 'display: none' : 'display: block'"
+                                                                th:style="${nhomDatn.getTrangThai()} == 5 ? 'display: none' : (${nhomDatn.getTrangThai()} == 4 ? 'display: none' : 'display: block')"
                                                                 th:attr="onclick=|updateTenDeTai('${nhomDatn.getId()}')|">
                                                             update
                                                         </button>

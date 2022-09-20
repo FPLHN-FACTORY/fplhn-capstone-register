@@ -9,6 +9,7 @@ function clearDataGVHD() {
 }
 
 $(document).ready(function () {
+    f()
     $('.enityNhomDatn[value="1"]').closest("tr").hide()
     fillter()
 
@@ -225,30 +226,26 @@ function chotDeTaiNhomDatn(maNhom) {
     });
 }
 
-function converTrangThai( trangThai){
-    var trangThai = ""
-    switch (trangThai) {
-        case 0:
-            trangThai = "Mới thành lập";
-            $('.enityNhomDatn[value="0"]').closest("tr").html(trangThai)
-            break;
-        case 1:
-            $('.enityNhomDatn[value="1"]').closest("tr").html(trangThai)
-            trangThai = "Đã liên hệ giảng viên";
-            break;
-        case 2:
-            $('.enityNhomDatn[value="2"]').closest("tr").html(trangThai)
-            trangThai = "sẵn sàng phê duyệt";
-            break;
-        case 3:
-            trangThai = "cần sửa";
-            break;
-        case 4:
-            trangThai = "Giáo viên đã chốt";
-            break;
-        case 5:
-            trangThai = "CNBM đã chốt";
-            break;
+var items = [{id:1, name: "thanh cong"}]
+
+function converTrangThai( ){
+
+
+    items.map(function (a){
+        var b = ""+a.id
+        console.log(b)
+        var c = a.name
+        console.log(c)
+        console.log( $('.trangThai[value=b]').closest("td"))
+        $('.trangThai[value=b]').innerHTML().html(c)    })
+
+
+}
+
+
+function f() {
+    var trangThais = document.querySelectorAll(".trangThai")
+    for(var i =0; i< trangThais.length; i++){
+        converTrangThai();
     }
-    return trangThai
 }
