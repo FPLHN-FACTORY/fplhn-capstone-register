@@ -16,5 +16,5 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
     @Query(value = """
                 select max(substring(ma_nhom, 3)) from nhom_datn
             """, nativeQuery = true)
-    String zenMaNhomTuDong();
+    String genMaNhomTuDong();
 }
