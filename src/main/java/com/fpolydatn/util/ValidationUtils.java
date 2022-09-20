@@ -4,12 +4,13 @@ import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  * @author hungpv
  */
-@Service
+@Component
 public class ValidationUtils {
     @Autowired
     @Qualifier(NhomDatnRepository.NAME)
@@ -30,5 +31,4 @@ public class ValidationUtils {
         }
         return text + count;
     }
-
 }
