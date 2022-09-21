@@ -7,12 +7,14 @@ import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.util.GenMaNhomTuDong;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.persistence.GeneratedValue;
 import java.util.List;
 
 /**
@@ -35,6 +37,6 @@ public class DtMonDatnController extends BaseController {
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
-        return "/daotao/dt-mon-datn";
+        return "daotao/dt-mon-datn";
     }
 }

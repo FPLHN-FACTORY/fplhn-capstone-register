@@ -35,16 +35,12 @@ $("#form_create_mon_datn").submit(function (event) {
             url: monDatnApi,
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
-            success: function (e) {
-                if (e.data == true) {
+            success: function () {
                     window.open(monDatnView, '_self');
                     $("#modal_create").modal("hide");
-                } else {
-                    $("#ma_mon_datn_error").text(e.data.localizedMessage);
-                }
             },
             error: function (e) {
-                console.log("ERROR : " + e);
+                $("#ma_mon_datn_error").text(e.responseJSON.message);
             }
         });
     }
@@ -102,7 +98,7 @@ $("#form_mon_datn_update").submit(function (event) {
                 $("#modal_update_mon_datn").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                $("#errorMaMonUpdate").text(e.responseJSON.message);
             }
         });
     }
