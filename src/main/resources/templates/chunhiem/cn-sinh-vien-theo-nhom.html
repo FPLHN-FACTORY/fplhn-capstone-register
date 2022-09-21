@@ -61,6 +61,7 @@
                                             </a>
 <!--                                            thay đổi trưởng nhóm-->
                                             <a> <button
+                                                    id="changeCaptain"
                                                     data-toggle="modal"
                                                     onclick="openModalChangeCaptain()"
                                                     class=" btn btn-success">
@@ -132,7 +133,8 @@
                                             <th:block th:each="sinhVienResponse,i : ${page.data}">
                                                 <tr>
                                                     <td th:text="${sinhVienResponse.getStt()}"></td>
-                                                    <td th:text="${sinhVienResponse.maSinhVien}"></td>
+                                                    <td th:text="${sinhVienResponse.maSinhVien}">
+                                                    </td>
                                                     <td th:text="${sinhVienResponse.tenSinhVien}"></td>
                                                     <td th:text="${sinhVienResponse.tenChuyenNganh}"></td>
                                                     <td th:text="${sinhVienResponse.tenDotDangKy}"></td>
@@ -359,6 +361,7 @@
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
+            <input hidden  th:value="${idCapTain}" id="idCaptain">
             <form id="form_hoc_ky_delete">
                 <div class="modal-header">
                     <h5 class="modal-title">Xoá học kỳ</h5>

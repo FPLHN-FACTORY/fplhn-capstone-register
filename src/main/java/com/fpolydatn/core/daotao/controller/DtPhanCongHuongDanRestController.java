@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author huynq
@@ -21,18 +24,18 @@ public class DtPhanCongHuongDanRestController {
     @Autowired
     private DtPhanCongHuongDanService phanCongHuongDanService;
 
-    @GetMapping("/{id}")
-    public ResponseObject detail(@PathVariable("id") String uuid) {
-        return new ResponseObject(phanCongHuongDanService.findId(uuid));
+    @GetMapping()
+    public ResponseObject detail(@RequestParam("idGiangVien") String idGiangVien, @RequestParam("idMon") String idMon) {
+        return new ResponseObject(phanCongHuongDanService.findId(idGiangVien, idMon));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseObject delete(@PathVariable("id") String id) {
-        return new ResponseObject(phanCongHuongDanService.delete(id));
+    @DeleteMapping()
+    public ResponseObject delete(@RequestParam("idGiangVien") String idGiangVien, @RequestParam("idMon") String idMon) {
+        return new ResponseObject(phanCongHuongDanService.delete(idGiangVien,idMon));
     }
 
-    @PostMapping
-    public ResponseObject add(@RequestBody PhanCongHuongDan phanCongHuongDan) {
-        return new ResponseObject(phanCongHuongDanService.add(phanCongHuongDan));
+    @PostMapping()
+    public ResponseObject addAll(@RequestBody List<PhanCongHuongDan> list) {
+        return new ResponseObject(phanCongHuongDanService.addAll(list));
     }
 }

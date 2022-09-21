@@ -2,6 +2,7 @@ package com.fpolydatn.core.giangvien.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.repository.GvNhomDatnRepository;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -45,5 +47,25 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
-    
+
+    @Override
+    public NhomDatn findById(String maNhom) {
+        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(maNhom);
+        if (Objects.isNull(nhomDatnCheck)) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        return nhomDatnCheck.get();
+    }
+
+    @Override
+    public NhomDatn updateTenDeTai(@Valid final GvUpdateTenDeTaiRequest request) {
+        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
+        if (Objects.isNull(nhomDatnCheck)) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        nhomDatnCheck.get().setTenDeTai(request.getTenDeTai());
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.SAN_SANG_PHE_DUYET);
+        return nhomDatnRepository.save(nhomDatnCheck.get());
+    }
+
 }

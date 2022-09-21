@@ -33,7 +33,6 @@ public class DtMonDatnController extends BaseController {
         req.setCoSoId(coSoId);
         PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
-        
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
         return "/daotao/dt-mon-datn";

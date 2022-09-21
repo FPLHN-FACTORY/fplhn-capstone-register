@@ -20,7 +20,11 @@ public interface CnSinhVienTheoNhomService {
 
     boolean changeCaptain(String idCaptainOwn,String idNhom);
 
+    boolean changeCaptainToOther(String idCaptainOwn,String idNhom);
+
     SinhVien getOldCaptain(String idNhom);
 
     List<SinhVien> getStudentNotCaptain(String idCaptain,String idGroup);
+
+    String tickCapTain(String maSinhVien,String idGroup);
 }

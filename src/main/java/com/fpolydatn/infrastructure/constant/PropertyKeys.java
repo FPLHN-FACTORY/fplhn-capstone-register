@@ -32,6 +32,7 @@ public class PropertyKeys {
     public static final String EMAIL_FPT_EXIST = "email.fpt.exist";
     public static final String EMAIL_FE_EXIST = "email.fe.exist";
     public static final String TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST = "ten.tai.khoan.giang.vien.huong.dan.exist";
+    public static final String DOT_DANG_KY_OVERLAP = "dot.dang.ky.overlap";
 
     public static final String NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC ="ngay.bat.dau.before.ngay.ket.thuc" ;
 

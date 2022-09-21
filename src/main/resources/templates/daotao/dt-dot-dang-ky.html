@@ -42,7 +42,7 @@
                                                     data-toggle="modal"
                                                     data-target="#modal_create"
                                                     class="col-12 col-sm-8 col-md-4 btn btn-success"
-                                                    onclick="clearData()">
+                                                    onclick="clearData();">
                                                 Tạo đợt đăng ký
                                             </button>
                                             <!--Start Model Create-->
@@ -55,7 +55,8 @@
                                                     <div class="modal-content">
                                                         <form id="form_create_dot_dang_ky">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Thêm đợt đăng ký</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Thêm đợt
+                                                                    đăng ký</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">x</span>
@@ -63,6 +64,15 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
+                                                                    <label class="col-form-label">Học kỳ</label>
+                                                                    <select class="form-control col-8" id="hocKyAdd">
+                                                                        <option value="" hidden>Chọn học kỳ</option>
+                                                                        <option th:each="hocKy : ${listHocKy}"
+                                                                                th:value="${hocKy.getId()}"
+                                                                                th:text="${hocKy.getName()}"></option>
+                                                                    </select>
+                                                                    <span class="text-danger"
+                                                                          id="errorMessageAddHocKy"></span><br>
                                                                     <label class="col-form-label">Tên đợt</label>
                                                                     <input
                                                                             type="text"
@@ -128,7 +138,8 @@
                                                     <td th:text="${#dates.format(dotDangKy.getNgayKetThuc(), 'dd-MM-yyyy HH:mm')}"></td>
                                                     <td th:text="${dotDangKy.getTongSinhVien()}"></td>
                                                     <td th:text="${dotDangKy.getTongSinhVienCoNhom()}"></td>
-                                                    <td th:text="${dotDangKy.getTrangThai()} == 1 ? 'Mở' : 'Đóng'" style="color: #5867dd; font-weight: bold"></td>
+                                                    <td th:text="${dotDangKy.getTrangThai()} == 1 ? 'Mở' : 'Đóng'"
+                                                        style="color: #5867dd; font-weight: bold"></td>
                                                     <td>
                                                         </button>
                                                         <button
@@ -193,6 +204,7 @@
                     <div class="form-group">
                         <label class="col-form-label">Tên đợt</label>
                         <input
+                                disabled
                                 type="text"
                                 class="form-control"
                                 id="ten_dot_dang_ky_update"/>

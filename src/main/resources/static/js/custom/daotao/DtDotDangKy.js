@@ -22,13 +22,13 @@ function openModalUpdateDotDangKy(dotDangKyId) {
             var gioBatDau = ngayBatDau.getHours() < 10 ? '0' + ngayBatDau.getHours() : ngayBatDau.getHours();
             var phutBatDau = ngayBatDau.getMinutes() < 10 ? '0' + ngayBatDau.getMinutes() : ngayBatDau.getMinutes();
             var ngayBatDauStr = ngayBatDau.toLocaleDateString('en-CA') + " " +
-                gioBatDau  + ":" + phutBatDau;
+                gioBatDau + ":" + phutBatDau;
             $("#ngay_bat_dau_update").val(ngayBatDauStr);
             var ngayKetThuc = new Date(responseData.data.ngayKetThuc);
             var gioKetThuc = ngayKetThuc.getHours() < 10 ? '0' + ngayKetThuc.getHours() : ngayKetThuc.getHours();
             var phutKetThuc = ngayKetThuc.getMinutes() < 10 ? '0' + ngayKetThuc.getMinutes() : ngayKetThuc.getMinutes();
             var ngayBatDauStr = ngayKetThuc.toLocaleDateString('en-CA') + " " +
-                gioKetThuc  + ":" + phutKetThuc;
+                gioKetThuc + ":" + phutKetThuc;
             $("#ngay_ket_thuc_update").val(ngayBatDauStr);
         },
         error: function (e) {
@@ -47,13 +47,40 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     dotDangKyRequest["tenDotDangKy"] = tenDotDangKy;
     dotDangKyRequest["ngayBatDau"] = ngayBatDau.getTime();
     dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.getTime();
-    if (tenDotDangKy.length === 0) {
-        $("#errorMessageUpdate").text("Tên đợt đăng ký không được để trống");
-    } else if (tenDotDangKy.length < 6) {
-        $("#errorMessageUpdate").text("Tên đợt đăng ký tối thiếu 6 ký tự");
-    } else if (ngayBatDau >= ngayKetThuc){
+
+    let check = 0;
+    if (ngayBatDau >= ngayKetThuc) {
         $("#errorMessageUpdate").text("Ngày giờ kết thúc phải sau ngày bắt đầu");
+        check += 1;
     } else {
+        $("#errorMessageUpdate").text("");
+    }
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: dotDangKyApi,
+        dataType: 'json',
+        async: false,
+        success: function (responseData) {
+            let listDotDangKy = responseData.data;
+            for (let i = 0; i < listDotDangKy.length; i++) {
+                if (dotDangKyId === listDotDangKy[i].id) {
+                    continue;
+                }
+                if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
+                    && ngayKetThuc.getTime() > listDotDangKy[i].ngayBatDau){
+                    $("#errorMessageUpdate").text("Thời gian trùng với: " + listDotDangKy[i].tenDotDangKy);
+                    check += 1;
+                }
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+
+    if (check == 0) {
         $.ajax({
             type: "PUT",
             contentType: "application/json",
@@ -73,12 +100,14 @@ $("#form_dot_dang_ky_update").submit(function (event) {
 });
 
 function clearData() {
+    $("#hocKyAdd").val("");
+    $("#errorMessageAddHocKy").text("");
+    $("#errorMessageAddNgayKetThuc").text("");
     $("#tenDotDangKyAdd").val('');
     $("#ngayBatDauAdd").val('');
     $("#ngayKetThucAdd").val('');
     $("#errorMessageAddTenDot").text("");
     $("#errorMessageAddNgayBatDau").text("");
-    $("#errorMessageAddNgayKetThuc").text("");
 }
 
 $("#form_create_dot_dang_ky").submit(function (event) {
@@ -88,14 +117,22 @@ $("#form_create_dot_dang_ky").submit(function (event) {
     let ngayBatDau = new Date(ngayBatDauStr);
     let ngayKetThucStr = $("#ngayKetThucAdd").val();
     let ngayKetThuc = new Date(ngayKetThucStr);
-    let hocKyId = new String('1a597a09-e917-474c-9e84-e4fedafe1bb3');
+    let hocKyId = $("#hocKyAdd").val();
 
     let dotDangKyRequest = {};
     dotDangKyRequest["tenDotDangKy"] = tenDotDangKy;
     dotDangKyRequest["ngayBatDau"] = ngayBatDau.getTime();
     dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.getTime();
     dotDangKyRequest["hocKyId"] = hocKyId;
+
     let check = 0;
+    if (hocKyId.length === 0) {
+        $("#errorMessageAddHocKy").text("Mời chọn học kỳ");
+        check += 1;
+    } else {
+        $("#errorMessageAddHocKy").text("");
+    }
+
     if (tenDotDangKy.length === 0) {
         $("#errorMessageAddTenDot").text("Tên đợt đăng ký không được để trống");
         check += 1;
@@ -113,17 +150,38 @@ $("#form_create_dot_dang_ky").submit(function (event) {
         $("#errorMessageAddNgayBatDau").text("");
     }
 
-    if (ngayKetThucStr === ""){
+    if (ngayKetThucStr === "") {
         $("#errorMessageAddNgayKetThuc").text("Ngày giờ kết thúc không được để trống");
         check += 1;
-    } else if (ngayBatDau >= ngayKetThuc){
+    } else if (ngayBatDau >= ngayKetThuc) {
         $("#errorMessageAddNgayKetThuc").text("Ngày giờ kết thúc phải sau ngày bắt đầu");
         check += 1;
     } else {
         $("#errorMessageAddNgayKetThuc").text("");
     }
 
-    if (check == 0){
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: dotDangKyApi,
+        dataType: 'json',
+        async: false,
+        success: function (responseData) {
+            let listDotDangKy = responseData.data;
+            for (let i = 0; i < listDotDangKy.length; i++) {
+                if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
+                    && ngayKetThuc.getTime() > listDotDangKy[i].ngayBatDau) {
+                    $("#errorMessageAddNgayKetThuc").text("Thời gian trùng với: " + listDotDangKy[i].tenDotDangKy);
+                    check += 1;
+                }
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+
+    if (check == 0) {
         $.ajax({
             type: "POST",
             contentType: "application/json",

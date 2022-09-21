@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8"/>
+    <title>Project Register System</title>
+    <meta content="Static table examples" name="description">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <link rel="stylesheet" th:href="@{/assets/vendors/base/vendors.bundle.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/assets/demo/default/base/style.bundle.css}" type="text/css"/>
+    <link href="https://ap.poly.edu.vn/images/favicon.ico" rel="shortcut icon"/>
+    <link rel="stylesheet" th:href="@{/css/plugin/query-ui.css}" type="text/css">
+    <style>
+        .btn-export {
+            color: #fff !important;
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+        }
+        .btn-export:hover, .btn-import:hover {
+            background-color: #51585e !important;
+        }
+        .btn-import {
+            width: 40px;
+            background-color: #6c757d !important;
+        }
+    </style>
+</head>
+<!-- end::Head -->
+
+<!-- begin::Body -->
+<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+
+<!-- begin:: Page -->
+<div class="m-grid m-grid--hor m-grid--root m-page">
+
+    <div th:insert="~{fragment/header-fragment :: header}"></div>
+
+    <!-- begin::Body -->
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+
+        <div th:insert="~{fragment/menu-fragment-dao-tao :: menu}"></div>
+
+        <!-- END: Left Aside -->
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+            <!-- END: Subheader -->
+            <div>
+                <div class="m-content">
+                    <h3>Xem danh sách nhóm dự án tốt nghiệp theo đợt</h3>
+                    <div class="mt-5">
+                        <section class="fillter-area  mb-5">
+                            <div class="m-portlet">
+                                <div class="m-portlet__head">
+                                    <div class="m-portlet__head-caption">
+                                        <div class="m-portlet__head-title">
+                                <span class="m-portlet__head-icon">
+                                    <i class="m-menu__link-icon flaticon-web"></i>
+                                </span>
+                                            <h3 class="m-portlet__head-text">
+                                                Bộ lọc
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form class="m-portlet__body"
+                                      id="form_search"
+                                      method="GET"
+                                      th:action="@{/dao-tao/nhom-datn}">
+                                    <div class="row">
+                                        <div
+                                                class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                            <span class="fillter-name col-5 text-center" for="">Tìm tên nhóm</span>
+                                            <input class="form-control col-6" id="tenNhom" name="tenNhom" type="text"
+                                            >
+                                        </div>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                            <span class="fillter-name col-5 text-center" for="">Chuyên ngành</span>
+                                            <select class="form-control col-6" id="chuyenNganh" name="chuyenNganh">
+                                                <option value="">chọn chuyên ngành</option>
+                                                <option th:each="chuyenhNganh : ${listChuyenNganh}"
+                                                        th:text="${chuyenhNganh.getName}"
+                                                        th:value="${chuyenhNganh.getId}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span class="fillter-name col-5 text-center" for="">Trạng thái:</span>
+                                            <select class="form-control col-6"
+                                                    id="trangThai" name="trangThai">
+                                                <option hidden value="">Trạng thái</option>
+                                                <option value="0">Chưa chốt đề tài</option>
+                                                <option value="1">Giáo viên đã chốt</option>
+                                                <option value="2">CNBM đã chốt</option>
+                                            </select>
+                                        </div>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                            <span class="fillter-name col-5 text-center" for="">Đợt đăng ký</span>
+                                            <select class="form-control col-6" id="dotDangKy" name="dotDangKy">
+                                                <option value="">chọn đợt đăng ký</option>
+                                                <option th:each="dotDangKy : ${listDotDangKy}"
+                                                        th:text="${dotDangKy.getName}"
+                                                        th:value="${dotDangKy.getId}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center pt-2">
+                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                            <a class="btn btn-primary text-white" onclick="loadDataNhomDatn(0)"
+                                               type="submit">Tìm
+                                                kiếm</a>
+                                        </div>
+                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                            <a class="btn btn-danger text-white"
+                                               href="#" onclick="clearform();">
+                                                Làm mới bộ lọc
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                        <div class="m-portlet">
+                            <div class="m-portlet">
+                                    <div class="m-portlet__body">
+                                    <!--                                    hiển thị danh sách chi tiết-->
+                                    <div class="row">
+                                        <div class="col-6 d-inline"
+                                        >
+                                            <div aria-hidden="true"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 class="modal fade "
+                                                 id="modal_create"
+                                                 tabindex="-1">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form id="form_create_hoc_ky">
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label">Danh sách thành viên
+                                                                        nhóm</label>
+                                                                    <hr>
+                                                                    <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+                                                                           id="custom-table">
+                                                                        <!-- hear-->
+                                                                        <thead>
+                                                                        <th>Mã sinh viên</th>
+                                                                        <th>Tên sinh viên</th>
+                                                                        </thead>
+                                                                        <!-- body-->
+                                                                        <tbody id="show_Dssv">
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+                                               id="custom-table">
+                                            <thead>
+                                            <th width="50px">STT</th>
+                                            <th>Tên nhóm</th>
+                                            <th>Tên đề tài</th>
+                                            <th>Chuyên nghành</th>
+                                            <th>Số thành viên</th>
+                                            <th>Trưởng nhóm</th>
+                                            <th>Gv hướng dẫn</th>
+                                            <th>Trạng thái</th>
+                                            <th>Danh sách thành viên</th>
+                                            </thead>
+                                            <tbody id="listNhomDatn">
+                                            <th:block th:each="nhomDatn : ${page.data}">
+                                                <tr>
+                                                    <td th:text="${nhomDatn.getStt()}"></td>
+                                                    <td th:text="${nhomDatn.tenNhom}"></td>
+                                                    <td th:text="${nhomDatn.tenDeTai}"></td>
+                                                    <td th:text="${nhomDatn.tenChuyenNganh}"></td>
+                                                    <td th:text="${nhomDatn.countSinhVien}"></td>
+                                                    <td th:text="${nhomDatn.maSinhVien}"></td>
+                                                    <td th:text="${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></td>
+                                                    <td th:text="${nhomDatn.getTrangThai()}==0?'Chưa chốt đề tài':(${nhomDatn.getTrangThai()}==1?'Giáo viên đã chốt':'CNBM đã chốt')"></td>
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-6 d-inline"
+                                                            >
+                                                                <button
+                                                                        class=" btn btn-success"
+                                                                        data-target="#modal_create"
+                                                                        data-toggle="modal"
+                                                                        th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
+                                                                >
+                                                                    Xem chi tiết
+                                                                </button>
+                                                                <div class="modal fade"></div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Paging-->
+                                        <nav aria-label="Page navigation" th:if="${page.totalPages > 1}">
+                                            <ul class="pagination justify-content-end" id="list_page">
+                                                <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           th:href="@{/dao-tao/nhom-datn?page={page.currentPage}(page.currentPage=${i}-1)}"
+                                                           th:text="${i}">
+                                                        </a>
+                                                    </li>
+                                                </div>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <div id="empty">
+                                        <div th:if="${page.data.isEmpty()}">
+                                            <h3>Không có dữ liệu</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end:: Body -->
+</div>
+
+<script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
+<script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+<script th:src="@{/js/custom/daotao/nhomDatnTheoDot.js}" type="text/javascript"></script>
+</body>
+</html>

@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class DtUpdateDotDangKyRequest extends DtBaseDotDangKyRequest {
 
-    String id;
+    private String id;
 
 }
