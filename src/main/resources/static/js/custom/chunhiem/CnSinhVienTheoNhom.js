@@ -32,7 +32,6 @@ $("#form_create_ma_nhom").submit(function (event) {
 function openModalRemoveNhom(maSinhVien) {
     $("#modal_sinh_vien_theo_nhom_remove").modal('show');
     $("#remove_sinh_vien_theo_nhom").val(maSinhVien);
-
 }
 
 $("#form_hoc_ky_delete").submit(function (event) {
@@ -156,6 +155,7 @@ function openModalChangeCaptain(){
 
 }
 function changeCaptain(idCaptain) {
+
     $("#modal_change_captain_confirm").modal('show')
     $("#change_captain_confirm").val(idCaptain)
 }

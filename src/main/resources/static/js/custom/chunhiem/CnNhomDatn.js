@@ -23,12 +23,13 @@ function loadDataNhomDatn(count) {
     let chuyenNganhId = $("#chuyenNganhId").val()
     let tenGvhd = $("#tenGvhd").val()
     let trangThai = $("#trangThai").val()
+    let dotDangKyId = $("#dotDangKyId").val()
 
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: CNNhomDatnApi + "/search" + "?tenNhom=" + tenNhom + "&chuyenNganhId=" + chuyenNganhId
-            + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&page=" + count,
+            + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
 
@@ -98,7 +99,7 @@ function chotDeTai(id, count) {
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            alert(e.responseJSON.message);
         }
     });
 }
@@ -117,7 +118,7 @@ function openModalRemoveNhomDatn(id, count) {
             $("#remove_nhom_datn").val(id);
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            alert(e.responseJSON.message);
         }
     });
 }
@@ -136,7 +137,7 @@ function openModalNhanXet(id, count) {
             $("#id_nhan_xet_nhom_datn").val(id);
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            alert(e.responseJSON.message);
         }
     });
 }
@@ -158,7 +159,7 @@ $("#form_nhom_datn_nhan_xet").submit(function (event) {
             $("#modal_nhom_datn_nhan_xet").modal("hide");
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            alert(e.responseJSON.message);
         }
     });
 });
@@ -179,8 +180,7 @@ $("#form_nhom_datn_delete").submit(function (event) {
             $("#modal_nhom_datn_remove").modal("hide");
         },
         error: function (e) {
-            console.log("ERROR : ", e);
-
+            alert(e.responseJSON.message);
         }
     });
 });
@@ -250,7 +250,7 @@ $("#form_create_nhom_datn").submit(function (event) {
     nhomDatnRequest["maSinhVien"] = maTruongNhom;
 
     if (maNhom.length == 0) {
-        $("#ma_nhom_erorr".text("Mã nhomsm không được để trống"))
+        $("#ma_nhom_erorr").text("Mã nhóm không được để trống")
     } else if (matKhau.length < 6) {
         $("#mat_khau_erorr").text("Mật khẩu tối thiểu 6 ký tự");
     } else if (maTruongNhom.length == 0) {
@@ -262,16 +262,12 @@ $("#form_create_nhom_datn").submit(function (event) {
             url: CNNhomDatnApi,
             data: JSON.stringify(nhomDatnRequest),
             dataType: 'json',
-            success: function (responseData) {
-                if (responseData.data == true) {
-                    window.open(CNNhomDatnView, '_self');
-                    $("#modal_create").modal("hide");
-                } else {
-                    alert(responseData.data.message)
-                }
+            success: function () {
+                window.open(CNNhomDatnView, '_self');
+                $("#modal_create").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                alert(e.responseJSON.message);
             }
         });
     }

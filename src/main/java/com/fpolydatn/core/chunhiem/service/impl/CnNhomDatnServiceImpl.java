@@ -6,10 +6,7 @@ import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
-import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.NhomDatn;
-import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
@@ -86,17 +83,17 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
-        String idTruongNhomCheck = cnNhomDatnRepository.getSinhVienByMaSinhVien(cnCreateNhomDatnRequest.getMaSinhVien());
-        String idTruongNhom = cnNhomDatnRepository.getSinhVienByMaSinhVienAndMaNhom(cnCreateNhomDatnRequest.getMaSinhVien());
         String idGiangVien = cnNhomDatnRepository.getIdByTenTaiKhoanGvhd(cnCreateNhomDatnRequest.getMaGiangVien());
-        if(idTruongNhomCheck==null){
+        if (idGiangVien == null) {
+            throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
+        }
+        String idTruongNhomCheck = cnNhomDatnRepository.getSinhVienByMaSinhVien(cnCreateNhomDatnRequest.getMaSinhVien());
+        if (idTruongNhomCheck == null) {
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
-        if(idTruongNhom==null){
+        String idTruongNhom = cnNhomDatnRepository.getSinhVienByMaSinhVienAndMaNhom(cnCreateNhomDatnRequest.getMaSinhVien());
+        if (idTruongNhom == null) {
             throw new RestApiException(Message.STUDENT_HAVE_GROUP);
-        }
-        if(idGiangVien == null){
-            throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
         NhomDatn nhomDatn = new NhomDatn();
         nhomDatn.setTruongNhomId(idTruongNhom);

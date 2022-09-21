@@ -37,6 +37,8 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR e.ten_gvhd LIKE %:#{#req.tenGvhd}% OR e.ten_tai_khoan LIKE %:#{#req.tenGvhd}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
+            AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
+            OR g.id = :#{#req.dotDangKyId})
             AND b.co_so_id = :#{#req.coSoId}
             GROUP BY b.id ORDER BY b.last_modified_date DESC 
             """, countQuery = """
@@ -55,38 +57,40 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR e.ten_gvhd LIKE %:#{#req.tenGvhd}% OR e.ten_tai_khoan LIKE %:#{#req.tenGvhd}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
+            AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
+            OR g.id = :#{#req.dotDangKyId})
             AND b.co_so_id = :#{#req.coSoId}
             GROUP BY b.id ORDER BY b.last_modified_date DESC 
             """, nativeQuery = true)
     Page<CnNhomDatnResponse> findNhomDatn(@Param("req") CnFindNhomDatnRequest req, Pageable page);
 
-    @Query(value = "SELECT id FROM nhom_datn WHERE ma_nhom = :maNhom",nativeQuery = true)
+    @Query(value = "SELECT id FROM nhom_datn WHERE ma_nhom = :maNhom", nativeQuery = true)
     String getIdByMaNhom(@Param("maNhom") String maNhom);
 
     @Query(value = """
             SELECT count(a.ma_sinh_vien) as so_luong FROM sinh_vien a
-            WHERE nhom_id = :idNhom""",nativeQuery = true)
-    int getSoLuongThanhVienNhom(@Param("idNhom")String idNhom);
+            WHERE nhom_id = :idNhom""", nativeQuery = true)
+    int getSoLuongThanhVienNhom(@Param("idNhom") String idNhom);
 
     @Modifying
     @Transactional
     @Query(value = """
-      UPDATE nhom_datn SET giang_vien_id = :giangVienId where id = :idNhom
-      """,nativeQuery = true)
-    void addGvhd(@Param("giangVienId")String giangVienId,@Param("idNhom")String idNhom);
+            UPDATE nhom_datn SET giang_vien_id = :giangVienId where id = :idNhom
+            """, nativeQuery = true)
+    void addGvhd(@Param("giangVienId") String giangVienId, @Param("idNhom") String idNhom);
 
-    @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien AND nhom_id IS NULL",nativeQuery = true)
+    @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien AND nhom_id IS NULL", nativeQuery = true)
     String getSinhVienByMaSinhVienAndMaNhom(@Param("maSinhVien") String maSinhVien);
 
-    @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien",nativeQuery = true)
+    @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien", nativeQuery = true)
     String getSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan",nativeQuery = true)
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan", nativeQuery = true)
     String getIdByTenTaiKhoanGvhd(@Param("tenTaiKhoan") String tenTaiKhoan);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE sinh_vien SET nhom_id = :nhomId WHERE id = :id",nativeQuery = true)
+    @Query(value = "UPDATE sinh_vien SET nhom_id = :nhomId WHERE id = :id", nativeQuery = true)
     void setNhomForTruongNhom(@Param("nhomId") String nhomId, @Param("id") String id);
 
     @Query(value = """
