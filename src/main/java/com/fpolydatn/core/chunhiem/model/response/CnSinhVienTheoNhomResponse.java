@@ -13,6 +13,7 @@ import org.springframework.data.rest.core.config.Projection;
 public interface CnSinhVienTheoNhomResponse extends IsIdentified {
 
     Integer getStt();
+
     @Value("#{target.ma_sinh_vien}")
     String getMaSinhVien();
 

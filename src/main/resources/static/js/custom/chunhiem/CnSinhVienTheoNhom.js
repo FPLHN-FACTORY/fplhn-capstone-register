@@ -1,6 +1,6 @@
 const sinhVienApi = '/api/chu-nhiem/sinh-vien';
 const sinhVienTheoNhomView = '/chu-nhiem/sinh-vien';
-
+let idOldCaptain;
 $(document).ready(function () {
     $("#hoc_ky_error").text("");
 });
@@ -8,7 +8,7 @@ $(document).ready(function () {
 function clearData() {
     $("#keyword").val("");
 }
-
+loadData()
 $("#form_create_ma_nhom").submit(function (event) {
     event.preventDefault();
     let idNhom = $("#idNhom").val()
@@ -38,7 +38,17 @@ $("#form_hoc_ky_delete").submit(function (event) {
     event.preventDefault();
     let maSinhVien = $("#remove_sinh_vien_theo_nhom").val();
     let idNhom = $("#idNhom").val()
-
+    if(idOldCaptain == maSinhVien) {
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: sinhVienApi + "/changeCaptainToOther?idCaptain=" + idOldCaptain + "&idGroup=" + idNhom,
+            success: function () {
+            },
+            error: function () {
+            }
+        })
+    }
     $.ajax({
         type: "DELETE",
         contentType: "application/json",
@@ -77,14 +87,14 @@ $('#form_change_gvhd').submit(function (event){
 })
 
 function openModalChangeCaptain(){
-    $("#modal_change_captain").modal('show');
-    let idGroup = $("#idNhom").val();
-    $.ajax({
-        type:"GET",
-        contentType: "application/json",
-        url:sinhVienApi+"/oldCaptain?idGroup=" + idGroup,
-        success:function (captain) {
-            $("#oldCaptain").html(`
+        $("#modal_change_captain").modal('show');
+        let idGroup = $("#idNhom").val();
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: sinhVienApi + "/oldCaptain?idGroup=" + idGroup,
+            success: function (captain) {
+                $("#oldCaptain").html(`
               <table 
                class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
               >
@@ -100,17 +110,17 @@ function openModalChangeCaptain(){
               </tr>
               </table>
          `)
-        },
-        error: function (){
+            },
+            error: function () {
 
-        }
-    })
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: sinhVienApi + "/listStudentNotCaptain?idGroup=" + idGroup,
-        success: function (responseData) {
-            var text = `
+            }
+        })
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: sinhVienApi + "/listStudentNotCaptain?idGroup=" + idGroup,
+            success: function (responseData) {
+                var text = `
               <table 
                class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
               >
@@ -120,8 +130,9 @@ function openModalChangeCaptain(){
               <th>Chức năng</th>
               </thead>
             `;
-         responseData.data.map(function (sinhVien){
-             text+=`
+                responseData.data.map(function (sinhVien) {
+                    text += `
+            
               <tr>
               <td>${sinhVien.maSinhVien}</td>
               <td>${sinhVien.tenSinhVien}</td>
@@ -134,13 +145,14 @@ function openModalChangeCaptain(){
               </td>
               </tr>
              `
-         })
-            text +=`</table>`
-            $("#manofteam").html(text)
-        },
-        error: function (responseData) {
-         }
-    })
+                })
+                text += `</table>`
+                $("#manofteam").html(text)
+            },
+            error: function (responseData) {
+            }
+        })
+
 }
 function changeCaptain(idCaptain) {
 
@@ -165,6 +177,21 @@ $("#form_change_captain_confirm").submit(function (event) {
     })
 
 })
+function loadData() {
+    let idGroup = $("#idNhom").val();
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: sinhVienApi + "/oldCaptain?idGroup=" + idGroup,
+        success: function (captain) {
+          idOldCaptain= captain.data.maSinhVien;
+        },
+        error: function () {
+        }
+    })
+
+
+}
 
 
 

@@ -4,8 +4,10 @@ import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,6 +65,18 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
         }
     }
 
+    @PutMapping("/changeCaptainToOther")
+    public ResponseObject changeCaptainToOther( @RequestParam("idCaptain")String idCaptain, @RequestParam("idGroup")String idGroup){
+        boolean update = false;
+        try {
+            update = sinhVienTheoNhomService.changeCaptainToOther(idCaptain,idGroup);
+
+            return new ResponseObject(update);
+        }catch (Exception e){
+            return new ResponseObject(e);
+        }
+    }
+
     @GetMapping("/listStudentNotCaptain")
     public ResponseObject getListStudentNotCaptain(@RequestParam("idGroup")String idGroup){
         SinhVien captain = sinhVienTheoNhomService.getOldCaptain(idGroup);
@@ -71,5 +85,9 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @GetMapping("/oldCaptain")
     public ResponseObject getOldCaptain(@RequestParam("idGroup")String idGroup){
         return new ResponseObject(sinhVienTheoNhomService.getOldCaptain(idGroup));
+    }
+    @GetMapping("/tickCaptain")
+    public ResponseObject getTickCaptain(@RequestParam("maSinhVien")String maSinhVien,@RequestParam("idGroup")String idGroup){
+        return new ResponseObject(sinhVienTheoNhomService.tickCapTain(maSinhVien, idGroup));
     }
 }

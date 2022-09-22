@@ -11,6 +11,7 @@ import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,6 +82,14 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     }
 
     @Override
+    public boolean changeCaptainToOther(String maSinhVien, String idNhom) {
+        String idCapTainOld = cnSinhVienTheoNhomRepository.getIdByMaSinhVienAndidNhom(maSinhVien, idNhom);
+        String idCapTainNew = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCapTainOld,idNhom).get(0).getId();
+        cnNhomDatnRepository.changeCaptainByTruongNhomId(idCapTainNew, idNhom);
+        return true;
+    }
+
+    @Override
     public SinhVien getOldCaptain(String idGroup) {
        String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup);
        Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(idOldCaptain);
@@ -92,5 +101,17 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         List<SinhVien> listStudentNotCaptain = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCaptain, idGroup);
         return listStudentNotCaptain;
     }
+
+    @Override
+    public String tickCapTain(String maSinhVien,String idGroup) {
+        String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup);
+        Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(idOldCaptain);
+        if(maSinhVien == captain.get().getMaSinhVien()){
+            return "(C)";
+        }else{
+            return "";
+        }
+    }
+
 
 }
