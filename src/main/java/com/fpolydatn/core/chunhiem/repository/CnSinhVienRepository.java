@@ -19,7 +19,8 @@ import java.util.List;
 public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
 
     @Query(value = """
-            SELECT a.id, ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT, ma_sinh_vien,ten_sinh_vien,
+            SELECT a.id, ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT, ma_sinh_vien,
+            if(a.id = e.truong_nhom_id, CONCAT(a.ten_sinh_vien, ' (C)'),a.ten_sinh_vien) as ten_sinh_vien,
             b.ten_chuyen_nganh,d.ten_dot_dang_ky,e.ten_nhom,f.ten_gvhd FROM sinh_vien a 
             LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id 
             LEFT JOIN mon_datn c ON c.id = a.mon_datn_id 
