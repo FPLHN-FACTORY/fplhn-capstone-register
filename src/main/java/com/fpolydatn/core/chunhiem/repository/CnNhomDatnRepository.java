@@ -72,6 +72,9 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             WHERE nhom_id = :idNhom""", nativeQuery = true)
     int getSoLuongThanhVienNhom(@Param("idNhom") String idNhom);
 
+    @Query(value = "SELECT so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan WHERE id = :id", nativeQuery = true)
+    int getSoNhomGiangVienHuongDan(@Param("id") String id);
+
     @Modifying
     @Transactional
     @Query(value = """

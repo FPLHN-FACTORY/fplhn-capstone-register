@@ -38,4 +38,6 @@ public class PropertyKeys {
 
     public static final String GIANG_VIEN_HUONG_DAN_NOT_EXIST ="giang.vien.huong.dan.not.exist" ;
 
+    public static final String GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM ="giang.vien.da.huong.dan.du.so.nhom" ;
+
 }

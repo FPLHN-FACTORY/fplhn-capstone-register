@@ -12,6 +12,7 @@ import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.repository.SinhVienRepository;
+import com.fpolydatn.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +33,9 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Autowired
     private CnNhomDatnRepository cnNhomDatnRepository;
+
+    @Autowired
+    private ValidationUtils validationUtils;
 
     @Override
     public PageableObject<CnSinhVienTheoNhomResponse> searchByIdNhom(final CnFindSinhVienTheoNhomRequest request) {
@@ -69,7 +73,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     public boolean addGvhd(String tenTaiKhoan, String idNhom) {
         String idGiangVien = cnGiangVienHuongDanReponsitory.getIdFromGiangVienId(tenTaiKhoan);
         if(idGiangVien==null){
-            throw  new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
+            throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
+        }
+        if(cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien) == validationUtils.soNhomGiangVienDangHuongDan(idGiangVien)){
+            throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
         }
         cnNhomDatnRepository.addGvhd(idGiangVien,idNhom);
         return true;

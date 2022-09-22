@@ -13,6 +13,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +38,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     private CnSinhVienRepository cnSinhVienRepository;
 
     private FormUtils formUtils = new FormUtils();
+
+    @Autowired
+    private ValidationUtils validationUtils;
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request) {
@@ -98,6 +102,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             idGiangVien = cnNhomDatnRepository.getIdByTenTaiKhoanGvhd(cnCreateNhomDatnRequest.getMaGiangVien());
             if (idGiangVien == "" || idGiangVien == null) {
                 throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
+            }
+            if(validationUtils.soNhomGiangVienDangHuongDan(idGiangVien) == cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien)){
+                throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
             }
         }
         String idTruongNhomCheck = cnNhomDatnRepository.getSinhVienByMaSinhVien(cnCreateNhomDatnRequest.getMaSinhVien());
