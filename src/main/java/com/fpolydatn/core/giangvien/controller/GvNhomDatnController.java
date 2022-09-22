@@ -6,7 +6,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.service.DtSvChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -53,18 +53,28 @@ public class GvNhomDatnController extends BaseController {
     }
 
     @GetMapping("/phe-duyet-nhom")
-    public String viewAllNhomDatnCanChot(final GvNhomDatnRequest request, Model model) {
+    public String viewAllNhomDatnCanChot(final GvFindNhomDatnHuongDanRequest request, Model model) {
         String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
-        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnGroupCanPheDuyet(maGvhd, request);
+        String coSoId = session.getCoSoId();
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnGroupDoiPheDuyet(maGvhd, request);
+        List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
+        List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
         model.addAttribute("page", listNhomDatn);
+        model.addAttribute("listHocKy", listHocKy);
+        model.addAttribute("listDotDangKy", listDotDangKy);
         return "/giangvien/gv-phe-duyet-nhom-datn";
     }
 
     @GetMapping("/thong-tin-nhom-datn")
-    public String viewAllNhomDatnHuongDan(final GvNhomDatnRequest request, Model model) {
+    public String viewAllNhomDatnHuongDan(final GvFindNhomDatnHuongDanRequest request, Model model) {
         String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
+        String coSoId = session.getCoSoId();
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnHuongDan(maGvhd, request);
+        List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
+        List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
         model.addAttribute("page", listNhomDatn);
+        model.addAttribute("listHocKy", listHocKy);
+        model.addAttribute("listDotDangKy", listDotDangKy);
         return "/giangvien/gv-thong-tin-nhom-datn";
     }
 }

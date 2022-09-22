@@ -3,7 +3,7 @@ package com.fpolydatn.core.giangvien.service;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
@@ -27,11 +27,12 @@ public interface GvNhomDatnService {
 
     NhomDatn updateTenDeTai(@Valid final GvUpdateTenDeTaiRequest request);
 
-    PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupCanPheDuyet(String maGvhd, final GvNhomDatnRequest request);
+    PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request);
 
     NhomDatn pheDuyetNhomDatn(final GvChotNhomDatnRequest request);
 
-    PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvNhomDatnRequest request);
+    PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvFindNhomDatnHuongDanRequest request);
 
     NhomDatn pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request);
+
 }

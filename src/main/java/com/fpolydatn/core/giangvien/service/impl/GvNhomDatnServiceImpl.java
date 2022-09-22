@@ -3,7 +3,7 @@ package com.fpolydatn.core.giangvien.service.impl;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
@@ -71,9 +71,9 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupCanPheDuyet(String maGvhd, final GvNhomDatnRequest request) {
+    public PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnGroupCanPheDuyet(maGvhd, pageable);
+        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnGroupCanPheDuyet(maGvhd, request, pageable);
         return new PageableObject(responses);
     }
 
@@ -88,9 +88,9 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public  PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvNhomDatnRequest request) {
+    public  PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnHuongDan(maGvhd, pageable);
+        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnHuongDan(maGvhd, request, pageable);
         return new PageableObject(responses);
     }
 
