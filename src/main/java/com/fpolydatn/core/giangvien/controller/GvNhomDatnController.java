@@ -53,10 +53,10 @@ public class GvNhomDatnController extends BaseController {
     }
 
     @GetMapping("/phe-duyet-nhom")
-    public String viewAllNhomDatnCanChot(final GvFindNhomDatnHuongDanRequest request, Model model) {
+    public String viewAllNhomDatnDoiPheDuyet(final GvFindNhomDatnHuongDanRequest request, Model model) {
         String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
         String coSoId = session.getCoSoId();
-        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnGroupDoiPheDuyet(maGvhd, request);
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnDoiPheDuyet(maGvhd, request);
         List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
         model.addAttribute("page", listNhomDatn);

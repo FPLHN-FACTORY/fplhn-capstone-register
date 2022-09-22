@@ -71,9 +71,9 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public PageableObject<GvNhomDatnResponse> findAllNhomDatnGroupDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
+    public PageableObject<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnGroupCanPheDuyet(maGvhd, request, pageable);
+        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnDoiPheDuyet(maGvhd, request, pageable);
         return new PageableObject(responses);
     }
 

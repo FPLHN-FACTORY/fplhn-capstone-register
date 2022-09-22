@@ -107,7 +107,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, nativeQuery = true)
-    Page<GvNhomDatnResponse> findAllNhomDatnGroupCanPheDuyet(@Param("maGvhd") String maGvhd, @Param("request") GvFindNhomDatnHuongDanRequest request, Pageable page);
+    Page<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(@Param("maGvhd") String maGvhd, @Param("request") GvFindNhomDatnHuongDanRequest request, Pageable page);
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER( ORDER BY nd.last_modified_date DESC ) AS stt, nd.id, nd.ten_nhom ,nd.ten_de_tai , cn.ten_chuyen_nganh,

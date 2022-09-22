@@ -61,7 +61,7 @@ public class GvNhomDatnRestController {
     @GetMapping("/seach/chot-nhom-datn")
     public ResponseObject findAllNhomdatnCanChot(final GvFindNhomDatnHuongDanRequest request){
         String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
-        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnGroupDoiPheDuyet(maGvhd, request);
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnDoiPheDuyet(maGvhd, request);
         return new ResponseObject(listNhomDatn);
     }
 
