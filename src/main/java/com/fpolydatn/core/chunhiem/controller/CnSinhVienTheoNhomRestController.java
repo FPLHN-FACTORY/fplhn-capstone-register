@@ -86,8 +86,5 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     public ResponseObject getOldCaptain(@RequestParam("idGroup")String idGroup){
         return new ResponseObject(sinhVienTheoNhomService.getOldCaptain(idGroup));
     }
-    @GetMapping("/tickCaptain")
-    public ResponseObject getTickCaptain(@RequestParam("maSinhVien")String maSinhVien,@RequestParam("idGroup")String idGroup){
-        return new ResponseObject(sinhVienTheoNhomService.tickCapTain(maSinhVien, idGroup));
-    }
+
 }

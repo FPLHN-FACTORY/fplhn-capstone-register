@@ -61,16 +61,19 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
 
     @Query(value = """
     SELECT ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT,a.ma_sinh_vien,a.ten_sinh_vien,
-    b.ten_chuyen_nganh, c.ma_mon,d.ma_nhom,d.ten_de_tai,e.ten_gvhd
+    b.ten_chuyen_nganh,f.ten_dot_dang_ky, c.ma_mon,d.ma_nhom,d.ten_de_tai,e.ten_gvhd
     FROM sinh_vien a
     LEFT JOIN chuyen_nganh b  ON b.id = a.chuyen_nganh_id
     LEFT JOIN mon_datn c ON c.id = a.mon_datn_id
     LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
     LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
     LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
-    WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId} 
+    WHERE a.co_so_id = :#{#req.coSoId} 
     AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-    OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%) ORDER BY ten_sinh_vien
+    OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)
+    AND (:#{#req.idDotDangKy} IS NULL OR :#{#req.idDotDangKy} LIKE ''
+            OR f.id = :#{#req.idDotDangKy})
+     ORDER BY ten_sinh_vien
     """,countQuery = """
     SELECT COUNT(a.id)
     FROM sinh_vien a

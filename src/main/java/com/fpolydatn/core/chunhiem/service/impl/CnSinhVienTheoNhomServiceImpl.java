@@ -2,11 +2,13 @@ package com.fpolydatn.core.chunhiem.service.impl;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoNhomRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
+import com.fpolydatn.core.chunhiem.repository.CnDotDangKyRepository;
 import com.fpolydatn.core.chunhiem.repository.CnGiangVienHuongDanReponsitory;
 import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
 import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
@@ -29,6 +31,9 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Autowired
     private CnGiangVienHuongDanReponsitory cnGiangVienHuongDanReponsitory;
+
+    @Autowired
+    private CnDotDangKyRepository cnDotDangKyRepository;
 
     @Autowired
     private CnNhomDatnRepository cnNhomDatnRepository;
@@ -103,15 +108,9 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     }
 
     @Override
-    public String tickCapTain(String maSinhVien,String idGroup) {
-        String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup);
-        Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(idOldCaptain);
-        if(maSinhVien == captain.get().getMaSinhVien()){
-            return "(C)";
-        }else{
-            return "";
-        }
+    public List<DotDangKy> getListDotDangKy() {
+        System.out.println(cnDotDangKyRepository.findAll());
+       return cnDotDangKyRepository.findAll();
     }
-
 
 }

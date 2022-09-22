@@ -31,13 +31,13 @@ $("#form_create_group").submit(function (event) {
 
 function loadDataToTable(count) {
     let tenSinhVien = $("#ten-hoc-ky").val();
+    let dotDangKyId = $("#dotDangKyId").val();
     $("#listSV").html("");
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: sinhVienApi + "/search" + "?tenSinhVien=" + tenSinhVien + "&page=" + count,
+        url: sinhVienApi + "/search" + "?tenSinhVien=" + tenSinhVien +"&idDotDangKy="+dotDangKyId+ "&page=" + count,
         success: function (responseData) {
-
             let array = responseData.data.data
             var text = "";
             var text1 = "";

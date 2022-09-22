@@ -13,10 +13,4 @@ import org.springframework.stereotype.Repository;
 public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
 
     public static final String NAME = "BaseNhomDatnRepository";
-
-    @Query(value = """
-            select '(C)' from nhom_datn where id = :idNhom and truong_nhom_id = :idSinhVien
-            """, nativeQuery = true)
-    String danhDauTruongNhom(@Param("idNhom") String idNhom, @Param("idSinhVien") String idSinhVien);
-
 }

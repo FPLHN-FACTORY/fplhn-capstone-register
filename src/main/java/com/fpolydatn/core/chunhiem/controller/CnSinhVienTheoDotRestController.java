@@ -32,7 +32,6 @@ public class CnSinhVienTheoDotRestController extends BaseController {
 
     @GetMapping("/search")
     public ResponseObject searchSinhVienTheoDot(final CnFindSinhVienTheoDotRequest req){
-        req.setIdDotDangKy(dotDangKyRepository.findAll().get(0).getId());
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<CnSinhVienTheoDotResponse> listSinhVienTheoDot = cnSinhVienTheoDotService.searchByIdDotDangKy(req);
