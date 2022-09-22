@@ -5,6 +5,7 @@ import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
+public interface CnSinhVienRepository extends SinhVienRepository {
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT, ma_sinh_vien,ten_sinh_vien,
@@ -99,4 +100,7 @@ public interface CnSinhVienRepository extends JpaRepository<SinhVien,String> {
      SELECT * FROM sinh_vien WHERE id != :idCaptain and nhom_id = :idGroup
     """,nativeQuery = true)
     List<SinhVien> getListSinhVienNotCaptain(@Param("idCaptain")String idCaptain,@Param("idGroup")String idGroup);
+
+    @Query(value = "SELECT * FROM sinh_vien WHERE nhom_id = :idNhom", nativeQuery = true)
+    List<SinhVien> getAllSinhVien(String idNhom);
 }

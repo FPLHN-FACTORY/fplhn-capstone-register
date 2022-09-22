@@ -5,11 +5,12 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
 @Projection(types = { SinhVien.class, ChuyenNganh.class, DotDangKy.class, NhomDatn.class, GiangVienHuongDan.class})
-public interface CnSinhVienTheoNhomResponse {
+public interface CnSinhVienTheoNhomResponse extends IsIdentified {
 
     Integer getStt();
     @Value("#{target.ma_sinh_vien}")

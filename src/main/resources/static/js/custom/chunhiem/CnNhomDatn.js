@@ -52,7 +52,7 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
                 <td>${item.tenChuyenNganh}</td>
                 <td>${item.total}</td>
-                <td>${item.maSinhVien}</td>
+                <td>${item.maSinhVien + ' - ' + item.tenSinhVien}</td>
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
                 <td><a class="btn btn-primary"  href="/chu-nhiem/sinh-vien?id=${item.id}">Chi tiết nhóm</a></td>
@@ -235,6 +235,13 @@ function chotNhieuDeTai(count) {
             alert("Chốt thành công")
         }
     }
+}
+
+function clearForm(){
+    $("#maNhom").val("");
+    $("#matKhau").val("");
+    $("#maGiangVien").val("");
+    $("#maTruongNhom").val("");
 }
 
 $("#form_create_nhom_datn").submit(function (event) {
