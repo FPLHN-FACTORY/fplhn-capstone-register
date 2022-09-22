@@ -4,6 +4,7 @@ import com.fpolydatn.entity.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
+import javax.persistence.ManyToOne;
 import java.util.UUID;
 
 @Projection(types = {ChuyenNganh.class, NhomDatn.class, SinhVien.class, GiangVienHuongDan.class, DotDangKy.class, HocKy.class})
@@ -36,4 +37,5 @@ public interface DtNhomDatnTheoDotResponse {
 
     @Value("#{target.trang_thai}")
     int getTrangThai();
+
 }
