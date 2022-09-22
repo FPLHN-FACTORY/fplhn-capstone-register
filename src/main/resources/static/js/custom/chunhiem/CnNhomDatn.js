@@ -45,6 +45,7 @@ function loadDataNhomDatn(count) {
                     templateString = item.trangThai == 4 ? `<td><input type="checkbox" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"></td>` : `<td><input disabled type="checkbox" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"></td>`
                     return `
                 <tr>`
+
                         + templateString +
                         `
                 <td>${item.stt}</td>

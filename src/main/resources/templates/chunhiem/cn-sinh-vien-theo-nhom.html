@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <script src="../../static/js/custom/chunhiem/CnSinhVienTheoNhom.js"></script>
     <script src="../../static/js/custom/chunhiem/CnNhomDatn.js"></script>
+    <script src="../../static/js/custom/chunhiem/CnSinhVienTheoDot.js"></script>
 </head>
 <!-- end::Head -->
 
@@ -133,8 +134,7 @@
                                             <th:block th:each="sinhVienResponse,i : ${page.data}">
                                                 <tr>
                                                     <td th:text="${sinhVienResponse.getStt()}"></td>
-                                                    <td th:text="${sinhVienResponse.maSinhVien}">
-                                                    </td>
+                                                    <td th:text="${sinhVienResponse.maSinhVien}"></td>
                                                     <td th:text="${sinhVienResponse.tenSinhVien}"></td>
                                                     <td th:text="${sinhVienResponse.tenChuyenNganh}"></td>
                                                     <td th:text="${sinhVienResponse.tenDotDangKy}"></td>
