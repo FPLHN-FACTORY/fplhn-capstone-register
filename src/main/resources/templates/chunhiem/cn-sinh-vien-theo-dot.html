@@ -57,7 +57,21 @@
                                             <input type="text" class="form-control col-10 "
                                                    name="tenHocKy" oninput="loadDataToTable(0)" id="ten-hoc-ky"
                                                    value="">
-                                            <button type="submit" class="btn btn-primary ml-3">Tìm kiếm</button>
+                                        </div>
+                                        <br>
+                                        <div class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center "
+                                            >
+                                            <span for="" class="fillter-name col-4 text-right">Đợt đăng ký</span>
+                                            <select onchange="loadDataToTable(0)" class="form-control col-10"
+                                                    id="dotDangKyId">
+                                                <option value="" hidden>Chọn đợt đăng ký</option>
+                                                <option th:each="item : ${listDotDangKy}"
+                                                        th:value="${item.getId()}" th:text="${item.getName()}"></option>
+                                            </select>
+                                          </div>
+                                        <br>
+                                        <div class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center ">
+                                        <button type="submit" class="btn btn-primary ml-5">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </form>
@@ -119,6 +133,7 @@
                                                 <th>Mã sinh viên</th>
                                                 <th>Tên sinh viên</th>
                                                 <th>Tên chuyên ngành</th>
+                                                <th>Tên đợt đăng ký</th>
                                                 <th>Mã môn</th>
                                                 <th>Mã nhóm</th>
                                                 <th>Tên đề tài</th>
@@ -131,6 +146,7 @@
                                                         <td th:text="${sinhVien.maSinhVien}"></td>
                                                         <td th:text="${sinhVien.tenSinhVien}"></td>
                                                         <td th:text="${sinhVien.tenChuyenNganh}"></td>
+                                                        <td th:text="${sinhVien.tenDotDangKy}"></td>
                                                         <td th:text="${sinhVien.maMon}"></td>
                                                         <td th:switch="${sinhVien.maNhom}">
                                                             <a th:case=null

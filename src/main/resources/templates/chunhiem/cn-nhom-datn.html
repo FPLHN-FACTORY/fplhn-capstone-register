@@ -176,7 +176,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-dismiss="modal" onclick="clearForm()">Hủy
                                                                 </button>
                                                                 <button type="submit" class="btn btn-primary">Thêm mới
                                                                 </button>
@@ -215,7 +215,7 @@
                                                         <td th:text="${nhomDatn.getTenDeTai()}==null ? 'Chưa có' : (${nhomDatn.getTenDeTai()})"></td>
                                                         <td th:text="${nhomDatn.getTenChuyenNganh()}"></td>
                                                         <td th:text="${nhomDatn.getTotal()}"></td>
-                                                        <td th:text="${nhomDatn.getMaSinhVien()}"></td>
+                                                        <td th:text="${nhomDatn.getMaSinhVien()} + ' - ' + ${nhomDatn.getTenSinhVien()}"></td>
                                                         <td th:switch="${nhomDatn.getTenGvhd()}">
                                                             <p th:case=null>Chưa có</p>
                                                             <p th:case="*"

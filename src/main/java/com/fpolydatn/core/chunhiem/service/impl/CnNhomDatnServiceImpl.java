@@ -4,13 +4,16 @@ import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
+import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -30,7 +34,13 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Autowired
     private CnNhomDatnRepository cnNhomDatnRepository;
 
+    @Autowired
+    private CnSinhVienRepository cnSinhVienRepository;
+
     private FormUtils formUtils = new FormUtils();
+
+    @Autowired
+    private ValidationUtils validationUtils;
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request) {
@@ -69,6 +79,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
         cnNhomDatnRepository.delete(nhomDatnCheck.get());
+        List<SinhVien> listSinhVien = cnSinhVienRepository.getAllSinhVien(id);
+        for (SinhVien xx : listSinhVien) {
+            cnSinhVienRepository.deleteSinhVienOutGroup(xx.getMaSinhVien());
+        }
         return true;
     }
 
@@ -83,9 +97,15 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
-        String idGiangVien = cnNhomDatnRepository.getIdByTenTaiKhoanGvhd(cnCreateNhomDatnRequest.getMaGiangVien());
-        if (idGiangVien == null) {
-            throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
+        String idGiangVien = null;
+        if (cnCreateNhomDatnRequest.getMaGiangVien() != null && cnCreateNhomDatnRequest.getMaGiangVien() != "") {
+            idGiangVien = cnNhomDatnRepository.getIdByTenTaiKhoanGvhd(cnCreateNhomDatnRequest.getMaGiangVien());
+            if (idGiangVien == "" || idGiangVien == null) {
+                throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
+            }
+            if(validationUtils.soNhomGiangVienDangHuongDan(idGiangVien) == cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien)){
+                throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
+            }
         }
         String idTruongNhomCheck = cnNhomDatnRepository.getSinhVienByMaSinhVien(cnCreateNhomDatnRequest.getMaSinhVien());
         if (idTruongNhomCheck == null) {
