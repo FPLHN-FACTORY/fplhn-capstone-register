@@ -3,6 +3,8 @@ package com.fpolydatn.core.chunhiem.controller;
 import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
+import com.fpolydatn.core.chunhiem.repository.CnDotDangKyRepository;
+import com.fpolydatn.core.chunhiem.service.CnDotDangKyService;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
@@ -29,6 +31,9 @@ public class CnNhomDatnRestController extends BaseController {
     @Autowired
     private CnNhomDatnService nhomDatnService;
 
+    @Autowired
+    private CnDotDangKyRepository cnDotDangKyRepository;
+
     @GetMapping("/search")
     public ResponseObject viewHocKy(final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
@@ -40,6 +45,7 @@ public class CnNhomDatnRestController extends BaseController {
     @PostMapping
     public ResponseObject create(@RequestBody CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
         cnCreateNhomDatnRequest.setCoSoId(session.getCoSoId());
+        cnCreateNhomDatnRequest.setDotDangKyId(cnDotDangKyRepository.findAll().get(0).getId());
         return new ResponseObject(nhomDatnService.create(cnCreateNhomDatnRequest));
     }
 

@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <script src="../../static/js/custom/chunhiem/CnSinhVienTheoNhom.js"></script>
     <script src="../../static/js/custom/chunhiem/CnNhomDatn.js"></script>
+    <script src="../../static/js/custom/chunhiem/CnSinhVienTheoDot.js"></script>
 </head>
 <!-- end::Head -->
 
@@ -61,6 +62,7 @@
                                             </a>
 <!--                                            thay đổi trưởng nhóm-->
                                             <a> <button
+                                                    id="changeCaptain"
                                                     data-toggle="modal"
                                                     onclick="openModalChangeCaptain()"
                                                     class=" btn btn-success">
@@ -359,7 +361,8 @@
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
-            <form id="form_hoc_ky_delete">
+            <input hidden  th:value="${idCapTain}" id="idCaptain">
+            <form id="form_remove_sinh_vien_theo_nhom">
                 <div class="modal-header">
                     <h5 class="modal-title">Xoá học kỳ</h5>
                     <button type="button" class="close"
