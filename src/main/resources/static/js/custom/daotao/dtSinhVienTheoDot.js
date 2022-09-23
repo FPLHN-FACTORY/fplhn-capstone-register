@@ -16,7 +16,6 @@ function viewTable(page) {
         url: "/api/dao-tao/sinh-vien?page=" + page + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData.data.data.length)
             if(responseData.data.data.length > 0){
                 $("#is_empty").html('')
                 $("#list").html(responseData.data.data.map(function (item) {
@@ -61,3 +60,45 @@ function viewTable(page) {
         }
     });
 }
+$("#form_type_excel").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#type_excel").val();
+    if ( typeExcel == '') {
+        $("#type_excel_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/sinh-vien/export?typeExcel="+typeExcel,
+
+            success: function () {
+                window.open("/api/dao-tao/sinh-vien/export?typeExcel="+typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+});
+// $("#form_import_excel").submit(function (event) {
+//     event.preventDefault();
+//     let typeExcel = $("#inputGroupFile01").val();
+//     if ( typeExcel == '') {
+//         $("#type_excel_error").text("chọn file");
+//     } else {
+//         $.ajax({
+//             type: "POST",
+//             enctype: 'multipart/form-data',
+//             processData: false,
+//             contentType: false,
+//             cache: false,
+//             url: "/api/dao-tao/sinh-vien/import?file="+encodeURIComponent(typeExcel) ,
+//             success: function () {
+//                 // window.open("/api/dao-tao/sinh-vien/import", '_self');
+//             },
+//             error: function (e) {
+//                 console.log("ERROR : ", e);
+//             }
+//         });
+//     }
+// });

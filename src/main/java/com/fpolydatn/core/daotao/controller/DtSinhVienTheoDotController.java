@@ -12,8 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -41,5 +45,12 @@ public class DtSinhVienTheoDotController extends BaseController {
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("listDotDangKy", listDotDangKy);
         return "daotao/dt-sinh-vien-theo-dot";
+    }
+    @PostMapping("/import")
+    public String exportEcel(@RequestParam("file") MultipartFile file,Model model,final FindDtSinhVienTheoDotRequest req) throws IOException {
+        req.setCoSoId(session.getCoSoId());
+        String coSoId =session.getCoSoId();
+        sinhVienService.DtSinhVienImport(file,coSoId);
+        return findAllSinhVien(model,req);
     }
 }

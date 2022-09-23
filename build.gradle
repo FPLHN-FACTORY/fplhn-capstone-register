@@ -47,6 +47,14 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
 //    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '1.2.5.RELEASE'
 
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    implementation group: 'org.apache.poi', name: 'poi', version: '3.17'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+
+
 }
 
 tasks.named('test') {
