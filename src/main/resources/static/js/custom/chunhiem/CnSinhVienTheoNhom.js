@@ -8,6 +8,7 @@ $(document).ready(function () {
 function clearData() {
     $("#keyword").val("");
 }
+
 loadData()
 $("#form_create_ma_nhom").submit(function (event) {
     event.preventDefault();
@@ -17,14 +18,12 @@ $("#form_create_ma_nhom").submit(function (event) {
         type: "POST",
         contentType: "application/json",
         url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + maSinhVien,
-        data: JSON.stringify(maSinhVien,idNhom),
+        data: JSON.stringify(maSinhVien, idNhom),
         success: function (responseData) {
-            console.log(responseData)
-            if (responseData.data==true) {
-                window.open(sinhVienTheoNhomView+ "?id=" + idNhom, '_self');
-            } else $("#idStudentError").html(responseData.data.message)
+            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
         },
-        error: function (responseData) {
+        error: function (e) {
+            $("#idStudentError").html(e.responseJSON.message)
         }
     });
 });
@@ -34,11 +33,11 @@ function openModalRemoveNhom(maSinhVien) {
     $("#remove_sinh_vien_theo_nhom").val(maSinhVien);
 }
 
-$("#form_hoc_ky_delete").submit(function (event) {
+$("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     event.preventDefault();
     let maSinhVien = $("#remove_sinh_vien_theo_nhom").val();
     let idNhom = $("#idNhom").val()
-    if(idOldCaptain == maSinhVien) {
+    if (idOldCaptain == maSinhVien) {
         $.ajax({
             type: "PUT",
             contentType: "application/json",
@@ -54,7 +53,7 @@ $("#form_hoc_ky_delete").submit(function (event) {
         contentType: "application/json",
         url: sinhVienApi + "/" + maSinhVien,
         success: function () {
-            window.open(sinhVienTheoNhomView+ "?id=" + idNhom, '_self');
+            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -62,39 +61,36 @@ $("#form_hoc_ky_delete").submit(function (event) {
     });
 });
 
-function openModalChangeGvhd(){
+function openModalChangeGvhd() {
     $('#modal_change_gvhd').modal('show');
 }
 
-$('#form_change_gvhd').submit(function (event){
+$('#form_change_gvhd').submit(function (event) {
     event.preventDefault();
     let idGroup = $("#idNhom").val();
     let giangVienId = $("#giangVienId").val();
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: sinhVienApi + "/addGvhd?" + "giangVienId="+giangVienId+"&idNhom="+idGroup,
+        url: sinhVienApi + "/addGvhd?" + "giangVienId=" + giangVienId + "&idNhom=" + idGroup,
         success: function (responseData) {
-            if (responseData.data==true) {
-                window.open(sinhVienTheoNhomView+ "?id=" + idGroup, '_self');
-            } else{
-                $("#change_gvhd").html(responseData.data.message)
-            }
+            window.open(sinhVienTheoNhomView + "?id=" + idGroup, '_self');
         },
         error: function (e) {
+            $("#change_gvhd").html(e.responseJSON.message)
         }
     });
 })
 
-function openModalChangeCaptain(){
-        $("#modal_change_captain").modal('show');
-        let idGroup = $("#idNhom").val();
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: sinhVienApi + "/oldCaptain?idGroup=" + idGroup,
-            success: function (captain) {
-                $("#oldCaptain").html(`
+function openModalChangeCaptain() {
+    $("#modal_change_captain").modal('show');
+    let idGroup = $("#idNhom").val();
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: sinhVienApi + "/oldCaptain?idGroup=" + idGroup,
+        success: function (captain) {
+            $("#oldCaptain").html(`
               <table 
                class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
               >
@@ -110,17 +106,17 @@ function openModalChangeCaptain(){
               </tr>
               </table>
          `)
-            },
-            error: function () {
+        },
+        error: function () {
 
-            }
-        })
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: sinhVienApi + "/listStudentNotCaptain?idGroup=" + idGroup,
-            success: function (responseData) {
-                var text = `
+        }
+    })
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: sinhVienApi + "/listStudentNotCaptain?idGroup=" + idGroup,
+        success: function (responseData) {
+            var text = `
               <table 
                class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
               >
@@ -130,8 +126,8 @@ function openModalChangeCaptain(){
               <th>Chức năng</th>
               </thead>
             `;
-                responseData.data.map(function (sinhVien) {
-                    text += `
+            responseData.data.map(function (sinhVien) {
+                text += `
             
               <tr>
               <td>${sinhVien.maSinhVien}</td>
@@ -145,38 +141,41 @@ function openModalChangeCaptain(){
               </td>
               </tr>
              `
-                })
-                text += `</table>`
-                $("#manofteam").html(text)
-            },
-            error: function (responseData) {
-            }
-        })
+            })
+            text += `</table>`
+            $("#manofteam").html(text)
+        },
+        error: function (responseData) {
+        }
+    })
 
 }
+
 function changeCaptain(idCaptain) {
 
     $("#modal_change_captain_confirm").modal('show')
     $("#change_captain_confirm").val(idCaptain)
 }
+
 $("#form_change_captain_confirm").submit(function (event) {
     event.preventDefault();
     let idCaptain = $("#change_captain_confirm").val();
     let idGroup = $("#idNhom").val();
     $.ajax({
-        type:"PUT",
-        contentType:"application/json",
-        url:sinhVienApi+"/changeCaptain?idCaptain="+idCaptain +"&idGroup="+idGroup,
-        success:function (){
+        type: "PUT",
+        contentType: "application/json",
+        url: sinhVienApi + "/changeCaptain?idCaptain=" + idCaptain + "&idGroup=" + idGroup,
+        success: function () {
             alert("Thay đổi trưởng nhóm thành công");
-            window.open(sinhVienTheoNhomView+ "?id=" + idGroup, '_self');
+            window.open(sinhVienTheoNhomView + "?id=" + idGroup, '_self');
         },
-        error: function (){
+        error: function () {
 
         }
     })
 
 })
+
 function loadData() {
     let idGroup = $("#idNhom").val();
     $.ajax({
@@ -184,13 +183,11 @@ function loadData() {
         contentType: "application/json",
         url: sinhVienApi + "/oldCaptain?idGroup=" + idGroup,
         success: function (captain) {
-          idOldCaptain= captain.data.maSinhVien;
+            idOldCaptain = captain.data.maSinhVien;
         },
         error: function () {
         }
     })
-
-
 }
 
 

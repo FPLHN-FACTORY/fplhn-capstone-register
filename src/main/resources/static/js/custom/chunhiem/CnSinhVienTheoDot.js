@@ -18,13 +18,12 @@ $("#form_create_group").submit(function (event) {
         url: sinhVienApi + "/addSinhVien?id=" + maNhom + "&maSinhVien=" + maSinhVien,
         data: JSON.stringify(maSinhVien, maNhom),
         success: function (responseData) {
-            if (responseData.data == true) {
-                loadDataToTable(count)
-                $("#modal_create_nhom").modal('hide');
-                alert("Thêm thành công")
-            } else $("#idNhom_error").html(responseData.data.message)
+            loadDataToTable(count)
+            $("#modal_create_nhom").modal('hide');
+            alert("Thêm thành công")
         },
-        error: function (responseData) {
+        error: function (e) {
+            $("#idNhom_error").html(e.responseJSON.message)
         }
     });
 });
@@ -36,7 +35,7 @@ function loadDataToTable(count) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: sinhVienApi + "/search" + "?tenSinhVien=" + tenSinhVien +"&idDotDangKy="+dotDangKyId+ "&page=" + count,
+        url: sinhVienApi + "/search" + "?tenSinhVien=" + tenSinhVien + "&idDotDangKy=" + dotDangKyId + "&page=" + count,
         success: function (responseData) {
             let array = responseData.data.data
             var text = "";
@@ -87,10 +86,10 @@ function loadDataToTable(count) {
                 let templateHtml = ``;
                 for (let i = 0; i < responseData.data.totalPages; i++) {
                     templateHtml += `<li class="page-item" >
-                                        <a class="page-link" onclick="loadDataToTable(${i})">${i+1}</a>
+                                        <a class="page-link" onclick="loadDataToTable(${i})">${i + 1}</a>
                                     </li>`
                 }
-                if(responseData.data.totalPages == 1){
+                if (responseData.data.totalPages == 1) {
                     templateHtml = ``;
                 }
                 $("#page").html(templateHtml);

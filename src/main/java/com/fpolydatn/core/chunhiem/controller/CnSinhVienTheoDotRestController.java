@@ -31,7 +31,7 @@ public class CnSinhVienTheoDotRestController extends BaseController {
     private DotDangKyRepository dotDangKyRepository;//hiện tại chưa lấy đợt nên bọn em fix cứng cái dot_dang_ky_id thầy ạ
 
     @GetMapping("/search")
-    public ResponseObject searchSinhVienTheoDot(final CnFindSinhVienTheoDotRequest req){
+    public ResponseObject searchSinhVienTheoDot(final CnFindSinhVienTheoDotRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<CnSinhVienTheoDotResponse> listSinhVienTheoDot = cnSinhVienTheoDotService.searchByIdDotDangKy(req);
@@ -40,13 +40,7 @@ public class CnSinhVienTheoDotRestController extends BaseController {
 
     @PostMapping("/addSinhVien")
     public ResponseObject addSinhVienByNhom(@RequestParam("id") String maNhom, @RequestParam("maSinhVien") String maSinhVien) {
-        boolean add = false;
-        try {
-            add = cnSinhVienTheoDotService.addSinhVienTheoNhom(maNhom, maSinhVien);
-            return new ResponseObject(add);
-        } catch (Exception e) {
-            return new ResponseObject(e);
-        }
+        return new ResponseObject(cnSinhVienTheoDotService.addSinhVienTheoNhom(maNhom, maSinhVien));
     }
 
 }
