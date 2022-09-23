@@ -3,7 +3,7 @@ package com.fpolydatn.util;
 import java.sql.Timestamp;
 
 /**
- * @author SonPT
+ * @author HangNT
  */
 public class DateTimeUtil {
 
