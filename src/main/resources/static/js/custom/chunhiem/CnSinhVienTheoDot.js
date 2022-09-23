@@ -18,26 +18,25 @@ $("#form_create_group").submit(function (event) {
         url: sinhVienApi + "/addSinhVien?id=" + maNhom + "&maSinhVien=" + maSinhVien,
         data: JSON.stringify(maSinhVien, maNhom),
         success: function (responseData) {
-            if (responseData.data == true) {
-                loadDataToTable(count)
-                $("#modal_create_nhom").modal('hide');
-                alert("Thêm thành công")
-            } else alert(responseData.data.message)
+            loadDataToTable(count)
+            $("#modal_create_nhom").modal('hide');
+            alert("Thêm thành công")
         },
-        error: function (responseData) {
+        error: function (e) {
+            $("#idNhom_error").html(e.responseJSON.message)
         }
     });
 });
 
 function loadDataToTable(count) {
     let tenSinhVien = $("#ten-hoc-ky").val();
+    let dotDangKyId = $("#dotDangKyId").val();
     $("#listSV").html("");
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: sinhVienApi + "/search" + "?tenSinhVien=" + tenSinhVien + "&page=" + count,
+        url: sinhVienApi + "/search" + "?tenSinhVien=" + tenSinhVien + "&idDotDangKy=" + dotDangKyId + "&page=" + count,
         success: function (responseData) {
-
             let array = responseData.data.data
             var text = "";
             var text1 = "";
@@ -59,15 +58,16 @@ function loadDataToTable(count) {
                             <td> ${sinhVien.maSinhVien}</td>
                             <td> ${sinhVien.tenSinhVien}</td>
                             <td> ${sinhVien.tenChuyenNganh}</td>
+                            <td> ${sinhVien.tenDotDangKy}</td>
                             <td> ${sinhVien.maMon}</td>
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <button
+                  <a
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">
-                      Thêm nhóm</button>
+                      Thêm nhóm</a>
                       </td>
                 ` : `
                 <td>
@@ -86,10 +86,10 @@ function loadDataToTable(count) {
                 let templateHtml = ``;
                 for (let i = 0; i < responseData.data.totalPages; i++) {
                     templateHtml += `<li class="page-item" >
-                                        <a class="page-link" onclick="loadDataToTable(${i})">${i+1}</a>
+                                        <a class="page-link" onclick="loadDataToTable(${i})">${i + 1}</a>
                                     </li>`
                 }
-                if(responseData.data.totalPages == 1){
+                if (responseData.data.totalPages == 1) {
                     templateHtml = ``;
                 }
                 $("#page").html(templateHtml);
