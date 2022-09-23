@@ -2,7 +2,9 @@ package com.fpolydatn.core.giangvien.controller;
 
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
@@ -56,10 +58,37 @@ public class GvNhomDatnRestController {
         return new ResponseObject(nhomDatnResponse);
     }
 
+    @GetMapping("/seach/chot-nhom-datn")
+    public ResponseObject findAllNhomdatnCanChot(final GvFindNhomDatnHuongDanRequest request){
+        String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnDoiPheDuyet(maGvhd, request);
+        return new ResponseObject(listNhomDatn);
+    }
+
+    @GetMapping("/seach/nhom-datn-huong-dan")
+    public ResponseObject findAllNhomdatnHuongDan(final GvFindNhomDatnHuongDanRequest request){
+        String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnHuongDan(maGvhd, request);
+        return new ResponseObject(listNhomDatn);
+    }
+
     @PutMapping("/update-ten-de-tai/{maNhom}")
     public ResponseObject updateTenDeTaiNhomDatn(@PathVariable("maNhom") String maNhom,
                                                  @RequestBody GvUpdateTenDeTaiRequest request) {
         NhomDatn nhomDatnResponse = nhomDatnService.updateTenDeTai(request);
         return new ResponseObject(nhomDatnResponse);
     }
+
+    @PutMapping("/phe-duyet-nhom")
+    public ResponseObject pheDuyetNhomDatn(final GvChotNhomDatnRequest request) {
+        NhomDatn nhomDatnResponse = nhomDatnService.pheDuyetNhomDatn(request);
+        return new ResponseObject(nhomDatnResponse);
+    }
+
+    @PutMapping("/phe-duyet-de-tai-nhom")
+    public ResponseObject pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request) {
+        NhomDatn nhomDatnResponse = nhomDatnService.pheDuyetDeTaiNhomDatn(request);
+        return new ResponseObject(nhomDatnResponse);
+    }
+
 }

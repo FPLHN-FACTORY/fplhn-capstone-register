@@ -1,7 +1,9 @@
 package com.fpolydatn.core.giangvien.service;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
@@ -24,5 +26,13 @@ public interface GvNhomDatnService {
     NhomDatn findById(String maNhom);
 
     NhomDatn updateTenDeTai(@Valid final GvUpdateTenDeTaiRequest request);
+
+    PageableObject<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request);
+
+    NhomDatn pheDuyetNhomDatn(final GvChotNhomDatnRequest request);
+
+    PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvFindNhomDatnHuongDanRequest request);
+
+    NhomDatn pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request);
 
 }

@@ -1,7 +1,9 @@
 package com.fpolydatn.core.giangvien.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
@@ -65,6 +67,40 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         }
         nhomDatnCheck.get().setTenDeTai(request.getTenDeTai());
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.SAN_SANG_PHE_DUYET);
+        return nhomDatnRepository.save(nhomDatnCheck.get());
+    }
+
+    @Override
+    public PageableObject<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnDoiPheDuyet(maGvhd, request, pageable);
+        return new PageableObject(responses);
+    }
+
+    @Override
+    public NhomDatn pheDuyetNhomDatn(GvChotNhomDatnRequest request) {
+        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
+        if (Objects.isNull(nhomDatnCheck)) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.DA_LIEN_HE_GV);
+        return nhomDatnRepository.save(nhomDatnCheck.get());
+    }
+
+    @Override
+    public  PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnHuongDan(maGvhd, request, pageable);
+        return new PageableObject(responses);
+    }
+
+    @Override
+    public NhomDatn pheDuyetDeTaiNhomDatn(GvChotNhomDatnRequest request) {
+        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
+        if (Objects.isNull(nhomDatnCheck)) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
