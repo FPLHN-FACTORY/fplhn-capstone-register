@@ -80,25 +80,4 @@ $("#form_type_excel").submit(function (event) {
         });
     }
 });
-// $("#form_import_excel").submit(function (event) {
-//     event.preventDefault();
-//     let typeExcel = $("#inputGroupFile01").val();
-//     if ( typeExcel == '') {
-//         $("#type_excel_error").text("chọn file");
-//     } else {
-//         $.ajax({
-//             type: "POST",
-//             enctype: 'multipart/form-data',
-//             processData: false,
-//             contentType: false,
-//             cache: false,
-//             url: "/api/dao-tao/sinh-vien/import?file="+encodeURIComponent(typeExcel) ,
-//             success: function () {
-//                 // window.open("/api/dao-tao/sinh-vien/import", '_self');
-//             },
-//             error: function (e) {
-//                 console.log("ERROR : ", e);
-//             }
-//         });
-//     }
-// });
+
