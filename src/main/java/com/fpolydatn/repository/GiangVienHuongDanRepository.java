@@ -15,10 +15,9 @@ public interface GiangVienHuongDanRepository extends JpaRepository<GiangVienHuon
     String NAME = "BaseGiangVienHuongDanRepository";
 
     @Query(value = """
-        SELECT count(1) FROM nhom_datn
-        where giang_vien_id = :idGiangVien 
-        and dot_dang_ky_id = 'e3afc2f8-3562-4606-9aae-62366445d077'
-        group by giang_vien_id
+        SELECT IF(COUNT(id) IS NULL, 0, COUNT(id)) FROM nhom_datn
+        WHERE giang_vien_id = :idGiangVien 
+        AND dot_dang_ky_id = 'e3afc2f8-3562-4606-9aae-62366445d077'
         """, nativeQuery = true)
-    String getSoNhomGiangVienDangHuongDan(@Param("idGiangVien") String id);
+    int getSoNhomGiangVienDangHuongDan(@Param("idGiangVien") String id);
 }

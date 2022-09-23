@@ -1,6 +1,7 @@
 package com.fpolydatn.core.chunhiem.model.response;
 
 import com.fpolydatn.entity.ChuyenNganh;
+import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.NhomDatn;
@@ -8,7 +9,7 @@ import com.fpolydatn.entity.SinhVien;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-@Projection(types = {SinhVien.class, ChuyenNganh.class, MonDatn.class, NhomDatn.class, GiangVienHuongDan.class})
+@Projection(types = {SinhVien.class, ChuyenNganh.class, MonDatn.class, NhomDatn.class, GiangVienHuongDan.class, DotDangKy.class})
 public interface CnSinhVienTheoDotResponse {
 
     Integer getStt();
@@ -21,6 +22,9 @@ public interface CnSinhVienTheoDotResponse {
 
     @Value("#{target.ten_chuyen_nganh}")
     String getTenChuyenNganh();
+
+    @Value("#{target.ten_dot_dang_ky}")
+    String getTenDotDangKy();
 
     @Value("#{target.ma_mon}")
     String getMaMon();
