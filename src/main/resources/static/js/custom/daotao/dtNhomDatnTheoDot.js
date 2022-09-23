@@ -69,8 +69,8 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenDeTai}</td>
                 <td>${item.tenChuyenNganh}</td>
                 <td>${item.countSinhVien}/7</td>
-                <td>${item.maSinhVien}</td>
-                <td>${item.tenGvhd}</td>
+                <td>${item.maSinhVien}-${item.tenSinhVien}</td>
+                <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
                 
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                <td><button type="button" data-toggle="modal" data-target="#modal_create" class="btn btn-primary" onclick="openModalDanhSachSinhVien('${item.id}')">Chi tiết thành viên</button>
                 <div class="modal fade"></div>
