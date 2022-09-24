@@ -78,9 +78,21 @@
                                             <select class="form-control col-7" onchange="loadDataNhomDatn(0)"
                                                     id="trangThai" name="trangThai">
                                                 <option value="" hidden>Trạng thái</option>
-                                                <option value="0">Chưa chốt đề tài</option>
-                                                <option value="1">Giáo viên đã chốt</option>
-                                                <option value="2">CNBM đã chốt</option>
+                                                <option value="0">Mới thành lập</option>
+                                                <option value="1">Đã liên hệ giảng viên</option>
+                                                <option value="2">Sẵn sàng phê duyệt</option>
+                                                <option value="3">Cần sửa</option>
+                                                <option value="4">Giảng viên viên đã chốt</option>
+                                                <option value="5">CNBM đã chốt</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Đợt đăng ký:</span>
+                                            <select onchange="loadDataNhomDatn(0)" class="form-control col-7"
+                                                    id="dotDangKyId">
+                                                <option value="" hidden>Chọn đợt đăng ký</option>
+                                                <option th:each="item : ${listDotDangKy}"
+                                                        th:value="${item.getId()}" th:text="${item.getName()}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -104,26 +116,27 @@
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="row">
-                                        <div class="col-6 d-inline"
-                                        >
-                                            <button
-                                                    data-toggle="modal"
-                                                    data-target="#modal_detail"
+                                        <div class="col-6 d-inline">
+                                            <button data-toggle="modal"
+                                                    data-target="#modal_create"
                                                     class="col-12 col-sm-8 col-md-4 btn btn-success">
                                                 Tạo nhóm
                                             </button>
+                                            <button data-toggle="modal"
+                                                    data-target="#modal_detail"
+                                                    class="col-12 col-sm-8 col-md-4 btn btn-success"
+                                                    th:attr="onclick=|chotNhieuDeTai('${page.currentPage}')|">
+                                                Chốt đề tài</button>
                                             <div class="modal fade "
                                                  id="modal_create"
-
                                                  tabindex="-1"
                                                  aria-labelledby="exampleModalLabel"
                                                  aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
-                                                        <form id="form-showDetail">
+                                                        <form id="form_create_nhom_datn">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Tạo
-                                                                    nhóm</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Tạo nhóm</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
@@ -131,18 +144,39 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label class="col-form-label">Tên nhóm</label>
+                                                                    <label class="col-form-label">Mã nhóm</label>
                                                                     <input
                                                                             type="text"
                                                                             class="form-control"
-                                                                            id="tenHocKyAdd">
+                                                                            id="maNhom">
                                                                     <span class="text-danger"
-                                                                          id="hoc_ky_error"></span>
+                                                                          id="ma_nhom_erorr"></span><br>
+                                                                    <label class="col-form-label">Mật khẩu nhóm</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="matKhau">
+                                                                    <span class="text-danger"
+                                                                          id="mat_khau_erorr"></span><br>
+                                                                    <label class="col-form-label">Mã giảng viên</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="maGiangVien">
+                                                                    <span class="text-danger"
+                                                                          id="ma_giang_vien_erorr"></span><br>
+                                                                    <label class="col-form-label">Mã sinh viên (Trưởng nhóm)</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="maTruongNhom">
+                                                                    <span class="text-danger"
+                                                                          id="ma_truong_nhom_erorr"></span>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-dismiss="modal" onclick="clearForm()">Hủy
                                                                 </button>
                                                                 <button type="submit" class="btn btn-primary">Thêm mới
                                                                 </button>
@@ -158,6 +192,7 @@
                                             <table id="custom-table"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead>
+                                                <th><input type="checkbox" id="checkbox_father"></th>
                                                 <th width="50px">STT</th>
                                                 <th>Tên nhóm</th>
                                                 <th>Tên đề tài</th>
@@ -174,14 +209,19 @@
                                                 <tbody id="listNhomDatn">
                                                 <th:block th:each="nhomDatn : ${page.data}">
                                                     <tr>
+                                                        <td><input th:disabled="${nhomDatn.getTrangThai()}==4?'false':'true'" type="checkbox" id="checkbox_son" th:value="${nhomDatn.getId()}" onchange="checkBoxSonListener()"></td>
                                                         <td th:text="${nhomDatn.getStt()}"></td>
-                                                        <td th:text="${nhomDatn.getTenNhom()}"></td>
-                                                        <td th:text="${nhomDatn.getTenDeTai()}"></td>
+                                                        <td th:text="${nhomDatn.getTenNhom()}==null ? 'Chưa có' : (${nhomDatn.getTenNhom()})"></td>
+                                                        <td th:text="${nhomDatn.getTenDeTai()}==null ? 'Chưa có' : (${nhomDatn.getTenDeTai()})"></td>
                                                         <td th:text="${nhomDatn.getTenChuyenNganh()}"></td>
                                                         <td th:text="${nhomDatn.getTotal()}"></td>
-                                                        <td th:text="${nhomDatn.getMaSinhVien()}"></td>
-                                                        <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></td>
-                                                        <td th:text="${nhomDatn.getTrangThai()}==0?'Chưa chốt đề tài':(${nhomDatn.getTrangThai()}==1?'Giáo viên đã chốt':'CNBM đã chốt')"></td>
+                                                        <td th:text="${nhomDatn.getMaSinhVien()} + ' - ' + ${nhomDatn.getTenSinhVien()}"></td>
+                                                        <td th:switch="${nhomDatn.getTenGvhd()}">
+                                                            <p th:case=null>Chưa có</p>
+                                                            <p th:case="*"
+                                                               th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></p>
+                                                        </td>
+                                                        <td th:text="${T(com.fpolydatn.util.TrangThaiNhomUtils).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                         <td>
                                                             <a class="btn btn-primary"
                                                                th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}">Chi
@@ -189,14 +229,20 @@
                                                         </td>
                                                         <td>
                                                             <button type="button" class="btn btn-primary"
-                                                                    th:style="${nhomDatn.getTrangThai()}==1?'display: block':'display: none'"
+                                                                    th:style="${nhomDatn.getTrangThai()}==4?'display: block':'display: none'"
                                                                     th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 Chốt đề tài
+                                                            </button>
+                                                            |
+                                                            <button type="button" class="btn btn-danger text-white"
+                                                                    th:style="${nhomDatn.getTrangThai()}==4?'display: block':'display: none'"
+                                                                    th:attr="onclick=|openModalNhanXet('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                Từ chối
                                                             </button>
                                                         </td>
                                                         <td>
                                                             <button type="button" class="btn btn-danger text-white"
-                                                                    th:style="${nhomDatn.getTrangThai()}==2?'display: none':'display: block'"
+                                                                    th:style="${nhomDatn.getTrangThai()}==5?'display: none':'display: block'"
                                                                     th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 Xóa
                                                             </button>
@@ -266,6 +312,41 @@
                             data-dismiss="modal">Hủy
                     </button>
                     <button type="submit" class="btn btn-primary">Xoá
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div
+        class="modal fade"
+        id="modal_nhom_datn_nhan_xet"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_nhom_datn_nhan_xet">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nhận xét</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Lí do từ chối chốt đề tài là gì ?</p>
+                    <input
+                            type="text"
+                            class="form-control" id="nhan_xet">
+                    <span id="id_nhan_xet_nhom_datn" style="color:red;"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Hủy
+                    </button>
+                    <button type="submit" class="btn btn-primary">Gửi
                     </button>
                 </div>
             </form>

@@ -3,10 +3,16 @@ package com.fpolydatn.core.chunhiem.controller;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,22 +25,38 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
 
     @DeleteMapping("/{maSinhVien}")
     public ResponseObject updateSinhVienByNhom(@PathVariable("maSinhVien") String maSinhVien) {
-        Boolean remove = false;
-        try {
-            remove = sinhVienTheoNhomService.deleteFromIdSinhVien(maSinhVien);
-            return new ResponseObject(remove);
-        } catch (Exception e) {
-            return new ResponseObject(e);
-        }
+        return new ResponseObject(sinhVienTheoNhomService.deleteFromIdSinhVien(maSinhVien));
     }
+
     @PostMapping("/addSinhVien")
     public ResponseObject addSinhVienByNhom(@RequestParam("id") String idNhom, @RequestParam("maSinhVien") String maSinhVien) {
-        boolean add = false;
-        try {
-            add = sinhVienTheoNhomService.addSinhVienTheoNhom(idNhom, maSinhVien);
-            return new ResponseObject(add);
-        } catch (Exception e) {
-            return new ResponseObject(e);
-        }
+        return new ResponseObject(sinhVienTheoNhomService.addSinhVienTheoNhom(idNhom, maSinhVien));
     }
+
+    @PostMapping("/addGvhd")
+    public ResponseObject addGvhd(@RequestParam("giangVienId") String giangVienId, @RequestParam("idNhom") String idNhom) {
+        return new ResponseObject(sinhVienTheoNhomService.addGvhd(giangVienId, idNhom));
+    }
+
+    @PutMapping("/changeCaptain")
+    public ResponseObject changeCaptain(@RequestParam("idCaptain") String idCaptain, @RequestParam("idGroup") String idGroup) {
+        return new ResponseObject(sinhVienTheoNhomService.changeCaptain(idCaptain, idGroup));
+    }
+
+    @PutMapping("/changeCaptainToOther")
+    public ResponseObject changeCaptainToOther(@RequestParam("idCaptain") String idCaptain, @RequestParam("idGroup") String idGroup) {
+        return new ResponseObject(sinhVienTheoNhomService.changeCaptainToOther(idCaptain, idGroup));
+    }
+
+    @GetMapping("/listStudentNotCaptain")
+    public ResponseObject getListStudentNotCaptain(@RequestParam("idGroup") String idGroup) {
+        SinhVien captain = sinhVienTheoNhomService.getOldCaptain(idGroup);
+        return new ResponseObject(sinhVienTheoNhomService.getStudentNotCaptain(captain.getId(), idGroup));
+    }
+
+    @GetMapping("/oldCaptain")
+    public ResponseObject getOldCaptain(@RequestParam("idGroup") String idGroup) {
+        return new ResponseObject(sinhVienTheoNhomService.getOldCaptain(idGroup));
+    }
+
 }

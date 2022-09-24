@@ -5,10 +5,11 @@ package com.fpolydatn.infrastructure.constant;
  */
 public class PropertyKeys {
 
+
+
     private PropertyKeys() {
     }
 
-    public static final String NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC = "ngay.bat.dau.before.ngay.ket.thuc";
 
     public static final String CHUYEN_NGANH_NOT_EXIST = "chuyen.nganh.not.exist";
     public static final String CO_SO_NOT_EXIST = "co.so.not.exist";
@@ -33,5 +34,11 @@ public class PropertyKeys {
     public static final String TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST = "ten.tai.khoan.giang.vien.huong.dan.exist";
     public static final String DOT_DANG_KY_OVERLAP = "dot.dang.ky.overlap";
     public static final String MAT_KHAU_KHONG_CHINH_XAC = "mat.khau.khong.chinh.xac";
+
+    public static final String NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC ="ngay.bat.dau.before.ngay.ket.thuc" ;
+
+    public static final String GIANG_VIEN_HUONG_DAN_NOT_EXIST ="giang.vien.huong.dan.not.exist" ;
+
+    public static final String GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM ="giang.vien.da.huong.dan.du.so.nhom" ;
 
 }
