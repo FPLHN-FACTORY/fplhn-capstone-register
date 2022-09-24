@@ -45,6 +45,6 @@ public interface SvNhomDatnResponse extends IsIdentified {
     int getTrangThai();
 
     @Value("#{target.nhan_xet}")
-    int getNhanXet();
+    String getNhanXet();
 
 }

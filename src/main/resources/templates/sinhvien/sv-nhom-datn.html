@@ -65,7 +65,7 @@
                                                             <div class="form-group row">
                                                                 <label class="col-xl-3 col-lg-3 col-form-label">Tên đề tài</label>
                                                                 <div class="col-lg-9 col-xl-6">
-                                                                    <input type="text" th:value="${nhomDatnThamGia[0].tenDeTai}" readonly="readonly" class="form-control">
+                                                                    <input type="text" th:value="${T(com.fpolydatn.util.TrangThaiNhomUtils).ConvertToTrangThai(nhomDatnThamGia[0].getTrangThai())}" readonly="readonly" class="form-control">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
@@ -77,7 +77,13 @@
                                                             <div class="form-group row">
                                                                 <label class="col-xl-3 col-lg-3 col-form-label">Trạng thái</label>
                                                                 <div class="col-lg-9 col-xl-6">
-                                                                    <input type="text" th:value="${nhomDatnThamGia[0].tenGvhd}" readonly="readonly" class="form-control">
+                                                                    <input type="text" th:value="${T(com.fpolydatn.util.TrangThaiNhomUtils).ConvertToTrangThai(nhomDatnThamGia[0].getTrangThai())}" readonly="readonly" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-xl-3 col-lg-3 col-form-label">Nhận xét</label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <textarea type="text" th:value="${nhomDatnThamGia[0].nhanXet}" readonly="readonly" class="form-control"></textarea>
                                                                 </div>
                                                             </div>
                                                         <h3>Danh sách thành viên nhóm</h3>
