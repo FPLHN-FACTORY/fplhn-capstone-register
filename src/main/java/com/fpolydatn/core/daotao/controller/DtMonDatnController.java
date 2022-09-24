@@ -31,15 +31,11 @@ public class DtMonDatnController extends BaseController {
     @Autowired
     private DtChuyenNganhService chuyenNganhService;
 
-    @Autowired
-    private GenMaNhomTuDong genMaNhomTuDong;
-
     @GetMapping
     public String viewMonDatn(Model model, final DtFindMonDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
-        System.out.println(genMaNhomTuDong.genMaNhomTuDong());
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("file",new MuitiPathFile());
