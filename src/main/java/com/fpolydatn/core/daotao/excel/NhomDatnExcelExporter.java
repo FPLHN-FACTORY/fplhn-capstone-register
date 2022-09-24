@@ -39,7 +39,6 @@ public class NhomDatnExcelExporter {
         createCell(row, 5,"Trưởng nhóm",cellStyle);
         createCell(row, 6,"Tên GVHD",cellStyle);
         createCell(row, 7,"Trạng thái",cellStyle);
-//        createCell(row, 8,"Danh sách sinh viên",cellStyle);
     }
 
     private void createCell(Row row, int countColum, Object value, CellStyle cellStyle){
@@ -79,7 +78,6 @@ public class NhomDatnExcelExporter {
             createCell(row, countColum++, xx.getMaSinhVien() + "-" + xx.getTenSinhVien(),style);
             createCell(row, countColum++, xx.getTenGvhd() + "-" + xx.getTenTaiKhoan(),style);
             createCell(row, countColum++, xx.getTrangThai()==0?"Mới thành lập":(xx.getTrangThai()==1?"Đã liên hệ giảng viên":(xx.getTrangThai()==2?"Sẵn sàng phê duyệt":(xx.getTrangThai()==3?"Cần sửa":(xx.getTrangThai()==4?"Giảng viên đã chốt":"Chủ nhiệm bộ môn đã chốt")))),style);
-//            createCell(row, countColum++, xx.sinhVien().getTenSinhVien(), style);
         });
 
         final long endTime = System.currentTimeMillis();

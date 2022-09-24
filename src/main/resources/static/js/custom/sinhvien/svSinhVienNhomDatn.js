@@ -2,10 +2,10 @@ let SVNhomDatnApi = '/api/sinh-vien/nhom-datn';
 let SVNhomDatnView = '/sinh-vien/nhom-datn';
 
 function clearform() {
-    $("#tenNhom").val("");
-    $("#chuyenNganh").val("");
-    $("#trangThai").val("");
-    $("#dotDangKy").val("");
+    $("#tenDeTai").val("");
+    $("#truongNhom").val("");
+    $("#giangVien").val("");
+    $("#soLuong").val("");
 }
 
 function openModalDanhSachSinhVien(id) {
@@ -42,14 +42,14 @@ $("#form_list_nhom_datn").submit(function (event) {
 })
 
 function loadDataNhomDatn(count) {
-    let tenNhom = $("#tenNhom").val()
-    let chuyenNganhId = $("#chuyenNganh").val()
-    let dotDangKyId = $("#dotDangKy").val()
-    let trangThai = $("#trangThai").val()
+    let tenDeTai = $("#tenDeTai").val()
+    let soLuong = $("#soLuong").val()
+    let giangVien = $("#giangVien").val()
+    let truongNhom = $("#truongNhom").val()
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: SVNhomDatnApi + "/search" + "?tenNhom=" + tenNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
+        url: SVNhomDatnApi + "/search" + "?tenDeTai=" + tenDeTai + "&soLuong=" + soLuong + "&giangVien=" + giangVien + "&truongNhom=" + truongNhom + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)

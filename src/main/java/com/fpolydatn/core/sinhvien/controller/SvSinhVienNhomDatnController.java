@@ -34,10 +34,10 @@ public class SvSinhVienNhomDatnController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<SvSinhVienNhomDatnResponse> listNhomDatn = svSinhVienNhomDatnService.findAllNhomDatn(req);
-        List<SimpleEntityProj> listChuyenNganh = dtChuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
-        model.addAttribute("listChuyenNganh", listChuyenNganh);
-        List<SimpleEntityProj> listDotDangKy = dtDotDangKyService.findAllSimpleEntityByCoSo(coSoId);
-        model.addAttribute("listDotDangKy", listDotDangKy);
+//        List<SimpleEntityProj> listChuyenNganh = dtChuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
+//        model.addAttribute("listChuyenNganh", listChuyenNganh);
+//        List<SimpleEntityProj> listDotDangKy = dtDotDangKyService.findAllSimpleEntityByCoSo(coSoId);
+//        model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("page", listNhomDatn);
         return "sinhvien/sv-nhom-datn";
     }

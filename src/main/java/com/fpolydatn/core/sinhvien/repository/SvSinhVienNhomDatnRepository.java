@@ -24,18 +24,17 @@ public interface SvSinhVienNhomDatnRepository extends SinhVienRepository {
             JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
-            WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
-            OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
-            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
-            OR f.id = :#{#req.chuyenNganhId})
-            AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
-            OR g.id = :#{#req.dotDangKyId})
-            AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
-            OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
+            WHERE (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
+            OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%) 
+            AND (:#{#req.truongNhom} IS NULL OR :#{#req.truongNhom} LIKE ''
+            OR c.ten_sinh_vien LIKE %:#{#req.truongNhom}%)
+            AND (:#{#req.giangVien} IS NULL OR :#{#req.giangVien} LIKE ''
+            OR e.ten_gvhd LIKE %:#{#req.giangVien}%) 
             AND b.co_so_id = :#{#req.coSoId}
             AND B.trang_thai = 0
             GROUP BY b.id
-            HAVING COUNT(d.ma_sinh_vien) < 7 
+            HAVING COUNT(d.ma_sinh_vien) < 7
+            
             ORDER BY b.last_modified_date DESC
             """, countQuery = """
             SELECT count(b.id)
@@ -45,18 +44,17 @@ public interface SvSinhVienNhomDatnRepository extends SinhVienRepository {
             JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
-            WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
-            OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
-            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
-            OR f.id = :#{#req.chuyenNganhId})
-            AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
-            OR g.id = :#{#req.dotDangKyId})
-            AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
-            OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
+            WHERE (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
+            OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%) 
+            AND (:#{#req.truongNhom} IS NULL OR :#{#req.truongNhom} LIKE ''
+            OR c.ten_sinh_vien LIKE %:#{#req.truongNhom}%)
+            AND (:#{#req.giangVien} IS NULL OR :#{#req.giangVien} LIKE ''
+            OR e.ten_gvhd LIKE %:#{#req.giangVien}%) 
             AND b.co_so_id = :#{#req.coSoId}
             AND B.trang_thai = 0
             GROUP BY b.id
             HAVING COUNT(d.ma_sinh_vien) < 7
+            
             ORDER BY b.last_modified_date DESC
             """, nativeQuery = true)
     Page<SvSinhVienNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") final FindDtNhomDatnTheoDotRequest req);
