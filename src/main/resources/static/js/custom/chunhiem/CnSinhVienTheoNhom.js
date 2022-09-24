@@ -194,7 +194,6 @@ function openModalChangeCaptain() {
         error: function (responseData) {
         }
     })
-
 }
 
 function changeCaptain(idCaptain) {
