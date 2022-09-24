@@ -18,13 +18,7 @@ public class ValidationUtils {
     private GiangVienHuongDanRepository giangVienHuongDanRepository;
 
     public int soNhomGiangVienDangHuongDan(String id){
-        int soNhomHD;
-        if(giangVienHuongDanRepository.getSoNhomGiangVienDangHuongDan(id) == null){
-            soNhomHD = 0;
-        }else{
-            soNhomHD = Integer.parseInt(giangVienHuongDanRepository.getSoNhomGiangVienDangHuongDan(id));
-        }
-        return soNhomHD;
+        return giangVienHuongDanRepository.getSoNhomGiangVienDangHuongDan(id);
     }
 
 }
