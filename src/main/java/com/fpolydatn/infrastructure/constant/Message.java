@@ -36,7 +36,7 @@ public enum Message {
     EMAIL_FE_EXIST(PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EXIST)),
     GIANG_VIEN_HUONG_DAN_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_HUONG_DAN_NOT_EXIST)),
     DOT_DANG_KY_OVERLAP(PropertiesReader.getProperty(PropertyKeys.DOT_DANG_KY_OVERLAP)),
-    GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM));
+    GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM)),
     MAT_KHAU_KHONG_CHINH_XAC(PropertiesReader.getProperty(PropertyKeys.MAT_KHAU_KHONG_CHINH_XAC));
 
     private String message;
