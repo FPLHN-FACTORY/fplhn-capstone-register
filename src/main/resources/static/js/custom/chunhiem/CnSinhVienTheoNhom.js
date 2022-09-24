@@ -215,7 +215,6 @@ $("#form_change_captain_confirm").submit(function (event) {
             window.open(sinhVienTheoNhomView + "?id=" + idGroup, '_self');
         },
         error: function () {
-
         }
     })
 
