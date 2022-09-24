@@ -36,12 +36,15 @@ public class DtSinhVienTheoDotExport {
         createCell(row, 0,"stt",cellStyle);
         createCell(row, 1,"MSSV",cellStyle);
         createCell(row, 2,"Họ tên",cellStyle);
-        createCell(row, 3,"Chuyên Ngành",cellStyle);
-        createCell(row, 4,"Môn đăng ký",cellStyle);
-        createCell(row, 5,"ID nhóm",cellStyle);
-        createCell(row, 6,"Tên đề tài",cellStyle);
-        createCell(row, 7,"GV hướng dẫn",cellStyle);
-        createCell(row, 8,"Đợt đăng ký",cellStyle);
+        createCell(row, 3,"Số điện thoại",cellStyle);
+        createCell(row, 4,"Email",cellStyle);
+        createCell(row, 5,"Khóa",cellStyle);
+        createCell(row, 6,"Môn đăng ký",cellStyle);
+        createCell(row, 7,"ID nhóm",cellStyle);
+        createCell(row, 8,"Tên đề tài",cellStyle);
+        createCell(row, 9,"GV hướng dẫn",cellStyle);
+        createCell(row, 10,"Đợt đăng ký",cellStyle);
+        createCell(row, 11,"Chuyên Ngành",cellStyle);
     }
 
     private void createCell(Row row, int countColum, Object value, CellStyle cellStyle){
@@ -75,12 +78,15 @@ public class DtSinhVienTheoDotExport {
             createCell(row, countColum++, DtSinhVien.getStt(),style);
             createCell(row, countColum++, DtSinhVien.getMaSinhVien(),style);
             createCell(row, countColum++, DtSinhVien.getTenSinhVien(),style);
-            createCell(row, countColum++, DtSinhVien.getTenChuyenNganh(),style);
+            createCell(row, countColum++, DtSinhVien.getSoDienThoai(),style);
+            createCell(row, countColum++, DtSinhVien.getEmail(),style);
+            createCell(row, countColum++, DtSinhVien.getKhoa(),style);
             createCell(row, countColum++, DtSinhVien.getTenMonDatn(),style);
             createCell(row, countColum++, DtSinhVien.getMaNhom()== null ? "chưa có": DtSinhVien.getMaNhom(),style);
             createCell(row, countColum++, DtSinhVien.getTenDeTai()== null? "Chưa có": DtSinhVien.getTenDeTai(),style);
             createCell(row, countColum++, DtSinhVien.getTenGvhd() ==null ? "Chưa có" : DtSinhVien.getTenGvhd(),style);
             createCell(row, countColum++, DtSinhVien.getTenDotDangKy(),style);
+            createCell(row, countColum++, DtSinhVien.getTenChuyenNganh(),style);
         });
     }
 

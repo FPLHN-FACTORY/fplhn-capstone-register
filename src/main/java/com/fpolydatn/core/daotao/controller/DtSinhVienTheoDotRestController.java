@@ -39,9 +39,9 @@ public class DtSinhVienTheoDotRestController extends BaseController {
         request.setCoSoId(session.getCoSoId());
         sinhVienService.DTSinhVienExport(response,typeExcel,request);
     }
-//    @PostMapping("/import")
-//    public void exportEcel(@RequestParam("file")MultipartFile  file) throws IOException {
-//        String coSoId =session.getCoSoId();
-//       sinhVienService.DtSinhVienImport(file,coSoId);
-//    }
+    @PostMapping("/import")
+    public void exportEcel(@RequestParam("file")MultipartFile  file) throws IOException {
+        String coSoId =session.getCoSoId();
+       sinhVienService.DtSinhVienImport(file,coSoId);
+    }
 }

@@ -174,7 +174,7 @@
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
                                                         <form  enctype="multipart/form-data" method="post"
-                                                              th:action="@{/dao-tao/sinh-vien/import}" >
+                                                              th:action="@{/api/dao-tao/sinh-vien/import}" id="form_import_excel">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" >Import Excel</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
@@ -190,7 +190,7 @@
                                                                         </div>
                                                                         <div class="custom-file">
                                                                             <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                                                                   aria-describedby="inputGroupFileAddon01" name="file">
+                                                                                   aria-describedby="inputGroupFileAddon01" name="file" >
                                                                             <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                                                                         </div>
                                                                     </div>
@@ -219,11 +219,14 @@
                                                 <th width="50px">STT</th>
                                                 <th>MSSV</th>
                                                 <th>Họ tên</th>
-                                                <th>Chuyên Ngành</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Email</th>
+                                                <th>Khóa</th>
                                                 <th>Môn đăng ký</th>
                                                 <th>Id nhóm</th>
                                                 <th>Tên Đề tài</th>
                                                 <th>GV hướng dẫn</th>
+                                                <th>Chuyên Ngành</th>
                                                 </thead>
                                                 <tbody id="list">
                                                 <th:block th:each="sinhVien :  ${page.data}">
@@ -231,11 +234,14 @@
                                                         <td th:text="${sinhVien.getStt}"/>
                                                         <td th:text="${sinhVien.maSinhVien}"/>
                                                         <td th:text="${sinhVien.tenSinhVien}"/>
-                                                        <td th:text="${sinhVien.tenChuyenNganh}"/>
+                                                        <td th:text="${sinhVien.soDienThoai}"/>
+                                                        <td th:text="${sinhVien.email}"/>
+                                                        <td th:text="${sinhVien.khoa}"/>
                                                         <td th:text="${sinhVien.tenMonDatn}==null? 'chưa có ': ${sinhVien.tenMonDatn}"/>
                                                         <td th:text="${sinhVien.maNhom} ==null? 'chưa có ': ${sinhVien.maNhom}"/>
                                                         <td th:text="${sinhVien.tenDeTai}==null? 'chưa có ':${sinhVien.tenDeTai}"/>
                                                         <td th:text="${sinhVien.tenGvhd}==null? 'chưa có ':${sinhVien.tenGvhd}"/>
+                                                        <td th:text="${sinhVien.tenChuyenNganh}"/>
                                                     </tr>
                                                 </th:block>
                                                 </tbody>

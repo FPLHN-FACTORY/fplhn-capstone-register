@@ -46,11 +46,4 @@ public class DtSinhVienTheoDotController extends BaseController {
         model.addAttribute("listDotDangKy", listDotDangKy);
         return "daotao/dt-sinh-vien-theo-dot";
     }
-    @PostMapping("/import")
-    public String exportEcel(@RequestParam("file") MultipartFile file,Model model,final FindDtSinhVienTheoDotRequest req) throws IOException {
-        req.setCoSoId(session.getCoSoId());
-        String coSoId =session.getCoSoId();
-        sinhVienService.DtSinhVienImport(file,coSoId);
-        return findAllSinhVien(model,req);
-    }
 }

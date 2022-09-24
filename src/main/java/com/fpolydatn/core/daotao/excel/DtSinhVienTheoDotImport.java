@@ -1,9 +1,15 @@
 package com.fpolydatn.core.daotao.excel;
 
+import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
+import com.fpolydatn.core.daotao.service.DtDotDangKyService;
+import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
+import com.fpolydatn.core.daotao.service.impl.DtDotDangKyServiceImpl;
+import com.fpolydatn.core.daotao.service.impl.DtSinhVienTheoDotServiceImpl;
 import com.fpolydatn.entity.SinhVien;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +28,6 @@ public class DtSinhVienTheoDotImport {
         List<SinhVien> listSinhVien = new ArrayList<>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
-
         for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
            SinhVien sinhVien = new SinhVien();
             XSSFRow row = worksheet.getRow(i);
@@ -39,6 +44,5 @@ public class DtSinhVienTheoDotImport {
         }
         return listSinhVien;
     }
-
 
 }
