@@ -54,6 +54,11 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         return dtCanBoRepository.save(canBo);
     }
 
+    @Override
+    public CanBo createcb(CanBo canBo) {
+        return dtCanBoRepository.save(canBo);
+    }
+
 
     @Override
     public Boolean delete(String id) {
@@ -91,6 +96,10 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     @Override
     public List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro) {
         return dtCanBoRepository.findAllSimpleEntityByTenCanBo(id, vaiTro);
+    }
+    @Override
+    public Optional<CanBo> findByEmailFe(String emailFe) {
+        return dtCanBoRepository.findByEmailFe(emailFe);
     }
 
 }

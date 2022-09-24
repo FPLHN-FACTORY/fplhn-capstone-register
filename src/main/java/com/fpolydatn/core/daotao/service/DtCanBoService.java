@@ -10,6 +10,7 @@ import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author nguyenvv4
@@ -20,6 +21,8 @@ public interface DtCanBoService {
 
     CanBo create(@Valid DtCreateCanBoRequest canBo);
 
+    public CanBo createcb(CanBo canBo);
+
     Boolean delete(String id);
 
     CanBo findById(String id);
@@ -27,5 +30,8 @@ public interface DtCanBoService {
     CanBo update(DtUpdateCanBoRequest canBoRequest);
 
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
+
+    Optional<CanBo> findByEmailFe(String emailFe);
+
 
 }
