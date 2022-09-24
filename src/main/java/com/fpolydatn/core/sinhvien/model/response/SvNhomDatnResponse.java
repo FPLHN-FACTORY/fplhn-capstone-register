@@ -15,6 +15,9 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(types = {NhomDatn.class, SinhVien.class, GiangVienHuongDan.class, DotDangKy.class})
 public interface SvNhomDatnResponse extends IsIdentified {
 
+    @Value("#{target.id_sinh_vien}")
+    String getIdSinhVien();
+
     Integer getStt();
 
     @Value("#{target.ma_nhom}")
@@ -45,6 +48,6 @@ public interface SvNhomDatnResponse extends IsIdentified {
     int getTrangThai();
 
     @Value("#{target.nhan_xet}")
-    int getNhanXet();
+    String getNhanXet();
 
 }

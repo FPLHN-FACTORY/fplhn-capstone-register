@@ -12,4 +12,6 @@ public interface SvNhomDatnService {
     List<SvNhomDatnResponse> getNhomDatnById(String id);
 
     Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser);
+
+    Boolean guiYeuCauPheDuyet(String idNhomDatn, String idUser);
 }
