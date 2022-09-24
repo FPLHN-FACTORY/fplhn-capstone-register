@@ -6,8 +6,11 @@ import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.entity.GiangVienHuongDan;
+import com.fpolydatn.infrastructure.constant.Message;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author Vinhnv
@@ -25,5 +28,7 @@ public interface DtGiangVienHDService {
     long getSizeListHocKy(String tenGiangVien);
 
     PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest req);
+
+    Boolean importExcel(MultipartFile file);
 
 }

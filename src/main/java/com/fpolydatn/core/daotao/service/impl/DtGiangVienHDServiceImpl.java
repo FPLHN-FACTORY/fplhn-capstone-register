@@ -5,19 +5,30 @@ import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
+import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
 import com.fpolydatn.core.daotao.repository.DtGiangVienHDRepository;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,6 +40,13 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     @Autowired
     private DtGiangVienHDRepository dtGiangVienHDRepository;
+
+    @Autowired
+    private DtCoSoRepository dtCoSoRepository;
+
+    @Autowired
+    private DtDotDangKyRepository dtDotDangKyRepository;
+
 
     private FormUtils formUtils = new FormUtils();
 
@@ -110,5 +128,85 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         Page<DtGiangVienHDResponse> res = dtGiangVienHDRepository.findByName(request, pageable);
         return new PageableObject<>(res);
     }
+
+    @Override
+    public Boolean importExcel(MultipartFile file) {
+        List<GiangVienHuongDan> list = new ArrayList<>();
+
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            int rowNumber = 0;
+            Iterator<Row> iterator = sheet.iterator();
+
+            while (iterator.hasNext()) {
+                Row row = iterator.next();
+
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
+                }
+
+                Iterator<Cell> cells = row.iterator();
+
+                int cid = 0;
+                GiangVienHuongDan gvhd = new GiangVienHuongDan();
+                while (cells.hasNext()) {
+                    Cell cell = cells.next();
+
+                    switch (cid) {
+                        case 1:
+                            String tenCoSo = cell.getStringCellValue();
+                            gvhd.setCoSoId(dtCoSoRepository.findName(tenCoSo).getId());
+                            break;
+                        case 2:
+                            String tenDotDangKy = cell.getStringCellValue();
+                            gvhd.setDotDangKyId(dtDotDangKyRepository.findName(tenDotDangKy).getId());
+                            break;
+                        case 3:
+                            String tenGV = cell.getStringCellValue().trim();
+                            gvhd.setTenGvhd(tenGV);
+                            break;
+                        case 4:
+                            String tenTaiKhoan = cell.getStringCellValue().trim();
+                            gvhd.setTenTaiKhoan(tenTaiKhoan);
+                            break;
+                        case 5:
+                            double soNhom = cell.getNumericCellValue();
+                            gvhd.setSoNhomHuongDanToiDa((short) soNhom);
+                            break;
+                        case 6:
+                            String sdt = cell.getStringCellValue().trim();
+                            gvhd.setSoDienThoai(sdt);
+                            break;
+                        case 7:
+                            String emailFpt = cell.getStringCellValue().trim();
+                            gvhd.setEmailFpt(emailFpt);
+                            break;
+                        case 8:
+                            String emailFe = cell.getStringCellValue().trim();
+                            gvhd.setEmailFe(emailFe);
+                            break;
+                        default:
+                            break;
+                    }
+                    cid++;
+
+                }
+                list.add(gvhd);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ;
+        if (list == null) {
+            return false;
+        }
+        dtGiangVienHDRepository.saveAll(list);
+        return true;
+    }
+
 
 }
