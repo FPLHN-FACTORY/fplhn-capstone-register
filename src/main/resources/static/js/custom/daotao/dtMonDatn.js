@@ -139,3 +139,41 @@ $("#form_mon_datn_delete").submit(function (event) {
         }
     });
 });
+
+function openModalImportMonDatn() {
+    $("#modal_mon_datn_import").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: monDatnApi,
+        data: JSON.stringify(),
+        dataType: 'json',
+        success: function () {
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+//$("#modal_mon_datn_import").submit(function (event) {
+//    event.preventDefault();
+//    let file = $("#fileupload").val();
+//    console.log(file)
+//    let f = file.replace(/.*[\/\\]/, '');
+    // let file = 'D:\fpoly-datn\test.xlsx'
+//    $.ajax({
+//        type: "POST",
+//        contentType: "application/json",
+//        url: monDatnApi + "/import",
+//        data: JSON.stringify(file),
+//        dataType: 'json',
+//        success: function () {
+//            window.open(monDatnView, '_self');
+//            $("#modal_mon_datn_remove").modal("hide");
+//        },
+//        error: function (e) {
+//            console.log("ERROR : ", e);
+//        }
+//    });
+//});

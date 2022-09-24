@@ -7,6 +7,7 @@ import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 
 import com.fpolydatn.entity.MonDatn;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -24,5 +25,7 @@ public interface DtMonDatnService {
     MonDatn update(@Valid final DtUpdateMonDatnRequest command);
 
     Boolean add(@Valid final DtCreateMonDatnRequest command);
+
+    Boolean importExcel(MultipartFile file);
 
 }

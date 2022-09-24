@@ -1,10 +1,11 @@
 package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindPhanCongHuongDanRequest;
-import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanGiaoVienResponse;
+import com.fpolydatn.core.daotao.model.request.DtFindPhanMonGiangVienHuongDanRequest;
+import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
-import com.fpolydatn.entity.PhanCongHuongDan;
+import com.fpolydatn.core.daotao.model.response.DtPhanMonDatnChoGiangVienHuongDanResponse;
 import com.fpolydatn.repository.PhanCongHuongDanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import java.util.List;
  * @author huynq
  */
 public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository {
-
+//    [UC-DT-MDa-CT-1] Phân công GVHD theo môn
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY last_modified_date DESC) AS stt, gv.id, gv.ten_gvhd FROM do_an_tot_nghiep.phan_cong_huong_dan pc
             JOIN do_an_tot_nghiep.giang_vien_huong_dan gv ON pc.giang_vien_id = gv.id
@@ -36,7 +37,7 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
                     ORDER BY last_modified_date DESC 
             """
             , nativeQuery = true)
-    Page<DtPhanCongHuongDanResponse> findByName(@Param("monID") String id, @Param("req") DtFindPhanCongHuongDanRequest req, Pageable page);
+    Page<DtPhanCongHuongDanResponse> getGiangVienHuongDan(@Param("monID") String id, @Param("req") DtFindPhanCongHuongDanRequest req, Pageable page);
 
     @Query(value = """
             SELECT a.id, a.created_date, a.last_modified_date, c.ten_co_so,
@@ -48,17 +49,56 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
     DtPhanCongHuongDanMonDatnResponse getMon(@Param("maMonId") String maMonId);
 
     @Query(value = """
-            SELECT a.giang_vien_id, a.mon_datn_id
-            FROM do_an_tot_nghiep.phan_cong_huong_dan a
-            WHERE a.giang_vien_id = :maGV AND a.mon_datn_id = :maMon""", nativeQuery = true)
-    PhanCongHuongDan finId(@Param("maGV") String idGV, @Param("maMon") String idMon);
-
-    @Query(value = """
             SELECT ROW_NUMBER() OVER() AS stt, gv.id, gv.ten_gvhd FROM do_an_tot_nghiep.giang_vien_huong_dan gv
             WHERE gv.co_so_id = :coSoId 
             AND gv.id NOT IN (SELECT giang_vien_id FROM do_an_tot_nghiep.phan_cong_huong_dan WHERE mon_datn_id = :maMonId)
-            
             """
             , nativeQuery = true)
-    List<DtPhanCongHuongDanGiaoVienResponse> getPhanCongGiaoVien(@Param("coSoId") String coSoId, @Param("maMonId") String maMonId);
+    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(@Param("coSoId") String coSoId, @Param("maMonId") String maMonId);
+
+//    [UC-DT-GV-CT-1] Phân môn cho GVHD
+    @Query(value = """
+            SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
+            JOIN do_an_tot_nghiep.phan_cong_huong_dan pc on m.id = pc.mon_datn_id
+            WHERE pc.giang_vien_id = :giangVienId AND
+                ( :#{#req.tenMonDatn} IS NULL 
+                    OR :#{#req.tenMonDatn} LIKE '' 
+                    OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
+                    ORDER BY last_modified_date DESC 
+            """, countQuery = """
+            SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
+            JOIN do_an_tot_nghiep.phan_cong_huong_dan pc on m.id = pc.mon_datn_id
+            WHERE pc.giang_vien_id = :giangVienId AND
+                ( :#{#req.tenMonDatn} IS NULL 
+                    OR :#{#req.tenMonDatn} LIKE '' 
+                    OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
+                    ORDER BY last_modified_date DESC 
+            """
+            , nativeQuery = true)
+    Page<DtPhanMonDatnChoGiangVienHuongDanResponse> getMonDatn(@Param("giangVienId") String id, @Param("req") DtFindPhanMonGiangVienHuongDanRequest req, Pageable page);
+
+    @Query(value = """
+            SELECT ROW_NUMBER() OVER(ORDER BY gvhd.last_modified_date DESC ) AS stt,
+                gvhd.id,
+                cs.ten_co_so,
+                ddk.ten_dot_dang_ky,
+                gvhd.ten_gvhd ,
+                gvhd.so_nhom_huong_dan_toi_da,
+                gvhd.ten_tai_khoan,
+                gvhd.so_dien_thoai,
+                gvhd.email_fpt,
+                gvhd.email_fe
+                FROM giang_vien_huong_dan gvhd
+                JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id
+                JOIN co_so cs ON gvhd.co_so_id = cs.id
+                WHERE gvhd.id = :maGiangVienHuongDan""", nativeQuery = true)
+    DtGiangVienHDResponse getGiangVienHD(@Param("maGiangVienHuongDan") String maGiangVienHuongDan);
+
+    @Query(value = """
+            SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
+            WHERE m.co_so_id = :coSoId 
+            AND m.id NOT IN (SELECT mon_datn_id FROM do_an_tot_nghiep.phan_cong_huong_dan WHERE giang_vien_id = :maGiangVienHuongDan)
+            """
+            , nativeQuery = true)
+    List<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanCongMonDatn(@Param("coSoId") String coSoId, @Param("maGiangVienHuongDan") String maMonId);
 }
