@@ -21,4 +21,11 @@ public interface SvSinhVienRepository extends SinhVienRepository {
             WHERE  nhom_id LIKE :#{#request.maNhom}
             """, nativeQuery = true)
     List<SvSinhVienTheoNhomResponse> findByNhomId(@Param("request") SvFindSinhVienRequest request);
+
+    @Query(value = "SELECT nhom_id FROM sinh_vien " +
+            "WHERE co_so_id = :coSoId " +
+            "AND dot_dang_ky_id = :dotDangKyId " +
+            "AND id = :id", nativeQuery = true)
+    String getNhomIdById(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId, @Param("id") String id);
+
 }

@@ -24,4 +24,9 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
         return sinhVienRepository.findByNhomId(request);
     }
 
+    @Override
+    public String getNhomIdById(String coSoId, String dotDangKyId, String id) {
+        return sinhVienRepository.getNhomIdById(coSoId, dotDangKyId, id);
+    }
+
 }

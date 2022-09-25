@@ -12,4 +12,6 @@ public interface SvSinhVienService {
 
     List<SvSinhVienTheoNhomResponse> findByNhomId(final SvFindSinhVienRequest request);
 
+    String getNhomIdById(String coSoId, String dotDangKyId, String id);
+
 }

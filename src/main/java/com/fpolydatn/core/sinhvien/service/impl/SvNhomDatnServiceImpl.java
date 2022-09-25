@@ -1,6 +1,9 @@
 package com.fpolydatn.core.sinhvien.service.impl;
 
+import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
+import com.fpolydatn.core.sinhvien.model.response.SvSinhVienNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.repository.SvNhomDatnRepository;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.entity.NhomDatn;
@@ -8,6 +11,9 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,6 +59,13 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             return true;
         }
         throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
+    }
+
+    @Override
+    public PageableObject<SvSinhVienNhomDatnResponse> findAllNhomDatn(final FindSvNhomDatnRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Page<SvSinhVienNhomDatnResponse> res = svNhomDatnRepository.findAllNhomDatn(pageable, request);
+        return new PageableObject(res);
     }
 
 }
