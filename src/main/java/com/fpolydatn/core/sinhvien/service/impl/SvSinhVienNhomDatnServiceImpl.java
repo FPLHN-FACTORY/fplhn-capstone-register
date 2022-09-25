@@ -1,7 +1,6 @@
 package com.fpolydatn.core.sinhvien.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.sinhvien.model.request.CreateSinhVienJoinNhomDatnRequest;

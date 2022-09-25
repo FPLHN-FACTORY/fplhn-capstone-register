@@ -10,7 +10,6 @@ import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-import java.util.UUID;
 
 /**
  * @author thepvph20110

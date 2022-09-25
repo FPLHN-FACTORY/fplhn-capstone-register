@@ -1,6 +1,5 @@
 package com.fpolydatn.core.sinhvien.repository;
 
-import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
