@@ -37,5 +37,6 @@ public class PropertyKeys {
     public static final String NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC ="ngay.bat.dau.before.ngay.ket.thuc" ;
 
     public static final String GIANG_VIEN_HUONG_DAN_NOT_EXIST ="giang.vien.huong.dan.not.exist" ;
+    public static final String FILE_EMPTY ="file.empty" ;
 
 }
