@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.beans.Transient;
 import java.util.List;
 
 /**
@@ -42,7 +41,7 @@ public class DtGiangVienController extends BaseController {
         PageableObject<DtGiangVienHDResponse> listGiangVien = giangVienHDService.search(rep);
         List<SimpleEntityProj> listDotDangKy = dangKyService.findAllSimpleEntity(coSoid);
         model.addAttribute("listDotDangKy", listDotDangKy);
-        model.addAttribute("file", new MuitiPathFile());
+        model.addAttribute("file", new MuitiPathFile()); //-- thêm cái này
         model.addAttribute("page", listGiangVien);
         return "daotao/dt-giang-vien-huong-dan";
     }

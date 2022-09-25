@@ -26,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +52,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public GiangVienHuongDan create(DtCreateGiangVienHDRequest command) {
+    public GiangVienHuongDan create( DtCreateGiangVienHDRequest command) {
         String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
@@ -79,7 +80,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public GiangVienHuongDan update(DtUpdateGiangVienHDRequest command) {
+    public GiangVienHuongDan update( DtUpdateGiangVienHDRequest command) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(command.getId());
         if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
@@ -130,7 +131,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public Boolean importExcel(MultipartFile file) {
+    public List<GiangVienHuongDan> importExcel(MultipartFile file) {
         List<GiangVienHuongDan> list = new ArrayList<>();
 
         try {
@@ -201,12 +202,35 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             e.printStackTrace();
         }
         ;
-        if (list == null) {
-            return false;
-        }
-        dtGiangVienHDRepository.saveAll(list);
-        return true;
+        checkValidFile(list);
+        return list;
     }
+
+    @Override
+    public List<GiangVienHuongDan> checkValidFile(List<GiangVienHuongDan> list) {
+        List<GiangVienHuongDan> listGVHD = new ArrayList<>();
+        if(list == null){
+            throw new RestApiException(Message.FILE_EMPTY);
+        }
+        for (int i = 0; i <list.size() ; i++) {
+            GiangVienHuongDan giangVien = dtGiangVienHDRepository.getGVHDByEmailFpt(list.get(i).getEmailFpt().trim());
+            if(giangVien != null){
+                giangVien.setTenGvhd(list.get(i).getTenGvhd());
+                giangVien.setSoNhomHuongDanToiDa(list.get(i).getSoNhomHuongDanToiDa());
+                giangVien.setTenTaiKhoan(list.get(i).getTenTaiKhoan());
+                giangVien.setSoDienThoai(list.get(i).getSoDienThoai());
+                giangVien.setEmailFpt(list.get(i).getEmailFpt());
+                giangVien.setEmailFe(list.get(i).getEmailFe());
+                giangVien.setDotDangKyId(list.get(i).getDotDangKyId());
+                dtGiangVienHDRepository.save(giangVien);
+            }else{
+                listGVHD.add(list.get(i));
+            }
+        }
+        dtGiangVienHDRepository.saveAll(listGVHD);
+        return listGVHD;
+    }
+
 
 
 }

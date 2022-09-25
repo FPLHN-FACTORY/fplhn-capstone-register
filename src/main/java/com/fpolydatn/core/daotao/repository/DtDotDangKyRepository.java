@@ -2,7 +2,6 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindDotDangKyRequest;
 import com.fpolydatn.core.daotao.model.response.DtDotDangKyResponse;
-import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.DotDangKyRepository;
