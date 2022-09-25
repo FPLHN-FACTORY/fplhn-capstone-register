@@ -63,10 +63,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form class="m-portlet__body"
-                                      id="form_search"
-                                      method="GET"
-                                      th:action="@{/sinh-vien/nhom-datn}">
+                                <form
+                                      id="form_search">
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
@@ -96,9 +94,7 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <a class="btn btn-primary text-white" onclick="loadDataNhomDatn(0)"
-                                               type="submit">Tìm
-                                                kiếm</a>
+                                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a class="btn btn-danger text-white"

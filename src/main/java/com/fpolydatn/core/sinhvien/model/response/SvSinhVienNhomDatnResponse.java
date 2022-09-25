@@ -21,6 +21,7 @@ public interface SvSinhVienNhomDatnResponse extends IsIdentified {
 
     @Value("#{target.ten_chuyen_nganh}")
     String getTenChuyenNganh();
+
     @Value("#{target.total_ma_sinh_vien}")
     String getCountSinhVien();
 

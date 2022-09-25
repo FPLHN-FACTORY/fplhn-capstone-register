@@ -37,6 +37,7 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject viewHocKy(final FindSvNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
+        req.setDotDangKyId("e3afc2f8-3562-4606-9aae-62366445d077");
         PageableObject<SvSinhVienNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
         DtApiResponse<SvSinhVienNhomDatnResponse> dtApiResponse = new DtApiResponse<>();
         dtApiResponse.setData(listNhomDatn);

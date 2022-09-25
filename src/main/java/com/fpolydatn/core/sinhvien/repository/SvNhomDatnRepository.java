@@ -49,7 +49,9 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             AND b.co_so_id = :#{#req.coSoId}
             AND g.id = :#{#req.dotDangKyId}
             AND b.trang_thai = 0
-            GROUP BY b.id          
+            GROUP BY b.id
+            HAVING (:#{#req.soLuong} IS NULL OR :#{#req.soLuong} LIKE ''
+            OR CONVERT(COUNT(d.ma_sinh_vien), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED))            
             ORDER BY b.last_modified_date DESC
             """, countQuery = """
             SELECT count(b.id)
@@ -69,6 +71,8 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             AND g.id = :#{#req.dotDangKyId}
             AND b.trang_thai = 0
             GROUP BY b.id
+            HAVING (:#{#req.soLuong} IS NULL OR :#{#req.soLuong} LIKE ''
+            OR CONVERT(COUNT(d.ma_sinh_vien), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED))
             ORDER BY b.last_modified_date DESC
             """, nativeQuery = true)
     Page<SvSinhVienNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") FindSvNhomDatnRequest req);

@@ -39,19 +39,21 @@ public class SvNhomDatnController extends BaseController {
     @GetMapping
     public String viewNhomDatn(Model model, final FindSvNhomDatnRequest req ){
         String nhomId = svSinhVienService.getNhomIdById(session.getCoSoId(),
-                "67f067fa-a0f4-4792-9cc4-3dbc92341561",
-                "27b2dc99-65cb-4cbf-b02b-e2e3213517f5");
-        if (nhomId == null) {
+                "e3afc2f8-3562-4606-9aae-62366445d077",
+                "ed8dbb74-e08b-4f8b-bd9d-93a1999dfcbl");
+        if (nhomId == null || nhomId.trim().isEmpty()) {
+            System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             req.setCoSoId(session.getCoSoId());
-            req.setDotDangKyId("67f067fa-a0f4-4792-9cc4-3dbc92341561");
+            req.setDotDangKyId("e3afc2f8-3562-4606-9aae-62366445d077");
             PageableObject<SvSinhVienNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
             System.out.println(listNhomDatn.getData().size());
             model.addAttribute("page", listNhomDatn);
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,
-                    session.getCoSoId(), "27b2dc99-65cb-4cbf-b02b-e2e3213517f5");
+                    session.getCoSoId(), "ed8dbb74-e08b-4f8b-bd9d-93a1999dfcbl");
             List<SvNhomDatnResponse> svNhomDatnResponse = svNhomDatnService.getNhomDatnById(nhomId);
+            System.out.println(svNhomDatnResponse.size());
             model.addAttribute("checkTruongNhom",checkTruongNhom);
             model.addAttribute("nhomDatnThamGia",svNhomDatnResponse);
             return "sinhvien/sv-nhom-datn";

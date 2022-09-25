@@ -1,5 +1,5 @@
-let SVNhomDatnApi = '/api/sinh-vien';
-let SVNhomDatnView = '/sinh-vien/nhom-datn';
+const SVNhomDatnApi = '/api/sinh-vien';
+const SVNhomDatnView = '/sinh-vien';
 
 function clearform() {
     $("#tenDeTai").val("");
@@ -36,7 +36,7 @@ function openModalDanhSachSinhVien(id) {
 }
 
 // mới
-$("#form_list_nhom_datn").submit(function (event) {
+$("#form_search").submit(function (event) {
     event.preventDefault();
     loadDataNhomDatn(0);
 })
