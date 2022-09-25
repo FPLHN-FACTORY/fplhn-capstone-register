@@ -3,6 +3,7 @@ package com.fpolydatn.core.sinhvien.repository;
 import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
+import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvSinhVienNhomDatnResponse;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.data.domain.Page;
@@ -57,7 +58,7 @@ public interface SvSinhVienNhomDatnRepository extends SinhVienRepository {
             
             ORDER BY b.last_modified_date DESC
             """, nativeQuery = true)
-    Page<SvSinhVienNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") final FindDtNhomDatnTheoDotRequest req);
+    Page<SvSinhVienNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") final FindSvNhomDatnRequest req);
 
     @Query(value = "select a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, a.ma_sinh_vien, a.ten_sinh_vien from sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id\n" +
             "        where a.nhom_id = :#{#req.id}" +

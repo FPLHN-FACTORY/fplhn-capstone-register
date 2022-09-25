@@ -5,6 +5,7 @@ import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.sinhvien.model.request.CreateSinhVienJoinNhomDatnRequest;
+import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvSinhVienNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.repository.SvSinhVienNhomDatnRepository;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienNhomDatnService;
@@ -21,7 +22,7 @@ public class SvSinhVienNhomDatnServiceImpl implements SvSinhVienNhomDatnService 
     private SvSinhVienNhomDatnRepository svSinhVienNhomDatnRepository;
 
     @Override
-    public PageableObject<SvSinhVienNhomDatnResponse> findAllNhomDatn(FindDtNhomDatnTheoDotRequest request) {
+    public PageableObject<SvSinhVienNhomDatnResponse> findAllNhomDatn(FindSvNhomDatnRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<SvSinhVienNhomDatnResponse> res = svSinhVienNhomDatnRepository.findAllNhomDatn(pageable, request);
         return new PageableObject(res);

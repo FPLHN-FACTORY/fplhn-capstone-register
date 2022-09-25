@@ -8,10 +8,10 @@ import lombok.Setter;
 @Getter
 public class FindDtNhomDatnTheoDotRequest extends PageableRequest {
 
-    private String tenDeTai;
-    private String truongNhom;
-    private String soLuong;
-    private String giangVien;
+    private String tenNhom;
+    private String chuyenNganhId;
+    private String dotDangKyId;
+    private String trangThai;
     private String coSoId;
 
 }

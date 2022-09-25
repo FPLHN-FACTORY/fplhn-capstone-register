@@ -8,6 +8,7 @@ import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtApiResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.sinhvien.model.request.CreateSinhVienJoinNhomDatnRequest;
+import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvSinhVienNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienNhomDatnService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class SvSinhVienNhomDatnRestController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseObject viewHocKy(final FindDtNhomDatnTheoDotRequest req) {
+    public ResponseObject viewHocKy(final FindSvNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<SvSinhVienNhomDatnResponse> listNhomDatn = svSinhVienNhomDatnService.findAllNhomDatn(req);

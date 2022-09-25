@@ -7,6 +7,7 @@ import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
+import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvSinhVienNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienNhomDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -30,7 +31,7 @@ public class SvSinhVienNhomDatnController extends BaseController {
     private DtDotDangKyService dtDotDangKyService;
 
     @GetMapping
-    public String findAllNhomDatn(Model model, final FindDtNhomDatnTheoDotRequest req) {
+    public String findAllNhomDatn(Model model, final FindSvNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<SvSinhVienNhomDatnResponse> listNhomDatn = svSinhVienNhomDatnService.findAllNhomDatn(req);
