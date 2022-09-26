@@ -46,4 +46,6 @@ public class PropertyKeys {
 
     public static final String KHONG_PHAI_TRUONG_NHOM = "khong.phai.truong.nhom";
 
+    public static final String NHOM_DA_DU_THANH_VIEN = "nhom.da.du.thanh.vien";
+
 }

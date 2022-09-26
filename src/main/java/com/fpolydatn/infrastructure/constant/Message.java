@@ -40,7 +40,8 @@ public enum Message {
     MAT_KHAU_KHONG_CHINH_XAC(PropertiesReader.getProperty(PropertyKeys.MAT_KHAU_KHONG_CHINH_XAC)),
     FILE_EMPTY(PropertiesReader.getProperty(PropertyKeys.FILE_EMPTY)),
     TRANG_THAI_KHONG_THOA_MAN(PropertiesReader.getProperty(PropertyKeys.TRANG_THAI_KHONG_THOA_MAN)),
-    KHONG_PHAI_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.KHONG_PHAI_TRUONG_NHOM));
+    KHONG_PHAI_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.KHONG_PHAI_TRUONG_NHOM)),
+    NHOM_DA_DU_THANH_VIEN(PropertiesReader.getProperty(PropertyKeys.NHOM_DA_DU_THANH_VIEN));
 
     private String message;
 

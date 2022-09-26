@@ -6,6 +6,8 @@ function clearform() {
     $("#truongNhom").val("");
     $("#giangVien").val("");
     $("#soLuong").val("");
+    $("#errorPassword").text("");
+    $("#inputPassword").val("");
 }
 
 function openModalDanhSachSinhVien(id) {
@@ -13,12 +15,12 @@ function openModalDanhSachSinhVien(id) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: SVNhomDatnApi + "?keyword=" + id,
+        url: SVNhomDatnApi + "?id=" + id,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData.data.data)
+            console.log(responseData.data)
             var text = "";
-            responseData.data.data.map(function (item) {
+            responseData.data.map(function (item) {
                 text += `
                 <tr>
                 <td>${item.stt}</td>
@@ -35,7 +37,6 @@ function openModalDanhSachSinhVien(id) {
     });
 }
 
-// mới
 $("#form_search").submit(function (event) {
     event.preventDefault();
     loadDataNhomDatn(0);
@@ -71,11 +72,13 @@ function loadDataNhomDatn(count) {
                 <td>${item.countSinhVien}/7</td>
                 <td>${item.maSinhVien}-${item.tenSinhVien}</td>
                 <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
+                <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
                 <td><button type="button" data-toggle="modal" data-target="#modal_create" class="btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
                 <td><div class="row"><div class="col-6 d-inline"><button class=" btn btn-success"
                                     data-target="#modal_create1"
                                     data-toggle="modal"
-                                    onclick="clearData();">
+                                    onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
+                                    >
                                 Tham gia nhóm
                             </button>
                         </div>
@@ -103,48 +106,56 @@ function loadDataNhomDatn(count) {
     });
 }
 
-function openModalCreateSinhVienJoinNhom(matKhauNhom, idNhom) {
-    if (matKhauNhom == '') {
+function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
+    clearform();
+    if (Number(matKhauTonTai) == 0) {
+        let addSinhVienRequest = {};
+        addSinhVienRequest["idNhom"] = idNhom;
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: SVNhomDatnApi + "/addSinhVien?idNhom=" + idNhom,
+            url: SVNhomDatnApi + "/add",
+            data: JSON.stringify(addSinhVienRequest),
+            datatype: 'json',
             success: function () {
-                alert("Tham gia thanh cong")
-                loadDataNhomDatn(0);
-                $("#modal_create_sinh_vien_join_nhom").modal('hide');
+                $("#modal_confirm_success").modal('show');
             },
             error: function (responseData) {
+                console.log(responseData);
             }
         });
     } else {
-        $("#modal_create_sinh_vien_join_nhom").modal('show');
-        $("#idNhom").val(idNhom)
-        $("#matKhauNhom").val(matKhauNhom)
+        $("#modal_add_sinh_vien").modal('show');
+        $("#idNhom").val(idNhom);
     }
 }
 
-$("#form_create_sinh_vien_join_nhom").submit(function(event) {
-    event.preventDefault();
-    let matKhauNguoiDung = $("#matKhau").val()
-    let idNhom = $("#idNhom").val()
-    let matKhauNhom = $("#matKhauNhom").val()
-    if (matKhauNguoiDung == matKhauNhom) {
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: SVNhomDatnApi + "/addSinhVien?idNhom=" + idNhom,
-            success: function (responseData) {
-                alert("Tham gia thanh cong")
-                $("#modal_create_sinh_vien_join_nhom").modal('hide');
-                loadDataNhomDatn(0);
-            },
-            error: function (responseData) {
+function addSinhVienHasPassword() {
+    let inputPassword = $("#inputPassword").val();
+    let idNhom = $("#idNhom").val();
+    let addSinhVienRequest = {};
+    addSinhVienRequest["idNhom"] = idNhom;
+    addSinhVienRequest["inputPassword"] = inputPassword;
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: SVNhomDatnApi + "/add",
+        data: JSON.stringify(addSinhVienRequest),
+        datatype: 'json',
+        success: function (responseData) {
+            $("#modal_add_sinh_vien").modal('hide');
+            $("#modal_confirm_success").modal('show');
+        },
+        error: function (responseData) {
+            console.log(responseData);
+            if (responseData.responseJSON.message === 'Mat Khau Khong Chinh Xac') {
+                $("#errorPassword").text("Mật khẩu không chính xác");
             }
-        });
-    } else {
-        alert("Mat khau sai")
-    }
+        }
+    });
+}
+
+$("#form_confirm_success").submit(function (event) {
+    event.preventDefault();
+    window.open(SVNhomDatnView, '_self');
 })
-
-

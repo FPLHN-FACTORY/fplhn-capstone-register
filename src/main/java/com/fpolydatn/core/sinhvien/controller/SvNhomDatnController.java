@@ -2,9 +2,9 @@ package com.fpolydatn.core.sinhvien.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
+import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
-import com.fpolydatn.core.sinhvien.model.response.SvSinhVienNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.repository.DotDangKyRepository;
@@ -15,9 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
-import java.util.Objects;
-
-import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 /**
  * @author hoangnt
@@ -37,25 +34,22 @@ public class SvNhomDatnController extends BaseController {
     private DotDangKyRepository dotDangKyRepository;
 
     @GetMapping
-    public String viewNhomDatn(Model model, final FindSvNhomDatnRequest req ){
+    public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req ){
         String nhomId = svSinhVienService.getNhomIdById(session.getCoSoId(),
-                "e3afc2f8-3562-4606-9aae-62366445d077",
-                "ed8dbb74-e08b-4f8b-bd9d-93a1999dfcbl");
+                "67f067fa-a0f4-4792-9cc4-3dbc92341561",
+                "27b2dc99-65cb-4cbf-b02b-e2e3213517f5");
         if (nhomId == null || nhomId.trim().isEmpty()) {
-            System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             req.setCoSoId(session.getCoSoId());
-            req.setDotDangKyId("e3afc2f8-3562-4606-9aae-62366445d077");
-            PageableObject<SvSinhVienNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
-            System.out.println(listNhomDatn.getData().size());
+            req.setDotDangKyId("67f067fa-a0f4-4792-9cc4-3dbc92341561");
+            PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
             model.addAttribute("page", listNhomDatn);
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,
-                    session.getCoSoId(), "ed8dbb74-e08b-4f8b-bd9d-93a1999dfcbl");
-            List<SvNhomDatnResponse> svNhomDatnResponse = svNhomDatnService.getNhomDatnById(nhomId);
-            System.out.println(svNhomDatnResponse.size());
+                    session.getCoSoId(), "27b2dc99-65cb-4cbf-b02b-e2e3213517f5");
+            List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getNhomDatnById(nhomId);
             model.addAttribute("checkTruongNhom",checkTruongNhom);
-            model.addAttribute("nhomDatnThamGia",svNhomDatnResponse);
+            model.addAttribute("nhomDatnThamGia", svDetailNhomDatnResponse);
             return "sinhvien/sv-nhom-datn";
         }
     }

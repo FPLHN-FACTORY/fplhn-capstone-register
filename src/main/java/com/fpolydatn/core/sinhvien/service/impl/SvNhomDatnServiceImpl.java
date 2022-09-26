@@ -1,9 +1,13 @@
 package com.fpolydatn.core.sinhvien.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
+import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
+import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
+import com.fpolydatn.core.sinhvien.model.request.AddSinhVienRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
+import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
-import com.fpolydatn.core.sinhvien.model.response.SvSinhVienNhomDatnResponse;
+import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.core.sinhvien.repository.SvNhomDatnRepository;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.entity.NhomDatn;
@@ -29,7 +33,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     private SvNhomDatnRepository svNhomDatnRepository;
 
     @Override
-    public List<SvNhomDatnResponse> getNhomDatnById(String id) {
+    public List<SvDetailNhomDatnResponse> getNhomDatnById(String id) {
         return svNhomDatnRepository.getNhomDatnById(id);
     }
 
@@ -62,10 +66,32 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
-    public PageableObject<SvSinhVienNhomDatnResponse> findAllNhomDatn(final FindSvNhomDatnRequest request) {
+    public PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<SvSinhVienNhomDatnResponse> res = svNhomDatnRepository.findAllNhomDatn(pageable, request);
+        Page<SvNhomDatnResponse> res = svNhomDatnRepository.findAllNhomDatn(pageable, request);
         return new PageableObject(res);
+    }
+
+    @Override
+    public List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(String id) {
+        List<SvShowSinhVienTheoNhomResponse> res = svNhomDatnRepository.showDanhSachSinhVien(id);
+        return res;
+    }
+
+    @Override
+    public boolean addSinhVienTheoNhom(final AddSinhVienRequest req) {
+        String matKhau = svNhomDatnRepository.getMatKhauById(req.getIdNhom());
+        int soLuongThanhVien = svNhomDatnRepository.getSoLuongThanhVienById(req.getIdNhom());
+        if (soLuongThanhVien == 7){
+            throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
+        }
+        if (!(matKhau == null)) {
+            if (!matKhau.trim().equals(req.getInputPassword().trim())){
+                throw new RestApiException(Message.MAT_KHAU_KHONG_CHINH_XAC);
+            }
+        }
+        svNhomDatnRepository.addSinhVienInGroup(req);
+        return true;
     }
 
 }

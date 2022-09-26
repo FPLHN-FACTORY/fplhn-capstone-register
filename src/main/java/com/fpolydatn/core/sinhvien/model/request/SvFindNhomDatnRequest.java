@@ -1,16 +1,18 @@
 package com.fpolydatn.core.sinhvien.model.request;
 
+import com.fpolydatn.core.common.base.PageableRequest;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author hoangnt
- */
-@Getter
 @Setter
-public class SvFindNhomDatnRequest {
+@Getter
+public class SvFindNhomDatnRequest extends PageableRequest{
 
-    private String idNhom;
+    private String tenDeTai;
+    private String truongNhom;
+    private String soLuong;
+    private String giangVien;
+    private String coSoId;
+    private String dotDangKyId;
 
-    private String idSinhVien;
 }

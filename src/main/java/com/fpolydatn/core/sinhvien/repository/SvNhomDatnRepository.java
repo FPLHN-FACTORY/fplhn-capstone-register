@@ -1,14 +1,20 @@
 package com.fpolydatn.core.sinhvien.repository;
 
-import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
+import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
+import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
+import com.fpolydatn.core.sinhvien.model.request.AddSinhVienRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
+import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
-import com.fpolydatn.core.sinhvien.model.response.SvSinhVienNhomDatnResponse;
+import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -22,7 +28,7 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             "FROM nhom_datn a join sinh_vien b on a.id = b.nhom_id " +
             "join giang_vien_huong_dan c on c.id = a.giang_vien_id\n" +
             "join dot_dang_ky d on d.id = a.dot_dang_ky_id where  a.id = :nhomDatnId",nativeQuery = true)
-    List<SvNhomDatnResponse> getNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
+    List<SvDetailNhomDatnResponse> getNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
 
     @Query(value = "SELECT truong_nhom_id FROM nhom_datn WHERE id = :nhomDatnId and co_so_id = :coSoId",nativeQuery = true)
     String getIdTruongNhom (@Param("nhomDatnId") String nhomDatnId,@Param("coSoId") String coSoId);
@@ -33,7 +39,7 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
     @Query(value = """
             SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ten_nhom
             ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien,
-            e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date, b.mat_khau
+            e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date, IF(b.mat_khau IS NULL, 0, 1) AS mat_khau_ton_tai
             FROM nhom_datn b JOIN sinh_vien c ON b.truong_nhom_id = c.id
             JOIN sinh_vien d ON d.nhom_id = b.id
             JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
@@ -51,7 +57,7 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             AND b.trang_thai = 0
             GROUP BY b.id
             HAVING (:#{#req.soLuong} IS NULL OR :#{#req.soLuong} LIKE ''
-            OR CONVERT(COUNT(d.ma_sinh_vien), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED))            
+            OR CONVERT(COUNT(d.ma_sinh_vien), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED))  AND COUNT(d.ma_sinh_vien) < 7          
             ORDER BY b.last_modified_date DESC
             """, countQuery = """
             SELECT count(b.id)
@@ -72,8 +78,26 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             AND b.trang_thai = 0
             GROUP BY b.id
             HAVING (:#{#req.soLuong} IS NULL OR :#{#req.soLuong} LIKE ''
-            OR CONVERT(COUNT(d.ma_sinh_vien), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED))
+            OR CONVERT(COUNT(d.ma_sinh_vien), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED)) AND COUNT(d.ma_sinh_vien) < 7
             ORDER BY b.last_modified_date DESC
             """, nativeQuery = true)
-    Page<SvSinhVienNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") FindSvNhomDatnRequest req);
+    Page<SvNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") SvFindNhomDatnRequest req);
+
+    @Query(value = "SELECT id, ROW_NUMBER() OVER(ORDER BY last_modified_date DESC) AS stt, ma_sinh_vien, ten_sinh_vien " +
+            "FROM sinh_vien \n" +
+            "WHERE nhom_id = :id"
+            , nativeQuery = true)
+    List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(@Param("id") String id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE sinh_vien SET nhom_id = :#{#req.idNhom} WHERE id = :#{#req.idUser}",nativeQuery = true)
+    void addSinhVienInGroup(@Param("req") AddSinhVienRequest req);
+
+    @Query(value = "SELECT mat_khau FROM nhom_datn WHERE id = :id", nativeQuery = true)
+    String getMatKhauById(@Param("id") String id);
+
+    @Query(value = "SELECT COUNT(id) FROM sinh_vien WHERE nhom_id = :nhomId GROUP BY nhom_id", nativeQuery = true)
+    int getSoLuongThanhVienById(@Param("nhomId") String nhomId);
+
 }

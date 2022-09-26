@@ -4,14 +4,20 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.response.DtApiResponse;
-import com.fpolydatn.core.sinhvien.model.request.FindSvNhomDatnRequest;
-import com.fpolydatn.core.sinhvien.model.response.SvSinhVienNhomDatnResponse;
+import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
+import com.fpolydatn.core.sinhvien.model.request.AddSinhVienRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
+import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
+import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -34,12 +40,12 @@ public class SvNhomDatnRestController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseObject viewHocKy(final FindSvNhomDatnRequest req) {
+    public ResponseObject viewNhomDatn(final SvFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        req.setDotDangKyId("e3afc2f8-3562-4606-9aae-62366445d077");
-        PageableObject<SvSinhVienNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
-        DtApiResponse<SvSinhVienNhomDatnResponse> dtApiResponse = new DtApiResponse<>();
+        req.setDotDangKyId("67f067fa-a0f4-4792-9cc4-3dbc92341561");
+        PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
+        DtApiResponse<SvNhomDatnResponse> dtApiResponse = new DtApiResponse<>();
         dtApiResponse.setData(listNhomDatn);
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < listNhomDatn.getTotalPages(); i++) {
@@ -47,6 +53,18 @@ public class SvNhomDatnRestController extends BaseController {
         }
         dtApiResponse.setList(list);
         return new ResponseObject(dtApiResponse);
+    }
+
+    @GetMapping("")
+    public ResponseObject showDanhSachSinhVien(@RequestParam("id") String id) {
+        List<SvShowSinhVienTheoNhomResponse> listDanhSachSinhVien = svNhomDatnService.showDanhSachSinhVien(id);
+        return new ResponseObject(listDanhSachSinhVien);
+    }
+
+    @PostMapping("/add")
+    public ResponseObject addSinhVien(@RequestBody AddSinhVienRequest req) {
+        req.setIdUser("27b2dc99-65cb-4cbf-b02b-e2e3213517f5");
+        return new ResponseObject(svNhomDatnService.addSinhVienTheoNhom(req));
     }
 
 }

@@ -110,13 +110,13 @@
                         <div
                                 class="modal fade"
                                 tabindex="-1"
-                                id="modal_create_sinh_vien_join_nhom"
+                                id="modal_add_sinh_vien"
                                 aria-labelledby="exampleModalLabel"
                                 aria-hidden="true">
                             <div class="modal-dialog modal-lg modal-lg"
                                  role="document">
                                 <div class="modal-content">
-                                    <form id="form_create_sinh_vien_join_nhom">
+                                    <form id="form_add_sinh_vien">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Tham gia nhóm</h5>
                                             <button type="button" class="close"
@@ -125,34 +125,68 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <span id="id_can_bo_update" style="color:red;"></span>
-
                                             <div class="form-group">
                                                 <br>
                                                 <label class="col-form-label">Mật khẩu</label>
                                                 <input
                                                         type="text"
                                                         class="form-control"
-                                                        id="matKhau">
+                                                        id="inputPassword">
 
                                                 <span class="text-danger"
                                                       id="idNhom"></span>
                                                 <span class="text-danger"
-                                                      id="matKhauNhom"></span>
+                                                      id="errorPassword"></span><br>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                     data-dismiss="modal">Hủy
                                             </button>
-                                            <button type="submit" class="btn btn-primary">Tham gia nhóm
+                                            <button
+                                                    type="button" class="btn btn-primary"
+                                                    th:attr="onclick=|addSinhVienHasPassword()|"
+                                            >Tham gia nhóm
                                             </button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <!--                        edn add nhom-->
+                        <!--                        end add nhom-->
+                        <!--        Begin confirm Success         -->
+                        <div
+                                class="modal fade"
+                                tabindex="-1"
+                                id="modal_confirm_success"
+                                aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-lg"
+                                 role="document">
+                                <div class="modal-content">
+                                    <form id="form_confirm_success">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Thông báo</h5>
+                                            <button type="button" class="close"
+                                                    data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <br>
+                                                <h4>Tham gia thành công</h4>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Xem chi tiết nhóm
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--        End confirm Success                -->
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
@@ -163,7 +197,7 @@
                                             <div aria-hidden="true"
                                                  aria-labelledby="exampleModalLabel"
                                                  class="modal fade "
-                                                 id="modal_create"
+                                                 id="modal_show_detail"
                                                  tabindex="-1">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
@@ -174,7 +208,7 @@
                                                                         nhóm</label>
                                                                     <hr>
                                                                     <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
-                                                                           id="custom-table">
+                                                                           id="custom-detail-table">
                                                                         <!-- hear-->
                                                                         <thead>
                                                                         <th>STT</th>
@@ -195,7 +229,6 @@
                                         </div>
                                     </div>
                                     <div class="mt-3 overflow-hidden">
-                                        <!--                                   Export file     -->
 
                                         <!--                                        Table body-->
                                         <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
@@ -207,6 +240,7 @@
                                             <th>Số thành viên</th>
                                             <th>Trưởng nhóm</th>
                                             <th>Gv hướng dẫn</th>
+                                            <th>Trạng thái nhóm</th>
                                             <th>Danh sách thành viên</th>
                                             <th>Hành động</th>
                                             </thead>
@@ -219,6 +253,7 @@
                                                     <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
                                                     <td th:text="${nhomDatn.maSinhVien} + ' - ' + ${nhomDatn.getTenSinhVien()}"></td>
                                                     <td th:text="${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></td>
+                                                    <td th:text="${nhomDatn.getMatKhauTonTai} == '0' ? 'Công khai' : 'Nhóm kín'"></td>
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-6 d-inline"
@@ -241,7 +276,7 @@
                                                                 <button
                                                                         type="button"
                                                                         class="btn btn-success"
-                                                                        th:attr="onclick=|openModalCreateSinhVienJoinNhom('${nhomDatn.getMatKhau()}', '${nhomDatn.getId()}')|" >
+                                                                        th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|" >
                                                                     Tham gia nhóm
                                                                 </button>
                                                             </div>

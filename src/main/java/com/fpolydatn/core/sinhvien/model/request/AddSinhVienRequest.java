@@ -5,6 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateSinhVienJoinNhomDatnRequest {
+public final class AddSinhVienRequest {
     private String idNhom;
+    private String idUser;
+    private String inputPassword;
 }
