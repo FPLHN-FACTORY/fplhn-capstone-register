@@ -34,44 +34,6 @@
                     <h3>Quản lý nhóm dự án tốt nghiệp </h3>
                     <div class="mt-5">
                         <div class="m-portlet">
-                            <div class="m-portlet__head">
-                                <div class="m-portlet__head-caption">
-                                    <div class="m-portlet__head-title">
-                                <span class="m-portlet__head-icon">
-                                    <i class="m-menu__link-icon flaticon-web"></i>
-                                </span>
-                                        <h3 class="m-portlet__head-text">
-                                            Bộ lọc
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <form id="form_list_giang_vien">
-                                <div class="row">
-                                    <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                        <span for="" class="fillter-name col-4 text-center">Học kỳ:</span>
-                                        <select class="form-control col-7" id="tenHocKyNhomHuongDan" name="tenGvhd">
-                                            <option value="" hidden>Chọn Học Kỳ</option>
-                                            <option th:each="item : ${listHocKy}" th:value="${item.getId()}"
-                                                    th:text="${item.getName()}"></option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                        <span for="" class="fillter-name col-4 text-center">Đợt đăng ký:</span>
-                                        <select class="form-control col-7" id="tenDotDangKyNhomHuongDan"
-                                                name="tenDotDangKy">
-                                            <option value="" hidden>Đợt đăng ký</option>
-                                            <option th:each="item : ${listDotDangKy}" th:value="${item.getId()}"
-                                                    th:text="${item.getName()}"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </form>
-                            <br>
-                        </div>
-
-                        <div class="m-portlet">
                             <div class="m-portlet__body">
                                 <div class="table-responsive mt-3">
                                     <table id="custom-table"

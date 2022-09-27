@@ -92,12 +92,10 @@ function seachNhomdatnDoiXacNhan(index) {
     if(index == undefined){
         index =0
     }
-    let tenHocKy = $("#tenHocKyNhomDoiXacNhan").val()
-    let tenDotDangKy = $("#tenDotDangKyDoiXacNhan").val()
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: nhomDatnAPI + "/seach/chot-nhom-datn" + "?hocKyId=" + tenHocKy  + "&dotDangKyId=" + tenDotDangKy + "&page="+index,
+        url: nhomDatnAPI + "/seach/chot-nhom-datn" + "?page="+index,
         success: function (responseData) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
@@ -154,12 +152,10 @@ function seachNhomdatnHuongDan(index) {
     if(index == undefined){
         index =0
     }
-    let tenHocKy = $("#tenHocKyNhomHuongDan").val()
-    let tenDotDangKy = $("#tenDotDangKyNhomHuongDan").val()
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: nhomDatnAPI + "/seach/nhom-datn-huong-dan" + "?hocKyId=" + tenHocKy  + "&dotDangKyId=" + tenDotDangKy  + "&page="+index,
+        url: nhomDatnAPI + "/seach/nhom-datn-huong-dan" + "?page="+index,
         success: function (responseData) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `

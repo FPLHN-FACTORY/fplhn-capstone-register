@@ -76,13 +76,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE gvhd.id LIKE :maGvhd
-            AND ( :#{#request.hocKyId} IS NULL
-                          OR :#{#request.hocKyId} LIKE ''
-                          OR hk.id LIKE %:#{#request.hocKyId}% )
-            AND                                              
-                        ( :#{#request.dotDangKyId} IS NULL
-                           OR :#{#request.dotDangKyId} LIKE ''
-                           OR ddk.id LIKE %:#{#request.dotDangKyId}% )
+            AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
             AND nd.trang_thai = 0
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
@@ -96,18 +90,12 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE   gvhd.id LIKE :maGvhd
-            AND ( :#{#request.hocKyId} IS NULL
-                          OR :#{#request.hocKyId} LIKE ''
-                          OR hk.id LIKE %:#{#request.hocKyId}% )
-            AND                                              
-                        ( :#{#request.dotDangKyId} IS NULL
-                           OR :#{#request.dotDangKyId} LIKE ''
-                           OR ddk.id LIKE %:#{#request.dotDangKyId}% )
+            AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
             AND nd.trang_thai = 0
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, nativeQuery = true)
-    Page<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(@Param("maGvhd") String maGvhd, @Param("request") GvFindNhomDatnHuongDanRequest request, Pageable page);
+    Page<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(@Param("maGvhd") String maGvhd,  Pageable page);
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER( ORDER BY nd.last_modified_date DESC ) AS stt, nd.id, nd.ten_nhom ,nd.ten_de_tai , cn.ten_chuyen_nganh,
@@ -120,13 +108,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE gvhd.id LIKE :maGvhd
-            AND ( :#{#request.hocKyId} IS NULL
-                          OR :#{#request.hocKyId} LIKE ''
-                          OR hk.id LIKE %:#{#request.hocKyId}% )
-            AND                                              
-                        ( :#{#request.dotDangKyId} IS NULL
-                           OR :#{#request.dotDangKyId} LIKE ''
-                           OR ddk.id LIKE %:#{#request.dotDangKyId}% )
+            AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
             AND nd.trang_thai !=0
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
@@ -140,16 +122,10 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE   gvhd.id LIKE :maGvhd
-            AND ( :#{#request.hocKyId} IS NULL
-                          OR :#{#request.hocKyId} LIKE ''
-                          OR hk.id LIKE %:#{#request.hocKyId}% )
-            AND                                              
-                        ( :#{#request.dotDangKyId} IS NULL
-                           OR :#{#request.dotDangKyId} LIKE ''
-                           OR ddk.id LIKE %:#{#request.dotDangKyId}% )
+            AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
             AND nd.trang_thai !=0
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, nativeQuery = true)
-    Page<GvNhomDatnResponse> findAllNhomDatnHuongDan(@Param("maGvhd") String maGvhd, @Param("request") GvFindNhomDatnHuongDanRequest request, Pageable page);
+    Page<GvNhomDatnResponse> findAllNhomDatnHuongDan(@Param("maGvhd") String maGvhd, Pageable page);
 }

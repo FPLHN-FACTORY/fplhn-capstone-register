@@ -60,14 +60,14 @@ public class GvNhomDatnRestController {
 
     @GetMapping("/seach/chot-nhom-datn")
     public ResponseObject findAllNhomdatnCanChot(final GvFindNhomDatnHuongDanRequest request){
-        String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
+        String maGvhd = "f82fc123-0e98-4b98-85a2-20e65ea1d75a";
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnDoiPheDuyet(maGvhd, request);
         return new ResponseObject(listNhomDatn);
     }
 
     @GetMapping("/seach/nhom-datn-huong-dan")
     public ResponseObject findAllNhomdatnHuongDan(final GvFindNhomDatnHuongDanRequest request){
-        String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
+        String maGvhd = "f82fc123-0e98-4b98-85a2-20e65ea1d75a";
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnHuongDan(maGvhd, request);
         return new ResponseObject(listNhomDatn);
     }
