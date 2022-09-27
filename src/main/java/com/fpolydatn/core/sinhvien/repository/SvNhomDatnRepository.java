@@ -23,14 +23,13 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = "SELECT a.id, b.id AS id_sinh_vien, ROW_NUMBER() OVER() AS Stt, ma_nhom, ten_nhom, ten_dot_dang_ky, " +
             "ten_de_tai, ma_sinh_vien, ten_sinh_vien, ten_gvhd, f.ten_mon_datn,\n" +
-            "IF(b.id = a.truong_nhom_id,'Trưởng nhóm','Thành viên') as chuc_vu, a.trang_thai, " +
+            "IF(b.id = a.truong_nhom_id, 1, 0) AS chuc_vu, a.trang_thai, " +
             "IF(a.nhan_xet IS NULL, 'Không có nhận xét', a.nhan_xet) AS nhan_xet\n" +
-            "FROM nhom_datn a LEFT JOIN sinh_vien b on a.id = b.nhom_id " +
-            "LEFT JOIN giang_vien_huong_dan c on c.id = a.giang_vien_id\n" +
-            "LEFT JOIN phan_cong_huong_dan e on e.giang_vien_id = c.id\n" +
-            "LEFT JOIN mon_datn f on f.id = e.mon_datn_id\n" +
-            "LEFT JOIN dot_dang_ky d on d.id = a.dot_dang_ky_id where  a.id = :nhomDatnId",nativeQuery = true)
-    List<SvDetailNhomDatnResponse> getNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
+            "FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id " +
+            "LEFT JOIN giang_vien_huong_dan c ON c.id = a.giang_vien_id\n" +
+            "JOIN mon_datn f ON f.id = b.mon_datn_id\n" +
+            "LEFT JOIN dot_dang_ky d ON d.id = a.dot_dang_ky_id WHERE a.id = :nhomDatnId",nativeQuery = true)
+    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
 
     @Query(value = "SELECT id, co_so_id, dot_dang_ky_id, giang_vien_id, ma_nhom, " +
             "mat_khau, mo_ta, nhan_xet, ten_de_tai, ten_nhom, trang_thai, truong_nhom_id FROM nhom_datn " +
@@ -96,22 +95,7 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             , nativeQuery = true)
     List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(@Param("id") String id);
 
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE sinh_vien SET nhom_id = :#{#req.idNhom} WHERE id = :#{#req.idUser}",nativeQuery = true)
-    void addSinhVienInGroup(@Param("req") SvAddSinhVienRequest req);
-
     @Query(value = "SELECT mat_khau FROM nhom_datn WHERE id = :id", nativeQuery = true)
     String getMatKhauById(@Param("id") String id);
-
-    @Query(value = "SELECT COUNT(id) FROM sinh_vien WHERE nhom_id = :nhomId GROUP BY nhom_id", nativeQuery = true)
-    int getSoLuongThanhVienById(@Param("nhomId") String nhomId);
-
-    @Query(value = "SELECT count(1) FROM nhom_datn n JOIN giang_vien_huong_dan g ON n.giang_vien_id = g.id " +
-            "WHERE g.id LIKE :id", nativeQuery = true)
-    Long countByGiangVienId(@Param("id") String id);
-
-    @Query(value = "UPDATE sinh_vien SET nhom_id = NULL WHERE id = :id", nativeQuery = true)
-    void roiNhom(@Param("id") String id);
 
 }

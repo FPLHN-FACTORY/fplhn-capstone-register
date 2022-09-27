@@ -63,6 +63,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br>
                                 <form
                                       id="form_search">
                                     <div class="row">
@@ -104,210 +105,19 @@
                                         </div>
                                     </div>
                                 </form>
+                                <br>
                             </div>
                         </section>
-                        <!--          Begin Modal Create Nhom              -->
-                        <div class="modal fade " id="modal_create" tabindex="-1"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <form id="form_create_nhom_datn">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Đăng
-                                                ký
-                                                nhóm Dự án tốt nghiệp</h5>
-                                            <button type="button" class="close"
-                                                    data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <span class="text-danger">(*)</span>
-                                                <label class="col-form-label">Môn DATN</label>
-                                                <select class="form-control col-8" id="monDatnCreateNhom">
-                                                    <option th:each="i : ${listDataMonDatn}"
-                                                            th:value="${i.getId()}"
-                                                            th:text="${i.getTenMon()}">
-                                                    </option>
-                                                    <option value="" selected>Không chọn
-                                                    </option>
-                                                </select>
-                                                <p class="text-danger" id="mon_datn_error"></p>
-                                                <label class="col-form-label">Chọn giảng viên
-                                                    hướng
-                                                    dẫn</label>
-                                                <select class="form-control col-8"
-                                                        id="giangVienCreateNhom">
-                                                    <option hidden>Không chọn</option>
-                                                </select>
-                                                <span class="text-danger">(*)</span>
-                                                <label class="col-form-label">Tên nhóm:</label>
-                                                <input type="text" class="form-control"
-                                                       id="tenNhomCreateNhom">
-                                                <p class="text-danger" id="ten_nhom_error"></p>
-                                                <span class="text-danger">(*)</span>
-                                                <label class="col-form-label">Tên đề tài</label>
-                                                <input type="text" class="form-control"
-                                                       id="tenDeTaiCreateNhom">
-                                                <p class="text-danger" id="ten_de_tai_error"></p>
-                                                <label class="col-form-label">Trạng thái
-                                                    nhóm</label>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                           value="" id="checkTrangThaiCreateNhom">
-                                                    <label class="form-check-label"
-                                                           for="checkTrangThaiCreateNhom">
-                                                        Riêng tư
-                                                    </label>
-                                                </div>
-                                                <label class="col-form-label">Mô tả:</label>
-                                                <textarea name="" id="moTaCreateNhom" cols="30" rows="10"
-                                                          class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Hủy
-                                            </button>
-                                            <button type="button" class="btn btn-primary"
-                                                    th:attr="onclick=|createNhomDatn()|"
-                                            >Đăng ký
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!--           End Modal Create Nhom             -->
-                        <!--                        begin add Sinh vien-->
-                        <div
-                                class="modal fade"
-                                tabindex="-1"
-                                id="modal_add_sinh_vien"
-                                aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-lg"
-                                 role="document">
-                                <div class="modal-content">
-                                    <form id="form_add_sinh_vien">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Tham gia nhóm</h5>
-                                            <button type="button" class="close"
-                                                    data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <br>
-                                                <label class="col-form-label">Mật khẩu</label>
-                                                <input
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="inputPassword">
 
-                                                <span class="text-danger"
-                                                      id="idNhom"></span>
-                                                <span class="text-danger"
-                                                      id="errorPassword"></span><br>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Hủy
-                                            </button>
-                                            <button
-                                                    type="button" class="btn btn-primary"
-                                                    th:attr="onclick=|addSinhVienHasPassword()|"
-                                            >Tham gia nhóm
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!--                        end add nhom-->
-                        <!--        Begin confirm Success         -->
-                        <div
-                                class="modal fade"
-                                tabindex="-1"
-                                id="modal_confirm_success"
-                                aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-lg"
-                                 role="document">
-                                <div class="modal-content">
-                                    <form id="form_confirm_success">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Thông báo</h5>
-                                            <button type="button" class="close"
-                                                    data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <br>
-                                                <h4 id="messageSuccess"></h4>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Xem chi tiết nhóm
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!--        End confirm Success                -->
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
-                                    <!--                                    hiển thị danh sách chi tiết-->
-                                    <div class="row">
-                                        <div class="col-6 d-inline"
-                                        >
-                                            <div aria-hidden="true"
-                                                 aria-labelledby="exampleModalLabel"
-                                                 class="modal fade "
-                                                 id="modal_show_detail"
-                                                 tabindex="-1">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <form id="form_create_hoc_ky">
-                                                            <div class="modal-body">
-                                                                <div class="form-group">
-                                                                    <label class="col-form-label">Danh sách thành viên
-                                                                        nhóm</label>
-                                                                    <hr>
-                                                                    <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
-                                                                           id="custom-detail-table">
-                                                                        <!-- hear-->
-                                                                        <thead>
-                                                                        <th>STT</th>
-                                                                        <th>Mã sinh viên</th>
-                                                                        <th>Tên sinh viên</th>
-                                                                        </thead>
-                                                                        <!-- body-->
-                                                                        <tbody id="show_Dssv">
-
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="mt-3 overflow-hidden">
                                         <button data-toggle="modal" data-target="#modal_create"
                                                 class="btn btn-primary">
                                             Tạo nhóm Dự án tốt nghiệp
                                         </button>
-                                        <br>
+                                        <br><br>
                                         <!--                Table body       -->
                                         <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
                                                id="custom-table">
@@ -393,7 +203,200 @@
     </div>
     <!-- end:: Body -->
 </div>
+<!--                                    hiển thị danh sách chi tiết-->
+<div class="row">
+    <div class="col-6 d-inline"
+    >
+        <div aria-hidden="true"
+             aria-labelledby="exampleModalLabel"
+             class="modal fade "
+             id="modal_show_detail"
+             tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form id="form_create_hoc_ky">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="col-form-label">Danh sách thành viên
+                                    nhóm</label>
+                                <hr>
+                                <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+                                       id="custom-detail-table">
+                                    <!-- hear-->
+                                    <thead>
+                                    <th>STT</th>
+                                    <th>Mã sinh viên</th>
+                                    <th>Tên sinh viên</th>
+                                    </thead>
+                                    <!-- body-->
+                                    <tbody id="show_Dssv">
 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Chi tiết nhóm      -->
+<!--          Begin Modal Create Nhom              -->
+<div class="modal fade " id="modal_create" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="form_create_nhom_datn">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Đăng
+                        ký
+                        nhóm Dự án tốt nghiệp</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <span class="text-danger">(*)</span>
+                        <label class="col-form-label">Môn DATN</label>
+                        <select class="form-control col-8" id="monDatnCreateNhom">
+                            <option th:each="i : ${listDataMonDatn}"
+                                    th:value="${i.getId()}"
+                                    th:text="${i.getTenMon()}">
+                            </option>
+                            <option value="" selected>Không chọn
+                            </option>
+                        </select>
+                        <p class="text-danger" id="mon_datn_error"></p>
+                        <label class="col-form-label">Chọn giảng viên
+                            hướng
+                            dẫn</label>
+                        <select class="form-control col-8"
+                                id="giangVienCreateNhom">
+                            <option hidden>Không chọn</option>
+                        </select>
+                        <span class="text-danger">(*)</span>
+                        <label class="col-form-label">Tên nhóm:</label>
+                        <input type="text" class="form-control"
+                               id="tenNhomCreateNhom">
+                        <p class="text-danger" id="ten_nhom_error"></p>
+                        <span class="text-danger">(*)</span>
+                        <label class="col-form-label">Tên đề tài</label>
+                        <input type="text" class="form-control"
+                               id="tenDeTaiCreateNhom">
+                        <p class="text-danger" id="ten_de_tai_error"></p>
+                        <label class="col-form-label">Trạng thái
+                            nhóm</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                   value="" id="checkTrangThaiCreateNhom">
+                            <label class="form-check-label"
+                                   for="checkTrangThaiCreateNhom">
+                                Riêng tư
+                            </label>
+                        </div>
+                        <label class="col-form-label">Mô tả:</label>
+                        <textarea name="" id="moTaCreateNhom" cols="30" rows="10"
+                                  class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Hủy
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            th:attr="onclick=|createNhomDatn()|"
+                    >Đăng ký
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--           End Modal Create Nhom             -->
+<!--           begin add Sinh vien              -->
+<div
+        class="modal fade"
+        tabindex="-1"
+        id="modal_add_sinh_vien"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_add_sinh_vien">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tham gia nhóm</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <br>
+                        <label class="col-form-label">Mật khẩu</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="inputPassword">
+
+                        <span class="text-danger"
+                              id="idNhom"></span>
+                        <span class="text-danger"
+                              id="errorPassword"></span><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Hủy
+                    </button>
+                    <button
+                            type="button" class="btn btn-primary"
+                            th:attr="onclick=|addSinhVienHasPassword()|"
+                    >Tham gia nhóm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--                        end add Sinh vien-->
+<!--        Begin confirm Success         -->
+<div
+        class="modal fade"
+        tabindex="-1"
+        id="modal_confirm_success"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_confirm_success">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông báo</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <br>
+                        <h4 id="messageSuccess"></h4>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Xem chi tiết nhóm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--        End confirm Success                -->
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

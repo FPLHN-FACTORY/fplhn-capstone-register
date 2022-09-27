@@ -90,7 +90,7 @@
                                             GVHD</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <input type="text"
-                                                   th:value="${nhomDatnThamGia[0].tenGvhd}"
+                                                   th:value="${nhomDatnThamGia[0].tenGvhd} == null ? '*Chưa có giảng viên hướng dẫn*' : ${nhomDatnThamGia[0].tenGvhd}"
                                                    readonly="readonly" class="form-control">
                                         </div>
                                     </div>
@@ -163,23 +163,36 @@
                                                 <th>Mã Sinh Viên</th>
                                                 <th>Tên Sinh Viên</th>
                                                 <th>Chức Vụ</th>
+                                                <th th:style="${checkTruongNhom} == false ? 'display:none' : 'display:block'">
+                                                    Chức năng
+                                                </th>
                                                 </thead>
                                                 <tbody>
-                                                <th:block th:each="SvnhomDatn : ${nhomDatnThamGia}">
+                                                <th:block th:each="SvNhomDatn : ${nhomDatnThamGia}">
                                                     <tr>
-                                                        <td th:text="${SvnhomDatn.getStt()}"></td>
-                                                        <td th:text="${SvnhomDatn.getMaSinhVien()}"></td>
-                                                        <td th:text="${SvnhomDatn.getTenSinhVien()}"></td>
-                                                        <td th:text="${SvnhomDatn.getChucVu()}"></td>
+                                                        <td th:text="${SvNhomDatn.getStt()}"></td>
+                                                        <td th:text="${SvNhomDatn.getMaSinhVien()}"></td>
+                                                        <td th:text="${SvNhomDatn.getTenSinhVien()}"></td>
+                                                        <td th:text="${SvNhomDatn.getChucVu()} == 1 ? 'Trưởng nhóm' : 'Thành viên'"></td>
+                                                        <td
+                                                                th:style="${checkTruongNhom} == false ? 'display:none' : (${SvNhomDatn.getChucVu()} == 1 ? 'display:none' : 'display:block')"
+                                                        >
+                                                            <button
+                                                                    class="btn btn-primary"
+                                                                    th:attr="onclick=|chuyenQuyenTruongNhom('${SvNhomDatn.getIdSinhVien()}', '${SvNhomDatn.getTenSinhVien()}')|"
+                                                            >
+                                                                Chuyển quyền trưởng nhóm
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                 </th:block>
                                                 </tbody>
                                             </table>
                                             <div style="text-align: right">
                                                 <button
-                                                   class="btn btn-danger text-white"
-                                                   th:attr="onclick=|roiNhom()|"
-                                                   th:style="${checkTruongNhom} == true ? 'display:none' : 'display:block'"
+                                                        class="btn btn-danger text-white"
+                                                        th:attr="onclick=|roiNhom(${soThanhVien})|"
+                                                        th:style="${soThanhVien} == 1 ? 'display:block' : (${checkTruongNhom} == true ? 'display:none' : 'display:block')"
                                                 >
                                                     Rời nhóm
                                                 </button>

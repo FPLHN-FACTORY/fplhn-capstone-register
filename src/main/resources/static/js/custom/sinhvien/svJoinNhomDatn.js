@@ -43,10 +43,10 @@ $("#form_search").submit(function (event) {
 })
 
 function loadDataNhomDatn(count) {
-    let tenDeTai = $("#tenDeTai").val()
-    let soLuong = $("#soLuong").val()
-    let giangVien = $("#giangVien").val()
-    let truongNhom = $("#truongNhom").val()
+    let tenDeTai = $("#tenDeTai").val().trim();
+    let soLuong = $("#soLuong").val().trim();
+    let giangVien = $("#giangVien").val().trim();
+    let truongNhom = $("#truongNhom").val().trim();
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -121,6 +121,7 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
             data: JSON.stringify(addSinhVienRequest),
             datatype: 'json',
             success: function () {
+                $("#messageSuccess").text("Tham gia thành công");
                 $("#modal_confirm_success").modal('show');
             },
             error: function (responseData) {
@@ -134,7 +135,7 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
 }
 
 function addSinhVienHasPassword() {
-    let inputPassword = $("#inputPassword").val();
+    let inputPassword = $("#inputPassword").val().trim();
     let idNhom = $("#idNhom").val();
     let addSinhVienRequest = {};
     addSinhVienRequest["idNhom"] = idNhom;
@@ -147,6 +148,7 @@ function addSinhVienHasPassword() {
         datatype: 'json',
         success: function (responseData) {
             $("#modal_add_sinh_vien").modal('hide');
+            $("#messageSuccess").text("Tham gia thành công");
             $("#modal_confirm_success").modal('show');
         },
         error: function (responseData) {
@@ -160,7 +162,6 @@ function addSinhVienHasPassword() {
 
 $("#form_confirm_success").submit(function (event) {
     event.preventDefault();
-    $("#messageSuccess").text("Tham gia thành công");
     window.open(SVNhomDatnView, '_self');
 })
 
@@ -188,10 +189,11 @@ function createNhomDatn() {
     $("#ten_de_tai_error").text("");
     $("#mon_datn_error").text("");
     $("#ten_nhom_error").text("");
-    let giangVienId = $("#giangVienCreateNhom").val()
-    let tenDeTai = $("#tenDeTaiCreateNhom").val()
-    let tenNhom = $("#tenNhomCreateNhom").val()
-    let moTa = $("#moTaCreateNhom").val()
+    let giangVienId = $("#giangVienCreateNhom").val();
+    let tenDeTai = $("#tenDeTaiCreateNhom").val().trim();
+    let tenNhom = $("#tenNhomCreateNhom").val().trim();
+    let moTa = $("#moTaCreateNhom").val().trim();
+    let idMonDatn = $("#monDatnCreateNhom").val();
 
     if ($('#monDatnCreateNhom').val() === "") {
         $("#mon_datn_error").text("*Chưa chọn môn dự án tốt nghiệp");
@@ -209,9 +211,17 @@ function createNhomDatn() {
     }
 
     if (check) {
-        let matKhau = ""
+        let matKhau = "";
         if ($("#checkTrangThaiCreateNhom").is(':checked')) {
             matKhau = Math.floor(Math.random() * 100000000)
+        } else {
+            matKhau = null;
+        }
+        if (moTa.length == 0) {
+            moTa = null;
+        }
+        if (giangVienId.length == 0) {
+            giangVienId = null;
         }
         let nhomDatnRequest = {};
         nhomDatnRequest["giangVienId"] = giangVienId;
@@ -219,6 +229,7 @@ function createNhomDatn() {
         nhomDatnRequest["tenDeTai"] = tenDeTai;
         nhomDatnRequest["matKhau"] = matKhau;
         nhomDatnRequest["moTa"] = moTa;
+        nhomDatnRequest["idMonDatn"] = idMonDatn;
         $.ajax({
             type: "POST",
             contentType: "application/json",

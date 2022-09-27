@@ -15,6 +15,6 @@ public interface SvSinhVienService {
 
     String getNhomIdById(String coSoId, String dotDangKyId, String id);
 
-    SinhVien saveNhomDatn(String sinhVienId, String nhomDatnId);
+    Integer getSoThanhVienByNhomId(String nhomId);
 
 }

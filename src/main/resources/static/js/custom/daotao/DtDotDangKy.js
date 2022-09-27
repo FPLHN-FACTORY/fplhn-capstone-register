@@ -40,7 +40,7 @@ function openModalUpdateDotDangKy(dotDangKyId) {
 $("#form_dot_dang_ky_update").submit(function (event) {
     event.preventDefault();
     let dotDangKyId = $("#id_dot_dang_ky_update").val();
-    let tenDotDangKy = $("#ten_dot_dang_ky_update").val();
+    let tenDotDangKy = $("#ten_dot_dang_ky_update").val().trim();
     let ngayBatDauStr = $("#ngay_bat_dau_update").val();
     let ngayBatDau = new Date(ngayBatDauStr);
     let ngayKetThucStr = $("#ngay_ket_thuc_update").val();
@@ -137,7 +137,7 @@ function clearData() {
 
 $("#form_create_dot_dang_ky").submit(function (event) {
     event.preventDefault();
-    let tenDotDangKy = $("#tenDotDangKyAdd").val();
+    let tenDotDangKy = $("#tenDotDangKyAdd").val().trim();
     let ngayBatDauStr = $("#ngayBatDauAdd").val();
     let ngayBatDau = new Date(ngayBatDauStr);
     let ngayKetThucStr = $("#ngayKetThucAdd").val();

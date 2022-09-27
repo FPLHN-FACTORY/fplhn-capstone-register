@@ -44,10 +44,10 @@ public interface SvDetailNhomDatnResponse extends IsIdentified {
     String getTenMonDatn();
 
     @Value("#{target.chuc_vu}")
-    String getChucVu();
+    Integer getChucVu();
 
     @Value("#{target.trang_thai}")
-    int getTrangThai();
+    Integer getTrangThai();
 
     @Value("#{target.nhan_xet}")
     String getNhanXet();

@@ -23,34 +23,24 @@ import java.util.Optional;
 public class SvSinhVienServiceImpl implements SvSinhVienService {
 
     @Autowired
-    private SvSinhVienRepository sinhVienRepository;
+    private SvSinhVienRepository svSinhVienRepository;
 
     @Autowired
     private SvNhomDatnRepository svNhomDatnRepository;
 
     @Override
     public List<SvSinhVienTheoNhomResponse> findByNhomId(final SvFindSinhVienRequest request) {
-        return sinhVienRepository.findByNhomId(request);
+        return svSinhVienRepository.findByNhomId(request);
     }
 
     @Override
     public String getNhomIdById(String coSoId, String dotDangKyId, String id) {
-        return sinhVienRepository.getNhomIdById(coSoId, dotDangKyId, id);
+        return svSinhVienRepository.getNhomIdById(coSoId, dotDangKyId, id);
     }
 
     @Override
-    public SinhVien saveNhomDatn(String sinhVienId, String nhomDatnId) {
-        Optional<SinhVien> sinhVienOptional = sinhVienRepository.findById(sinhVienId);
-        if (!sinhVienOptional.isPresent()) {
-            throw new RestApiException(Message.STUDENT_NOT_EXIST);
-        }
-        Optional<NhomDatn> nhomDatnOptional = svNhomDatnRepository.findById(nhomDatnId);
-        if (!nhomDatnOptional.isPresent()) {
-            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
-        }
-        SinhVien sinhVien = sinhVienOptional.get();
-        sinhVien.setNhomId(nhomDatnId);
-        return sinhVienRepository.save(sinhVien);
+    public Integer getSoThanhVienByNhomId(String nhomId) {
+        return svSinhVienRepository.getSoLuongThanhVienById(nhomId);
     }
 
 }

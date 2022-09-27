@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 public interface SvNhomDatnService {
-    List<SvDetailNhomDatnResponse> getNhomDatnById(String id);
+    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id);
 
     Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser);
 
@@ -33,9 +33,11 @@ public interface SvNhomDatnService {
 
     List<SvMonDatnResponse> getMonDatn();
 
-    NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest);
+    NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest, String idUser);
 
     Boolean updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest);
 
     Boolean roiNhom(String idUser);
+
+    Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi);
 }

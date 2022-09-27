@@ -11,7 +11,8 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 public class SvCreateNhomDatnRequest {
-
+    @NotBlank
+    @NotEmpty
     private String giangVienId;
 
     @NotEmpty()
@@ -25,9 +26,6 @@ public class SvCreateNhomDatnRequest {
     private String matKhau;
     private String moTa;
 
-    @NotEmpty()
-    @NotBlank()
-    private String truongNhomId;
 
     @NotEmpty
     @NotBlank
@@ -36,4 +34,8 @@ public class SvCreateNhomDatnRequest {
     @NotEmpty()
     @NotBlank()
     private String coSoId;
+
+    @NotBlank
+    @NotBlank
+    private String idMonDatn;
 }

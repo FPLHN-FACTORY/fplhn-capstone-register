@@ -3,7 +3,6 @@ package com.fpolydatn.core.sinhvien.controller;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.core.daotao.model.response.DtApiResponse;
 import com.fpolydatn.core.sinhvien.model.request.SvAddSinhVienRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvCreateNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
@@ -27,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -51,7 +50,7 @@ public class SvNhomDatnRestController extends BaseController {
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
-    private String idUser = "4d5eff02-6565-44eb-92f2-8beeb3687145";
+    private String idUser = "a2529445-f53f-47ea-a2d2-9762bfe075bc";
 
     @GetMapping("/search-giang-vien")
     public ResponseObject getGiangVienHuongDan(@RequestParam(defaultValue = "", required = true) String idMonDatn) {
@@ -85,14 +84,11 @@ public class SvNhomDatnRestController extends BaseController {
     }
 
     @PostMapping
-    public ResponseObject addNhomDatn(@RequestBody SvCreateNhomDatnRequest svNhomDatnRequest) {
+    public ResponseObject createNhomDatn(@RequestBody SvCreateNhomDatnRequest svNhomDatnRequest) {
         String coSoid = session.getCoSoId();
         svNhomDatnRequest.setCoSoId(coSoid);
-        svNhomDatnRequest.setTruongNhomId(idUser);
         svNhomDatnRequest.setDotDangKyId(dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond()));
-        NhomDatn nhomDatn = svNhomDatnService.createNhomDatn(svNhomDatnRequest);
-        svSinhVienService.saveNhomDatn(svNhomDatnRequest.getTruongNhomId(),nhomDatn.getId());
-        return new ResponseObject(nhomDatn);
+        return new ResponseObject(svNhomDatnService.createNhomDatn(svNhomDatnRequest, idUser));
     }
 
     @PutMapping("/update-ten-de-tai")
@@ -103,8 +99,12 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PutMapping("/roi-nhom")
     public ResponseObject roiNhom() {
-        String idUser = "";
         return new ResponseObject(svNhomDatnService.roiNhom(idUser));
+    }
+
+    @PutMapping("/chuyen-quyen-truong-nhom")
+    public ResponseObject chuyenQuyenTruongNhom(@RequestParam("idTruongNhomMoi") String idTruongNhomMoi) {
+        return new ResponseObject(svNhomDatnService.chuyenQuyenTruongNhom(idUser, idTruongNhomMoi));
     }
 
 }
