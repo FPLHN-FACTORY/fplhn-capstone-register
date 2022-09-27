@@ -109,4 +109,7 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             "WHERE g.id LIKE :id", nativeQuery = true)
     Long countByGiangVienId(@Param("id") String id);
 
+    @Query(value = "UPDATE sinh_vien SET nhom_id = NULL WHERE id = :id", nativeQuery = true)
+    void roiNhom(@Param("id") String id);
+
 }

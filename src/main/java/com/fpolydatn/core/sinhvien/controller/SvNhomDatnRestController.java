@@ -106,4 +106,10 @@ public class SvNhomDatnRestController extends BaseController {
         return new ResponseObject(svNhomDatnService.updateTenDeTai(svUpdateTenDeTaiRequest));
     }
 
+    @PutMapping("/roi-nhom")
+    public ResponseObject roiNhom() {
+        String idUser = "";
+        return new ResponseObject(svNhomDatnService.roiNhom(idUser));
+    }
+
 }

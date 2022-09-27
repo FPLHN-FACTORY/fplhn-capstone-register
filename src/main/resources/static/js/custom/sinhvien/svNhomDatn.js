@@ -39,7 +39,6 @@ function doiTenDeTai() {
             success: function (responseData) {
                 $("#modal_doi_ten_de_Tai").modal('hide');
                 $("#messageSuccess").text("Đổi đề tài thành công");
-                $("#messageConfirm").val(0);
                 $("#modal_success").modal('show');
             },
             error: function (responseData) {
@@ -59,3 +58,24 @@ $("#form_confirm").submit(function (event) {
     event.preventDefault();
     window.open(svNhomDatnView, '_self');
 })
+
+function roiNhom(){
+    let checkConfirm = confirm("Bạn muốn rời nhóm?");
+    if (checkConfirm == true) {
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: svNhomDatnApi + "/roi-nhom",
+            success: function (responseData) {
+                $("#modal_doi_ten_de_Tai").modal('hide');
+                $("#messageSuccess").text("Rời nhóm thành công");
+                $("#modal_success").modal('show');
+            },
+            error: function (responseData) {
+                console.log(responseData);
+                alert(responseData.responseJSON.message);
+            }
+        });
+    }
+}
+

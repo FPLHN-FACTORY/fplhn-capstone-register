@@ -52,4 +52,6 @@ public class PropertyKeys {
 
     public static final String SINH_VIEN_KHONG_CO_NHOM = "sinh.vien.khong.co.nhom";
 
+    public static final String ROI_NHOM_KHI_LA_TRUONG_NHOM = "roi.nhom.khi.la.truong.nhom";
+
 }

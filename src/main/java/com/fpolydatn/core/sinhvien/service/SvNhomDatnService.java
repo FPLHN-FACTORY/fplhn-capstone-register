@@ -36,4 +36,6 @@ public interface SvNhomDatnService {
     NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest);
 
     Boolean updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest);
+
+    Boolean roiNhom(String idUser);
 }

@@ -154,7 +154,7 @@
                                                 <th width="50px">STT</th>
                                                 <th>Mã Sinh Viên</th>
                                                 <th>Tên Sinh Viên</th>
-                                                <th>Ch5ức Vụ</th>
+                                                <th>Chức Vụ</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="SvnhomDatn : ${nhomDatnThamGia}">
@@ -167,6 +167,16 @@
                                                 </th:block>
                                                 </tbody>
                                             </table>
+                                            <div style="text-align: right">
+                                                <button
+                                                   class="btn btn-danger text-white"
+                                                   th:attr="onclick=|roiNhom()|"
+                                                   th:style="${checkTruongNhom} == true ? 'display:none' : 'display:block'"
+                                                >
+                                                    Rời nhóm
+                                                </button>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>

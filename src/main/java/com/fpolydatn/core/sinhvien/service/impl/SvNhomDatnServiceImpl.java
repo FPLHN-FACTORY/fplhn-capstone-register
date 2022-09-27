@@ -149,4 +149,22 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         return true;
     }
 
+    @Override
+    public Boolean roiNhom(String idUser) {
+        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
+        if(!sinhVien.isPresent()){
+            throw new RestApiException(Message.STUDENT_NOT_EXIST);
+        }
+        Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(sinhVien.get().getNhomId());
+        if (!nhomDatn.isPresent()) {
+            throw new RestApiException(Message.SINH_VIEN_KHONG_CO_NHOM);
+        }
+
+        if (idUser.equals(nhomDatn.get().getTruongNhomId())) {
+            throw new RestApiException(Message.ROI_NHOM_KHI_LA_TRUONG_NHOM);
+        }
+        svNhomDatnRepository.roiNhom(idUser);
+        return true;
+    }
+
 }
