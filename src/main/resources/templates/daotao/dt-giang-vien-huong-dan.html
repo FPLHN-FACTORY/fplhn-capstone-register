@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- begin::Head -->
+
 <head>
     <meta charset="utf-8"/>
     <title>Project Register System</title>
@@ -10,11 +11,18 @@
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
+    <style>
+        .chuc-nang {
+            font-size: 10px;
+        }
+    </style>
 </head>
 <!-- end::Head -->
 
 <!-- begin::Body -->
-<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+
+<body
+        class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 
 <!-- begin:: Page -->
 <div class="m-grid m-grid--hor m-grid--root m-page">
@@ -37,23 +45,21 @@
                                 <div class="m-portlet__head">
                                     <div class="m-portlet__head-caption">
                                         <div class="m-portlet__head-title">
-                                <span class="m-portlet__head-icon">
-                                    <i class="m-menu__link-icon flaticon-web"></i>
-                                </span>
+                                                <span class="m-portlet__head-icon">
+                                                    <i class="m-menu__link-icon flaticon-web"></i>
+                                                </span>
                                             <h3 class="m-portlet__head-text">
                                                 Bộ lọc
                                             </h3>
                                         </div>
                                     </div>
                                 </div>
-                                <form
-                                        id="searchGvhd"
-                                        method="GET"
-                                        class="m-portlet__body">
+                                <form id="searchGvhd" method="GET" class="m-portlet__body">
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Tên giảng viên</span>
+                                                <span for="" class="fillter-name col-4 text-center">Tên giảng
+                                                    viên</span>
                                             <input oninput="loadTable(0)" type="text" class="form-control col-8"
                                                    name="tenGiangVien" id="tenGiangVien" value="">
                                         </div>
@@ -64,8 +70,7 @@
                                             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <a href="#"
-                                               class="btn btn-danger text-white" onclick="clearData();">
+                                            <a href="#" class="btn btn-danger text-white" onclick="clearData();">
                                                 Làm mới bộ lọc
                                             </a>
                                         </div>
@@ -85,12 +90,19 @@
                                                     <div class="row">
                                                         <div class="col-md-8 mx-auto">
                                                             <h2>Upload File Example</h2>
-                                                            <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
-                                                            <form method="post" th:object="${file}" th:action="@{'/dao-tao/giang-vien-huong-dan/import'}" enctype="multipart/form-data">
+                                                            <p th:text="${message}" th:if="${message ne null}"
+                                                               class="alert alert-primary"></p>
+                                                            <form method="post" th:object="${file}"
+                                                                  th:action="@{'/dao-tao/giang-vien-huong-dan/import'}"
+                                                                  enctype="multipart/form-data">
                                                                 <div class="form-group">
-                                                                    <input type="file" class="" id="fileupload" name="fileupload" th:field="*{file}" multiple >
+                                                                    <input type="file" class="" id="fileupload"
+                                                                           name="fileupload" th:field="*{file}"
+                                                                           multiple>
                                                                 </div>
-                                                                <button type="submit" class="btn btn-primary">Upload File</button>
+                                                                <button type="submit" class="btn btn-primary">Upload
+                                                                    File
+                                                                </button>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -99,286 +111,288 @@
 
                                             <button data-toggle="modal"
                                                     data-target="#modal_create"
-                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
-                                                Thêm giảng viên
-                                            </button>
-                                            <div class="modal fade "
-                                                 id="modal_create"
-                                                 tabindex="-1"
-                                                 aria-labelledby="exampleModalLabel"
-                                                 aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <form id="form_create_giang_vien">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Thêm
-                                                                    giảng viên</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
+                                            <div class="m-portlet">
+                                                <div class="m-portlet">
+                                                    <div class="m-portlet__body">
+                                                        <div class="row">
+                                                            <div class="col-6 d-inline">
+                                                                <button data-toggle="modal" data-target="#modal_create"
+                                                                        class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                                    Thêm giảng viên
                                                                 </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="form-group">
-                                                                    <label class="col-form-label">Đợt đăng ký</label>
-                                                                    <br>
-                                                                    <select class="form-control col-8" id="dotDangKyId">
-                                                                        <option value="Chọn đợt đăng kí" hidden>Chọn đợt
-                                                                            đăng kí
-                                                                        </option>
-                                                                        <option th:each="item : ${listDotDangKy}"
-                                                                                th:value="${item.id}"
-                                                                                th:text="${item.getName()}"></option>
-                                                                    </select>
-                                                                    <small class="text-danger"
-                                                                           id="errorDotDangKy"></small><br>
-                                                                    <br>
-                                                                    <label class="col-form-label">Tên giảng viên</label><br>
-                                                                    <input
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="tenGvhd">
-                                                                    <span class="text-danger"
-                                                                          id="errorTenGiangVien"></span><br>
-                                                                    <label class="col-form-label">Số nhóm hướng
-                                                                        dẫn</label>
-                                                                    <input
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="soNhomHuongDanToiDa">
-                                                                    <span class="text-danger" id="errorSoNhomHD"></span><br>
-                                                                    <label class="col-form-label">Tên tài khoản</label>
-                                                                    <input
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="tenTaiKhoan">
-                                                                    <span class="text-danger"
-                                                                          id="errorTenTaiKhoan"></span><br>
-                                                                    <label class="col-form-label">Số điện thoại</label>
-                                                                    <input
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="soDienThoai">
-                                                                    <span class="text-danger" id="errorSDT"></span><br>
-                                                                    <label class="col-form-label">Email Fpt</label>
-                                                                    <input
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="emailFpt">
-                                                                    <span class="text-danger" id="errorEmailFpt"></span><br>
-                                                                    <label class="col-form-label">Email Fe</label>
-                                                                    <input
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="emailFe">
-                                                                    <span class="text-danger" id="errorEmailFe"></span>
+                                                                <div class="modal fade " id="modal_create" tabindex="-1"
+                                                                     aria-labelledby="exampleModalLabel"
+                                                                     aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <form id="form_create_giang_vien">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title"
+                                                                                        id="exampleModalLabel">Thêm
+                                                                                        giảng viên</h5>
+                                                                                    <button type="button" class="close"
+                                                                                            data-dismiss="modal"
+                                                                                            aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div class="form-group">
+                                                                                        <label class="col-form-label">Đợt
+                                                                                            đăng
+                                                                                            ký</label>
+                                                                                        <br>
+                                                                                        <select class="form-control col-8"
+                                                                                                id="dotDangKyId">
+                                                                                            <option value="Chọn đợt đăng kí"
+                                                                                                    hidden>Chọn
+                                                                                                đợt
+                                                                                                đăng kí
+                                                                                            </option>
+                                                                                            <option th:each="item : ${listDotDangKy}"
+                                                                                                    th:value="${item.id}"
+                                                                                                    th:text="${item.getName()}"></option>
+                                                                                        </select>
+                                                                                        <small class="text-danger"
+                                                                                               id="errorDotDangKy"></small><br>
+                                                                                        <br>
+                                                                                        <label class="col-form-label">Tên
+                                                                                            giảng
+                                                                                            viên</label><br>
+                                                                                        <input type="text"
+                                                                                               class="form-control"
+                                                                                               id="tenGvhd">
+                                                                                        <span class="text-danger"
+                                                                                              id="errorTenGiangVien"></span><br>
+                                                                                        <label class="col-form-label">Số
+                                                                                            nhóm hướng
+                                                                                            dẫn</label>
+                                                                                        <input type="text"
+                                                                                               class="form-control"
+                                                                                               id="soNhomHuongDanToiDa">
+                                                                                        <span class="text-danger"
+                                                                                              id="errorSoNhomHD"></span><br>
+                                                                                        <label class="col-form-label">Tên
+                                                                                            tài
+                                                                                            khoản</label>
+                                                                                        <input type="text"
+                                                                                               class="form-control"
+                                                                                               id="tenTaiKhoan">
+                                                                                        <span class="text-danger"
+                                                                                              id="errorTenTaiKhoan"></span><br>
+                                                                                        <label class="col-form-label">Số
+                                                                                            điện
+                                                                                            thoại</label>
+                                                                                        <input type="text"
+                                                                                               class="form-control"
+                                                                                               id="soDienThoai">
+                                                                                        <span class="text-danger"
+                                                                                              id="errorSDT"></span><br>
+                                                                                        <label class="col-form-label">Email
+                                                                                            Fpt</label>
+                                                                                        <input type="text"
+                                                                                               class="form-control"
+                                                                                               id="emailFpt">
+                                                                                        <span class="text-danger"
+                                                                                              id="errorEmailFpt"></span><br>
+                                                                                        <label class="col-form-label">Email
+                                                                                            Fe</label>
+                                                                                        <input type="text"
+                                                                                               class="form-control"
+                                                                                               id="emailFe">
+                                                                                        <span class="text-danger"
+                                                                                              id="errorEmailFe"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button"
+                                                                                            class="btn btn-secondary"
+                                                                                            data-dismiss="modal">Hủy
+                                                                                    </button>
+                                                                                    <button type="submit"
+                                                                                            class="btn btn-primary">Thêm
+                                                                                        mới
+                                                                                    </button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Hủy
-                                                                </button>
-                                                                <button type="submit" class="btn btn-primary">Thêm mới
-                                                                </button>
+                                                        </div>
+
+                                                        <div class="table-responsive mt-3">
+                                                            <div th:unless="${page.data.isEmpty()}">
+                                                                <table id="custom-table"
+                                                                       class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                                                    <thead>
+                                                                    <th width="50px">STT</th>
+                                                                    <th>Tên cơ sở</th>
+                                                                    <th>Tên đợt đăng ký</th>
+                                                                    <th>Tên giảng viên</th>
+                                                                    <th>Tên tài khoản</th>
+                                                                    <th>Số nhóm hướng dẫn</th>
+                                                                    <th>Số điện thoại</th>
+                                                                    <th>Email FPT</th>
+                                                                    <th>Email Fe</th>
+                                                                    <th width="200px">Chức năng</th>
+                                                                    </thead>
+                                                                    <tbody id="searchListGvhd">
+                                                                    <th:block th:each="giangVienHD,i : ${page.data}">
+                                                                        <tr>
+                                                                            <td th:text="${giangVienHD.getSTT()}"></td>
+                                                                            <td th:text="${giangVienHD.getTenCoSo()}"></td>
+                                                                            <td th:text="${giangVienHD.getTenDotDangKy()}"></td>
+                                                                            <td th:text="${giangVienHD.getTenGvhd()}"></td>
+                                                                            <td th:text="${giangVienHD.getTenTaiKhoan()}"></td>
+                                                                            <td th:text="${giangVienHD.getSoNhomHuongDanToiDa()}">
+                                                                            </td>
+                                                                            <td th:text="${giangVienHD.getSoDienThoai()}"></td>
+                                                                            <td th:text="${giangVienHD.getEmailFpt()}"></td>
+                                                                            <td th:text="${giangVienHD.getEmailFe()}"></td>
+                                                                            <td>
+                                                                                <button type="button"
+                                                                                        class="btn btn-primary chuc-nang"
+                                                                                        th:attr="onclick=|openModalUpdateGiangVien('${giangVienHD.id}','${page.currentPage}')|">
+                                                                                    Sửa
+                                                                                </button>
+                                                                                </button>
+                                                                                <button type="button"
+                                                                                        class="btn btn-danger chuc-nang"
+                                                                                        data-toggle="modal"
+                                                                                        th:attr="onclick=|openModalRemoveGiangVien('${giangVienHD.id}','${page.currentPage}')|">
+                                                                                    Xoá
+                                                                                </button>
+                                                                                <a type="button"
+                                                                                   class="btn btn-success chuc-nang"
+                                                                                   th:href="@{'/dao-tao/giang-vien-huong-dan/'+ ${giangVienHD.getId()}}">
+                                                                                    Phân môn
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </th:block>
+                                                                    </tbody>
+                                                                </table>
+                                                                <!-- Paging-->
+                                                                <nav th:if="${page.totalPages > 1}"
+                                                                     aria-label="Page navigation">
+                                                                    <ul class="pagination justify-content-end"
+                                                                        id="page">
+                                                                        <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
+                                                                            <li class="page-item">
+                                                                                <a class="page-link"
+                                                                                   th:href="@{/dao-tao/giang-vien-huong-dan?page={page.currentPage}(page.currentPage=${i}-1)}"
+                                                                                   th:text="${i}">
+                                                                                </a>
+                                                                            </li>
+                                                                        </div>
+                                                                    </ul>
+                                                                </nav>
                                                             </div>
-                                                        </form>
+                                                            <div th:if="${page.data.isEmpty()}">
+                                                                <h3>Không có dữ liệu</h3>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end:: Body -->
+                    </div>
+                    <!--  Start Modal Update-->
+                    <div class="modal fade" tabindex="-1" id="modal_update_giang_vien"
+                         aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-lg" role="document">
+                            <div class="modal-content">
+                                <form id="form_giang_vien_update">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Cập nhật học kỳ</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span id="giangVienId" style="color:red;"></span>
+                                        <span id="update_giang_vien_item" value="" style="color:red;"></span>
 
-                                    <div class="table-responsive mt-3">
-                                        <div th:unless="${page.data.isEmpty()}">
-                                            <table id="custom-table"
-                                                   class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
-                                                <thead>
-                                                <th width="50px">STT</th>
-                                                <th>Tên cơ sở</th>
-                                                <th>Tên đợt đăng ký</th>
-                                                <th>Tên giảng viên</th>
-                                                <th>Tên tài khoản</th>
-                                                <th>Số nhóm hướng dẫn</th>
-                                                <th>Số điện thoại</th>
-                                                <th>Email FPT</th>
-                                                <th>Email Fe</th>
-                                                <th width="200px">Chức năng</th>
-                                                </thead>
-                                                <tbody id="searchListGvhd">
-                                                <th:block th:each="giangVienHD,i : ${page.data}">
-                                                    <tr>
-                                                        <td th:text="${giangVienHD.getSTT()}"></td>
-                                                        <td th:text="${giangVienHD.getTenCoSo()}"></td>
-                                                        <td th:text="${giangVienHD.getTenDotDangKy()}"></td>
-                                                        <td th:text="${giangVienHD.getTenGvhd()}"></td>
-                                                        <td th:text="${giangVienHD.getTenTaiKhoan()}"></td>
-                                                        <td th:text="${giangVienHD.getSoNhomHuongDanToiDa()}"></td>
-                                                        <td th:text="${giangVienHD.getSoDienThoai()}"></td>
-                                                        <td th:text="${giangVienHD.getEmailFpt()}"></td>
-                                                        <td th:text="${giangVienHD.getEmailFe()}"></td>
-                                                        <td>
-                                                            <button
-                                                                    type="button"
-                                                                    class="btn btn-primary"
-                                                                    th:attr="onclick=|openModalUpdateGiangVien('${giangVienHD.id}','${page.currentPage}')|">
-                                                                Sửa
-                                                            </button>
-                                                            </button>
-                                                            <button
-                                                                    type="button"
-                                                                    class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    th:attr="onclick=|openModalRemoveGiangVien('${giangVienHD.id}','${page.currentPage}')|">
-                                                                Xoá
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </th:block>
-                                                </tbody>
-                                            </table>
-                                            <!-- Paging-->
-                                            <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
-                                                <ul class="pagination justify-content-end" id="page">
-                                                    <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                        <li class="page-item">
-                                                            <a class="page-link"
-                                                               th:href="@{/dao-tao/giang-vien-huong-dan?page={page.currentPage}(page.currentPage=${i}-1)}"
-                                                               th:text="${i}">
-                                                            </a>
-                                                        </li>
-                                                    </div>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                        <div th:if="${page.data.isEmpty()}">
-                                            <h3>Không có dữ liệu</h3>
+                                        <div class="form-group">
+                                            <label class="col-form-label">Đợt đăng ký</label> <br>
+                                            <select class="form-control col-8" id="dot_dang_ky_update">
+                                                <option value="" hidden>Chọn đợt đăng kí</option>
+                                                <option th:each="item : ${listDotDangKy}" th:value="${item.id}"
+                                                        th:text="${item.getName()}"></option>
+                                            </select>
+                                            <small class="text-danger" id="errorDotDangKyUpdate"></small><br>
+                                            <br>
+                                            <label class="col-form-label">Tên giảng viên</label>
+                                            <input type="text" class="form-control" id="ten_giang_vien_update">
+                                            <small class="text-danger" id="errorTenGiangVienUpdate"></small><br>
+                                            <label class="col-form-label">Số nhóm hướng dẫn</label>
+                                            <input type="text" class="form-control" id="so_nhom_update">
+                                            <small class="text-danger" id="errorSoNhomHDUpdate"></small><br>
+                                            <label class="col-form-label">Tên tài khoản</label>
+                                            <input type="text" class="form-control" id="ten_tai_khoan_update">
+                                            <small class="text-danger" id="errorTenTaiKhoanUpdate"></small><br>
+                                            <label class="col-form-label">Số điện thoại</label>
+                                            <input type="text" class="form-control" id="so_dien_thoai_update">
+                                            <small class="text-danger" id="errorSDTUpdate"></small><br>
+                                            <label class="col-form-label">Email Fpt</label>
+                                            <input type="text" class="form-control" id="emailFpt_update">
+                                            <small class="text-danger" id="errorEmailFptUpdate"></small><br>
+                                            <label class="col-form-label">Email Fe</label>
+                                            <input type="text" class="form-control" id="emailFe_update">
+                                            <small class="text-danger" id="errorEmailFeUpdate"></small>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            Cập nhật
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--   End Modal Update -->
 
+                    <!--  Start Modal Remove-->
+                    <div class="modal fade" id="modal_giang_vien_remove" tabindex="-1"
+                         aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-lg" role="document">
+                            <div class="modal-content">
+                                <form id="form_giang_vien_delete">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Xoá giảng viên</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Bạn có muốn xoá không ?</p>
+                                        <span id="remove_giang_vien" style="color:red;"></span>
+                                        <span id="remove_giang_vien_item" style="color:red;"></span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Xoá
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- end:: Body -->
-</div>
-<!--  Start Modal Update-->
-<div
-        class="modal fade"
-        tabindex="-1"
-        id="modal_update_giang_vien"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_giang_vien_update">
-                <div class="modal-header">
-                    <h5 class="modal-title">Cập nhật học kỳ</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <span id="giangVienId" style="color:red;"></span>
-                    <span id="update_giang_vien_item" value="" style="color:red;"></span>
-
-                    <div class="form-group">
-                        <label class="col-form-label">Đợt đăng ký</label> <br>
-                        <select class="form-control col-8" id="dot_dang_ky_update">
-                            <option value="" hidden>Chọn đợt đăng kí</option>
-                            <option th:each="item : ${listDotDangKy}" th:value="${item.id}"
-                                    th:text="${item.getName()}"></option>
-                        </select>
-                        <small class="text-danger" id="errorDotDangKyUpdate"></small><br>
-                        <br>
-                        <label class="col-form-label">Tên giảng viên</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="ten_giang_vien_update">
-                        <small class="text-danger" id="errorTenGiangVienUpdate"></small><br>
-                        <label class="col-form-label">Số nhóm hướng dẫn</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="so_nhom_update">
-                        <small class="text-danger" id="errorSoNhomHDUpdate"></small><br>
-                        <label class="col-form-label">Tên tài khoản</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="ten_tai_khoan_update">
-                        <small class="text-danger" id="errorTenTaiKhoanUpdate"></small><br>
-                        <label class="col-form-label">Số điện thoại</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="so_dien_thoai_update">
-                        <small class="text-danger" id="errorSDTUpdate"></small><br>
-                        <label class="col-form-label">Email Fpt</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="emailFpt_update">
-                        <small class="text-danger" id="errorEmailFptUpdate"></small><br>
-                        <label class="col-form-label">Email Fe</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="emailFe_update">
-                        <small class="text-danger" id="errorEmailFeUpdate"></small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        Cập nhật
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--   End Modal Update -->
-
-<!--  Start Modal Remove-->
-<div
-        class="modal fade"
-        id="modal_giang_vien_remove"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_giang_vien_delete">
-                <div class="modal-header">
-                    <h5 class="modal-title">Xoá giảng viên</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn xoá không ?</p>
-                    <span id="remove_giang_vien" style="color:red;"></span>
-                    <span id="remove_giang_vien_item" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Xoá
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 </div>

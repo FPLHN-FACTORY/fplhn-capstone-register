@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 /**
- * @author ToanNT
+ * @author hungpv
  */
 @Component
 public class GenMaNhomTuDong {
