@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
@@ -11,6 +11,9 @@
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
 </head>
+<!-- end::Head -->
+
+<!-- begin::Body -->
 <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 
 <!-- begin:: Page -->
@@ -21,133 +24,150 @@
     <!-- begin::Body -->
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
 
-        <div th:insert="~{fragment/menu-fragment-dao-tao :: menu}"></div>
+        <div th:insert="~{fragment/menu-fragment-sinh-vien :: menu}"></div>
 
         <!-- END: Left Aside -->
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
             <!-- END: Subheader -->
             <div>
-                <div>
-                    <h3 style="margin: 50px 0 0 50px;">Nhóm Dự Án Tốt Nghiệp</h3>
-                    <div class="m-content" style="margin: 50px 0 0 50px ; background-color: #fff; width: 1200px;">
-
-                        <div id="main">
-                            <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="kt-portlet">
-                                            <div class="kt-portlet__head">
-                                                <div class="kt-portlet__head-label">
-                                                    <h3 class="kt-portlet__head-title"
-                                                        style="margin: 20px 200px 10px 50px;">Thông tin Nhóm Dự Án Tốt
-                                                        Nghiệp Tham Gia</h3>
-                                                </div>
-                                            </div>
-                                            <form class="kt-form kt-form--label-right">
-                                                <div class="kt-portlet__body">
-                                                    <div class="kt-section kt-section--first">
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Mã
-                                                                nhóm</label>
-                                                            <div class="col-lg-9 col-xl-6">
-                                                                <input type="text"
-                                                                       th:value="${nhomDatnThamGia[0].maNhom}"
-                                                                       readonly="readonly" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Tên
-                                                                nhóm</label>
-                                                            <div class="col-lg-9 col-xl-6">
-                                                                <input type="text"
-                                                                       th:value="${nhomDatnThamGia[0].tenNhom}"
-                                                                       readonly="readonly" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Tên đợt đăng
-                                                                ký</label>
-                                                            <div class="col-lg-9 col-xl-6">
-                                                                <input type="text"
-                                                                       th:value="${nhomDatnThamGia[0].tenDotDangKy}"
-                                                                       readonly="readonly" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Tên đề
-                                                                tài</label>
-                                                            <div class="col-lg-9 col-xl-6">
-                                                                <input type="text"
-                                                                       th:value="${nhomDatnThamGia[0].tenDeTai}"
-                                                                       readonly="readonly" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Tên
-                                                                GVHD</label>
-                                                            <div class="col-lg-9 col-xl-6">
-                                                                <input type="text"
-                                                                       th:value="${nhomDatnThamGia[0].tenGvhd}"
-                                                                       readonly="readonly" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Trạng
-                                                                thái</label>
-                                                            <div class="col-lg-9 col-xl-6">
-                                                                <input type="text"
-                                                                       th:value="${T(com.fpolydatn.util.TrangThaiNhomUtils).ConvertToTrangThai(nhomDatnThamGia[0].getTrangThai())}"
-                                                                       readonly="readonly" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label class="col-xl-3 col-lg-3 col-form-label">Nhận
-                                                                xét</label>
-                                                            <div class="col-lg-9 col-xl-6">
+                <div class="m-content">
+                    <h3>Nhóm dự án tốt nghiệp</h3>
+                    <div class="mt-5">
+                        <section class="fillter-area  mb-5">
+                            <div class="m-portlet">
+                                <div class="m-portlet__head">
+                                    <div class="m-portlet__head-caption">
+                                        <div class="m-portlet__head-title">
+                                <span class="m-portlet__head-icon">
+                                    <i class="m-menu__link-icon flaticon-web"></i>
+                                </span>
+                                            <h3 class="m-portlet__head-text">
+                                                Thông tin
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form
+                                        class="m-portlet__body">
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Mã
+                                            nhóm</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   th:value="${nhomDatnThamGia[0].maNhom}"
+                                                   readonly="readonly" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Tên
+                                            nhóm</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   th:value="${nhomDatnThamGia[0].tenNhom}"
+                                                   readonly="readonly" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Tên đợt đăng
+                                            ký</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   th:value="${nhomDatnThamGia[0].tenDotDangKy}"
+                                                   readonly="readonly" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Tên đề
+                                            tài</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   th:value="${nhomDatnThamGia[0].tenDeTai}"
+                                                   readonly="readonly" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Tên
+                                            GVHD</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   th:value="${nhomDatnThamGia[0].tenGvhd}"
+                                                   readonly="readonly" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Trạng
+                                            thái</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   th:value="${T(com.fpolydatn.util.TrangThaiNhomUtils).ConvertToTrangThai(nhomDatnThamGia[0].getTrangThai())}"
+                                                   readonly="readonly" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Nhận
+                                            xét</label>
+                                        <div class="col-lg-9 col-xl-6">
                                                                 <textarea
                                                                         th:text="${nhomDatnThamGia[0].getNhanXet()}"
                                                                         readonly="readonly" class="form-control">
                                                                 </textarea>
-                                                            </div>
-                                                        </div>
-                                                        <button
-                                                                data-toggle="modal"
-                                                                data-target="#modal_create"
-                                                                class="btn btn-primary"
-                                                                th:style="${checkTruongNhom} == false ? 'display:none' : (${nhomDatnThamGia[0].getTrangThai()} == 1  ?
-                                                                'display: block' : (${nhomDatnThamGia[0].getTrangThai()} == 3 ? 'display: block' :   'display: none'))"
-                                                                th:attr="onclick=|guiYeuCauPheDuyet('${nhomDatnThamGia[0].getId()}')|"
-                                                        >
-                                                            Gửi yêu cầu phê duyệt
-                                                        </button>
-                                                        <h3>Danh sách thành viên nhóm</h3>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <table id="custom-table"
-                                                                       class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
-                                                                    <thead>
-                                                                    <th width="50px">STT</th>
-                                                                    <th>Mã Sinh Viên</th>
-                                                                    <th>Tên Sinh Viên</th>
-                                                                    <th>Chức Vụ</th>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    <th:block th:each="SvnhomDatn : ${nhomDatnThamGia}">
-                                                                        <tr>
-                                                                            <td th:text="${SvnhomDatn.getStt()}"></td>
-                                                                            <td th:text="${SvnhomDatn.getMaSinhVien()}"></td>
-                                                                            <td th:text="${SvnhomDatn.getTenSinhVien()}"></td>
-                                                                            <td th:text="${SvnhomDatn.getChucVu()}"></td>
-                                                                        </tr>
-                                                                    </th:block>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                         </div>
-                                        </form>
+                                    </div>
+
+                                    <div class="row justify-content-center pt-2">
+                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                            <button
+                                                    data-toggle="modal"
+                                                    data-target="#modal_create"
+                                                    class="btn btn-primary"
+                                                    th:style="${checkTruongNhom} == false ? 'display:none' : (${nhomDatnThamGia[0].getTrangThai()} == 1  ?
+                                                                'display: block' : (${nhomDatnThamGia[0].getTrangThai()} == 3 ? 'display: block' :   'display: none'))"
+                                                    th:attr="onclick=|guiYeuCauPheDuyet('${nhomDatnThamGia[0].getId()}')|"
+                                            >
+                                                Gửi yêu cầu phê duyệt
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                            <button
+                                                    th:style="${checkTruongNhom} == false ? 'display:none' : (${nhomDatnThamGia[0].getTrangThai()} == 1  ?
+                                                                'display: block' : (${nhomDatnThamGia[0].getTrangThai()} == 3 ? 'display: block' :   'display: none'))"
+                                                    type="button" class="btn btn-primary"
+                                                    data-target="#modal_doi_ten_de_Tai"
+                                                    th:attr="onclick=|openModalDoiTenDeTai()|"
+                                            >Đổi tên đề tài
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+
+                        <div class="m-portlet">
+                            <div class="m-portlet">
+                                <div class="m-portlet__body">
+                                    <h3>Danh sách thành viên nhóm</h3>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <table id="custom-table"
+                                                   class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                                <thead>
+                                                <th width="50px">STT</th>
+                                                <th>Mã Sinh Viên</th>
+                                                <th>Tên Sinh Viên</th>
+                                                <th>Ch5ức Vụ</th>
+                                                </thead>
+                                                <tbody>
+                                                <th:block th:each="SvnhomDatn : ${nhomDatnThamGia}">
+                                                    <tr>
+                                                        <td th:text="${SvnhomDatn.getStt()}"></td>
+                                                        <td th:text="${SvnhomDatn.getMaSinhVien()}"></td>
+                                                        <td th:text="${SvnhomDatn.getTenSinhVien()}"></td>
+                                                        <td th:text="${SvnhomDatn.getChucVu()}"></td>
+                                                    </tr>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +179,118 @@
     </div>
     <!-- end:: Body -->
 </div>
-
+<!--                        begin Đổi tên đề tài-->
+<div
+        class="modal fade"
+        tabindex="-1"
+        id="modal_doi_ten_de_Tai"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_doi_ten_de_tai">
+                <div class="modal-header">
+                    <h5 class="modal-title">Đổi tên đề tài</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <br>
+                        <label class="col-form-label">Tên đề tài</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="inputTenDeTai">
+                        <span class="text-danger"
+                              id="errorTenDeTai"></span><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Hủy
+                    </button>
+                    <button
+                            type="button" class="btn btn-primary"
+                            th:attr="onclick=|doiTenDeTai()|"
+                    >Đổi tên đề tài
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--                        end Đổi tên đề tài-->
+<!--        Begin Success         -->
+<div
+        class="modal fade"
+        tabindex="-1"
+        id="modal_success"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_success">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông báo</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <br>
+                        <h4 id="messageSuccess"></h4>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">OK
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--        End Success                -->
+<!--  Start Modal Remove-->
+<div
+        class="modal fade"
+        id="modal_hoc_ky_remove"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_hoc_ky_delete">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xoá học kỳ</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có muốn xoá không ?</p>
+                    <span id="remove_hoc_ky" style="color:red;"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Hủy
+                    </button>
+                    <button type="submit" class="btn btn-primary">Xoá
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--   End Modal Remove -->
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

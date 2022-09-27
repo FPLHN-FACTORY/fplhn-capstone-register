@@ -5,6 +5,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
+//import com.fpolydatn.core.sinhvien.service.SvMonDatnService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.repository.DotDangKyRepository;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 /**
  * @author hoangnt
@@ -33,20 +35,25 @@ public class SvNhomDatnController extends BaseController {
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
+//    @Autowired
+//    private SvMonDatnService svMonDatnService;
+
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req ){
+        String dotDangKyHienTai = dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond());
         String nhomId = svSinhVienService.getNhomIdById(session.getCoSoId(),
-                "67f067fa-a0f4-4792-9cc4-3dbc92341561",
-                "27b2dc99-65cb-4cbf-b02b-e2e3213517f5");
+                dotDangKyHienTai,
+                "a2529445-f53f-47ea-a2d2-9762bfe075bc");
         if (nhomId == null || nhomId.trim().isEmpty()) {
             req.setCoSoId(session.getCoSoId());
-            req.setDotDangKyId("67f067fa-a0f4-4792-9cc4-3dbc92341561");
+            req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
+            model.addAttribute("listDataMonDatn", svNhomDatnService.getMonDatn());
             model.addAttribute("page", listNhomDatn);
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,
-                    session.getCoSoId(), "27b2dc99-65cb-4cbf-b02b-e2e3213517f5");
+                    session.getCoSoId(), "a2529445-f53f-47ea-a2d2-9762bfe075bc");
             List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getNhomDatnById(nhomId);
             model.addAttribute("checkTruongNhom",checkTruongNhom);
             model.addAttribute("nhomDatnThamGia", svDetailNhomDatnResponse);
@@ -54,12 +61,4 @@ public class SvNhomDatnController extends BaseController {
         }
     }
 
-//    @GetMapping("/join")
-//    public String findAllNhomDatn(Model model, final FindSvNhomDatnRequest req) {
-//        String coSoId = session.getCoSoId();
-//        req.setCoSoId(coSoId);
-//        PageableObject<SvSinhVienNhomDatnResponse> listNhomDatn = svSinhVienNhomDatnService.findAllNhomDatn(req);
-//        model.addAttribute("page", listNhomDatn);
-//        return "sinhvien/sv-nhom-datn";
-//    }
 }

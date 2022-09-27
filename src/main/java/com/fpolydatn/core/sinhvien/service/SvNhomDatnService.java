@@ -1,14 +1,17 @@
 package com.fpolydatn.core.sinhvien.service;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
-import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
-import com.fpolydatn.core.sinhvien.model.request.AddSinhVienRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvAddSinhVienRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvCreateNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
+import com.fpolydatn.core.sinhvien.model.response.SvMonDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
+import com.fpolydatn.entity.NhomDatn;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -26,5 +29,11 @@ public interface SvNhomDatnService {
 
     List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(String id);
 
-    boolean addSinhVienTheoNhom(final AddSinhVienRequest req);
+    boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req);
+
+    List<SvMonDatnResponse> getMonDatn();
+
+    NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest);
+
+    Boolean updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest);
 }

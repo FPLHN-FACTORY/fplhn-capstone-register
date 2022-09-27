@@ -48,4 +48,8 @@ public class PropertyKeys {
 
     public static final String NHOM_DA_DU_THANH_VIEN = "nhom.da.du.thanh.vien";
 
+    public static final String GIANG_VIEN_HUONG_DAN_ALREADY_HAVE_ENOUGH_GROUPS = "giang.vien.huong.dan.already.have.enough.groups";
+
+    public static final String SINH_VIEN_KHONG_CO_NHOM = "sinh.vien.khong.co.nhom";
+
 }

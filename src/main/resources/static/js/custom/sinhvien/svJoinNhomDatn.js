@@ -157,5 +157,81 @@ function addSinhVienHasPassword() {
 
 $("#form_confirm_success").submit(function (event) {
     event.preventDefault();
+    $("#messageSuccess").text("Tham gia thành công");
     window.open(SVNhomDatnView, '_self');
 })
+
+function getGiangVien(idMonDatn) {
+    $.ajax({
+        type: "GET",
+        url: SVNhomDatnApi + "/search-giang-vien?idMonDatn=" + idMonDatn,
+        success: function (data) {
+            var text = "<option value='' selected>Không chọn</option>"
+            data.data.map(function (item) {
+                text += `<option value="${item.id}" >${item.tenGvhd}</option>`
+            })
+            $('#giangVienCreateNhom').html(text)
+        }
+    })
+}
+
+$('#monDatnCreateNhom').change(function () {
+    var idMonDatn = $(this).val();
+    getGiangVien(idMonDatn);
+})
+
+function createNhomDatn() {
+    var check = true;
+    $("#ten_de_tai_error").text("");
+    $("#mon_datn_error").text("");
+    $("#ten_nhom_error").text("");
+    let giangVienId = $("#giangVienCreateNhom").val()
+    let tenDeTai = $("#tenDeTaiCreateNhom").val()
+    let tenNhom = $("#tenNhomCreateNhom").val()
+    let moTa = $("#moTaCreateNhom").val()
+
+    if ($('#monDatnCreateNhom').val() === "") {
+        $("#mon_datn_error").text("*Chưa chọn môn dự án tốt nghiệp");
+        check = false;
+    }
+
+    if (tenNhom.length == 0) {
+        $("#ten_nhom_error").text("*Không để trống tên nhóm");
+        check = false;
+    }
+
+    if (tenDeTai.length == 0) {
+        $("#ten_de_tai_error").text("*Không để trống tên đề tài");
+        check = false;
+    }
+
+    if (check) {
+        let matKhau = ""
+        if ($("#checkTrangThaiCreateNhom").is(':checked')) {
+            matKhau = Math.floor(Math.random() * 100000000)
+        }
+        let nhomDatnRequest = {};
+        nhomDatnRequest["giangVienId"] = giangVienId;
+        nhomDatnRequest["tenNhom"] = tenNhom;
+        nhomDatnRequest["tenDeTai"] = tenDeTai;
+        nhomDatnRequest["matKhau"] = matKhau;
+        nhomDatnRequest["moTa"] = moTa;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: SVNhomDatnApi,
+            data: JSON.stringify(nhomDatnRequest),
+            dataType: 'json',
+            success: function (responseData) {
+                console.log(responseData)
+                $("#modal_create").modal("hide");
+                $("#messageSuccess").text("Tạo nhóm thành công");
+                $("#modal_confirm_success").modal('show');
+            },
+            error: function (e) {
+                alert(e.responseJSON.message);
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+}

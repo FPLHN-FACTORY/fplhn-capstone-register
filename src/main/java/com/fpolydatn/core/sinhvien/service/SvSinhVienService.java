@@ -2,6 +2,7 @@ package com.fpolydatn.core.sinhvien.service;
 
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvSinhVienTheoNhomResponse;
+import com.fpolydatn.entity.SinhVien;
 
 import java.util.List;
 
@@ -13,5 +14,7 @@ public interface SvSinhVienService {
     List<SvSinhVienTheoNhomResponse> findByNhomId(final SvFindSinhVienRequest request);
 
     String getNhomIdById(String coSoId, String dotDangKyId, String id);
+
+    SinhVien saveNhomDatn(String sinhVienId, String nhomDatnId);
 
 }

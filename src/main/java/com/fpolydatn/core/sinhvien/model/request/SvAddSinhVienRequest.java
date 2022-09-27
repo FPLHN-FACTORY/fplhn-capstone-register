@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public final class AddSinhVienRequest {
+public final class SvAddSinhVienRequest {
     private String idNhom;
     private String idUser;
     private String inputPassword;

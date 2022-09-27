@@ -1,12 +1,11 @@
 package com.fpolydatn.core.sinhvien.repository;
 
-import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
-import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
-import com.fpolydatn.core.sinhvien.model.request.AddSinhVienRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvAddSinhVienRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
+import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +20,7 @@ import java.util.List;
  * @author hoangnt
  */
 public interface SvNhomDatnRepository extends NhomDatnRepository {
+
     @Query(value = "SELECT a.id, b.id AS id_sinh_vien, ROW_NUMBER() OVER() AS Stt, ma_nhom, ten_nhom, ten_dot_dang_ky, " +
             "ten_de_tai, ma_sinh_vien, ten_sinh_vien, ten_gvhd," +
             "IF(b.id = a.truong_nhom_id,'Trưởng nhóm','Thành viên') as chuc_vu, a.trang_thai, " +
@@ -29,6 +29,11 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             "join giang_vien_huong_dan c on c.id = a.giang_vien_id\n" +
             "join dot_dang_ky d on d.id = a.dot_dang_ky_id where  a.id = :nhomDatnId",nativeQuery = true)
     List<SvDetailNhomDatnResponse> getNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
+
+    @Query(value = "SELECT id, co_so_id, dot_dang_ky_id, giang_vien_id, ma_nhom, " +
+            "mat_khau, mo_ta, nhan_xet, ten_de_tai, ten_nhom, trang_thai, truong_nhom_id FROM nhom_datn " +
+            "WHERE truong_nhom_id = :id", nativeQuery = true)
+    NhomDatn getNhomDatnByTruongNhomId(@Param("id") String id);
 
     @Query(value = "SELECT truong_nhom_id FROM nhom_datn WHERE id = :nhomDatnId and co_so_id = :coSoId",nativeQuery = true)
     String getIdTruongNhom (@Param("nhomDatnId") String nhomDatnId,@Param("coSoId") String coSoId);
@@ -92,12 +97,16 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
     @Modifying
     @Transactional
     @Query(value = "UPDATE sinh_vien SET nhom_id = :#{#req.idNhom} WHERE id = :#{#req.idUser}",nativeQuery = true)
-    void addSinhVienInGroup(@Param("req") AddSinhVienRequest req);
+    void addSinhVienInGroup(@Param("req") SvAddSinhVienRequest req);
 
     @Query(value = "SELECT mat_khau FROM nhom_datn WHERE id = :id", nativeQuery = true)
     String getMatKhauById(@Param("id") String id);
 
     @Query(value = "SELECT COUNT(id) FROM sinh_vien WHERE nhom_id = :nhomId GROUP BY nhom_id", nativeQuery = true)
     int getSoLuongThanhVienById(@Param("nhomId") String nhomId);
+
+    @Query(value = "SELECT count(1) FROM nhom_datn n JOIN giang_vien_huong_dan g ON n.giang_vien_id = g.id " +
+            "WHERE g.id LIKE :id", nativeQuery = true)
+    Long countByGiangVienId(@Param("id") String id);
 
 }
