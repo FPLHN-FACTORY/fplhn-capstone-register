@@ -1,6 +1,8 @@
 package com.fpolydatn.core.chunhiem.service;
 
+import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoNhomRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.DotDangKy;
@@ -28,4 +30,7 @@ public interface CnSinhVienTheoNhomService {
     List<SinhVien> getStudentNotCaptain(String idCaptain,String idGroup);
 
     List<DotDangKy> getListDotDangKy();
+
+    List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest request);
+
 }

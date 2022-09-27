@@ -1,7 +1,9 @@
 package com.fpolydatn.core.chunhiem.repository;
 
+import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoNhomRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
 import com.fpolydatn.entity.SinhVien;
@@ -109,4 +111,14 @@ public interface CnSinhVienRepository extends SinhVienRepository {
 
     @Query(value = "SELECT * FROM sinh_vien WHERE nhom_id = :idNhom", nativeQuery = true)
     List<SinhVien> getAllSinhVien(String idNhom);
+
+    @Query(value = """
+            SELECT CONCAT(ma_sinh_vien, '_' , ten_sinh_vien) as thong_tin, ma_sinh_vien FROM sinh_vien WHERE nhom_id IS NULL
+            AND ((:#{#req.maSinhVien} IS NULL OR :#{#req.maSinhVien} LIKE ''
+            OR ma_sinh_vien LIKE %:#{#req.maSinhVien}%)
+            OR (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
+            OR ten_sinh_vien LIKE %:#{#req.tenSinhVien}%))
+            AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId}
+            """, nativeQuery = true)
+    List<CnSinhVienSearchResponse> getListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req);
 }
