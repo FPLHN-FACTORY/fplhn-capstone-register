@@ -33,14 +33,6 @@ function fillter(){
         seachNhomdatn(0);
     });
 
-    $("#tenHocKyNhomDoiXacNhan").on('change', function (){
-        seachNhomdatnDoiXacNhan(0);
-    });
-
-    $("#tenHocKyNhomHuongDan").on('change', function (){
-        seachNhomdatnHuongDan(0);
-    });
-
 }
 
 
@@ -77,7 +69,7 @@ function pheDuyetNhomDatn(maNhom) {
         contentType: "application/json",
         url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + maNhom,
         success: function () {
-            seachNhomdatnDoiXacNhan(0);
+           window.location.reload(false)
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -88,130 +80,6 @@ $("#form_list_giang_vien").submit(function (event){
     event.preventDefault();
 })
 
-function seachNhomdatnDoiXacNhan(index) {
-    if(index == undefined){
-        index =0
-    }
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/seach/chot-nhom-datn" + "?page="+index,
-        success: function (responseData) {
-            $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
-                return `
-                <tr>
-                <td>${item.stt}</td>
-                <td>${item.tenNhom}</td>
-                <td>${item.tenDeTai}</td>
-                <td>${item.tenChuyenNganh}</td>
-                <td>${item.totalMaSinhVien}</td>
-                <td>${item.tenTruongNhom } - ${item.maTruongNhom} </td>
-                <td>${item.tenGvhd} - ${item.accountGvhd} </td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'cần sửa' : (item.trangThai == 4 ? 'Giáo viên đã chốt':'CNBM đã chốt'))))}</td>
-                <td>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary"
-                                    onclick= "showDetail('${item.id}')">
-                                    chi tiết nhóm
-                     </button>
-                 </td>
-                 <td>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary "
-                                    id="chotDuLieu" 
-                                    style="${item.trangThai == 0 ? 'display : block' : 'display : none'}"
-                                    onclick="pheDuyetNhomDatn('${item.id}')">xác nhận
-                     </button>
-                 </td>
-                </tr>
-                `
-            }))
-            $("#page").html(``)
-            let templateHtml = ``;
-            for(let i =0; i < responseData.data.totalPages; i++){
-                templateHtml += `<li class="page-item" >
-                                <a class="page-link" onclick="seachNhomdatnDoiXacNhan(${i})">${i +1}</a>
-                            </li>`
-            }
-            if(responseData.data.totalPages == 1){
-                templateHtml = ``;
-            }
-            $("#page").html(templateHtml)
-
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
-
-function seachNhomdatnHuongDan(index) {
-
-    if(index == undefined){
-        index =0
-    }
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/seach/nhom-datn-huong-dan" + "?page="+index,
-        success: function (responseData) {
-            $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
-                return `
-                <tr>
-                <td>${item.stt}</td>
-                <td>${item.tenNhom}</td>
-                <td>${item.tenDeTai}</td>
-                <td>${item.tenChuyenNganh}</td>
-                <td>${item.totalMaSinhVien}</td>
-                <td>${item.tenTruongNhom } - ${item.maTruongNhom} </td>
-                <td>${item.tenGvhd} - ${item.accountGvhd} </td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'cần sửa' : (item.trangThai == 4 ? 'Giáo viên đã chốt':'CNBM đã chốt'))))}</td>
-                <td>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary"
-                                    onclick= "showDetail('${item.id}')">
-                                    chi tiết nhóm
-                     </button>
-                 </td>
-                 <td>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary "
-                                    id="chotDuLieu" 
-                                    style="${item.trangThai == 1 ? 'display : block' : 'display : none'}"
-                                    onclick="pheDuyetNhomDatn('${item.id}')">xác nhận
-                     </button>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary "
-                                    style="${item.trangThai == 1 ? 'display : block' : 'display : none'}"
-                                    onclick="updateTenDeTai('${item.id}')">update 
-                     </button>
-                 </td>
-                </tr>
-                `
-            }))
-            $("#page").html(``)
-            let templateHtml = ``;
-            for(let i =0; i < responseData.data.totalPages; i++){
-                templateHtml += `<li class="page-item" >
-                                <a class="page-link" onclick="seachNhomdatnHuongDan(${i})">${i +1}</a>
-                            </li>`
-            }
-            if(responseData.data.totalPages == 1){
-                templateHtml = ``;
-            }
-            $("#page").html(templateHtml)
-
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
 
 function seachNhomdatn(index) {
     if(index == undefined){
@@ -305,7 +173,7 @@ $("#form_nhom_datn_update").submit(function (event) {
             data: JSON.stringify(NhomDatnRequest),
             dataType: 'json',
             success: function () {
-                seachNhomdatnHuongDan(0);
+                window.location.reload(false)
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -320,7 +188,7 @@ function chotDeTaiNhomDatn(maNhom) {
         contentType: "application/json",
         url: nhomDatnAPI + "/phe-duyet-de-tai-nhom?maNhom=" + maNhom,
         success: function () {
-            seachNhomdatnHuongDan(0);
+            window.location.reload(false)
         },
         error: function (e) {
             console.log("ERROR : ", e);
