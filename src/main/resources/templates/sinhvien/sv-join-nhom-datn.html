@@ -330,7 +330,7 @@
                                                     <td th:text="${nhomDatn.tenDeTai}"></td>
                                                     <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
                                                     <td th:text="${nhomDatn.maSinhVien} + ' - ' + ${nhomDatn.getTenSinhVien()}"></td>
-                                                    <td th:text="${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></td>
+                                                    <td th:text="${nhomDatn.tenGvhd} == null ? 'Chưa có': (${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()})"></td>
                                                     <td th:text="${nhomDatn.getMatKhauTonTai} == '0' ? 'Công khai' : 'Nhóm kín'"></td>
                                                     <td>
                                                         <div class="row">
@@ -338,7 +338,6 @@
                                                             >
                                                                 <button
                                                                         class=" btn btn-success"
-                                                                        data-target="#modal_create"
                                                                         data-toggle="modal"
                                                                         th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
                                                                 >
@@ -371,7 +370,7 @@
                                                 <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                     <li class="page-item">
                                                         <a class="page-link"
-                                                           th:href="@{/dao-tao/nhom-datn?page={page.currentPage}(page.currentPage=${i}-1)}"
+                                                           th:href="@{/sinh-vien/?page={page.currentPage}(page.currentPage=${i}-1)}"
                                                            th:text="${i}">
                                                         </a>
                                                     </li>

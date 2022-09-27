@@ -22,12 +22,14 @@ import java.util.List;
 public interface SvNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = "SELECT a.id, b.id AS id_sinh_vien, ROW_NUMBER() OVER() AS Stt, ma_nhom, ten_nhom, ten_dot_dang_ky, " +
-            "ten_de_tai, ma_sinh_vien, ten_sinh_vien, ten_gvhd," +
+            "ten_de_tai, ma_sinh_vien, ten_sinh_vien, ten_gvhd, f.ten_mon_datn,\n" +
             "IF(b.id = a.truong_nhom_id,'Trưởng nhóm','Thành viên') as chuc_vu, a.trang_thai, " +
             "IF(a.nhan_xet IS NULL, 'Không có nhận xét', a.nhan_xet) AS nhan_xet\n" +
-            "FROM nhom_datn a join sinh_vien b on a.id = b.nhom_id " +
-            "join giang_vien_huong_dan c on c.id = a.giang_vien_id\n" +
-            "join dot_dang_ky d on d.id = a.dot_dang_ky_id where  a.id = :nhomDatnId",nativeQuery = true)
+            "FROM nhom_datn a LEFT JOIN sinh_vien b on a.id = b.nhom_id " +
+            "LEFT JOIN giang_vien_huong_dan c on c.id = a.giang_vien_id\n" +
+            "LEFT JOIN phan_cong_huong_dan e on e.giang_vien_id = c.id\n" +
+            "LEFT JOIN mon_datn f on f.id = e.mon_datn_id\n" +
+            "LEFT JOIN dot_dang_ky d on d.id = a.dot_dang_ky_id where  a.id = :nhomDatnId",nativeQuery = true)
     List<SvDetailNhomDatnResponse> getNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
 
     @Query(value = "SELECT id, co_so_id, dot_dang_ky_id, giang_vien_id, ma_nhom, " +
@@ -45,12 +47,12 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ten_nhom
             ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien,
             e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date, IF(b.mat_khau IS NULL, 0, 1) AS mat_khau_ton_tai
-            FROM nhom_datn b JOIN sinh_vien c ON b.truong_nhom_id = c.id
-            JOIN sinh_vien d ON d.nhom_id = b.id
-            JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
-            JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
-            JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
-            JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             WHERE (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
             OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%) 
             AND (:#{#req.truongNhom} IS NULL OR :#{#req.truongNhom} LIKE ''
@@ -66,12 +68,12 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             ORDER BY b.last_modified_date DESC
             """, countQuery = """
             SELECT count(b.id)
-            FROM nhom_datn b JOIN sinh_vien c ON b.truong_nhom_id = c.id
-            JOIN sinh_vien d ON d.nhom_id = b.id
-            JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
-            JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
-            JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
-            JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             WHERE (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
             OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%) 
             AND (:#{#req.truongNhom} IS NULL OR :#{#req.truongNhom} LIKE ''

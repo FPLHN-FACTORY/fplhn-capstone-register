@@ -37,12 +37,14 @@ public class SvNhomDatnController extends BaseController {
 //    @Autowired
 //    private SvMonDatnService svMonDatnService;
 
+    private String idUser = "4d5eff02-6565-44eb-92f2-8beeb3687145";
+
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req ){
         String dotDangKyHienTai = dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond());
         String nhomId = svSinhVienService.getNhomIdById(session.getCoSoId(),
                 dotDangKyHienTai,
-                "a2529445-f53f-47ea-a2d2-9762bfe075bc");
+                idUser);
         if (nhomId == null || nhomId.trim().isEmpty()) {
             req.setCoSoId(session.getCoSoId());
             req.setDotDangKyId(dotDangKyHienTai);
@@ -52,7 +54,7 @@ public class SvNhomDatnController extends BaseController {
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,
-                    session.getCoSoId(), "a2529445-f53f-47ea-a2d2-9762bfe075bc");
+                    session.getCoSoId(), idUser);
             List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getNhomDatnById(nhomId);
             model.addAttribute("checkTruongNhom",checkTruongNhom);
             model.addAttribute("nhomDatnThamGia", svDetailNhomDatnResponse);

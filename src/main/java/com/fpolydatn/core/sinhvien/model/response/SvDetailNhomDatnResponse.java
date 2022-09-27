@@ -40,6 +40,9 @@ public interface SvDetailNhomDatnResponse extends IsIdentified {
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
 
+    @Value("#{target.ten_mon_datn}")
+    String getTenMonDatn();
+
     @Value("#{target.chuc_vu}")
     String getChucVu();
 

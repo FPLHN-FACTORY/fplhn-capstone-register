@@ -51,6 +51,8 @@ public class SvNhomDatnRestController extends BaseController {
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
+    private String idUser = "4d5eff02-6565-44eb-92f2-8beeb3687145";
+
     @GetMapping("/search-giang-vien")
     public ResponseObject getGiangVienHuongDan(@RequestParam(defaultValue = "", required = true) String idMonDatn) {
         return new ResponseObject(svGiangVienHuongDanService.getGiangVienHuongDan(idMonDatn));
@@ -58,23 +60,16 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PutMapping("/{id}")
     public ResponseObject guiYeuCauPheDuyet(@PathVariable String id){
-        return new ResponseObject(svNhomDatnService.guiYeuCauPheDuyet(id, "a2529445-f53f-47ea-a2d2-9762bfe075bc"));
+        return new ResponseObject(svNhomDatnService.guiYeuCauPheDuyet(id, idUser));
     }
 
     @GetMapping("/search")
-    public ResponseObject viewNhomDatn(final SvFindNhomDatnRequest req) {
+    public ResponseObject searchNhomDatn(final SvFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         req.setDotDangKyId(dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond()));
         PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
-        DtApiResponse<SvNhomDatnResponse> dtApiResponse = new DtApiResponse<>();
-        dtApiResponse.setData(listNhomDatn);
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < listNhomDatn.getTotalPages(); i++) {
-            list.add(i + 1);
-        }
-        dtApiResponse.setList(list);
-        return new ResponseObject(dtApiResponse);
+        return new ResponseObject(listNhomDatn);
     }
 
     @GetMapping("")
@@ -85,7 +80,7 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PostMapping("/add")
     public ResponseObject addSinhVien(@RequestBody SvAddSinhVienRequest req) {
-        req.setIdUser("a2529445-f53f-47ea-a2d2-9762bfe075bc");
+        req.setIdUser(idUser);
         return new ResponseObject(svNhomDatnService.addSinhVienTheoNhom(req));
     }
 
@@ -93,7 +88,7 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject addNhomDatn(@RequestBody SvCreateNhomDatnRequest svNhomDatnRequest) {
         String coSoid = session.getCoSoId();
         svNhomDatnRequest.setCoSoId(coSoid);
-        svNhomDatnRequest.setTruongNhomId("a2529445-f53f-47ea-a2d2-9762bfe075bc");
+        svNhomDatnRequest.setTruongNhomId(idUser);
         svNhomDatnRequest.setDotDangKyId(dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond()));
         NhomDatn nhomDatn = svNhomDatnService.createNhomDatn(svNhomDatnRequest);
         svSinhVienService.saveNhomDatn(svNhomDatnRequest.getTruongNhomId(),nhomDatn.getId());
@@ -102,7 +97,7 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PutMapping("/update-ten-de-tai")
     public ResponseObject updateTenDeTai(@RequestBody SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
-        svUpdateTenDeTaiRequest.setIdUser("a2529445-f53f-47ea-a2d2-9762bfe075bc");
+        svUpdateTenDeTaiRequest.setIdUser(idUser);
         return new ResponseObject(svNhomDatnService.updateTenDeTai(svUpdateTenDeTaiRequest));
     }
 

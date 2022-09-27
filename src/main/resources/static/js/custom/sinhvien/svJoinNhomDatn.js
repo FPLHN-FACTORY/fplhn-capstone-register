@@ -50,11 +50,12 @@ function loadDataNhomDatn(count) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: SVNhomDatnApi + "/search" + "?tenDeTai=" + tenDeTai + "&truongNhom=" + truongNhom + "&soLuong=" + soLuong + "&giangVien=" + giangVien + "&page=" + count,
+        url: SVNhomDatnApi + "/search" + "?tenDeTai=" + tenDeTai + "&truongNhom=" + truongNhom
+            + "&soLuong=" + soLuong + "&giangVien=" + giangVien + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)
-            let array = responseData.data.data.data
+            let array = responseData.data.data
             console.log(array)
             if (array.length == 0) {
                 console.log(array.length)
@@ -71,7 +72,7 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenDeTai}</td>
                 <td>${item.countSinhVien}/7</td>
                 <td>${item.maSinhVien}-${item.tenSinhVien}</td>
-                <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
+                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenTaiKhoan + ' - ' + item.tenGvhd}</td>
                 <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
                 <td><button type="button" data-toggle="modal" data-target="#modal_create" class="btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
                 <td><div class="row"><div class="col-6 d-inline"><button class=" btn btn-success"
@@ -90,14 +91,16 @@ function loadDataNhomDatn(count) {
                 `
                 }))
                 $("#list_page").html(``)
-                $("#list_page").html(responseData.data.list.map(function (item, index) {
-                    if (responseData.data.list.length == 1) {
-                        return ``
-                    }
-                    return `<li class="page-item" >
-                                <a class="page-link" onclick="loadDataNhomDatn(${index})">${item}</a>
-                            </li>`
-                }))
+                let templateHtml = ``;
+                for (let i = 0; i < responseData.data.totalPages; i++) {
+                    templateHtml += `<li class="page-item" >
+                                        <a class="page-link" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
+                                    </li>`
+                }
+                if (responseData.data.totalPages == 1) {
+                    templateHtml = ``;
+                }
+                $("#list_page").html(templateHtml);
             }
         },
         error: function (e) {
