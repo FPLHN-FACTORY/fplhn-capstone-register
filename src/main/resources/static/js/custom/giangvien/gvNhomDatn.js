@@ -195,3 +195,19 @@ function chotDeTaiNhomDatn(maNhom) {
         }
     });
 }
+
+
+function tuChoiNhomDatn(maNhom){
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/tu-choi-nhom-datn?maNhom=" + maNhom,
+        dataType: 'json',
+        success: function () {
+           window.location.reload(false)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
