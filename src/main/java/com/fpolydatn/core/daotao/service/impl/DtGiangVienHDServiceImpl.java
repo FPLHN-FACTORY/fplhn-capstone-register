@@ -212,19 +212,19 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         if(list == null){
             throw new RestApiException(Message.FILE_EMPTY);
         }
-        for (int i = 0; i <list.size() ; i++) {
-            GiangVienHuongDan giangVien = dtGiangVienHDRepository.getGVHDByEmailFpt(list.get(i).getEmailFpt().trim());
+        for ( GiangVienHuongDan gvhd: list) {
+            GiangVienHuongDan giangVien =  dtGiangVienHDRepository.getGVHDByEmailFpt(gvhd.getEmailFpt().trim());
             if(giangVien != null){
-                giangVien.setTenGvhd(list.get(i).getTenGvhd());
-                giangVien.setSoNhomHuongDanToiDa(list.get(i).getSoNhomHuongDanToiDa());
-                giangVien.setTenTaiKhoan(list.get(i).getTenTaiKhoan());
-                giangVien.setSoDienThoai(list.get(i).getSoDienThoai());
-                giangVien.setEmailFpt(list.get(i).getEmailFpt());
-                giangVien.setEmailFe(list.get(i).getEmailFe());
-                giangVien.setDotDangKyId(list.get(i).getDotDangKyId());
+                giangVien.setTenGvhd(gvhd.getTenGvhd());
+                giangVien.setSoNhomHuongDanToiDa(gvhd.getSoNhomHuongDanToiDa());
+                giangVien.setTenTaiKhoan(gvhd.getTenTaiKhoan());
+                giangVien.setSoDienThoai(gvhd.getSoDienThoai());
+                giangVien.setEmailFpt(gvhd.getEmailFpt());
+                giangVien.setEmailFe(gvhd.getEmailFe());
+                giangVien.setDotDangKyId(gvhd.getDotDangKyId());
                 dtGiangVienHDRepository.save(giangVien);
             }else{
-                listGVHD.add(list.get(i));
+                listGVHD.add(gvhd);
             }
         }
         dtGiangVienHDRepository.saveAll(listGVHD);
