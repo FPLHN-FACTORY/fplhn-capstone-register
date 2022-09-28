@@ -1,6 +1,7 @@
 package com.fpolydatn.core.daotao.repository;
 
 
+import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.repository.ChuyenNganhRepository;
 
 /**
@@ -34,4 +35,11 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
                 ORDER BY cn.last_modified_date DESC
             """, nativeQuery = true)
     Page<DtChuyenNganhResponse> findByName(@Param("req") DtFindChuyenNganhRequest req, Pageable page);
+
+    @Query(value = """
+            SELECT * FROM do_an_tot_nghiep.chuyen_nganh cn
+             WHERE cn.ten_chuyen_nganh = :tenChuyenNganh    ;
+            """, nativeQuery = true)
+    ChuyenNganh findName(@Param("tenChuyenNganh") String tenChuyenNganh);
+
 }

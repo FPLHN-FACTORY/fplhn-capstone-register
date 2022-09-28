@@ -134,6 +134,56 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-6 d-inline">
+                                            <button data-toggle="modal"
+                                                    data-target="#import"
+                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                import file
+                                            </button>
+                                            <div class="modal fade "
+                                                 id="import"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form th:action="@{/dao-tao/can-bo/import}" method="post"
+                                                              enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">import
+                                                                    file </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+
+                                                                    <input
+
+                                                                            class="form-control"
+
+                                                                            type="file" th:name="file">
+                                                                    <span class="text-danger"
+                                                                          id="hoc_ky_error"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Hủy
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary"
+                                                                        value="Import">Thêm mới
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                     <div class="table-responsive mt-3">
                                         <table id="custom-table"
