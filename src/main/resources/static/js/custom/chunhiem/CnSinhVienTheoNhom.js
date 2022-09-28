@@ -57,8 +57,8 @@ loadData()
 
 $("#form_create_ma_nhom").submit(function (event) {
     event.preventDefault();
-    let idNhom = $("#idNhom").val()
-    let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien")
+    let idNhom = $("#idNhom").val();
+    let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien");
     for (let item of listMaSinhVien) {
         $.ajax({
             type: "POST",
@@ -81,9 +81,9 @@ function openModalRemoveNhom(maSinhVien) {
 
 $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     event.preventDefault();
-    let maSinhVien = $("#remove_sinh_vien_theo_nhom").val();
-    let idNhom = $("#idNhom").val()
-    let soThanhVien = $("#soThanhVien").val()
+    let maSinhVien = $("#remove_sinh_vien_theo_nhom").val().trim();
+    let idNhom = $("#idNhom").val();
+    let soThanhVien = $("#soThanhVien").val();
     if (idOldCaptain == maSinhVien) {
         $.ajax({
             type: "PUT",

@@ -12,7 +12,6 @@ import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse
 import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
-import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.repository.DotDangKyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,11 +49,11 @@ public class SvNhomDatnRestController extends BaseController {
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
-    private String idUser = "a2529445-f53f-47ea-a2d2-9762bfe075bc";
+    private String idUser = "f61b5269-9181-4be7-9b46-c5e4c81cb00f";
 
     @GetMapping("/search-giang-vien")
     public ResponseObject getGiangVienHuongDan(@RequestParam(defaultValue = "", required = true) String idMonDatn) {
-        return new ResponseObject(svGiangVienHuongDanService.getGiangVienHuongDan(idMonDatn));
+        return new ResponseObject(svGiangVienHuongDanService.getGvhdByMonDatnId(idMonDatn));
     }
 
     @PutMapping("/{id}")
@@ -105,6 +104,11 @@ public class SvNhomDatnRestController extends BaseController {
     @PutMapping("/chuyen-quyen-truong-nhom")
     public ResponseObject chuyenQuyenTruongNhom(@RequestParam("idTruongNhomMoi") String idTruongNhomMoi) {
         return new ResponseObject(svNhomDatnService.chuyenQuyenTruongNhom(idUser, idTruongNhomMoi));
+    }
+
+    @PutMapping("/chon-giang-vien")
+    public ResponseObject chonGvhd(@RequestParam String idGiangVien){
+        return new ResponseObject(svNhomDatnService.chonGvhd(idUser, idGiangVien));
     }
 
 }

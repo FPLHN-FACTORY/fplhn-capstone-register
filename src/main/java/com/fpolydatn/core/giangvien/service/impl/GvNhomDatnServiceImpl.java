@@ -69,6 +69,7 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
             throw new RestApiException(Message.EMPTY);
         }
         nhomDatnCheck.get().setTenDeTai(request.getTenDeTai());
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 

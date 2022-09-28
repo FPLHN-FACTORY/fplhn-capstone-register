@@ -13,4 +13,5 @@ public interface SvMonDatnRepository extends MonDatnRepository {
 
     @Query(value = "SELECT id,ma_mon,ten_mon_datn FROM mon_datn", nativeQuery = true)
     List<SvMonDatnResponse> findMonDatn();
+
 }

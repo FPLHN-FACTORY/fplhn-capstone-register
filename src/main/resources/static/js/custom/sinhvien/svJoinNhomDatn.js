@@ -112,22 +112,25 @@ function loadDataNhomDatn(count) {
 function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
     clearform();
     if (Number(matKhauTonTai) == 0) {
-        let addSinhVienRequest = {};
-        addSinhVienRequest["idNhom"] = idNhom;
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: SVNhomDatnApi + "/add",
-            data: JSON.stringify(addSinhVienRequest),
-            datatype: 'json',
-            success: function () {
-                $("#messageSuccess").text("Tham gia thành công");
-                $("#modal_confirm_success").modal('show');
-            },
-            error: function (responseData) {
-                console.log(responseData);
-            }
-        });
+        let checkConfirm = confirm('Bạn muốn tham gia nhóm này?');
+        if (checkConfirm == true) {
+            let addSinhVienRequest = {};
+            addSinhVienRequest["idNhom"] = idNhom;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: SVNhomDatnApi + "/add",
+                data: JSON.stringify(addSinhVienRequest),
+                datatype: 'json',
+                success: function () {
+                    $("#messageSuccess").text("Tham gia thành công");
+                    $("#modal_confirm_success").modal('show');
+                },
+                error: function (responseData) {
+                    console.log(responseData);
+                }
+            });
+        }
     } else {
         $("#modal_add_sinh_vien").modal('show');
         $("#idNhom").val(idNhom);

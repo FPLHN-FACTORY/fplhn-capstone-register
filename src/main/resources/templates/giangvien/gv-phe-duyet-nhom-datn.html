@@ -61,7 +61,7 @@
                                                 <td th:text="${nhomDatn.getTenTruongNhom()} + ' - '+ ${nhomDatn.getMaTruongNhom()} ">
                                                 </td>
                                                 <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()} "></td>
-                                                <td th:text="${nhomDatn.getTrangThai()}==0?'Mới thành lập':(${nhomDatn.getTrangThai()}==2 ? 'sẵn sàng phê duyệt': (${nhomDatn.getTrangThai()}==3 ? 'cần sửa': (${nhomDatn.getTrangThai()}==4 ?'Giáo viên đã chốt':'CNBM đã chốt')))"></td>
+                                                <td th:text="${nhomDatn.getTrangThai()}==0?'Mới thành lập':(${nhomDatn.getTrangThai()}==2 ? 'Sẵn sàng phê duyệt': (${nhomDatn.getTrangThai()}==3 ? 'Cần sửa': (${nhomDatn.getTrangThai()}==4 ?'Giảng viên đã chốt':'CNBM đã chốt')))"></td>
                                                 <td>
                                                     <button
                                                             type="button"
@@ -96,6 +96,11 @@
                                             </div>
                                         </ul>
                                     </nav>
+                                </div>
+                                <div id="empty">
+                                    <div th:if="${page.data.isEmpty()}">
+                                        <h3>Không có nhóm nào cần xác nhận đã liên hệ</h3>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +170,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Bạn có muốn xác nhận nhóm ?</p>
+                    <p>Bạn có muốn xác nhận đã liên hệ với nhóm ?</p>
                     <span id="update_nhom_datn" style="color:red;"></span>
                 </div>
                 <div class="modal-footer">

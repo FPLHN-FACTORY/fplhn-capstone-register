@@ -37,7 +37,7 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             "LEFT JOIN dot_dang_ky d ON d.id = a.dot_dang_ky_id WHERE a.id = :nhomDatnId",nativeQuery = true)
     List<SvDetailNhomDatnResponse> getDetailNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
 
-    @Query(value = "SELECT id, co_so_id, dot_dang_ky_id, giang_vien_id, ma_nhom, " +
+    @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, dot_dang_ky_id, giang_vien_id, ma_nhom, " +
             "mat_khau, mo_ta, nhan_xet, ten_de_tai, ten_nhom, trang_thai, truong_nhom_id FROM nhom_datn " +
             "WHERE truong_nhom_id = :id", nativeQuery = true)
     NhomDatn getNhomDatnByTruongNhomId(@Param("id") String id);

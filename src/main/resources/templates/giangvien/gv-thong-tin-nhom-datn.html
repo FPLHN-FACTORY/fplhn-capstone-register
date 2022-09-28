@@ -31,7 +31,7 @@
             <!-- END: Subheader -->
             <div>
                 <div class="m-content">
-                    <h3>Nhóm đợi chốt đề tài </h3>
+                    <h3>Nhóm đang hướng dẫn </h3>
                     <div class="mt-5">
                         <div class="m-portlet">
                             <div class="m-portlet__body">
@@ -113,6 +113,11 @@
                                             </div>
                                         </ul>
                                     </nav>
+                                </div>
+                                <div id="empty">
+                                    <div th:if="${page.data.isEmpty()}">
+                                        <h3>Không có nhóm đang hướng dẫn</h3>
+                                    </div>
                                 </div>
                             </div>
                         </div>

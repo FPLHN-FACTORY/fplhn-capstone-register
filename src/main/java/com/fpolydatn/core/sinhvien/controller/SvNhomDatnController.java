@@ -4,7 +4,10 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
+import com.fpolydatn.core.sinhvien.model.response.SvGiangVienHuongDanResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
+import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
+import com.fpolydatn.core.sinhvien.service.SvMonDatnService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.repository.DotDangKyRepository;
@@ -33,13 +36,16 @@ public class SvNhomDatnController extends BaseController {
     private SvSinhVienService svSinhVienService;
 
     @Autowired
+    private SvMonDatnService svMonDatnService;
+
+    @Autowired
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
-//    @Autowired
-//    private SvMonDatnService svMonDatnService;
+    @Autowired
+    private SvGiangVienHuongDanService svGiangVienHuongDanService;
 
-    private String idUser = "a2529445-f53f-47ea-a2d2-9762bfe075bc";
+    private String idUser = "f61b5269-9181-4be7-9b46-c5e4c81cb00f";
 
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
@@ -51,7 +57,7 @@ public class SvNhomDatnController extends BaseController {
             req.setCoSoId(session.getCoSoId());
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
-            model.addAttribute("listDataMonDatn", svNhomDatnService.getMonDatn());
+            model.addAttribute("listDataMonDatn", svMonDatnService.getMonDatn());
             model.addAttribute("page", listNhomDatn);
             return "sinhvien/sv-join-nhom-datn";
         } else {
@@ -59,7 +65,10 @@ public class SvNhomDatnController extends BaseController {
                     session.getCoSoId(), idUser);
             List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getDetailNhomDatnById(nhomId);
             Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId);
+            String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(idUser);
+            List<SvGiangVienHuongDanResponse> listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId);
             model.addAttribute("soThanhVien", soThanhVien);
+            model.addAttribute("listGiangVien", listGiangVien);
             model.addAttribute("checkTruongNhom", checkTruongNhom);
             model.addAttribute("nhomDatnThamGia", svDetailNhomDatnResponse);
             return "sinhvien/sv-nhom-datn";
