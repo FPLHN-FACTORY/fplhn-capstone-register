@@ -20,14 +20,12 @@ import java.util.List;
  * @author hoangnt
  */
 public interface SvNhomDatnRepository extends NhomDatnRepository {
-<<<<<<< HEAD
+
     @Query(value = "SELECT b.id,ROW_NUMBER() OVER() AS Stt,ma_nhom,ten_nhom,ten_dot_dang_ky,ten_de_tai,ma_sinh_vien,ten_sinh_vien,ten_gvhd," +
             "IF(b.id = a.truong_nhom_id,'Trưởng nhóm','Thành viên') as chuc_vu,a.trang_thai,nhan_xet\n" +
             " FROM nhom_datn a join sinh_vien b on a.id = b.nhom_id join giang_vien_huong_dan c on c.id = a.giang_vien_id\n" +
             " join dot_dang_ky d on d.id = a.dot_dang_ky_id where  a.id = :nhomDatnId",nativeQuery = true)
     List<SvNhomDatnResponse> getNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
-=======
->>>>>>> phase_2_team_b_sonpt
 
     @Query(value = "SELECT a.id, b.id AS id_sinh_vien, ROW_NUMBER() OVER() AS Stt, ma_nhom, ten_nhom, ten_dot_dang_ky, " +
             "ten_de_tai, ma_sinh_vien, ten_sinh_vien, ten_gvhd, f.ten_mon_datn,\n" +

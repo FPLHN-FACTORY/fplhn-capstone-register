@@ -41,10 +41,7 @@ public interface SvNhomDatnResponse extends IsIdentified {
     @Value("#{target.trang_thai}")
     int getTrangThai();
 
-<<<<<<< HEAD
     @Value("#{target.nhan_xet}")
     String getNhanXet();
 
-=======
->>>>>>> phase_2_team_b_sonpt
 }
