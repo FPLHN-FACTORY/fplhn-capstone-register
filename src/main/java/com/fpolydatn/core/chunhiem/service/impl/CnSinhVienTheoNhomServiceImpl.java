@@ -12,6 +12,7 @@ import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.GiangVienHuongDan;
+import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
@@ -54,6 +55,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public boolean addSinhVienTheoNhom(String maNhom, String maSinhVien) {
         String id = cnSinhVienTheoNhomRepository.getIdSinhVienByMaSinhVien(maSinhVien);
+        String idNhom = cnNhomDatnRepository.getIdByMaNhom(maNhom);
         if(id==null){
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
@@ -61,7 +63,9 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if(idExist == null){
             throw new RestApiException(Message.STUDENT_HAVE_GROUP);
         }
-        cnSinhVienTheoNhomRepository.addSinhVienInGroup(maNhom,maSinhVien);
+        String captainId = cnNhomDatnRepository.findIDTruongNhom(idNhom);
+        Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(captainId);
+        cnSinhVienTheoNhomRepository.addSinhVienInGroup(maNhom,captain.get().getMonDatnId(),maSinhVien);
         return true;
     }
 
@@ -71,8 +75,12 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     }
 
     @Override
-    public boolean deleteFromIdSinhVien(String idNhom) {
-        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(idNhom);
+    public boolean deleteFromIdSinhVien(String maSinhVien,String idNhom) {
+//        if(cnNhomDatnRepository.getSoLuongThanhVienNhom(idNhom)==1){
+//            Optional<NhomDatn> nhomDatn = cnNhomDatnRepository.findById(idNhom);
+//            cnNhomDatnRepository.delete(nhomDatn.get());
+//        }
+        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien);
         return true;
     }
 

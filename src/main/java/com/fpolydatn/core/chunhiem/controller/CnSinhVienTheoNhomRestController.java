@@ -35,9 +35,9 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @Autowired
     private CnGiangVienHuongDanService cnGiangVienHuongDanService;
 
-    @DeleteMapping("/{maSinhVien}")
-    public ResponseObject updateSinhVienByNhom(@PathVariable("maSinhVien") String maSinhVien) {
-        return new ResponseObject(sinhVienTheoNhomService.deleteFromIdSinhVien(maSinhVien));
+    @DeleteMapping("/deleteStudent")
+    public ResponseObject updateSinhVienByNhom(@RequestParam("maSinhVien") String maSinhVien,@RequestParam("idNhom")String idNhom) {
+        return new ResponseObject(sinhVienTheoNhomService.deleteFromIdSinhVien(maSinhVien,idNhom));
     }
 
     @PostMapping("/addSinhVien")

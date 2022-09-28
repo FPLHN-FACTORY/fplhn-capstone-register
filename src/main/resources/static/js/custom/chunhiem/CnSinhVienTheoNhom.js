@@ -34,7 +34,7 @@ function clearData() {
 // }
 
 function searchGvhd() {
-    let text = $("#tags").val()
+    let text = $("#tags").val().trim();
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -56,7 +56,7 @@ loadData()
 
 $("#form_create_ma_nhom").submit(function (event) {
     event.preventDefault();
-    let idNhom = $("#idNhom").val()
+    let idNhom = $("#idNhom").val().trim();
     let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien")
     for (let item of listMaSinhVien) {
         $.ajax({
@@ -80,8 +80,8 @@ function openModalRemoveNhom(maSinhVien) {
 
 $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     event.preventDefault();
-    let maSinhVien = $("#remove_sinh_vien_theo_nhom").val();
-    let idNhom = $("#idNhom").val()
+    let maSinhVien = $("#remove_sinh_vien_theo_nhom").val().trim();
+    let idNhom = $("#idNhom").val().trim()
     if (idOldCaptain == maSinhVien) {
         $.ajax({
             type: "PUT",
@@ -97,7 +97,7 @@ $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     $.ajax({
         type: "DELETE",
         contentType: "application/json",
-        url: sinhVienApi + "/" + maSinhVien,
+        url: sinhVienApi + "/deleteStudent?maSinhVien=" + maSinhVien+"&idNhom="+idNhom,
         success: function () {
             window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
         },
@@ -113,7 +113,7 @@ function openModalChangeGvhd() {
 
 $('#form_change_gvhd').submit(function (event) {
     event.preventDefault();
-    let idGroup = $("#idNhom").val();
+    let idGroup = $("#idNhom").val().trim();
     let giangVienId = $("#tags").val().split('_');
     $.ajax({
         type: "POST",
@@ -130,7 +130,7 @@ $('#form_change_gvhd').submit(function (event) {
 
 function openModalChangeCaptain() {
     $("#modal_change_captain").modal('show');
-    let idGroup = $("#idNhom").val();
+    let idGroup = $("#idNhom").val().trim();
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -204,8 +204,8 @@ function changeCaptain(idCaptain) {
 
 $("#form_change_captain_confirm").submit(function (event) {
     event.preventDefault();
-    let idCaptain = $("#change_captain_confirm").val();
-    let idGroup = $("#idNhom").val();
+    let idCaptain = $("#change_captain_confirm").val().trim();
+    let idGroup = $("#idNhom").val().trim();
     $.ajax({
         type: "PUT",
         contentType: "application/json",
@@ -221,7 +221,7 @@ $("#form_change_captain_confirm").submit(function (event) {
 })
 
 function loadData() {
-    let idGroup = $("#idNhom").val();
+    let idGroup = $("#idNhom").val().trim();
     $.ajax({
         type: "GET",
         contentType: "application/json",

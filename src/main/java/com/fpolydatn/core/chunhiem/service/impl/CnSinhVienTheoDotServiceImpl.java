@@ -1,5 +1,7 @@
 package com.fpolydatn.core.chunhiem.service.impl;
 
+import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
@@ -42,7 +45,9 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
         if(numberOfGroup > 7){
             throw new RestApiException(Message.OVERLOADED_GROUP);
         }
-        cnSinhVienTheoNhomRepository.addSinhVienInGroup(idNhom,maSinhVien);
+        String captainId = nhomDatnRepository.findIDTruongNhom(idNhom);
+        Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(captainId);
+        cnSinhVienTheoNhomRepository.addSinhVienInGroup(idNhom,captain.get().getMonDatnId(),maSinhVien);
         return true;
     }
 

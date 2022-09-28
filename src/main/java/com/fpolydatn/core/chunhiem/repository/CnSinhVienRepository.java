@@ -59,8 +59,8 @@ public interface CnSinhVienRepository extends SinhVienRepository {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE sinh_vien SET nhom_id = :idNhom WHERE ma_sinh_vien = :maSinhVien",nativeQuery = true)
-    void addSinhVienInGroup(@Param("idNhom") String idNhom, @Param("maSinhVien") String maSinhVien);
+    @Query(value = "UPDATE sinh_vien SET nhom_id = :idNhom,mon_datn_id = :monId WHERE ma_sinh_vien = :maSinhVien",nativeQuery = true)
+    void addSinhVienInGroup(@Param("idNhom") String idNhom,@Param("monId") String monId, @Param("maSinhVien") String maSinhVien);
 
     @Query(value = """
     SELECT ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT,a.ma_sinh_vien,a.ten_sinh_vien,
@@ -121,4 +121,5 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId}
             """, nativeQuery = true)
     List<CnSinhVienSearchResponse> getListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req);
+
 }

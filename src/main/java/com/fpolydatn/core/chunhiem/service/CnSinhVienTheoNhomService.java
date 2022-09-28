@@ -17,7 +17,7 @@ public interface CnSinhVienTheoNhomService {
 
     long getSizeListSinhVien(String idNhom);
 
-    boolean deleteFromIdSinhVien(String maSinhVien);
+    boolean deleteFromIdSinhVien(String maSinhVien,String idNhom);
 
     boolean addGvhd(String giangVienId,String idNhom);
 
