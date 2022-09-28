@@ -38,13 +38,13 @@ public class DtMonDatnController extends BaseController {
         PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("page", pageMonDatn);
-        model.addAttribute("file",new MuitiPathFile());
+        model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
         return "daotao/dt-mon-datn";
     }
 
     @PostMapping("/import")
-    public String importExcel(Model model,@RequestBody MultipartFile file) {
+    public String importExcel(Model model, @RequestBody MultipartFile file) {
         this.monDatnService.importExcel(file);
         return "redirect:/dao-tao/mon-datn";
     }
