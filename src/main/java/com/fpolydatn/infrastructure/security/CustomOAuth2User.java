@@ -1,5 +1,6 @@
 package com.fpolydatn.infrastructure.security;
 
+import com.fpolydatn.infrastructure.constant.ActorConstant;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -28,10 +29,10 @@ public class CustomOAuth2User implements OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("chu-nhiem"));
-        authorities.add(new SimpleGrantedAuthority("dao-tao"));
-        authorities.add(new SimpleGrantedAuthority("giang-vien"));
-        authorities.add(new SimpleGrantedAuthority("sinh-vien"));
+        authorities.add(new SimpleGrantedAuthority(ActorConstant.CHU_NHIEM));
+        authorities.add(new SimpleGrantedAuthority(ActorConstant.DAO_TAO));
+        authorities.add(new SimpleGrantedAuthority(ActorConstant.GIANG_VIEN));
+        authorities.add(new SimpleGrantedAuthority(ActorConstant.SINH_VIEN));
         authorities.add(new SimpleGrantedAuthority("admin"));
         return authorities;
     }

@@ -17,8 +17,8 @@ public class ValidationUtils {
     @Qualifier(GiangVienHuongDanRepository.NAME)
     private GiangVienHuongDanRepository giangVienHuongDanRepository;
 
-    public int soNhomGiangVienDangHuongDan(String id){
-        return giangVienHuongDanRepository.getSoNhomGiangVienDangHuongDan(id);
+    public int soNhomGiangVienDangHuongDan(String id, String dotDangKyId){
+        return giangVienHuongDanRepository.getSoNhomGiangVienDangHuongDan(id,dotDangKyId);
     }
 
 }

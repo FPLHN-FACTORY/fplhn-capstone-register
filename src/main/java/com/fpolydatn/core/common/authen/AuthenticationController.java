@@ -2,13 +2,11 @@ package com.fpolydatn.core.common.authen;
 
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
+import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.CoSoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,7 +63,7 @@ public final class AuthenticationController {
     @GetMapping("/{coSoId}")
     @ResponseBody
     public ResponseObject getData(@PathVariable("coSoId") String coSoId, HttpSession session) {
-        session.setAttribute("coSoIDSelected", coSoId);
+        session.setAttribute(SessionConstant.CO_SO_ID, coSoId);
         return new ResponseObject(true);
     }
 

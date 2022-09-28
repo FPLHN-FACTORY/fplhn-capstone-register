@@ -25,10 +25,11 @@ public interface GiangVienHuongDanRepository extends JpaRepository<GiangVienHuon
              """, nativeQuery = true)
     SimpleEntityProj findSimpleEntityByTenGiangVienHuongDan(@Param("coSoId") String coSoId, @Param("emailFPT") String emailFPT,
                                                             @Param("dotDangKyID") String dotDangKyID);
+
     @Query(value = """
-        SELECT IF(COUNT(id) IS NULL, 0, COUNT(id)) FROM nhom_datn
-        WHERE giang_vien_id = :idGiangVien 
-        AND dot_dang_ky_id = 'e3afc2f8-3562-4606-9aae-62366445d077'
-        """, nativeQuery = true)
-    int getSoNhomGiangVienDangHuongDan(@Param("idGiangVien") String id);
+            SELECT IF(COUNT(id) IS NULL, 0, COUNT(id)) FROM nhom_datn
+            WHERE giang_vien_id = :idGiangVien 
+            AND dot_dang_ky_id = :dotDangKyID
+            """, nativeQuery = true)
+    int getSoNhomGiangVienDangHuongDan(@Param("idGiangVien") String id, @Param("dotDangKyID") String dotDangKyID);
 }

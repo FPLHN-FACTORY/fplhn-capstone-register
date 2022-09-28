@@ -1,5 +1,7 @@
 package com.fpolydatn.infrastructure.security;
 
+import com.fpolydatn.infrastructure.constant.ActorConstant;
+import com.fpolydatn.infrastructure.constant.SessionConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,10 +34,10 @@ public class SecurityConfig {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/authentication/*", "/")
                 .permitAll()
-                .antMatchers("/chu-nhiem").hasAuthority("chu-nhiem")
-                .antMatchers("/dao-tao").hasAuthority("dao-tao")
-                .antMatchers("/giang-vien").hasAuthority("giang-vien")
-                .antMatchers("/sinh-vien").hasAuthority("sinh-vien")
+                .antMatchers("/chu-nhiem").hasAuthority(ActorConstant.CHU_NHIEM)
+                .antMatchers("/dao-tao").hasAuthority(ActorConstant.DAO_TAO)
+                .antMatchers("/giang-vien").hasAuthority(ActorConstant.GIANG_VIEN)
+                .antMatchers("/sinh-vien").hasAuthority(ActorConstant.SINH_VIEN)
                 .antMatchers("/admin").hasAuthority("admin")
                 .anyRequest()
                 .authenticated()
@@ -43,8 +45,8 @@ public class SecurityConfig {
                 .oauth2Login()
                 .successHandler((request, response, authentication) -> {
                     CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
-                    String role = (String) session.getAttribute("role");
-                    String coSoID = (String) session.getAttribute("coSoIDSelected");
+                    String role = (String) session.getAttribute(SessionConstant.ROLE);
+                    String coSoID = (String) session.getAttribute(SessionConstant.CO_SO_ID);
                     if (Objects.isNull(role) || Objects.isNull(coSoID)) {
                         response.sendRedirect("/");
                     } else {
@@ -56,7 +58,9 @@ public class SecurityConfig {
                 .logout()
                 .logoutUrl("/doLogout")
                 .logoutSuccessUrl("/")
-                .permitAll().invalidateHttpSession(true).and().exceptionHandling().accessDeniedPage("/authentication/403");
+                .permitAll().invalidateHttpSession(true)
+                .and()
+                .exceptionHandling().accessDeniedPage("/authentication/403");
 
         http.headers().frameOptions().sameOrigin();
         return http.build();
