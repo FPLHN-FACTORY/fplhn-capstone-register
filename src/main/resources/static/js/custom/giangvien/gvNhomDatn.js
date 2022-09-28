@@ -208,7 +208,6 @@ function chotDeTaiNhomDatn(maNhom) {
         contentType: "application/json",
         url: nhomDatnAPI + "/" + maNhom,
         success: function (responseData) {
-            console.log(responseData)
             $('#ma_nhom_datn').val(responseData.data.id)
         },
         error: function (e) {
@@ -234,15 +233,14 @@ $("#form_nhom_datn_chot_de_tai").submit(function (event){
 })
 
 
-function tuChoiNhomDatn(maNhom){
-    $("#modal_nhom_datn_delete").modal('show');
+function tuChoiDeTaiNhomDatn(maNhom){
+    $("#modal_nhom_datn_tu_choi_de_tai").modal('show');
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: nhomDatnAPI + "/" + maNhom,
         success: function (responseData) {
-            console.log(responseData)
-            $('#remove_nhom_datn').val(responseData.data.id)
+            $('#ma_nhom_datn_tu_choi').val(responseData.data.id)
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -250,13 +248,14 @@ function tuChoiNhomDatn(maNhom){
     });
 }
 
-$('#form_nhom_datn_delete').submit(function (event){
+$('#form_nhom_datn_tu_choi_de_tai').submit(function (event){
     event.preventDefault();
-    var maNhom = $('#remove_nhom_datn').val()
+    var maNhom = $('#ma_nhom_datn_tu_choi').val()
+    console.log(maNhom)
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: nhomDatnAPI + "/tu-choi-nhom-datn?maNhom=" + maNhom,
+        url: nhomDatnAPI + "/tu-choi-de-tai-nhom-datn?maNhom=" + maNhom,
         dataType: 'json',
         success: function () {
             window.location.reload(false)

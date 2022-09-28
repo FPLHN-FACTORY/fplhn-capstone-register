@@ -104,12 +104,12 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public NhomDatn tuChoiNhomDatn(GvChotNhomDatnRequest request) {
+    public NhomDatn tuChoiDeTaiNhomDatn(GvChotNhomDatnRequest request) {
         Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        nhomDatnCheck.get().setGiangVienId(null);
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.DA_LIEN_HE_GV);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
