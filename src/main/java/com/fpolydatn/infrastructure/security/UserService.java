@@ -8,6 +8,7 @@ import com.fpolydatn.repository.CanBoRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import com.fpolydatn.repository.SinhVienRepository;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -44,10 +45,13 @@ public class UserService {
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
+    @Autowired
+    private CommonHelper commonHelper;
+
     public void processOAuthPostLogin(HttpServletResponse response,
                                       String coSoID, String email, String role) throws IOException {
 
-        String dotDangKyID = dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond());
+        String dotDangKyID = commonHelper.getDotDangKyHienTai();
 
         SimpleEntityProj account = null;
         switch (role.toLowerCase()) {
@@ -65,7 +69,7 @@ public class UserService {
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/authentication/sinh-vien");
                 } else {
-                    response.sendRedirect("/admin/hoc-ky");
+                    response.sendRedirect("/sinh-vien");
                 }
                 break;
             }

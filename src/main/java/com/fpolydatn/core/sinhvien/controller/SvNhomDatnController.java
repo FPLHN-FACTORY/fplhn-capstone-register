@@ -8,6 +8,7 @@ import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.repository.DotDangKyRepository;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -36,17 +37,15 @@ public class SvNhomDatnController extends BaseController {
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
-//    @Autowired
-//    private SvMonDatnService svMonDatnService;
-
-    private String idUser = "a2529445-f53f-47ea-a2d2-9762bfe075bc";
+    @Autowired
+    private CommonHelper commonHelper;
 
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
-        String dotDangKyHienTai = dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond());
+        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
         String nhomId = svSinhVienService.getNhomIdById(session.getCoSoId(),
                 dotDangKyHienTai,
-                idUser);
+                session.getUserId());
         if (nhomId == null || nhomId.trim().isEmpty()) {
             req.setCoSoId(session.getCoSoId());
             req.setDotDangKyId(dotDangKyHienTai);
@@ -56,7 +55,7 @@ public class SvNhomDatnController extends BaseController {
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,
-                    session.getCoSoId(), idUser);
+                    session.getCoSoId(), session.getUserId());
             List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getDetailNhomDatnById(nhomId);
             Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId);
             model.addAttribute("soThanhVien", soThanhVien);

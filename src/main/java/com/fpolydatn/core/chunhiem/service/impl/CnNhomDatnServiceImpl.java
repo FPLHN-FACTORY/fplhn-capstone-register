@@ -12,11 +12,9 @@ import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.FormUtils;
-import com.fpolydatn.util.ValidationUtils;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +24,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 /**
  * @author thangncph26123
@@ -44,11 +40,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     private FormUtils formUtils = new FormUtils();
 
     @Autowired
-    private ValidationUtils validationUtils;
-
-    @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;
+    private CommonHelper commonHelper;
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request) {
@@ -106,13 +98,13 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Override
     public boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
         String idGiangVien = null;
-        String dotDangKyID = dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond());
         if (cnCreateNhomDatnRequest.getMaGiangVien() != null && cnCreateNhomDatnRequest.getMaGiangVien() != "") {
             idGiangVien = cnNhomDatnRepository.getIdByTenTaiKhoanGvhd(cnCreateNhomDatnRequest.getMaGiangVien());
             if (idGiangVien == "" || idGiangVien == null) {
                 throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
             }
-            if (validationUtils.soNhomGiangVienDangHuongDan(idGiangVien,dotDangKyID) == cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien)) {
+            if (commonHelper.getSoNhomGiangVienDangHuongDan(idGiangVien) ==
+                    cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien)) {
                 throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
             }
         }

@@ -22,8 +22,8 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
-import com.fpolydatn.util.GenMaNhomTuDong;
-import com.fpolydatn.util.ValidationUtils;
+import com.fpolydatn.util.NhomDatnHelper;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,10 +52,10 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     private FormUtils formUtils = new FormUtils();
 
     @Autowired
-    private GenMaNhomTuDong genMaNhomTuDong;
+    private NhomDatnHelper nhomDatnHelper;
 
     @Autowired
-    private ValidationUtils validationUtils;
+    private CommonHelper commonHelper;
 
     @Autowired
     private SvGiangVienHuongDanRepository svGiangVienHuongDanRepository;
@@ -147,7 +147,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             }
         }
         if (svNhomDatnRequest.getGiangVienId() != null) {
-            if (validationUtils.soNhomGiangVienDangHuongDan(svNhomDatnRequest.getGiangVienId()) >= 7) {
+            if (commonHelper.getSoNhomGiangVienDangHuongDan(svNhomDatnRequest.getGiangVienId()) >= 7) {
                 throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_ALREADY_HAVE_ENOUGH_GROUPS);
             }
         }
@@ -162,7 +162,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         NhomDatn nhomDatn = formUtils.convertToObject(NhomDatn.class, svNhomDatnRequest);
         nhomDatn.setTruongNhomId(idUser);
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
-        nhomDatn.setMaNhom(genMaNhomTuDong.genMaNhomTuDong());
+        nhomDatn.setMaNhom(nhomDatnHelper.genMaNhomTuDong());
         nhomDatn = svNhomDatnRepository.save(nhomDatn);
         sinhVien.get().setNhomId(nhomDatn.getId());
         svSinhVienRepository.save(sinhVien.get());

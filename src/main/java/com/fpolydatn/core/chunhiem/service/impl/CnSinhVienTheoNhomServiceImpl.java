@@ -14,10 +14,8 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.repository.DotDangKyRepository;
-import com.fpolydatn.util.ValidationUtils;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 @Service
 public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService {
@@ -44,11 +40,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     private CnNhomDatnRepository cnNhomDatnRepository;
 
     @Autowired
-    private ValidationUtils validationUtils;
-
-    @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;
+    private CommonHelper commonHelper;
 
     @Override
     public PageableObject<CnSinhVienTheoNhomResponse> searchByIdNhom(final CnFindSinhVienTheoNhomRequest request) {
@@ -85,11 +77,11 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public boolean addGvhd(String tenTaiKhoan, String idNhom) {
         String idGiangVien = cnGiangVienHuongDanReponsitory.getIdFromGiangVienId(tenTaiKhoan);
-        String dotDangKyID = dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond());
         if (idGiangVien == null) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
         }
-        if (cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien) == validationUtils.soNhomGiangVienDangHuongDan(idGiangVien, dotDangKyID)) {
+        if (cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien) ==
+                commonHelper.getSoNhomGiangVienDangHuongDan(idGiangVien)) {
             throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
         }
         cnNhomDatnRepository.addGvhd(idGiangVien, idNhom);
