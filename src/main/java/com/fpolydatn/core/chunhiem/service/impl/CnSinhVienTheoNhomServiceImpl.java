@@ -66,13 +66,16 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     }
 
     @Override
-    public long getSizeListSinhVien(String idNhom) {
-        return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom);
+    public Integer getSizeListSinhVien(String idNhom, String coSoId) {
+        return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom, coSoId);
     }
 
     @Override
-    public boolean deleteFromIdSinhVien(String idNhom) {
-        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(idNhom);
+    public boolean deleteFromIdSinhVien(String idNhom, String maSinhVien, String coSoId) {
+        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien);
+        if(getSizeListSinhVien(idNhom, coSoId) == 0){
+            cnNhomDatnRepository.deleteById(idNhom);
+        }
         return true;
     }
 

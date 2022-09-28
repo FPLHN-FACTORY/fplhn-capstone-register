@@ -33,7 +33,7 @@ public class CnNhomDatnController extends BaseController {
     private CnDotDangKyService dotDangKyService;
 
     @GetMapping
-    public String viewHocKy(Model model, final CnFindNhomDatnRequest req) {
+    public String viewNhomDatn(Model model, final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         req.setDotDangKyId(dotDangKyService.listDotDangKy(coSoId).get(0).getId());

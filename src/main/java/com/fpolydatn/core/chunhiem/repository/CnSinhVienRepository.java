@@ -41,8 +41,8 @@ public interface CnSinhVienRepository extends SinhVienRepository {
                     WHERE e.id =  :#{#req.idNhom} AND a.co_so_id = :#{#req.coSoId}  ORDER BY ten_sinh_vien""", nativeQuery = true)
     Page<CnSinhVienTheoNhomResponse> searchSinhVien(@Param("req") CnFindSinhVienTheoNhomRequest req, Pageable page);
 
-    @Query(value = "SELECT COUNT(1) FROM sinh_vien a WHERE a.nhom_id  LIKE %:id_nhom% ", nativeQuery = true)
-    Long countListSinhVien(@Param("id_nhom")String id_nhom);
+    @Query(value = "SELECT IF(COUNT(1) IS NULL, 0, COUNT(1)) FROM sinh_vien a WHERE a.nhom_id = :id_nhom AND co_so_id = :coSoId", nativeQuery = true)
+    Integer countListSinhVien(@Param("id_nhom")String id_nhom, @Param("coSoId") String coSoId);
 
     @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien LIKE :maSinhVien",nativeQuery = true)
     String getIdSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien);

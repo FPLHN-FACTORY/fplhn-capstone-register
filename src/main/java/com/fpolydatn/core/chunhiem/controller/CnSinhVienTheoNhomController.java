@@ -42,6 +42,7 @@ public class CnSinhVienTheoNhomController extends BaseController {
         request.setDotDangKyId(dotDangKyRepository.findAll().get(0).getId());
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         List<CnSinhVienSearchResponse> listSinhVienNoGroup = sinhVienTheoNhomService.getListSinhVienNoGroup(request);
+        model.addAttribute("soThanhVien", sinhVienTheoNhomService.getSizeListSinhVien(id, coSoId));
         model.addAttribute("page", pageSinhVien);
         model.addAttribute("idNhom",req.getIdNhom());
         model.addAttribute("listSinhVienNoGroup", listSinhVienNoGroup);

@@ -1,5 +1,6 @@
 const sinhVienApi = '/api/chu-nhiem/sinh-vien';
 const sinhVienTheoNhomView = '/chu-nhiem/sinh-vien';
+const CnNhomDatnView = '/chu-nhiem/nhom-datn';
 let idOldCaptain;
 
 $(document).ready(function () {
@@ -82,6 +83,7 @@ $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     event.preventDefault();
     let maSinhVien = $("#remove_sinh_vien_theo_nhom").val();
     let idNhom = $("#idNhom").val()
+    let soThanhVien = $("#soThanhVien").val()
     if (idOldCaptain == maSinhVien) {
         $.ajax({
             type: "PUT",
@@ -97,9 +99,13 @@ $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     $.ajax({
         type: "DELETE",
         contentType: "application/json",
-        url: sinhVienApi + "/" + maSinhVien,
+        url: sinhVienApi + "?maSinhVien=" + maSinhVien + "&idNhom=" + idNhom,
         success: function () {
-            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+            if(soThanhVien > 1) {
+                window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+            }else{
+                window.open(CnNhomDatnView, '_self');
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
