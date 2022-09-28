@@ -64,18 +64,37 @@ function showDetail(maNhom) {
 
 
 function pheDuyetNhomDatn(maNhom) {
+    $("#modal_nhom_datn_update").modal('show');
     $.ajax({
-        type: "PUT",
+        type: "GET",
         contentType: "application/json",
-        url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + maNhom,
-        success: function () {
-           window.location.reload(false)
+        url: nhomDatnAPI + "/" + maNhom,
+        success: function (responseData) {
+            console.log(responseData)
+            $('#update_nhom_datn').val(responseData.data.id)
         },
         error: function (e) {
             console.log("ERROR : ", e);
         }
     });
 }
+
+$('#form_nhom_datn_update').submit(function (event){
+    event.preventDefault();
+    var maNhom = $('#update_nhom_datn').val()
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + maNhom,
+        success: function () {
+            window.location.reload(false)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+})
+
 $("#form_list_giang_vien").submit(function (event){
     event.preventDefault();
 })
@@ -183,6 +202,24 @@ $("#form_nhom_datn_update").submit(function (event) {
 });
 
 function chotDeTaiNhomDatn(maNhom) {
+    $("#modal_nhom_datn_chot_de_tai").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/" + maNhom,
+        success: function (responseData) {
+            console.log(responseData)
+            $('#ma_nhom_datn').val(responseData.data.id)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+$("#form_nhom_datn_chot_de_tai").submit(function (event){
+    event.preventDefault();
+    var maNhom = $('#ma_nhom_datn').val()
     $.ajax({
         type: "PUT",
         contentType: "application/json",
@@ -194,20 +231,38 @@ function chotDeTaiNhomDatn(maNhom) {
             console.log("ERROR : ", e);
         }
     });
-}
+})
 
 
 function tuChoiNhomDatn(maNhom){
+    $("#modal_nhom_datn_delete").modal('show');
     $.ajax({
-        type: "PUT",
+        type: "GET",
         contentType: "application/json",
-        url: nhomDatnAPI + "/tu-choi-nhom-datn?maNhom=" + maNhom,
-        dataType: 'json',
-        success: function () {
-           window.location.reload(false)
+        url: nhomDatnAPI + "/" + maNhom,
+        success: function (responseData) {
+            console.log(responseData)
+            $('#remove_nhom_datn').val(responseData.data.id)
         },
         error: function (e) {
             console.log("ERROR : ", e);
         }
     });
 }
+
+$('#form_nhom_datn_delete').submit(function (event){
+    event.preventDefault();
+    var maNhom = $('#remove_nhom_datn').val()
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/tu-choi-nhom-datn?maNhom=" + maNhom,
+        dataType: 'json',
+        success: function () {
+            window.location.reload(false)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+})

@@ -65,6 +65,11 @@ dependencies {
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
 
 
+    //https://mvnrepository.com/artifact/org.apache.poi/poi
+    implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
 }
 
 tasks.named('test') {
