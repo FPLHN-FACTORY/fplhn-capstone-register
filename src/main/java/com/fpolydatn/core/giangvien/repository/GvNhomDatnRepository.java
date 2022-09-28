@@ -12,8 +12,6 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author thangdt
  */
-
-
 public interface GvNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """

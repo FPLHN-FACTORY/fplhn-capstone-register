@@ -22,4 +22,11 @@ public interface DotDangKyRepository extends JpaRepository<DotDangKy, String> {
             WHERE co_so_id = :coSoId
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntity(@Param("coSoId") String coSoId);
+
+    @Query(value = """
+            SELECT id FROM dot_dang_ky ddk 
+            WHERE :currentTime BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc
+            """, nativeQuery = true)
+    String findDotDangKyID(@Param("currentTime") Long currentTime);
+
 }
