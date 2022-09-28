@@ -46,4 +46,10 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             "hoc_ky_id, ngay_bat_dau, ngay_ket_thuc, ten_dot_dang_ky FROM dot_dang_ky WHERE co_so_id = :coSoId"
             ,nativeQuery = true)
     List<DotDangKy> getAllByCoSo(@Param("coSoId") String coSoId);
+
+    @Query(value = """
+            SELECT * FROM do_an_tot_nghiep.dot_dang_ky ddk
+            WHERE ddk.ten_dot_dang_ky = :tenDotDangKy   ;
+            """, nativeQuery = true)
+    DotDangKy findName(@Param("tenDotDangKy") String tenDotDangKy);
 }

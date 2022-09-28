@@ -111,6 +111,107 @@
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
+
+                                    <div class="row">
+                                        <div class="col-4 d-inline float-left"
+                                        >
+                                            <button
+                                                    data-toggle="modal"
+                                                    data-target="#modal_excel"
+                                                    class="col-8 col-sm-6 col-md-4 btn btn-success btn-floating btn-sm fas">
+                                                <i class="fas fa-download"> Export Excel</i>
+                                            </button>
+                                            <button
+                                                    data-toggle="modal"
+                                                    data-target="#import_excel"
+                                                    class="col-8 col-sm-6 col-md-4 btn btn-success btn-floating btn-sm fas">
+                                                <i class="fas fa-upload"> Import Excel</i>
+                                            </button>
+                                            <div class="modal fade "
+                                                 id="modal_excel"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form id="form_type_excel" method="post">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Export Excel</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <p class="col-form-label">Định dạng file excel </p>
+                                                                    <select id="type_excel" class="form-control col-5">
+                                                                        <option value="">chọn kiểu file excel</option>
+                                                                        <option value="xls">.xls</option>
+                                                                        <option value="xlsx">.xlsx</option>
+                                                                    </select>
+                                                                    <span class="text-danger"
+                                                                          id="type_excel_error"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Hủy
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">Download excel
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal fade "
+                                                 id="import_excel"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form  enctype="multipart/form-data" method="post"
+                                                              th:action="@{/api/dao-tao/sinh-vien/import}" id="form_import_excel">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" >Import Excel</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                                                        </div>
+                                                                        <div class="custom-file">
+                                                                            <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                                                                   aria-describedby="inputGroupFileAddon01" name="file" >
+                                                                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="text-danger"
+                                                                          id="import_excel_error"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Hủy
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">Import excel
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="table-responsive mt-3">
                                             <table id="custom-table"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
@@ -118,11 +219,14 @@
                                                 <th width="50px">STT</th>
                                                 <th>MSSV</th>
                                                 <th>Họ tên</th>
-                                                <th>Chuyên Ngành</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Email</th>
+                                                <th>Khóa</th>
                                                 <th>Môn đăng ký</th>
                                                 <th>Id nhóm</th>
                                                 <th>Tên Đề tài</th>
                                                 <th>GV hướng dẫn</th>
+                                                <th>Chuyên Ngành</th>
                                                 </thead>
                                                 <tbody id="list">
                                                 <th:block th:each="sinhVien :  ${page.data}">
@@ -130,11 +234,14 @@
                                                         <td th:text="${sinhVien.getStt}"/>
                                                         <td th:text="${sinhVien.maSinhVien}"/>
                                                         <td th:text="${sinhVien.tenSinhVien}"/>
-                                                        <td th:text="${sinhVien.tenChuyenNganh}"/>
+                                                        <td th:text="${sinhVien.soDienThoai}"/>
+                                                        <td th:text="${sinhVien.email}"/>
+                                                        <td th:text="${sinhVien.khoa}"/>
                                                         <td th:text="${sinhVien.tenMonDatn}==null? 'chưa có ': ${sinhVien.tenMonDatn}"/>
                                                         <td th:text="${sinhVien.maNhom} ==null? 'chưa có ': ${sinhVien.maNhom}"/>
                                                         <td th:text="${sinhVien.tenDeTai}==null? 'chưa có ':${sinhVien.tenDeTai}"/>
                                                         <td th:text="${sinhVien.tenGvhd}==null? 'chưa có ':${sinhVien.tenGvhd}"/>
+                                                        <td th:text="${sinhVien.tenChuyenNganh}"/>
                                                     </tr>
                                                 </th:block>
                                                 </tbody>

@@ -13,4 +13,10 @@ import org.springframework.stereotype.Repository;
 public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
 
     public static final String NAME = "BaseNhomDatnRepository";
+
+    @Query(value = """
+                SELECT IF(COUNT(id) = 0, 0, MAX(SUBSTRING(ma_nhom, 4))) FROM nhom_datn 
+                WHERE dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
+    String genMaNhomTuDong(@Param("dotDangKyId") String dotDangKyId);
 }

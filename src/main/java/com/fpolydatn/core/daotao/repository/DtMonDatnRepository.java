@@ -37,4 +37,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
     Page<DtMonDatnResponse> findByName(@Param("req") DtFindMonDatnRequest req, Pageable page);
 
     MonDatn findByMaMon(String maMon);
+
+    @Query(value = "SELECT * FROM mon_datn WHERE ma_mon = :maMon AND id <> :id ", nativeQuery = true)
+    MonDatn findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id);
 }
