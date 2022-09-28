@@ -5,6 +5,7 @@ import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -76,4 +77,13 @@ public interface DtNhomDatnTheoDotRepository  extends NhomDatnRepository {
             ORDER BY b.last_modified_date DESC 
             """, nativeQuery = true)
     List<DtNhomDatnTheoDotResponse> findAllNhomDatnToExcel();
+
+    @Query(value = """
+                SELECT 
+                n.id,
+                n.ma_nhom AS 'name'
+                 FROM do_an_tot_nghiep.nhom_datn n
+                 WHERE n.co_so_id = :coSoId
+            """, nativeQuery = true)
+    List<SimpleEntityProj> getAllMaNhom(@Param("coSoId") String coSoId);
 }

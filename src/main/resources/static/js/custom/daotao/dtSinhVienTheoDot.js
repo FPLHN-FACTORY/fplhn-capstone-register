@@ -26,11 +26,11 @@ function viewTable(page) {
                                 <td>${item.soDienThoai}</td>
                                 <td>${item.email}</td>
                                 <td>${item.khoa}</td>
-                                <td>${item.tenChuyenNganh}</td>
                                 <td>${item.tenMonDatn == null ? 'chưa có' : item.tenMonDatn}</td>
                                 <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
                                 <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
                                 <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
+                                <td>${item.tenChuyenNganh}</td>
                         </tr>`
                 }));
                 var arr = new Array();
@@ -84,12 +84,31 @@ $("#form_type_excel").submit(function (event) {
         });
     }
 });
+$("#modal_excel_mau").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#type_mau_excel").val();
+    if (typeExcel == '') {
+        $("#mau_excel_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/sinh-vien/export-mau?typeExcel=" + typeExcel,
+
+            success: function () {
+                window.open("/api/dao-tao/sinh-vien/export-mau?typeExcel=" + typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+});
 $("#form_import_excel").submit(function (event) {
     event.preventDefault();
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile =typeExcel.substring(indexDot+1,typeExcel.length)
-    console.log(typeFile)
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("chọn file");
     } else if((typeFile== 'xls') || (typeFile== 'xlsx') ){
@@ -104,7 +123,9 @@ $("#form_import_excel").submit(function (event) {
                     window.open('/dao-tao/sinh-vien', '_self');
                 },
                 error: function (e) {
-                    console.log("ERROR : ", e);
+                    alert(e.responseText);
+                    window.open('/dao-tao/sinh-vien', '_self');
+                    console.log("ERROR: "+e);
                 }
             }
         );

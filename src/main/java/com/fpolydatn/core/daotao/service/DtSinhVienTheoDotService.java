@@ -3,11 +3,13 @@ package com.fpolydatn.core.daotao.service;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,5 +25,8 @@ public interface DtSinhVienTheoDotService {
 
     void DTSinhVienExport(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException;
 
-    void DtSinhVienImport(MultipartFile file,String coSoId)throws IOException;
+    void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException;
+
+    RestApiException DtSinhVienImport(MultipartFile file, String coSoId) throws IOException;
+
 }

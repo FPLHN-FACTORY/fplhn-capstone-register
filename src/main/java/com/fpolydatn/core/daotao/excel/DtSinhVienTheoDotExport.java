@@ -108,4 +108,38 @@ public class DtSinhVienTheoDotExport {
         xssfWorkbook.close();
         outputStream.close();
     }
+    private void headerLineMau(){
+        xssfSheet = xssfWorkbook.createSheet("sheet");
+        Row row = xssfSheet.createRow(0);
+
+        CellStyle cellStyle = xssfWorkbook.createCellStyle();
+        XSSFFont font = xssfWorkbook.createFont();
+        font.setBold(true);
+        font.setFontHeight(12);
+        cellStyle.setFont(font);
+
+        createCell(row, 0,"STT",cellStyle);
+        createCell(row, 1,"MSSV",cellStyle);
+        createCell(row, 2,"Họ tên",cellStyle);
+        createCell(row, 3,"Số điện thoại",cellStyle);
+        createCell(row, 4,"Email",cellStyle);
+        createCell(row, 5,"Khóa",cellStyle);
+        createCell(row, 6,"Mã nhóm",cellStyle);
+        createCell(row, 7,"Tên chuyên ngành",cellStyle);
+        createCell(row, 8,"Đợt đăng ký",cellStyle);
+        createCell(row, 9,"Mã Môn Datn",cellStyle);
+    }
+    public void exportMauImport(HttpServletResponse response) throws IOException {
+        final long startTime = System.currentTimeMillis();
+        headerLineMau();
+
+        writeDataLines();
+        ServletOutputStream outputStream = response.getOutputStream();
+        xssfWorkbook.write(outputStream);
+
+        final long endTime = System.currentTimeMillis();
+
+        xssfWorkbook.close();
+        outputStream.close();
+    }
 }
