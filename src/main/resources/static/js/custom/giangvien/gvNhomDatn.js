@@ -70,7 +70,6 @@ function pheDuyetNhomDatn(maNhom) {
         contentType: "application/json",
         url: nhomDatnAPI + "/" + maNhom,
         success: function (responseData) {
-            console.log(responseData)
             $('#update_nhom_datn').val(responseData.data.id)
         },
         error: function (e) {
@@ -171,7 +170,7 @@ function updateTenDeTai(maNhom){
     });
 }
 
-$("#form_nhom_datn_update").submit(function (event) {
+$("#form_nhom_datn_update_ten_de_tai").submit(function (event) {
     event.preventDefault();
     let tenDeTai = $("#ten_de_tai_update").val();
     let maNhom = $("#id_nhom_datn_update").val();
