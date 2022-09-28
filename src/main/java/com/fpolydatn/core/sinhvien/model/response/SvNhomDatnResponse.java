@@ -1,36 +1,33 @@
 package com.fpolydatn.core.sinhvien.model.response;
 
-import com.fpolydatn.entity.ChuyenNganh;
-import com.fpolydatn.entity.DotDangKy;
-import com.fpolydatn.entity.GiangVienHuongDan;
-import com.fpolydatn.entity.NhomDatn;
-import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.entity.*;
 import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-/**
- * @author hoangnt
- */
-@Projection(types = {NhomDatn.class, SinhVien.class, GiangVienHuongDan.class, DotDangKy.class})
+@Projection(types = {ChuyenNganh.class, NhomDatn.class, SinhVien.class, GiangVienHuongDan.class, DotDangKy.class, HocKy.class})
 public interface SvNhomDatnResponse extends IsIdentified {
 
-    Integer getStt();
-
-    @Value("#{target.ma_nhom}")
-    String getMaNhom();
+    @Value("#{target.stt}")
+    int getStt();
 
     @Value("#{target.ten_nhom}")
     String getTenNhom();
 
-    @Value("#{target.ten_dot_dang_ky}")
-    String getTenDotDangKy();
-
     @Value("#{target.ten_de_tai}")
     String getTenDeTai();
 
+    @Value("#{target.ten_chuyen_nganh}")
+    String getTenChuyenNganh();
+
+    @Value("#{target.total_ma_sinh_vien}")
+    String getCountSinhVien();
+
     @Value("#{target.ma_sinh_vien}")
     String getMaSinhVien();
+
+    @Value("#{target.mat_khau_ton_tai}")
+    int getMatKhauTonTai();
 
     @Value("#{target.ten_sinh_vien}")
     String getTenSinhVien();
@@ -38,13 +35,16 @@ public interface SvNhomDatnResponse extends IsIdentified {
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
 
-    @Value("#{target.chuc_vu}")
-    String getChucVu();
+    @Value("#{target.ten_tai_khoan}")
+    String getTenTaiKhoan();
 
     @Value("#{target.trang_thai}")
     int getTrangThai();
 
+<<<<<<< HEAD
     @Value("#{target.nhan_xet}")
     String getNhanXet();
 
+=======
+>>>>>>> phase_2_team_b_sonpt
 }

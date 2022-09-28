@@ -2,11 +2,15 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
+import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.Optional;
 
 
 /**
@@ -19,6 +23,9 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             s.id,
             s.ma_sinh_vien,
             s.ten_sinh_vien,
+            s.so_dien_thoai,
+            s.email,
+            s.khoa,
             c.ten_chuyen_nganh,
             m.ten_mon_datn,
             n.ma_nhom,
@@ -58,6 +65,9 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             s.id,
             s.ma_sinh_vien,
             s.ten_sinh_vien,
+            s.so_dien_thoai,
+            s.email,
+            s.khoa,
             c.ten_chuyen_nganh,
             m.ten_mon_datn,
             n.ma_nhom,

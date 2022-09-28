@@ -10,11 +10,7 @@ import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,5 +43,4 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         dtApiResponse.setList(list);
         return new ResponseObject(dtApiResponse);
     }
-
 }
