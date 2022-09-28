@@ -1,7 +1,9 @@
 package com.fpolydatn.core.chunhiem.repository;
 
+import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoNhomRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
 import com.fpolydatn.entity.SinhVien;
@@ -39,8 +41,8 @@ public interface CnSinhVienRepository extends SinhVienRepository {
                     WHERE e.id =  :#{#req.idNhom} AND a.co_so_id = :#{#req.coSoId}  ORDER BY ten_sinh_vien""", nativeQuery = true)
     Page<CnSinhVienTheoNhomResponse> searchSinhVien(@Param("req") CnFindSinhVienTheoNhomRequest req, Pageable page);
 
-    @Query(value = "SELECT COUNT(1) FROM sinh_vien a WHERE a.nhom_id  LIKE %:id_nhom% ", nativeQuery = true)
-    Long countListSinhVien(@Param("id_nhom")String id_nhom);
+    @Query(value = "SELECT IF(COUNT(1) IS NULL, 0, COUNT(1)) FROM sinh_vien a WHERE a.nhom_id = :id_nhom AND co_so_id = :coSoId", nativeQuery = true)
+    Integer countListSinhVien(@Param("id_nhom")String id_nhom, @Param("coSoId") String coSoId);
 
     @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien LIKE :maSinhVien",nativeQuery = true)
     String getIdSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien);
@@ -109,4 +111,14 @@ public interface CnSinhVienRepository extends SinhVienRepository {
 
     @Query(value = "SELECT * FROM sinh_vien WHERE nhom_id = :idNhom", nativeQuery = true)
     List<SinhVien> getAllSinhVien(String idNhom);
+
+    @Query(value = """
+            SELECT CONCAT(ma_sinh_vien, '_' , ten_sinh_vien) as thong_tin, ma_sinh_vien FROM sinh_vien WHERE nhom_id IS NULL
+            AND ((:#{#req.maSinhVien} IS NULL OR :#{#req.maSinhVien} LIKE ''
+            OR ma_sinh_vien LIKE %:#{#req.maSinhVien}%)
+            OR (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
+            OR ten_sinh_vien LIKE %:#{#req.tenSinhVien}%))
+            AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId}
+            """, nativeQuery = true)
+    List<CnSinhVienSearchResponse> getListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req);
 }

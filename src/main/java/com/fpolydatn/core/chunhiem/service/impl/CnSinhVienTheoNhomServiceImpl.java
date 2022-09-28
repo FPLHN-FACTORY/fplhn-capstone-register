@@ -1,6 +1,8 @@
 package com.fpolydatn.core.chunhiem.service.impl;
 
+import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoNhomRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
 import com.fpolydatn.core.chunhiem.repository.CnDotDangKyRepository;
 import com.fpolydatn.core.chunhiem.repository.CnGiangVienHuongDanReponsitory;
@@ -64,13 +66,16 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     }
 
     @Override
-    public long getSizeListSinhVien(String idNhom) {
-        return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom);
+    public Integer getSizeListSinhVien(String idNhom, String coSoId) {
+        return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom, coSoId);
     }
 
     @Override
-    public boolean deleteFromIdSinhVien(String idNhom) {
-        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(idNhom);
+    public boolean deleteFromIdSinhVien(String idNhom, String maSinhVien, String coSoId) {
+        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien);
+        if(getSizeListSinhVien(idNhom, coSoId) == 0){
+            cnNhomDatnRepository.deleteById(idNhom);
+        }
         return true;
     }
 
@@ -118,6 +123,11 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     public List<DotDangKy> getListDotDangKy() {
         System.out.println(cnDotDangKyRepository.findAll());
        return cnDotDangKyRepository.findAll();
+    }
+
+    @Override
+    public List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
+        return cnSinhVienTheoNhomRepository.getListSinhVienNoGroup(req);
     }
 
 }

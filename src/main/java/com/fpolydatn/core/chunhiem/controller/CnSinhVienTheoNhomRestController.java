@@ -1,11 +1,16 @@
 package com.fpolydatn.core.chunhiem.controller;
 
+import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
+import com.fpolydatn.core.chunhiem.service.CnGiangVienHuongDanService;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.repository.query.Param;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,9 +28,16 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @Autowired
     private CnSinhVienTheoNhomService sinhVienTheoNhomService;
 
-    @DeleteMapping("/{maSinhVien}")
-    public ResponseObject updateSinhVienByNhom(@PathVariable("maSinhVien") String maSinhVien) {
-        return new ResponseObject(sinhVienTheoNhomService.deleteFromIdSinhVien(maSinhVien));
+    @Autowired
+    @Qualifier(DotDangKyRepository.NAME)
+    private DotDangKyRepository dotDangKyRepository;
+
+    @Autowired
+    private CnGiangVienHuongDanService cnGiangVienHuongDanService;
+
+    @DeleteMapping("")
+    public ResponseObject updateSinhVienByNhom(@RequestParam("maSinhVien") String maSinhVien, @RequestParam("idNhom") String idNhom) {
+        return new ResponseObject(sinhVienTheoNhomService.deleteFromIdSinhVien(idNhom, maSinhVien, session.getCoSoId()));
     }
 
     @PostMapping("/addSinhVien")
@@ -57,6 +69,20 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @GetMapping("/oldCaptain")
     public ResponseObject getOldCaptain(@RequestParam("idGroup") String idGroup) {
         return new ResponseObject(sinhVienTheoNhomService.getOldCaptain(idGroup));
+    }
+
+    @GetMapping("/listSinhVienNoGroup")
+    public ResponseObject getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
+        req.setCoSoId(session.getCoSoId());
+        req.setDotDangKyId(dotDangKyRepository.findAll().get(0).getId());
+        return new ResponseObject(sinhVienTheoNhomService.getListSinhVienNoGroup(req));
+    }
+
+    @GetMapping("/listGvhd")
+    public ResponseObject getListGvhd(final CnFindGvhdRequest req) {
+        req.setCoSoId(session.getCoSoId());
+        req.setDotDangKyId(dotDangKyRepository.findAll().get(0).getId());
+        return new ResponseObject(cnGiangVienHuongDanService.getListGvhd(req));
     }
 
 }

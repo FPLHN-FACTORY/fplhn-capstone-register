@@ -1,31 +1,77 @@
 const sinhVienApi = '/api/chu-nhiem/sinh-vien';
 const sinhVienTheoNhomView = '/chu-nhiem/sinh-vien';
+const CnNhomDatnView = '/chu-nhiem/nhom-datn';
 let idOldCaptain;
+
 $(document).ready(function () {
-    $("#hoc_ky_error").text("");
+    $(".chosen-select-width").chosen({
+        width: "75%"
+    });
 });
 
 function clearData() {
     $("#keyword").val("");
 }
 
+// function searchSinhVien() {
+//     let text = $(".chosen-search-input").val()
+//     $.ajax({
+//         type: "GET",
+//         contentType: "application/json",
+//         url: sinhVienApi + "/listSinhVienNoGroup" + "?maSinhVien=" + text + "&tenSinhVien=" + text,
+//         dataType: 'json',
+//         success: function (responseData) {
+//             console.log(responseData)
+//             $("#cities").html(
+//                 responseData.data.map(function (item){
+//                     return `<option value="${item.maSinhVien}">${item.thongTinSinhVien}</option>`
+//                 })
+//             )
+//         },
+//         error: function (e) {
+//             console.log("ERROR : ", e);
+//         }
+//     });
+// }
+
+function searchGvhd() {
+    let text = $("#tags").val()
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: sinhVienApi + "/listGvhd" + "?tenTaiKhoan=" + text + "&tenGvhd=" + text,
+        dataType: 'json',
+        success: function (responseData) {
+            let array = responseData.data
+            $("#tags").autocomplete({
+                source: array
+            });
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
 loadData()
+
 $("#form_create_ma_nhom").submit(function (event) {
     event.preventDefault();
     let idNhom = $("#idNhom").val()
-    let maSinhVien = $("#maSinhVien").val();
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + maSinhVien,
-        data: JSON.stringify(maSinhVien, idNhom),
-        success: function (responseData) {
-            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
-        },
-        error: function (e) {
-            $("#idStudentError").html(e.responseJSON.message)
-        }
-    });
+    let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien")
+    for (let item of listMaSinhVien) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + item.innerHTML,
+            success: function (responseData) {
+                window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+            },
+            error: function (e) {
+                $("#idStudentError").html(e.responseJSON.message)
+            }
+        });
+    }
 });
 
 function openModalRemoveNhom(maSinhVien) {
@@ -37,12 +83,14 @@ $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     event.preventDefault();
     let maSinhVien = $("#remove_sinh_vien_theo_nhom").val();
     let idNhom = $("#idNhom").val()
+    let soThanhVien = $("#soThanhVien").val()
     if (idOldCaptain == maSinhVien) {
         $.ajax({
             type: "PUT",
             contentType: "application/json",
             url: sinhVienApi + "/changeCaptainToOther?idCaptain=" + idOldCaptain + "&idGroup=" + idNhom,
             success: function () {
+                window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
             },
             error: function () {
             }
@@ -51,9 +99,13 @@ $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     $.ajax({
         type: "DELETE",
         contentType: "application/json",
-        url: sinhVienApi + "/" + maSinhVien,
+        url: sinhVienApi + "?maSinhVien=" + maSinhVien + "&idNhom=" + idNhom,
         success: function () {
-            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+            if(soThanhVien > 1) {
+                window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+            }else{
+                window.open(CnNhomDatnView, '_self');
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -68,12 +120,12 @@ function openModalChangeGvhd() {
 $('#form_change_gvhd').submit(function (event) {
     event.preventDefault();
     let idGroup = $("#idNhom").val();
-    let giangVienId = $("#giangVienId").val();
+    let giangVienId = $("#tags").val().split('_');
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: sinhVienApi + "/addGvhd?" + "giangVienId=" + giangVienId + "&idNhom=" + idGroup,
-        success: function (responseData) {
+        url: sinhVienApi + "/addGvhd" + "?giangVienId=" + giangVienId[0] + "&idNhom=" + idGroup,
+        success: function () {
             window.open(sinhVienTheoNhomView + "?id=" + idGroup, '_self');
         },
         error: function (e) {
@@ -148,7 +200,6 @@ function openModalChangeCaptain() {
         error: function (responseData) {
         }
     })
-
 }
 
 function changeCaptain(idCaptain) {
@@ -170,7 +221,6 @@ $("#form_change_captain_confirm").submit(function (event) {
             window.open(sinhVienTheoNhomView + "?id=" + idGroup, '_self');
         },
         error: function () {
-
         }
     })
 
