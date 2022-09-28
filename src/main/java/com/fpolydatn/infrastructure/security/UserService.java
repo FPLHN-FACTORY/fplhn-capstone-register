@@ -1,6 +1,7 @@
 package com.fpolydatn.infrastructure.security;
 
 import com.fpolydatn.infrastructure.constant.ActorConstant;
+import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.repository.CanBoRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
@@ -60,7 +61,8 @@ public class UserService {
                 break;
             }
             case ActorConstant.CHU_NHIEM: {
-                if (Objects.isNull(canBoRepository.findSimpleEntityByTenCanBo(coSoID, email, 2))) {
+                if (Objects.isNull(canBoRepository.findSimpleEntityByTenCanBo(coSoID,
+                        email, VaiTro.CHU_NHIEM_BO_MON.ordinal()))) {
                     response.sendRedirect("/authentication/chu-nhiem");
                 } else {
                     response.sendRedirect("/chu-nhiem/dot-dang-ky/sinh-vien");
@@ -68,7 +70,8 @@ public class UserService {
                 break;
             }
             case ActorConstant.DAO_TAO: {
-                if (Objects.isNull(canBoRepository.findSimpleEntityByTenCanBo(coSoID, email, 1))) {
+                if (Objects.isNull(canBoRepository.findSimpleEntityByTenCanBo(coSoID,
+                        email, VaiTro.DAO_TAO.ordinal()))) {
                     response.sendRedirect("/authentication/dao-tao");
                 } else {
                     response.sendRedirect("/dao-tao/mon-datn");

@@ -28,7 +28,6 @@ public interface CanBoRepository extends JpaRepository<CanBo, String> {
             SELECT cb.id, cb.ten_can_bo AS 'name'
             FROM can_bo cb INNER JOIN co_so cs
             ON cb.co_so_id = cs.id
-            AND cb.co_so_id=:coSoId
             WHERE cb.co_so_id = :coSoId
             AND cb.email_fpt=:emailFPT
             AND cb.vai_tro = :vaiTro
