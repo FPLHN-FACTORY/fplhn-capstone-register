@@ -65,6 +65,9 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
+        if(request.getTenDeTai().isEmpty()){
+            throw new RestApiException(Message.EMPTY);
+        }
         nhomDatnCheck.get().setTenDeTai(request.getTenDeTai());
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
