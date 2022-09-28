@@ -28,6 +28,15 @@ public interface DtSinhVienTheoDotResponse extends IsIdentified {
     @Value("#{target.ten_sinh_vien}")
     String getTenSinhVien();
 
+    @Value("#{target.so_dien_thoai}")
+    String getSoDienThoai();
+
+    @Value("#{target.email}")
+    String getEmail();
+
+    @Value("#{target.khoa}")
+    String getKhoa();
+
     @Value("#{target.ten_chuyen_nganh}")
     String getTenChuyenNganh();
 

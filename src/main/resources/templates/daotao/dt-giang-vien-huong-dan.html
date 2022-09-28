@@ -79,6 +79,24 @@
                                 <div class="m-portlet__body">
                                     <div class="row">
                                         <div class="col-6 d-inline">
+
+                                            <section class="my-5">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-md-8 mx-auto">
+                                                            <h2>Upload File Example</h2>
+                                                            <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                                                            <form method="post" th:object="${file}" th:action="@{'/dao-tao/giang-vien-huong-dan/import'}" enctype="multipart/form-data">
+                                                                <div class="form-group">
+                                                                    <input type="file" class="" id="fileupload" name="fileupload" th:field="*{file}" multiple >
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary">Upload File</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
                                             <button data-toggle="modal"
                                                     data-target="#modal_create"
                                                     class="col-12 col-sm-8 col-md-4 btn btn-success">

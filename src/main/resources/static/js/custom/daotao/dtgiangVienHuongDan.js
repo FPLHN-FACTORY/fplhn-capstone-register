@@ -68,7 +68,10 @@ $("#form_create_giang_vien").submit(function (event) {
     } else if (regexSDT.test(soDienThoai) == false) {
         $("#errorSDT").text(" Số điện thoại không đúng định dạng");
         index++;
-    } else {
+    } else if (soDienThoai.length !=10 ) {
+        $("#errorSDT").text(" Số điện thoại không đúng định dạng");
+        index++;
+    }else {
         $("#errorSDT").text("");
     }
 
@@ -113,7 +116,6 @@ $("#form_create_giang_vien").submit(function (event) {
                 }else{
                     alert(responseData.data.message)
                 }
-
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -201,7 +203,10 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexSDT.test(soDienThoai) == false) {
         $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
         index++;
-    } else {
+    } else if ( soDienThoai.length != 10 ) {
+        $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
+        index++;
+     }  else {
         $("#errorSDTUpdate").text("");
     }
 
@@ -240,8 +245,8 @@ $("#form_giang_vien_update").submit(function (event) {
             dataType: 'json',
             success: function (responseData) {
                 if(responseData.data.message == null){
-                    loadTable(item);
-                    $("#modal_update_giang_vien").modal("hide");
+                    window.open(giangVienHuongDanView, '_self');
+                    $("#modal_create").modal("hide");
                 }else{
                     alert(responseData.data.message)
                 }

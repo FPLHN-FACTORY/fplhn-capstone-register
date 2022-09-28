@@ -2,6 +2,7 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,6 +63,9 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt", nativeQuery = true)
     String getIdByEmailFpt(@Param("emailFpt") String emailFpt);
+
+    @Query(value = "SELECT * FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt", nativeQuery = true)
+    GiangVienHuongDan getGVHDByEmailFpt(@Param("emailFpt") String emailFpt);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND id <> :id", nativeQuery = true)
     String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt ,@Param("id") String id );

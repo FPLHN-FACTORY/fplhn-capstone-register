@@ -10,20 +10,6 @@
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
-    <style>
-        .btn-export {
-            color: #fff !important;
-            background-color: #6c757d !important;
-            border-color: #6c757d !important;
-        }
-        .btn-export:hover, .btn-import:hover {
-            background-color: #51585e !important;
-        }
-        .btn-import {
-            width: 40px;
-            background-color: #6c757d !important;
-        }
-    </style>
 </head>
 <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 
@@ -61,7 +47,7 @@
                                                         <div class="kt-section__body"><div class="row">
                                                             <label class="col-xl-3"></label>
                                                             <div class="col-lg-9 col-xl-6">
-                                                                <h3 class="kt-section__title kt-section__title-sm" style="margin: 20px 0 ;">Thông tin môn</h3>
+                                                                <h3 class="kt-section__title kt-section__title-sm" style="margin: 20px 0 ;">Thông tin chi tiết môn</h3>
                                                             </div>
                                                         </div>
                                                             <div class="form-group row">
@@ -104,7 +90,7 @@
                                                         <div class="col-sm-6 text-left" style="padding: 0 ;">
                                                             <div class="col-6 d-inline">
                                                                 <button data-toggle="modal" data-target="#modal_create" class="col-12 col-sm-8 col-md-4 btn btn-success">
-                                                                    Thêm giảng viên
+                                                                    Phân công giảng viên
                                                                 </button>
 
                                                             </div>
@@ -185,7 +171,7 @@
             <div class="modal-content">
                 <form id="form_add_phan_cong">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Thêm giáo viên</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Phân công giáo viên</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -204,7 +190,7 @@
                                 <th:block th:each="phanCongHuongDanGiaoVien : ${phanCongHuongDanGiaoViens}">
                                     <tr>
                                         <td th:text="${phanCongHuongDanGiaoVien.stt}"></td>
-                                        <td th:text="${phanCongHuongDanGiaoVien.getTenGiaoVienHuongDan()}" class="giangVienId" th:value="${phanCongHuongDanGiaoVien.id}"></td>
+                                        <td th:text="${phanCongHuongDanGiaoVien.getTenGV()}" class="giangVienId" th:value="${phanCongHuongDanGiaoVien.id}"></td>
                                         <td>
                                             <input type="checkbox" name="checkThemTatCa" id="" class="checkThemTatCa">
                                         </td>
@@ -238,7 +224,7 @@
             <div class="modal-content">
                 <form id="form_phan_cong_huong_dan_delete">
                     <div class="modal-header">
-                        <h5 class="modal-title">Xoá học kỳ</h5>
+                        <h5 class="modal-title">Xoá giảng viên</h5>
                         <button type="button" class="close"
                                 data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
