@@ -1,7 +1,9 @@
 package com.fpolydatn.core.daotao.excel;
 
 
-import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -19,25 +21,45 @@ import java.util.List;
 public class DtSinhVienTheoDotImport {
 
 
-    public static List<SinhVien> importData(MultipartFile reapExcelDataFile) throws IOException {
-        List<SinhVien> listSinhVien = new ArrayList<>();
+    public static List<DtCreateSinhVienTheoDotRequest> importData(MultipartFile reapExcelDataFile) throws IOException {
+        List<DtCreateSinhVienTheoDotRequest> listSinhVien = new ArrayList<>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
         for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
-           SinhVien sinhVien = new SinhVien();
+            DtCreateSinhVienTheoDotRequest sinhVien = new DtCreateSinhVienTheoDotRequest();
             XSSFRow row = worksheet.getRow(i);
-            sinhVien.setMaSinhVien(row.getCell(1).getStringCellValue());
-            sinhVien.setTenSinhVien(row.getCell(2).getStringCellValue());
-            sinhVien.setChuyenNganhId(row.getCell(3).getStringCellValue());
-            sinhVien.setMonDatnId(row.getCell(4).getStringCellValue());
-            sinhVien.setNhomId(row.getCell(5).getStringCellValue());
-            sinhVien.setDotDangKyId(row.getCell(6).getStringCellValue());
-            sinhVien.setEmail(row.getCell(7).getStringCellValue());
-            sinhVien.setKhoa(row.getCell(8).getStringCellValue());
-            sinhVien.setSoDienThoai(row.getCell(9).getStringCellValue());
+            row.getCell(i).getCellTypeEnum();
+
+            sinhVien.setMaSinhVien(String.valueOf(getCellValue(row.getCell(1))));
+            sinhVien.setTenSinhVien(String.valueOf(getCellValue(row.getCell(2))));
+            sinhVien.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))));
+            sinhVien.setEmail(String.valueOf(getCellValue(row.getCell(4))));
+            sinhVien.setKhoa(String.valueOf(getCellValue(row.getCell(5))));
+            sinhVien.setMaNhom(String.valueOf(getCellValue(row.getCell(6))));
+            sinhVien.setChuyenNganh(String.valueOf(getCellValue(row.getCell(7))));
+            sinhVien.setDotDangKy(String.valueOf(getCellValue(row.getCell(8))));
+            sinhVien.setMonDATN(String.valueOf(getCellValue(row.getCell(9))));
+
+
             listSinhVien.add(sinhVien);
         }
         return listSinhVien;
+    }
+    private static Object getCellValue(XSSFCell cell){
+        switch (cell.getCellTypeEnum()) {
+            case STRING -> {
+                return cell.getStringCellValue();
+            }
+            case NUMERIC -> {
+                return cell.getNumericCellValue();
+            }
+            case BOOLEAN -> {
+                return cell.getBooleanCellValue();
+            }
+            default -> {
+                return "";
+            }
+        }
     }
 
 }

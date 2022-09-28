@@ -84,12 +84,31 @@ $("#form_type_excel").submit(function (event) {
         });
     }
 });
+$("#modal_excel_mau").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#type_mau_excel").val();
+    if (typeExcel == '') {
+        $("#mau_excel_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/sinh-vien/export-mau?typeExcel=" + typeExcel,
+
+            success: function () {
+                window.open("/api/dao-tao/sinh-vien/export-mau?typeExcel=" + typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+});
 $("#form_import_excel").submit(function (event) {
     event.preventDefault();
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile =typeExcel.substring(indexDot+1,typeExcel.length)
-    console.log(typeFile)
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("chọn file");
     } else if((typeFile== 'xls') || (typeFile== 'xlsx') ){
@@ -104,7 +123,9 @@ $("#form_import_excel").submit(function (event) {
                     window.open('/dao-tao/sinh-vien', '_self');
                 },
                 error: function (e) {
-                    console.log("ERROR : ", e);
+                    alert(e.responseText);
+                    window.open('/dao-tao/sinh-vien', '_self');
+                    console.log("ERROR: "+e);
                 }
             }
         );

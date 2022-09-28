@@ -34,13 +34,18 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     }
 
     @GetMapping("/export")
-    public void exportEcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
+    public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
         sinhVienService.DTSinhVienExport(response,typeExcel,request);
     }
+    @GetMapping("/export-mau")
+    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
+        request.setCoSoId(session.getCoSoId());
+        sinhVienService.MauImportExcel(response,typeExcel,request);
+    }
     @PostMapping("/import")
-    public void exportEcel(@RequestParam("file")MultipartFile  file) throws IOException {
+    public void importEcel(@RequestParam("file")MultipartFile  file) throws IOException {
         String coSoId =session.getCoSoId();
-       sinhVienService.DtSinhVienImport(file,coSoId);
+        sinhVienService.DtSinhVienImport(file,coSoId);
     }
 }
