@@ -10,11 +10,7 @@ function clearDataGVHD() {
 
 $(document).ready(function () {
 
-    $("#checkAll").click(function(){
-        $('input:checkbox').not(this).prop('checked', this.checked);
-    });
-
-
+    $('.enityNhomDatn[value="1"]').closest("tr").hide()
     fillter()
 
 });
@@ -66,11 +62,30 @@ function showDetail(maNhom) {
         });
 }
 
-function chotDuLieu(maNhom) {
+
+function pheDuyetNhomDatn(maNhom) {
+    $("#modal_nhom_datn_update").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/" + maNhom,
+        success: function (responseData) {
+            console.log(responseData)
+            $('#update_nhom_datn').val(responseData.data.id)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+$('#form_nhom_datn_update').submit(function (event){
+    event.preventDefault();
+    var maNhom = $('#update_nhom_datn').val()
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: nhomDatnAPI + "?maNhom=" + maNhom,
+        url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + maNhom,
         success: function () {
             window.location.reload(false)
         },
@@ -78,10 +93,12 @@ function chotDuLieu(maNhom) {
             console.log("ERROR : ", e);
         }
     });
-}
+})
+
 $("#form_list_giang_vien").submit(function (event){
     event.preventDefault();
 })
+
 
 function seachNhomdatn(index) {
     if(index == undefined){
@@ -99,9 +116,6 @@ function seachNhomdatn(index) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
                 <tr>
-                <td><input type="checkbox" class="checkbox"
-                            value="${item.id}">
-                 </td>
                 <td>${item.stt}</td>
                 <td>${item.tenNhom}</td>
                 <td>${item.tenDeTai}</td>
@@ -116,21 +130,6 @@ function seachNhomdatn(index) {
                                     class="btn btn-primary"
                                     onclick= "showDetail('${item.id}')">
                                     chi tiết nhóm
-                     </button>
-                 </td>
-                 <td>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary "
-                                    id="chotDuLieu" 
-                                    style="${item.trangThai == 2 ? 'display : block' : 'display : none'}"
-                                    onclick="chotDuLieu('${item.id}')">Chốt
-                     </button>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary "
-                                    id="chotDuLieu" style="${item.trangThai == 5 ? 'display : none' : 'display : block'}"
-                                    onclick="updateTenDeTai('${item.id}')">update 
                      </button>
                  </td>
                 </tr>
@@ -202,9 +201,68 @@ $("#form_nhom_datn_update").submit(function (event) {
     }
 });
 
-function chotAll(){
-    var data = Array.from(document.querySelectorAll('.checkbox'))
-        .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => checkbox.value);
-    data.map(function (item){chotDuLieu(item)} )
+function chotDeTaiNhomDatn(maNhom) {
+    $("#modal_nhom_datn_chot_de_tai").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/" + maNhom,
+        success: function (responseData) {
+            console.log(responseData)
+            $('#ma_nhom_datn').val(responseData.data.id)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
 }
+
+$("#form_nhom_datn_chot_de_tai").submit(function (event){
+    event.preventDefault();
+    var maNhom = $('#ma_nhom_datn').val()
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/phe-duyet-de-tai-nhom?maNhom=" + maNhom,
+        success: function () {
+            window.location.reload(false)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+})
+
+
+function tuChoiNhomDatn(maNhom){
+    $("#modal_nhom_datn_delete").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/" + maNhom,
+        success: function (responseData) {
+            console.log(responseData)
+            $('#remove_nhom_datn').val(responseData.data.id)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+$('#form_nhom_datn_delete').submit(function (event){
+    event.preventDefault();
+    var maNhom = $('#remove_nhom_datn').val()
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/tu-choi-nhom-datn?maNhom=" + maNhom,
+        dataType: 'json',
+        success: function () {
+            window.location.reload(false)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+})

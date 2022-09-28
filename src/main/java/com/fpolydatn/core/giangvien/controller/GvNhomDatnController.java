@@ -6,6 +6,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.service.DtSvChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -51,4 +52,29 @@ public class GvNhomDatnController extends BaseController {
         return "/giangvien/gv-nhom-datn";
     }
 
+    @GetMapping("/phe-duyet-nhom")
+    public String viewAllNhomDatnDoiPheDuyet(final GvFindNhomDatnHuongDanRequest request, Model model) {
+        String maGvhd = "1e2e261c-edc3-4a02-bbc3-964a1f5339b7";
+        String coSoId = session.getCoSoId();
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnDoiPheDuyet(maGvhd, request);
+        List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
+        List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
+        model.addAttribute("page", listNhomDatn);
+        model.addAttribute("listHocKy", listHocKy);
+        model.addAttribute("listDotDangKy", listDotDangKy);
+        return "/giangvien/gv-phe-duyet-nhom-datn";
+    }
+
+    @GetMapping("/thong-tin-nhom-datn")
+    public String viewAllNhomDatnHuongDan(final GvFindNhomDatnHuongDanRequest request, Model model) {
+        String maGvhd = "1e2e261c-edc3-4a02-bbc3-964a1f5339b7";
+        String coSoId = session.getCoSoId();
+        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnHuongDan(maGvhd, request);
+        List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
+        List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
+        model.addAttribute("page", listNhomDatn);
+        model.addAttribute("listHocKy", listHocKy);
+        model.addAttribute("listDotDangKy", listDotDangKy);
+        return "/giangvien/gv-thong-tin-nhom-datn";
+    }
 }

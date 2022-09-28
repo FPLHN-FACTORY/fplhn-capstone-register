@@ -32,6 +32,9 @@ public interface CnNhomDatnResponse extends IsIdentified {
     @Value("#{target.ma_sinh_vien}")
     String getMaSinhVien();
 
+    @Value("#{target.ten_sinh_vien}")
+    String getTenSinhVien();
+
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
 
