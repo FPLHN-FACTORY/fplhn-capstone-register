@@ -26,11 +26,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Vinhnv
@@ -212,8 +213,10 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         if(list == null){
             throw new RestApiException(Message.FILE_EMPTY);
         }
-        for ( GiangVienHuongDan gvhd: list) {
-            GiangVienHuongDan giangVien =  dtGiangVienHDRepository.getGVHDByEmailFpt(gvhd.getEmailFpt().trim());
+        Map<String , GiangVienHuongDan> getMapGV = dtGiangVienHDRepository.findAll().stream().
+                collect(Collectors.toMap(GiangVienHuongDan::getEmailFpt, gv -> gv));
+        for (GiangVienHuongDan gvhd: list) {
+            GiangVienHuongDan giangVien = getMapGV.get(gvhd.getEmailFpt());
             if(giangVien != null){
                 giangVien.setTenGvhd(gvhd.getTenGvhd());
                 giangVien.setSoNhomHuongDanToiDa(gvhd.getSoNhomHuongDanToiDa());
