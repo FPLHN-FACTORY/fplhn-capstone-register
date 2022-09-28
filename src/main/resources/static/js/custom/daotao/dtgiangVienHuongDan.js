@@ -328,18 +328,22 @@ function loadTable(count) {
                    <td>
                     <button
                         type="button"
-                        class="btn btn-primary"
+                        class="btn btn-primary chuc-nang"
                         onclick="openModalUpdateGiangVien('${item.id}','${count}')">
                           Sửa
                      </button>
                      </button>
                      <button
                          type="button"
-                         class="btn btn-danger"
+                         class="btn btn-danger chuc-nang"
                          data-toggle="modal"
                          onclick="openModalRemoveGiangVien('${item.id}','${count}')">
                          Xoá
                      </button>
+                     <a type="button" class="btn btn-success chuc-nang"
+                          href="/dao-tao/giang-vien-huong-dan/${item.id}">
+                          Phân môn
+                      </a>
                     </td>
 
                </tr>
