@@ -32,7 +32,7 @@ public interface DtCanBoService {
 
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
 
-    Optional<CanBo> findByEmailFe(String emailFe);
+//    Optional<CanBo> findByEmailFe(String emailFe);
 
     List<CanBo> importData(MultipartFile reapExcelDataFile, String id);
 

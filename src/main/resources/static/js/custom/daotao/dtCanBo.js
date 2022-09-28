@@ -47,6 +47,11 @@ $("#form_create_can_bo").submit(function (event) {
         if (regexFE.test(emailFe) == false) {
             $("#email_fe_error").text("Email Fe Phải Đúng Định Dạng");
             check = false;
+        }else {
+            if(emailFe.trim().includes(" ")){
+                $("#email_fe_error").text("Email Fe không được để dấu cách");
+                check = false;
+            }
         }
     }
     if (emailFpt.length == 0) {
@@ -56,6 +61,11 @@ $("#form_create_can_bo").submit(function (event) {
         if (regexFPT.test(emailFpt) == false) {
             $("#email_fpt_error").text("Email Fpt Phải Đúng Định Dạng");
             check = false;
+        }else {
+            if(emailFpt.trim().includes(" ")){
+                $("#email_fpt_error").text("Email Fe không được để dấu cách");
+                check = false;
+            }
         }
     }
     if (soDienThoai.length == 0) {
@@ -151,6 +161,11 @@ $("#form_hoc_ky_update").submit(function (event) {
         if (regexFE.test(emailFe) == false) {
             $("#email_fe_error_update").text("Email Fe Phải Đúng Định Dạng");
             check = false;
+        }else {
+            if(emailFpt.trim().includes(" ")){
+                $("#email_fe_error_update").text("Email Fe không được để dấu cách");
+                check = false;
+            }
         }
     }
     if (emailFpt.length == 0) {
@@ -160,6 +175,11 @@ $("#form_hoc_ky_update").submit(function (event) {
         if (regexFPT.test(emailFpt) == false) {
             $("#email_fpt_error_update").text("Email Fpt Phải Đúng Định Dạng");
             check = false;
+        }else {
+            if(emailFpt.trim().includes(" ")){
+                $("#email_fpt_error_update").text("Email Fpt không được để dấu cách");
+                check = false;
+            }
         }
     }
     if (soDienThoai.length == 0) {

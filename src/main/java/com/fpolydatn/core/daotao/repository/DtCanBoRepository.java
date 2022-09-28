@@ -46,6 +46,8 @@ public interface DtCanBoRepository extends CanBoRepository {
             SELECT id,ten_can_bo FROM can_bo WHERE vai_tro = 2""", nativeQuery = true)
     List<DtTenCanBoResponse> findCanBoByVaiTro();
 
-    Optional<CanBo> findByEmailFe(String emailfe);
+    @Query(value = """
+            SELECT email_fe FROM can_bo""", nativeQuery = true)
+    List<String> findAllEmailFe();
 
 }
