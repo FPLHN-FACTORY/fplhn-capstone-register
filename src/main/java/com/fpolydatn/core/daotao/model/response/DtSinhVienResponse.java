@@ -11,6 +11,9 @@ public interface DtSinhVienResponse {
 
     String getId();
 
+    @Value("#{target.stt}")
+    int getStt();
+
     @Value("#{target.ma_sinh_vien}")
     String getMaSinhVien();
 
