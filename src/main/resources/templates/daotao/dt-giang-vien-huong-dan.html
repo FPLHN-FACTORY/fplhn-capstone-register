@@ -78,25 +78,170 @@
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="row">
-                                        <div class="col-6 d-inline">
+                                        <div class="col-5 d-inline float-right"
+                                        >
+                                            <button id="mauImport"
+                                                    data-toggle="modal"
+                                                    data-target="#modal_excel_mau"
+                                                    class="col-10 col-sm-6 col-md-4 btn btn-secondary btn-floating btn-sm fas">
+                                                <i class="fas fa-download"> Mẫu Import Excel</i>
+                                            </button>
 
-                                            <section class="my-5">
-                                                <div class="container">
-                                                    <div class="row">
-                                                        <div class="col-md-8 mx-auto">
-                                                            <h2>Upload File Example</h2>
-                                                            <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
-                                                            <form method="post" th:object="${file}" th:action="@{'/dao-tao/giang-vien-huong-dan/import'}" enctype="multipart/form-data">
+                                            <div class="modal fade "
+                                                 id="modal_excel_mau"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form id="form_mau_excel" method="post">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"> Mẫu Import Excel</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <input type="file" class="" id="fileupload" name="fileupload" th:field="*{file}" multiple >
+                                                                    <p class="col-form-label">Định dạng file excel </p>
+                                                                    <select id="type_mau_excel" class="form-control col-5">
+                                                                        <option value="">chọn kiểu file excel</option>
+                                                                        <option value="xls">.xls</option>
+                                                                        <option value="xlsx">.xlsx</option>
+                                                                    </select>
+                                                                    <span class="text-danger"
+                                                                          id="mau_excel_error"></span>
                                                                 </div>
-                                                                <button type="submit" class="btn btn-primary">Upload File</button>
-                                                            </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Hủy
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">Download excel
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-portlet">
+                                        <div class="m-portlet">
+                                            <div class="m-portlet__body">
+
+                                                <div class="row">
+                                                    <div class="col-4 d-inline float-left"
+                                                    >
+                                                        <button
+                                                                data-toggle="modal"
+                                                                data-target="#modal_excel"
+                                                                class="col-8 col-sm-6 col-md-4 btn btn-success btn-floating btn-sm fas">
+                                                            <i class="fas fa-download"> Export Excel</i>
+                                                        </button>
+                                                        <button
+                                                                data-toggle="modal"
+                                                                data-target="#import_excel"
+                                                                class="col-8 col-sm-6 col-md-4 btn btn-success btn-floating btn-sm fas">
+                                                            <i class="fas fa-upload"> Import Excel</i>
+                                                        </button>
+                                                        <div class="modal fade "
+                                                             id="modal_excel"
+                                                             tabindex="-1"
+                                                             aria-labelledby="exampleModalLabel"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <form id="form_type_excel" method="post">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Export
+                                                                                Excel</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="form-group">
+                                                                                <p class="col-form-label">Định dạng file excel </p>
+                                                                                <select id="type_excel" class="form-control col-5">
+                                                                                    <option value="">chọn kiểu file excel</option>
+                                                                                    <option value="xls">.xls</option>
+                                                                                    <option value="xlsx">.xlsx</option>
+                                                                                </select>
+                                                                                <span class="text-danger"
+                                                                                      id="type_excel_error"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary"
+                                                                                    data-dismiss="modal">Hủy
+                                                                            </button>
+                                                                            <button type="submit" class="btn btn-primary">Download
+                                                                                excel
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal fade "
+                                                             id="import_excel"
+                                                             tabindex="-1"
+                                                             aria-labelledby="exampleModalLabel"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <form enctype="multipart/form-data" method="post"
+                                                                          th:action="@{/api/dao-tao/giang-vien-huong-dan/import}"
+                                                                          id="form_import_excel">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Import Excel</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-prepend">
+                                                                            <span class="input-group-text"
+                                                                                  id="inputGroupFileAddon01">Upload</span>
+                                                                                    </div>
+                                                                                    <div class="custom-file">
+                                                                                        <input type="file" class="custom-file-input"
+                                                                                               id="inputGroupFile01"
+                                                                                               aria-describedby="inputGroupFileAddon01"
+                                                                                               name="file">
+                                                                                        <label class="custom-file-label"
+                                                                                               for="inputGroupFile01">Choose
+                                                                                            file</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <span class="text-danger"
+                                                                                      id="import_excel_error"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary"
+                                                                                    data-dismiss="modal">Hủy
+                                                                            </button>
+                                                                            <button type="submit" class="btn btn-primary">Import
+                                                                                excel
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </section>
-
+                                    <div class="row">
+                                        <div class="col-6 d-inline">
+                                            <br>
                                             <button data-toggle="modal"
                                                     data-target="#modal_create"
                                                     class="col-12 col-sm-8 col-md-4 btn btn-success">

@@ -26,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -53,7 +54,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public GiangVienHuongDan create( DtCreateGiangVienHDRequest command) {
+    public GiangVienHuongDan create( @Valid DtCreateGiangVienHDRequest command) {
         String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
@@ -62,8 +63,8 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenTaiKhoan = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan());
-        if (idByTenTaiKhoan != null) {
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan());
+        if (idByTenGiangVien != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
         GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class, command);
