@@ -80,10 +80,11 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public boolean addGvhd(String tenTaiKhoan, String idNhom) {
         String idGiangVien = cnGiangVienHuongDanReponsitory.getIdFromGiangVienId(tenTaiKhoan);
+        String dotDangKyId = "";
         if(idGiangVien==null){
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
         }
-        if(cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien) == validationUtils.soNhomGiangVienDangHuongDan(idGiangVien)){
+        if(cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien) == validationUtils.soNhomGiangVienDangHuongDan(idGiangVien, dotDangKyId)){
             throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
         }
         cnNhomDatnRepository.addGvhd(idGiangVien,idNhom);
@@ -106,9 +107,9 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public SinhVien getOldCaptain(String idGroup) {
-       String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup);
-       Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(idOldCaptain);
-       return captain.get();
+        String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup);
+        Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(idOldCaptain);
+        return captain.get();
     }
 
     @Override
@@ -120,7 +121,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public List<DotDangKy> getListDotDangKy() {
         System.out.println(cnDotDangKyRepository.findAll());
-       return cnDotDangKyRepository.findAll();
+        return cnDotDangKyRepository.findAll();
     }
 
     @Override

@@ -48,10 +48,10 @@ dependencies {
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client
-//    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.1.0.RELEASE'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.1.0.RELEASE'
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
-//    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '1.2.5.RELEASE'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '1.2.5.RELEASE'
 
 }
 

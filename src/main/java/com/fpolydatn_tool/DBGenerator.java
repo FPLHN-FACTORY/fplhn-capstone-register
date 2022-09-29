@@ -29,6 +29,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * @author phongtt35
  */
@@ -82,6 +85,16 @@ public class DBGenerator implements CommandLineRunner {
         yenlh5.setTenTaiKhoan("yenlh5");
         yenlh5.setVaiTro(VaiTro.DAO_TAO);
         yenlh5.setId(canBoRepository.save(yenlh5).getId());
+        CanBo daotao = new CanBo();
+        daotao.setCoSoId(csHN.getId());
+        daotao.setEmailFe("daotao.fcr@gmail.com");
+        daotao.setEmailFpt("daotao.fcr@gmail.com");
+        daotao.setSoDienThoai("0912345678");
+        daotao.setTenCanBo("Đào tạo");
+        daotao.setTenTaiKhoan("daotao");
+        daotao.setVaiTro(VaiTro.DAO_TAO);
+        daotao.setId(canBoRepository.save(daotao).getId());
+
         CanBo minhdq8 = new CanBo();
         minhdq8.setCoSoId(csHN.getId());
         minhdq8.setEmailFe("minhdq8@fe.edu.vn");
@@ -100,6 +113,15 @@ public class DBGenerator implements CommandLineRunner {
         thienth3.setTenTaiKhoan("thienth3");
         thienth3.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
         thienth3.setId(canBoRepository.save(thienth3).getId());
+        CanBo cnbm = new CanBo();
+        cnbm.setCoSoId(csHN.getId());
+        cnbm.setEmailFe("chunhiem.fcr@gmail.com");
+        cnbm.setEmailFpt("chunhiem.fcr@gmail.com");
+        cnbm.setSoDienThoai("0912345678");
+        cnbm.setTenCanBo("Chủ nhiệm");
+        cnbm.setTenTaiKhoan("chunhiem");
+        cnbm.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
+        cnbm.setId(canBoRepository.save(cnbm).getId());
 
         ChuyenNganh ptpm = new ChuyenNganh();
         ptpm.setCoSoId(csHN.getId());
@@ -128,9 +150,9 @@ public class DBGenerator implements CommandLineRunner {
         DotDangKy dot1 = new DotDangKy();
         dot1.setCoSoId(csHN.getId());
         dot1.setHocKyId(su22.getId());
-        dot1.setNgayBatDau(1652115600000L);
-        dot1.setNgayKetThuc(1652979600000L);
-        dot1.setTenDotDangKy("Đợt đăng ký kỳ Summer 2022");
+        dot1.setNgayBatDau(Calendar.getInstance().getTimeInMillis());
+        dot1.setNgayKetThuc(dot1.getNgayBatDau() + 2629800000L);
+        dot1.setTenDotDangKy("Đợt đăng ký kỳ 11");
         dot1.setId(dotDangKyRepository.save(dot1).getId());
 
         GiangVienHuongDan tiennh21 = new GiangVienHuongDan();
@@ -153,9 +175,19 @@ public class DBGenerator implements CommandLineRunner {
         dungna29.setCoSoId(csHN.getId());
         dungna29.setDotDangKyId(dot1.getId());
         dungna29.setSoNhomHuongDanToiDa((short)5);
-        dungna29.setTenTaiKhoan("dungna29");
         dungna29.setTenGvhd("Nguyễn Anh Dũng");
         dungna29.setId(giangVienHuongDanRepository.save(dungna29).getId());
+
+        GiangVienHuongDan gvhd = new GiangVienHuongDan();
+        gvhd.setEmailFe("giangvien.fcr@gmail.com");
+        gvhd.setSoDienThoai("09123445678");
+        gvhd.setTenTaiKhoan("giangvien");
+        gvhd.setEmailFpt("giangvien.fcr@gmail.com");
+        gvhd.setCoSoId(csHN.getId());
+        gvhd.setDotDangKyId(dot1.getId());
+        gvhd.setSoNhomHuongDanToiDa((short)7);
+        gvhd.setTenGvhd("Giảng Viên");
+        gvhd.setId(giangVienHuongDanRepository.save(gvhd).getId());
 
         PhanCongHuongDan tienNHJava = new PhanCongHuongDan();
         tienNHJava.setGiangVienId(tiennh21.getId());
@@ -163,8 +195,16 @@ public class DBGenerator implements CommandLineRunner {
         phanCongHuongDanRepository.save(tienNHJava);
         PhanCongHuongDan dungNACSharp = new PhanCongHuongDan();
         dungNACSharp.setMonDatnId(cSharp.getId());
-        dungNACSharp.setGiangVienId(cSharp.getId());
+        dungNACSharp.setGiangVienId(dungna29.getId());
         phanCongHuongDanRepository.save(dungNACSharp);
+        PhanCongHuongDan gvhdJava = new PhanCongHuongDan();
+        gvhdJava.setMonDatnId(java.getId());
+        gvhdJava.setGiangVienId(gvhd.getId());
+        phanCongHuongDanRepository.save(gvhdJava);
+        PhanCongHuongDan gvhdCS = new PhanCongHuongDan();
+        gvhdCS.setMonDatnId(cSharp.getId());
+        gvhdCS.setGiangVienId(gvhd.getId());
+        phanCongHuongDanRepository.save(gvhdCS);
 
         SinhVien phongtt35 =  new SinhVien();
         phongtt35.setChuyenNganhId(ptpm.getId());
@@ -232,6 +272,19 @@ public class DBGenerator implements CommandLineRunner {
         khanhpg.setMaSinhVien("PH45678");
         khanhpg.setNhomId(null);
         khanhpg.setId(sinhVienRepository.save(khanhpg).getId());
+
+        SinhVien sinhVien =  new SinhVien();
+        sinhVien.setChuyenNganhId(ptpm.getId());
+        sinhVien.setDotDangKyId(dot1.getId());
+        sinhVien.setMonDatnId(cSharp.getId());
+        sinhVien.setSoDienThoai("0912345667");
+        sinhVien.setCoSoId(csHN.getId());
+        sinhVien.setEmail("sinhvien.fcr@gmail.com");
+        sinhVien.setKhoa("K12");
+        sinhVien.setTenSinhVien("Sinh Viên");
+        sinhVien.setMaSinhVien("PH00001");
+        sinhVien.setNhomId(null);
+        sinhVien.setId(sinhVienRepository.save(sinhVien).getId());
 
     }
 
