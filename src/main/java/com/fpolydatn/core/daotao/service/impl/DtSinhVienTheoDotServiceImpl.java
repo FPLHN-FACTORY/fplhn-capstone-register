@@ -11,13 +11,11 @@ import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
-import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import com.fpolydatn.repository.ChuyenNganhRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -160,19 +157,19 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
             if (map.get(sinhVien.getChuyenNganh()) != null) {
                 sinhVienEntity.setChuyenNganhId(map.get(sinhVien.getChuyenNganh()));
-            } else if(!map.containsKey(sinhVien.getChuyenNganh())){
+            } else if (!map.containsKey(sinhVien.getChuyenNganh())) {
                 throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
             }
 
             if (map.get(sinhVien.getDotDangKy()) != null) {
                 sinhVienEntity.setDotDangKyId(map.get(sinhVien.getDotDangKy()));
-            } else if(!map.containsKey(sinhVien.getDotDangKy())){
+            } else if (!map.containsKey(sinhVien.getDotDangKy())) {
                 throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
             }
 
             if (map.get(sinhVien.getMonDATN()) != null) {
                 sinhVienEntity.setMonDatnId(map.get(sinhVien.getMonDATN()));
-            } else if(!map.containsKey(sinhVien.getMonDATN())){
+            } else if (!map.containsKey(sinhVien.getMonDATN())) {
                 throw new RestApiException(Message.MON_DATN_NOT_EXIST);
             }
 

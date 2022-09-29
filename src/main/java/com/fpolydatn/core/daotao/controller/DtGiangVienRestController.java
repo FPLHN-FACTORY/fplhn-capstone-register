@@ -72,6 +72,4 @@ public class DtGiangVienRestController extends BaseController {
         return new ResponseObject(listGiangVienHD);
     }
 
-
-
 }

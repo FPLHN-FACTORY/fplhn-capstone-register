@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author nguyenvv4
@@ -31,8 +30,6 @@ public interface DtCanBoService {
     CanBo update(DtUpdateCanBoRequest canBoRequest);
 
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
-
-//    Optional<CanBo> findByEmailFe(String emailFe);
 
     List<CanBo> importData(MultipartFile reapExcelDataFile, String id);
 

@@ -1,8 +1,6 @@
 package com.fpolydatn.core.chunhiem.repository;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
-import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
-import com.fpolydatn.core.chunhiem.model.response.CnGvhdSearchResponse;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

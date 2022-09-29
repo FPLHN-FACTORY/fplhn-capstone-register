@@ -128,7 +128,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
                 canBo.setTenTaiKhoan(row.getCell(4).getStringCellValue());
                 canBo.setVaiTro(VaiTro.valueOf(row.getCell(5).getStringCellValue()));
                 canBo.setCoSoId(id);
-                if(!validateDataExcel(listEmailFe,canBo.getEmailFe())){
+                if (!validateDataExcel(listEmailFe, canBo.getEmailFe())) {
                     throw new RestApiException(Message.HOC_KY_NOT_EXIST);
                 }
                 listCanBo.add(canBo);
@@ -139,9 +139,9 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         return listCanBo;
     }
 
-    public boolean validateDataExcel(List<String> listEmail,String emailFE){
-        for (String s: listEmail) {
-            if(s.equals(emailFE)){
+    public boolean validateDataExcel(List<String> listEmail, String emailFE) {
+        for (String s : listEmail) {
+            if (s.equals(emailFE)) {
                 return false;
             }
         }

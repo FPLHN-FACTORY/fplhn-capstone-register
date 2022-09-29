@@ -9,9 +9,13 @@ import lombok.Setter;
 public class FindDtNhomDatnTheoDotRequest extends PageableRequest {
 
     private String tenNhom;
+
     private String chuyenNganhId;
+
     private String dotDangKyId;
+
     private String trangThai;
+
     private String coSoId;
 
 }

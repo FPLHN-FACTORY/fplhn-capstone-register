@@ -15,4 +15,5 @@ public interface DtPhanCongHuongDanResponse extends IsIdentified {
 
     @Value("#{target.ten_gvhd}")
     String getTenGV();
+
 }

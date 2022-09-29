@@ -52,4 +52,5 @@ public interface DtMonDatnRepository extends MonDatnRepository {
 
     @Query(value = "SELECT * FROM mon_datn WHERE ma_mon = :maMon AND id <> :id ", nativeQuery = true)
     MonDatn findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id);
+
 }

@@ -1,8 +1,6 @@
 package com.fpolydatn.core.daotao.excel;
 
-
 import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
-
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -45,20 +43,23 @@ public class DtSinhVienTheoDotImport {
         }
         return listSinhVien;
     }
-    private static Object getCellValue(XSSFCell cell){
-        switch (cell.getCellTypeEnum()) {
-            case STRING -> {
-                return cell.getStringCellValue();
+
+    private static Object getCellValue(XSSFCell cell) {
+        try {
+            switch (cell.getCellTypeEnum()) {
+                case NUMERIC -> {
+                    return cell.getNumericCellValue();
+                }
+                case BOOLEAN -> {
+                    return cell.getBooleanCellValue();
+                }
+                default -> {
+                    return cell.getStringCellValue();
+                }
+
             }
-            case NUMERIC -> {
-                return cell.getNumericCellValue();
-            }
-            case BOOLEAN -> {
-                return cell.getBooleanCellValue();
-            }
-            default -> {
-                return "";
-            }
+        }catch (Exception e){
+            return "";
         }
     }
 

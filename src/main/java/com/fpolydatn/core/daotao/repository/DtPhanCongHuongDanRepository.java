@@ -18,7 +18,7 @@ import java.util.List;
  * @author huynq
  */
 public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository {
-//    [UC-DT-MDa-CT-1] Phân công GVHD theo môn
+    //    [UC-DT-MDa-CT-1] Phân công GVHD theo môn
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY last_modified_date DESC) AS stt, gv.id, gv.ten_gvhd FROM do_an_tot_nghiep.phan_cong_huong_dan pc
             JOIN do_an_tot_nghiep.giang_vien_huong_dan gv ON pc.giang_vien_id = gv.id
@@ -56,7 +56,7 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
             , nativeQuery = true)
     List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(@Param("coSoId") String coSoId, @Param("maMonId") String maMonId);
 
-//    [UC-DT-GV-CT-1] Phân môn cho GVHD
+    //    [UC-DT-GV-CT-1] Phân môn cho GVHD
     @Query(value = """
             SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
             JOIN do_an_tot_nghiep.phan_cong_huong_dan pc on m.id = pc.mon_datn_id
@@ -101,4 +101,5 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
             """
             , nativeQuery = true)
     List<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanCongMonDatn(@Param("coSoId") String coSoId, @Param("maGiangVienHuongDan") String maMonId);
+
 }

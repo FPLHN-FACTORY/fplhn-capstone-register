@@ -13,4 +13,5 @@ public class DtUpdateMonDatnRequest extends DtBaseMonDatnRequest {
     private String id;
 
     private String coSoId;
+
 }

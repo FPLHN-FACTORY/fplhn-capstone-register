@@ -119,5 +119,4 @@ $("#form_chuyen_nganh_delete").submit(function (event) {
             console.log("ERROR : ", e);
         }
     });
-
 });

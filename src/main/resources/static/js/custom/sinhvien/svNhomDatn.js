@@ -1,7 +1,7 @@
 const svNhomDatnApi = '/api/sinh-vien';
 const svNhomDatnView = '/sinh-vien';
 
-function guiYeuCauPheDuyet(id){
+function guiYeuCauPheDuyet(id) {
     var check = confirm("Bạn muốn gửi yêu cầu phê duyệt?");
     if (check == true) {
         $.ajax({
@@ -20,7 +20,7 @@ function guiYeuCauPheDuyet(id){
     }
 }
 
-function openModalDoiTenDeTai(){
+function openModalDoiTenDeTai() {
     $("#modal_doi_ten_de_Tai").modal("show");
 }
 
@@ -59,14 +59,14 @@ $("#form_confirm").submit(function (event) {
     window.open(svNhomDatnView, '_self');
 })
 
-function roiNhom(soThanhVien){
+function roiNhom(soThanhVien) {
     let check = false;
     let checkConfirm = confirm("Bạn muốn rời nhóm?");
-    if (checkConfirm == true){
+    if (checkConfirm == true) {
         check = true;
         if (soThanhVien == 1) {
             let checkConfirmXoaNhom = confirm("Nhóm sẽ bị xóa nếu bạn rời nhóm\n Bạn có muốn tiếp tục rời nhóm?");
-            if (checkConfirmXoaNhom == false){
+            if (checkConfirmXoaNhom == false) {
                 check = false;
             }
         }
@@ -90,7 +90,7 @@ function roiNhom(soThanhVien){
     }
 }
 
-function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi){
+function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi) {
     let checkConfirm = confirm("Bạn muốn chuyển quyển trưởng nhóm cho: " + tenTruongNhomMoi + "?");
     if (checkConfirm == true) {
         $.ajax({
@@ -110,7 +110,7 @@ function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi){
     }
 }
 
-function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi){
+function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi) {
     let checkConfirm = confirm("Bạn muốn chuyển quyển trưởng nhóm cho: " + tenTruongNhomMoi + "?");
     if (checkConfirm == true) {
         $.ajax({
@@ -130,7 +130,7 @@ function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi){
     }
 }
 
-function chonGiangVienHuongDan(){
+function chonGiangVienHuongDan() {
     let idGiangVien = $('#chonGiangVien').val();
     let checkConfirm = confirm('Bạn có chắc muốn chọn giảng viên này không');
     if (checkConfirm == true) {

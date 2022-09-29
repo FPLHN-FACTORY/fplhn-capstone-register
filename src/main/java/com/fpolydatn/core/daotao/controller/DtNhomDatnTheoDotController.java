@@ -43,6 +43,7 @@ public class DtNhomDatnTheoDotController extends BaseController {
         model.addAttribute("page", listNhomDatn);
         return "daotao/dt-nhom-datn";
     }
+
     @GetMapping("/export")
     public void exportEcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
@@ -55,4 +56,5 @@ public class DtNhomDatnTheoDotController extends BaseController {
 
         nhomDatn.exportData(response);
     }
+
 }

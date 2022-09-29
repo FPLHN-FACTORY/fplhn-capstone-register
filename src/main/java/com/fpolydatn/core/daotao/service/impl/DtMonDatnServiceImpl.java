@@ -116,8 +116,8 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             while (iterator.hasNext()) {
                 Row row = iterator.next();
 
-                if(rowNumber == 0 ) {
-                    rowNumber ++;
+                if (rowNumber == 0) {
+                    rowNumber++;
                     continue;
                 }
 
@@ -148,7 +148,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                         default:
                             break;
                     }
-                    cid ++ ;
+                    cid++;
 
                 }
                 list.add(monDatn);
@@ -157,14 +157,15 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
         } catch (Exception e) {
             e.printStackTrace();
-        };
+        }
+        ;
         return list;
     }
 
     @Override
     public Boolean importExcel(MultipartFile file) {
         List<MonDatn> list = (List<MonDatn>) convertExcelToList(file);
-        if(list == null) {
+        if (list == null) {
             return false;
         }
         monDatnRepository.saveAll(list);
