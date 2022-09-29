@@ -165,7 +165,7 @@ $("#form_hoc_ky_update").submit(function (event) {
             $("#email_fe_error_update").text("Email Fe Phải Đúng Định Dạng");
             check = false;
         }else {
-            if(emailFpt.includes(" ")){
+            if(emailFe.includes(" ")){
                 $("#email_fe_error_update").text("Email Fe không được để dấu cách");
                 check = false;
             }
