@@ -26,7 +26,7 @@ public final class DtPhanCongHuongDanController extends BaseController {
     private DtPhanCongHuongDanService phanCongHuongDanService;
 
     @GetMapping("/{id}")
-    public String viewPhanCongHuongDan (Model model
+    public String viewPhanCongHuongDan(Model model
             , final DtFindPhanCongHuongDanRequest req
             , @PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
@@ -39,4 +39,5 @@ public final class DtPhanCongHuongDanController extends BaseController {
         model.addAttribute("phanCongHuongDanGiaoViens", phanCongHuongDanGiaoViens);
         return "daotao/dt-phan-cong-huong-dan";
     }
+
 }

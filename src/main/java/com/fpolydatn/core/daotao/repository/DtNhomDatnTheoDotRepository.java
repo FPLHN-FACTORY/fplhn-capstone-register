@@ -4,7 +4,6 @@ import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
-import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface DtNhomDatnTheoDotRepository  extends NhomDatnRepository {
+public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
     @Query(value = """
             SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ten_nhom
             ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien, 
@@ -86,4 +85,5 @@ public interface DtNhomDatnTheoDotRepository  extends NhomDatnRepository {
                  WHERE n.co_so_id = :coSoId
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaNhom(@Param("coSoId") String coSoId);
+
 }

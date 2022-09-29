@@ -25,9 +25,6 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
     @Autowired
     private SvSinhVienRepository svSinhVienRepository;
 
-    @Autowired
-    private SvNhomDatnRepository svNhomDatnRepository;
-
     @Override
     public List<SvSinhVienTheoNhomResponse> findByNhomId(final SvFindSinhVienRequest request) {
         return svSinhVienRepository.findByNhomId(request);
@@ -42,5 +39,12 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
     public Integer getSoThanhVienByNhomId(String nhomId) {
         return svSinhVienRepository.getSoLuongThanhVienById(nhomId);
     }
+
+    @Override
+    public String getMonDatnIdBySinhVienId(String id) {
+        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(id);
+        return sinhVien.get().getMonDatnId();
+    }
+
 
 }

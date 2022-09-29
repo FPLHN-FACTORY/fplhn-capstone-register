@@ -13,27 +13,6 @@ function clearData() {
     $("#keyword").val("");
 }
 
-// function searchSinhVien() {
-//     let text = $(".chosen-search-input").val()
-//     $.ajax({
-//         type: "GET",
-//         contentType: "application/json",
-//         url: sinhVienApi + "/listSinhVienNoGroup" + "?maSinhVien=" + text + "&tenSinhVien=" + text,
-//         dataType: 'json',
-//         success: function (responseData) {
-//             console.log(responseData)
-//             $("#cities").html(
-//                 responseData.data.map(function (item){
-//                     return `<option value="${item.maSinhVien}">${item.thongTinSinhVien}</option>`
-//                 })
-//             )
-//         },
-//         error: function (e) {
-//             console.log("ERROR : ", e);
-//         }
-//     });
-// }
-
 function searchGvhd() {
     let text = $("#tags").val()
     $.ajax({
@@ -57,8 +36,8 @@ loadData()
 
 $("#form_create_ma_nhom").submit(function (event) {
     event.preventDefault();
-    let idNhom = $("#idNhom").val()
-    let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien")
+    let idNhom = $("#idNhom").val();
+    let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien");
     for (let item of listMaSinhVien) {
         $.ajax({
             type: "POST",
@@ -81,9 +60,9 @@ function openModalRemoveNhom(maSinhVien) {
 
 $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     event.preventDefault();
-    let maSinhVien = $("#remove_sinh_vien_theo_nhom").val();
-    let idNhom = $("#idNhom").val()
-    let soThanhVien = $("#soThanhVien").val()
+    let maSinhVien = $("#remove_sinh_vien_theo_nhom").val().trim();
+    let idNhom = $("#idNhom").val();
+    let soThanhVien = $("#soThanhVien").val();
     if (idOldCaptain == maSinhVien) {
         $.ajax({
             type: "PUT",
@@ -101,9 +80,9 @@ $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
         contentType: "application/json",
         url: sinhVienApi + "?maSinhVien=" + maSinhVien + "&idNhom=" + idNhom,
         success: function () {
-            if(soThanhVien > 1) {
+            if (soThanhVien > 1) {
                 window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
-            }else{
+            } else {
                 window.open(CnNhomDatnView, '_self');
             }
         },

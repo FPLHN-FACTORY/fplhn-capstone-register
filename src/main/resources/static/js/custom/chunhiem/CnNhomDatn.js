@@ -238,7 +238,7 @@ function chotNhieuDeTai(count) {
     }
 }
 
-function clearForm(){
+function clearForm() {
     $("#maNhom").val("");
     $("#matKhau").val("");
     $("#maGiangVien").val("");

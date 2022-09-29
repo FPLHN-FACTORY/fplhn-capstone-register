@@ -30,6 +30,6 @@ public interface DtGiangVienHDService {
 
     List<GiangVienHuongDan> importExcel(MultipartFile file);
 
-    Object checkValidFile(List<GiangVienHuongDan> list );
+    Object checkValidFile(List<GiangVienHuongDan> list);
 
 }

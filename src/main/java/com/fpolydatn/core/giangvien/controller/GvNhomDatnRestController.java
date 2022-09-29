@@ -77,9 +77,9 @@ public class GvNhomDatnRestController {
         return new ResponseObject(nhomDatnResponse);
     }
 
-    @PutMapping("/tu-choi-nhom-datn")
-    public ResponseObject tuChoiNhomDatn(final GvChotNhomDatnRequest request) {
-        NhomDatn nhomDatnResponse = nhomDatnService.tuChoiNhomDatn(request);
+    @PutMapping("/tu-choi-de-tai-nhom-datn")
+    public ResponseObject tuChoiDeTaiNhomDatn(final GvChotNhomDatnRequest request) {
+        NhomDatn nhomDatnResponse = nhomDatnService.tuChoiDeTaiNhomDatn(request);
         return new ResponseObject(nhomDatnResponse);
     }
 }

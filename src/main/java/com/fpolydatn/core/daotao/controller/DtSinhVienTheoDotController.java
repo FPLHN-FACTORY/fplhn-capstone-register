@@ -31,8 +31,9 @@ public class DtSinhVienTheoDotController extends BaseController {
 
     @Autowired
     private DtSvDotDangKyService dotDangKyService;
+
     @GetMapping
-    public String findAllSinhVien(Model model,final FindDtSinhVienTheoDotRequest req) {
+    public String findAllSinhVien(Model model, final FindDtSinhVienTheoDotRequest req) {
         req.setCoSoId(session.getCoSoId());
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(req.getCoSoId());
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(req.getCoSoId());
@@ -42,4 +43,5 @@ public class DtSinhVienTheoDotController extends BaseController {
         model.addAttribute("listDotDangKy", listDotDangKy);
         return "daotao/dt-sinh-vien-theo-dot";
     }
+
 }

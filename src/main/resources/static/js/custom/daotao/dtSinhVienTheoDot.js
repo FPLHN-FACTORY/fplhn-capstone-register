@@ -108,10 +108,10 @@ $("#form_import_excel").submit(function (event) {
     event.preventDefault();
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
-    let typeFile =typeExcel.substring(indexDot+1,typeExcel.length)
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("chọn file");
-    } else if((typeFile== 'xls') || (typeFile== 'xlsx') ){
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         $.ajax({
                 type: 'POST',
                 url: $(this).attr('action'),
@@ -125,13 +125,11 @@ $("#form_import_excel").submit(function (event) {
                 error: function (e) {
                     alert(e.responseText);
                     window.open('/dao-tao/sinh-vien', '_self');
-                    console.log("ERROR: "+e);
+                    console.log("ERROR: " + e);
                 }
             }
         );
-    }
-    else {
+    } else {
         $("#import_excel_error").text("chọn đúng file Excel ");
     }
 });
-

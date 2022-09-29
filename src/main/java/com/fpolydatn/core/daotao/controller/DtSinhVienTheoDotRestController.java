@@ -27,7 +27,7 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     private DtSinhVienTheoDotService sinhVienService;
 
     @GetMapping
-    public ResponseObject searchStudent(final FindDtSinhVienTheoDotRequest req){
+    public ResponseObject searchStudent(final FindDtSinhVienTheoDotRequest req) {
         req.setCoSoId(session.getCoSoId());
         PageableObject<DtSinhVienTheoDotResponse> listSinhVien = sinhVienService.searchStudent(req);
         return new ResponseObject(listSinhVien);
@@ -36,16 +36,19 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     @GetMapping("/export")
     public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
-        sinhVienService.DTSinhVienExport(response,typeExcel,request);
+        sinhVienService.DTSinhVienExport(response, typeExcel, request);
     }
+
     @GetMapping("/export-mau")
     public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
-        sinhVienService.MauImportExcel(response,typeExcel,request);
+        sinhVienService.MauImportExcel(response, typeExcel, request);
     }
+
     @PostMapping("/import")
-    public void importEcel(@RequestParam("file")MultipartFile  file) throws IOException {
-        String coSoId =session.getCoSoId();
-        sinhVienService.DtSinhVienImport(file,coSoId);
+    public void importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+        String coSoId = session.getCoSoId();
+        sinhVienService.DtSinhVienImport(file, coSoId);
     }
+
 }

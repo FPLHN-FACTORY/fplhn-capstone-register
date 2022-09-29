@@ -10,6 +10,11 @@
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
+    <style>
+        .chuc-nang {
+            font-size: 10px;
+        }
+    </style>
 </head>
 <!-- end::Head -->
 
@@ -364,18 +369,23 @@
                                                         <td>
                                                             <button
                                                                     type="button"
-                                                                    class="btn btn-primary"
+                                                                    class="btn btn-primary chuc-nang"
                                                                     th:attr="onclick=|openModalUpdateGiangVien('${giangVienHD.id}','${page.currentPage}')|">
                                                                 Sửa
                                                             </button>
                                                             </button>
                                                             <button
                                                                     type="button"
-                                                                    class="btn btn-danger"
+                                                                    class="btn btn-danger chuc-nang"
                                                                     data-toggle="modal"
                                                                     th:attr="onclick=|openModalRemoveGiangVien('${giangVienHD.id}','${page.currentPage}')|">
                                                                 Xoá
                                                             </button>
+
+                                                            <a type="button" class="btn btn-success chuc-nang"
+                                                               th:href="@{'/dao-tao/giang-vien-huong-dan/'+ ${giangVienHD.getId()}}">
+                                                                Phân môn
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </th:block>

@@ -17,7 +17,8 @@ public class SvGiangVienHuongDanServiceImpl implements SvGiangVienHuongDanServic
     SvGiangVienHuongDanRepository giangVienHuongDanRepository;
 
     @Override
-    public List<SvGiangVienHuongDanResponse> getGiangVienHuongDan(String maMon) {
+    public List<SvGiangVienHuongDanResponse> getGvhdByMonDatnId(String maMon) {
         return giangVienHuongDanRepository.getGiangVienHuongDanByIdMonDatn(maMon);
     }
+
 }

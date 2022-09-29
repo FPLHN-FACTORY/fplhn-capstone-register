@@ -35,6 +35,6 @@ public interface GvNhomDatnService {
 
     NhomDatn pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request);
 
-    NhomDatn tuChoiNhomDatn(final GvChotNhomDatnRequest request);
+    NhomDatn tuChoiDeTaiNhomDatn(final GvChotNhomDatnRequest request);
 
 }

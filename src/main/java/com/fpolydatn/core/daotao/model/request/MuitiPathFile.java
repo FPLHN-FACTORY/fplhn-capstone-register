@@ -14,6 +14,8 @@ import javax.persistence.Transient;
 @Getter
 @Setter
 public class MuitiPathFile {
+
     @Transient
     private MultipartFile file;
+
 }

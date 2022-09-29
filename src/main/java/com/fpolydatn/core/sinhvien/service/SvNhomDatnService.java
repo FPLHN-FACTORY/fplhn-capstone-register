@@ -31,8 +31,6 @@ public interface SvNhomDatnService {
 
     boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req);
 
-    List<SvMonDatnResponse> getMonDatn();
-
     NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest, String idUser);
 
     Boolean updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest);
@@ -40,4 +38,6 @@ public interface SvNhomDatnService {
     Boolean roiNhom(String idUser);
 
     Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi);
+
+    Boolean chonGvhd(String idUser, String idGiangVien);
 }

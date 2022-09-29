@@ -40,10 +40,11 @@ $("#form_add_phan_cong").submit(function (event) {
 });
 
 let checkOut = 0;
-function checkAll(){
-    checkOut ++ ;
+
+function checkAll() {
+    checkOut++;
     let checkBoxs = $(".checkThemTatCa")
-    if(checkOut % 2 == 0) {
+    if (checkOut % 2 == 0) {
         for (const checkBox of checkBoxs) {
             checkBox.checked = false
         }

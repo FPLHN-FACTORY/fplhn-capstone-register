@@ -24,7 +24,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN sinh_vien c ON nd.truong_nhom_id = c.id
             JOIN sinh_vien sv ON sv.nhom_id = nd.id
             JOIN chuyen_nganh cn ON cn.id = sv.chuyen_nganh_id
-            JOIN giang_vien_huong_dan gvhd ON gvhd.id = nd.giang_vien_id
+            LEFT JOIN giang_vien_huong_dan gvhd ON gvhd.id = nd.giang_vien_id
             JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE   ( :#{#request.hocKyId} IS NULL\s

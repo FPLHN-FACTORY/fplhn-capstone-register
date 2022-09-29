@@ -7,6 +7,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class FindSinhVienRequest extends PageableRequest {
+
     private String id;
-    private  String coSoId;
+
+    private String coSoId;
+
 }

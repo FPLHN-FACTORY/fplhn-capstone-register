@@ -78,7 +78,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         }
         List<DotDangKy> listDotDangKy = dtDotDangKyRepository.findAll();
         for (DotDangKy dotDangKy : listDotDangKy) {
-            if (dotDangKy.getId().equals(dtUpdateDotDangKyRequest.getId())){
+            if (dotDangKy.getId().equals(dtUpdateDotDangKyRequest.getId())) {
                 continue;
             }
             if (dtUpdateDotDangKyRequest.getNgayBatDau() < dotDangKy.getNgayKetThuc()
@@ -115,4 +115,5 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     public List<DotDangKy> getAllByCoSo(String coSoId) {
         return dtDotDangKyRepository.getAllByCoSo(coSoId);
     }
+
 }

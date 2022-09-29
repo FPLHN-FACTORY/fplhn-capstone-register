@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-
 /**
  * @author thepvph20110
  */
@@ -103,4 +102,5 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                  WHERE s.co_so_id = :coSoId
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaSV(@Param("coSoId") String coSoId);
+
 }

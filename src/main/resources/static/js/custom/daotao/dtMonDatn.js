@@ -36,8 +36,8 @@ $("#form_create_mon_datn").submit(function (event) {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                    window.open(monDatnView, '_self');
-                    $("#modal_create").modal("hide");
+                window.open(monDatnView, '_self');
+                $("#modal_create").modal("hide");
             },
             error: function (e) {
                 $("#ma_mon_datn_error").text(e.responseJSON.message);
@@ -155,25 +155,3 @@ function openModalImportMonDatn() {
         }
     });
 }
-
-//$("#modal_mon_datn_import").submit(function (event) {
-//    event.preventDefault();
-//    let file = $("#fileupload").val();
-//    console.log(file)
-//    let f = file.replace(/.*[\/\\]/, '');
-    // let file = 'D:\fpoly-datn\test.xlsx'
-//    $.ajax({
-//        type: "POST",
-//        contentType: "application/json",
-//        url: monDatnApi + "/import",
-//        data: JSON.stringify(file),
-//        dataType: 'json',
-//        success: function () {
-//            window.open(monDatnView, '_self');
-//            $("#modal_mon_datn_remove").modal("hide");
-//        },
-//        error: function (e) {
-//            console.log("ERROR : ", e);
-//        }
-//    });
-//});

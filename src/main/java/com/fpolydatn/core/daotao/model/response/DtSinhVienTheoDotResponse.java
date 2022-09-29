@@ -10,7 +10,6 @@ import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-
 /**
  * @author thepvph20110
  */
@@ -53,4 +52,5 @@ public interface DtSinhVienTheoDotResponse extends IsIdentified {
 
     @Value("#{target.ten_dot_dang_ky}")
     String getTenDotDangKy();
+
 }
