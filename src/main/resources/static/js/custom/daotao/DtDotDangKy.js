@@ -40,9 +40,11 @@ function openModalUpdateDotDangKy(dotDangKyId) {
 $("#form_dot_dang_ky_update").submit(function (event) {
     event.preventDefault();
     let dotDangKyId = $("#id_dot_dang_ky_update").val();
-    let tenDotDangKy = $("#ten_dot_dang_ky_update").val();
-    let ngayBatDau = new Date($("#ngay_bat_dau_update").val());
-    let ngayKetThuc = new Date($("#ngay_ket_thuc_update").val());
+    let tenDotDangKy = $("#ten_dot_dang_ky_update").val().trim();
+    let ngayBatDauStr = $("#ngay_bat_dau_update").val();
+    let ngayBatDau = new Date(ngayBatDauStr);
+    let ngayKetThucStr = $("#ngay_ket_thuc_update").val();
+    let ngayKetThuc = new Date(ngayKetThucStr);
     let dotDangKyRequest = {};
     dotDangKyRequest["tenDotDangKy"] = tenDotDangKy;
     dotDangKyRequest["ngayBatDau"] = ngayBatDau.getTime();
@@ -50,10 +52,27 @@ $("#form_dot_dang_ky_update").submit(function (event) {
 
     let check = 0;
     if (ngayBatDau >= ngayKetThuc) {
-        $("#errorMessageUpdate").text("Ngày giờ kết thúc phải sau ngày bắt đầu");
+        $("#errorMessageNgayKetThucUpdate").text("Ngày giờ kết thúc phải sau ngày bắt đầu");
         check += 1;
     } else {
-        $("#errorMessageUpdate").text("");
+        $("#errorMessageNgayKetThucUpdate").text("");
+    }
+
+    if (ngayBatDauStr === "") {
+        $("#errorMessageNgayBatDauUpdate").text("Ngày giờ bắt đầu không được để trống");
+        check += 1;
+    } else {
+        $("#errorMessageNgayBatDauUpdate").text("");
+    }
+
+    if (ngayKetThucStr === "") {
+        $("#errorMessageNgayKetThucUpdate").text("Ngày giờ kết thúc không được để trống");
+        check += 1;
+    } else if (ngayBatDau >= ngayKetThuc) {
+        $("#errorMessageNgayKetThucUpdate").text("Ngày giờ kết thúc phải sau ngày bắt đầu");
+        check += 1;
+    } else {
+        $("#errorMessageNgayKetThucUpdate").text("");
     }
 
     $.ajax({
@@ -64,13 +83,19 @@ $("#form_dot_dang_ky_update").submit(function (event) {
         async: false,
         success: function (responseData) {
             let listDotDangKy = responseData.data;
-            for (let i = 0; i < listDotDangKy.length; i++) {
+            let size = listDotDangKy.length;
+            for (let i = 0; i < size; i++) {
                 if (dotDangKyId === listDotDangKy[i].id) {
                     continue;
                 }
                 if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
-                    && ngayKetThuc.getTime() > listDotDangKy[i].ngayBatDau){
-                    $("#errorMessageUpdate").text("Thời gian trùng với: " + listDotDangKy[i].tenDotDangKy);
+                    && ngayKetThuc.getTime() > listDotDangKy[i].ngayBatDau) {
+                    if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
+                        && ngayBatDau.getTime() > listDotDangKy[i].ngayBatDau) {
+                        $("#errorMessageNgayBatDauUpdate").text("Thời gian bắt đầu trùng với: " + listDotDangKy[i].tenDotDangKy);
+                    } else {
+                        $("#errorMessageNgayKetThucUpdate").text("Thời gian kết thúc trùng với: " + listDotDangKy[i].tenDotDangKy);
+                    }
                     check += 1;
                 }
             }
@@ -112,7 +137,7 @@ function clearData() {
 
 $("#form_create_dot_dang_ky").submit(function (event) {
     event.preventDefault();
-    let tenDotDangKy = $("#tenDotDangKyAdd").val();
+    let tenDotDangKy = $("#tenDotDangKyAdd").val().trim();
     let ngayBatDauStr = $("#ngayBatDauAdd").val();
     let ngayBatDau = new Date(ngayBatDauStr);
     let ngayKetThucStr = $("#ngayKetThucAdd").val();
@@ -168,10 +193,16 @@ $("#form_create_dot_dang_ky").submit(function (event) {
         async: false,
         success: function (responseData) {
             let listDotDangKy = responseData.data;
-            for (let i = 0; i < listDotDangKy.length; i++) {
+            let size = listDotDangKy.length;
+            for (let i = 0; i < size; i++) {
                 if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
                     && ngayKetThuc.getTime() > listDotDangKy[i].ngayBatDau) {
-                    $("#errorMessageAddNgayKetThuc").text("Thời gian trùng với: " + listDotDangKy[i].tenDotDangKy);
+                    if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
+                        && ngayBatDau.getTime() > listDotDangKy[i].ngayBatDau) {
+                        $("#errorMessageAddNgayBatDau").text("Thời gian bắt đầu trùng với: " + listDotDangKy[i].tenDotDangKy);
+                    } else {
+                        $("#errorMessageAddNgayKetThuc").text("Thời gian kết thúc trùng với: " + listDotDangKy[i].tenDotDangKy);
+                    }
                     check += 1;
                 }
             }

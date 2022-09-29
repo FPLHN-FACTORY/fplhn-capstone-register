@@ -12,9 +12,9 @@ public class FindDtNhomDatnTheoDotRequest extends PageableRequest {
 
     private String chuyenNganhId;
 
-    private String trangThai;
-
     private String dotDangKyId;
+
+    private String trangThai;
 
     private String coSoId;
 

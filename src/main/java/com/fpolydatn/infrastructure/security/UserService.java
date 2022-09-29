@@ -65,7 +65,7 @@ public class UserService {
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/authentication/sinh-vien");
                 } else {
-                    response.sendRedirect("/admin/hoc-ky");
+                    response.sendRedirect("/sinh-vien");
                 }
                 break;
             }

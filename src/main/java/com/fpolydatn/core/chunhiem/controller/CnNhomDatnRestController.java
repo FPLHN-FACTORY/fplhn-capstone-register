@@ -4,12 +4,10 @@ import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.repository.CnDotDangKyRepository;
-import com.fpolydatn.core.chunhiem.service.CnDotDangKyService;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.entity.NhomDatn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +33,7 @@ public class CnNhomDatnRestController extends BaseController {
     private CnDotDangKyRepository cnDotDangKyRepository;
 
     @GetMapping("/search")
-    public ResponseObject viewHocKy(final CnFindNhomDatnRequest req) {
+    public ResponseObject viewNhomDatn(final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req);

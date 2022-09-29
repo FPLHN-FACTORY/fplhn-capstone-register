@@ -25,6 +25,7 @@ public interface DtCanBoRepository extends CanBoRepository {
                     ON cb.co_so_id= cs.id  WHERE (:#{#req.tenCanBo} IS NULL
                     OR :#{#req.tenCanBo} LIKE ''
                     OR ten_can_bo LIKE %:#{#req.tenCanBo}% )
+                    AND cb.co_so_id = :#{#req.coSoID}
                     ORDER BY cb.last_modified_date DESC 
             """,
             countQuery = """
@@ -42,4 +43,9 @@ public interface DtCanBoRepository extends CanBoRepository {
     @Query(value = """
             SELECT id,ten_can_bo FROM can_bo WHERE vai_tro = 2""", nativeQuery = true)
     List<DtTenCanBoResponse> findCanBoByVaiTro();
+
+    @Query(value = """
+            SELECT email_fe FROM can_bo""", nativeQuery = true)
+    List<String> findAllEmailFe();
+
 }

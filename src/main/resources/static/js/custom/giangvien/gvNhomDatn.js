@@ -1,7 +1,6 @@
 const nhomDatnAPI = '/api/giang-vien/nhom-datn';
 const nhomDatnView = '/giang-vien/nhom-datn';
 
-
 function clearDataGVHD() {
     $("#tenHocKy").val("");
     $("#tenChuyenNganh").val("");
@@ -10,46 +9,41 @@ function clearDataGVHD() {
 
 $(document).ready(function () {
 
-    $("#checkAll").click(function(){
-        $('input:checkbox').not(this).prop('checked', this.checked);
-    });
-
-
+    $('.enityNhomDatn[value="1"]').closest("tr").hide()
     fillter()
 
 });
 
-function fillter(){
+function fillter() {
 
-    $("#ten_de_tai_update").on('change', function (){
+    $("#ten_de_tai_update").on('change', function () {
         $("#errorMessageUpdate").text("");
     });
 
-    $('#tenChuyenNganh').change(function (){
+    $('#tenChuyenNganh').change(function () {
         seachNhomdatn(0);
     })
 
-    $("#tenHocKy").on('change', function (){
+    $("#tenHocKy").on('change', function () {
         seachNhomdatn(0);
     });
 
-    $("#tenDotDangKy").on('change', function (){
+    $("#tenDotDangKy").on('change', function () {
         seachNhomdatn(0);
     });
 
 }
 
-
 function showDetail(maNhom) {
     $("#form-showDetail").modal('show');
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: nhomDatnAPI + "?maNhom=" + maNhom,
-            dataType: 'json',
-            success: function (responseData) {
-                $("#table_body_dssv").html(responseData.data.map(function (item) {
-                    return `
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "?maNhom=" + maNhom,
+        dataType: 'json',
+        success: function (responseData) {
+            $("#table_body_dssv").html(responseData.data.map(function (item) {
+                return `
                     <tr>
                     <td>${item.stt}</td>
                     <td>${item.maSinhVien}</td>
@@ -58,19 +52,36 @@ function showDetail(maNhom) {
                     <td>${item.email}</td>
                     <td>${item.khoa}</td>
                     `
-                }))
-            },
-            error: function (e) {
-                console.log("ERROR : ", e);
-            }
-        });
+            }))
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
 }
 
-function chotDuLieu(maNhom) {
+function pheDuyetNhomDatn(maNhom) {
+    $("#modal_nhom_datn_update").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/" + maNhom,
+        success: function (responseData) {
+            $('#update_nhom_datn').val(responseData.data.id)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+$('#form_nhom_datn_update').submit(function (event) {
+    event.preventDefault();
+    var maNhom = $('#update_nhom_datn').val()
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: nhomDatnAPI + "?maNhom=" + maNhom,
+        url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + maNhom,
         success: function () {
             window.location.reload(false)
         },
@@ -78,14 +89,15 @@ function chotDuLieu(maNhom) {
             console.log("ERROR : ", e);
         }
     });
-}
-$("#form_list_giang_vien").submit(function (event){
+})
+
+$("#form_list_giang_vien").submit(function (event) {
     event.preventDefault();
 })
 
 function seachNhomdatn(index) {
-    if(index == undefined){
-        index =0
+    if (index == undefined) {
+        index = 0
     }
     let tenChuyenNganh = $("#tenChuyenNganh").val()
     let tenHocKy = $("#tenHocKy").val()
@@ -94,22 +106,19 @@ function seachNhomdatn(index) {
         type: "GET",
         contentType: "application/json",
         url: nhomDatnAPI + "/search" + "?chuyenNganhId=" + tenChuyenNganh
-            + "&hocKyId=" + tenHocKy + "&dotDangKyId=" + tenDotDangKy + "&page="+index,
+            + "&hocKyId=" + tenHocKy + "&dotDangKyId=" + tenDotDangKy + "&page=" + index,
         success: function (responseData) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
                 <tr>
-                <td><input type="checkbox" class="checkbox"
-                            value="${item.id}">
-                 </td>
                 <td>${item.stt}</td>
                 <td>${item.tenNhom}</td>
                 <td>${item.tenDeTai}</td>
                 <td>${item.tenChuyenNganh}</td>
                 <td>${item.totalMaSinhVien}</td>
-                <td>${item.tenTruongNhom } - ${item.maTruongNhom} </td>
+                <td>${item.tenTruongNhom} - ${item.maTruongNhom} </td>
                 <td>${item.tenGvhd} - ${item.accountGvhd} </td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'cần sửa' : (item.trangThai == 4 ? 'Giáo viên đã chốt':'CNBM đã chốt'))))}</td>
+                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'cần sửa' : (item.trangThai == 4 ? 'Giáo viên đã chốt' : 'CNBM đã chốt'))))}</td>
                 <td>
                      <button
                                     type="button"
@@ -118,32 +127,17 @@ function seachNhomdatn(index) {
                                     chi tiết nhóm
                      </button>
                  </td>
-                 <td>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary "
-                                    id="chotDuLieu" 
-                                    style="${item.trangThai == 2 ? 'display : block' : 'display : none'}"
-                                    onclick="chotDuLieu('${item.id}')">Chốt
-                     </button>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary "
-                                    id="chotDuLieu" style="${item.trangThai == 5 ? 'display : none' : 'display : block'}"
-                                    onclick="updateTenDeTai('${item.id}')">update 
-                     </button>
-                 </td>
                 </tr>
                 `
             }))
             $("#page").html(``)
             let templateHtml = ``;
-            for(let i =0; i < responseData.data.totalPages; i++){
+            for (let i = 0; i < responseData.data.totalPages; i++) {
                 templateHtml += `<li class="page-item" >
-                                <a class="page-link" onclick="seachNhomdatn(${i})">${i +1}</a>
+                                <a class="page-link" onclick="seachNhomdatn(${i})">${i + 1}</a>
                             </li>`
             }
-            if(responseData.data.totalPages == 1){
+            if (responseData.data.totalPages == 1) {
                 templateHtml = ``;
             }
             $("#page").html(templateHtml)
@@ -155,7 +149,7 @@ function seachNhomdatn(index) {
     });
 }
 
-function updateTenDeTai(maNhom){
+function updateTenDeTai(maNhom) {
     $("#modal_update_ten_de_tai").modal('show');
     $.ajax({
         type: "GET",
@@ -172,7 +166,7 @@ function updateTenDeTai(maNhom){
     });
 }
 
-$("#form_nhom_datn_update").submit(function (event) {
+$("#form_nhom_datn_update_ten_de_tai").submit(function (event) {
     event.preventDefault();
     let tenDeTai = $("#ten_de_tai_update").val();
     let maNhom = $("#id_nhom_datn_update").val();
@@ -181,7 +175,7 @@ $("#form_nhom_datn_update").submit(function (event) {
     NhomDatnRequest["maNhom"] = maNhom;
 
 
-    if (tenDeTai.trim().length  == 0 ) {
+    if (tenDeTai.trim().length == 0) {
         $("#errorMessageUpdate").text("Tên đề tài không được để trống");
     } else if (tenDeTai.length < 6) {
         $("#errorMessageUpdate").text("Tên đề tài tối thiếu 6 ký tự");
@@ -202,9 +196,66 @@ $("#form_nhom_datn_update").submit(function (event) {
     }
 });
 
-function chotAll(){
-    var data = Array.from(document.querySelectorAll('.checkbox'))
-        .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => checkbox.value);
-    data.map(function (item){chotDuLieu(item)} )
+function chotDeTaiNhomDatn(maNhom) {
+    $("#modal_nhom_datn_chot_de_tai").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/" + maNhom,
+        success: function (responseData) {
+            $('#ma_nhom_datn').val(responseData.data.id)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
 }
+
+$("#form_nhom_datn_chot_de_tai").submit(function (event) {
+    event.preventDefault();
+    var maNhom = $('#ma_nhom_datn').val()
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/phe-duyet-de-tai-nhom?maNhom=" + maNhom,
+        success: function () {
+            window.location.reload(false)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+})
+
+function tuChoiDeTaiNhomDatn(maNhom) {
+    $("#modal_nhom_datn_tu_choi_de_tai").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/" + maNhom,
+        success: function (responseData) {
+            $('#ma_nhom_datn_tu_choi').val(responseData.data.id)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+$('#form_nhom_datn_tu_choi_de_tai').submit(function (event) {
+    event.preventDefault();
+    var maNhom = $('#ma_nhom_datn_tu_choi').val()
+    console.log(maNhom)
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/tu-choi-de-tai-nhom-datn?maNhom=" + maNhom,
+        dataType: 'json',
+        success: function () {
+            window.location.reload(false)
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+})

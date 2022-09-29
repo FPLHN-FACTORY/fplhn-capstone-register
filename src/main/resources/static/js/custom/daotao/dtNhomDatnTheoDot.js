@@ -1,4 +1,5 @@
 let DTNhomDatnApi = '/api/dao-tao/nhom-datn';
+let DTNhomDatnView = '/dao-tao/nhom-datn';
 
 function clearform() {
     $("#tenNhom").val("");
@@ -20,6 +21,7 @@ function openModalDanhSachSinhVien(id) {
             responseData.data.data.map(function (item) {
                 text += `
                 <tr>
+                <td>${item.stt}</td>
                 <td>${item.maSinhVien}</td>
                 <td>${item.tenSinhVien}</td>
                 </tr>
@@ -67,11 +69,11 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenNhom}</td>
                 <td>${item.tenDeTai}</td>
                 <td>${item.tenChuyenNganh}</td>
-                <td>${item.countSinhVien}</td>
-                <td>${item.maSinhVien}</td>
-                <td>${item.tenGvhd}</td>
-                <td>${item.trangThai == 0 ? 'Chưa chốt đề tài' : (item.trangThai == 1 ? 'Giáo viên đã chốt' : 'CNBM đã chốt')}</td>
-                <td><button type="button" data-toggle="modal" data-target="#modal_create" class="btn btn-primary" onclick="openModalDanhSachSinhVien('${item.id}')">Chi tiết thành viên</button>
+                <td>${item.countSinhVien}/7</td>
+                <td>${item.maSinhVien}-${item.tenSinhVien}</td>
+                <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
+                
+                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                <td><button type="button" data-toggle="modal" data-target="#modal_create" class="btn btn-primary" onclick="openModalDanhSachSinhVien('${item.id}')">Chi tiết thành viên</button>
                 <div class="modal fade"></div>
                 </td>
                 </tr>
@@ -92,4 +94,5 @@ function loadDataNhomDatn(count) {
             console.log("ERROR : ", e);
         }
     });
+
 }

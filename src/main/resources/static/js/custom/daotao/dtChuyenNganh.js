@@ -16,7 +16,7 @@ $("#form_create_chuyen_nganh").submit(function (event) {
     let chuyenNganhRequest = {};
     chuyenNganhRequest["chuNhiemBoMon"] = CNBMId;
     chuyenNganhRequest["tenChuyenNganh"] = tenchuyenNganh;
-    if (tenchuyenNganh.length === 0) {
+    if (tenchuyenNganh.trim().length === 0) {
         $("#chuyen_nganh_error").text("Tên chuyên ngành không được để trống");
     } else {
         $.ajax({
@@ -63,7 +63,7 @@ $("#form_chuyen_nganh_update").submit(function (event) {
     let chuyenNganhrequest = {};
     chuyenNganhrequest["tenChuyenNganh"] = tenchuyennganh;
     chuyenNganhrequest["chuNhiemBoMon"] = tenCNBM;
-    if (tenchuyennganh.length === 0) {
+    if (tenchuyennganh.trim().length === 0) {
         $("#chuyennganh_error").text("Tên Chuyen Nganh không được để trống");
     } else {
         $.ajax({
@@ -119,5 +119,4 @@ $("#form_chuyen_nganh_delete").submit(function (event) {
             console.log("ERROR : ", e);
         }
     });
-
 });

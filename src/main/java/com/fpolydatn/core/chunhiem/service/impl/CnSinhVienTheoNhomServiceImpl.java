@@ -14,10 +14,8 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 @Service
 public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService {
@@ -46,53 +42,52 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Autowired
     private ValidationUtils validationUtils;
 
-    @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;
-
     @Override
     public PageableObject<CnSinhVienTheoNhomResponse> searchByIdNhom(final CnFindSinhVienTheoNhomRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<CnSinhVienTheoNhomResponse> res = cnSinhVienTheoNhomRepository.searchSinhVien(request, pageable);
+        Page<CnSinhVienTheoNhomResponse> res =cnSinhVienTheoNhomRepository.searchSinhVien(request,pageable);
         return new PageableObject<>(res);
     }
 
     @Override
     public boolean addSinhVienTheoNhom(String maNhom, String maSinhVien) {
         String id = cnSinhVienTheoNhomRepository.getIdSinhVienByMaSinhVien(maSinhVien);
-        if (id == null) {
+        if(id==null){
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
         String idExist = cnSinhVienTheoNhomRepository.getIdByMaSinhVienAndMaNhom(maSinhVien);
-        if (idExist == null) {
+        if(idExist == null){
             throw new RestApiException(Message.STUDENT_HAVE_GROUP);
         }
-        cnSinhVienTheoNhomRepository.addSinhVienInGroup(maNhom, maSinhVien);
+        cnSinhVienTheoNhomRepository.addSinhVienInGroup(maNhom,maSinhVien);
         return true;
     }
 
     @Override
-    public long getSizeListSinhVien(String idNhom) {
-        return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom);
+    public Integer getSizeListSinhVien(String idNhom, String coSoId) {
+        return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom, coSoId);
     }
 
     @Override
-    public boolean deleteFromIdSinhVien(String idNhom) {
-        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(idNhom);
+    public boolean deleteFromIdSinhVien(String idNhom, String maSinhVien, String coSoId) {
+        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien);
+        if(getSizeListSinhVien(idNhom, coSoId) == 0){
+            cnNhomDatnRepository.deleteById(idNhom);
+        }
         return true;
     }
 
     @Override
     public boolean addGvhd(String tenTaiKhoan, String idNhom) {
         String idGiangVien = cnGiangVienHuongDanReponsitory.getIdFromGiangVienId(tenTaiKhoan);
-        String dotDangKyID = dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond());
-        if (idGiangVien == null) {
+        String dotDangKyId = "";
+        if(idGiangVien==null){
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
         }
-        if (cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien) == validationUtils.soNhomGiangVienDangHuongDan(idGiangVien, dotDangKyID)) {
+        if(cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien) == validationUtils.soNhomGiangVienDangHuongDan(idGiangVien, dotDangKyId)){
             throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
         }
-        cnNhomDatnRepository.addGvhd(idGiangVien, idNhom);
+        cnNhomDatnRepository.addGvhd(idGiangVien,idNhom);
         return true;
     }
 
@@ -105,7 +100,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public boolean changeCaptainToOther(String maSinhVien, String idNhom) {
         String idCapTainOld = cnSinhVienTheoNhomRepository.getIdByMaSinhVienAndidNhom(maSinhVien, idNhom);
-        String idCapTainNew = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCapTainOld, idNhom).get(0).getId();
+        String idCapTainNew = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCapTainOld,idNhom).get(0).getId();
         cnNhomDatnRepository.changeCaptainByTruongNhomId(idCapTainNew, idNhom);
         return true;
     }

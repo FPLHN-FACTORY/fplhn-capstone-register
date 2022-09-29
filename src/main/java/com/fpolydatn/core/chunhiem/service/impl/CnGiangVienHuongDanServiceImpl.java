@@ -1,10 +1,8 @@
 package com.fpolydatn.core.chunhiem.service.impl;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
-import com.fpolydatn.core.chunhiem.model.response.CnGvhdSearchResponse;
 import com.fpolydatn.core.chunhiem.repository.CnGiangVienHuongDanReponsitory;
 import com.fpolydatn.core.chunhiem.service.CnGiangVienHuongDanService;
-import com.fpolydatn.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

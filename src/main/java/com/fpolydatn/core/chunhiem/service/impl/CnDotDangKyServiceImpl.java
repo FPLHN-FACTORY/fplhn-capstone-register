@@ -1,6 +1,5 @@
 package com.fpolydatn.core.chunhiem.service.impl;
 
-import com.fpolydatn.core.chunhiem.repository.CnChuyenNganhRepository;
 import com.fpolydatn.core.chunhiem.repository.CnDotDangKyRepository;
 import com.fpolydatn.core.chunhiem.service.CnDotDangKyService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;

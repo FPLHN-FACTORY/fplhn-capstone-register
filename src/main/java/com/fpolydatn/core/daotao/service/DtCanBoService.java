@@ -7,6 +7,7 @@ import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -20,6 +21,8 @@ public interface DtCanBoService {
 
     CanBo create(@Valid DtCreateCanBoRequest canBo);
 
+    public CanBo createcb(CanBo canBo);
+
     Boolean delete(String id);
 
     CanBo findById(String id);
@@ -27,5 +30,7 @@ public interface DtCanBoService {
     CanBo update(DtUpdateCanBoRequest canBoRequest);
 
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
+
+    List<CanBo> importData(MultipartFile reapExcelDataFile, String id);
 
 }

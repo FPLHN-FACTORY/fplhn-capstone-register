@@ -6,6 +6,7 @@ import com.fpolydatn.core.daotao.model.request.DtCreateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * @author hungpv
@@ -47,4 +50,10 @@ public class DtMonDatnRestController extends BaseController {
         monDatnRequest.setCoSoId(session.getCoSoId());
         return new ResponseObject(monDatnService.add(monDatnRequest));
     }
+
+    @GetMapping
+    public ResponseEntity<?> get() {
+        return ResponseEntity.ok(Map.of("message", "ok"));
+    }
+
 }

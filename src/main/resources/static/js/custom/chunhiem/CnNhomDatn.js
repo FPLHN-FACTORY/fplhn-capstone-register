@@ -238,7 +238,7 @@ function chotNhieuDeTai(count) {
     }
 }
 
-function clearForm(){
+function clearForm() {
     $("#maNhom").val("");
     $("#matKhau").val("");
     $("#maGiangVien").val("");
@@ -247,10 +247,10 @@ function clearForm(){
 
 $("#form_create_nhom_datn").submit(function (event) {
     event.preventDefault();
-    let maNhom = $("#maNhom").val();
-    let matKhau = $("#matKhau").val();
-    let maGiangVien = $("#maGiangVien").val();
-    let maTruongNhom = $("#maTruongNhom").val();
+    let maNhom = $("#maNhom").val().trim();
+    let matKhau = $("#matKhau").val().trim();
+    let maGiangVien = $("#maGiangVien").val().trim();
+    let maTruongNhom = $("#maTruongNhom").val().trim();
     let nhomDatnRequest = {};
     nhomDatnRequest["maNhom"] = maNhom;
     nhomDatnRequest["matKhau"] = matKhau;

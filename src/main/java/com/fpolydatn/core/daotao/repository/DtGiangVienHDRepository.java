@@ -2,6 +2,7 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,19 +64,22 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt", nativeQuery = true)
     String getIdByEmailFpt(@Param("emailFpt") String emailFpt);
 
+    @Query(value = "SELECT * FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt", nativeQuery = true)
+    GiangVienHuongDan getGVHDByEmailFpt(@Param("emailFpt") String emailFpt);
+
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND id <> :id", nativeQuery = true)
-    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt ,@Param("id") String id );
+    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe", nativeQuery = true)
     String getIdByEmailFe(@Param("emailFe") String emailFe);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe AND id <> :id", nativeQuery = true)
-    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe ,@Param("id") String id );
+    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe, @Param("id") String id);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan ", nativeQuery = true)
     String getIdByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id", nativeQuery = true)
-    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan ,@Param("id") String id );
+    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id);
 
 }

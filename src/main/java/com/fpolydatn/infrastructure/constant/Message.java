@@ -36,7 +36,22 @@ public enum Message {
     EMAIL_FE_EXIST(PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EXIST)),
     GIANG_VIEN_HUONG_DAN_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_HUONG_DAN_NOT_EXIST)),
     DOT_DANG_KY_OVERLAP(PropertiesReader.getProperty(PropertyKeys.DOT_DANG_KY_OVERLAP)),
-    GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM));
+    GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM)),
+    MAT_KHAU_KHONG_CHINH_XAC(PropertiesReader.getProperty(PropertyKeys.MAT_KHAU_KHONG_CHINH_XAC)),
+
+    EMPTY(PropertiesReader.getProperty(PropertyKeys.EMPTY)),
+
+    EMAIL_MALFORMED(PropertiesReader.getProperty(PropertyKeys.EMAIL_MALFORMED)),
+    MA_SV_MALFORMED(PropertiesReader.getProperty(PropertyKeys.MA_SV_MALFORMED)),
+    FILE_EMPTY(PropertiesReader.getProperty(PropertyKeys.FILE_EMPTY)),
+    TRANG_THAI_KHONG_THOA_MAN(PropertiesReader.getProperty(PropertyKeys.TRANG_THAI_KHONG_THOA_MAN)),
+    KHONG_PHAI_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.KHONG_PHAI_TRUONG_NHOM)),
+    NHOM_DA_DU_THANH_VIEN(PropertiesReader.getProperty(PropertyKeys.NHOM_DA_DU_THANH_VIEN)),
+    GIANG_VIEN_HUONG_DAN_ALREADY_HAVE_ENOUGH_GROUPS(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_HUONG_DAN_ALREADY_HAVE_ENOUGH_GROUPS)),
+    SINH_VIEN_KHONG_CO_NHOM(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_KHONG_CO_NHOM)),
+    ROI_NHOM_KHI_LA_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.ROI_NHOM_KHI_LA_TRUONG_NHOM)),
+    SINH_VIEN_DANG_LA_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_DANG_LA_TRUONG_NHOM)),
+    TRUONG_NHOM_MOI_KHONG_CUNG_NHOM(PropertiesReader.getProperty(PropertyKeys.TRUONG_NHOM_MOI_KHONG_CUNG_NHOM));
 
     private String message;
 

@@ -2,12 +2,14 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 
 /**
  * @author thepvph20110
@@ -19,6 +21,9 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             s.id,
             s.ma_sinh_vien,
             s.ten_sinh_vien,
+            s.so_dien_thoai,
+            s.email,
+            s.khoa,
             c.ten_chuyen_nganh,
             m.ten_mon_datn,
             n.ma_nhom,
@@ -58,6 +63,9 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             s.id,
             s.ma_sinh_vien,
             s.ten_sinh_vien,
+            s.so_dien_thoai,
+            s.email,
+            s.khoa,
             c.ten_chuyen_nganh,
             m.ten_mon_datn,
             n.ma_nhom,
@@ -85,5 +93,14 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                     GROUP BY s.id
                     """, nativeQuery = true)
     Page<DtSinhVienTheoDotResponse> findAllSinhVien(Pageable page, @Param("req") final FindDtSinhVienTheoDotRequest req);
+
+    @Query(value = """
+                SELECT 
+                s.id,
+                s.ma_sinh_vien AS 'name'
+                 FROM do_an_tot_nghiep.sinh_vien s
+                 WHERE s.co_so_id = :coSoId
+            """, nativeQuery = true)
+    List<SimpleEntityProj> getAllMaSV(@Param("coSoId") String coSoId);
 
 }

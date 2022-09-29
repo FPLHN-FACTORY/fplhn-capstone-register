@@ -13,22 +13,31 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     @Autowired
     private DtNhomDatnTheoDotRepository dtNhomDatnTheoDotRepository;
+
     @Override
     public PageableObject<DtNhomDatnTheoDotResponse> findAllNhomDatn(FindDtNhomDatnTheoDotRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<DtNhomDatnTheoDotResponse> res = dtNhomDatnTheoDotRepository.findAllNhomDatn(pageable,request);
+        Page<DtNhomDatnTheoDotResponse> res = dtNhomDatnTheoDotRepository.findAllNhomDatn(pageable, request);
         return new PageableObject(res);
     }
+
     @Override
     public PageableObject<DtSinhVienResponse> showDanhSachSinhVien(final FindSinhVienRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        System.out.println(dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable,request).getSize());
-        Page<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable,request);
+        System.out.println(dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable, request).getSize());
+        Page<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable, request);
         return new PageableObject<>(res);
+    }
+
+    @Override
+    public List<DtNhomDatnTheoDotResponse> listAllNhomDatnToExcel() {
+        return dtNhomDatnTheoDotRepository.findAllNhomDatnToExcel();
     }
 
 }
