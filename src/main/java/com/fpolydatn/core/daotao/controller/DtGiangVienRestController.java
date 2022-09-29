@@ -64,7 +64,7 @@ public class DtGiangVienRestController extends BaseController {
     public ResponseObject delete(@PathVariable("id") String id) {
         try {
             return new ResponseObject(giangVienHDService.delete(id));
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseObject(e);
         }
     }

@@ -48,10 +48,10 @@ $("#form_create_giang_vien").submit(function (event) {
     } else if (Number.parseInt(soNhomHuongDanToiDa) <= 0) {
         $("#errorSoNhomHD").text("Số nhóm phải lớn hơn 0");
         index++;
-    }else if (Number.isInteger(soNhomHuongDanToiDa) == false) {
+    } else if (Number.isInteger(soNhomHuongDanToiDa) == false) {
         $("#errorSoNhomHD").text("Số nhóm phải là số ");
         index++;
-    }  else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
+    } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
         $("#errorSoNhomHD").text("Số nhóm chỉ từ 1 đến 7");
         index++;
     } else {
@@ -71,10 +71,10 @@ $("#form_create_giang_vien").submit(function (event) {
     } else if (regexSDT.test(soDienThoai) == false) {
         $("#errorSDT").text(" Số điện thoại không đúng định dạng");
         index++;
-    } else if (soDienThoai.length !=10 ) {
+    } else if (soDienThoai.length != 10) {
         $("#errorSDT").text(" Số điện thoại không đúng định dạng");
         index++;
-    }else {
+    } else {
         $("#errorSDT").text("");
     }
 
@@ -84,20 +84,20 @@ $("#form_create_giang_vien").submit(function (event) {
     } else if (emailFpt.trim().includes(" ")) {
         $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
         index++;
-    }else if (regexFPT.test(emailFpt) == false) {
+    } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
-         index++;
-    }  else {
+        index++;
+    } else {
         $("#errorEmailFpt").text("");
     }
 
     if (emailFe.length === 0) {
         $("#errorEmailFe").text(" EmailFe không được để trống");
         index++;
-    }else if (regexFE.test(emailFe) == false) {
-         $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
-         index++;
-    }  else if (emailFpt.trim().includes(" ")) {
+    } else if (regexFE.test(emailFe) == false) {
+        $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
+        index++;
+    } else if (emailFpt.trim().includes(" ")) {
         $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
         index++;
     } else {
@@ -117,12 +117,12 @@ $("#form_create_giang_vien").submit(function (event) {
             url: giangVienHuongDanApi,
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
-            success: function ( responseData) {
-            console.log(responseData)
-                if(responseData.data.message == null){
+            success: function (responseData) {
+                console.log(responseData)
+                if (responseData.data.message == null) {
                     window.open(giangVienHuongDanView, '_self');
                     $("#modal_create").modal("hide");
-                }else{
+                } else {
                     alert(responseData.data.message)
                 }
             },
@@ -192,12 +192,12 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexSoNhom.test(soNhomHuongDanToiDa) == false) {
         $("#errorSoNhomHDUpdate").text(" Số nhóm phải là số");
         index++;
-    }else if (Number.isInteger(soNhomHuongDanToiDa) == false) {
-         $("#errorSoNhomHDUpdate").text(" Số nhóm phải là số");
+    } else if (Number.isInteger(soNhomHuongDanToiDa) == false) {
+        $("#errorSoNhomHDUpdate").text(" Số nhóm phải là số");
         index++;
     } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
         $("#errorSoNhomHDUpdate").text("Số nhóm chỉ từ 1 đến 7");
-         index++;
+        index++;
     } else {
         $("#errorSoNhomHD").text("");
     }
@@ -215,10 +215,10 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexSDT.test(soDienThoai) == false) {
         $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
         index++;
-    } else if ( soDienThoai.length != 10 ) {
+    } else if (soDienThoai.length != 10) {
         $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
         index++;
-     }  else {
+    } else {
         $("#errorSDTUpdate").text("");
     }
 
@@ -227,10 +227,10 @@ $("#form_giang_vien_update").submit(function (event) {
         index++;
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
-        index ++;
+        index++;
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
-        index ++;
+        index++;
     } else {
         $("#errorEmailFpt").text("");
     }
@@ -241,9 +241,9 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexFE.test(emailFe) == false) {
         $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
         index++;
-    }else if (emailFpt.trim().includes(" ")) {
-         $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
-         index++;
+    } else if (emailFpt.trim().includes(" ")) {
+        $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
+        index++;
     } else {
         $("#errorEmailFeUpdate").text("");
     }
@@ -262,10 +262,10 @@ $("#form_giang_vien_update").submit(function (event) {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                if(responseData.data.message == null){
+                if (responseData.data.message == null) {
                     window.open(giangVienHuongDanView, '_self');
                     $("#modal_create").modal("hide");
-                }else{
+                } else {
                     alert(responseData.data.message)
                 }
 
@@ -366,12 +366,12 @@ function loadTable(count) {
             $("#page").html(``)
             let templateHtml = ``;
             for (let i = 0; i < responseData.data.totalPages; i++) {
-                    templateHtml += `<li class="page-item" >
-                                         <a class="page-link" onclick="loadTable(${i})">${i+1}</a>
+                templateHtml += `<li class="page-item" >
+                                         <a class="page-link" onclick="loadTable(${i})">${i + 1}</a>
                                      </li>`
             }
-            if(responseData.data.totalPages == 1){
-                    templateHtml = ``;
+            if (responseData.data.totalPages == 1) {
+                templateHtml = ``;
             }
             $("#page").html(templateHtml);
         },
@@ -380,14 +380,15 @@ function loadTable(count) {
         }
     });
 }
+
 $("#form_import_excel").submit(function (event) {
     event.preventDefault();
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
-    let typeFile =typeExcel.substring(indexDot+1,typeExcel.length)
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("chọn file");
-    } else if((typeFile== 'xls') || (typeFile== 'xlsx') ){
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         $.ajax({
                 type: 'POST',
                 url: $(this).attr('action'),
@@ -401,12 +402,11 @@ $("#form_import_excel").submit(function (event) {
                 error: function (e) {
                     alert(e.responseText);
                     window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                    console.log("ERROR: "+e);
+                    console.log("ERROR: " + e);
                 }
             }
         );
-    }
-    else {
+    } else {
         $("#import_excel_error").text("chọn đúng file Excel ");
     }
 });

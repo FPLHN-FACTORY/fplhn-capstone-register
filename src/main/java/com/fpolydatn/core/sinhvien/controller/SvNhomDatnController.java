@@ -45,7 +45,7 @@ public class SvNhomDatnController extends BaseController {
     @Autowired
     private SvGiangVienHuongDanService svGiangVienHuongDanService;
 
-    private String idUser = "f61b5269-9181-4be7-9b46-c5e4c81cb00f";
+    private String idUser = "f7455b64-b0aa-43b6-a457-d54db9efb259";
 
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
