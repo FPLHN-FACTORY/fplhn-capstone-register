@@ -135,6 +135,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     public NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest, String idUser) {
         String giangVienId = svNhomDatnRequest.getGiangVienId();
+        String dotDangKyId = "";
         if (giangVienId != null) {
             Optional<GiangVienHuongDan> giangVienHuongDan = svGiangVienHuongDanRepository.findById(giangVienId);
             if (!giangVienHuongDan.isPresent()) {
@@ -142,7 +143,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             }
         }
         if (svNhomDatnRequest.getGiangVienId() != null) {
-            if (validationUtils.soNhomGiangVienDangHuongDan(svNhomDatnRequest.getGiangVienId()) >= 7) {
+            if (validationUtils.soNhomGiangVienDangHuongDan(svNhomDatnRequest.getGiangVienId(), dotDangKyId) >= 7) {
                 throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_ALREADY_HAVE_ENOUGH_GROUPS);
             }
         }
