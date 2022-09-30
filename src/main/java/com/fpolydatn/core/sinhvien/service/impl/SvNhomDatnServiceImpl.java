@@ -179,7 +179,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if (!svUpdateTenDeTaiRequest.getIdUser().equals(nhomDatn.get().getTruongNhomId())) {
             throw new RestApiException(Message.KHONG_PHAI_TRUONG_NHOM);
         }
-
+        if (nhomDatn.get().getTrangThai().ordinal() == 4 || nhomDatn.get().getTrangThai().ordinal() == 5) {
+            throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
+        }
         nhomDatn.get().setTenDeTai(svUpdateTenDeTaiRequest.getTenDeTai());
         svNhomDatnRepository.save(nhomDatn.get());
         return true;

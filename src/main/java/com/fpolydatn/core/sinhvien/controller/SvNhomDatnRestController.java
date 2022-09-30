@@ -43,13 +43,8 @@ public class SvNhomDatnRestController extends BaseController {
     private SvGiangVienHuongDanService svGiangVienHuongDanService;
 
     @Autowired
-    private SvSinhVienService svSinhVienService;
-
-    @Autowired
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
-
-    private String idUser = "f7455b64-b0aa-43b6-a457-d54db9efb259";
 
     @GetMapping("/search-giang-vien")
     public ResponseObject getGiangVienHuongDan(@RequestParam(defaultValue = "", required = true) String idMonDatn) {
@@ -58,7 +53,7 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PutMapping("/{id}")
     public ResponseObject guiYeuCauPheDuyet(@PathVariable String id){
-        return new ResponseObject(svNhomDatnService.guiYeuCauPheDuyet(id, idUser));
+        return new ResponseObject(svNhomDatnService.guiYeuCauPheDuyet(id, session.getUserId()));
     }
 
     @GetMapping("/search")
@@ -78,7 +73,7 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PostMapping("/add")
     public ResponseObject addSinhVien(@RequestBody SvAddSinhVienRequest req) {
-        req.setIdUser(idUser);
+        req.setIdUser(session.getUserId());
         return new ResponseObject(svNhomDatnService.addSinhVienTheoNhom(req));
     }
 
@@ -87,28 +82,28 @@ public class SvNhomDatnRestController extends BaseController {
         String coSoid = session.getCoSoId();
         svNhomDatnRequest.setCoSoId(coSoid);
         svNhomDatnRequest.setDotDangKyId(dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond()));
-        return new ResponseObject(svNhomDatnService.createNhomDatn(svNhomDatnRequest, idUser));
+        return new ResponseObject(svNhomDatnService.createNhomDatn(svNhomDatnRequest, session.getUserId()));
     }
 
     @PutMapping("/update-ten-de-tai")
     public ResponseObject updateTenDeTai(@RequestBody SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
-        svUpdateTenDeTaiRequest.setIdUser(idUser);
+        svUpdateTenDeTaiRequest.setIdUser(session.getUserId());
         return new ResponseObject(svNhomDatnService.updateTenDeTai(svUpdateTenDeTaiRequest));
     }
 
     @PutMapping("/roi-nhom")
     public ResponseObject roiNhom() {
-        return new ResponseObject(svNhomDatnService.roiNhom(idUser));
+        return new ResponseObject(svNhomDatnService.roiNhom(session.getUserId()));
     }
 
     @PutMapping("/chuyen-quyen-truong-nhom")
     public ResponseObject chuyenQuyenTruongNhom(@RequestParam("idTruongNhomMoi") String idTruongNhomMoi) {
-        return new ResponseObject(svNhomDatnService.chuyenQuyenTruongNhom(idUser, idTruongNhomMoi));
+        return new ResponseObject(svNhomDatnService.chuyenQuyenTruongNhom(session.getUserId(), idTruongNhomMoi));
     }
 
     @PutMapping("/chon-giang-vien")
     public ResponseObject chonGvhd(@RequestParam String idGiangVien){
-        return new ResponseObject(svNhomDatnService.chonGvhd(idUser, idGiangVien));
+        return new ResponseObject(svNhomDatnService.chonGvhd(session.getUserId(), idGiangVien));
     }
 
 }

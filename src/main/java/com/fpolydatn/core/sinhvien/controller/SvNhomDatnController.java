@@ -45,14 +45,12 @@ public class SvNhomDatnController extends BaseController {
     @Autowired
     private SvGiangVienHuongDanService svGiangVienHuongDanService;
 
-    private String idUser = "f7455b64-b0aa-43b6-a457-d54db9efb259";
-
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
         String dotDangKyHienTai = dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond());
         String nhomId = svSinhVienService.getNhomIdById(session.getCoSoId(),
                 dotDangKyHienTai,
-                idUser);
+                session.getUserId());
         if (nhomId == null || nhomId.trim().isEmpty()) {
             req.setCoSoId(session.getCoSoId());
             req.setDotDangKyId(dotDangKyHienTai);
@@ -62,10 +60,10 @@ public class SvNhomDatnController extends BaseController {
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,
-                    session.getCoSoId(), idUser);
+                    session.getCoSoId(), session.getUserId());
             List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getDetailNhomDatnById(nhomId);
             Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId);
-            String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(idUser);
+            String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(session.getUserId());
             List<SvGiangVienHuongDanResponse> listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId);
             model.addAttribute("soThanhVien", soThanhVien);
             model.addAttribute("listGiangVien", listGiangVien);
