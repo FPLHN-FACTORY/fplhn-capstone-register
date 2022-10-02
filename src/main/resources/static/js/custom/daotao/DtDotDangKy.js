@@ -6,6 +6,8 @@ $(document).ready(function () {
 });
 
 function openModalUpdateDotDangKy(dotDangKyId) {
+    $("#errorMessageNgayKetThucUpdate").text("");
+    $("#errorMessageNgayKetThucUpdate").text("");
     $("#modal_update_dot_dang_ky").modal('show');
     $.ajax({
         type: "GET",

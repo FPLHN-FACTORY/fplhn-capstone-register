@@ -61,7 +61,7 @@
                                                 <td th:text="${nhomDatn.getTenTruongNhom()} + ' - '+ ${nhomDatn.getMaTruongNhom()} ">
                                                 </td>
                                                 <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()} "></td>
-                                                <td th:text="${T(com.fpolydatn.util.TrangThaiNhomUtils).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
+                                                <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                 <td>
                                                     <button
                                                             type="button"

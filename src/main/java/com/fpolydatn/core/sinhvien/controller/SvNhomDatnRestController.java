@@ -11,8 +11,8 @@ import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
-import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.repository.DotDangKyRepository;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,9 +46,13 @@ public class SvNhomDatnRestController extends BaseController {
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
+    @Autowired
+    private CommonHelper commonHelper;
+
     @GetMapping("/search-giang-vien")
     public ResponseObject getGiangVienHuongDan(@RequestParam(defaultValue = "", required = true) String idMonDatn) {
-        return new ResponseObject(svGiangVienHuongDanService.getGvhdByMonDatnId(idMonDatn));
+        String coSoId = session.getCoSoId();
+        return new ResponseObject(svGiangVienHuongDanService.getGvhdByMonDatnId(idMonDatn, coSoId));
     }
 
     @PutMapping("/{id}")
@@ -60,7 +64,7 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject searchNhomDatn(final SvFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        req.setDotDangKyId(dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond()));
+        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
         return new ResponseObject(listNhomDatn);
     }
@@ -81,7 +85,7 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject createNhomDatn(@RequestBody SvCreateNhomDatnRequest svNhomDatnRequest) {
         String coSoid = session.getCoSoId();
         svNhomDatnRequest.setCoSoId(coSoid);
-        svNhomDatnRequest.setDotDangKyId(dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond()));
+        svNhomDatnRequest.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         return new ResponseObject(svNhomDatnService.createNhomDatn(svNhomDatnRequest, session.getUserId()));
     }
 

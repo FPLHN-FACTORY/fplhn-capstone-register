@@ -5,7 +5,7 @@ import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 /**
  * @author thangncph26123
  */
-public class TrangThaiNhomUtils {
+public class TrangThaiNhomConverter {
 
     public static String ConvertToTrangThai(TrangThaiNhom trangThaiNhom) {
         String trangThaiNhomStr = "";

@@ -32,7 +32,7 @@ function loadDataNhomDatn(count) {
             + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
-
+            console.log(responseData);
             let array = responseData.data.data
             if (array.length == 0) {
                 $("#listNhomDatn").html(``)
@@ -186,6 +186,7 @@ $("#form_nhom_datn_delete").submit(function (event) {
     });
 });
 
+
 document.querySelector("#checkbox_father").addEventListener("change", function (e) {
     e.preventDefault()
     var list_CheckBox = document.querySelectorAll("#checkbox_son")
@@ -195,6 +196,7 @@ document.querySelector("#checkbox_father").addEventListener("change", function (
         }
     }
 })
+
 
 function checkBoxSonListener() {
     var checkboxFather = document.querySelector("#checkbox_father")

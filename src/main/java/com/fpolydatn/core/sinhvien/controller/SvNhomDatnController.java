@@ -11,6 +11,7 @@ import com.fpolydatn.core.sinhvien.service.SvMonDatnService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.repository.DotDangKyRepository;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-
-import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 /**
  * @author hoangnt
@@ -39,20 +38,20 @@ public class SvNhomDatnController extends BaseController {
     private SvMonDatnService svMonDatnService;
 
     @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;
-
-    @Autowired
     private SvGiangVienHuongDanService svGiangVienHuongDanService;
+    @Autowired
+    private CommonHelper commonHelper;
 
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
-        String dotDangKyHienTai = dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond());
-        String nhomId = svSinhVienService.getNhomIdById(session.getCoSoId(),
+        String coSoId = session.getCoSoId();
+        String idUSer = session.getUserId();
+        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+        String nhomId = svSinhVienService.getNhomIdById(coSoId,
                 dotDangKyHienTai,
-                session.getUserId());
+                idUSer);
         if (nhomId == null || nhomId.trim().isEmpty()) {
-            req.setCoSoId(session.getCoSoId());
+            req.setCoSoId(coSoId);
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
             model.addAttribute("listDataMonDatn", svMonDatnService.getMonDatn());
@@ -60,11 +59,11 @@ public class SvNhomDatnController extends BaseController {
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,
-                    session.getCoSoId(), session.getUserId());
+                    coSoId, idUSer);
             List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getDetailNhomDatnById(nhomId);
             Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId);
-            String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(session.getUserId());
-            List<SvGiangVienHuongDanResponse> listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId);
+            String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(idUSer);
+            List<SvGiangVienHuongDanResponse> listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
             model.addAttribute("soThanhVien", soThanhVien);
             model.addAttribute("listGiangVien", listGiangVien);
             model.addAttribute("checkTruongNhom", checkTruongNhom);
