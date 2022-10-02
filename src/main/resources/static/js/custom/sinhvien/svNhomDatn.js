@@ -1,7 +1,7 @@
 const svNhomDatnApi = '/api/sinh-vien';
 const svNhomDatnView = '/sinh-vien';
 
-function guiYeuCauPheDuyet(id){
+function guiYeuCauPheDuyet(id) {
     var check = confirm("Bạn muốn gửi yêu cầu phê duyệt?");
     if (check == true) {
         $.ajax({
@@ -20,7 +20,7 @@ function guiYeuCauPheDuyet(id){
     }
 }
 
-function openModalDoiTenDeTai(){
+function openModalDoiTenDeTai() {
     $("#modal_doi_ten_de_Tai").modal("show");
 }
 
@@ -59,18 +59,20 @@ $("#form_confirm").submit(function (event) {
     window.open(svNhomDatnView, '_self');
 })
 
-function roiNhom(soThanhVien){
-    let check = -1;
+function roiNhom(soThanhVien) {
+    let check = false;
     let checkConfirm = confirm("Bạn muốn rời nhóm?");
-    if (checkConfirm == true){
-        check += 1;
-    }
-    if (soThanhVien == 1) {
-        let checkConfirmXoaNhom = confirm("Nhóm sẽ bị xóa nếu bạn rời nhóm\n Bạn có muốn tiếp tục rời nhóm?");
-        check != 1;
+    if (checkConfirm == true) {
+        check = true;
+        if (soThanhVien == 1) {
+            let checkConfirmXoaNhom = confirm("Nhóm sẽ bị xóa nếu bạn rời nhóm\n Bạn có muốn tiếp tục rời nhóm?");
+            if (checkConfirmXoaNhom == false) {
+                check = false;
+            }
+        }
     }
 
-    if (check > -1) {
+    if (check == true) {
         $.ajax({
             type: "PUT",
             contentType: "application/json",
@@ -88,7 +90,7 @@ function roiNhom(soThanhVien){
     }
 }
 
-function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi){
+function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi) {
     let checkConfirm = confirm("Bạn muốn chuyển quyển trưởng nhóm cho: " + tenTruongNhomMoi + "?");
     if (checkConfirm == true) {
         $.ajax({
@@ -108,3 +110,43 @@ function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi){
     }
 }
 
+function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi) {
+    let checkConfirm = confirm("Bạn muốn chuyển quyển trưởng nhóm cho: " + tenTruongNhomMoi + "?");
+    if (checkConfirm == true) {
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: svNhomDatnApi + "/chuyen-quyen-truong-nhom?idTruongNhomMoi=" + idTruongNhomMoi,
+            success: function (responseData) {
+                $("#modal_doi_ten_de_Tai").modal('hide');
+                $("#messageSuccess").text("Đã chuyển quyền trưởng nhóm cho " + tenTruongNhomMoi);
+                $("#modal_success").modal('show');
+            },
+            error: function (responseData) {
+                console.log(responseData);
+                alert(responseData.responseJSON.message);
+            }
+        });
+    }
+}
+
+function chonGiangVienHuongDan() {
+    let idGiangVien = $('#chonGiangVien').val();
+    let checkConfirm = confirm('Bạn có chắc muốn chọn giảng viên này không');
+    if (checkConfirm == true) {
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: svNhomDatnApi + "/chon-giang-vien?idGiangVien=" + idGiangVien,
+            success: function (responseData) {
+                $("#modal_chon_giang_vien").modal('hide');
+                $("#messageSuccess").text("Đã cập nhật giảng viên");
+                $("#modal_success").modal('show');
+            },
+            error: function (responseData) {
+                console.log(responseData);
+                alert(responseData.responseJSON.message);
+            }
+        });
+    }
+}

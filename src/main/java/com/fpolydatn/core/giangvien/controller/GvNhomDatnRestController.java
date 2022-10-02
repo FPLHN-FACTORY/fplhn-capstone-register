@@ -58,20 +58,6 @@ public class GvNhomDatnRestController {
         return new ResponseObject(nhomDatnResponse);
     }
 
-    @GetMapping("/seach/chot-nhom-datn")
-    public ResponseObject findAllNhomdatnCanChot(final GvFindNhomDatnHuongDanRequest request){
-        String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
-        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnDoiPheDuyet(maGvhd, request);
-        return new ResponseObject(listNhomDatn);
-    }
-
-    @GetMapping("/seach/nhom-datn-huong-dan")
-    public ResponseObject findAllNhomdatnHuongDan(final GvFindNhomDatnHuongDanRequest request){
-        String maGvhd = "5e965ce8-9d44-4601-a00e-f793391a0c19";
-        PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnHuongDan(maGvhd, request);
-        return new ResponseObject(listNhomDatn);
-    }
-
     @PutMapping("/update-ten-de-tai/{maNhom}")
     public ResponseObject updateTenDeTaiNhomDatn(@PathVariable("maNhom") String maNhom,
                                                  @RequestBody GvUpdateTenDeTaiRequest request) {
@@ -91,4 +77,9 @@ public class GvNhomDatnRestController {
         return new ResponseObject(nhomDatnResponse);
     }
 
+    @PutMapping("/tu-choi-de-tai-nhom-datn")
+    public ResponseObject tuChoiDeTaiNhomDatn(final GvChotNhomDatnRequest request) {
+        NhomDatn nhomDatnResponse = nhomDatnService.tuChoiDeTaiNhomDatn(request);
+        return new ResponseObject(nhomDatnResponse);
+    }
 }

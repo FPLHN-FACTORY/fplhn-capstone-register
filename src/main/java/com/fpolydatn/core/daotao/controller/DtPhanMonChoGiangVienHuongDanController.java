@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/dao-tao/giang-vien-huong-dan")
-public class DtPhanMonChoGiangVienHuongDanController extends BaseController{
+public class DtPhanMonChoGiangVienHuongDanController extends BaseController {
     @Autowired
     private DtPhanCongHuongDanService phanCongHuongDanService;
 
@@ -38,4 +38,5 @@ public class DtPhanMonChoGiangVienHuongDanController extends BaseController{
         model.addAttribute("phanMonDatns", phanMonDatns);
         return "daotao/dt-phan-mon-datn-giang-vien";
     }
+
 }

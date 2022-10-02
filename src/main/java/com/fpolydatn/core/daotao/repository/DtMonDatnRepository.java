@@ -3,11 +3,14 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.entity.MonDatn;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.MonDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /**
  * @author hungpv
@@ -38,6 +41,16 @@ public interface DtMonDatnRepository extends MonDatnRepository {
 
     MonDatn findByMaMon(String maMon);
 
+    @Query(value = """
+                SELECT 
+                m.id,
+                m.ma_mon AS 'name'
+                 FROM do_an_tot_nghiep.mon_datn m
+                 WHERE m.co_so_id = :coSoId
+            """, nativeQuery = true)
+    List<SimpleEntityProj> getAllMaMon(@Param("coSoId") String coSoId);
+
     @Query(value = "SELECT * FROM mon_datn WHERE ma_mon = :maMon AND id <> :id ", nativeQuery = true)
     MonDatn findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id);
+
 }

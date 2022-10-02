@@ -65,15 +65,18 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
+        if(request.getTenDeTai().isEmpty()){
+            throw new RestApiException(Message.EMPTY);
+        }
         nhomDatnCheck.get().setTenDeTai(request.getTenDeTai());
-        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.SAN_SANG_PHE_DUYET);
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
     @Override
     public PageableObject<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnDoiPheDuyet(maGvhd, request, pageable);
+        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnDoiPheDuyet(maGvhd, pageable);
         return new PageableObject(responses);
     }
 
@@ -90,7 +93,7 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     @Override
     public  PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnHuongDan(maGvhd, request, pageable);
+        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnHuongDan(maGvhd,  pageable);
         return new PageableObject(responses);
     }
 
@@ -101,6 +104,16 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
+        return nhomDatnRepository.save(nhomDatnCheck.get());
+    }
+
+    @Override
+    public NhomDatn tuChoiDeTaiNhomDatn(GvChotNhomDatnRequest request) {
+        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
+        if (Objects.isNull(nhomDatnCheck)) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.DA_LIEN_HE_GV);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 

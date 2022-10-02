@@ -68,18 +68,18 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
     GiangVienHuongDan getGVHDByEmailFpt(@Param("emailFpt") String emailFpt);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND id <> :id", nativeQuery = true)
-    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt ,@Param("id") String id );
+    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe", nativeQuery = true)
     String getIdByEmailFe(@Param("emailFe") String emailFe);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe AND id <> :id", nativeQuery = true)
-    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe ,@Param("id") String id );
+    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe, @Param("id") String id);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan ", nativeQuery = true)
     String getIdByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id", nativeQuery = true)
-    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan ,@Param("id") String id );
+    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id);
 
 }

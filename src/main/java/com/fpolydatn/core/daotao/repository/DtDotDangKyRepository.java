@@ -29,22 +29,17 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
             """,
             countQuery = """
-            SELECT COUNT(ddk.id) 
-            FROM dot_dang_ky ddk LEFT JOIN sinh_vien sv ON ddk.id = sv.dot_dang_ky_id 
-            INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id WHERE ddk.co_so_id = :#{#req.coSoId} 
-            GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
-            """,
+                    SELECT COUNT(ddk.id) 
+                    FROM dot_dang_ky ddk LEFT JOIN sinh_vien sv ON ddk.id = sv.dot_dang_ky_id 
+                    INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id WHERE ddk.co_so_id = :#{#req.coSoId} 
+                    GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
+                    """,
             nativeQuery = true)
     Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest req, Pageable page);
 
-    @Query(value = "SELECT d.id , d.ten_dot_dang_ky " +
-            "FROM do_an_tot_nghiep.dot_dang_ky d " +
-            "WHERE UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN d.ngay_bat_dau AND d.ngay_ket_thuc LIMIT 1", nativeQuery = true)
-    Optional<SimpleEntityProj> DotDangKyHienTai();
-
     @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, " +
             "hoc_ky_id, ngay_bat_dau, ngay_ket_thuc, ten_dot_dang_ky FROM dot_dang_ky WHERE co_so_id = :coSoId"
-            ,nativeQuery = true)
+            , nativeQuery = true)
     List<DotDangKy> getAllByCoSo(@Param("coSoId") String coSoId);
 
     @Query(value = """
@@ -52,4 +47,5 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             WHERE ddk.ten_dot_dang_ky = :tenDotDangKy   ;
             """, nativeQuery = true)
     DotDangKy findName(@Param("tenDotDangKy") String tenDotDangKy);
+
 }

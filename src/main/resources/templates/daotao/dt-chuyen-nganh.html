@@ -114,8 +114,8 @@
                                                                 <div class="form-group">
                                                                     <div>
                                                                         <label class="col-form-label">Chủ nhiệm bộ môn: </label>
-                                                                        <select id="tenCNBMhAdd" class="combobox">
-                                                                            <option value="0" hidden></option>
+                                                                        <select id="tenCNBMhAdd" class="form-control">
+<!--                                                                            <option value="0" hidden></option>-->
                                                                             <option th:each="canBo : ${listCanBo}"
                                                                                     th:value="${canBo.id}"
                                                                                     th:text="${canBo.name}"></option>
@@ -235,7 +235,7 @@
                     <div class="form-group">
                         <div>
                             <label class="col-form-label">Chủ nhiệm bộ môn: </label>
-                            <select id="tenCNBMhUpdate" class="combobox">
+                            <select id="tenCNBMhUpdate" class="form-control">
                                 <option th:each="canBo : ${listCanBo}"
                                         th:value="${canBo.id}"
                                         th:text="${canBo.name}"></option>

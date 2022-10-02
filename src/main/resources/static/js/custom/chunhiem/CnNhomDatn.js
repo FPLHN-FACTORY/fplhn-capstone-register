@@ -32,7 +32,7 @@ function loadDataNhomDatn(count) {
             + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
-
+            console.log(responseData);
             let array = responseData.data.data
             if (array.length == 0) {
                 $("#listNhomDatn").html(``)
@@ -186,6 +186,7 @@ $("#form_nhom_datn_delete").submit(function (event) {
     });
 });
 
+
 document.querySelector("#checkbox_father").addEventListener("change", function (e) {
     e.preventDefault()
     var list_CheckBox = document.querySelectorAll("#checkbox_son")
@@ -195,6 +196,7 @@ document.querySelector("#checkbox_father").addEventListener("change", function (
         }
     }
 })
+
 
 function checkBoxSonListener() {
     var checkboxFather = document.querySelector("#checkbox_father")
@@ -238,7 +240,7 @@ function chotNhieuDeTai(count) {
     }
 }
 
-function clearForm(){
+function clearForm() {
     $("#maNhom").val("");
     $("#matKhau").val("");
     $("#maGiangVien").val("");
@@ -247,10 +249,10 @@ function clearForm(){
 
 $("#form_create_nhom_datn").submit(function (event) {
     event.preventDefault();
-    let maNhom = $("#maNhom").val();
-    let matKhau = $("#matKhau").val();
-    let maGiangVien = $("#maGiangVien").val();
-    let maTruongNhom = $("#maTruongNhom").val();
+    let maNhom = $("#maNhom").val().trim();
+    let matKhau = $("#matKhau").val().trim();
+    let maGiangVien = $("#maGiangVien").val().trim();
+    let maTruongNhom = $("#maTruongNhom").val().trim();
     let nhomDatnRequest = {};
     nhomDatnRequest["maNhom"] = maNhom;
     nhomDatnRequest["matKhau"] = matKhau;

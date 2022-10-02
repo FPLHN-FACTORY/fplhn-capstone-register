@@ -133,11 +133,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
-    public List<SvMonDatnResponse> getMonDatn() {
-        return svMonDatnRepository.findMonDatn();
-    }
-
-    @Override
     public NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest, String idUser) {
         String giangVienId = svNhomDatnRequest.getGiangVienId();
         if (giangVienId != null) {
@@ -183,7 +178,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if (!svUpdateTenDeTaiRequest.getIdUser().equals(nhomDatn.get().getTruongNhomId())) {
             throw new RestApiException(Message.KHONG_PHAI_TRUONG_NHOM);
         }
-
+        if (nhomDatn.get().getTrangThai().ordinal() == 4 || nhomDatn.get().getTrangThai().ordinal() == 5) {
+            throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
+        }
         nhomDatn.get().setTenDeTai(svUpdateTenDeTaiRequest.getTenDeTai());
         svNhomDatnRepository.save(nhomDatn.get());
         return true;
@@ -237,6 +234,24 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         nhomDatn.get().setTruongNhomId(truongNhomMoi.get().getId());
         svNhomDatnRepository.save(nhomDatn.get());
+        return true;
+    }
+
+    @Override
+    public Boolean chonGvhd(String idUser, String idGiangVien) {
+        Optional<GiangVienHuongDan> giangVienHuongDan = svGiangVienHuongDanRepository.findById(idGiangVien);
+        if (!giangVienHuongDan.isPresent()){
+            throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
+        }
+        NhomDatn nhomDatn = svNhomDatnRepository.getNhomDatnByTruongNhomId(idUser);
+        if (nhomDatn == null) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if (nhomDatn.getTrangThai().ordinal() != 0){
+            throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
+        }
+        nhomDatn.setGiangVienId(idGiangVien);
+        svNhomDatnRepository.save(nhomDatn);
         return true;
     }
 }

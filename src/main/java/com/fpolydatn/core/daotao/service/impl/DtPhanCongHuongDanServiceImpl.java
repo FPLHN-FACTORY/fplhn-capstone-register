@@ -50,7 +50,7 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
         phanCongHuongDanId.setMonDatnId(idMon);
         phanCongHuongDanId.setGiangVienId(idGV);
         Optional<PhanCongHuongDan> phanCongHuongDan = phanCongHuongDanRepository.findById(phanCongHuongDanId);
-        if(phanCongHuongDan == null) {
+        if (phanCongHuongDan == null) {
             throw new RestApiException(Message.PHAN_CONG_HUONG_DAN_NOT_EXIST);
         }
         return phanCongHuongDan.get();

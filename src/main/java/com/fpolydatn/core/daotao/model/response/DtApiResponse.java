@@ -8,7 +8,9 @@ import java.util.List;
 @Getter
 @Setter
 public class DtApiResponse<T> {
+
     PageableObject<T> data;
 
     List<Integer> list;
+
 }

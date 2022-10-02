@@ -120,8 +120,8 @@
                                                     <td th:text="${nhomDatn.getTotalMaSinhVien()}"></td>
                                                     <td th:text="${nhomDatn.getTenTruongNhom()} + ' - '+ ${nhomDatn.getMaTruongNhom()} ">
                                                     </td>
-                                                    <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()} "></td>
-                                                    <td th:text="${nhomDatn.getTrangThai()}==0?'Mới thành lập':(${nhomDatn.getTrangThai()}==2 ? 'sẵn sàng phê duyệt': (${nhomDatn.getTrangThai()}==3 ? 'cần sửa': (${nhomDatn.getTrangThai()}==4 ?'Giáo viên đã chốt':'CNBM đã chốt')))"></td>
+                                                    <td th:text="${nhomDatn.getTenGvhd()} == null ? 'Chưa có giảng viên hướng dẫn' : ${nhomDatn.getTenGvhd() + ' - ' + nhomDatn.getAccountGvhd()} "></td>
+                                                    <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                     <td>
                                                         <button
                                                                 type="button"

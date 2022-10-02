@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 /**
  * @author thangncph26123
@@ -37,8 +36,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR e.ten_gvhd LIKE %:#{#req.tenGvhd}% OR e.ten_tai_khoan LIKE %:#{#req.tenGvhd}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
-            AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
-            OR g.id = :#{#req.dotDangKyId})
+            AND g.id = :#{#req.dotDangKyId}
             AND b.co_so_id = :#{#req.coSoId}
             GROUP BY b.id, f.ten_chuyen_nganh ORDER BY b.last_modified_date DESC 
             """, countQuery = """
@@ -57,8 +55,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR e.ten_gvhd LIKE %:#{#req.tenGvhd}% OR e.ten_tai_khoan LIKE %:#{#req.tenGvhd}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
-            AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
-            OR g.id = :#{#req.dotDangKyId})
+            AND g.id = :#{#req.dotDangKyId}
             AND b.co_so_id = :#{#req.coSoId}
             GROUP BY b.id, f.ten_chuyen_nganh ORDER BY b.last_modified_date DESC 
             """, nativeQuery = true)

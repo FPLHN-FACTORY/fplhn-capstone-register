@@ -10,7 +10,4 @@ import lombok.Setter;
 @Getter
 @Setter
 public final class GvFindNhomDatnHuongDanRequest extends PageableRequest {
-
-    private String hocKyId;
-    private String dotDangKyId;
 }

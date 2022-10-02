@@ -22,5 +22,5 @@ public abstract class DtBaseChuyenNganhRequest {
     @NotEmpty
     @NotBlank
     private String tenChuyenNganh;
-    
+
 }

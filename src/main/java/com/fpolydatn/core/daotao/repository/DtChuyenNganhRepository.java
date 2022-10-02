@@ -1,19 +1,17 @@
 package com.fpolydatn.core.daotao.repository;
 
-
 import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.repository.ChuyenNganhRepository;
-
-/**
- * @author hungpv
- */
-
 import com.fpolydatn.core.daotao.model.request.DtFindChuyenNganhRequest;
 import com.fpolydatn.core.daotao.model.response.DtChuyenNganhResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+/**
+ * @author hungpv
+ */
 
 public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
 

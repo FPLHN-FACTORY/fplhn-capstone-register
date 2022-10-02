@@ -1,7 +1,6 @@
 package com.fpolydatn.core.chunhiem.model.response;
 
 import com.fpolydatn.entity.GiangVienHuongDan;
-import com.fpolydatn.entity.SinhVien;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 

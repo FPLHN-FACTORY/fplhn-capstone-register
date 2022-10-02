@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author thepvph20110
@@ -16,6 +15,7 @@ import java.util.Optional;
 public class DtSvDotDangKyServiceImpl implements DtSvDotDangKyService {
     @Autowired
     private DtDotDangKyRepository dotDangKyRepository;
+
     @Override
     public List<SimpleEntityProj> listDotDangKy(String coSoId) {
         return dotDangKyRepository.findAllSimpleEntity(coSoId);
@@ -26,8 +26,4 @@ public class DtSvDotDangKyServiceImpl implements DtSvDotDangKyService {
         return dotDangKyRepository.findAllSimpleEntity(coSoId);
     }
 
-    @Override
-    public SimpleEntityProj DotDangKyHienTai() {
-        return dotDangKyRepository.DotDangKyHienTai().get();
-    }
 }

@@ -11,4 +11,5 @@ import lombok.Setter;
 public class DtUpdateChuyenNganhRequest extends DtBaseChuyenNganhRequest {
 
     private String id;
+
 }
