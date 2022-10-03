@@ -49,7 +49,7 @@ public class SvNhomDatnRestController extends BaseController {
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
-    private String idUser = "f61b5269-9181-4be7-9b46-c5e4c81cb00f";
+    private String idUser = "d6ab8411-0d92-4aab-8f3c-de3197dc2b8a";
 
     @GetMapping("/search-giang-vien")
     public ResponseObject getGiangVienHuongDan(@RequestParam(defaultValue = "", required = true) String idMonDatn) {
