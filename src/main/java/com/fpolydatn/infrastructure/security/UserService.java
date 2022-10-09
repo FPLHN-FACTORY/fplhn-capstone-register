@@ -82,7 +82,8 @@ public class UserService {
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/authentication/" + ActorConstant.DAO_TAO);
                 } else {
-                    response.sendRedirect("/dao-tao/mon-datn");
+//                    response.sendRedirect("/dao-tao/mon-datn");
+                    response.sendRedirect("/admin/hoc-ky");
                 }
                 break;
             }
@@ -92,7 +93,7 @@ public class UserService {
         }
 
         if (Objects.nonNull(account)) {
-            session.setAttribute(SessionConstant.USER_ID, account.getId());
+            session.setAttribute(SessionConstant.USER, account);
         } else {
             session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thông");
         }

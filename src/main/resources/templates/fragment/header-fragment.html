@@ -50,21 +50,24 @@
                 </div>
             </div>
 
-            <div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav">
-                <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general m-stack--fluid">
-                    <div class="m-stack__item m-topbar__nav-wrapper">
-                        <ul class="m-topbar__nav m-nav m-nav--inline">
-                            <li id="m_quick_sidebar_toggle" class="m-nav__item">
-                                <a th:href="@{/doLogout}"class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder mt-3">
-                                    Đăng xuất
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+            <div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav"
+                 style="display: flex;justify-content: flex-end;padding-right: 30px;padding-top: 10px;">
+                <div class="btn-group">
+                    <button type="button" class="dropdown" data-bs-toggle="dropdown"
+                            aria-expanded="false" style="height: 50px; border: none;background-color: transparent;">
+                        <!--                        <img th:src="@{/img/avatar.jpg}" style="width: 100%;  border-radius: 50%;">-->
+                        <span style="color: #959cb6;font-size: 0.9rem;">Xin chào</span>
+                        <span th:text="${session.currentUser.name}"
+                              style="color: #6c7293;font-size: 1rem;font-weight: 500;"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/doLogout}">
+                            Đăng xuất
+                        </a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-
     </div>
 </header>
 <!-- END: Header -->

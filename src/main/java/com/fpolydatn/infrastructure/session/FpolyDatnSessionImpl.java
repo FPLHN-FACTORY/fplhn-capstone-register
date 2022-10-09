@@ -1,6 +1,7 @@
 package com.fpolydatn.infrastructure.session;
 
 import com.fpolydatn.infrastructure.constant.SessionConstant;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ class FpolyDatnSessionImpl implements FpolyDatnSession {
 
     @Override
     public String getUserId() {
-        return String.valueOf(session.getAttribute(SessionConstant.USER_ID));
+        SimpleEntityProj account = (SimpleEntityProj) session.getAttribute(SessionConstant.USER);
+        return account.getId();
     }
 }

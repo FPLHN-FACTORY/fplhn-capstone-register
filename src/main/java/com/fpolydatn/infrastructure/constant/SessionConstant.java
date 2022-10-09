@@ -5,7 +5,7 @@ package com.fpolydatn.infrastructure.constant;
  */
 public class SessionConstant {
 
-    public static String USER_ID = "currentUserId";
+    public static String USER= "currentUser";
 
     public static String CO_SO_ID = "coSoIDSelected";
 
