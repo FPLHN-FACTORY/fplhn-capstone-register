@@ -82,8 +82,7 @@ public class UserService {
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/authentication/" + ActorConstant.DAO_TAO);
                 } else {
-//                    response.sendRedirect("/dao-tao/mon-datn");
-                    response.sendRedirect("/admin/hoc-ky");
+                    response.sendRedirect("/dao-tao/mon-datn");
                 }
                 break;
             }
