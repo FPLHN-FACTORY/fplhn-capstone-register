@@ -44,7 +44,7 @@ public final class AuthenticationController {
     }
 
     @GetMapping("/dao-tao")
-    public String dtGetCoSo(Model model, HttpSession session) {
+    public String dtChonCoSo(Model model, HttpSession session) {
         return getCoSo(model, session, ActorConstant.DAO_TAO);
     }
 

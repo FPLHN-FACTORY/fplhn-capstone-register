@@ -5,7 +5,6 @@ import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.CanBoRepository;
-import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import com.fpolydatn.repository.SinhVienRepository;
 import com.fpolydatn.util.CommonHelper;
@@ -17,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Objects;
-
-import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 /**
  * @author HangNT
@@ -42,10 +39,6 @@ public class UserService {
     private CanBoRepository canBoRepository;
 
     @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;
-
-    @Autowired
     private CommonHelper commonHelper;
 
     public void processOAuthPostLogin(HttpServletResponse response,
@@ -58,7 +51,7 @@ public class UserService {
             case ActorConstant.GIANG_VIEN: {
                 account = gvhdRepository.findSimpleEntityByTenGiangVienHuongDan(coSoID, email, dotDangKyID);
                 if (Objects.isNull(account)) {
-                    response.sendRedirect("/authentication/giang-vien");
+                    response.sendRedirect("/authentication/" + ActorConstant.GIANG_VIEN);
                 } else {
                     response.sendRedirect("/giang-vien/nhom-datn");
                 }
@@ -67,7 +60,7 @@ public class UserService {
             case ActorConstant.SINH_VIEN: {
                 account = sinhVienRepository.findSimpleEntityByTenSinhVien(coSoID, email, dotDangKyID);
                 if (Objects.isNull(account)) {
-                    response.sendRedirect("/authentication/sinh-vien");
+                    response.sendRedirect("/authentication/" + ActorConstant.SINH_VIEN);
                 } else {
                     response.sendRedirect("/sinh-vien");
                 }
@@ -77,7 +70,7 @@ public class UserService {
                 account = canBoRepository.findSimpleEntityByTenCanBo(coSoID,
                         email, VaiTro.CHU_NHIEM_BO_MON.ordinal());
                 if (Objects.isNull(account)) {
-                    response.sendRedirect("/authentication/chu-nhiem");
+                    response.sendRedirect("/authentication/" + ActorConstant.CHU_NHIEM);
                 } else {
                     response.sendRedirect("/chu-nhiem/dot-dang-ky/sinh-vien");
                 }
@@ -87,7 +80,7 @@ public class UserService {
                 account = canBoRepository.findSimpleEntityByTenCanBo(coSoID,
                         email, VaiTro.DAO_TAO.ordinal());
                 if (Objects.isNull(account)) {
-                    response.sendRedirect("/authentication/dao-tao");
+                    response.sendRedirect("/authentication/" + ActorConstant.DAO_TAO);
                 } else {
                     response.sendRedirect("/dao-tao/mon-datn");
                 }
@@ -100,6 +93,8 @@ public class UserService {
 
         if (Objects.nonNull(account)) {
             session.setAttribute(SessionConstant.USER_ID, account.getId());
+        } else {
+            session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thông");
         }
     }
 }

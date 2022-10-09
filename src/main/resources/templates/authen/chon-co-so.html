@@ -35,7 +35,6 @@
              style="background-image: url(https://gv.poly.edu.vn/theme/admin_v1/media//bg/bg-3.jpg);">
             <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
 
-
                 <div class="kt-login__container">
                     <div class="kt-login__logo" style="margin: 0 auto">
                         <a href="/">
@@ -54,7 +53,7 @@
                                     </th:block>
                                 </select>
                             </div>
-                            <div th:if="${errorMessage}" th:utext="${errorMessage}" id="error" class="error" style="font-size: 0.9rem;
+                            <div th:text="${session.messageError}" id="error" class="error" style="font-size: 0.9rem;
     padding-left: 1.6rem;">
                             </div>
                             <div class="kt-login__divider" style="margin: 15px 0">
