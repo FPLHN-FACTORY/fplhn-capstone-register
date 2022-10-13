@@ -134,16 +134,24 @@ public class DBGenerator implements CommandLineRunner {
         cntt.setTenChuyenNganh("Công nghệ thông tin");
         cntt.setId(chuyenNganhRepository.save(cntt).getId());
 
+        MonDatn monPtpm = new MonDatn();
+        monPtpm.setCoSoId(csHN.getId());
+        monPtpm.setMaMon("PRO");
+        monPtpm.setChuyenNganhId(ptpm.getId());
+        monPtpm.setTenMonDatn("Môn dự án tốt nghiệp PTPM");
+        monPtpm.setId(monDatnRepository.save(monPtpm).getId());
         MonDatn java = new MonDatn();
         java.setCoSoId(csHN.getId());
         java.setMaMon("PRO2112");
         java.setChuyenNganhId(ptpm.getId());
+        java.setNhomMonDatnId(monPtpm.getId());
         java.setTenMonDatn("Dự án tốt nghiệp (UDPM-Spring Boot)");
         java.setId(monDatnRepository.save(java).getId());
         MonDatn cSharp = new MonDatn();
         cSharp.setCoSoId(csHN.getId());
         cSharp.setMaMon("PRO2113");
         cSharp.setChuyenNganhId(ptpm.getId());
+        cSharp.setNhomMonDatnId(monPtpm.getId());
         cSharp.setTenMonDatn("Dự án tốt nghiệp C#");
         cSharp.setId(monDatnRepository.save(cSharp).getId());
 
@@ -151,6 +159,9 @@ public class DBGenerator implements CommandLineRunner {
         dot1.setCoSoId(csHN.getId());
         dot1.setHocKyId(su22.getId());
         dot1.setNgayBatDau(Calendar.getInstance().getTimeInMillis());
+        dot1.setHanSinhVien(dot1.getNgayBatDau() + 1296000000L);
+        dot1.setHanGiangVien(dot1.getNgayBatDau() + 1900800000L);
+        dot1.setHanCNBM(dot1.getNgayBatDau() + 2629800000L);
         dot1.setNgayKetThuc(dot1.getNgayBatDau() + 2629800000L);
         dot1.setTenDotDangKy("Đợt đăng ký kỳ 11");
         dot1.setId(dotDangKyRepository.save(dot1).getId());

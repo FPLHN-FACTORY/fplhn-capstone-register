@@ -11,6 +11,18 @@
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/fontawesome/css/all.min.css}">
+    <style>
+        .view {
+            background-color: #3bac47;
+            padding: 5px;
+            color: #fff;
+            border-radius: 0.15rem;
+        }
+        .fa-fw {
+            width: 1em !important;
+        }
+    </style>
 </head>
 <!-- end::Head -->
 
@@ -127,7 +139,8 @@
                                                     data-target="#modal_detail"
                                                     class="col-12 col-sm-8 col-md-4 btn btn-success"
                                                     th:attr="onclick=|chotNhieuDeTai('${page.currentPage}')|">
-                                                Chốt đề tài</button>
+                                                Chốt đề tài
+                                            </button>
                                             <div class="modal fade "
                                                  id="modal_create"
                                                  tabindex="-1"
@@ -137,7 +150,8 @@
                                                     <div class="modal-content">
                                                         <form id="form_create_nhom_datn">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Tạo nhóm</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Tạo
+                                                                    nhóm</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
@@ -166,7 +180,8 @@
                                                                             id="maGiangVien">
                                                                     <span class="text-danger"
                                                                           id="ma_giang_vien_erorr"></span><br>
-                                                                    <label class="col-form-label">Mã sinh viên (Trưởng nhóm)</label>
+                                                                    <label class="col-form-label">Mã sinh viên (Trưởng
+                                                                        nhóm)</label>
                                                                     <input
                                                                             type="text"
                                                                             class="form-control"
@@ -202,15 +217,19 @@
                                                 <th>Trưởng nhóm</th>
                                                 <th>GVHD</th>
                                                 <th>Trạng thái</th>
-                                                <th>Chi tiết nhóm</th>
-                                                <th>Chốt đề tài</th>
+                                                <th>Xem chi tiết</th>
+                                                <th>Hành động</th>
                                                 <th>Xóa</th>
                                                 <!--                                            <th width="200px">Chức năng</th>-->
                                                 </thead>
                                                 <tbody id="listNhomDatn">
                                                 <th:block th:each="nhomDatn : ${page.data}">
                                                     <tr>
-                                                        <td><input th:disabled="${nhomDatn.getTrangThai()}==4?'false':'true'" type="checkbox" id="checkbox_son" th:value="${nhomDatn.getId()}" onchange="checkBoxSonListener()"></td>
+                                                        <td><input
+                                                                th:disabled="${nhomDatn.getTrangThai()}==4?'false':'true'"
+                                                                type="checkbox" id="checkbox_son"
+                                                                th:value="${nhomDatn.getId()}"
+                                                                onchange="checkBoxSonListener()"></td>
                                                         <td th:text="${nhomDatn.getStt()}"></td>
                                                         <td th:text="${nhomDatn.getTenNhom()}==null ? 'Chưa có' : (${nhomDatn.getTenNhom()})"></td>
                                                         <td th:text="${nhomDatn.getTenDeTai()}==null ? 'Chưa có' : (${nhomDatn.getTenDeTai()})"></td>
@@ -224,17 +243,35 @@
                                                         </td>
                                                         <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                         <td>
-                                                            <a class="btn btn-primary"
-                                                               th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}">Chi
-                                                                tiết nhóm</a>
-                                                        </td>
+                                                            <a class="btn btn-primary" th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}">Xem chi tiết</a></td>
+<!--                                                            <a-->
+<!--                                                                    class="view mr-1"-->
+<!--                                                                    title="Chi tiết thành viên trong nhóm"-->
+<!--                                                                    th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}"-->
+<!--                                                            >-->
+<!--                                                                <svg-->
+<!--                                                                        class="svg-inline&#45;&#45;fa fa-eye fa-w-18 fa-fw"-->
+<!--                                                                        aria-hidden="true"-->
+<!--                                                                        focusable="false"-->
+<!--                                                                        data-prefix="fas"-->
+<!--                                                                        data-icon="eye"-->
+<!--                                                                        role="img"-->
+<!--                                                                        xmlns="http://www.w3.org/2000/svg"-->
+<!--                                                                        viewBox="0 0 576 512"-->
+<!--                                                                        data-fa-i2svg=""-->
+<!--                                                                >-->
+<!--                                                                    <path-->
+<!--                                                                            fill="currentColor"-->
+<!--                                                                            d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"-->
+<!--                                                                    ></path>-->
+<!--                                                                </svg>-->
+<!--                                                            </a>-->
                                                         <td>
                                                             <button type="button" class="btn btn-primary"
                                                                     th:style="${nhomDatn.getTrangThai()}==4?'display: block':'display: none'"
                                                                     th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 Chốt đề tài
-                                                            </button>
-                                                            |
+                                                            </button> |
                                                             <button type="button" class="btn btn-danger text-white"
                                                                     th:style="${nhomDatn.getTrangThai()}==4?'display: block':'display: none'"
                                                                     th:attr="onclick=|openModalNhanXet('${nhomDatn.getId()}','${page.currentPage}')|">

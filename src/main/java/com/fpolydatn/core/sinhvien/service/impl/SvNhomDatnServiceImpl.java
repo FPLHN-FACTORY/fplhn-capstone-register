@@ -86,7 +86,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             if (!nhomDatn.get().getTruongNhomId().equals(idUser)) {
                 throw new RestApiException(Message.KHONG_PHAI_TRUONG_NHOM);
             }
-            nhomDatn.get().setTrangThai(TrangThaiNhom.SAN_SANG_PHE_DUYET);
+            nhomDatn.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_XAC_NHAN);
             svNhomDatnRepository.save(nhomDatn.get());
             return true;
         }

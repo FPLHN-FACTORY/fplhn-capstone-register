@@ -86,7 +86,7 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.DA_LIEN_HE_GV);
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_XAC_NHAN);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
@@ -113,7 +113,7 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.DA_LIEN_HE_GV);
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_XAC_NHAN);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 

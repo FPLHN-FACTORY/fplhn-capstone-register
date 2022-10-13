@@ -13,11 +13,11 @@ public class TrangThaiNhomConverter {
             case MOI_THANH_LAP:
                 trangThaiNhomStr = "Mới thành lập";
                 break;
-            case DA_LIEN_HE_GV:
-                trangThaiNhomStr = "Đã liên hệ giảng viên";
+            case CHU_NHIEM_DA_XAC_NHAN:
+                trangThaiNhomStr = "Chủ nhiệm đã xác nhận";
                 break;
-            case SAN_SANG_PHE_DUYET:
-                trangThaiNhomStr = "Sẵn sàng phê duyệt";
+            case GIANG_VIEN_DA_XAC_NHAN:
+                trangThaiNhomStr = "Giảng viên đã xác nhận";
                 break;
             case CAN_SUA:
                 trangThaiNhomStr = "Cần sửa";
