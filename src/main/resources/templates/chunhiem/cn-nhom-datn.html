@@ -219,6 +219,7 @@
                                                 <th>Trạng thái</th>
                                                 <th>Xem chi tiết</th>
                                                 <th>Hành động</th>
+                                                <th>Xóa</th>
                                                 <!--                                            <th width="200px">Chức năng</th>-->
                                                 </thead>
                                                 <tbody id="listNhomDatn">
@@ -242,7 +243,7 @@
                                                         </td>
                                                         <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                         <td>
-                                                            <a class="btn btn-primary" th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}">Xem chi tiết</a>
+                                                            <a class="btn btn-primary" th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}">Xem chi tiết</a></td>
 <!--                                                            <a-->
 <!--                                                                    class="view mr-1"-->
 <!--                                                                    title="Chi tiết thành viên trong nhóm"-->
@@ -265,16 +266,19 @@
 <!--                                                                    ></path>-->
 <!--                                                                </svg>-->
 <!--                                                            </a>-->
+                                                        <td>
                                                             <button type="button" class="btn btn-primary"
                                                                     th:style="${nhomDatn.getTrangThai()}==4?'display: block':'display: none'"
                                                                     th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 Chốt đề tài
-                                                            </button>
+                                                            </button> |
                                                             <button type="button" class="btn btn-danger text-white"
                                                                     th:style="${nhomDatn.getTrangThai()}==4?'display: block':'display: none'"
                                                                     th:attr="onclick=|openModalNhanXet('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 Từ chối
                                                             </button>
+                                                        </td>
+                                                        <td>
                                                             <button type="button" class="btn btn-danger text-white"
                                                                     th:style="${nhomDatn.getTrangThai()}==5?'display: none':'display: block'"
                                                                     th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">
