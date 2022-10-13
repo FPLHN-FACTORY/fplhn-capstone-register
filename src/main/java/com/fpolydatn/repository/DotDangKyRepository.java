@@ -26,7 +26,8 @@ public interface DotDangKyRepository extends JpaRepository<DotDangKy, String> {
     @Query(value = """
             SELECT id FROM dot_dang_ky ddk 
             WHERE :currentTime BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc
+            AND co_so_id = :coSoId
             """, nativeQuery = true)
-    String findDotDangKyID(@Param("currentTime") Long currentTime);
+    String findDotDangKyID(@Param("coSoId") String coSoId, @Param("currentTime") Long currentTime);
 
 }

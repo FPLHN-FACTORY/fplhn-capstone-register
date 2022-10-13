@@ -11,8 +11,8 @@ import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
-import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.repository.DotDangKyRepository;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,29 +43,28 @@ public class SvNhomDatnRestController extends BaseController {
     private SvGiangVienHuongDanService svGiangVienHuongDanService;
 
     @Autowired
-    private SvSinhVienService svSinhVienService;
-
-    @Autowired
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
-    private String idUser = "d6ab8411-0d92-4aab-8f3c-de3197dc2b8a";
+    @Autowired
+    private CommonHelper commonHelper;
 
     @GetMapping("/search-giang-vien")
     public ResponseObject getGiangVienHuongDan(@RequestParam(defaultValue = "", required = true) String idMonDatn) {
-        return new ResponseObject(svGiangVienHuongDanService.getGvhdByMonDatnId(idMonDatn));
+        String coSoId = session.getCoSoId();
+        return new ResponseObject(svGiangVienHuongDanService.getGvhdByMonDatnId(idMonDatn, coSoId));
     }
 
     @PutMapping("/{id}")
     public ResponseObject guiYeuCauPheDuyet(@PathVariable String id){
-        return new ResponseObject(svNhomDatnService.guiYeuCauPheDuyet(id, idUser));
+        return new ResponseObject(svNhomDatnService.guiYeuCauPheDuyet(id, session.getUserId()));
     }
 
     @GetMapping("/search")
     public ResponseObject searchNhomDatn(final SvFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        req.setDotDangKyId(dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond()));
+        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
         return new ResponseObject(listNhomDatn);
     }
@@ -78,7 +77,7 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PostMapping("/add")
     public ResponseObject addSinhVien(@RequestBody SvAddSinhVienRequest req) {
-        req.setIdUser(idUser);
+        req.setIdUser(session.getUserId());
         return new ResponseObject(svNhomDatnService.addSinhVienTheoNhom(req));
     }
 
@@ -86,29 +85,29 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject createNhomDatn(@RequestBody SvCreateNhomDatnRequest svNhomDatnRequest) {
         String coSoid = session.getCoSoId();
         svNhomDatnRequest.setCoSoId(coSoid);
-        svNhomDatnRequest.setDotDangKyId(dotDangKyRepository.findDotDangKyID(convertDateToTimeStampSecond()));
-        return new ResponseObject(svNhomDatnService.createNhomDatn(svNhomDatnRequest, idUser));
+        svNhomDatnRequest.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        return new ResponseObject(svNhomDatnService.createNhomDatn(svNhomDatnRequest, session.getUserId()));
     }
 
     @PutMapping("/update-ten-de-tai")
     public ResponseObject updateTenDeTai(@RequestBody SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
-        svUpdateTenDeTaiRequest.setIdUser(idUser);
+        svUpdateTenDeTaiRequest.setIdUser(session.getUserId());
         return new ResponseObject(svNhomDatnService.updateTenDeTai(svUpdateTenDeTaiRequest));
     }
 
     @PutMapping("/roi-nhom")
     public ResponseObject roiNhom() {
-        return new ResponseObject(svNhomDatnService.roiNhom(idUser));
+        return new ResponseObject(svNhomDatnService.roiNhom(session.getUserId()));
     }
 
     @PutMapping("/chuyen-quyen-truong-nhom")
     public ResponseObject chuyenQuyenTruongNhom(@RequestParam("idTruongNhomMoi") String idTruongNhomMoi) {
-        return new ResponseObject(svNhomDatnService.chuyenQuyenTruongNhom(idUser, idTruongNhomMoi));
+        return new ResponseObject(svNhomDatnService.chuyenQuyenTruongNhom(session.getUserId(), idTruongNhomMoi));
     }
 
     @PutMapping("/chon-giang-vien")
     public ResponseObject chonGvhd(@RequestParam String idGiangVien){
-        return new ResponseObject(svNhomDatnService.chonGvhd(idUser, idGiangVien));
+        return new ResponseObject(svNhomDatnService.chonGvhd(session.getUserId(), idGiangVien));
     }
 
 }

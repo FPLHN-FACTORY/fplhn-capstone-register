@@ -54,4 +54,6 @@ public class SinhVien extends MultiTenantEntity
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     private String dotDangKyId;
 
+    @Column
+    private Long thoiDỉemRoiNhomGanNhat;
 }

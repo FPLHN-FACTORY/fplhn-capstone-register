@@ -54,7 +54,7 @@ public class GvNhomDatnController extends BaseController {
 
     @GetMapping("/phe-duyet-nhom")
     public String viewAllNhomDatnDoiPheDuyet(final GvFindNhomDatnHuongDanRequest request, Model model) {
-        String maGvhd = "91c97982-4da4-4778-a292-870b588a5d20";
+        String maGvhd = session.getUserId();
         String coSoId = session.getCoSoId();
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnDoiPheDuyet(maGvhd, request);
         List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
@@ -67,7 +67,7 @@ public class GvNhomDatnController extends BaseController {
 
     @GetMapping("/thong-tin-nhom-datn")
     public String viewAllNhomDatnHuongDan(final GvFindNhomDatnHuongDanRequest request, Model model) {
-        String maGvhd = "91c97982-4da4-4778-a292-870b588a5d20";
+        String maGvhd = session.getUserId();
         String coSoId = session.getCoSoId();
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnHuongDan(maGvhd, request);
         List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();

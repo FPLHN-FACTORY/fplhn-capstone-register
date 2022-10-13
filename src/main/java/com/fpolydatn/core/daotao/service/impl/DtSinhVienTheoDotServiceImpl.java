@@ -16,6 +16,7 @@ import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +55,9 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Autowired
     private DtMonDatnRepository monDatnRepository;
 
+    @Autowired
+    private CommonHelper commonHelper;
+
     private List<DtSinhVienTheoDotResponse> list;
 
     private HashMap<String, String> map;
@@ -61,9 +65,9 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Override
     public PageableObject<DtSinhVienTheoDotResponse> findAllSinhVien(final FindDtSinhVienTheoDotRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Optional<SimpleEntityProj> dotDangEntityProj = dotDangKyRepository.DotDangKyHienTai();
-        if (dotDangEntityProj.isPresent()) {
-            request.setIdDotDangKy(dotDangEntityProj.get().getId());
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (dotDangKyId != null) {
+            request.setIdDotDangKy(dotDangKyId);
         } else {
             request.setIdDotDangKy("");
         }
@@ -74,10 +78,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
     @Override
     public PageableObject<DtSinhVienTheoDotResponse> searchStudent(final FindDtSinhVienTheoDotRequest request) {
-        Optional<SimpleEntityProj> dotDangEntityProj = dotDangKyRepository.DotDangKyHienTai();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
         if (request.getIdDotDangKy().equalsIgnoreCase("")) {
-            if (dotDangEntityProj.isPresent()) {
-                request.setIdDotDangKy(dotDangEntityProj.get().getId());
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
             } else {
                 request.setIdDotDangKy("");
             }

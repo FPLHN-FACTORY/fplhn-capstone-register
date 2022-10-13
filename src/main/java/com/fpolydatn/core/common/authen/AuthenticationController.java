@@ -1,8 +1,8 @@
 package com.fpolydatn.core.common.authen;
 
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
+import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.CoSoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +43,8 @@ public final class AuthenticationController {
         return getCoSo(model, session, ActorConstant.SINH_VIEN);
     }
 
-    @GetMapping("/can-bo")
-    public String dtGetCoSo(Model model, HttpSession session) {
+    @GetMapping("/dao-tao")
+    public String dtChonCoSo(Model model, HttpSession session) {
         return getCoSo(model, session, ActorConstant.DAO_TAO);
     }
 
@@ -63,7 +63,13 @@ public final class AuthenticationController {
     @GetMapping("/{coSoId}")
     @ResponseBody
     public ResponseObject getData(@PathVariable("coSoId") String coSoId, HttpSession session) {
-        session.setAttribute("coSoIDSelected", coSoId);
+        session.setAttribute(SessionConstant.CO_SO_ID, coSoId);
         return new ResponseObject(true);
     }
+
+    @GetMapping("/403")
+    public String prohibitedAccess() {
+        return "403";
+    }
+
 }

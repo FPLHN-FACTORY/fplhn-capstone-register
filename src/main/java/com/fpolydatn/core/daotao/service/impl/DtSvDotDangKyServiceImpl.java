@@ -26,9 +26,4 @@ public class DtSvDotDangKyServiceImpl implements DtSvDotDangKyService {
         return dotDangKyRepository.findAllSimpleEntity(coSoId);
     }
 
-    @Override
-    public SimpleEntityProj DotDangKyHienTai() {
-        return dotDangKyRepository.DotDangKyHienTai().get();
-    }
-
 }

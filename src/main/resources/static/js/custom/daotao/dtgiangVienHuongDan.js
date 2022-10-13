@@ -15,13 +15,13 @@ function clearData() {
 
 $("#form_create_giang_vien").submit(function (event) {
     event.preventDefault();
-    let tenGvhd = $("#tenGvhd").val();
-    let soNhomHuongDanToiDa = $("#soNhomHuongDanToiDa").val();
-    let tenTaiKhoan = $("#tenTaiKhoan").val();
-    let soDienThoai = $("#soDienThoai").val();
-    let emailFpt = $("#emailFpt").val();
-    let emailFe = $("#emailFe").val();
-    let dotDangKyId = $("#dotDangKyId").val();
+    let tenGvhd = $("#tenGvhd").val().trim();
+    let soNhomHuongDanToiDa = $("#soNhomHuongDanToiDa").val().trim();
+    let tenTaiKhoan = $("#tenTaiKhoan").val().trim();
+    let soDienThoai = $("#soDienThoai").val().trim();
+    let emailFpt = $("#emailFpt").val().trim();
+    let emailFe = $("#emailFe").val().trim();
+    let dotDangKyId = $("#dotDangKyId").val().trim();
     let giangVienRequest = {};
     giangVienRequest["tenGvhd"] = tenGvhd;
     giangVienRequest["soNhomHuongDanToiDa"] = soNhomHuongDanToiDa;
@@ -47,6 +47,9 @@ $("#form_create_giang_vien").submit(function (event) {
         index++;
     } else if (Number.parseInt(soNhomHuongDanToiDa) <= 0) {
         $("#errorSoNhomHD").text("Số nhóm phải lớn hơn 0");
+        index++;
+    } else if (Number.isInteger(soNhomHuongDanToiDa) == false) {
+        $("#errorSoNhomHD").text("Số nhóm phải là số ");
         index++;
     } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
         $("#errorSoNhomHD").text("Số nhóm chỉ từ 1 đến 7");
@@ -78,6 +81,9 @@ $("#form_create_giang_vien").submit(function (event) {
     if (emailFpt.length === 0) {
         $("#errorEmailFpt").text(" EmailFpt không được để trống");
         index++;
+    } else if (emailFpt.trim().includes(" ")) {
+        $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
+        index++;
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
         index++;
@@ -89,6 +95,9 @@ $("#form_create_giang_vien").submit(function (event) {
         $("#errorEmailFe").text(" EmailFe không được để trống");
         index++;
     } else if (regexFE.test(emailFe) == false) {
+        $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
+        index++;
+    } else if (emailFpt.trim().includes(" ")) {
         $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
         index++;
     } else {
@@ -152,15 +161,15 @@ function openModalUpdateGiangVien(giangVienId, item) {
 
 $("#form_giang_vien_update").submit(function (event) {
     event.preventDefault();
-    let tenGvhd = $("#ten_giang_vien_update").val();
-    let soNhomHuongDanToiDa = $("#so_nhom_update").val();
-    let tenTaiKhoan = $("#ten_tai_khoan_update").val();
-    let soDienThoai = $("#so_dien_thoai_update").val();
-    let emailFpt = $("#emailFpt_update").val();
-    let emailFe = $("#emailFe_update").val();
-    let dotDangKyId = $("#dot_dang_ky_update").val();
-    let giangVienId = $("#giangVienId").val();
-    let item = $("#update_giang_vien_item").val();
+    let tenGvhd = $("#ten_giang_vien_update").val().trim();
+    let soNhomHuongDanToiDa = $("#so_nhom_update").val().trim();
+    let tenTaiKhoan = $("#ten_tai_khoan_update").val().trim();
+    let soDienThoai = $("#so_dien_thoai_update").val().trim();
+    let emailFpt = $("#emailFpt_update").val().trim();
+    let emailFe = $("#emailFe_update").val().trim();
+    let dotDangKyId = $("#dot_dang_ky_update").val().trim();
+    let giangVienId = $("#giangVienId").val().trim();
+    let item = $("#update_giang_vien_item").val().trim();
     let giangVienRequest = {};
     giangVienRequest["tenGvhd"] = tenGvhd;
     giangVienRequest["soNhomHuongDanToiDa"] = soNhomHuongDanToiDa;
@@ -181,6 +190,9 @@ $("#form_giang_vien_update").submit(function (event) {
         $("#errorSoNhomHDUpdate").text(" Số nhóm không được để trống");
         index++;
     } else if (regexSoNhom.test(soNhomHuongDanToiDa) == false) {
+        $("#errorSoNhomHDUpdate").text(" Số nhóm phải là số");
+        index++;
+    } else if (Number.isInteger(soNhomHuongDanToiDa) == false) {
         $("#errorSoNhomHDUpdate").text(" Số nhóm phải là số");
         index++;
     } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
@@ -216,6 +228,9 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
         index++;
+    } else if (regexFPT.test(emailFpt) == false) {
+        $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
+        index++;
     } else {
         $("#errorEmailFpt").text("");
     }
@@ -224,6 +239,9 @@ $("#form_giang_vien_update").submit(function (event) {
         $("#errorEmailFeUpdate").text(" EmailFe không được để trống");
         index++;
     } else if (regexFE.test(emailFe) == false) {
+        $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
+        index++;
+    } else if (emailFpt.trim().includes(" ")) {
         $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
         index++;
     } else {
@@ -328,22 +346,18 @@ function loadTable(count) {
                    <td>
                     <button
                         type="button"
-                        class="btn btn-primary chuc-nang"
+                        class="btn btn-primary"
                         onclick="openModalUpdateGiangVien('${item.id}','${count}')">
                           Sửa
                      </button>
                      </button>
                      <button
                          type="button"
-                         class="btn btn-danger chuc-nang"
+                         class="btn btn-danger"
                          data-toggle="modal"
                          onclick="openModalRemoveGiangVien('${item.id}','${count}')">
                          Xoá
                      </button>
-                     <a type="button" class="btn btn-success chuc-nang"
-                          href="/dao-tao/giang-vien-huong-dan/${item.id}">
-                          Phân môn
-                      </a>
                     </td>
 
                </tr>
@@ -366,3 +380,33 @@ function loadTable(count) {
         }
     });
 }
+
+$("#form_import_excel").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#inputGroupFile01").val();
+    let indexDot = typeExcel.indexOf('.');
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    if (typeExcel.length <= 0) {
+        $("#import_excel_error").text("chọn file");
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                enctype: 'multipart/form-data',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
+                },
+                error: function (e) {
+                    alert(e.responseText);
+                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
+                    console.log("ERROR: " + e);
+                }
+            }
+        );
+    } else {
+        $("#import_excel_error").text("chọn đúng file Excel ");
+    }
+});

@@ -37,11 +37,6 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             nativeQuery = true)
     Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest req, Pageable page);
 
-    @Query(value = "SELECT d.id , d.ten_dot_dang_ky " +
-            "FROM do_an_tot_nghiep.dot_dang_ky d " +
-            "WHERE UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN d.ngay_bat_dau AND d.ngay_ket_thuc LIMIT 1", nativeQuery = true)
-    Optional<SimpleEntityProj> DotDangKyHienTai();
-
     @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, " +
             "hoc_ky_id, ngay_bat_dau, ngay_ket_thuc, ten_dot_dang_ky FROM dot_dang_ky WHERE co_so_id = :coSoId"
             , nativeQuery = true)
