@@ -134,16 +134,24 @@ public class DBGenerator implements CommandLineRunner {
         cntt.setTenChuyenNganh("Công nghệ thông tin");
         cntt.setId(chuyenNganhRepository.save(cntt).getId());
 
+        MonDatn monPtpm = new MonDatn();
+        monPtpm.setCoSoId(csHN.getId());
+        monPtpm.setMaMon("PRO");
+        monPtpm.setChuyenNganhId(ptpm.getId());
+        monPtpm.setTenMonDatn("Môn dự án tốt nghiệp PTPM");
+        monPtpm.setId(monDatnRepository.save(monPtpm).getId());
         MonDatn java = new MonDatn();
         java.setCoSoId(csHN.getId());
         java.setMaMon("PRO2112");
         java.setChuyenNganhId(ptpm.getId());
+        java.setNhomMonDatnId(monPtpm.getId());
         java.setTenMonDatn("Dự án tốt nghiệp (UDPM-Spring Boot)");
         java.setId(monDatnRepository.save(java).getId());
         MonDatn cSharp = new MonDatn();
         cSharp.setCoSoId(csHN.getId());
         cSharp.setMaMon("PRO2113");
         cSharp.setChuyenNganhId(ptpm.getId());
+        cSharp.setNhomMonDatnId(monPtpm.getId());
         cSharp.setTenMonDatn("Dự án tốt nghiệp C#");
         cSharp.setId(monDatnRepository.save(cSharp).getId());
 
