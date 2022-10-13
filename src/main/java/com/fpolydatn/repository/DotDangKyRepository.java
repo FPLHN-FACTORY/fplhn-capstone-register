@@ -44,7 +44,7 @@ public interface DotDangKyRepository extends JpaRepository<DotDangKy, String> {
     KhoangThoiGianResponse findMocThoiGianGiangVien(@Param("id") String id);
 
     @Query(value = """
-            SELECT ddk.han_sinh_vien as ngay_bat_dau, ddk.hancnbm as ngay_ket_thuc FROM dot_dang_ky ddk 
+            SELECT ddk.han_sinh_vien as ngay_bat_dau, ddk.han_chu_nhiem_bo_mon as ngay_ket_thuc FROM dot_dang_ky ddk 
             WHERE ddk.id = :id
             """, nativeQuery = true)
     KhoangThoiGianResponse findMocThoiGianChuNhiem(@Param("id") String id);

@@ -22,18 +22,36 @@ public class MocThoiGianCommon {
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
-    public KhoangThoiGianResponse findMocThoiGianSinhVien() {
+    public boolean checkMocThoiGianSinhVien() {
+        boolean check = false;
         String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
-        return dotDangKyRepository.findMocThoiGianSinhVien(dotDangKyHienTaiId);
+        KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianSinhVien(dotDangKyHienTaiId);
+        Long currentTime = convertDateToTimeStampSecond();
+        if (currentTime >= khoangThoiGianResponse.getNgayBatDau() && currentTime <= khoangThoiGianResponse.getNgayKetThuc()) {
+            check = true;
+        }
+        return check;
     }
 
-    public KhoangThoiGianResponse findMocThoiGianGiangVien() {
+    public boolean checkMocThoiGianGiangVien() {
+        boolean check = false;
         String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
-        return dotDangKyRepository.findMocThoiGianGiangVien(dotDangKyHienTaiId);
+        KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianGiangVien(dotDangKyHienTaiId);
+        Long currentTime = convertDateToTimeStampSecond();
+        if (currentTime >= khoangThoiGianResponse.getNgayBatDau() && currentTime <= khoangThoiGianResponse.getNgayKetThuc()) {
+            check = true;
+        }
+        return check;
     }
 
-    public KhoangThoiGianResponse findMocThoiGianChuNhiem() {
+    public boolean checkMocThoiGianChuNhiem() {
+        boolean check = false;
         String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
-        return dotDangKyRepository.findMocThoiGianChuNhiem(dotDangKyHienTaiId);
+        KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianChuNhiem(dotDangKyHienTaiId);
+        Long currentTime = convertDateToTimeStampSecond();
+        if (currentTime >= khoangThoiGianResponse.getNgayBatDau() && currentTime <= khoangThoiGianResponse.getNgayKetThuc()) {
+            check = true;
+        }
+        return check;
     }
 }
