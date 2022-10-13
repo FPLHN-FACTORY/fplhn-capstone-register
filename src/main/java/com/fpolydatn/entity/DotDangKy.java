@@ -32,6 +32,15 @@ public class DotDangKy extends MultiTenantEntity
     @Column(nullable = false)
     private Long ngayKetThuc;
 
+    @Column(nullable = false)
+    private Long hanSinhVien;
+
+    @Column(nullable = false)
+    private Long hanGiangVien;
+
+    @Column(nullable = false)
+    private Long hanCNBM;
+
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     private String hocKyId;
 
