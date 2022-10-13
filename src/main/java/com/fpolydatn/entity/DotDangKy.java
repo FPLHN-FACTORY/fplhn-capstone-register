@@ -39,7 +39,7 @@ public class DotDangKy extends MultiTenantEntity
     private Long hanGiangVien;
 
     @Column(nullable = false)
-    private Long hanCNBM;
+    private Long hanChuNhiemBoMon;
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     private String hocKyId;
