@@ -219,7 +219,7 @@ public class DBGenerator implements CommandLineRunner {
         SinhVien phongtt35 =  new SinhVien();
         phongtt35.setChuyenNganhId(ptpm.getId());
         phongtt35.setDotDangKyId(dot1.getId());
-        phongtt35.setMonDatnId(java.getId());
+        phongtt35.setMonChuongTrinhId(java.getId());
         phongtt35.setSoDienThoai("0912345667");
         phongtt35.setCoSoId(csHN.getId());
         phongtt35.setEmail("phongtt35@fpt.edu.vn");
@@ -247,7 +247,7 @@ public class DBGenerator implements CommandLineRunner {
         SinhVien nguyenvv4 =  new SinhVien();
         nguyenvv4.setChuyenNganhId(ptpm.getId());
         nguyenvv4.setDotDangKyId(dot1.getId());
-        nguyenvv4.setMonDatnId(java.getId());
+        nguyenvv4.setMonChuongTrinhId(java.getId());
         nguyenvv4.setSoDienThoai("0912345667");
         nguyenvv4.setCoSoId(csHN.getId());
         nguyenvv4.setEmail("nguyenvv4@fpt.edu.vn");
@@ -260,7 +260,7 @@ public class DBGenerator implements CommandLineRunner {
         SinhVien hangnt169 =  new SinhVien();
         hangnt169.setChuyenNganhId(ptpm.getId());
         hangnt169.setDotDangKyId(dot1.getId());
-        hangnt169.setMonDatnId(java.getId());
+        hangnt169.setMonChuongTrinhId(java.getId());
         hangnt169.setSoDienThoai("0912345667");
         hangnt169.setCoSoId(csHN.getId());
         hangnt169.setEmail("hangnt169@fpt.edu.vn");
@@ -273,7 +273,7 @@ public class DBGenerator implements CommandLineRunner {
         SinhVien khanhpg =  new SinhVien();
         khanhpg.setChuyenNganhId(ptpm.getId());
         khanhpg.setDotDangKyId(dot1.getId());
-        khanhpg.setMonDatnId(cSharp.getId());
+        khanhpg.setMonChuongTrinhId(cSharp.getId());
         khanhpg.setSoDienThoai("0912345667");
         khanhpg.setCoSoId(csHN.getId());
         khanhpg.setEmail("khanhpg@fpt.edu.vn");
@@ -286,7 +286,7 @@ public class DBGenerator implements CommandLineRunner {
         SinhVien sinhVien =  new SinhVien();
         sinhVien.setChuyenNganhId(ptpm.getId());
         sinhVien.setDotDangKyId(dot1.getId());
-        sinhVien.setMonDatnId(cSharp.getId());
+        sinhVien.setMonChuongTrinhId(cSharp.getId());
         sinhVien.setSoDienThoai("0912345667");
         sinhVien.setCoSoId(csHN.getId());
         sinhVien.setEmail("sinhvien.fcr@gmail.com");
