@@ -37,10 +37,11 @@ public class DtGiangVienHuongDanExport {
         createCell(row, 2, "Tên đợt đăng ký", cellStyle);
         createCell(row, 3, "Tên giảng viên", cellStyle);
         createCell(row, 4, "Tên tài khoản", cellStyle);
-        createCell(row, 5, "Số nhóm hướng dẫn ", cellStyle);
-        createCell(row, 6, "Số điện thoại", cellStyle);
-        createCell(row, 7, "Email FPT", cellStyle);
-        createCell(row, 8, "Email FE", cellStyle);
+        createCell(row, 5, "Số nhóm đang hướng dẫn", cellStyle);
+        createCell(row, 6, "Số nhóm hướng dẫn tối đa", cellStyle);
+        createCell(row, 7, "Số điện thoại", cellStyle);
+        createCell(row, 8, "Email FPT", cellStyle);
+        createCell(row, 9, "Email FE", cellStyle);
 
     }
 
@@ -79,7 +80,8 @@ public class DtGiangVienHuongDanExport {
             createCell(row, countColum++, giangVien.getTenDotDangKy(), style);
             createCell(row, countColum++, giangVien.getTenGvhd(), style);
             createCell(row, countColum++, giangVien.getTenTaiKhoan(), style);
-            createCell(row, countColum++, giangVien.getSoNhomDangHuongDan() + "/" + giangVien.getSoNhomHuongDanToiDa(), style);
+            createCell(row, countColum++, giangVien.getSoNhomDangHuongDan() , style);
+            createCell(row, countColum++, giangVien.getSoNhomHuongDanToiDa(), style);
             createCell(row, countColum++, giangVien.getSoDienThoai(), style);
             createCell(row, countColum++, giangVien.getEmailFpt(), style);
             createCell(row, countColum++, giangVien.getEmailFe(), style);
@@ -120,7 +122,7 @@ public class DtGiangVienHuongDanExport {
         createCell(row, 2, "Tên đợt đăng ký", cellStyle);
         createCell(row, 3, "Tên giảng viên", cellStyle);
         createCell(row, 4, "Tên tài khoản", cellStyle);
-        createCell(row, 5, "Số nhóm hướng dẫn", cellStyle);
+        createCell(row, 5, "Số nhóm hướng dẫn tối đa", cellStyle);
         createCell(row, 6, "Số điện thoại", cellStyle);
         createCell(row, 7, "Email FPT", cellStyle);
         createCell(row, 8, "Email FE", cellStyle);
