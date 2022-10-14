@@ -57,6 +57,7 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
                 <td><a class="btn btn-primary"  href="/chu-nhiem/sinh-vien?id=${item.id}">Chi tiết nhóm</a></td>
+                <td><button style="${item.trangThai == 4 ? 'display : block' : 'display : none'}" type="button" class="btn btn-primary" onclick="CNChotDuLieu('${item.id}','${count}')">Chốt đề tài</button></td>
                 <td><button style="${item.trangThai == 4 ? 'display : block' : 'display : none'}" type="button" class="btn btn-primary" onclick="CNChotDuLieu('${item.id}','${count}')">Chốt đề tài</button> | 
                 <button type="button" class="btn btn-danger text-white" style="${item.trangThai == 4 ? 'display : block' : 'display : none'}" onclick="openModalNhanXet('${item.id}','${count}')">Từ chối</button></td>
                 <td><button style="${item.trangThai == 5 ? 'display : none' : 'display : block'}" type="button" class="btn btn-danger text-white" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">Xóa</button>

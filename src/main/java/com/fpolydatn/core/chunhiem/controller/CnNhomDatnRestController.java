@@ -35,7 +35,9 @@ public class CnNhomDatnRestController extends BaseController {
     @GetMapping("/search")
     public ResponseObject viewNhomDatn(final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
+        req.setDotDangKyId(dotDangKyId);
         PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req);
         System.out.println(listNhomDatn.getData().size());
         return new ResponseObject(listNhomDatn);
