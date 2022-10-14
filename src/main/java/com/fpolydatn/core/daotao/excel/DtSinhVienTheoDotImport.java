@@ -26,7 +26,6 @@ public class DtSinhVienTheoDotImport {
         for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
             DtCreateSinhVienTheoDotRequest sinhVien = new DtCreateSinhVienTheoDotRequest();
             XSSFRow row = worksheet.getRow(i);
-            row.getCell(i).getCellTypeEnum();
 
             sinhVien.setMaSinhVien(String.valueOf(getCellValue(row.getCell(1))));
             sinhVien.setTenSinhVien(String.valueOf(getCellValue(row.getCell(2))));
@@ -46,7 +45,7 @@ public class DtSinhVienTheoDotImport {
 
     private static Object getCellValue(XSSFCell cell) {
         try {
-            switch (cell.getCellTypeEnum()) {
+            switch (cell.getCellType()) {
                 case NUMERIC -> {
                     return cell.getNumericCellValue();
                 }

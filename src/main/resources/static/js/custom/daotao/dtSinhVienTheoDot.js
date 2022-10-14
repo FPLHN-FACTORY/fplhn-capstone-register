@@ -133,3 +133,33 @@ $("#form_import_excel").submit(function (event) {
         $("#import_excel_error").text("chọn đúng file Excel ");
     }
 });
+
+function loaiSinhVien() {
+    var form = $('#form_loai_sinh_vien')[0];
+    $.ajax({
+            type: 'POST',
+            url: '/api/dao-tao/sinh-vien/loai-sinh-vien',
+            enctype: 'multipart/form-data',
+            processData: false,
+            data: new FormData(form),
+            contentType: false,
+            cache: false,
+            success: function (response) {
+                if (response.data.status == true){
+                    $("#messNotification").text("Loại sinh viên không đạt thành công");
+                } else {
+                    $("#messNotification").text(response.data.message);
+                }
+                $('#modal_loai_sinh_vien').modal("hide");
+                $("#modal_notification").modal("show");
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        }
+    );
+}
+
+function reload(){
+    window.open('/dao-tao/sinh-vien', '_self');
+}

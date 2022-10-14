@@ -2,6 +2,7 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.data.domain.Page;
@@ -102,5 +103,8 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                  WHERE s.co_so_id = :coSoId
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaSV(@Param("coSoId") String coSoId);
+
+    @Query(value = "SELECT * FROM sinh_vien WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId", nativeQuery = true)
+    List<SinhVien> findAllSinhVienByDotDangKyId(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
 
 }

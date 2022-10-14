@@ -4,7 +4,9 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotExport;
 import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotImport;
 import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
+import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
+import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
@@ -14,15 +16,22 @@ import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.github.pjfanning.xlsx.StreamingReader;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,7 +41,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * @author thepvph20110
@@ -222,6 +231,67 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         for (SimpleEntityProj simpleEntityProj : getAllSimpleEntityProjs) {
             mapSimple.put(simpleEntityProj.getName(), simpleEntityProj.getId());
         }
+    }
+
+    @Override
+    public DtLoaiSinhVienResponse loaiSinhVienKhongDat(DtLoaiSinhVienKhongDatRequest request) {
+        DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
+        response.setStatus(true);
+        List<String> listMsvLoai = new ArrayList<>();
+        int columnIndex = -1;
+        try {
+            Workbook workbook = StreamingReader.builder()
+                    .bufferSize(4096)
+                    .rowCacheSize(50)
+                    .open(request.getFileLoaiSv().getInputStream());
+
+            for (Sheet sheet : workbook) {
+                for (Row row : sheet) {
+                    for (Cell cell : row) {
+                        CellType type = cell.getCellType();
+                        if (type == CellType.STRING &&
+                                (cell.getStringCellValue().equals("Mã sinh viên") ||
+                                        cell.getStringCellValue().equals("MSV"))) {
+                            columnIndex = cell.getColumnIndex();
+                            continue;
+                        }
+                        if (columnIndex != -1 &&
+                                cell.getColumnIndex() == columnIndex &&
+                                type == CellType.STRING) {
+                            listMsvLoai.add(cell.getStringCellValue());
+                        }
+                    }
+                }
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        List<SinhVien> listSvKhongDat = new ArrayList<>();
+        Map<String, SinhVien> mapSinhVien = new HashMap<>();
+        List<SinhVien> listSinhVien = sinhVienRepository.findAllSinhVienByDotDangKyId(request.getDotDangKyId(),
+                request.getCoSoId());
+        listSinhVien.stream().forEach(sinhVien -> {
+            mapSinhVien.put(sinhVien.getMaSinhVien(), sinhVien);
+        });
+
+        listMsvLoai.parallelStream().forEach(msv -> {
+            SinhVien sv = mapSinhVien.get(msv);
+            if (sv != null){
+                if (sv.getTrangThai() == TrangThaiSinhVien.DU_DIEU_KIEN){
+                    sv.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                    listSvKhongDat.add(sv);
+                }
+            } else {
+                response.setStatus(false);
+                response.setMessage("Mã sinh viên " + msv + " không tồn tại");
+                return;
+            }
+        });
+        if (response.getStatus()){
+            sinhVienRepository.saveAll(listSvKhongDat);
+        }
+        return response;
     }
 
 }
