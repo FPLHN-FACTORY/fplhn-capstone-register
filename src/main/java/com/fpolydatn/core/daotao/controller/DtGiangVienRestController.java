@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
@@ -80,4 +81,15 @@ public class DtGiangVienRestController extends BaseController {
         this.giangVienHDService.importExcel(file);
     }
 
+    @GetMapping("/export")
+    public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
+        request.setCoSoId(session.getCoSoId());
+        giangVienHDService.DtGiangVienHDExportExcel(response, typeExcel, request);
+    }
+
+    @GetMapping("/export-mau")
+    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
+        request.setCoSoId(session.getCoSoId());
+        giangVienHDService.DtGiangVienHDMauExportExcel(response, typeExcel, request);
+    }
 }

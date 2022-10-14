@@ -8,7 +8,9 @@ import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -32,4 +34,7 @@ public interface DtGiangVienHDService {
 
     Object checkValidFile(List<GiangVienHuongDan> list);
 
+    void DtGiangVienHDExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
+
+    void DtGiangVienHDMauExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
 }

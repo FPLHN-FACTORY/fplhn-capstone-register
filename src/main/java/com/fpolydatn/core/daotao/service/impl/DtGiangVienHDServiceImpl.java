@@ -1,6 +1,7 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtGiangVienHuongDanExport;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
@@ -26,8 +27,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +58,8 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
 
     private FormUtils formUtils = new FormUtils();
+
+    private List<DtGiangVienHDResponse> listGiangVienHD;
 
     @Override
     public GiangVienHuongDan create(@Valid DtCreateGiangVienHDRequest command) {
@@ -129,6 +137,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     public PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<DtGiangVienHDResponse> res = dtGiangVienHDRepository.findByName(request, pageable);
+        listGiangVienHD = res.stream().toList();
         return new PageableObject<>(res);
     }
 
@@ -235,5 +244,30 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         return listGVHD;
     }
 
+    @Override
+    public void DtGiangVienHDExportExcel(HttpServletResponse response, String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
 
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=GiangVienHuongDan" + currentDateTime + "." + typeExcel;
+        response.setHeader(headerKey, headerValue);
+        DtGiangVienHuongDanExport dtGiangVienHuongDanExport = new DtGiangVienHuongDanExport(listGiangVienHD);
+        dtGiangVienHuongDanExport.exportData(response);
+    }
+
+    @Override
+    public void DtGiangVienHDMauExportExcel(HttpServletResponse response, String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=GiangVienHuongDan" + currentDateTime + "." + typeExcel;
+        response.setHeader(headerKey, headerValue);
+        List<DtGiangVienHDResponse> listMau = new ArrayList<>();
+        DtGiangVienHuongDanExport dtGiangVienHuongDanExport = new DtGiangVienHuongDanExport(listMau);
+        dtGiangVienHuongDanExport.exportMauImport(response);
+    }
 }
