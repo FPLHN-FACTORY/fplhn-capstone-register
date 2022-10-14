@@ -21,7 +21,6 @@ public interface GvNhomDatnService {
 
     PageableObject<GvNhomDatnResponse> fillAllNhomDatn(final GvFindNhomDatnRequest request);
 
-    NhomDatn updateTrangThaiNhom(final GvUpdateNhomDatnRequest request);
 
     NhomDatn findById(String maNhom);
 
@@ -33,8 +32,8 @@ public interface GvNhomDatnService {
 
     PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvFindNhomDatnHuongDanRequest request);
 
-    NhomDatn pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request);
+    NhomDatn chotDeTaiNhomDatn(final GvChotNhomDatnRequest request);
 
-    NhomDatn tuChoiDeTaiNhomDatn(final GvChotNhomDatnRequest request);
+    boolean mocThoiGianGiangVienHuongDan();
 
 }
