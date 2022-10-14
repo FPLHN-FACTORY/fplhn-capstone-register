@@ -58,5 +58,5 @@ public class SinhVien extends MultiTenantEntity
     private String dotDangKyId;
 
     @Column
-    private Long thoiDỉemRoiNhomGanNhat;
+    private Long thoiDiemRoiNhomGanNhat;
 }
