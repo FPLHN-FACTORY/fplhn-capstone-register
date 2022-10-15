@@ -163,9 +163,6 @@ public class DBGenerator implements CommandLineRunner {
         dot1.setHanChuNhiemBoMon(dot1.getNgayBatDau() + 2629800000L);
         dot1.setNgayKetThuc(dot1.getNgayBatDau() + 2629800000L);
         dot1.setTenDotDangKy("Đợt đăng ký kỳ 11");
-        dot1.setHanSinhVien(dot1.getNgayBatDau() + 1296000000L);
-        dot1.setHanGiangVien(dot1.getNgayBatDau() + 1900800000L);
-        dot1.setHanChuNhiemBoMon(dot1.getNgayBatDau() + 2629800000L);
         dot1.setId(dotDangKyRepository.save(dot1).getId());
 
         GiangVienHuongDan tiennh21 = new GiangVienHuongDan();
