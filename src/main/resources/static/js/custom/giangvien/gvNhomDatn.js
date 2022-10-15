@@ -68,21 +68,27 @@ function showDetail(maNhom) {
 }
 
 function pheDuyetNhomDatn(maNhom) {
-    $("#modal_nhom_datn_update").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/" + maNhom,
-        success: function (responseData) {
-            $('#update_nhom_datn').val(responseData.data.id)
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
+    var checkMocThoiGians = $("#mocthoiGian").val()
+    if(checkMocThoiGians == false) {
+        $("#show_error_phe_duyet_nhom_datn").modal('show');
+        $("#showErrorPheDuyetNhomDatn").text("đã hết thời hạn thực hiện ");
+    }else {
+        $("#modal_nhom_datn_update").modal('show');
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: nhomDatnAPI + "/" + maNhom,
+            success: function (responseData) {
+                $('#update_nhom_datn').val(responseData.data.id)
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
 }
 
-$("#XacNhanLienHeNhomDatn").submit(function () {
+$("#XacNhanLienHeNhomDatn").submit(function (event) {
     event.preventDefault();
     var maNhom = $('#update_nhom_datn').val()
     $.ajax({
@@ -154,20 +160,26 @@ function seachNhomdatn(index) {
 }
 
 function updateTenDeTai(maNhom) {
-    $("#modal_update_ten_de_tai").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/" + maNhom,
-        dataType: 'json',
-        success: function (responseData) {
-            $("#id_nhom_datn_update").val(responseData.data.id);
-            $("#ten_de_tai_update").val(responseData.data.tenDeTai);
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
+    var checkMocThoiGians = $("#mocthoiGian").val()
+    if(checkMocThoiGians == false) {
+        $("#show_error_phe_duyet_nhom_datn").modal('show');
+        $("#showErrorPheDuyetNhomDatn").text("đã hết thời hạn thực hiện ");
+    }else {
+        $("#modal_update_ten_de_tai").modal('show');
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: nhomDatnAPI + "/" + maNhom,
+            dataType: 'json',
+            success: function (responseData) {
+                $("#id_nhom_datn_update").val(responseData.data.id);
+                $("#ten_de_tai_update").val(responseData.data.tenDeTai);
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
 }
 
 $("#updateTenDeTaiNhomDatn").submit(function (event) {
@@ -201,6 +213,11 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
 });
 
 function chotDeTaiNhomDatn(maNhom) {
+    var checkMocThoiGians = $("#mocthoiGian").val()
+    if(checkMocThoiGians == false) {
+        $("#show_error_phe_duyet_nhom_datn").modal('show');
+        $("#showErrorPheDuyetNhomDatn").text("đã hết thời hạn thực hiện ");
+    }else{
         $("#modal_nhom_datn_chot_de_tai").modal('show');
         $.ajax({
             type: "GET",
@@ -213,14 +230,12 @@ function chotDeTaiNhomDatn(maNhom) {
                 console.log("ERROR : ", e);
             }
         });
-
-
+    }
 }
 
 $("#submitChotDeTaiNhomDatn").submit(function (event) {
     event.preventDefault()
     var maNhom = $('#ma_nhom_datn').val()
-    console.log(maNhom)
     $.ajax({
         type: "PUT",
         contentType: "application/json",

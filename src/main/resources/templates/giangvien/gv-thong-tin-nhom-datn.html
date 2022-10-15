@@ -241,6 +241,38 @@
 </div>
 <!--   thong bao phe dyet-->
 
+<!--  Start  show error -->
+<div
+        class="modal fade"
+        id="show_error_phe_duyet_nhom_datn"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form >
+                <div class="modal-header">
+                    <h5 class="modal-title">Lỗi</h5>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger" id="showErrorPheDuyetNhomDatn"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Xác nhận
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--   End show error-->
+
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
