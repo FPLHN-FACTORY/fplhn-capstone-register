@@ -344,21 +344,25 @@ function loadTable(count) {
                    <td >${item.emailFpt}</td>
                    <td >${item.emailFe}</td>
                    <td>
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        onclick="openModalUpdateGiangVien('${item.id}','${count}')">
-                          Sửa
-                     </button>
-                     </button>
-                     <button
-                         type="button"
-                         class="btn btn-danger"
-                         data-toggle="modal"
-                         onclick="openModalRemoveGiangVien('${item.id}','${count}')">
-                         Xoá
-                     </button>
-                    </td>
+                       <button
+                           type="button"
+                           class="btn btn-primary chuc-nang"
+                           onclick="openModalUpdateGiangVien('${item.id}','${count}')">
+                             Sửa
+                        </button>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-danger chuc-nang"
+                            data-toggle="modal"
+                            onclick="openModalRemoveGiangVien('${item.id}','${count}')">
+                            Xoá
+                        </button>
+                       <a type="button" class="btn btn-success chuc-nang"
+                            href="/dao-tao/giang-vien-huong-dan/${item.id}">
+                            Phân môn
+                        </a>
+                   </td>
 
                </tr>
                `
