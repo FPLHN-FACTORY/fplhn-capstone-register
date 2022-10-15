@@ -1,6 +1,10 @@
 let CNNhomDatnApi = '/api/chu-nhiem/nhom-datn';
 let CNNhomDatnView = '/chu-nhiem/nhom-datn';
 
+function submitModal() {
+    $("#modal_confirm_success").modal('hide')
+}
+
 $(document).ready(function () {
     $("#hoc_ky_error").text("");
 });
@@ -10,6 +14,7 @@ function clearData() {
     $("#chuyenNganhId").val("");
     $("#tenGvhd").val("");
     $("#trangThai").val("");
+    $("#dotDangKyId").val("");
 }
 
 $("#form_list_nhom_datn").submit(function (event) {
@@ -42,7 +47,7 @@ function loadDataNhomDatn(count) {
                 $("#empty").html(``)
                 var templateString;
                 $("#listNhomDatn").html(array.map(function (item) {
-                    templateString = item.trangThai == 4 ? `<td><input type="checkbox" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"></td>` : `<td><input disabled type="checkbox" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"></td>`
+                    templateString = item.trangThai == 4 | item.trangThai == 0 ? `<td><input type="checkbox" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"></td>` : `<td><input disabled type="checkbox" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"></td>`
                     return `
                 <tr>`
 
@@ -55,9 +60,9 @@ function loadDataNhomDatn(count) {
                 <td>${item.total}</td>
                 <td>${item.maSinhVien + ' - ' + item.tenSinhVien}</td>
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
+                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã xác nhận' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
                 <td><a class="btn btn-primary"  href="/chu-nhiem/sinh-vien?id=${item.id}">Chi tiết nhóm</a></td>
-                <td><button style="${item.trangThai == 4 ? 'display : block' : 'display : none'}" type="button" class="btn btn-primary" onclick="CNChotDuLieu('${item.id}','${count}')">Chốt đề tài</button></td>
+                <td><button style="${item.trangThai == 0 ? 'display : block' : 'display : none'}" type="button" class="btn btn-primary" onclick="CNXacNhanNhom('${item.id}','${count}')">Xác nhận</button></td>
                 <td><button style="${item.trangThai == 4 ? 'display : block' : 'display : none'}" type="button" class="btn btn-primary" onclick="CNChotDuLieu('${item.id}','${count}')">Chốt đề tài</button> | 
                 <button type="button" class="btn btn-danger text-white" style="${item.trangThai == 4 ? 'display : block' : 'display : none'}" onclick="openModalNhanXet('${item.id}','${count}')">Từ chối</button></td>
                 <td><button style="${item.trangThai == 5 ? 'display : none' : 'display : block'}" type="button" class="btn btn-danger text-white" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">Xóa</button>
@@ -84,24 +89,67 @@ function loadDataNhomDatn(count) {
 }
 
 function CNChotDuLieu(id, count) {
-    let checkConfirm = confirm("Bạn có chắc muốn chốt dữ liệu không?");
-    if (checkConfirm) {
-        chotDeTai(id, count)
-        alert("Chốt thành công")
-    }
+    $("#modal_chot_de_tai").modal('show')
+    $("#id_nhom_datn_chot").val(id)
+    $("#currentPagingChot").val(count)
 }
+
+$("#form_chot_de_tai").submit(function (event) {
+    event.preventDefault();
+    let id = $("#id_nhom_datn_chot").val()
+    let count = $("#currentPagingChot").val()
+    chotDeTai(id, count)
+    $("#modal_chot_de_tai").modal('hide')
+    $("#messageSuccess").text("Chốt đề tài thành công")
+    $("#modal_confirm_success").modal('show')
+});
 
 function chotDeTai(id, count) {
     $.ajax({
         type: "PUT",
         contentType: "application/json",
-        url: CNNhomDatnApi + "/" + id + "?page=" + count,
+        url: CNNhomDatnApi + "/chot-de-tai/" + id + "?page=" + count,
         dataType: 'json',
         success: function () {
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            alert(e.responseJSON.message);
+            $("#messageSuccess").text(e.responseJSON.message)
+            $("#modal_confirm_success").modal('show')
+            return;
+        }
+    });
+}
+
+function CNXacNhanNhom(id, count) {
+    $("#modal_xac_nhan_nhom").modal('show')
+    $("#id_nhom_datn_xac_nhan").val(id)
+    $("#currentPagingXacNhan").val(count)
+}
+
+$("#form_xac_nhan_nhom").submit(function (event) {
+    event.preventDefault();
+    let id = $("#id_nhom_datn_xac_nhan").val()
+    let count = $("#currentPagingXacNhan").val()
+    xacNhanNhom(id, count)
+    $("#modal_xac_nhan_nhom").modal('hide')
+    $("#messageSuccess").text("Xác nhận nhóm thành công")
+    $("#modal_confirm_success").modal('show')
+});
+
+function xacNhanNhom(id, count) {
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: CNNhomDatnApi + "/xac-nhan-nhom/" + id + "?page=" + count,
+        dataType: 'json',
+        success: function () {
+            loadDataNhomDatn(count)
+        },
+        error: function (e) {
+            $("#messageSuccess").text(e.responseJSON.message)
+            $("#modal_confirm_success").modal('show')
+            return;
         }
     });
 }
@@ -120,7 +168,9 @@ function openModalRemoveNhomDatn(id, count) {
             $("#remove_nhom_datn").val(id);
         },
         error: function (e) {
-            alert(e.responseJSON.message);
+            $("#messageSuccess").text(e.responseJSON.message)
+            $("#modal_confirm_success").modal('show')
+            return;
         }
     });
 }
@@ -139,7 +189,9 @@ function openModalNhanXet(id, count) {
             $("#id_nhan_xet_nhom_datn").val(id);
         },
         error: function (e) {
-            alert(e.responseJSON.message);
+            $("#messageSuccess").text(e.responseJSON.message)
+            $("#modal_confirm_success").modal('show')
+            return;
         }
     });
 }
@@ -161,7 +213,10 @@ $("#form_nhom_datn_nhan_xet").submit(function (event) {
             $("#modal_nhom_datn_nhan_xet").modal("hide");
         },
         error: function (e) {
-            alert(e.responseJSON.message);
+            $("#modal_nhom_datn_nhan_xet").modal("hide");
+            $("#messageSuccess").text(e.responseJSON.message)
+            $("#modal_confirm_success").modal('show')
+            return;
         }
     });
 });
@@ -182,11 +237,12 @@ $("#form_nhom_datn_delete").submit(function (event) {
             $("#modal_nhom_datn_remove").modal("hide");
         },
         error: function (e) {
-            alert(e.responseJSON.message);
+            $("#messageSuccess").text(e.responseJSON.message)
+            $("#modal_confirm_success").modal('show')
+            return;
         }
     });
 });
-
 
 document.querySelector("#checkbox_father").addEventListener("change", function (e) {
     e.preventDefault()
@@ -227,42 +283,82 @@ function chotNhieuDeTai(count) {
         }
     }
     if (check == 0) {
-        alert("Hãy chọn nhóm muốn chốt đề tài")
+        $("#messageSuccess").text("Hãy chọn nhóm muốn chốt đề tài")
+        $("#modal_confirm_success").modal('show')
     } else {
-        let checkConfirm = confirm("Bạn có chắc muốn chốt dữ liệu không?");
-        if (checkConfirm) {
-            for (var item of list_checkbox_son) {
-                if (item.checked) {
-                    chotDeTai(item.value, count);
-                }
-            }
-            alert("Chốt thành công")
-        }
+        $("#modal_chot_nhieu_de_tai").modal('show')
+        $("#currentPagingChotNhieu").val(count)
     }
 }
 
+$("#form_chot_nhieu_de_tai").submit(function (event) {
+    event.preventDefault();
+    let count = $('#currentPagingChotNhieu').val()
+    var list_checkbox_son = document.querySelectorAll("#checkbox_son")
+    for (var item of list_checkbox_son) {
+        if (item.checked) {
+            chotDeTai(item.value, count);
+        }
+    }
+    $("#modal_chot_nhieu_de_tai").modal('hide')
+    $("#messageSuccess").text("Chốt thành công")
+    $("#modal_confirm_success").modal('show')
+})
+
+function xacNhanNhieuNhom(count) {
+    var list_checkbox_son = document.querySelectorAll("#checkbox_son")
+    var check = 0;
+    for (var item of list_checkbox_son) {
+        if (item.checked) {
+            check++
+        }
+    }
+    if (check == 0) {
+        $("#messageSuccess").text("Hãy chọn nhóm muốn xác nhận")
+        $("#modal_confirm_success").modal('show')
+    } else {
+        $("#modal_xac_nhan_nhieu_nhom").modal('show')
+        $("#currentPagingXacNhanNhieu").val(count)
+    }
+}
+
+$("#form_xac_nhan_nhieu_nhom").submit(function (event) {
+    event.preventDefault();
+    let count = $('#currentPagingXacNhanNhieu').val()
+    var list_checkbox_son = document.querySelectorAll("#checkbox_son")
+    for (var item of list_checkbox_son) {
+        if (item.checked) {
+            xacNhanNhom(item.value, count);
+        }
+    }
+    $("#modal_xac_nhan_nhieu_nhom").modal('hide')
+    $("#messageSuccess").text("Xác nhận thành công")
+    $("#modal_confirm_success").modal('show')
+})
+
 function clearForm() {
-    $("#maNhom").val("");
     $("#matKhau").val("");
     $("#maGiangVien").val("");
     $("#maTruongNhom").val("");
 }
 
+function openModalCreate(){
+    $("#modal_create").modal('show')
+}
+
 $("#form_create_nhom_datn").submit(function (event) {
     event.preventDefault();
-    let maNhom = $("#maNhom").val().trim();
+
     let matKhau = $("#matKhau").val().trim();
     let maGiangVien = $("#maGiangVien").val().trim();
-    let maTruongNhom = $("#maTruongNhom").val().trim();
+    let maTruongNhom = $("#tags").val().trim().split('_');
+
     let nhomDatnRequest = {};
-    nhomDatnRequest["maNhom"] = maNhom;
     nhomDatnRequest["matKhau"] = matKhau;
     nhomDatnRequest["maGiangVien"] = maGiangVien;
-    nhomDatnRequest["maSinhVien"] = maTruongNhom;
+    nhomDatnRequest["maSinhVien"] = maTruongNhom[0];
 
-    if (maNhom.length == 0) {
-        $("#ma_nhom_erorr").text("Mã nhóm không được để trống")
-    } else if (matKhau.length < 6) {
+    if (matKhau.length < 6) {
         $("#mat_khau_erorr").text("Mật khẩu tối thiểu 6 ký tự");
     } else if (maTruongNhom.length == 0) {
         $("#ma_truong_nhom_erorr").text("Mã trưởng nhóm không được để trống");
@@ -278,12 +374,32 @@ $("#form_create_nhom_datn").submit(function (event) {
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
-                alert(e.responseJSON.message);
+                $("#modal_create").modal("hide");
+                $("#messageSuccess").text(e.responseJSON.message)
+                $("#modal_confirm_success").modal('show')
             }
         });
     }
 });
 
+function searchSinhVienNoGroup() {
+    let text = $("#tags").val();
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: CNNhomDatnApi + "/list-sinh-vien-no-group" + "?maSinhVien=" + text + "&tenSinhVien=" + text,
+        dataType: 'json',
+        success: function (responseData) {
+            let array = responseData.data
+            $("#tags").autocomplete({
+                source: array
+            });
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
 
 
 

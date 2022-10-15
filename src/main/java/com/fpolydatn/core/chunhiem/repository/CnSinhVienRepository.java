@@ -112,12 +112,22 @@ public interface CnSinhVienRepository extends SinhVienRepository {
     List<SinhVien> getAllSinhVien(String idNhom);
 
     @Query(value = """
-            SELECT CONCAT(ma_sinh_vien, '_' , ten_sinh_vien) as thong_tin, ma_sinh_vien FROM sinh_vien WHERE nhom_id IS NULL
-            AND ((:#{#req.maSinhVien} IS NULL OR :#{#req.maSinhVien} LIKE ''
+            SELECT CONCAT(ma_sinh_vien, '_' , ten_sinh_vien) as thong_tin, ma_sinh_vien FROM sinh_vien
+            WHERE ((:#{#req.maSinhVien} IS NULL OR :#{#req.maSinhVien} LIKE ''
             OR ma_sinh_vien LIKE %:#{#req.maSinhVien}%)
             OR (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
             OR ten_sinh_vien LIKE %:#{#req.tenSinhVien}%))
-            AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId}
+            AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId} AND nhom_id IS NULL
             """, nativeQuery = true)
     List<CnSinhVienSearchResponse> getListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req);
+
+    @Query(value = """
+            SELECT CONCAT(ma_sinh_vien, '_' , ten_sinh_vien) as thong_tin FROM sinh_vien
+            WHERE ((:#{#req.maSinhVien} IS NULL OR :#{#req.maSinhVien} LIKE ''
+            OR ma_sinh_vien LIKE %:#{#req.maSinhVien}%)
+            OR (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
+            OR ten_sinh_vien LIKE %:#{#req.tenSinhVien}%))
+            AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId} AND nhom_id IS NULL
+            """, nativeQuery = true)
+    List<String> getStringListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req);
 }

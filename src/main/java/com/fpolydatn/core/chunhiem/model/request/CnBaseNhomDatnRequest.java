@@ -17,10 +17,6 @@ public abstract class CnBaseNhomDatnRequest {
 
     @NotEmpty()
     @NotBlank()
-    private String maNhom;
-
-    @NotEmpty()
-    @NotBlank()
     @Column(length = EntityProperties.LENGTH_PASSWORD)
     private String matKhau;
 

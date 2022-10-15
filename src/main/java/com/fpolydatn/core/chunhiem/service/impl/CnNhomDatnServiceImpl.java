@@ -2,7 +2,9 @@ package com.fpolydatn.core.chunhiem.service.impl;
 
 import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
+import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
 import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
 import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
@@ -14,6 +16,8 @@ import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.MocThoiGianCommon;
+import com.fpolydatn.util.NhomDatnHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,10 +41,14 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Autowired
     private CnSinhVienRepository cnSinhVienRepository;
 
-    private FormUtils formUtils = new FormUtils();
-
     @Autowired
     private CommonHelper commonHelper;
+
+    @Autowired
+    private MocThoiGianCommon mocThoiGianCommon;
+
+    @Autowired
+    private NhomDatnHelper nhomDatnHelper;
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request) {
@@ -51,9 +59,16 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean chotDeTai(String id) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
+        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if (nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.GVHD_CHOT) {
+            throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CNBM_CHOT);
         cnNhomDatnRepository.save(nhomDatnCheck.get());
@@ -61,10 +76,35 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     }
 
     @Override
-    public boolean tuChoiChotDeTai(String id, String nhanXet) {
+    public boolean xacNhanNhom(String id) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
+        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if (nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.MOI_THANH_LAP) {
+            throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
+        }
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
+        cnNhomDatnRepository.save(nhomDatnCheck.get());
+        return true;
+    }
+
+    @Override
+    public boolean tuChoiChotDeTai(String id, String nhanXet) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
+        }
+        Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
+        if (Objects.isNull(nhomDatnCheck)) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if (nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.GVHD_CHOT) {
+            throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CAN_SUA);
         nhomDatnCheck.get().setNhanXet(nhanXet);
@@ -74,6 +114,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public Boolean delete(String id) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
+        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -97,6 +141,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
+        }
         String idGiangVien = null;
         if (cnCreateNhomDatnRequest.getMaGiangVien() != null && cnCreateNhomDatnRequest.getMaGiangVien() != "") {
             idGiangVien = cnNhomDatnRepository.getIdByTenTaiKhoanGvhd(cnCreateNhomDatnRequest.getMaGiangVien());
@@ -119,7 +167,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         NhomDatn nhomDatn = new NhomDatn();
         nhomDatn.setTruongNhomId(idTruongNhom);
         nhomDatn.setGiangVienId(idGiangVien);
-        nhomDatn.setMaNhom(cnCreateNhomDatnRequest.getMaNhom());
+        nhomDatn.setMaNhom(nhomDatnHelper.genMaNhomTuDong());
         nhomDatn.setMatKhau(cnCreateNhomDatnRequest.getMatKhau());
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
         nhomDatn.setCoSoId(cnCreateNhomDatnRequest.getCoSoId());
@@ -127,6 +175,11 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         nhomDatn.setId(cnNhomDatnRepository.save(nhomDatn).getId());
         cnNhomDatnRepository.setNhomForTruongNhom(cnNhomDatnRepository.save(nhomDatn).getId(), idTruongNhom);
         return true;
+    }
+
+    @Override
+    public List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
+        return cnSinhVienRepository.getStringListSinhVienNoGroup(req);
     }
 
 }
