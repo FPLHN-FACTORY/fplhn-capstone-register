@@ -34,4 +34,6 @@ public interface SvSinhVienRepository extends SinhVienRepository {
     @Query(value = "SELECT COUNT(id) FROM sinh_vien WHERE nhom_id = :nhomId GROUP BY nhom_id", nativeQuery = true)
     int getSoLuongThanhVienById(@Param("nhomId") String nhomId);
 
+    @Query(value = "SELECT mon_chuong_trinh_id FROM sinh_vien WHERE id = :id ",nativeQuery = true)
+    String getMonChuongTrinhIdById(@Param("id") String id);
 }

@@ -23,4 +23,14 @@ public class SvMonDatnServiceImpl implements SvMonDatnService {
         return svMonDatnRepository.findMonDatn();
     }
 
+    @Override
+    public String getNhomMonDatnIdByMonChuongTrinhId(String id) {
+        return svMonDatnRepository.getNhomMonDatnIdByMonChuongTrinhId(id);
+    }
+
+    @Override
+    public List<SvMonDatnResponse> getMonDatnTuongDuong(String id) {
+        return svMonDatnRepository.getMonDatnTuongDuong(id);
+    }
+
 }

@@ -12,4 +12,7 @@ public interface SvMonDatnService {
 
     List<SvMonDatnResponse> getMonDatn();
 
+    String getNhomMonDatnIdByMonChuongTrinhId(String id);
+    List<SvMonDatnResponse> getMonDatnTuongDuong(String id);
+
 }
