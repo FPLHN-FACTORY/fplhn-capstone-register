@@ -10,9 +10,6 @@ import java.util.List;
 
 public interface SvMonDatnService {
 
-    List<SvMonDatnResponse> getMonDatn();
-
-    String getNhomMonDatnIdByMonChuongTrinhId(String id);
-    List<SvMonDatnResponse> getMonDatnTuongDuong(String id);
+    List<SvMonDatnResponse> getAllMonDatnByIdUser(String id);
 
 }

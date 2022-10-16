@@ -50,13 +50,11 @@ public class SvNhomDatnController extends BaseController {
         String nhomId = svSinhVienService.getNhomIdById(coSoId,
                 dotDangKyHienTai,
                 idUSer);
-        String monChuongTrinhId = svSinhVienService.getMonChuongTrinhIdById(idUSer);
-        String nhomMonDatnId = svMonDatnService.getNhomMonDatnIdByMonChuongTrinhId(monChuongTrinhId);
         if (nhomId == null || nhomId.trim().isEmpty()) {
             req.setCoSoId(coSoId);
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
-            model.addAttribute("listDataMonDatn", svMonDatnService.getMonDatnTuongDuong(nhomMonDatnId));
+            model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer));
             model.addAttribute("page", listNhomDatn);
             return "sinhvien/sv-join-nhom-datn";
         } else {
