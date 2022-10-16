@@ -54,7 +54,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     @Override
     public PageableObject<DtCanBoResponse> search(final DtFindCanBoRequest canBoRequest) {
         Pageable pageable = PageRequest.of(canBoRequest.getPage(), canBoRequest.getSize());
-        Page<DtCanBoResponse> res = dtCanBoRepository.findAllByTenCanBo(canBoRequest, pageable);
+        Page<DtCanBoResponse> res =  dtCanBoRepository.findAllByTenCanBo(canBoRequest, pageable);
         return new PageableObject(res);
     }
 
