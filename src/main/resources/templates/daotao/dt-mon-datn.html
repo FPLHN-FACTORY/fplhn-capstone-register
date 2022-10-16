@@ -33,47 +33,56 @@
                 <div class="m-content">
                     <h3>Quản lý Môn DATN</h3>
                     <div class="mt-5">
+                        <section class="fillter-area  mb-5">
+                            <div class="m-portlet">
+
+                                <div class="row">
+                                    <div class="col-12 d-inline" >
+                                        <!--  Start Modal Import Excel-->
+                                        <form style = "margin:20px" id="modal_mon_datn_import" th:object="${file}" th:action="@{'/dao-tao/mon-datn/import'}" method="POST" enctype="multipart/form-data">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Import Excel</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${errorMess}">
+                                                    <strong>ERROR !!! </strong>
+                                                    <div th:each="mess : ${errorMess}">
+                                                        <p th:text="${mess}"></p>
+                                                    </div>
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${successMess}">
+                                                    <strong>SUCCESS !!! </strong><p th:text="${successMess}"></p>
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <h5 class="modal-title">Import file Excel</h5>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlFile1">Example file input</label>
+                                                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="fileupload" th:field="*{file}" multiple >
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a th:href="@{/dao-tao/mon-datn/mau-import}" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Mẫu Import Excel">
+                                                    <i class="fas fa-download">Mẫu Import</i>
+                                                </a>
+                                                <button type="submit" class="btn btn-primary" style="cursor: not-allowed" id="import" data-toggle="tooltip" data-placement="top" title="Import Excel" disabled>
+                                                    <i class="fas fa-upload">Import excel</i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <!--   End Modal Import Excel -->
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
-                                    <div class="row">
-                                        <div class="col-12 d-inline" >
-                                            <!--  Start Modal Import Excel-->
-                                            <form id="modal_mon_datn_import" th:object="${file}" th:action="@{'/dao-tao/mon-datn/import'}" method="POST" enctype="multipart/form-data">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Import Excel</h5>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${errorMess}">
-                                                        <strong>ERROR !!! </strong>
-                                                        <div th:each="mess : ${errorMess}">
-                                                            <p th:text="${mess}"></p>
-                                                        </div>
-                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${successMess}">
-                                                        <strong>SUCCESS !!! </strong><p th:text="${successMess}"></p>
-                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-
-                                                    <h5 class="modal-title">Import file Excel</h5>
-                                                    <div class="form-group">
-                                                        <label for="exampleFormControlFile1">Example file input</label>
-                                                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="fileupload" th:field="*{file}" multiple >
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">Load Table
-                                                    </button>
-                                                </div>
-                                            </form>
-                                            <!--   End Modal Import Excel -->
-                                        </div>
-                                    </div>
                                     <div class="row">
                                         <div class="col-6 d-inline">
                                             <a

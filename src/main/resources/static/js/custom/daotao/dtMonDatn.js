@@ -36,8 +36,8 @@ $("#form_create_mon_datn").submit(function (event) {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                window.open(monDatnView, '_self');
-                $("#modal_create").modal("hide");
+                    window.open(monDatnView, '_self');
+                    $("#modal_create").modal("hide");
             },
             error: function (e) {
                 $("#ma_mon_datn_error").text(e.responseJSON.message);
@@ -140,18 +140,13 @@ $("#form_mon_datn_delete").submit(function (event) {
     });
 });
 
-function openModalImportMonDatn() {
-    $("#modal_mon_datn_import").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: monDatnApi,
-        data: JSON.stringify(),
-        dataType: 'json',
-        success: function () {
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
+$("#exampleFormControlFile1").on("input", function () {
+    if(!$("#exampleFormControlFile1").val().trim().length == 0) {
+        $("#import").removeAttr('disabled');
+        $("#import").css( 'cursor', 'pointer' );
+    } else {
+        $("#import").attr('disabled','disabled');
+        $("#import").css( 'cursor', 'not-allowed');
+    }
+
+})

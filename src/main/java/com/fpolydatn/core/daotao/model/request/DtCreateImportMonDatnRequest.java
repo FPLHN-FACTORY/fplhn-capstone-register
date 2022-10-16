@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @Getter
 @Setter
-public class DtCreateImportMonDatnRequest  extends DtBaseMonDatnRequest {
+public class DtCreateImportMonDatnRequest extends DtBaseMonDatnRequest{
 
     @NotEmpty
     @NotBlank
