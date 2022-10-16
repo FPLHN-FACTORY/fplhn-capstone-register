@@ -6,4 +6,6 @@ package com.fpolydatn.infrastructure.session;
 public interface FpolyDatnSession {
 
     String getCoSoId();
+
+    String getUserId();
 }

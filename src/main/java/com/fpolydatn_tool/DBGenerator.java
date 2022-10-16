@@ -29,6 +29,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.util.Calendar;
+
 /**
  * @author phongtt35
  */
@@ -82,6 +84,16 @@ public class DBGenerator implements CommandLineRunner {
         yenlh5.setTenTaiKhoan("yenlh5");
         yenlh5.setVaiTro(VaiTro.DAO_TAO);
         yenlh5.setId(canBoRepository.save(yenlh5).getId());
+        CanBo daotao = new CanBo();
+        daotao.setCoSoId(csHN.getId());
+        daotao.setEmailFe("daotao.fcr@gmail.com");
+        daotao.setEmailFpt("daotao.fcr@gmail.com");
+        daotao.setSoDienThoai("0912345678");
+        daotao.setTenCanBo("Đào tạo");
+        daotao.setTenTaiKhoan("daotao");
+        daotao.setVaiTro(VaiTro.DAO_TAO);
+        daotao.setId(canBoRepository.save(daotao).getId());
+
         CanBo minhdq8 = new CanBo();
         minhdq8.setCoSoId(csHN.getId());
         minhdq8.setEmailFe("minhdq8@fe.edu.vn");
@@ -100,6 +112,15 @@ public class DBGenerator implements CommandLineRunner {
         thienth3.setTenTaiKhoan("thienth3");
         thienth3.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
         thienth3.setId(canBoRepository.save(thienth3).getId());
+        CanBo cnbm = new CanBo();
+        cnbm.setCoSoId(csHN.getId());
+        cnbm.setEmailFe("chunhiem.fcr@gmail.com");
+        cnbm.setEmailFpt("chunhiem.fcr@gmail.com");
+        cnbm.setSoDienThoai("0912345678");
+        cnbm.setTenCanBo("Chủ nhiệm");
+        cnbm.setTenTaiKhoan("chunhiem");
+        cnbm.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
+        cnbm.setId(canBoRepository.save(cnbm).getId());
 
         ChuyenNganh ptpm = new ChuyenNganh();
         ptpm.setCoSoId(csHN.getId());
@@ -112,25 +133,36 @@ public class DBGenerator implements CommandLineRunner {
         cntt.setTenChuyenNganh("Công nghệ thông tin");
         cntt.setId(chuyenNganhRepository.save(cntt).getId());
 
+        MonDatn monPtpm = new MonDatn();
+        monPtpm.setCoSoId(csHN.getId());
+        monPtpm.setMaMon("PRO");
+        monPtpm.setChuyenNganhId(ptpm.getId());
+        monPtpm.setTenMonDatn("Môn dự án tốt nghiệp PTPM");
+        monPtpm.setId(monDatnRepository.save(monPtpm).getId());
         MonDatn java = new MonDatn();
         java.setCoSoId(csHN.getId());
         java.setMaMon("PRO2112");
         java.setChuyenNganhId(ptpm.getId());
+        java.setNhomMonDatnId(monPtpm.getId());
         java.setTenMonDatn("Dự án tốt nghiệp (UDPM-Spring Boot)");
         java.setId(monDatnRepository.save(java).getId());
         MonDatn cSharp = new MonDatn();
         cSharp.setCoSoId(csHN.getId());
         cSharp.setMaMon("PRO2113");
         cSharp.setChuyenNganhId(ptpm.getId());
+        cSharp.setNhomMonDatnId(monPtpm.getId());
         cSharp.setTenMonDatn("Dự án tốt nghiệp C#");
         cSharp.setId(monDatnRepository.save(cSharp).getId());
 
         DotDangKy dot1 = new DotDangKy();
         dot1.setCoSoId(csHN.getId());
         dot1.setHocKyId(su22.getId());
-        dot1.setNgayBatDau(1652115600000L);
-        dot1.setNgayKetThuc(1652979600000L);
-        dot1.setTenDotDangKy("Đợt đăng ký kỳ Summer 2022");
+        dot1.setNgayBatDau(Calendar.getInstance().getTimeInMillis());
+        dot1.setHanSinhVien(dot1.getNgayBatDau() + 1296000000L);
+        dot1.setHanGiangVien(dot1.getNgayBatDau() + 1900800000L);
+        dot1.setHanChuNhiemBoMon(dot1.getNgayBatDau() + 2629800000L);
+        dot1.setNgayKetThuc(dot1.getNgayBatDau() + 2629800000L);
+        dot1.setTenDotDangKy("Đợt đăng ký kỳ 11");
         dot1.setId(dotDangKyRepository.save(dot1).getId());
 
         GiangVienHuongDan tiennh21 = new GiangVienHuongDan();
@@ -153,9 +185,19 @@ public class DBGenerator implements CommandLineRunner {
         dungna29.setCoSoId(csHN.getId());
         dungna29.setDotDangKyId(dot1.getId());
         dungna29.setSoNhomHuongDanToiDa((short)5);
-        dungna29.setTenTaiKhoan("dungna29");
         dungna29.setTenGvhd("Nguyễn Anh Dũng");
         dungna29.setId(giangVienHuongDanRepository.save(dungna29).getId());
+
+        GiangVienHuongDan gvhd = new GiangVienHuongDan();
+        gvhd.setEmailFe("giangvien.fcr@gmail.com");
+        gvhd.setSoDienThoai("09123445678");
+        gvhd.setTenTaiKhoan("giangvien");
+        gvhd.setEmailFpt("giangvien.fcr@gmail.com");
+        gvhd.setCoSoId(csHN.getId());
+        gvhd.setDotDangKyId(dot1.getId());
+        gvhd.setSoNhomHuongDanToiDa((short)7);
+        gvhd.setTenGvhd("Giảng Viên");
+        gvhd.setId(giangVienHuongDanRepository.save(gvhd).getId());
 
         PhanCongHuongDan tienNHJava = new PhanCongHuongDan();
         tienNHJava.setGiangVienId(tiennh21.getId());
@@ -163,19 +205,28 @@ public class DBGenerator implements CommandLineRunner {
         phanCongHuongDanRepository.save(tienNHJava);
         PhanCongHuongDan dungNACSharp = new PhanCongHuongDan();
         dungNACSharp.setMonDatnId(cSharp.getId());
-        dungNACSharp.setGiangVienId(cSharp.getId());
+        dungNACSharp.setGiangVienId(dungna29.getId());
         phanCongHuongDanRepository.save(dungNACSharp);
+        PhanCongHuongDan gvhdJava = new PhanCongHuongDan();
+        gvhdJava.setMonDatnId(java.getId());
+        gvhdJava.setGiangVienId(gvhd.getId());
+        phanCongHuongDanRepository.save(gvhdJava);
+        PhanCongHuongDan gvhdCS = new PhanCongHuongDan();
+        gvhdCS.setMonDatnId(cSharp.getId());
+        gvhdCS.setGiangVienId(gvhd.getId());
+        phanCongHuongDanRepository.save(gvhdCS);
 
         SinhVien phongtt35 =  new SinhVien();
         phongtt35.setChuyenNganhId(ptpm.getId());
         phongtt35.setDotDangKyId(dot1.getId());
-        phongtt35.setMonDatnId(java.getId());
+        phongtt35.setMonChuongTrinhId(java.getId());
         phongtt35.setSoDienThoai("0912345667");
         phongtt35.setCoSoId(csHN.getId());
         phongtt35.setEmail("phongtt35@fpt.edu.vn");
         phongtt35.setKhoa("K12");
         phongtt35.setTenSinhVien("Trần Tuấn Phong");
         phongtt35.setMaSinhVien("PH12345");
+        phongtt35.setMonDatnId(java.getId());
         phongtt35.setId(sinhVienRepository.save(phongtt35).getId());
 
         NhomDatn nhom1 = new NhomDatn();
@@ -197,7 +248,7 @@ public class DBGenerator implements CommandLineRunner {
         SinhVien nguyenvv4 =  new SinhVien();
         nguyenvv4.setChuyenNganhId(ptpm.getId());
         nguyenvv4.setDotDangKyId(dot1.getId());
-        nguyenvv4.setMonDatnId(java.getId());
+        nguyenvv4.setMonChuongTrinhId(java.getId());
         nguyenvv4.setSoDienThoai("0912345667");
         nguyenvv4.setCoSoId(csHN.getId());
         nguyenvv4.setEmail("nguyenvv4@fpt.edu.vn");
@@ -205,12 +256,13 @@ public class DBGenerator implements CommandLineRunner {
         nguyenvv4.setTenSinhVien("Vũ Văn Nguyên");
         nguyenvv4.setMaSinhVien("PH23456");
         nguyenvv4.setNhomId(nhom1.getId());
+        nguyenvv4.setMonDatnId(java.getId());
         nguyenvv4.setId(sinhVienRepository.save(nguyenvv4).getId());
 
         SinhVien hangnt169 =  new SinhVien();
         hangnt169.setChuyenNganhId(ptpm.getId());
         hangnt169.setDotDangKyId(dot1.getId());
-        hangnt169.setMonDatnId(java.getId());
+        hangnt169.setMonChuongTrinhId(java.getId());
         hangnt169.setSoDienThoai("0912345667");
         hangnt169.setCoSoId(csHN.getId());
         hangnt169.setEmail("hangnt169@fpt.edu.vn");
@@ -218,12 +270,13 @@ public class DBGenerator implements CommandLineRunner {
         hangnt169.setTenSinhVien("Nguyễn Thuý Hằng");
         hangnt169.setMaSinhVien("PH34567");
         hangnt169.setNhomId(nhom1.getId());
+        nguyenvv4.setMonDatnId(java.getId());
         hangnt169.setId(sinhVienRepository.save(hangnt169).getId());
 
         SinhVien khanhpg =  new SinhVien();
         khanhpg.setChuyenNganhId(ptpm.getId());
         khanhpg.setDotDangKyId(dot1.getId());
-        khanhpg.setMonDatnId(cSharp.getId());
+        khanhpg.setMonChuongTrinhId(cSharp.getId());
         khanhpg.setSoDienThoai("0912345667");
         khanhpg.setCoSoId(csHN.getId());
         khanhpg.setEmail("khanhpg@fpt.edu.vn");
@@ -232,6 +285,19 @@ public class DBGenerator implements CommandLineRunner {
         khanhpg.setMaSinhVien("PH45678");
         khanhpg.setNhomId(null);
         khanhpg.setId(sinhVienRepository.save(khanhpg).getId());
+
+        SinhVien sinhVien =  new SinhVien();
+        sinhVien.setChuyenNganhId(ptpm.getId());
+        sinhVien.setDotDangKyId(dot1.getId());
+        sinhVien.setMonChuongTrinhId(cSharp.getId());
+        sinhVien.setSoDienThoai("0912345667");
+        sinhVien.setCoSoId(csHN.getId());
+        sinhVien.setEmail("sinhvien.fcr@gmail.com");
+        sinhVien.setKhoa("K12");
+        sinhVien.setTenSinhVien("Sinh Viên");
+        sinhVien.setMaSinhVien("PH00001");
+        sinhVien.setNhomId(null);
+        sinhVien.setId(sinhVienRepository.save(sinhVien).getId());
 
     }
 

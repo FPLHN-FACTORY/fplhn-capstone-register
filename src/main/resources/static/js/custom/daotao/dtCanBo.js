@@ -23,12 +23,12 @@ function clear() {
 $("#form_create_can_bo").submit(function (event) {
     event.preventDefault();
     clear();
-    let emailFe = $("#emailfe").val();
-    let emailFpt = $("#emailfpt").val();
-    let soDienThoai = $("#sodienthoai").val();
-    let tenCanBo = $("#tenCanBo").val();
-    let tenTaiKhoan = $("#tentaikhoan").val();
-    let vaitro = $("#vaiTro").val();
+    let emailFe = $("#emailfe").val().trim();
+    let emailFpt = $("#emailfpt").val().trim();
+    let soDienThoai = $("#sodienthoai").val().trim();
+    let tenCanBo = $("#tenCanBo").val().trim();
+    let tenTaiKhoan = $("#tentaikhoan").val().trim();
+    let vaitro = $("#vaiTro").val().trim();
 
     let canBoRequest = {};
 
@@ -47,6 +47,11 @@ $("#form_create_can_bo").submit(function (event) {
         if (regexFE.test(emailFe) == false) {
             $("#email_fe_error").text("Email Fe Phải Đúng Định Dạng");
             check = false;
+        } else {
+            if (emailFe.includes(" ")) {
+                $("#email_fe_error").text("Email Fe không được để dấu cách");
+                check = false;
+            }
         }
     }
     if (emailFpt.length == 0) {
@@ -56,6 +61,11 @@ $("#form_create_can_bo").submit(function (event) {
         if (regexFPT.test(emailFpt) == false) {
             $("#email_fpt_error").text("Email Fpt Phải Đúng Định Dạng");
             check = false;
+        } else {
+            if (emailFpt.includes(" ")) {
+                $("#email_fpt_error").text("Email Fe không được để dấu cách");
+                check = false;
+            }
         }
     }
     if (soDienThoai.length == 0) {
@@ -74,6 +84,9 @@ $("#form_create_can_bo").submit(function (event) {
     }
     if (tenTaiKhoan.length == 0) {
         $("#ten_tai_khoan_error").text("Tên Tài Khoản Không Được Để Trống");
+        check = false;
+    } else if (tenTaiKhoan.includes(" ")) {
+        $("#ten_tai_khoan_error").text("Tên Tài Khoản Không Được Được Chứa Khoảng Trắng");
         check = false;
     }
     if (check == true) {
@@ -126,13 +139,13 @@ function openModalUpdateCanBo(canBoId) {
 
 $("#form_hoc_ky_update").submit(function (event) {
     event.preventDefault();
-    let emailFpt = $("#email_fpt_update").val();
-    let emailFe = $("#email_fe_update").val();
-    let soDienThoai = $("#so_dien_thoai_Update").val();
-    let tenCanBo = $("#ten_Can_Bo_Update").val();
-    let tenTaiKhoan = $("#ten_tai_khoan_Update").val();
-    let vaiTro = $("#vai_Tro_Update").val();
-    let canBoId = $("#id_can_bo_update").val();
+    let emailFpt = $("#email_fpt_update").val().trim();
+    let emailFe = $("#email_fe_update").val().trim();
+    let soDienThoai = $("#so_dien_thoai_Update").val().trim();
+    let tenCanBo = $("#ten_Can_Bo_Update").val().trim();
+    let tenTaiKhoan = $("#ten_tai_khoan_Update").val().trim();
+    let vaiTro = $("#vai_Tro_Update").val().trim();
+    let canBoId = $("#id_can_bo_update").val().trim();
     let canBoRequest = {};
 
     canBoRequest["emailFpt"] = emailFpt;
@@ -151,6 +164,11 @@ $("#form_hoc_ky_update").submit(function (event) {
         if (regexFE.test(emailFe) == false) {
             $("#email_fe_error_update").text("Email Fe Phải Đúng Định Dạng");
             check = false;
+        } else {
+            if (emailFe.includes(" ")) {
+                $("#email_fe_error_update").text("Email Fe không được để dấu cách");
+                check = false;
+            }
         }
     }
     if (emailFpt.length == 0) {
@@ -160,6 +178,11 @@ $("#form_hoc_ky_update").submit(function (event) {
         if (regexFPT.test(emailFpt) == false) {
             $("#email_fpt_error_update").text("Email Fpt Phải Đúng Định Dạng");
             check = false;
+        } else {
+            if (emailFpt.includes(" ")) {
+                $("#email_fpt_error_update").text("Email Fpt không được để dấu cách");
+                check = false;
+            }
         }
     }
     if (soDienThoai.length == 0) {
@@ -178,6 +201,9 @@ $("#form_hoc_ky_update").submit(function (event) {
     }
     if (tenTaiKhoan.length == 0) {
         $("#ten_tai_khoan_error_update").text("Tên Tài Khoản Không Được Để Trống");
+        check = false;
+    } else if (tenTaiKhoan.includes(" ")) {
+        $("#ten_tai_khoan_error_update").text("Tên Tài Khoản Không Được Chứa Khoảng Trắng");
         check = false;
     }
     if (check == true) {

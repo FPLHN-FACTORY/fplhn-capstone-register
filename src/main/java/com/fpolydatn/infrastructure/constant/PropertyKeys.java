@@ -42,6 +42,14 @@ public class PropertyKeys {
 
     public static final String GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM ="giang.vien.da.huong.dan.du.so.nhom" ;
 
+    public static final String EMPTY ="empty" ;
+
+    public static final String EMAIL_MALFORMED ="email.malformed" ;
+
+    public static final String MA_SV_MALFORMED ="ma.sv.malformed" ;
+
+
+
     public static final String TRANG_THAI_KHONG_THOA_MAN = "trang.thai.khong.thoa.man";
 
     public static final String KHONG_PHAI_TRUONG_NHOM = "khong.phai.truong.nhom";

@@ -46,4 +46,5 @@ public final class DtDotDangKyRestController extends BaseController {
     public ResponseObject getListDotDangKy() {
         return new ResponseObject(dotDangKyService.getAllByCoSo(session.getCoSoId()));
     }
+
 }

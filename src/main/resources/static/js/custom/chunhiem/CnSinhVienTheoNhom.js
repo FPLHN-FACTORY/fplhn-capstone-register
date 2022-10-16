@@ -1,5 +1,6 @@
 const sinhVienApi = '/api/chu-nhiem/sinh-vien';
 const sinhVienTheoNhomView = '/chu-nhiem/sinh-vien';
+const CnNhomDatnView = '/chu-nhiem/nhom-datn';
 let idOldCaptain;
 
 $(document).ready(function () {
@@ -34,7 +35,7 @@ function clearData() {
 // }
 
 function searchGvhd() {
-    let text = $("#tags").val().trim();
+    let text = $("#tags").val()
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -56,7 +57,7 @@ loadData()
 
 $("#form_create_ma_nhom").submit(function (event) {
     event.preventDefault();
-    let idNhom = $("#idNhom").val().trim();
+    let idNhom = $("#idNhom").val()
     let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien")
     for (let item of listMaSinhVien) {
         $.ajax({
@@ -81,7 +82,8 @@ function openModalRemoveNhom(maSinhVien) {
 $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     event.preventDefault();
     let maSinhVien = $("#remove_sinh_vien_theo_nhom").val().trim();
-    let idNhom = $("#idNhom").val().trim()
+    let idNhom = $("#idNhom").val();
+    let soThanhVien = $("#soThanhVien").val();
     if (idOldCaptain == maSinhVien) {
         $.ajax({
             type: "PUT",
@@ -97,9 +99,13 @@ $("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
     $.ajax({
         type: "DELETE",
         contentType: "application/json",
-        url: sinhVienApi + "/deleteStudent?maSinhVien=" + maSinhVien+"&idNhom="+idNhom,
+        url: sinhVienApi + "?maSinhVien=" + maSinhVien + "&idNhom=" + idNhom,
         success: function () {
-            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+            if (soThanhVien > 1) {
+                window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+            } else {
+                window.open(CnNhomDatnView, '_self');
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -113,7 +119,7 @@ function openModalChangeGvhd() {
 
 $('#form_change_gvhd').submit(function (event) {
     event.preventDefault();
-    let idGroup = $("#idNhom").val().trim();
+    let idGroup = $("#idNhom").val();
     let giangVienId = $("#tags").val().split('_');
     $.ajax({
         type: "POST",
@@ -130,7 +136,7 @@ $('#form_change_gvhd').submit(function (event) {
 
 function openModalChangeCaptain() {
     $("#modal_change_captain").modal('show');
-    let idGroup = $("#idNhom").val().trim();
+    let idGroup = $("#idNhom").val();
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -204,8 +210,8 @@ function changeCaptain(idCaptain) {
 
 $("#form_change_captain_confirm").submit(function (event) {
     event.preventDefault();
-    let idCaptain = $("#change_captain_confirm").val().trim();
-    let idGroup = $("#idNhom").val().trim();
+    let idCaptain = $("#change_captain_confirm").val();
+    let idGroup = $("#idNhom").val();
     $.ajax({
         type: "PUT",
         contentType: "application/json",
@@ -221,7 +227,7 @@ $("#form_change_captain_confirm").submit(function (event) {
 })
 
 function loadData() {
-    let idGroup = $("#idNhom").val().trim();
+    let idGroup = $("#idNhom").val();
     $.ajax({
         type: "GET",
         contentType: "application/json",

@@ -12,12 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -35,8 +31,9 @@ public class DtSinhVienTheoDotController extends BaseController {
 
     @Autowired
     private DtSvDotDangKyService dotDangKyService;
+
     @GetMapping
-    public String findAllSinhVien(Model model,final FindDtSinhVienTheoDotRequest req) {
+    public String findAllSinhVien(Model model, final FindDtSinhVienTheoDotRequest req) {
         req.setCoSoId(session.getCoSoId());
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(req.getCoSoId());
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(req.getCoSoId());
@@ -46,4 +43,5 @@ public class DtSinhVienTheoDotController extends BaseController {
         model.addAttribute("listDotDangKy", listDotDangKy);
         return "daotao/dt-sinh-vien-theo-dot";
     }
+
 }

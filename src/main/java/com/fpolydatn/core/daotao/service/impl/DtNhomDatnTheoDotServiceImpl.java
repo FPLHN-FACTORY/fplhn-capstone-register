@@ -19,17 +19,19 @@ import java.util.List;
 public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     @Autowired
     private DtNhomDatnTheoDotRepository dtNhomDatnTheoDotRepository;
+
     @Override
     public PageableObject<DtNhomDatnTheoDotResponse> findAllNhomDatn(FindDtNhomDatnTheoDotRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<DtNhomDatnTheoDotResponse> res = dtNhomDatnTheoDotRepository.findAllNhomDatn(pageable,request);
+        Page<DtNhomDatnTheoDotResponse> res = dtNhomDatnTheoDotRepository.findAllNhomDatn(pageable, request);
         return new PageableObject(res);
     }
+
     @Override
     public PageableObject<DtSinhVienResponse> showDanhSachSinhVien(final FindSinhVienRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        System.out.println(dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable,request).getSize());
-        Page<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable,request);
+        System.out.println(dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable, request).getSize());
+        Page<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable, request);
         return new PageableObject<>(res);
     }
 
@@ -37,4 +39,5 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     public List<DtNhomDatnTheoDotResponse> listAllNhomDatnToExcel() {
         return dtNhomDatnTheoDotRepository.findAllNhomDatnToExcel();
     }
+
 }

@@ -1,8 +1,8 @@
 package com.fpolydatn.infrastructure.session;
 
-import com.fpolydatn.repository.CoSoRepository;
+import com.fpolydatn.infrastructure.constant.SessionConstant;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
@@ -17,13 +17,14 @@ class FpolyDatnSessionImpl implements FpolyDatnSession {
     @Autowired
     private HttpSession session;
 
-    @Autowired
-    @Qualifier(CoSoRepository.NAME)
-    private CoSoRepository repository;
-
     @Override
     public String getCoSoId() {
-        return repository.findAll().get(0).getId();
-        //return String.valueOf(session.getAttribute("coSoIDSelected"));
+        return String.valueOf(session.getAttribute(SessionConstant.CO_SO_ID));
+    }
+
+    @Override
+    public String getUserId() {
+        SimpleEntityProj account = (SimpleEntityProj) session.getAttribute(SessionConstant.USER);
+        return account.getId();
     }
 }

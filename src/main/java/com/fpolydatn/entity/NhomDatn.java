@@ -56,5 +56,4 @@ public class NhomDatn extends MultiTenantEntity
 
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     private String dotDangKyId;
-
 }

@@ -10,8 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
-
+import java.util.List;
 
 /**
  * @author thepvph20110
@@ -41,7 +40,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             WHERE s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% AND 
             (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
             AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)))
-            AND  d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
+            AND d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
             GROUP BY s.id 
             ORDER BY s.last_modified_date DESC """,
             countQuery = """
@@ -95,5 +94,17 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                     GROUP BY s.id
                     """, nativeQuery = true)
     Page<DtSinhVienTheoDotResponse> findAllSinhVien(Pageable page, @Param("req") final FindDtSinhVienTheoDotRequest req);
+
+    @Query(value = """
+                SELECT 
+                s.id,
+                s.ma_sinh_vien AS 'name'
+                 FROM do_an_tot_nghiep.sinh_vien s
+                 WHERE s.co_so_id = :coSoId
+            """, nativeQuery = true)
+    List<SimpleEntityProj> getAllMaSV(@Param("coSoId") String coSoId);
+
+    @Query(value = "SELECT * FROM sinh_vien WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId", nativeQuery = true)
+    List<SinhVien> findAllSinhVienByDotDangKyId(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
 
 }

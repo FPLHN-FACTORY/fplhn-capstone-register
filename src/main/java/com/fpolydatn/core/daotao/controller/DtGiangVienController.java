@@ -13,10 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
+
 
 
 import java.util.List;
@@ -45,12 +43,5 @@ public class DtGiangVienController extends BaseController {
         model.addAttribute("page", listGiangVien);
         return "daotao/dt-giang-vien-huong-dan";
     }
-
-    @PostMapping("/import")
-    public String importExcel(Model model,@RequestBody MultipartFile file) {
-        this.giangVienHDService.importExcel(file);
-        return "redirect:/dao-tao/giang-vien-huong-dan";
-    }
-
 
 }

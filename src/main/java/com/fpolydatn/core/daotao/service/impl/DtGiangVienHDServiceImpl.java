@@ -30,7 +30,9 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Vinhnv
@@ -52,7 +54,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     private FormUtils formUtils = new FormUtils();
 
     @Override
-    public GiangVienHuongDan create( DtCreateGiangVienHDRequest command) {
+    public GiangVienHuongDan create(@Valid DtCreateGiangVienHDRequest command) {
         String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
@@ -61,8 +63,8 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenTaiKhoan = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan());
-        if (idByTenTaiKhoan != null) {
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan());
+        if (idByTenGiangVien != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
         GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class, command);
@@ -80,7 +82,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public GiangVienHuongDan update( DtUpdateGiangVienHDRequest command) {
+    public GiangVienHuongDan update(DtUpdateGiangVienHDRequest command) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(command.getId());
         if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
@@ -209,12 +211,14 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public List<GiangVienHuongDan> checkValidFile(List<GiangVienHuongDan> list) {
         List<GiangVienHuongDan> listGVHD = new ArrayList<>();
-        if(list == null){
+        if (list == null) {
             throw new RestApiException(Message.FILE_EMPTY);
         }
-        for ( GiangVienHuongDan gvhd: list) {
-            GiangVienHuongDan giangVien =  dtGiangVienHDRepository.getGVHDByEmailFpt(gvhd.getEmailFpt().trim());
-            if(giangVien != null){
+        Map<String, GiangVienHuongDan> getMapGV = dtGiangVienHDRepository.findAll().stream().
+                collect(Collectors.toMap(GiangVienHuongDan::getEmailFpt, gv -> gv));
+        for (GiangVienHuongDan gvhd : list) {
+            GiangVienHuongDan giangVien = getMapGV.get(gvhd.getEmailFpt());
+            if (giangVien != null) {
                 giangVien.setTenGvhd(gvhd.getTenGvhd());
                 giangVien.setSoNhomHuongDanToiDa(gvhd.getSoNhomHuongDanToiDa());
                 giangVien.setTenTaiKhoan(gvhd.getTenTaiKhoan());
@@ -223,14 +227,13 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 giangVien.setEmailFe(gvhd.getEmailFe());
                 giangVien.setDotDangKyId(gvhd.getDotDangKyId());
                 dtGiangVienHDRepository.save(giangVien);
-            }else{
+            } else {
                 listGVHD.add(gvhd);
             }
         }
         dtGiangVienHDRepository.saveAll(listGVHD);
         return listGVHD;
     }
-
 
 
 }

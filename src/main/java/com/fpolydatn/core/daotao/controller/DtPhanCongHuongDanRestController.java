@@ -37,4 +37,5 @@ public class DtPhanCongHuongDanRestController {
     public ResponseObject addAll(@RequestBody List<PhanCongHuongDan> list) {
         return new ResponseObject(phanCongHuongDanService.addAll(list));
     }
+
 }

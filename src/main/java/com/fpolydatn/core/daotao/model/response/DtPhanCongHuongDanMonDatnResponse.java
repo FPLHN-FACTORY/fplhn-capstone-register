@@ -34,4 +34,5 @@ public interface DtPhanCongHuongDanMonDatnResponse extends IsIdentified {
 
     @Value("#{target.chuyen_nganh_id}")
     String getChuyenNganhId();
+
 }

@@ -27,6 +27,9 @@ public class MonDatn extends MultiTenantEntity implements Serializable {
     @Nationalized
     private String tenMonDatn;
 
+    @Column(length = EntityProperties.LENGTH_ID)
+    private String nhomMonDatnId;
+
     @Column(length = EntityProperties.LENGTH_ID, nullable = false)
     private String chuyenNganhId;
 }

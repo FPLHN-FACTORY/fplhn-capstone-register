@@ -16,4 +16,5 @@ public interface DtCoSoRepository extends CoSoRepository {
             WHERE cs.ten_co_so = :tenCoSo    ;
             """, nativeQuery = true)
     CoSo findName(@Param("tenCoSo") String tenCoSo);
+
 }

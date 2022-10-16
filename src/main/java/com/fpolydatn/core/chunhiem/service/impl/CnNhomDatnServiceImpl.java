@@ -13,7 +13,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
-import com.fpolydatn.util.ValidationUtils;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,7 +40,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     private FormUtils formUtils = new FormUtils();
 
     @Autowired
-    private ValidationUtils validationUtils;
+    private CommonHelper commonHelper;
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request) {
@@ -103,7 +103,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             if (idGiangVien == "" || idGiangVien == null) {
                 throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
             }
-            if(validationUtils.soNhomGiangVienDangHuongDan(idGiangVien) == cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien)){
+            if (commonHelper.getSoNhomGiangVienDangHuongDan(idGiangVien) ==
+                    cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien)) {
                 throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
             }
         }

@@ -6,6 +6,8 @@ $(document).ready(function () {
 });
 
 function openModalUpdateDotDangKy(dotDangKyId) {
+    $("#errorMessageNgayKetThucUpdate").text("");
+    $("#errorMessageNgayKetThucUpdate").text("");
     $("#modal_update_dot_dang_ky").modal('show');
     $.ajax({
         type: "GET",
@@ -91,7 +93,7 @@ $("#form_dot_dang_ky_update").submit(function (event) {
                 if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
                     && ngayKetThuc.getTime() > listDotDangKy[i].ngayBatDau) {
                     if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
-                        && ngayBatDau.getTime() > listDotDangKy[i].ngayBatDau){
+                        && ngayBatDau.getTime() > listDotDangKy[i].ngayBatDau) {
                         $("#errorMessageNgayBatDauUpdate").text("Thời gian bắt đầu trùng với: " + listDotDangKy[i].tenDotDangKy);
                     } else {
                         $("#errorMessageNgayKetThucUpdate").text("Thời gian kết thúc trùng với: " + listDotDangKy[i].tenDotDangKy);
@@ -198,7 +200,7 @@ $("#form_create_dot_dang_ky").submit(function (event) {
                 if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
                     && ngayKetThuc.getTime() > listDotDangKy[i].ngayBatDau) {
                     if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
-                        && ngayBatDau.getTime() > listDotDangKy[i].ngayBatDau){
+                        && ngayBatDau.getTime() > listDotDangKy[i].ngayBatDau) {
                         $("#errorMessageAddNgayBatDau").text("Thời gian bắt đầu trùng với: " + listDotDangKy[i].tenDotDangKy);
                     } else {
                         $("#errorMessageAddNgayKetThuc").text("Thời gian kết thúc trùng với: " + listDotDangKy[i].tenDotDangKy);
