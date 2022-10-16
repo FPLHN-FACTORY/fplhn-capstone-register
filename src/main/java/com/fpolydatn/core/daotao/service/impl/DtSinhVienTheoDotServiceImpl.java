@@ -149,7 +149,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
         addDataInMap(map, coSoId);
 
-        for (DtCreateSinhVienTheoDotRequest sinhVien : sinhVienList) {
+        sinhVienList.parallelStream().forEach(sinhVien-> {
             SinhVien sinhVienEntity = new SinhVien();
             if (map.get(sinhVien.getMaSinhVien()) != null) {
                 sinhVienEntity.setId(map.get(sinhVien.getMaSinhVien()));
@@ -202,7 +202,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             sinhVienEntity.setCoSoId(coSoId);
 
             listSinhVienEntity.add(sinhVienEntity);
-        }
+        });
         sinhVienRepository.saveAll(listSinhVienEntity);
 
         return new RestApiException(Message.SUCCESS);

@@ -30,13 +30,17 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             n.ma_nhom,
             n.ten_de_tai,
             g.ten_gvhd ,
-            d.ten_dot_dang_ky 
-            FROM do_an_tot_nghiep.sinh_vien s 
-            LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id= s.nhom_id 
-            LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id 
-            LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id 
-            LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id 
-            LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id 
+            d.ten_dot_dang_ky ,
+            s.trang_thai,
+            n.so_thanh_vien
+            FROM do_an_tot_nghiep.sinh_vien s
+            LEFT JOIN (select nda.*,COUNT(sv.ma_sinh_vien) AS so_thanh_vien from do_an_tot_nghiep.nhom_datn nda
+            JOIN sinh_vien sv ON sv.nhom_id = nda.id) n
+            ON n.id= s.nhom_id
+            LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
+            LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id
+            LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id
+            LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
             WHERE s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% AND 
             (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
             AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)))
@@ -72,13 +76,17 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             n.ma_nhom,
             n.ten_de_tai,
             g.ten_gvhd ,
-            d.ten_dot_dang_ky 
+            d.ten_dot_dang_ky ,
+            s.trang_thai,
+            n.so_thanh_vien
             FROM do_an_tot_nghiep.sinh_vien s
-            LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id= s.nhom_id 
-            LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id 
-            LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id 
-            LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id 
-            LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id 
+            LEFT JOIN (select nda.*,COUNT(sv.ma_sinh_vien) AS so_thanh_vien from do_an_tot_nghiep.nhom_datn nda
+            JOIN sinh_vien sv ON sv.nhom_id = nda.id) n
+            ON n.id= s.nhom_id
+            LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
+            LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id
+            LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id
+            LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
             WHERE s.co_so_id = :#{#req.coSoId} AND d.id =:#{#req.idDotDangKy}
             GROUP BY s.id 
             ORDER BY s.last_modified_date DESC """,

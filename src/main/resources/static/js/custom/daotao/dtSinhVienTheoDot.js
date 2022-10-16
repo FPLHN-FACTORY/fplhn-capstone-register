@@ -120,11 +120,14 @@ $("#form_import_excel").submit(function (event) {
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    window.open('/dao-tao/sinh-vien', '_self');
+                    $("#messNotification").text("Thêm sinh viên thành công");
+                    $('#import_excel').modal("hide");
+                    $("#modal_notification").modal("show");
                 },
                 error: function (e) {
-                    alert(e.responseText);
-                    window.open('/dao-tao/sinh-vien', '_self');
+                    $("#messNotification").text(e.responseText);
+                    $('#import_excel').modal("hide");
+                    $("#modal_notification").modal("show");
                     console.log("ERROR: " + e);
                 }
             }
