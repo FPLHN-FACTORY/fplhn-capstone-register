@@ -1,4 +1,4 @@
-package com.fpolydatn.core.giangvien.model.request;
+package com.fpolydatn.core.daotao.giangvien.model.request;
 
 import com.fpolydatn.core.common.base.PageableRequest;
 import lombok.Getter;

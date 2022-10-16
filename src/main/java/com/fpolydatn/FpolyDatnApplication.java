@@ -14,8 +14,4 @@ public class FpolyDatnApplication {
         SpringApplication.run(FpolyDatnApplication.class, args);
     }
 
-
-    
-    
-    
 }

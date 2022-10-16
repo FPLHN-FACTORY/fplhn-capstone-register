@@ -1,4 +1,4 @@
-package com.fpolydatn.core.giangvien.model.response;
+package com.fpolydatn.core.daotao.giangvien.model.response;
 
 import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.GiangVienHuongDan;

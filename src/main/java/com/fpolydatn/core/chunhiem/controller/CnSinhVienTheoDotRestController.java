@@ -21,6 +21,7 @@ public class CnSinhVienTheoDotRestController extends BaseController {
     @Autowired
     private CnSinhVienTheoDotService cnSinhVienTheoDotService;
 
+
     @Autowired
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;//hiện tại chưa lấy đợt nên bọn em fix cứng cái dot_dang_ky_id thầy ạ

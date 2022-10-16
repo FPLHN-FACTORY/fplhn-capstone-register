@@ -8,6 +8,7 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.repository.DotDangKyRepository;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,10 +32,11 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @Autowired
     private CnGiangVienHuongDanService cnGiangVienHuongDanService;
 
-    @DeleteMapping("/{maSinhVien}")
-    public ResponseObject updateSinhVienByNhom(@PathVariable("maSinhVien") String maSinhVien) {
-        return new ResponseObject(sinhVienTheoNhomService.deleteFromIdSinhVien(maSinhVien));
+    @DeleteMapping("")
+    public ResponseObject updateSinhVienByNhom(@RequestParam("maSinhVien") String maSinhVien, @RequestParam("idNhom") String idNhom) {
+        return new ResponseObject(sinhVienTheoNhomService.deleteFromIdSinhVien(idNhom, maSinhVien, session.getCoSoId()));
     }
+
 
     @PostMapping("/addSinhVien")
     public ResponseObject addSinhVienByNhom(@RequestParam("id") String idNhom, @RequestParam("maSinhVien") String maSinhVien) {
@@ -69,15 +71,17 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
 
     @GetMapping("/listSinhVienNoGroup")
     public ResponseObject getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
-        req.setCoSoId(session.getCoSoId());
-        req.setDotDangKyId(dotDangKyRepository.findAll().get(0).getId());
+        req.setCoSoId(session.getCoSoId());   b
+        String dotDangKyHientai = new CommonHelper().getDotDangKyHienTai();
+        req.setDotDangKyId(dotDangKyHientai);
         return new ResponseObject(sinhVienTheoNhomService.getListSinhVienNoGroup(req));
     }
 
     @GetMapping("/listGvhd")
     public ResponseObject getListGvhd(final CnFindGvhdRequest req) {
         req.setCoSoId(session.getCoSoId());
-        req.setDotDangKyId(dotDangKyRepository.findAll().get(0).getId());
+        String dotDangKyHientai = new CommonHelper().getDotDangKyHienTai();
+        req.setDotDangKyId(dotDangKyHientai);
         return new ResponseObject(cnGiangVienHuongDanService.getListGvhd(req));
     }
 

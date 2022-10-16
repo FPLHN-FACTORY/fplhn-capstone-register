@@ -1,12 +1,12 @@
-package com.fpolydatn.core.giangvien.service;
+package com.fpolydatn.core.daotao.giangvien.service;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
-import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
-import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
+import com.fpolydatn.core.daotao.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.daotao.giangvien.model.response.GvNhomDatnResponse;
+import com.fpolydatn.core.daotao.giangvien.model.request.GvChotNhomDatnRequest;
+import com.fpolydatn.core.daotao.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
+import com.fpolydatn.core.daotao.giangvien.model.request.GvUpdateTenDeTaiRequest;
+import com.fpolydatn.core.daotao.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.entity.NhomDatn;
 
 import javax.validation.Valid;

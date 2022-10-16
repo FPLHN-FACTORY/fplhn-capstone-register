@@ -47,7 +47,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
         }
         String captainId = nhomDatnRepository.findIDTruongNhom(idNhom);
         Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(captainId);
-        cnSinhVienTheoNhomRepository.addSinhVienInGroup(idNhom,captain.get().getMonDatnId(),maSinhVien);
+        cnSinhVienTheoNhomRepository.addSinhVienInGroup(idNhom,maSinhVien);
         return true;
     }
 
