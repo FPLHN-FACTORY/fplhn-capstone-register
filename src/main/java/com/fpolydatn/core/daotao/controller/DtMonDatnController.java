@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -44,8 +45,14 @@ public class DtMonDatnController extends BaseController {
     }
 
     @PostMapping("/import")
-    public String importExcel(Model model, @RequestBody MultipartFile file) {
-        this.monDatnService.importExcel(file);
+    public String importExcel(RedirectAttributes redirectAttributes, @RequestBody MultipartFile file) {
+        List<String> check = this.monDatnService.importExcel(file);
+        System.out.println(check);
+        if(check.size() == 0) {
+            redirectAttributes.addFlashAttribute("successMess", "Import file excel thành công.");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMess", check);
+        }
         return "redirect:/dao-tao/mon-datn";
     }
 

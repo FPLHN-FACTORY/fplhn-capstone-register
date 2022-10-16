@@ -10,6 +10,7 @@ import com.fpolydatn.entity.MonDatn;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -26,6 +27,6 @@ public interface DtMonDatnService {
 
     Boolean add(@Valid final DtCreateMonDatnRequest command);
 
-    Boolean importExcel(MultipartFile file);
+    List<String> importExcel(MultipartFile file);
 
 }
