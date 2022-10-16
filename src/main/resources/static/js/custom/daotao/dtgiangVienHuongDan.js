@@ -300,9 +300,14 @@ $("#form_giang_vien_delete").submit(function (event) {
         url: giangVienHuongDanApi + "/" + giangVienId,
         data: JSON.stringify(giangVienId),
         dataType: 'json',
-        success: function () {
-            loadTable(item);
-            $("#modal_giang_vien_remove").modal("hide");
+        success: function (responseData) {
+            if(responseData.data.message != null){
+             alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
+            }else{
+               loadTable(item);
+               $("#modal_giang_vien_remove").modal("hide");
+            }
+
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -435,10 +440,10 @@ $("#modal_excel_mau").submit(function (event) {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/giang-vien-huong-dan/export-mau?typeExcel=" + typeExcel,
+            url: "/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel,
 
             success: function () {
-                window.open("/api/dao-tao/giang-vien-huong-dan/export-mau?typeExcel=" + typeExcel, '_self');
+                window.open("/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel, '_self');
             },
             error: function (e) {
                 console.log("ERROR : ", e);

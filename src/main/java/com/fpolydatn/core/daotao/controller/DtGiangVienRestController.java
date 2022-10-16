@@ -87,7 +87,7 @@ public class DtGiangVienRestController extends BaseController {
         giangVienHDService.DtGiangVienHDExportExcel(response, typeExcel, request);
     }
 
-    @GetMapping("/export-mau")
+    @GetMapping("/export/mau")
     public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
         giangVienHDService.DtGiangVienHDMauExportExcel(response, typeExcel, request);

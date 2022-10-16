@@ -77,9 +77,6 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt", nativeQuery = true)
     String getIdByEmailFpt(@Param("emailFpt") String emailFpt);
 
-    @Query(value = "SELECT * FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt", nativeQuery = true)
-    GiangVienHuongDan getGVHDByEmailFpt(@Param("emailFpt") String emailFpt);
-
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND id <> :id", nativeQuery = true)
     String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id);
 
@@ -94,5 +91,14 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id", nativeQuery = true)
     String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id);
+
+    @Query(value = "SELECT  COUNT(nd.id) AS so_nhom_dang_huong_dan" +
+            "      FROM giang_vien_huong_dan gvhd \n" +
+            "      LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id \n" +
+            "      LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id\n" +
+            "      LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                \n" +
+            "      WHERE gvhd.id = :idGiangVien \n" +
+            "      GROUP BY gvhd.id  ", nativeQuery = true)
+    int getCountSoNhomDangHuongDan(@Param("idGiangVien") String idGiangVien);
 
 }

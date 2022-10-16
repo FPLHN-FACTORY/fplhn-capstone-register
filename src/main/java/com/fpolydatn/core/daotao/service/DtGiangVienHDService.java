@@ -30,7 +30,7 @@ public interface DtGiangVienHDService {
 
     PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest req);
 
-    List<GiangVienHuongDan> importExcel(MultipartFile file);
+    List<GiangVienHuongDan> importExcel(MultipartFile file) throws IOException;
 
     Object checkValidFile(List<GiangVienHuongDan> list);
 

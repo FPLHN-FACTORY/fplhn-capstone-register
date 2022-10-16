@@ -82,8 +82,12 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public Boolean delete(String id) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(id);
+        int countSoNhomDangHuongDan = dtGiangVienHDRepository.getCountSoNhomDangHuongDan(id);
         if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
+        }
+        if(countSoNhomDangHuongDan != 0){
+            throw new RestApiException(Message.GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN);
         }
         dtGiangVienHDRepository.delete(gvhdCheck.get());
         return true;
@@ -142,7 +146,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public List<GiangVienHuongDan> importExcel(MultipartFile file) {
+    public List<GiangVienHuongDan> importExcel(MultipartFile file) throws IOException {
         List<GiangVienHuongDan> list = new ArrayList<>();
 
         try {
