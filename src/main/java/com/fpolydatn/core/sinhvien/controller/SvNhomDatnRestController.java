@@ -114,5 +114,4 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject updateThoiGianRoiNhom(){
         return new ResponseObject((svNhomDatnService.updateThoiGianRoiNhom(session.getUserId())));
     }
-
 }
