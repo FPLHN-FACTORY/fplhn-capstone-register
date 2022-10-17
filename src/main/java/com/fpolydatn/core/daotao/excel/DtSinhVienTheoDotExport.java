@@ -82,7 +82,7 @@ public class DtSinhVienTheoDotExport {
             createCell(row, countColum++, DtSinhVien.getTenSinhVien(), style);
             createCell(row, countColum++, DtSinhVien.getSoDienThoai(), style);
             createCell(row, countColum++, DtSinhVien.getEmail(), style);
-            createCell(row, countColum++, TrangThaiSinhVien.values()[DtSinhVien.getTrangThai()].name(), style);
+            createCell(row, countColum++, DtSinhVien.getTrangThai()== 0? "Đủ điều kiện": "Không đủ điều kiện", style);
             createCell(row, countColum++, DtSinhVien.getKhoa(), style);
             createCell(row, countColum++, DtSinhVien.getTenMonDatn()== null? "Chưa có" : DtSinhVien.getTenMonDatn(), style);
             createCell(row, countColum++, DtSinhVien.getMaNhom() == null ? "chưa có" : DtSinhVien.getMaNhom(), style);
