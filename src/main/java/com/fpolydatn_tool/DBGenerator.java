@@ -226,6 +226,7 @@ public class DBGenerator implements CommandLineRunner {
         phongtt35.setKhoa("K12");
         phongtt35.setTenSinhVien("Trần Tuấn Phong");
         phongtt35.setMaSinhVien("PH12345");
+        phongtt35.setMonDatnId(java.getId());
         phongtt35.setId(sinhVienRepository.save(phongtt35).getId());
 
         NhomDatn nhom1 = new NhomDatn();
@@ -255,6 +256,7 @@ public class DBGenerator implements CommandLineRunner {
         nguyenvv4.setTenSinhVien("Vũ Văn Nguyên");
         nguyenvv4.setMaSinhVien("PH23456");
         nguyenvv4.setNhomId(nhom1.getId());
+        nguyenvv4.setMonDatnId(java.getId());
         nguyenvv4.setId(sinhVienRepository.save(nguyenvv4).getId());
 
         SinhVien hangnt169 =  new SinhVien();
@@ -268,6 +270,7 @@ public class DBGenerator implements CommandLineRunner {
         hangnt169.setTenSinhVien("Nguyễn Thuý Hằng");
         hangnt169.setMaSinhVien("PH34567");
         hangnt169.setNhomId(nhom1.getId());
+        nguyenvv4.setMonDatnId(java.getId());
         hangnt169.setId(sinhVienRepository.save(hangnt169).getId());
 
         SinhVien khanhpg =  new SinhVien();
