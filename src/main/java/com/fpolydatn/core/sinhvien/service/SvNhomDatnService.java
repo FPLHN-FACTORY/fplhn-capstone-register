@@ -40,6 +40,4 @@ public interface SvNhomDatnService {
     Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi);
 
     Boolean chonGvhd(String idUser, String idGiangVien);
-
-    Boolean updateThoiGianRoiNhom(String idUser);
 }

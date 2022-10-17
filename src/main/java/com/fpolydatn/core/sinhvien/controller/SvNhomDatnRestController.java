@@ -110,8 +110,4 @@ public class SvNhomDatnRestController extends BaseController {
         return new ResponseObject(svNhomDatnService.chonGvhd(session.getUserId(), idGiangVien));
     }
 
-    @PutMapping("/update-thoi-gian-roi-nhom")
-    public ResponseObject updateThoiGianRoiNhom(){
-        return new ResponseObject((svNhomDatnService.updateThoiGianRoiNhom(session.getUserId())));
-    }
 }
