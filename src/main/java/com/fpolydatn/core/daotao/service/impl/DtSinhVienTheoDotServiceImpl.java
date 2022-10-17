@@ -74,7 +74,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Override
     public PageableObject<DtSinhVienTheoDotResponse> searchStudent(final FindDtSinhVienTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        if (request.getIdDotDangKy() == null){
+        if (request.getIdDotDangKy() == null) {
             if (dotDangKyId != null) {
                 request.setIdDotDangKy(dotDangKyId);
             } else {
@@ -132,8 +132,9 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public RestApiException DtSinhVienImport(MultipartFile file, String coSoId) throws IOException {
-
+    public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException {
+        DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
+        response.setStatus(true);
         DtSinhVienTheoDotImport sinhVienTheoDotImport = new DtSinhVienTheoDotImport();
         List<DtCreateSinhVienTheoDotRequest> sinhVienList = sinhVienTheoDotImport.importData(file);
         List<SinhVien> listSinhVienEntity = new ArrayList<>();
@@ -141,49 +142,69 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
         addDataInMap(map, coSoId);
 
-        sinhVienList.parallelStream().forEach(sinhVien-> {
+        sinhVienList.parallelStream().forEach(sinhVien -> {
             SinhVien sinhVienEntity = new SinhVien();
             if (map.get(sinhVien.getMaSinhVien()) != null) {
                 sinhVienEntity.setId(map.get(sinhVien.getMaSinhVien()));
             } else if (!sinhVien.getMaSinhVien().matches("[a-zA-Z]{2}+\\d+")) {
-                throw new RestApiException(Message.MA_SV_MALFORMED);
+                response.setStatus(false);
+                response.setMessage("Mã sinh viên \"" + sinhVien.getMaSinhVien() + "\" không đúng định dạng");
+                return;
             }
 
             if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
                     sinhVien.getSoDienThoai().isEmpty() || sinhVien.getEmail().isEmpty() ||
                     sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
                     sinhVien.getDotDangKy().isEmpty()) {
-                throw new RestApiException(Message.EMPTY);
+                response.setStatus(false);
+                response.setMessage("Không để trống (Mã, tên, sđt, email, khóa, tên chuyên ngành, đợt đăng ký)");
+                return;
             }
 
             if (map.get(sinhVien.getMaNhom()) != null) {
                 sinhVienEntity.setNhomId(map.get(sinhVien.getMaNhom()));
+            } else if (sinhVien.getMaNhom().isEmpty()) {
+                sinhVienEntity.setNhomId(null);
+            } else if (!map.containsKey(sinhVien.getMaNhom())) {
+                response.setStatus(false);
+                response.setMessage("Mã nhóm \"" + sinhVien.getMaNhom() + "\" không tồn tại");
+                return;
             }
 
             if (map.get(sinhVien.getChuyenNganh()) != null) {
                 sinhVienEntity.setChuyenNganhId(map.get(sinhVien.getChuyenNganh()));
             } else if (!map.containsKey(sinhVien.getChuyenNganh())) {
-                throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
+                response.setStatus(false);
+                response.setMessage("Tên chuyên ngành \"" + sinhVien.getChuyenNganh() + "\" không tồn tại");
+                return;
             }
 
             if (map.get(sinhVien.getDotDangKy()) != null) {
                 sinhVienEntity.setDotDangKyId(map.get(sinhVien.getDotDangKy()));
             } else if (!map.containsKey(sinhVien.getDotDangKy())) {
-                throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
+                response.setStatus(false);
+                response.setMessage("Tên đợt đăng ký \"" + sinhVien.getDotDangKy() + "\" không tồn tại");
+                return;
             }
 
             if (map.get(sinhVien.getMonDATN()) != null) {
                 sinhVienEntity.setMonDatnId(map.get(sinhVien.getMonDATN()));
             } else if (!map.containsKey(sinhVien.getMonDATN())) {
-                throw new RestApiException(Message.MON_DATN_NOT_EXIST);
+                response.setStatus(false);
+                response.setMessage("Mã môn DATN \"" + sinhVien.getMonDATN() + "\" không tồn tại");
+                return;
             }
 
             if (!sinhVien.getSoDienThoai().matches("(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}")) {
-                throw new RestApiException(Message.NUMBER_FORMAT_EXCEPTION);
+                response.setStatus(false);
+                response.setMessage("Số điện thoại \"" + sinhVien.getSoDienThoai() + "\" không đúng định dạng");
+                return;
             }
 
             if (!sinhVien.getEmail().matches("\\w+@fpt.edu.vn")) {
-                throw new RestApiException(Message.EMAIL_MALFORMED);
+                response.setStatus(false);
+                response.setMessage("Email \"" + sinhVien.getEmail() + "\" không đúng định dạng");
+                return;
             }
 
             sinhVienEntity.setTenSinhVien(sinhVien.getTenSinhVien());
@@ -195,9 +216,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
             listSinhVienEntity.add(sinhVienEntity);
         });
+
         sinhVienRepository.saveAll(listSinhVienEntity);
 
-        return new RestApiException(Message.SUCCESS);
+        return response;
     }
 
     public void addDataInMap(HashMap<String, String> mapAll, String coSoId) {
@@ -269,8 +291,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
         listMsvLoai.parallelStream().forEach(msv -> {
             SinhVien sv = mapSinhVien.get(msv);
-            if (sv != null){
-                if (sv.getTrangThai() == TrangThaiSinhVien.DU_DIEU_KIEN){
+            if (sv != null) {
+                if (sv.getTrangThai() == TrangThaiSinhVien.DU_DIEU_KIEN) {
                     sv.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
                     listSvKhongDat.add(sv);
                 }
@@ -280,7 +302,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 return;
             }
         });
-        if (response.getStatus()){
+        if (response.getStatus()) {
             sinhVienRepository.saveAll(listSvKhongDat);
         }
         return response;

@@ -119,15 +119,16 @@ $("#form_import_excel").submit(function (event) {
                 data: new FormData(this),
                 processData: false,
                 contentType: false,
-                success: function (data) {
-                    $("#messNotification").text("Thêm sinh viên thành công");
+                success: function (response) {
+                    if (response.data.status == true) {
+                        $("#messNotification").text("import file thành công");
+                    } else {
+                        $("#messNotification").text(response.data.message);
+                    }
                     $('#import_excel').modal("hide");
                     $("#modal_notification").modal("show");
                 },
                 error: function (e) {
-                    $("#messNotification").text(e.responseText);
-                    $('#import_excel').modal("hide");
-                    $("#modal_notification").modal("show");
                     console.log("ERROR: " + e);
                 }
             }
@@ -148,7 +149,7 @@ function loaiSinhVien() {
             contentType: false,
             cache: false,
             success: function (response) {
-                if (response.data.status == true){
+                if (response.data.status == true) {
                     $("#messNotification").text("Loại sinh viên không đạt thành công");
                 } else {
                     $("#messNotification").text(response.data.message);
@@ -163,6 +164,6 @@ function loaiSinhVien() {
     );
 }
 
-function reload(){
+function reload() {
     window.open('/dao-tao/sinh-vien', '_self');
 }

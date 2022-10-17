@@ -24,7 +24,7 @@ public interface DtSinhVienTheoDotService {
 
     void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException;
 
-    RestApiException DtSinhVienImport(MultipartFile file, String coSoId) throws IOException;
+    DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException;
 
     DtLoaiSinhVienResponse loaiSinhVienKhongDat(DtLoaiSinhVienKhongDatRequest request);
 

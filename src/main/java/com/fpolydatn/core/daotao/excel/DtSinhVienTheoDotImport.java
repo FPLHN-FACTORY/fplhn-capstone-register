@@ -33,15 +33,15 @@ public class DtSinhVienTheoDotImport {
                 continue;
             }
             DtCreateSinhVienTheoDotRequest sinhVien = new DtCreateSinhVienTheoDotRequest();
-            sinhVien.setMaSinhVien(String.valueOf(getCellValue(row.getCell(1))));
-            sinhVien.setTenSinhVien(String.valueOf(getCellValue(row.getCell(2))));
-            sinhVien.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))));
-            sinhVien.setEmail(String.valueOf(getCellValue(row.getCell(4))));
-            sinhVien.setKhoa(String.valueOf(getCellValue(row.getCell(5))));
-            sinhVien.setMaNhom(String.valueOf(getCellValue(row.getCell(6))));
-            sinhVien.setChuyenNganh(String.valueOf(getCellValue(row.getCell(7))));
-            sinhVien.setDotDangKy(String.valueOf(getCellValue(row.getCell(8))));
-            sinhVien.setMonDATN(String.valueOf(getCellValue(row.getCell(9))));
+            sinhVien.setMaSinhVien(String.valueOf(getCellValue(row.getCell(1))).trim());
+            sinhVien.setTenSinhVien(String.valueOf(getCellValue(row.getCell(2))).trim());
+            sinhVien.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))).trim());
+            sinhVien.setEmail(String.valueOf(getCellValue(row.getCell(4))).trim());
+            sinhVien.setKhoa(String.valueOf(getCellValue(row.getCell(5))).trim());
+            sinhVien.setMaNhom(String.valueOf(getCellValue(row.getCell(6))).trim());
+            sinhVien.setChuyenNganh(String.valueOf(getCellValue(row.getCell(7))).trim());
+            sinhVien.setDotDangKy(String.valueOf(getCellValue(row.getCell(8))).trim());
+            sinhVien.setMonDATN(String.valueOf(getCellValue(row.getCell(9))).trim());
             listSinhVien.add(sinhVien);
 
         }
