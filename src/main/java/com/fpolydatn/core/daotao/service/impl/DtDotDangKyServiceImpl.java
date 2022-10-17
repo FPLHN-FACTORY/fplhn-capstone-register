@@ -4,6 +4,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateDotDangKyRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindDotDangKyRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateDotDangKyRequest;
+import com.fpolydatn.core.daotao.model.response.DtDetailDotDangKyResponse;
 import com.fpolydatn.core.daotao.model.response.DtDotDangKyResponse;
 import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
 import com.fpolydatn.core.daotao.repository.DtHocKyRepository;
@@ -68,7 +69,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     }
 
     @Override
-    public DotDangKy update(DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest) {
+    public DotDangKy update(@Valid DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest) {
         Optional<DotDangKy> dotDangKyCheck = dtDotDangKyRepository.findById(dtUpdateDotDangKyRequest.getId());
         if (!dotDangKyCheck.isPresent()) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
@@ -89,6 +90,9 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         DotDangKy dotDangKy = dotDangKyCheck.get();
         dotDangKy.setNgayBatDau(dtUpdateDotDangKyRequest.getNgayBatDau());
         dotDangKy.setNgayKetThuc(dtUpdateDotDangKyRequest.getNgayKetThuc());
+        dotDangKy.setHanSinhVien(dtUpdateDotDangKyRequest.getHanSinhVien());
+        dotDangKy.setHanGiangVien(dtUpdateDotDangKyRequest.getHanGiangVien());
+        dotDangKy.setHanChuNhiemBoMon(dtUpdateDotDangKyRequest.getHanChuNhiemBoMon());
         return dtDotDangKyRepository.save(dotDangKy);
     }
 
@@ -114,6 +118,17 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Override
     public List<DotDangKy> getAllByCoSo(String coSoId) {
         return dtDotDangKyRepository.getAllByCoSo(coSoId);
+    }
+
+    @Override
+    public DtDetailDotDangKyResponse detail(String id, String coSoId) {
+        DtDetailDotDangKyResponse dtDotDangKyResponse = dtDotDangKyRepository.detailDotDangKy(id, coSoId);
+        System.out.println("Tỉ lệ: " + dtDotDangKyResponse.getTiLeXacNhan());
+        System.out.println("tổng nhóm " + dtDotDangKyResponse.getTongSoNhom());
+        if (dtDotDangKyResponse == null) {
+            throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
+        }
+        return dtDotDangKyResponse;
     }
 
 }

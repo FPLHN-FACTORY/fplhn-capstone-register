@@ -21,17 +21,20 @@ function openModalUpdateDotDangKy(dotDangKyId) {
             $("#id_co_so_update").val(responseData.data.coSoId);
             $("#ten_dot_dang_ky_update").val(responseData.data.tenDotDangKy);
             var ngayBatDau = new Date(responseData.data.ngayBatDau);
-            var gioBatDau = ngayBatDau.getHours() < 10 ? '0' + ngayBatDau.getHours() : ngayBatDau.getHours();
-            var phutBatDau = ngayBatDau.getMinutes() < 10 ? '0' + ngayBatDau.getMinutes() : ngayBatDau.getMinutes();
-            var ngayBatDauStr = ngayBatDau.toLocaleDateString('en-CA') + " " +
-                gioBatDau + ":" + phutBatDau;
+            var ngayBatDauStr = ngayBatDau.toLocaleDateString('en-CA') + " " + ngayBatDau.toLocaleTimeString();
             $("#ngay_bat_dau_update").val(ngayBatDauStr);
             var ngayKetThuc = new Date(responseData.data.ngayKetThuc);
-            var gioKetThuc = ngayKetThuc.getHours() < 10 ? '0' + ngayKetThuc.getHours() : ngayKetThuc.getHours();
-            var phutKetThuc = ngayKetThuc.getMinutes() < 10 ? '0' + ngayKetThuc.getMinutes() : ngayKetThuc.getMinutes();
-            var ngayBatDauStr = ngayKetThuc.toLocaleDateString('en-CA') + " " +
-                gioKetThuc + ":" + phutKetThuc;
+            var ngayBatDauStr = ngayKetThuc.toLocaleDateString('en-CA') + " " + ngayBatDau.toLocaleTimeString();
             $("#ngay_ket_thuc_update").val(ngayBatDauStr);
+            var hanSinhVien = new Date(responseData.data.hanSinhVien);
+            var hanSinhVienStr = hanSinhVien.toLocaleDateString('en-CA') + " " + hanSinhVien.toLocaleTimeString();
+            $("#han_sinh_vien_update").val(hanSinhVienStr);
+            var hanGiangVien = new Date(responseData.data.hanGiangVien);
+            var hanGiangVienStr = hanGiangVien.toLocaleDateString('en-CA') + " " + hanGiangVien.toLocaleTimeString();
+            $("#han_giang_vien_update").val(hanGiangVienStr);
+            var hanChuNhiemBoMon = new Date(responseData.data.hanChuNhiemBoMon);
+            var hanChuNhiemBoMonStr = hanChuNhiemBoMon.toLocaleDateString('en-CA') + " " + hanChuNhiemBoMon.toLocaleTimeString();
+            $("#han_chu_nhiem_bo_mon_update").val(hanChuNhiemBoMonStr);
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -42,15 +45,23 @@ function openModalUpdateDotDangKy(dotDangKyId) {
 $("#form_dot_dang_ky_update").submit(function (event) {
     event.preventDefault();
     let dotDangKyId = $("#id_dot_dang_ky_update").val();
-    let tenDotDangKy = $("#ten_dot_dang_ky_update").val().trim();
     let ngayBatDauStr = $("#ngay_bat_dau_update").val();
     let ngayBatDau = new Date(ngayBatDauStr);
     let ngayKetThucStr = $("#ngay_ket_thuc_update").val();
     let ngayKetThuc = new Date(ngayKetThucStr);
+    let hanSinhVienStr = $("#han_sinh_vien_update").val();
+    let hanSinhVien = new Date(hanSinhVienStr);
+    let hanGiangVienStr = $("#han_giang_vien_update").val();
+    let hanGiangVien = new Date(hanGiangVienStr);
+    let hanChuNhiemBoMonStr = $("#han_chu_nhiem_bo_mon_update").val();
+    let hanChuNhiemBoMon = new Date(hanChuNhiemBoMonStr);
     let dotDangKyRequest = {};
-    dotDangKyRequest["tenDotDangKy"] = tenDotDangKy;
     dotDangKyRequest["ngayBatDau"] = ngayBatDau.getTime();
     dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.getTime();
+    dotDangKyRequest["hanSinhVien"] = hanSinhVien.getTime();
+    dotDangKyRequest["hanGiangVien"] = hanGiangVien.getTime();
+    dotDangKyRequest["hanChuNhiemBoMon"] = hanChuNhiemBoMon.getTime();
+    console.log(hanSinhVien.getTime() + '||' + hanGiangVien.getTime() + '||' + hanChuNhiemBoMon.getTime());
 
     let check = 0;
     if (ngayBatDau >= ngayKetThuc) {
@@ -116,7 +127,6 @@ $("#form_dot_dang_ky_update").submit(function (event) {
             dataType: 'json',
             success: function () {
                 window.open(dotDangKyView, '_self');
-                // location.reload();
                 $("#modal_update_dot_dang_ky").modal("hide");
             },
             error: function (e) {
@@ -223,7 +233,6 @@ $("#form_create_dot_dang_ky").submit(function (event) {
             dataType: 'json',
             success: function (responseData) {
                 window.open(dotDangKyView, '_self');
-                // location.reload();
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
@@ -232,3 +241,37 @@ $("#form_create_dot_dang_ky").submit(function (event) {
         });
     }
 });
+
+function detail(dotDangKyid) {
+    $("#modal_detail").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: dotDangKyApi + "/search/" + dotDangKyid,
+        dataType: 'json',
+        success: function (responseData) {
+            console.log(responseData.data);
+            var ngayBatDau = new Date(responseData.data.ngayBatDau);
+            var ngayKetThuc = new Date(responseData.data.ngayKetThuc);
+            var hanSinhVien = new Date(responseData.data.hanSinhVien);
+            var hanGiangVien = new Date(responseData.data.hanGiangVien);
+            var hanChuNhiemBoMon = new Date(responseData.data.hanChuNhiemBoMon);
+            $("#detailTenHocKy").val(responseData.data.tenHocKy);
+            $("#detailTenDotDangKy").val(responseData.data.tenDotDangKy);
+            $("#detailNgayBatDau").val(ngayBatDau.toLocaleDateString() + " " + ngayBatDau.toLocaleTimeString());
+            $("#detailNgayKetThuc").val(ngayKetThuc.toLocaleDateString() + " " + ngayKetThuc.toLocaleTimeString());
+            $("#detailHanSinhVien").val(hanSinhVien.toLocaleDateString() + " " + hanSinhVien.toLocaleTimeString());
+            $("#detailHanGiangVien").val(hanGiangVien.toLocaleDateString() + " " + hanGiangVien.toLocaleTimeString());
+            $("#detailHanChuNhiemBoMon").val(hanChuNhiemBoMon.toLocaleDateString() + " " + hanChuNhiemBoMon.toLocaleTimeString());
+            $("#detailTongSoSinhVien").val(responseData.data.tongSinhVien);
+            $("#detailTongSoSinhVienChuaCoNhom").val(responseData.data.tongSinhVienChuaCoNhom);
+            $("#detailTongSoSinhVienCoNhom").val(responseData.data.tongSinhVienCoNhom);
+            $("#detailTongSoNhom").val(responseData.data.tongSoNhom);
+            $("#detailTiLeXacNhan").val(responseData.data.tiLeXacNhan + "%");
+            $("#detailTrangThai").val(responseData.data.trangThai == 1 ? "Mở" : "Đóng");
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
