@@ -43,7 +43,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
             WHERE s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% AND 
             (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
-            AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)))
+            AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, (s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
             AND d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
             GROUP BY s.id 
             ORDER BY s.last_modified_date DESC """,
@@ -55,53 +55,13 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                     LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id 
                     LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id 
                     LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id 
-                    WHERE s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% AND 
+                    WHERE (s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL) AND 
                     (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
-                    AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)))
+                    AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, (s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
                     AND  d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
                     GROUP BY s.id  
                     """, nativeQuery = true)
     Page<DtSinhVienTheoDotResponse> searchStudent(@Param("req") FindDtSinhVienTheoDotRequest req, Pageable page);
-
-    @Query(value = """ 
-            SELECT ROW_NUMBER() OVER(ORDER BY s.last_modified_date DESC) AS stt,
-            s.id,
-            s.ma_sinh_vien,
-            s.ten_sinh_vien,
-            s.so_dien_thoai,
-            s.email,
-            s.khoa,
-            c.ten_chuyen_nganh,
-            m.ten_mon_datn,
-            n.ma_nhom,
-            n.ten_de_tai,
-            g.ten_gvhd ,
-            d.ten_dot_dang_ky ,
-            s.trang_thai,
-            n.so_thanh_vien
-            FROM do_an_tot_nghiep.sinh_vien s
-            LEFT JOIN (select nda.*,COUNT(sv.ma_sinh_vien) AS so_thanh_vien from do_an_tot_nghiep.nhom_datn nda
-            JOIN sinh_vien sv ON sv.nhom_id = nda.id) n
-            ON n.id= s.nhom_id
-            LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
-            LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id
-            LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id
-            LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
-            WHERE s.co_so_id = :#{#req.coSoId} AND d.id =:#{#req.idDotDangKy}
-            GROUP BY s.id 
-            ORDER BY s.last_modified_date DESC """,
-            countQuery = """
-                    SELECT count(s.id) 
-                    FROM do_an_tot_nghiep.sinh_vien s
-                    LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id= s.nhom_id 
-                    LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id 
-                    LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id 
-                    LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id 
-                    LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id 
-                    WHERE s.co_so_id = :#{#req.coSoId} AND d.id =:#{#req.idDotDangKy}
-                    GROUP BY s.id
-                    """, nativeQuery = true)
-    Page<DtSinhVienTheoDotResponse> findAllSinhVien(Pageable page, @Param("req") final FindDtSinhVienTheoDotRequest req);
 
     @Query(value = """
                 SELECT 
