@@ -41,7 +41,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id
             LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id
             LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
-            WHERE s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% AND 
+            WHERE (s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL) AND 
             (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
             AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, (s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
             AND d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
