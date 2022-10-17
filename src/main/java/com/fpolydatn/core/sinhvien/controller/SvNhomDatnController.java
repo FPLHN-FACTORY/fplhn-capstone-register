@@ -54,7 +54,7 @@ public class SvNhomDatnController extends BaseController {
             req.setCoSoId(coSoId);
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
-            model.addAttribute("listDataMonDatn", svMonDatnService.getMonDatn());
+            model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer));
             model.addAttribute("page", listNhomDatn);
             return "sinhvien/sv-join-nhom-datn";
         } else {
