@@ -51,7 +51,7 @@ public class SvNhomDatnController extends BaseController {
                 dotDangKyHienTai,
                 idUSer);
         if (nhomId == null || nhomId.trim().isEmpty()) {
-            req.setCoSoId(coSoId);
+            req.setCoSoId(coSoId );
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
             model.addAttribute("listDataMonDatn", svMonDatnService.getMonDatn());
