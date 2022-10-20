@@ -75,7 +75,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     public PageableObject<DtSinhVienTheoDotResponse> searchStudent(final FindDtSinhVienTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         if (request.getIdDotDangKy() == null){
-            request.setIdDotDangKy("");
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
         } else if (request.getIdDotDangKy().equalsIgnoreCase("")) {
             if (dotDangKyId != null) {
                 request.setIdDotDangKy(dotDangKyId);
