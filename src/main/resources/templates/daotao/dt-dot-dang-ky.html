@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 </head>
 <!-- end::Head -->
 
@@ -195,59 +196,63 @@
                 </button>
             </div>
             <div class="modal-body">
-                <label class="col-form-label">Tên học kỳ</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailTenHocKy" value="email@example.com">
+                <div style="width: 48%;margin-right: 2%; float:left">
+                    <label class="col-form-label">Tên học kỳ</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTenHocKy" value="email@example.com">
+                    </div>
+                    <label class="col-form-label">Tên đợt đăng ký</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTenDotDangKy">
+                    </div>
+                    <label class="col-form-label">Ngày bắt đầu</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailNgayBatDau">
+                    </div>
+                    <label class="col-form-label">Ngày kết thúc</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailNgayKetThuc">
+                    </div>
+                    <label class="col-form-label">Hạn sinh viên</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailHanSinhVien">
+                    </div>
+                    <label class="col-form-label">Hạn giảng viên hướng dẫn</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailHanGiangVien">
+                    </div>
+                    <label class="col-form-label">Hạn chủ nhiệm bộ môn</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailHanChuNhiemBoMon">
+                    </div>
                 </div>
-                <label class=class="col-form-label">Tên đợt đăng ký</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailTenDotDangKy">
-                </div>
-                <label class="col-form-label">Ngày bắt đầu</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailNgayBatDau">
-                </div>
-                <label class="col-form-label">Ngày kết thúc</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailNgayKetThuc">
-                </div>
-                <label class="col-sm-2 col-form-label">Hạn sinh viên</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailHanSinhVien">
-                </div>
-                <label class="col-form-label">Hạn giảng viên hướng dẫn</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailHanGiangVien">
-                </div>
-                <label class="col-form-label">Hạn chủ nhiệm bộ môn</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailHanChuNhiemBoMon">
-                </div>
-                <label class="col-form-label">Tổng số sinh viên đăng ký</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailTongSoSinhVien">
-                </div>
-                <label class="col-form-label">Tổng số sinh viên chưa có nhóm</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailTongSoSinhVienChuaCoNhom">
-<!--                    <a th:href=""><i class="bi bi-eye"></i></a>-->
-                </div>
-                <label class="col-form-label">Tổng số sinh viên có nhóm</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailTongSoSinhVienCoNhom">
-                </div>
-                <label class="col-form-label">Tổng số nhóm</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailTongSoNhom">
-                </div>
-                <label class="col-form-label">Tỉ lệ xác nhận</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailTiLeXacNhan">
-                </div>
-                <label class="col-form-label">Trạng thái</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control" id="detailTrangThai"
-                           style="color: #5867dd; font-weight: bold">
+                <div style="width: 50%; float:left">
+                    <label class="col-form-label">Tổng số sinh viên đăng ký</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTongSoSinhVien">
+                    </div>
+                    <label class="col-form-label">Tổng số sinh viên chưa có nhóm</label>
+                    <div class="input-group mb-3" >
+                        <input type="text" readonly class="form-control" id="detailTongSoSinhVienChuaCoNhom">
+                        <a href="" class="btn btn-primary bi bi-eye"></a>
+                    </div>
+                    <label class="col-form-label">Tổng số sinh viên có nhóm</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTongSoSinhVienCoNhom">
+                    </div>
+                    <label class="col-form-label">Tổng số nhóm</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTongSoNhom">
+                    </div>
+                    <label class="col-form-label">Tỉ lệ xác nhận</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTiLeXacNhan">
+                    </div>
+                    <label class="col-form-label">Trạng thái</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTrangThai"
+                               style="color: #5867dd; font-weight: bold">
+                    </div>
                 </div>
             </div>
         </div>

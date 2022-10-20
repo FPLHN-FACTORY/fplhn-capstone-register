@@ -123,8 +123,6 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Override
     public DtDetailDotDangKyResponse detail(String id, String coSoId) {
         DtDetailDotDangKyResponse dtDotDangKyResponse = dtDotDangKyRepository.detailDotDangKy(id, coSoId);
-        System.out.println("Tỉ lệ: " + dtDotDangKyResponse.getTiLeXacNhan());
-        System.out.println("tổng nhóm " + dtDotDangKyResponse.getTongSoNhom());
         if (dtDotDangKyResponse == null) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
