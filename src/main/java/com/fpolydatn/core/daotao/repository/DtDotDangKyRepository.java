@@ -35,8 +35,9 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             nativeQuery = true)
     Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest req, Pageable page);
 
-    @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, " +
-            "hoc_ky_id, ngay_bat_dau, ngay_ket_thuc, ten_dot_dang_ky FROM dot_dang_ky WHERE co_so_id = :coSoId"
+    @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, hoc_ky_id, " +
+            "ngay_bat_dau, ngay_ket_thuc, ten_dot_dang_ky, han_sinh_vien, han_giang_vien, han_chu_nhiem_bo_mon " +
+            "FROM dot_dang_ky WHERE co_so_id = :coSoId"
             , nativeQuery = true)
     List<DotDangKy> getAllByCoSo(@Param("coSoId") String coSoId);
 

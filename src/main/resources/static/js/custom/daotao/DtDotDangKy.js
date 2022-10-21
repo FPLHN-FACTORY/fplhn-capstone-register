@@ -6,8 +6,11 @@ $(document).ready(function () {
 });
 
 function openModalUpdateDotDangKy(dotDangKyId) {
+    $("#errorMessageNgayBatDauUpdate").text("");
     $("#errorMessageNgayKetThucUpdate").text("");
-    $("#errorMessageNgayKetThucUpdate").text("");
+    $("#errorMessageHanSinhVienUpdate").text("");
+    $("#errorMessageHanGiangVienUpdate").text("");
+    $("#errorMessageHanChuNhiemBoMonUpdate").text("");
     $("#modal_update_dot_dang_ky").modal('show');
     $.ajax({
         type: "GET",
@@ -88,6 +91,42 @@ $("#form_dot_dang_ky_update").submit(function (event) {
         $("#errorMessageNgayKetThucUpdate").text("");
     }
 
+    if (hanSinhVienStr === "") {
+        check += 1;
+        $("#errorMessageHanSinhVienUpdate").text("Hạn sinh viên không được để trống");
+    } else if (hanSinhVien <= ngayBatDau || hanSinhVien >= ngayKetThuc){
+        $("#errorMessageHanSinhVienUpdate").text("Hạn sinh viên phải nằm trong thời gian của đợt đăng ký");
+        check += 1;
+    } else {
+        $("#errorMessageHanSinhVienUpdate").text("");
+    }
+
+    if (hanGiangVienStr === "") {
+        check += 1;
+        $("#errorMessageHanGiangVienUpdate").text("Hạn giảng viên không được để trống");
+    } else if (hanGiangVien <= ngayBatDau || hanGiangVien >= ngayKetThuc) {
+        check += 1;
+        $("#errorMessageHanGiangVienUpdate").text("Hạn giảng viên phải nằm trong thời gian của đợt đăng ký");
+    } else if (hanGiangVien < hanSinhVien){
+        check += 1;
+        $("#errorMessageHanGiangVienUpdate").text("Hạn giảng viên phải sau hạn sinh viên");
+    } else {
+        $("#errorMessageHanGiangVienUpdate").text("");
+    }
+
+    if (hanChuNhiemBoMonStr === "") {
+        check += 1;
+        $("#errorMessageHanChuNhiemBoMonUpdate").text("Hạn chủ nhiệm bộ môn không được để trống");
+    } else if (hanChuNhiemBoMon <= ngayBatDau || hanChuNhiemBoMon >= ngayKetThuc) {
+        check += 1;
+        $("#errorMessageHanChuNhiemBoMonUpdate").text("Hạn chủ nhiệm bộ môn phải nằm trong thời gian của đợt đăng ký");
+    } else if (hanChuNhiemBoMon < hanGiangVien){
+        check += 1;
+        $("#errorMessageHanChuNhiemBoMonUpdate").text("Hạn chủ nhiệm bộ môn phải sau hạn giảng viên");
+    } else {
+        $("#errorMessageHanChuNhiemBoMonUpdate").text("");
+    }
+
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -136,7 +175,7 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     }
 });
 
-function clearData() {
+function clearDataAdd() {
     $("#hocKyAdd").val("");
     $("#errorMessageAddHocKy").text("");
     $("#errorMessageAddNgayKetThuc").text("");
@@ -145,6 +184,9 @@ function clearData() {
     $("#ngayKetThucAdd").val('');
     $("#errorMessageAddTenDot").text("");
     $("#errorMessageAddNgayBatDau").text("");
+    $("#errorMessageAddHanSinhVien").text("");
+    $("#errorMessageAddHanGiangVien").text("");
+    $("#errorMessageAddHanChuNhiemBoMon").text("");
 }
 
 $("#form_create_dot_dang_ky").submit(function (event) {
@@ -154,12 +196,21 @@ $("#form_create_dot_dang_ky").submit(function (event) {
     let ngayBatDau = new Date(ngayBatDauStr);
     let ngayKetThucStr = $("#ngayKetThucAdd").val();
     let ngayKetThuc = new Date(ngayKetThucStr);
+    let hanSinhVienStr = $("#hanSinhVienAdd").val();
+    let hanSinhVien = new Date(hanSinhVienStr);
+    let hanGiangVienStr = $("#hanGiangVienAdd").val();
+    let hanGiangVien = new Date(hanGiangVienStr);
+    let hanChuNhiemBoMonStr = $("#hanChuNhiemBoMonAdd").val();
+    let hanChuNhiemBoMon = new Date(hanChuNhiemBoMonStr);
     let hocKyId = $("#hocKyAdd").val();
 
     let dotDangKyRequest = {};
     dotDangKyRequest["tenDotDangKy"] = tenDotDangKy;
     dotDangKyRequest["ngayBatDau"] = ngayBatDau.getTime();
     dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.getTime();
+    dotDangKyRequest["hanSinhVien"] = hanSinhVien.getTime();
+    dotDangKyRequest["hanGiangVien"] = hanGiangVien.getTime();
+    dotDangKyRequest["hanChuNhiemBoMon"] = hanChuNhiemBoMon.getTime();
     dotDangKyRequest["hocKyId"] = hocKyId;
 
     let check = 0;
@@ -195,6 +246,42 @@ $("#form_create_dot_dang_ky").submit(function (event) {
         check += 1;
     } else {
         $("#errorMessageAddNgayKetThuc").text("");
+    }
+
+    if (hanSinhVienStr === "") {
+        check += 1;
+        $("#errorMessageAddHanSinhVien").text("Hạn sinh viên không được để trống");
+    } else if (hanSinhVien <= ngayBatDau || hanSinhVien >= ngayKetThuc){
+        $("#errorMessageAddHanSinhVien").text("Hạn sinh viên phải nằm trong thời gian của đợt đăng ký");
+        check += 1;
+    } else {
+        $("#errorMessageAddHanSinhVien").text("");
+    }
+
+    if (hanGiangVienStr === "") {
+        check += 1;
+        $("#errorMessageAddHanGiangVien").text("Hạn giảng viên không được để trống");
+    } else if (hanGiangVien <= ngayBatDau || hanGiangVien >= ngayKetThuc) {
+        check += 1;
+        $("#errorMessageAddHanGiangVien").text("Hạn giảng viên phải nằm trong thời gian của đợt đăng ký");
+    } else if (hanGiangVien < hanSinhVien){
+        check += 1;
+        $("#errorMessageAddHanGiangVien").text("Hạn giảng viên phải sau hạn sinh viên");
+    } else {
+        $("#errorMessageAddHanGiangVien").text("");
+    }
+
+    if (hanChuNhiemBoMonStr === "") {
+        check += 1;
+        $("#errorMessageAddHanChuNhiemBoMon").text("Hạn chủ nhiệm bộ môn không được để trống");
+    } else if (hanChuNhiemBoMon <= ngayBatDau || hanChuNhiemBoMon >= ngayKetThuc) {
+        check += 1;
+        $("#errorMessageAddHanChuNhiemBoMon").text("Hạn chủ nhiệm bộ môn phải nằm trong thời gian của đợt đăng ký");
+    } else if (hanChuNhiemBoMon < hanGiangVien){
+        check += 1;
+        $("#errorMessageAddHanChuNhiemBoMon").text("Hạn chủ nhiệm bộ môn phải sau hạn giảng viên");
+    } else {
+        $("#errorMessageAddHanChuNhiemBoMon").text("");
     }
 
     $.ajax({
@@ -250,7 +337,6 @@ function detail(dotDangKyid) {
         url: dotDangKyApi + "/search/" + dotDangKyid,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData.data);
             var ngayBatDau = new Date(responseData.data.ngayBatDau);
             var ngayKetThuc = new Date(responseData.data.ngayKetThuc);
             var hanSinhVien = new Date(responseData.data.hanSinhVien);
@@ -267,8 +353,14 @@ function detail(dotDangKyid) {
             $("#detailTongSoSinhVienChuaCoNhom").val(responseData.data.tongSinhVienChuaCoNhom);
             $("#detailTongSoSinhVienCoNhom").val(responseData.data.tongSinhVienCoNhom);
             $("#detailTongSoNhom").val(responseData.data.tongSoNhom);
-            $("#detailTiLeXacNhan").val(responseData.data.tiLeXacNhan + "%");
+            $("#detailTiLeXacNhan").val(responseData.data.tiLeXacNhan == null ? "0%" : responseData.data.tiLeXacNhan + "%");
             $("#detailTrangThai").val(responseData.data.trangThai == 1 ? "Mở" : "Đóng");
+            if (responseData.data.tongSinhVienChuaCoNhom == 0) {
+                $("#btnShowSinhVienChuaCoNhom").attr('style', "display: none");
+            } else {
+                $("#btnShowSinhVienChuaCoNhom").attr('style', "display: block");
+                $("#btnShowSinhVienChuaCoNhom").attr('href', "/dao-tao/sinh-vien?idTrangThaiNhom=b&idDotDangKy=" + dotDangKyid);
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
