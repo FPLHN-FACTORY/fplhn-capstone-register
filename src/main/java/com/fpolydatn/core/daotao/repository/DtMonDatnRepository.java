@@ -17,14 +17,15 @@ import java.util.List;
  */
 public interface DtMonDatnRepository extends MonDatnRepository {
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, m.nhom_mon_datn_id, cb.ten_tai_khoan 
+            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, 
+             (SELECT b.ten_mon_datn FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon , cb.ten_tai_khoan 
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
                 WHERE m.co_so_id = :#{#req.coSoId} AND
                     ( :#{#req.tenMonDatn} IS NULL 
                         OR :#{#req.tenMonDatn} LIKE '' 
-                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
+                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) AND nhom_mon_datn_id IS NOT NULL
                 ORDER BY m.last_modified_date DESC 
             """, countQuery = """
             SELECT COUNT(m.id)
@@ -34,7 +35,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 WHERE m.co_so_id = :#{#req.coSoId} AND
                     ( :#{#req.tenMonDatn} IS NULL 
                         OR :#{#req.tenMonDatn} LIKE '' 
-                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
+                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) AND nhom_mon_datn_id IS NOT NULL
                 ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
     Page<DtMonDatnResponse> findByName(@Param("req") DtFindMonDatnRequest req, Pageable page);
@@ -67,14 +68,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 m.nhom_mon_datn_id, 
                 m.ten_mon_datn
                 FROM mon_datn m 
-                WHERE nhom_mon_datn_id IS NULL 
+                WHERE nhom_mon_datn_id IS NULL
             """, nativeQuery = true)
     List<MonDatn> findByTenNhomMon();
-    @Query(value = """
-                SELECT m.id, 
-                m.ten_mon_datn 
-                FROM mon_datn m 
-                WHERE nhom_mon_datn_id IS NULL AND m.co_so_id = :coSoId
-            """, nativeQuery = true)
-    List<SimpleEntityProj>findNhomMon(@Param("coSoId") String id);
 }

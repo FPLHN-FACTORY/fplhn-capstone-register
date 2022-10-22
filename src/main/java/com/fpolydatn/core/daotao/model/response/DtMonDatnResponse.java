@@ -21,8 +21,8 @@ public interface DtMonDatnResponse extends IsIdentified {
     @Value("#{target.ten_mon_datn}")
     String getTenMon();
 
-    @Value("#{target.nhom_mon_datn_id}")
-    String getNhomMonId();
+    @Value("#{target.ten_nhom_mon}")
+    String getTenNhomMon();
 
     @Value("#{target.ten_tai_khoan}")
     String getChuNhiemBoMon();

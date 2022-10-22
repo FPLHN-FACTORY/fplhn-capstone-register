@@ -92,7 +92,8 @@
                                                                         <label class="col-form-label">Nhóm môn datn:</label>
                                                                         <select id="tenNhomMonDatn" class="form-control">
                                                                             <div th:each="tenNhomMon : ${tenNhomMon}">
-                                                                                <option th:text="${tenNhomMon.tenMonDatn}"></option>
+                                                                                <option th:value="${tenNhomMon.id}"
+                                                                                        th:text="${tenNhomMon.tenMonDatn}"></option>
                                                                             </div>
                                                                         </select><br>
                                                                     </div>
@@ -138,7 +139,7 @@
                                                         <td th:text="${monDatn.stt}"></td>
                                                         <td th:text="${monDatn.maMon}"></td>
                                                         <td th:text="${monDatn.tenMon}"></td>
-                                                        <td th:text="${monDatn.nhomMonId}"></td>
+                                                        <td th:text="${monDatn.tenNhomMon}"></td>
                                                         <td>
                                                             <a
                                                                     type="button"
