@@ -55,18 +55,15 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     private FormUtils formUtils = new FormUtils();
 
-    private HashMap<String, MonDatn> monDatnHashMap = new HashMap<>();
+    private HashMap<String, MonDatn> monDatnHashMap;
 
-    private HashMap<String, ChuyenNganh> chuyenNganhHashMap = new HashMap<>();
+    private HashMap<String, ChuyenNganh> chuyenNganhHashMap;
 
-    private HashMap<String, CoSo> coSoHashMap = new HashMap<>();
+    private HashMap<String, CoSo> coSoHashMap;
 
     private List<String> returnList = new ArrayList<>();
 
     private HashMap<String, String> listMaMonDatn = new HashMap<>();
-
-    private List<DtCreateImportMonDatnRequest> listCreateImport = new ArrayList<>();
-
 
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
@@ -125,6 +122,10 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     @Override
     public List<String> importExcel(MultipartFile file) {
+        coSoHashMap = new HashMap<>();
+        monDatnHashMap = new HashMap<>();
+        chuyenNganhHashMap = new HashMap<>();
+        returnList.clear();
         // tạo bộ nhớ đệm
         boNhoDem();
 
@@ -134,11 +135,14 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             return returnList;
         }
 
-        // check vaildate
-        List<MonDatn> list = checkNhom(file);
+        List<DtCreateImportMonDatnRequest> importMonDatnRequests = importExcelList(file);
+
+        // đưa ra môn
+        List<MonDatn> list = checkMaNhom(importMonDatnRequests);
+
 
         // import in database
-        if (list.size() != 0 && list.size() == listCreateImport.size()) {
+        if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
             monDatnRepository.saveAll(list);
         }
 
@@ -146,40 +150,31 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         return returnList;
     }
 
-    private List<MonDatn> checkNhom(MultipartFile file) {
+    private List<MonDatn> checkMaNhom(List<DtCreateImportMonDatnRequest> checkValiDate) {
         List<MonDatn> list = new ArrayList<>();
-        List<DtCreateImportMonDatnRequest> listCheck = checkImport(file);
-        listCheck.parallelStream().forEach(create -> {
+
+        List<DtCreateImportMonDatnRequest> checkMa = checkImport(checkValiDate);
+
+        checkMa.forEach(el -> {
             int check = 0;
-            if(!listMaMonDatn.containsKey(create.getMaMon())) {
-                returnList.add(formErrors("F" + (create.getStt() + 1), "Mã nhóm không tồn tại"));
-                check ++;
+            if (!monDatnHashMap.containsKey(el.getNhomMonDatnId())) {
+                returnList.add(formErrors("F" + (el.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
+                check++;
             }
-
             if (check == 0) {
-                MonDatn monDatn = new MonDatn();
-                monDatn.setMaMon(create.getMaMon());
-                monDatn.setTenMonDatn(create.getTenMonDatn());
-                monDatn.setCoSoId(coSoHashMap.get(create.getCoSoId()).getId());
-                monDatn.setChuyenNganhId(chuyenNganhHashMap.get(create.getChuyenNganhId()).getId());
-                monDatn.setNhomMonDatnId(create.getNhomMonDatnId());
-
-                list.add(monDatn);
+                if (!el.getMaMon().equals(el.getNhomMonDatnId())) {
+                    monDatnHashMap.get(el.getMaMon()).setNhomMonDatnId(el.getNhomMonDatnId());
+                }
+                list.add(monDatnHashMap.get(el.getMaMon()));
             }
-
         });
-
         return list;
     }
 
-    private List<DtCreateImportMonDatnRequest> checkImport(MultipartFile file) {
-        returnList.clear();
+    private List<DtCreateImportMonDatnRequest> checkImport(List<DtCreateImportMonDatnRequest> list) {
+        List<DtCreateImportMonDatnRequest> traVe = new ArrayList<>();
 
-        List<DtCreateImportMonDatnRequest> list = new ArrayList<>();
-
-        List<DtCreateImportMonDatnRequest> listCreate = importExcelList(file);
-
-        listCreate.parallelStream().forEach(createMonDant -> {
+        list.forEach(createMonDant -> {
             int check = 0;
             // check mã môn
             if (monDatnHashMap.containsKey(createMonDant.getMaMon())) {
@@ -257,20 +252,17 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             }
 
             if (check == 0) {
-                DtCreateImportMonDatnRequest monDatn = new DtCreateImportMonDatnRequest();
+                MonDatn monDatn = new MonDatn();
                 monDatn.setMaMon(createMonDant.getMaMon());
                 monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
                 monDatn.setCoSoId(coSoHashMap.get(createMonDant.getCoSoId()).getId());
                 monDatn.setChuyenNganhId(chuyenNganhHashMap.get(createMonDant.getChuyenNganhId()).getId());
-                monDatn.setNhomMonDatnId(createMonDant.getNhomMonDatnId());
-
-                listMaMonDatn.put(createMonDant.getMaMon(), createMonDant.getMaMon());
-
-                list.add(monDatn);
+                monDatnHashMap.put(monDatn.getMaMon(), monDatn);
+                traVe.add(createMonDant);
             }
 
         });
-        return list;
+        return traVe;
     }
 
     public String formErrors(String vtr, String err) {
@@ -278,11 +270,12 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     public List<DtCreateImportMonDatnRequest> importExcelList(MultipartFile file) {
+        List<DtCreateImportMonDatnRequest> list = new ArrayList<>();
 
         try {
             Workbook workbook = StreamingReader.builder()
                     .bufferSize(4096)
-                    .rowCacheSize(30)
+                    .rowCacheSize(50)
                     .open(file.getInputStream());
             Sheet sheet = workbook.getSheetAt(0);
             int rowNumber = 0;
@@ -304,12 +297,12 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 createMonDatn.setCoSoId(String.valueOf(getCellValue(row.getCell(4))).trim());
                 createMonDatn.setNhomMonDatnId(String.valueOf(getCellValue(row.getCell(5))).trim());
 
-                listCreateImport.add(createMonDatn);
+                list.add(createMonDatn);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return listCreateImport;
+        return list;
     }
 
     public boolean checkTypeFile(MultipartFile file) {
