@@ -6,7 +6,6 @@ import com.fpolydatn.core.sinhvien.model.request.SvCreateNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
-import com.fpolydatn.core.sinhvien.model.response.SvMonDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.core.sinhvien.repository.SvGiangVienHuongDanRepository;
@@ -21,9 +20,9 @@ import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
 import com.fpolydatn.util.NhomDatnHelper;
-import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,29 +110,30 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     public boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req) {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(req.getIdUser());
         Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(req.getIdNhom());
-        if(sinhVien.get().getThoiDiemRoiNhomGanNhat() + 43200000 < Calendar.getInstance().getTimeInMillis()){
+        if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
             throw new RestApiException(Message.THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG);
-        }else{
-            if (!nhomDatn.isPresent()) {
-                throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
-            }
-            Optional<SinhVien> truongNhom = svSinhVienRepository.findById(nhomDatn.get().getTruongNhomId());
-            if (!sinhVien.get().getMonDatnId().equals(truongNhom.get().getMonDatnId())) {
-                sinhVien.get().setMonDatnId(truongNhom.get().getMonDatnId());
-            }
-            String matKhau = svNhomDatnRepository.getMatKhauById(req.getIdNhom());
-            int soLuongThanhVien = svSinhVienRepository.getSoLuongThanhVienById(req.getIdNhom());
-            if (soLuongThanhVien == 7){
-                throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
-            }
-            if (!(matKhau == null)) {
-                if (!matKhau.trim().equals(req.getInputPassword().trim())){
-                    throw new RestApiException(Message.MAT_KHAU_KHONG_CHINH_XAC);
-                }
-            }
-            sinhVien.get().setNhomId(nhomDatn.get().getId());
-            svSinhVienRepository.save(sinhVien.get());
         }
+
+        if (!nhomDatn.isPresent()) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        Optional<SinhVien> truongNhom = svSinhVienRepository.findById(nhomDatn.get().getTruongNhomId());
+        if (!sinhVien.get().getMonDatnId().equals(truongNhom.get().getMonDatnId())) {
+            sinhVien.get().setMonDatnId(truongNhom.get().getMonDatnId());
+        }
+        String matKhau = svNhomDatnRepository.getMatKhauById(req.getIdNhom());
+        int soLuongThanhVien = svSinhVienRepository.getSoLuongThanhVienById(req.getIdNhom());
+        if (soLuongThanhVien == 7) {
+            throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
+        }
+        if (!(matKhau == null)) {
+            if (!matKhau.trim().equals(req.getInputPassword().trim())) {
+                throw new RestApiException(Message.MAT_KHAU_KHONG_CHINH_XAC);
+            }
+        }
+        sinhVien.get().setNhomId(nhomDatn.get().getId());
+        svSinhVienRepository.save(sinhVien.get());
+
         return true;
     }
 
@@ -155,9 +156,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
-        if (!sinhVien.get().getMonDatnId().equals(svNhomDatnRequest.getIdMonDatn())){
-            sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());
-        }
         NhomDatn nhomDatn = formUtils.convertToObject(NhomDatn.class, svNhomDatnRequest);
         nhomDatn.setTruongNhomId(idUser);
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
@@ -258,11 +256,15 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         nhomDatn.setGiangVienId(idGiangVien);
         svNhomDatnRepository.save(nhomDatn);
         return true;
+
     }
+
     @Override
     public Boolean updateThoiGianRoiNhom(String idUser) {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
+        System.out.println(sinhVien.get().getId());
         sinhVien.get().setThoiDiemRoiNhomGanNhat(Calendar.getInstance().getTimeInMillis());
+        svSinhVienRepository.save(sinhVien.get());
         return true;
     }
 }
