@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface DtMonDatnRepository extends MonDatnRepository {
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, cb.ten_tai_khoan 
+            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, m.nhom_mon_datn_id, cb.ten_tai_khoan 
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
@@ -50,7 +50,31 @@ public interface DtMonDatnRepository extends MonDatnRepository {
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaMon(@Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT * FROM mon_datn WHERE ma_mon = :maMon AND id <> :id ", nativeQuery = true)
-    MonDatn findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id);
+    @Query(value = """
+                SELECT id 
+                FROM mon_datn
+                WHERE ma_mon = :maMon AND id <> :id 
+            """, nativeQuery = true)
+    String findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id);
 
+    @Query(value = """ 
+                SELECT m.id, 
+                m.created_date, 
+                m.last_modified_date, 
+                m.co_so_id, 
+                m.chuyen_nganh_id, 
+                m.ma_mon, 
+                m.nhom_mon_datn_id, 
+                m.ten_mon_datn
+                FROM mon_datn m 
+                WHERE nhom_mon_datn_id IS NULL 
+            """, nativeQuery = true)
+    List<MonDatn> findByTenNhomMon();
+    @Query(value = """
+                SELECT m.id, 
+                m.ten_mon_datn 
+                FROM mon_datn m 
+                WHERE nhom_mon_datn_id IS NULL AND m.co_so_id = :coSoId
+            """, nativeQuery = true)
+    List<SimpleEntityProj>findNhomMon(@Param("coSoId") String id);
 }

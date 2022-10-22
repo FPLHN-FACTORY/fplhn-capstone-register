@@ -7,9 +7,11 @@ import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 
 import com.fpolydatn.entity.MonDatn;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -21,6 +23,8 @@ public interface DtMonDatnService {
     Boolean delete(final String id);
 
     MonDatn findById(String id);
+
+    List<MonDatn> findByTenNhomMon();
 
     MonDatn update(@Valid final DtUpdateMonDatnRequest command);
 

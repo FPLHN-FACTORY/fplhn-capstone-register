@@ -11,10 +11,12 @@ $("#form_create_mon_datn").submit(function (event) {
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
+    let nhomMonId = $("#tenNhomMonDatn").val();
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
+    monDatnRequest["nhomMonDatnId"] = nhomMonId;
     let index = 0;
     if (maMon.trim().length === 0) {
         $("#ma_mon_datn_error").text("Ma mon DATN khong duoc de trong");
