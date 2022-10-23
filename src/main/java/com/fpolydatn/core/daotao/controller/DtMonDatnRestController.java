@@ -31,7 +31,7 @@ public class DtMonDatnRestController extends BaseController {
 
     @Autowired
     private CommonHelper commonHelper;
-    
+
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();

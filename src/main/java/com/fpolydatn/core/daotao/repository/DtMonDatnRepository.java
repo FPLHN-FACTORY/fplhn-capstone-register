@@ -87,8 +87,8 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 LEFT JOIN sinh_vien s ON m.id = s.mon_datn_id 
                 RIGHT JOIN phan_cong_huong_dan p ON m.id = p.mon_datn_id  
                 WHERE m.id = :id 
-                AND m.co_so_id = :coSoId      
-                 AND s.dot_dang_ky_id = :dotDangKyId                                                        
+                AND m.co_so_id = :coSoId 
+                AND s.dot_dang_ky_id = :dotDangKyId                                                        
             """, nativeQuery = true)
     List<MonDatn> findByIdMon(@Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 }

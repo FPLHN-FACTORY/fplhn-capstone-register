@@ -62,7 +62,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     public Boolean delete(final String id, String coSoId, String dotDangKyId) {
         Optional<MonDatn> monCheck = monDatnRepository.findById(id);
         List<MonDatn> checkIdMon = monDatnRepository.findByIdMon(id, coSoId, dotDangKyId);
-        System.out.println(checkIdMon);
         if (Objects.isNull(monCheck)) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
