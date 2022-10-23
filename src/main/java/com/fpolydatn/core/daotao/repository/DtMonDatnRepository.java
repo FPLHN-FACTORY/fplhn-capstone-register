@@ -3,6 +3,7 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.entity.MonDatn;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.MonDatnRepository;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author hungpv
@@ -44,8 +46,8 @@ public interface DtMonDatnRepository extends MonDatnRepository {
 
     @Query(value = """
                 SELECT 
-                m.id,
-                m.ma_mon AS 'name'
+                 m.id,
+                 m.ma_mon AS 'name'
                  FROM do_an_tot_nghiep.mon_datn m
                  WHERE m.co_so_id = :coSoId
             """, nativeQuery = true)
@@ -71,4 +73,22 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 WHERE nhom_mon_datn_id IS NULL
             """, nativeQuery = true)
     List<MonDatn> findByTenNhomMon();
+
+    @Query(value = """
+                SELECT m.id,
+                m.created_date, 
+                m.last_modified_date, 
+                m.co_so_id, 
+                m.chuyen_nganh_id, 
+                m.ma_mon, 
+                m.nhom_mon_datn_id, 
+                m.ten_mon_datn
+                FROM mon_datn m 
+                LEFT JOIN sinh_vien s ON m.id = s.mon_datn_id 
+                RIGHT JOIN phan_cong_huong_dan p ON m.id = p.mon_datn_id  
+                WHERE m.id = :id 
+                AND m.co_so_id = :coSoId      
+                 AND s.dot_dang_ky_id = :dotDangKyId                                                        
+            """, nativeQuery = true)
+    List<MonDatn> findByIdMon(@Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 }

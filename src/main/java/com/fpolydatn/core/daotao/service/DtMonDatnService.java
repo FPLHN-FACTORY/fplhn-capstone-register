@@ -20,7 +20,7 @@ import java.util.List;
 public interface DtMonDatnService {
     PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req);
 
-    Boolean delete(final String id);
+    Boolean delete(final String id, String coSoId, String dotDangKyId);
 
     MonDatn findById(String id);
 

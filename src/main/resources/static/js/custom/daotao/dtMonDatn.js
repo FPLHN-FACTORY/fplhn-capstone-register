@@ -137,7 +137,7 @@ $("#form_mon_datn_delete").submit(function (event) {
             $("#modal_mon_datn_remove").modal("hide");
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            $("#remove_mon_datn").text(e.responseJSON.message);
         }
     });
 });

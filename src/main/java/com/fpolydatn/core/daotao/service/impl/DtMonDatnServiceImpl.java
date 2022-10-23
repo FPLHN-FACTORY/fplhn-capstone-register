@@ -10,6 +10,7 @@ import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.entity.MonDatn;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -58,10 +59,15 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
-    public Boolean delete(final String id) {
+    public Boolean delete(final String id, String coSoId, String dotDangKyId) {
         Optional<MonDatn> monCheck = monDatnRepository.findById(id);
+        List<MonDatn> checkIdMon = monDatnRepository.findByIdMon(id, coSoId, dotDangKyId);
+        System.out.println(checkIdMon);
         if (Objects.isNull(monCheck)) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
+        }
+        if (checkIdMon.size() != 0) {
+            throw new RestApiException(Message.KHONG_DUOC_XOA_MON);
         }
         monDatnRepository.delete(monCheck.get());
         return true;

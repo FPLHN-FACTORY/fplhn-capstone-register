@@ -5,6 +5,7 @@ import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,9 +29,14 @@ public class DtMonDatnRestController extends BaseController {
     @Autowired
     private DtMonDatnService monDatnService;
 
+    @Autowired
+    private CommonHelper commonHelper;
+    
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
-        return new ResponseObject(monDatnService.delete(id));
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        return new ResponseObject(monDatnService.delete(id, coSoId, dotDangKyId));
     }
 
     @GetMapping("/{id}")
