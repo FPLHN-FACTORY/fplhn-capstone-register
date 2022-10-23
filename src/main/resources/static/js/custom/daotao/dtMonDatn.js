@@ -157,3 +157,7 @@ function openModalImportMonDatn() {
         }
     });
 }
+
+function clearModalDelete() {
+    $("#remove_mon_datn").text("");
+}
