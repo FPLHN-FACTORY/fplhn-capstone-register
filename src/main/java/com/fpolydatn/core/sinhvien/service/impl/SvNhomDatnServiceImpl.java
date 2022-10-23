@@ -22,6 +22,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,14 +50,15 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Autowired
     private SvSinhVienRepository svSinhVienRepository;
 
-    private FormUtils formUtils = new FormUtils();
+    private final FormUtils formUtils = new FormUtils();
 
     @Autowired
     private NhomDatnHelper nhomDatnHelper;
 
     @Autowired
     private CommonHelper commonHelper;
-
+    @Autowired
+    private MocThoiGianCommon mocThoiGianCommon;
     @Autowired
     private SvGiangVienHuongDanRepository svGiangVienHuongDanRepository;
 
@@ -68,10 +70,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     public Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser) {
         String idTruongNhom = svNhomDatnRepository.getIdTruongNhom(idNhomDatn, idCoSo);
-        if (idUser.equals(idTruongNhom)) {
-            return true;
-        }
-        return false;
+        return idUser.equals(idTruongNhom);
     }
 
     @Override
@@ -149,6 +148,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         Optional<MonDatn> monDatn = svMonDatnRepository.findById(svNhomDatnRequest.getIdMonDatn());
         if (!monDatn.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
+        }
+        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+            throw new RestApiException(Message.SV_DOT_DANG_KY_OUT_OF_DATE);
         }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
         NhomDatn nhomDatn = formUtils.convertToObject(NhomDatn.class, svNhomDatnRequest);

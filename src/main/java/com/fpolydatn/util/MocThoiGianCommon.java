@@ -23,7 +23,7 @@ public class MocThoiGianCommon {
     private DotDangKyRepository dotDangKyRepository;
 
     public boolean checkMocThoiGianSinhVien() {
-        boolean check = false;
+        boolean check = true;
         String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
         KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianSinhVien(dotDangKyHienTaiId);
         Long currentTime = convertDateToTimeStampSecond();

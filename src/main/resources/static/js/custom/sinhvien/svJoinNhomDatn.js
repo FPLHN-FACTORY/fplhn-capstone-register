@@ -247,9 +247,7 @@ function createNhomDatn() {
             },
             error: function (e) {
                 console.log("ERROR : ", e);
-                $("#modal_create").modal("hide");
-                $("#messageError").text(e.responseJSON.message);
-                $("#modal_confirm_success").modal('show');
+                alert(e.responseJSON.message);
             }
         });
     }
