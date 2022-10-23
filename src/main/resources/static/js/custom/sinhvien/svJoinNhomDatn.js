@@ -79,6 +79,7 @@ function loadDataNhomDatn(count) {
                                     data-target="#modal_create1"
                                     data-toggle="modal"
                                     onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
+                                    checkMocThoiGian();
                                     >
                                 Tham gia nhóm
                             </button>
@@ -161,6 +162,14 @@ function addSinhVienHasPassword() {
             }
         }
     });
+}
+
+function checkMocThoiGian(){
+    let check = $("#haha").val().trim();
+    if(!check.empty()){
+        return true;
+    }
+    return false;
 }
 
 $("#form_confirm_success").submit(function (event) {

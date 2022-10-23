@@ -51,7 +51,7 @@ public class SvNhomDatnController extends BaseController {
         String nhomId = svSinhVienService.getNhomIdById(coSoId,
                 dotDangKyHienTai,
                 idUSer);
-        model.addAttribute("checkMocThoiGian", mocThoiGianCommon.checkMocThoiGianSinhVien());
+        model.addAttribute("checkMocThoiGian", !mocThoiGianCommon.checkMocThoiGianSinhVien());
         if (nhomId == null || nhomId.trim().isEmpty()) {
             req.setCoSoId(coSoId);
             req.setDotDangKyId(dotDangKyHienTai);
