@@ -246,8 +246,10 @@ function createNhomDatn() {
                 $("#modal_confirm_success").modal('show');
             },
             error: function (e) {
-                alert(e.responseJSON.message);
                 console.log("ERROR : ", e);
+                $("#modal_create").modal("hide");
+                $("#messageError").text(e.responseJSON.message);
+                $("#modal_confirm_success").modal('show');
             }
         });
     }

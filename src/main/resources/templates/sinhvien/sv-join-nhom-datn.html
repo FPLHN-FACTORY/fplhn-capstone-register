@@ -117,7 +117,7 @@
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="mt-3 overflow-hidden">
-                                        <button data-toggle="modal" data-target="#modal_create"
+                                        <button th:if="${checkMocThoiGian}" data-toggle="modal" data-target="#modal_create"
                                                 class="btn btn-primary">
                                             Tạo nhóm Dự án tốt nghiệp
                                         </button>
@@ -390,6 +390,7 @@
                     <div class="form-group">
                         <br>
                         <h4 id="messageSuccess"></h4>
+                        <h4 id="messageError"></h4>
                     </div>
                 </div>
                 <div class="modal-footer">
