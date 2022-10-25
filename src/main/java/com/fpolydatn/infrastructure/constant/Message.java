@@ -51,7 +51,9 @@ public enum Message {
     SINH_VIEN_KHONG_CO_NHOM(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_KHONG_CO_NHOM)),
     ROI_NHOM_KHI_LA_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.ROI_NHOM_KHI_LA_TRUONG_NHOM)),
     SINH_VIEN_DANG_LA_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_DANG_LA_TRUONG_NHOM)),
-    TRUONG_NHOM_MOI_KHONG_CUNG_NHOM(PropertiesReader.getProperty(PropertyKeys.TRUONG_NHOM_MOI_KHONG_CUNG_NHOM));
+    TRUONG_NHOM_MOI_KHONG_CUNG_NHOM(PropertiesReader.getProperty(PropertyKeys.TRUONG_NHOM_MOI_KHONG_CUNG_NHOM)),
+    CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM(PropertiesReader.getProperty(PropertyKeys.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM)),
+    MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN));
 
     private String message;
 
