@@ -148,7 +148,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Override
     public boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
         boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-
         if (!check) {
             throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
         }
