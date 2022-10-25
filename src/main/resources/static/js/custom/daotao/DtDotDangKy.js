@@ -6,6 +6,7 @@ $(document).ready(function () {
 });
 
 function openModalUpdateDotDangKy(dotDangKyId) {
+
     $("#errorMessageNgayBatDauUpdate").text("");
     $("#errorMessageNgayKetThucUpdate").text("");
     $("#errorMessageHanSinhVienUpdate").text("");
@@ -58,22 +59,15 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     let hanGiangVien = new Date(hanGiangVienStr);
     let hanChuNhiemBoMonStr = $("#han_chu_nhiem_bo_mon_update").val();
     let hanChuNhiemBoMon = new Date(hanChuNhiemBoMonStr);
+
     let dotDangKyRequest = {};
-    dotDangKyRequest["ngayBatDau"] = ngayBatDau.getTime();
-    dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.getTime();
-    dotDangKyRequest["hanSinhVien"] = hanSinhVien.getTime();
-    dotDangKyRequest["hanGiangVien"] = hanGiangVien.getTime();
-    dotDangKyRequest["hanChuNhiemBoMon"] = hanChuNhiemBoMon.getTime();
-    console.log(hanSinhVien.getTime() + '||' + hanGiangVien.getTime() + '||' + hanChuNhiemBoMon.getTime());
+    dotDangKyRequest["ngayBatDau"] = ngayBatDau.toLocaleString('en-CA', {hour12: false});
+    dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.toLocaleString('en-CA', {hour12: false});
+    dotDangKyRequest["hanSinhVien"] = hanSinhVien.toLocaleString('en-CA', {hour12: false});
+    dotDangKyRequest["hanGiangVien"] = hanGiangVien.toLocaleString('en-CA', {hour12: false});
+    dotDangKyRequest["hanChuNhiemBoMon"] = hanChuNhiemBoMon.toLocaleString('en-CA', {hour12: false});
 
     let check = 0;
-    if (ngayBatDau >= ngayKetThuc) {
-        $("#errorMessageNgayKetThucUpdate").text("Ngày giờ kết thúc phải sau ngày bắt đầu");
-        check += 1;
-    } else {
-        $("#errorMessageNgayKetThucUpdate").text("");
-    }
-
     if (ngayBatDauStr === "") {
         $("#errorMessageNgayBatDauUpdate").text("Ngày giờ bắt đầu không được để trống");
         check += 1;
@@ -94,7 +88,7 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     if (hanSinhVienStr === "") {
         check += 1;
         $("#errorMessageHanSinhVienUpdate").text("Hạn sinh viên không được để trống");
-    } else if (hanSinhVien <= ngayBatDau || hanSinhVien >= ngayKetThuc){
+    } else if (hanSinhVien <= ngayBatDau || hanSinhVien >= ngayKetThuc) {
         $("#errorMessageHanSinhVienUpdate").text("Hạn sinh viên phải nằm trong thời gian của đợt đăng ký");
         check += 1;
     } else {
@@ -107,7 +101,7 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     } else if (hanGiangVien <= ngayBatDau || hanGiangVien >= ngayKetThuc) {
         check += 1;
         $("#errorMessageHanGiangVienUpdate").text("Hạn giảng viên phải nằm trong thời gian của đợt đăng ký");
-    } else if (hanGiangVien < hanSinhVien){
+    } else if (hanGiangVien < hanSinhVien) {
         check += 1;
         $("#errorMessageHanGiangVienUpdate").text("Hạn giảng viên phải sau hạn sinh viên");
     } else {
@@ -120,7 +114,7 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     } else if (hanChuNhiemBoMon <= ngayBatDau || hanChuNhiemBoMon >= ngayKetThuc) {
         check += 1;
         $("#errorMessageHanChuNhiemBoMonUpdate").text("Hạn chủ nhiệm bộ môn phải nằm trong thời gian của đợt đăng ký");
-    } else if (hanChuNhiemBoMon < hanGiangVien){
+    } else if (hanChuNhiemBoMon < hanGiangVien) {
         check += 1;
         $("#errorMessageHanChuNhiemBoMonUpdate").text("Hạn chủ nhiệm bộ môn phải sau hạn giảng viên");
     } else {
@@ -165,8 +159,8 @@ $("#form_dot_dang_ky_update").submit(function (event) {
             data: JSON.stringify(dotDangKyRequest),
             dataType: 'json',
             success: function () {
-                window.open(dotDangKyView, '_self');
                 $("#modal_update_dot_dang_ky").modal("hide");
+                window.open(dotDangKyView, '_self');
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -206,11 +200,11 @@ $("#form_create_dot_dang_ky").submit(function (event) {
 
     let dotDangKyRequest = {};
     dotDangKyRequest["tenDotDangKy"] = tenDotDangKy;
-    dotDangKyRequest["ngayBatDau"] = ngayBatDau.getTime();
-    dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.getTime();
-    dotDangKyRequest["hanSinhVien"] = hanSinhVien.getTime();
-    dotDangKyRequest["hanGiangVien"] = hanGiangVien.getTime();
-    dotDangKyRequest["hanChuNhiemBoMon"] = hanChuNhiemBoMon.getTime();
+    dotDangKyRequest["ngayBatDau"] = ngayBatDau.toLocaleString('en-CA', {hour12: false});
+    dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.toLocaleString('en-CA', {hour12: false});
+    dotDangKyRequest["hanSinhVien"] = hanSinhVien.toLocaleString('en-CA', {hour12: false});
+    dotDangKyRequest["hanGiangVien"] = hanGiangVien.toLocaleString('en-CA', {hour12: false});
+    dotDangKyRequest["hanChuNhiemBoMon"] = hanChuNhiemBoMon.toLocaleString('en-CA', {hour12: false});
     dotDangKyRequest["hocKyId"] = hocKyId;
 
     let check = 0;
@@ -227,6 +221,9 @@ $("#form_create_dot_dang_ky").submit(function (event) {
     } else if (tenDotDangKy.length < 6) {
         $("#errorMessageAddTenDot").text("Tên đợt đăng ký tối thiếu 6 ký tự");
         check += 1;
+    } else if (tenDotDangKy.length > 100) {
+        $("#errorMessageAddTenDot").text("Vượt quá số ký tự");
+        check != 1;
     } else {
         $("#errorMessageAddTenDot").text("");
     }
@@ -251,7 +248,7 @@ $("#form_create_dot_dang_ky").submit(function (event) {
     if (hanSinhVienStr === "") {
         check += 1;
         $("#errorMessageAddHanSinhVien").text("Hạn sinh viên không được để trống");
-    } else if (hanSinhVien <= ngayBatDau || hanSinhVien >= ngayKetThuc){
+    } else if (hanSinhVien <= ngayBatDau || hanSinhVien >= ngayKetThuc) {
         $("#errorMessageAddHanSinhVien").text("Hạn sinh viên phải nằm trong thời gian của đợt đăng ký");
         check += 1;
     } else {
@@ -264,7 +261,7 @@ $("#form_create_dot_dang_ky").submit(function (event) {
     } else if (hanGiangVien <= ngayBatDau || hanGiangVien >= ngayKetThuc) {
         check += 1;
         $("#errorMessageAddHanGiangVien").text("Hạn giảng viên phải nằm trong thời gian của đợt đăng ký");
-    } else if (hanGiangVien < hanSinhVien){
+    } else if (hanGiangVien < hanSinhVien) {
         check += 1;
         $("#errorMessageAddHanGiangVien").text("Hạn giảng viên phải sau hạn sinh viên");
     } else {
@@ -277,7 +274,7 @@ $("#form_create_dot_dang_ky").submit(function (event) {
     } else if (hanChuNhiemBoMon <= ngayBatDau || hanChuNhiemBoMon >= ngayKetThuc) {
         check += 1;
         $("#errorMessageAddHanChuNhiemBoMon").text("Hạn chủ nhiệm bộ môn phải nằm trong thời gian của đợt đăng ký");
-    } else if (hanChuNhiemBoMon < hanGiangVien){
+    } else if (hanChuNhiemBoMon < hanGiangVien) {
         check += 1;
         $("#errorMessageAddHanChuNhiemBoMon").text("Hạn chủ nhiệm bộ môn phải sau hạn giảng viên");
     } else {
@@ -367,3 +364,4 @@ function detail(dotDangKyid) {
         }
     });
 }
+
