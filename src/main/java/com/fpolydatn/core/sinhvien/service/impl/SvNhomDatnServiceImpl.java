@@ -22,6 +22,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +61,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Autowired
     private SvGiangVienHuongDanRepository svGiangVienHuongDanRepository;
+
+    @Autowired
+    private MocThoiGianCommon mocThoiGianCommon;
 
     @Override
     public List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id) {
@@ -188,7 +193,11 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     public Boolean roiNhom(String idUser) {
+        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+            throw new RestApiException(Message.EXECUTION_TIME_OUT);
+        }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
+        Date thoiGianRoiNhom = new Date();
         if(!sinhVien.isPresent()){
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
@@ -205,6 +214,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             svNhomDatnRepository.delete(nhomDatn.get());
         }
         sinhVien.get().setNhomId(null);
+        sinhVien.get().setThoiDiemRoiNhomGanNhat(thoiGianRoiNhom.getTime());
         svSinhVienRepository.save(sinhVien.get());
         return true;
     }

@@ -50,7 +50,8 @@ public enum Message {
     INVALID_HAN_GIANG_VIEN (PropertiesReader.getProperty(PropertyKeys.INVALID_HAN_GIANG_VIEN)),
     INVALID_HAN_CHU_NHIEM_BO_MON(PropertiesReader.getProperty(PropertyKeys.INVALID_HAN_CHU_NHIEM_BO_MON)),
     INVALID_DATE(PropertiesReader.getProperty(PropertyKeys.INVALID_DATE)),
-    INVALID_NGAY_KET_THUC(PropertiesReader.getProperty(PropertyKeys.INVALID_NGAY_KETTHUC));
+    INVALID_NGAY_KET_THUC(PropertiesReader.getProperty(PropertyKeys.INVALID_NGAY_KETTHUC)),
+    EXECUTION_TIME_OUT(PropertiesReader.getProperty(PropertyKeys.EXECUTION_TIME_OUT));
 
     private String message;
 

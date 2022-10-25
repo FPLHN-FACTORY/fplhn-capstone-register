@@ -51,5 +51,6 @@ public class PropertyKeys {
     public static final String INVALID_HAN_CHU_NHIEM_BO_MON = "invalid.han.chu.nhiem.bo.mon";
     public static final String INVALID_DATE = "invalid.date";
     public static final String INVALID_NGAY_KETTHUC = "invalid.ngay.ket.thuc";
+    public static final String EXECUTION_TIME_OUT = "execution.time.out";
 
 }
