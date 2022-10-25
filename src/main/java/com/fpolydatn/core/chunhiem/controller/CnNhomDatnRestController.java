@@ -4,6 +4,8 @@ import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
+import com.fpolydatn.core.chunhiem.service.CnGiangVienHuongDanService;
+import com.fpolydatn.core.chunhiem.service.CnMonDatnService;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
@@ -29,6 +31,12 @@ public class CnNhomDatnRestController extends BaseController {
 
     @Autowired
     private CnNhomDatnService nhomDatnService;
+
+    @Autowired
+    private CnMonDatnService cnMonDatnService;
+
+    @Autowired
+    private CnGiangVienHuongDanService cnGiangVienHuongDanService;
 
     @Autowired
     private CommonHelper commonHelper;
@@ -80,6 +88,19 @@ public class CnNhomDatnRestController extends BaseController {
         req.setCoSoId(session.getCoSoId());
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         return new ResponseObject(nhomDatnService.getListSinhVienNoGroup(req));
+    }
+
+    @GetMapping("/list-mon-datn")
+    public ResponseObject getAllMonDatnByNhomMon(@RequestParam("nhomMonId") String nhomMonId) {
+        String coSoId = session.getCoSoId();
+        return new ResponseObject(cnMonDatnService.getAllMonDatnByNhomMon(coSoId, nhomMonId));
+    }
+
+    @GetMapping("/list-gvhd")
+    public ResponseObject getAllGvhdByIdMon(@RequestParam("idMon") String idMon) {
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        return new ResponseObject(cnGiangVienHuongDanService.getGiangVienHuongDanByIdMonDatn(idMon,coSoId,dotDangKyId));
     }
 
 }

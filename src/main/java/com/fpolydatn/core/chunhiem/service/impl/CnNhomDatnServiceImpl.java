@@ -4,7 +4,8 @@ import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
-import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
+import com.fpolydatn.core.chunhiem.repository.CnGiangVienHuongDanReponsitory;
+import com.fpolydatn.core.chunhiem.repository.CnMonDatnRepository;
 import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
 import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
@@ -14,7 +15,6 @@ import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.util.FormUtils;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
@@ -49,6 +49,12 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Autowired
     private NhomDatnHelper nhomDatnHelper;
+
+    @Autowired
+    private CnMonDatnRepository cnMonDatnRepository;
+
+    @Autowired
+    private CnGiangVienHuongDanReponsitory cnGiangVienHuongDanReponsitory;
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request) {
@@ -145,12 +151,11 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         if (!check) {
             throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
         }
-        String idGiangVien = null;
-        if (cnCreateNhomDatnRequest.getMaGiangVien() != null && cnCreateNhomDatnRequest.getMaGiangVien() != "") {
-            idGiangVien = cnNhomDatnRepository.getIdByTenTaiKhoanGvhd(cnCreateNhomDatnRequest.getMaGiangVien());
-            if (idGiangVien == "" || idGiangVien == null) {
-                throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
-            }
+        String idGiangVien = cnCreateNhomDatnRequest.getIdGiangVien();
+        if(cnGiangVienHuongDanReponsitory.findById(idGiangVien) == null){
+            throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
+        }
+        if (!idGiangVien.equals("")) {
             if (commonHelper.getSoNhomGiangVienDangHuongDan(idGiangVien) ==
                     cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien)) {
                 throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
@@ -164,6 +169,14 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         if (idTruongNhom == null) {
             throw new RestApiException(Message.STUDENT_HAVE_GROUP);
         }
+        String monDatnId = cnCreateNhomDatnRequest.getMonDatnId();
+        if (cnMonDatnRepository.findById(monDatnId) == null) {
+            throw new RestApiException(Message.MON_DATN_NOT_EXIST);
+        }
+        String checkMonTuongDuong = cnSinhVienRepository.checkMonTuongDuong(monDatnId, idTruongNhom);
+        if (checkMonTuongDuong == null) {
+            throw new RestApiException(Message.MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN);
+        }
         NhomDatn nhomDatn = new NhomDatn();
         nhomDatn.setTruongNhomId(idTruongNhom);
         nhomDatn.setGiangVienId(idGiangVien);
@@ -173,7 +186,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         nhomDatn.setCoSoId(cnCreateNhomDatnRequest.getCoSoId());
         nhomDatn.setDotDangKyId(cnCreateNhomDatnRequest.getDotDangKyId());
         nhomDatn.setId(cnNhomDatnRepository.save(nhomDatn).getId());
-        cnNhomDatnRepository.setNhomForTruongNhom(cnNhomDatnRepository.save(nhomDatn).getId(), idTruongNhom);
+        cnNhomDatnRepository.setNhomForTruongNhom(nhomDatn.getId(), monDatnId, idTruongNhom);
         return true;
     }
 

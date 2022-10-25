@@ -15,6 +15,8 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public abstract class CnBaseNhomDatnRequest {
 
+    private String monDatnId;
+
     @NotEmpty()
     @NotBlank()
     @Column(length = EntityProperties.LENGTH_PASSWORD)
@@ -22,7 +24,7 @@ public abstract class CnBaseNhomDatnRequest {
 
     @NotEmpty()
     @NotBlank()
-    private String maGiangVien;
+    private String idGiangVien;
 
     @NotEmpty()
     @NotBlank()
