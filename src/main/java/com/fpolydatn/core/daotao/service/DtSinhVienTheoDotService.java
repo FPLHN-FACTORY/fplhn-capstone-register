@@ -16,8 +16,6 @@ import java.io.IOException;
  */
 public interface DtSinhVienTheoDotService {
 
-    PageableObject<DtSinhVienTheoDotResponse> findAllSinhVien(final FindDtSinhVienTheoDotRequest request);
-
     PageableObject<DtSinhVienTheoDotResponse> searchStudent(final FindDtSinhVienTheoDotRequest request);
 
     boolean checkTypeFile(MultipartFile file);
