@@ -25,4 +25,9 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
             """, nativeQuery = true)
     List<String> getListGvhd(@Param("req") CnFindGvhdRequest req);
 
+
+    @Query(value = "select giang_vien_id from phan_cong_huong_dan where giang_vien_id = :idGiangVien" +
+            " and mon_datn_id = :idMonDatn",nativeQuery = true)
+    String checkIdGiangVienAndMonDatn(@Param("idGiangVien")String idGiangVien,@Param("idMonDatn") String idMonDatn);
+
 }

@@ -71,7 +71,7 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
 
     @GetMapping("/listSinhVienNoGroup")
     public ResponseObject getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
-        req.setCoSoId(session.getCoSoId());   b
+        req.setCoSoId(session.getCoSoId());
         String dotDangKyHientai = new CommonHelper().getDotDangKyHienTai();
         req.setDotDangKyId(dotDangKyHientai);
         return new ResponseObject(sinhVienTheoNhomService.getListSinhVienNoGroup(req));

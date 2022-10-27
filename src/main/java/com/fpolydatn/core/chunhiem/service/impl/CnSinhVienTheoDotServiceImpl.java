@@ -46,8 +46,9 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
             throw new RestApiException(Message.OVERLOADED_GROUP);
         }
         String captainId = nhomDatnRepository.findIDTruongNhom(idNhom);
+        String idMonDatn  = cnSinhVienTheoNhomRepository.findIdMonDatnByIdCaptain(captainId);
         Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(captainId);
-        cnSinhVienTheoNhomRepository.addSinhVienInGroup(idNhom,maSinhVien);
+        cnSinhVienTheoNhomRepository.addSinhVienInGroup(idNhom,maSinhVien,idMonDatn);
         return true;
     }
 

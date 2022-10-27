@@ -59,19 +59,21 @@ $("#form_create_ma_nhom").submit(function (event) {
     event.preventDefault();
     let idNhom = $("#idNhom").val()
     let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien")
+    var maSinhViens = '';
     for (let item of listMaSinhVien) {
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + item.innerHTML,
-            success: function (responseData) {
-                window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
-            },
-            error: function (e) {
-                $("#idStudentError").html(e.responseJSON.message)
-            }
-        });
+        maSinhViens += item.innerHTML+"-";
     }
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + maSinhViens,
+        success: function (responseData) {
+            window.open(sinhVienTheoNhomView + "?id=" + idNhom , '_self');
+        },
+        error: function (e) {
+            $("#idStudentError").html(e.responseJSON.message)
+        }
+    });
 });
 
 function openModalRemoveNhom(maSinhVien) {
@@ -163,6 +165,7 @@ function openModalChangeCaptain() {
 
         }
     })
+
     $.ajax({
         type: "GET",
         contentType: "application/json",

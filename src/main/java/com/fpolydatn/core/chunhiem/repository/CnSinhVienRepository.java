@@ -49,6 +49,12 @@ public interface CnSinhVienRepository extends SinhVienRepository {
     @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien and nhom_id is null",nativeQuery = true)
     String getIdByMaSinhVienAndMaNhom(@Param("maSinhVien")String maSinhVien);
 
+    @Query(value = "SELECT mon_chuong_trinh_id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien ",nativeQuery = true)
+    String findIdMonChuongTrinh(@Param("maSinhVien")String maSinhVien);
+
+    @Query(value = " SELECT mon_datn_id FROM sinh_vien WHERE id = :idCaptain",nativeQuery = true)
+    String findIdMonDatnByIdCaptain(@Param("idCaptain")String idCaptain);
+
     @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien and nhom_id = :idNhom",nativeQuery = true)
     String getIdByMaSinhVienAndidNhom(@Param("maSinhVien")String maSinhVien,@Param("idNhom")String idNhom);
     @Modifying
@@ -58,8 +64,8 @@ public interface CnSinhVienRepository extends SinhVienRepository {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE sinh_vien SET nhom_id = :idNhom WHERE ma_sinh_vien = :maSinhVien",nativeQuery = true)
-    void addSinhVienInGroup(@Param("idNhom") String idNhom, @Param("maSinhVien") String maSinhVien);
+    @Query(value = "UPDATE sinh_vien SET nhom_id = :idNhom,mon_datn_id  = :idMonDatn WHERE ma_sinh_vien = :maSinhVien",nativeQuery = true)
+    void addSinhVienInGroup(@Param("idNhom") String idNhom, @Param("maSinhVien") String maSinhVien,@Param("idMonDatn")String idMondatn);
 
     @Query(value = """
     SELECT ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT,a.ma_sinh_vien,a.ten_sinh_vien,
