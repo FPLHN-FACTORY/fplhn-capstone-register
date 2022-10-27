@@ -22,6 +22,7 @@ import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,6 +60,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Autowired
     private SvGiangVienHuongDanRepository svGiangVienHuongDanRepository;
+
+    @Autowired
+    private MocThoiGianCommon mocThoiGianCommon;
 
     @Override
     public List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id) {
@@ -110,6 +114,12 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     public boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req) {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(req.getIdUser());
         Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(req.getIdNhom());
+
+        boolean check = mocThoiGianCommon.checkMocThoiGianSinhVien();
+        if(!check){
+            throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
+        }
+
         if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
             throw new RestApiException(Message.THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG);
         }

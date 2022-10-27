@@ -68,4 +68,6 @@ public class PropertyKeys {
 
     public static final String THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG = "tham.gia.nhom.sau.khi.roi.nhom.12.tieng";
 
+    public static final String HET_HAN_QUYEN_SINH_VIEN = "het.han.quyen.sinh.vien";
+
 }
