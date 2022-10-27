@@ -9,4 +9,6 @@ public class ActorConstant {
     public static final String DAO_TAO = "dao-tao";
     public static final String CHU_NHIEM = "chu-nhiem";
     public static final String SINH_VIEN = "sinh-vien";
+    public static final String ADMIN = "admin";
+
 }
