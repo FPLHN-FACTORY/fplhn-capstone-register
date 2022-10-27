@@ -26,6 +26,7 @@ function viewTable(page) {
                                 <td>${item.soDienThoai}</td>
                                 <td>${item.email}</td>
                                 <td>${item.khoa}</td>
+                                <td>${item.trangThai==0? 'Đủ điều kiện': 'Không đủ điều kiện'}</td>
                                 <td>${item.tenMonDatn == null ? 'chưa có' : item.tenMonDatn}</td>
                                 <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
                                 <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
