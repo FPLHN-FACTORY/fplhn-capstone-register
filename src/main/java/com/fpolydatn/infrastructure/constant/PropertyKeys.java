@@ -5,6 +5,7 @@ package com.fpolydatn.infrastructure.constant;
  */
 public class PropertyKeys {
 
+
     private PropertyKeys() {
     }
 
@@ -29,7 +30,6 @@ public class PropertyKeys {
     public static final String TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST = "ten.tai.khoan.giang.vien.huong.dan.exist";
     public static final String DOT_DANG_KY_OVERLAP = "dot.dang.ky.overlap";
     public static final String MAT_KHAU_KHONG_CHINH_XAC = "mat.khau.khong.chinh.xac";
-    public static final String NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC = "ngay.bat.dau.before.ngay.ket.thuc";
     public static final String GIANG_VIEN_HUONG_DAN_NOT_EXIST = "giang.vien.huong.dan.not.exist";
     public static final String FILE_EMPTY = "file.empty";
     public static final String GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM = "giang.vien.da.huong.dan.du.so.nhom";
@@ -50,9 +50,8 @@ public class PropertyKeys {
     public static final String INVALID_DATE = "invalid.date";
     public static final String INVALID_NGAY_KETTHUC = "invalid.ngay.ket.thuc";
     public static final String EXECUTION_TIME_OUT = "execution.time.out";
-
     public static final String THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG = "tham.gia.nhom.sau.khi.roi.nhom.12.tieng";
-
     public static final String HET_HAN_QUYEN_SINH_VIEN = "het.han.quyen.sinh.vien";
+    public static final String SV_DOT_DANG_KY_OUT_OF_DATE = "sv.dot.dang.ky.out.of.date";
 
 }

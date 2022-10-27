@@ -51,7 +51,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Autowired
     private SvSinhVienRepository svSinhVienRepository;
 
-    private FormUtils formUtils = new FormUtils();
+    private final FormUtils formUtils = new FormUtils();
 
     @Autowired
     private NhomDatnHelper nhomDatnHelper;
@@ -60,10 +60,10 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     private CommonHelper commonHelper;
 
     @Autowired
-    private SvGiangVienHuongDanRepository svGiangVienHuongDanRepository;
+    private MocThoiGianCommon mocThoiGianCommon;
 
     @Autowired
-    private MocThoiGianCommon mocThoiGianCommon;
+    private SvGiangVienHuongDanRepository svGiangVienHuongDanRepository;
 
     @Override
     public List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id) {
@@ -73,10 +73,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     public Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser) {
         String idTruongNhom = svNhomDatnRepository.getIdTruongNhom(idNhomDatn, idCoSo);
-        if (idUser.equals(idTruongNhom)) {
-            return true;
-        }
-        return false;
+        return idUser.equals(idTruongNhom);
     }
 
     @Override
@@ -99,9 +96,12 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
-    public PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request) {
+    public PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request, String idUser) {
+        Optional<SinhVien> sv = svSinhVienRepository.findById(idUser);
+        Optional<MonDatn> monDatn = svMonDatnRepository.findById(sv.get().getMonChuongTrinhId());
+        System.out.println("aaaaaaaaaaaa "+monDatn.get().getNhomMonDatnId());
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<SvNhomDatnResponse> res = svNhomDatnRepository.findAllNhomDatn(pageable, request);
+        Page<SvNhomDatnResponse> res = svNhomDatnRepository.findAllNhomDatn(pageable, request, monDatn.get().getNhomMonDatnId());
         return new PageableObject(res);
     }
 
@@ -120,18 +120,13 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if(!check){
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
-
         if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
             throw new RestApiException(Message.THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG);
         }
-
         if (!nhomDatn.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
         Optional<SinhVien> truongNhom = svSinhVienRepository.findById(nhomDatn.get().getTruongNhomId());
-        if (!sinhVien.get().getMonDatnId().equals(truongNhom.get().getMonDatnId())) {
-            sinhVien.get().setMonDatnId(truongNhom.get().getMonDatnId());
-        }
         String matKhau = svNhomDatnRepository.getMatKhauById(req.getIdNhom());
         int soLuongThanhVien = svSinhVienRepository.getSoLuongThanhVienById(req.getIdNhom());
         if (soLuongThanhVien == 7) {
@@ -142,9 +137,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
                 throw new RestApiException(Message.MAT_KHAU_KHONG_CHINH_XAC);
             }
         }
+        sinhVien.get().setMonDatnId(truongNhom.get().getMonDatnId());
         sinhVien.get().setNhomId(nhomDatn.get().getId());
         svSinhVienRepository.save(sinhVien.get());
-
         return true;
     }
 
@@ -165,6 +160,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         Optional<MonDatn> monDatn = svMonDatnRepository.findById(svNhomDatnRequest.getIdMonDatn());
         if (!monDatn.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
+        }
+        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+            throw new RestApiException(Message.SV_DOT_DANG_KY_OUT_OF_DATE);
         }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
         if (!sinhVien.get().getMonDatnId().equals(svNhomDatnRequest.getIdMonDatn())){
@@ -227,6 +225,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         sinhVien.get().setNhomId(null);
         sinhVien.get().setThoiDiemRoiNhomGanNhat(thoiGianRoiNhom.getTime());
+        sinhVien.get().setMonDatnId(null);
         svSinhVienRepository.save(sinhVien.get());
         return true;
     }

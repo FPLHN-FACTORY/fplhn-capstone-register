@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .antMatchers("/dao-tao").hasAuthority(ActorConstant.DAO_TAO)
                 .antMatchers("/giang-vien").hasAuthority(ActorConstant.GIANG_VIEN)
                 .antMatchers("/sinh-vien").hasAuthority(ActorConstant.SINH_VIEN)
-                .antMatchers("/admin").hasAuthority("admin")
+                .antMatchers("/admin").hasAuthority(ActorConstant.ADMIN)
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -65,9 +65,10 @@ public class SecurityConfig {
         http.headers().frameOptions().sameOrigin();
         return http.build();
     }
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**","/css/**");
+        return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**", "/css/**");
     }
 
 }

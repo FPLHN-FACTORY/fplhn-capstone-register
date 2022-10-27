@@ -62,10 +62,11 @@ public class SvNhomDatnRestController extends BaseController {
 
     @GetMapping("/search")
     public ResponseObject searchNhomDatn(final SvFindNhomDatnRequest req) {
+        String idUser = session.getUserId();
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
-        PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
+        PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUser);
         return new ResponseObject(listNhomDatn);
     }
 

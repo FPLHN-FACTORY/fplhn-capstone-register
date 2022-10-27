@@ -25,7 +25,7 @@ public interface SvNhomDatnService {
 
     Boolean guiYeuCauPheDuyet(String idNhomDatn, String idUser);
 
-    PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request);
+    PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request, String idUser);
 
     List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(String id);
 

@@ -53,8 +53,8 @@ public enum Message {
     INVALID_NGAY_KET_THUC(PropertiesReader.getProperty(PropertyKeys.INVALID_NGAY_KETTHUC)),
     EXECUTION_TIME_OUT(PropertiesReader.getProperty(PropertyKeys.EXECUTION_TIME_OUT)),
     THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG(PropertiesReader.getProperty(PropertyKeys.THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG)),
-    HET_HAN_QUYEN_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.HET_HAN_QUYEN_SINH_VIEN));
-
+    HET_HAN_QUYEN_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.HET_HAN_QUYEN_SINH_VIEN)),
+    SV_DOT_DANG_KY_OUT_OF_DATE(PropertiesReader.getProperty(PropertyKeys.SV_DOT_DANG_KY_OUT_OF_DATE));
     private String message;
 
     Message(String message) {

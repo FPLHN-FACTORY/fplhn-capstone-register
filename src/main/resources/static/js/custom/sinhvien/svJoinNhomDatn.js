@@ -1,5 +1,6 @@
 const SVNhomDatnApi = '/api/sinh-vien';
 const SVNhomDatnView = '/sinh-vien';
+const checkHanSV = $("#check_han_sv").text();
 
 function clearform() {
     $("#tenDeTai").val("");
@@ -62,7 +63,8 @@ function loadDataNhomDatn(count) {
                 $("#listNhomDatn").html(``)
                 $("#list_page").html(``)
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`)
-            } else {
+            }
+            else {
                 $("#empty").html(``)
                 $("#listNhomDatn").html(array.map(function (item) {
                     return `
@@ -74,8 +76,11 @@ function loadDataNhomDatn(count) {
                 <td>${item.maSinhVien}-${item.tenSinhVien}</td>
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenTaiKhoan + ' - ' + item.tenGvhd}</td>
                 <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
-                <td><button type="button" data-toggle="modal" data-target="#modal_create" class="btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
-                <td><div class="row"><div class="col-6 d-inline"><button class=" btn btn-success"
+                <td><button type="button" class="btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
+                <td style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}">
+                    <div class="row">
+                        <div class="col-6 d-inline">
+                            <button class=" btn btn-success"                                    
                                     data-target="#modal_create1"
                                     data-toggle="modal"
                                     onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
@@ -127,8 +132,7 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
                     $("#modal_confirm_success").modal('show');
                 },
                 error: function (responseData) {
-                    alert(responseData.responseJSON.message)
-                    console.log(responseData);
+                    alert(responseData.responseJSON.message);
                 }
             });
         }
@@ -164,6 +168,8 @@ function addSinhVienHasPassword() {
         }
     });
 }
+
+
 
 $("#form_confirm_success").submit(function (event) {
     event.preventDefault();
@@ -248,8 +254,8 @@ function createNhomDatn() {
                 $("#modal_confirm_success").modal('show');
             },
             error: function (e) {
-                alert(e.responseJSON.message);
                 console.log("ERROR : ", e);
+                alert(e.responseJSON.message);
             }
         });
     }
