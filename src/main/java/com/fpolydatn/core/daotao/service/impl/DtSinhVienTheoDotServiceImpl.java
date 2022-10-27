@@ -72,23 +72,15 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     private HashMap<String, String> map;
 
     @Override
-    public PageableObject<DtSinhVienTheoDotResponse> findAllSinhVien(final FindDtSinhVienTheoDotRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        if (dotDangKyId != null) {
-            request.setIdDotDangKy(dotDangKyId);
-        } else {
-            request.setIdDotDangKy("");
-        }
-        Page<DtSinhVienTheoDotResponse> res = sinhVienRepository.findAllSinhVien(pageable, request);
-        list = res.stream().toList();
-        return new PageableObject(res);
-    }
-
-    @Override
     public PageableObject<DtSinhVienTheoDotResponse> searchStudent(final FindDtSinhVienTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        if (request.getIdDotDangKy().equalsIgnoreCase("")) {
+        if (request.getIdDotDangKy() == null){
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
+        } else if (request.getIdDotDangKy().equalsIgnoreCase("")) {
             if (dotDangKyId != null) {
                 request.setIdDotDangKy(dotDangKyId);
             } else {
