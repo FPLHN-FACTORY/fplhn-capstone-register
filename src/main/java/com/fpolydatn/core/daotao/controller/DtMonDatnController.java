@@ -50,7 +50,6 @@ public class DtMonDatnController extends BaseController {
 
     @PostMapping("/import")
     public String importExcel(RedirectAttributes redirectAttributes, @RequestBody MultipartFile file) {
-        Long dau = System.currentTimeMillis()/1000;
         List<String> check = this.monDatnService.importExcel(file);
         System.out.println(check);
         if(check.size() == 0) {
@@ -58,8 +57,6 @@ public class DtMonDatnController extends BaseController {
         } else {
             redirectAttributes.addFlashAttribute("errorMess", check);
         }
-        Long Cuoi = System.currentTimeMillis()/1000;
-        System.out.println(Cuoi - dau);
         return "redirect:/dao-tao/mon-datn";
     }
 
