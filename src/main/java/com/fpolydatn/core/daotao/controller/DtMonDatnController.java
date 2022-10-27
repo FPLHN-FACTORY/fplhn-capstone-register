@@ -51,7 +51,6 @@ public class DtMonDatnController extends BaseController {
     @PostMapping("/import")
     public String importExcel(RedirectAttributes redirectAttributes, @RequestBody MultipartFile file) {
         List<String> check = this.monDatnService.importExcel(file);
-        System.out.println(check);
         if(check.size() == 0) {
             redirectAttributes.addFlashAttribute("successMess", "Import file excel thành công.");
         } else {
