@@ -37,7 +37,7 @@ public class DtSinhVienTheoDotController extends BaseController {
         req.setCoSoId(session.getCoSoId());
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(req.getCoSoId());
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(req.getCoSoId());
-        PageableObject<DtSinhVienTheoDotResponse> listSinhVien = sinhVienService.findAllSinhVien(req);
+        PageableObject<DtSinhVienTheoDotResponse> listSinhVien = sinhVienService.searchStudent(req);
         model.addAttribute("page", listSinhVien);
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("listDotDangKy", listDotDangKy);
