@@ -15,12 +15,12 @@ import com.fpolydatn.entity.HocKy;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -33,6 +33,7 @@ import java.util.Optional;
  * @author SonPT
  */
 
+@Validated
 @Service
 public class DtDotDangKyServiceImpl implements DtDotDangKyService {
 
@@ -41,8 +42,6 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
 
     @Autowired
     private DtHocKyRepository dtHocKyRepository;
-
-    private FormUtils formUtils = new FormUtils();
 
     @Override
     public PageableObject<DtDotDangKyResponse> findByCoSo(DtFindDotDangKyRequest request) {
