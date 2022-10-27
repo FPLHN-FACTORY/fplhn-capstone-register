@@ -6,7 +6,6 @@ import com.fpolydatn.core.sinhvien.model.request.SvCreateNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
-import com.fpolydatn.core.sinhvien.model.response.SvMonDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.core.sinhvien.repository.SvGiangVienHuongDanRepository;
@@ -21,10 +20,10 @@ import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
-import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +31,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -85,7 +85,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
                 svNhomDatnRepository.getTrangThai(idNhomDatn) == 3
         ) {
             Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(idNhomDatn);
-            if (!nhomDatn.isPresent()){
+            if (!nhomDatn.isPresent()) {
                 throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
             }
             if (!nhomDatn.get().getTruongNhomId().equals(idUser)) {
@@ -115,6 +115,16 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     public boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req) {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(req.getIdUser());
         Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(req.getIdNhom());
+
+        boolean check = mocThoiGianCommon.checkMocThoiGianSinhVien();
+        if(!check){
+            throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
+        }
+
+        if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+            throw new RestApiException(Message.THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG);
+        }
+
         if (!nhomDatn.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
@@ -124,16 +134,17 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         String matKhau = svNhomDatnRepository.getMatKhauById(req.getIdNhom());
         int soLuongThanhVien = svSinhVienRepository.getSoLuongThanhVienById(req.getIdNhom());
-        if (soLuongThanhVien == 7){
+        if (soLuongThanhVien == 7) {
             throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
         }
         if (!(matKhau == null)) {
-            if (!matKhau.trim().equals(req.getInputPassword().trim())){
+            if (!matKhau.trim().equals(req.getInputPassword().trim())) {
                 throw new RestApiException(Message.MAT_KHAU_KHONG_CHINH_XAC);
             }
         }
         sinhVien.get().setNhomId(nhomDatn.get().getId());
         svSinhVienRepository.save(sinhVien.get());
+
         return true;
     }
 
@@ -165,6 +176,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         nhomDatn.setMaNhom(nhomDatnHelper.genMaNhomTuDong());
         nhomDatn = svNhomDatnRepository.save(nhomDatn);
         sinhVien.get().setNhomId(nhomDatn.getId());
+        sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());
         svSinhVienRepository.save(sinhVien.get());
         return nhomDatn;
     }
@@ -172,7 +184,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     public Boolean updateTenDeTai(SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(svUpdateTenDeTaiRequest.getIdUser());
-        if(!sinhVien.isPresent()){
+        if (!sinhVien.isPresent()) {
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
         Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(sinhVien.get().getNhomId());
@@ -198,7 +210,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
         Date thoiGianRoiNhom = new Date();
-        if(!sinhVien.isPresent()){
+        if (!sinhVien.isPresent()) {
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
         Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(sinhVien.get().getNhomId());
@@ -222,7 +234,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     public Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi) {
         Optional<SinhVien> truongNhom = svSinhVienRepository.findById(idUser);
-        if(!truongNhom.isPresent()){
+        if (!truongNhom.isPresent()) {
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
         Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(truongNhom.get().getNhomId());
@@ -233,7 +245,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             throw new RestApiException(Message.KHONG_PHAI_TRUONG_NHOM);
         }
         Optional<SinhVien> truongNhomMoi = svSinhVienRepository.findById(idTruongNhomMoi);
-        if(!truongNhomMoi.isPresent()){
+        if (!truongNhomMoi.isPresent()) {
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
         if (truongNhom.get().getId().equals(idTruongNhomMoi)) {
@@ -250,18 +262,19 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     public Boolean chonGvhd(String idUser, String idGiangVien) {
         Optional<GiangVienHuongDan> giangVienHuongDan = svGiangVienHuongDanRepository.findById(idGiangVien);
-        if (!giangVienHuongDan.isPresent()){
+        if (!giangVienHuongDan.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
         }
         NhomDatn nhomDatn = svNhomDatnRepository.getNhomDatnByTruongNhomId(idUser);
         if (nhomDatn == null) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if (nhomDatn.getTrangThai().ordinal() != 0){
+        if (nhomDatn.getTrangThai().ordinal() != 0) {
             throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
         }
         nhomDatn.setGiangVienId(idGiangVien);
         svNhomDatnRepository.save(nhomDatn);
         return true;
     }
+
 }

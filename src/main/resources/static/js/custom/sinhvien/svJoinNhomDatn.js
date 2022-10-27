@@ -127,6 +127,7 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
                     $("#modal_confirm_success").modal('show');
                 },
                 error: function (responseData) {
+                    alert(responseData.responseJSON.message)
                     console.log(responseData);
                 }
             });
@@ -156,6 +157,7 @@ function addSinhVienHasPassword() {
         },
         error: function (responseData) {
             console.log(responseData);
+            alert(responseData.responseJSON.message)
             if (responseData.responseJSON.message === 'Mat Khau Khong Chinh Xac') {
                 $("#errorPassword").text("Mật khẩu không chính xác");
             }

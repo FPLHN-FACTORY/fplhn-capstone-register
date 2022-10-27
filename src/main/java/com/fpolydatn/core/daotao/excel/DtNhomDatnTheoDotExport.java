@@ -15,13 +15,12 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class NhomDatnExcelExporter {
+public class DtNhomDatnTheoDotExport {
     private XSSFWorkbook xssfWorkbook;
     private XSSFSheet xssfSheet;
     private List<DtNhomDatnTheoDotResponse> listNhomDatn;
-    private List<DtSinhVienResponse> listSinhVienResponses;
 
-    public NhomDatnExcelExporter(List<DtNhomDatnTheoDotResponse> listNhomDatn) {
+    public DtNhomDatnTheoDotExport(List<DtNhomDatnTheoDotResponse> listNhomDatn) {
         this.listNhomDatn = listNhomDatn;
         xssfWorkbook = new XSSFWorkbook();
     }
@@ -69,11 +68,9 @@ public class NhomDatnExcelExporter {
         XSSFFont font = xssfWorkbook.createFont();
         font.setFontHeight(12);
         style.setFont(font);
-        int rowCount = 1;
         listNhomDatn.stream().forEach(xx -> {
             Row row = xssfSheet.createRow(xx.getStt());
             int countColum = 0;
-            System.out.println(xx.getStt());
             createCell(row, countColum++, xx.getStt(), style);
             createCell(row, countColum++, xx.getTenNhom(), style);
             createCell(row, countColum++, xx.getTenDeTai(), style);
