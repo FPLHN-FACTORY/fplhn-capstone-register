@@ -31,7 +31,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -166,6 +165,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
+        if (!sinhVien.get().getMonDatnId().equals(svNhomDatnRequest.getIdMonDatn())){
+            sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());
+        }
         NhomDatn nhomDatn = formUtils.convertToObject(NhomDatn.class, svNhomDatnRequest);
         nhomDatn.setTruongNhomId(idUser);
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);

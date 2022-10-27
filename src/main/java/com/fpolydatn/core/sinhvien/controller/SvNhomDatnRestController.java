@@ -110,4 +110,5 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject chonGvhd(@RequestParam String idGiangVien){
         return new ResponseObject(svNhomDatnService.chonGvhd(session.getUserId(), idGiangVien));
     }
+
 }
