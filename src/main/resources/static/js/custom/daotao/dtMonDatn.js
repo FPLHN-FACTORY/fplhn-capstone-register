@@ -158,6 +158,10 @@ function openModalImportMonDatn() {
     });
 }
 
-function clearModalDelete() {
+function clearModal() {
     $("#remove_mon_datn").text("");
+    $("#ma_mon_datn_error").text("");
+    $("#ten_mon_datn_error").text("");
+    $("#errorMaMonUpdate").text("");
+    $("#errorTenMonUpdate").text("");
 }
