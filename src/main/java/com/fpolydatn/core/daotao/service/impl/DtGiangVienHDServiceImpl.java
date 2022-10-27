@@ -14,10 +14,11 @@ import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
+import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -150,9 +151,12 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         List<GiangVienHuongDan> list = new ArrayList<>();
 
         try {
-            XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-            XSSFSheet sheet = workbook.getSheetAt(0);
+            Workbook workbook = StreamingReader.builder()
+                    .bufferSize(4096)
+                    .rowCacheSize(50)
+                    .open(file.getInputStream());
             int rowNumber = 0;
+            Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> iterator = sheet.iterator();
 
             while (iterator.hasNext()) {
@@ -169,7 +173,6 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 GiangVienHuongDan gvhd = new GiangVienHuongDan();
                 while (cells.hasNext()) {
                     Cell cell = cells.next();
-
                     switch (cid) {
                         case 1:
                             String tenCoSo = cell.getStringCellValue();

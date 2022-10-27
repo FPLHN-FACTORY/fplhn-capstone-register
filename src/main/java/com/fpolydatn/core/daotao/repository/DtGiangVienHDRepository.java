@@ -2,7 +2,6 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
-import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
