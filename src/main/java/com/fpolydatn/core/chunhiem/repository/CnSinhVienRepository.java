@@ -59,7 +59,7 @@ public interface CnSinhVienRepository extends SinhVienRepository {
     String getIdByMaSinhVienAndidNhom(@Param("maSinhVien")String maSinhVien,@Param("idNhom")String idNhom);
     @Modifying
     @Transactional
-    @Query(value = "UPDATE sinh_vien SET nhom_id = NULL WHERE ma_sinh_vien = :maSinhVien",nativeQuery = true)
+    @Query(value = "UPDATE sinh_vien SET nhom_id = NULL , mon_datn_id  = NULL WHERE ma_sinh_vien = :maSinhVien",nativeQuery = true)
     void deleteSinhVienOutGroup(@Param("maSinhVien") String maSinhVien);
 
     @Modifying
