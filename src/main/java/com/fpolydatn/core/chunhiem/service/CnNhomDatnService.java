@@ -4,7 +4,6 @@ import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
-import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.NhomDatn;
 

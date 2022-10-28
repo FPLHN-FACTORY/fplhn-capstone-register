@@ -4,7 +4,6 @@ import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanResponse;
 import com.fpolydatn.core.chunhiem.repository.CnGiangVienHuongDanReponsitory;
 import com.fpolydatn.core.chunhiem.service.CnGiangVienHuongDanService;
-import com.fpolydatn.core.sinhvien.model.response.SvGiangVienHuongDanResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

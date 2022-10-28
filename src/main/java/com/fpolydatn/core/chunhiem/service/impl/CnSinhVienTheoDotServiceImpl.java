@@ -1,6 +1,5 @@
 package com.fpolydatn.core.chunhiem.service.impl;
 
-import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
