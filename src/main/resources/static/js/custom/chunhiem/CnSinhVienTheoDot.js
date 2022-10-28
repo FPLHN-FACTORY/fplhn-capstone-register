@@ -29,8 +29,8 @@ $("#form_create_group").submit(function (event) {
 });
 
 function loadDataToTable(count) {
-    let tenSinhVien = $("#ten-hoc-ky").val();
-    let dotDangKyId = $("#dotDangKyId").val();
+    let tenSinhVien = $("#ten-hoc-ky").val().trim();
+    let dotDangKyId = $("#dotDangKyId").val().trim();
     $("#listSV").html("");
     $.ajax({
         type: "GET",

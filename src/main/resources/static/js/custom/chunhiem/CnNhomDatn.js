@@ -3,11 +3,10 @@ const CNNhomDatnView = '/chu-nhiem/nhom-datn';
 let flag = 0;
 let checkListCbb = 0;
 let currentPaging = -1;
-const checkHanChuNhiem = $("#check_han_chu_nhiem").val()
+const checkHanChuNhiem = $("#check_han_chu_nhiem").val();
 
 function submitModal() {
     $("#modal_confirm_success").modal('hide')
-
 }
 
 $(document).ready(function () {
@@ -60,7 +59,7 @@ function loadDataNhomDatn(count) {
                 $("#empty").html(``)
                 var templateString;
                 $("#listNhomDatn").html(array.map(function (item) {
-                    templateString = item.trangThai == 4 | item.trangThai == 0 ? `<td><div class="form-check"><input type="checkbox" class="form-check-input" data-toggle="tooltip" title="Chọn một" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"></div></td>` : `<td><div class="form-check"><input disabled type="checkbox" data-toggle="tooltip" title="Chọn một" class="form-check-input" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"></div></td>`
+                    templateString = item.trangThai == 4 | item.trangThai == 0 ? `<td><div class="form-check"><input type="checkbox" class="form-check-input" data-toggle="tooltip" title="Chọn một" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"><input hidden id="check-trang-thai" value="${item.trangThai}"></div></td>` : `<td><div class="form-check"><input disabled type="checkbox" data-toggle="tooltip" title="Chọn một" class="form-check-input" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"><input hidden id="check-trang-thai" value="${item.trangThai}"></div></td>`
                     return `
                 <tr>`
 
@@ -342,6 +341,9 @@ function check() {
 
 function chotNhieuDeTai(count) {
     var list_checkbox_son = document.querySelectorAll("#checkbox_son")
+    var listTrangThai = document.querySelectorAll("#check-trang-thai")
+    var countTrangThai = 0;
+
     flag = 0;
     checkListCbb = 0;
     for (var item of list_checkbox_son) {
@@ -351,16 +353,28 @@ function chotNhieuDeTai(count) {
     }
 
     if (checkListCbb == 0) {
-        toastr.warning('Hãy chọn nhóm muốn chốt');
+        alert("Chọn nhóm muốn chốt đề tài")
     } else {
+
+        for (let i = 0; i < list_checkbox_son.length; i++) {
+            if (list_checkbox_son[i].checked && listTrangThai[i].value == 4) {
+                countTrangThai++;
+            }
+        }
+
+        if (countTrangThai != checkListCbb) {
+            alert("Trạng thái của nhóm không thỏa mãn để thực hiện chức năng chốt")
+            return;
+        }
+
         bootbox.confirm("Bạn có chắc muốn chốt đề tài những nhóm được chọn không ?", function (item) {
             if (item) {
-                for (var item of list_checkbox_son) {
-                    if (item.checked) {
+                for (var xx of list_checkbox_son) {
+                    if (xx.checked) {
                         if (currentPaging == -1) {
-                            chotDeTai(item.value, count);
+                            chotDeTai(xx.value, count);
                         } else {
-                            chotDeTai(item.value, currentPaging);
+                            chotDeTai(xx.value, currentPaging);
                         }
                     }
                 }
@@ -373,6 +387,9 @@ function chotNhieuDeTai(count) {
 
 function xacNhanNhieuNhom(count) {
     var list_checkbox_son = document.querySelectorAll("#checkbox_son")
+    var listTrangThai = document.querySelectorAll("#check-trang-thai")
+    var countTrangThai = 0;
+
     flag = 0;
     checkListCbb = 0;
     for (var item of list_checkbox_son) {
@@ -380,16 +397,31 @@ function xacNhanNhieuNhom(count) {
             checkListCbb++
         }
     }
+
     if (checkListCbb == 0) {
-        toastr.warning('Hãy chọn nhóm muốn xác nhận');
+        alert("Chọn nhóm muốn xác nhận")
     } else {
+
+        for (let i = 0; i < list_checkbox_son.length; i++) {
+            if (list_checkbox_son[i].checked && listTrangThai[i].value == 0) {
+                countTrangThai++;
+            }
+        }
+
+        if (countTrangThai != checkListCbb) {
+            alert("Trạng thái của nhóm không thỏa mãn để thực hiện chức năng xác nhận")
+            return;
+        }
+
         bootbox.confirm("Bạn có chắc muốn xác nhận những nhóm được chọn không ?", function (item) {
             if (item) {
-                for (var item of list_checkbox_son) {
-                    if (currentPaging == -1) {
-                        xacNhanNhom(item.value, count);
-                    } else {
-                        xacNhanNhom(item.value, currentPaging);
+                for (var xx of list_checkbox_son) {
+                    if (xx.checked) {
+                        if (currentPaging == -1) {
+                            xacNhanNhom(xx.value, count);
+                        } else {
+                            xacNhanNhom(xx.value, currentPaging);
+                        }
                     }
                 }
                 var checkboxFather = document.querySelector("#checkbox_father")
@@ -469,18 +501,3 @@ function searchSinhVienNoGroup() {
         }
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

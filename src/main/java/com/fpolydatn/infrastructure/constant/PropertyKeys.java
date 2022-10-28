@@ -47,4 +47,12 @@ public class PropertyKeys {
     public static final String CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM = "chua.den.thoi.gian.cua.chu.nhiem";
     public static final String MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN = "mon.datn.khong.thoa.man.voi.sinh.vien";
 
+    public static final String VUOT_QUA_SO_LUONG_CHO_PHEP = "vuot.qua.so.luong.cho.phep";
+
+    public static final String MON_KHONG_TUONG_DUONG = "mon.khong.tuong.duong";
+
+    public static final String GIANG_VIEN_KHONG_DAY_MON_NAY ="giang.vien.khong.day.mon.nay" ;
+
+
+
 }

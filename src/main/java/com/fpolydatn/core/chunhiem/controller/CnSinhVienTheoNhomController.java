@@ -8,6 +8,7 @@ import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.repository.DotDangKyRepository;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,7 @@ public class CnSinhVienTheoNhomController extends BaseController {
     private CnSinhVienTheoNhomService sinhVienTheoNhomService;
 
     @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;
+    private CommonHelper commonHelper;
 
     @GetMapping
     public String viewSinhVienTheoNhom(Model model, @RequestParam("id") String id, final CnFindSinhVienTheoNhomRequest req, final CnFindSinhVienNoGroupRequest request) {
@@ -35,7 +35,7 @@ public class CnSinhVienTheoNhomController extends BaseController {
         req.setIdNhom(id);
         req.setCoSoId(coSoId);
         request.setCoSoId(session.getCoSoId());
-        request.setDotDangKyId(dotDangKyRepository.findAll().get(0).getId());
+        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         List<CnSinhVienSearchResponse> listSinhVienNoGroup = sinhVienTheoNhomService.getListSinhVienNoGroup(request);
         model.addAttribute("soThanhVien", sinhVienTheoNhomService.getSizeListSinhVien(id, coSoId));

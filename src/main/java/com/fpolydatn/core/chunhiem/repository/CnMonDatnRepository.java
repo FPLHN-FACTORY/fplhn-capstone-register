@@ -10,7 +10,14 @@ import java.util.List;
 /**
  * @author thangncph26123
  */
+
 public interface CnMonDatnRepository extends MonDatnRepository {
+
+    @Query(value = "SELECT nhom_mon_datn_id FROM mon_datn WHERE id = :idMaMon", nativeQuery = true)
+    String findIdNhomMonDatn(@Param("idMaMon") String id);
+
+    @Query(value = "SELECT nhom_mon_datn_id from mon_datn where nhom_mon_datn_id = :idNhomMonDatn and id = :idMonChuongTrinh", nativeQuery = true)
+    String checkMonChuongTrinh(@Param("idNhomMonDatn") String idNhomMonDatn, @Param("idMonChuongTrinh") String idMonChuongTrinh);
 
     @Query(value = """
             SELECT id, ten_mon_datn AS ten_mon_datn FROM mon_datn WHERE co_so_id = :coSoId AND nhom_mon_datn_id IS NULL

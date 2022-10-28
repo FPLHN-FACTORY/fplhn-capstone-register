@@ -129,9 +129,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
         cnNhomDatnRepository.delete(nhomDatnCheck.get());
-        List<SinhVien> listSinhVien = cnSinhVienRepository.getAllSinhVien(id);
+        List<SinhVien> listSinhVien = cnSinhVienRepository.getAllSinhVien(id, commonHelper.getDotDangKyHienTai());
         for (SinhVien xx : listSinhVien) {
-            cnSinhVienRepository.deleteSinhVienOutGroup(xx.getMaSinhVien());
+            cnSinhVienRepository.deleteSinhVienOutGroup(xx.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
         }
         return true;
     }
@@ -157,15 +157,15 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         if (!idGiangVien.equals("")) {
             if (commonHelper.getSoNhomGiangVienDangHuongDan(idGiangVien) ==
-                    cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien)) {
+                    cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien, commonHelper.getDotDangKyHienTai())) {
                 throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
             }
         }
-        String idTruongNhomCheck = cnNhomDatnRepository.getSinhVienByMaSinhVien(cnCreateNhomDatnRequest.getMaSinhVien());
+        String idTruongNhomCheck = cnNhomDatnRepository.getSinhVienByMaSinhVien(cnCreateNhomDatnRequest.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
         if (idTruongNhomCheck == null) {
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
-        String idTruongNhom = cnNhomDatnRepository.getSinhVienByMaSinhVienAndMaNhom(cnCreateNhomDatnRequest.getMaSinhVien());
+        String idTruongNhom = cnNhomDatnRepository.getSinhVienByMaSinhVienAndMaNhom(cnCreateNhomDatnRequest.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
         if (idTruongNhom == null) {
             throw new RestApiException(Message.STUDENT_HAVE_GROUP);
         }
@@ -173,7 +173,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         if (cnMonDatnRepository.findById(monDatnId) == null) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
-        String checkMonTuongDuong = cnSinhVienRepository.checkMonTuongDuong(monDatnId, idTruongNhom);
+        String checkMonTuongDuong = cnSinhVienRepository.checkMonTuongDuong(monDatnId, idTruongNhom, commonHelper.getDotDangKyHienTai());
         if (checkMonTuongDuong == null) {
             throw new RestApiException(Message.MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN);
         }
@@ -186,7 +186,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         nhomDatn.setCoSoId(cnCreateNhomDatnRequest.getCoSoId());
         nhomDatn.setDotDangKyId(cnCreateNhomDatnRequest.getDotDangKyId());
         nhomDatn.setId(cnNhomDatnRepository.save(nhomDatn).getId());
-        cnNhomDatnRepository.setNhomForTruongNhom(nhomDatn.getId(), monDatnId, idTruongNhom);
+        cnNhomDatnRepository.setNhomForTruongNhom(nhomDatn.getId(), monDatnId, idTruongNhom, commonHelper.getDotDangKyHienTai());
         return true;
     }
 

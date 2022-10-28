@@ -327,7 +327,9 @@
                                                                         title="Chọn một"
                                                                         id="checkbox_son"
                                                                         th:value="${nhomDatn.getId()}"
-                                                                        onchange="checkBoxSonListener()"/></div>
+                                                                        onchange="checkBoxSonListener()"/>
+                                                            <input hidden id="check-trang-thai" th:value="${nhomDatn.getTrangThai()}">
+                                                            </div>
                                                         </td>
                                                         <td th:text="${nhomDatn.getStt()}"></td>
                                                         <td th:text="${nhomDatn.getTenNhom()}==null ? 'Chưa có' : (${nhomDatn.getTenNhom()})"></td>

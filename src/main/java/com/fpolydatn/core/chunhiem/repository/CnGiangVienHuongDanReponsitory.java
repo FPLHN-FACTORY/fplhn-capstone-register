@@ -14,9 +14,9 @@ import java.util.List;
 @Repository
 public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanRepository {
     @Query(value = """
-            SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan
+            SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
-    String getIdFromGiangVienId(@Param("tenTaiKhoan") String tenTaiKhoan);
+    String getIdFromGiangVienId(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
             SELECT CONCAT(ten_tai_khoan, '_' , ten_gvhd) AS thong_tin FROM giang_vien_huong_dan
@@ -27,6 +27,11 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
             AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId}
             """, nativeQuery = true)
     List<String> getListGvhd(@Param("req") CnFindGvhdRequest req);
+
+
+    @Query(value = "select giang_vien_id from phan_cong_huong_dan JOIN giang_vien_huong_dan on giang_vien_huong_dan.id = phan_cong_huong_dan.giang_vien_id where giang_vien_id = :idGiangVien" +
+            " and mon_datn_id = :idMonDatn AND giang_vien_huong_dan.dot_dang_ky_id = :dotDangKyId",nativeQuery = true)
+    String checkIdGiangVienAndMonDatn(@Param("idGiangVien") String idGiangVien,@Param("idMonDatn") String idMonDatn, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
             SELECT g.id, g.ten_tai_khoan, g.ten_gvhd, g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
