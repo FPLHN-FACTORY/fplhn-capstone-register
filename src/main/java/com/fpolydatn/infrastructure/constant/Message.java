@@ -11,7 +11,6 @@ public enum Message {
 
     ERROR_UNKNOWN("Error Unknown"),
 
-    NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC(PropertiesReader.getProperty(PropertyKeys.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC)),
     CHUYEN_NGANH_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.CHUYEN_NGANH_NOT_EXIST)),
     CO_SO_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.CO_SO_NOT_EXIST)),
     CAN_BO_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.CAN_BO_NOT_EXIST)),
@@ -27,12 +26,9 @@ public enum Message {
     STUDENT_HAVE_GROUP(PropertiesReader.getProperty(PropertyKeys.STUDENT_HAVE_GROUP)),
     GROUP_NO_EXIST(PropertiesReader.getProperty(PropertyKeys.GROUP_NO_EXIST)),
     OVERLOADED_GROUP(PropertiesReader.getProperty(PropertyKeys.OVERLOADED_GROUP)),
-
     GIANG_VIEN_HUONG_DAN_EXIST(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_HUONG_DAN_EXIST)),
-
     MON_DATN_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.MON_DATN_NOT_EXIST)),
     MON_DATN_ALREADY_EXIST(PropertiesReader.getProperty(PropertyKeys.MON_DATN_ALREADY_EXIST)),
-
     EMAIL_FPT_EXIST(PropertiesReader.getProperty(PropertyKeys.EMAIL_FPT_EXIST)),
     TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST(PropertiesReader.getProperty(PropertyKeys.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST)),
     EMAIL_FE_EXIST(PropertiesReader.getProperty(PropertyKeys.EMAIL_FE_EXIST)),
@@ -40,9 +36,7 @@ public enum Message {
     DOT_DANG_KY_OVERLAP(PropertiesReader.getProperty(PropertyKeys.DOT_DANG_KY_OVERLAP)),
     GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM)),
     MAT_KHAU_KHONG_CHINH_XAC(PropertiesReader.getProperty(PropertyKeys.MAT_KHAU_KHONG_CHINH_XAC)),
-
     EMPTY(PropertiesReader.getProperty(PropertyKeys.EMPTY)),
-
     EMAIL_MALFORMED(PropertiesReader.getProperty(PropertyKeys.EMAIL_MALFORMED)),
     MA_SV_MALFORMED(PropertiesReader.getProperty(PropertyKeys.MA_SV_MALFORMED)),
     FILE_EMPTY(PropertiesReader.getProperty(PropertyKeys.FILE_EMPTY)),

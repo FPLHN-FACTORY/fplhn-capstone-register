@@ -33,7 +33,7 @@ public class CustomOAuth2User implements OAuth2User {
         authorities.add(new SimpleGrantedAuthority(ActorConstant.DAO_TAO));
         authorities.add(new SimpleGrantedAuthority(ActorConstant.GIANG_VIEN));
         authorities.add(new SimpleGrantedAuthority(ActorConstant.SINH_VIEN));
-        authorities.add(new SimpleGrantedAuthority("admin"));
+        authorities.add(new SimpleGrantedAuthority(ActorConstant.ADMIN));
         return authorities;
     }
 

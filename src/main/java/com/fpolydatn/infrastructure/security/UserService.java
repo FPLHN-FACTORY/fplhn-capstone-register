@@ -94,7 +94,7 @@ public class UserService {
         if (Objects.nonNull(account)) {
             session.setAttribute(SessionConstant.USER, account);
         } else {
-            session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thông");
+            session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thống");
         }
     }
 }
