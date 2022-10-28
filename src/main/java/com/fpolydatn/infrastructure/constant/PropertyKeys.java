@@ -6,7 +6,6 @@ package com.fpolydatn.infrastructure.constant;
 public class PropertyKeys {
 
 
-
     private PropertyKeys() {
     }
 
@@ -14,6 +13,8 @@ public class PropertyKeys {
     public static final String CHUYEN_NGANH_NOT_EXIST = "chuyen.nganh.not.exist";
     public static final String CO_SO_NOT_EXIST = "co.so.not.exist";
     public static final String CAN_BO_NOT_EXIST = "can.bo.not.exist";
+    public static final String CAN_BO_EXSIT = "can.bo.exist" ;
+    public static final String NO_SPACES_ALLOW = "no.space.allow";
     public static final String DOT_DANG_KY_NOT_EXIST = "dot.dang.ky.not.exist";
     public static final String HOC_KY_NOT_EXIST = "hoc.ky.not.exist";
     public static final String MON_DATN_NOT_EXIST = "mon.datn.not.exist";
