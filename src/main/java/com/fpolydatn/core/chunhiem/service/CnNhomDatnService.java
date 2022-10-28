@@ -32,4 +32,6 @@ public interface CnNhomDatnService {
 
     List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req);
 
+    boolean checkHanChuNhiem();
+
 }

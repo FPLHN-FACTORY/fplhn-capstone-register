@@ -195,4 +195,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         return cnSinhVienRepository.getStringListSinhVienNoGroup(req);
     }
 
+    @Override
+    public boolean checkHanChuNhiem() {
+        return mocThoiGianCommon.checkMocThoiGianChuNhiem();
+    }
+
 }

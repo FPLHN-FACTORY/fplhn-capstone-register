@@ -50,10 +50,12 @@ public class CnNhomDatnController extends BaseController {
         List<SimpleEntityProj> listTenChuyenNganh = chuyenNganhService.listTenChuyenNganh(coSoId);
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
         List<CnMonDatnResponse> listNhomMonDatn = cnMonDatnService.getAllNhomMonDatn(coSoId);
+        boolean checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listTenChuyenNganh", listTenChuyenNganh);
         model.addAttribute("listNhomMonDatn", listNhomMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
+        model.addAttribute("checkHanChuNhiem", checkHanChuNhiem);
         return "chunhiem/cn-nhom-datn";
     }
 }

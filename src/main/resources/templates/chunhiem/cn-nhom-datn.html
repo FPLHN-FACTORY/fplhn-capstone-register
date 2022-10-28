@@ -13,13 +13,11 @@
     <link href="http://harvesthq.github.io/chosen/chosen.css" rel="stylesheet"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
     <style>
         #th-hanh-dong {
-            width: 155px;
+            width: 165px;
             overflow: hidden;
         }
 
@@ -36,7 +34,6 @@
             height: 35px;
             line-height: 30px;
             background: #1abb32;
-            color: white;
             float: left;
         }
 
@@ -48,7 +45,6 @@
             height: 35px;
             line-height: 30px;
             background: #d31613;
-            color: white;
             float: left;
         }
 
@@ -60,7 +56,6 @@
             height: 35px;
             line-height: 30px;
             background: #4284d3;
-            color: white;
             float: left;
         }
 
@@ -72,7 +67,6 @@
             height: 35px;
             line-height: 30px;
             background: #eae345;
-            color: white;
             float: left;
         }
 
@@ -84,7 +78,6 @@
             height: 35px;
             line-height: 30px;
             background: #4bcbb5;
-            color: white;
             float: left;
         }
 
@@ -114,6 +107,7 @@
             <div>
                 <div class="m-content">
                     <h3>Quản lý nhóm dự án tốt nghiệp theo đợt</h3>
+                    <input id="check_han_chu_nhiem" hidden th:value="${checkHanChuNhiem}">
                     <div class="mt-5">
                         <section class="fillter-area  mb-5">
                             <div class="m-portlet">
@@ -133,14 +127,14 @@
                                 <form id="form_list_nhom_datn" th:action="@{/chu-nhiem/nhom-datn}">
                                     <div class="row">
                                         <div
-                                             class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Tên nhóm:</span>
                                             <input type="text" oninput="loadDataNhomDatn(0)" class="form-control col-7"
                                                    name="tenNhom" id="tenNhom"
                                                    value="">
                                         </div>
                                         <div
-                                             class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Chuyên ngành:</span>
                                             <select onchange="loadDataNhomDatn(0)" class="form-control col-7"
                                                     id="chuyenNganhId" name="tenChuyenNganh">
@@ -150,14 +144,14 @@
                                             </select>
                                         </div>
                                         <div
-                                             class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Tên GVHD:</span>
                                             <input oninput="loadDataNhomDatn(0)" type="text" class="form-control col-7"
                                                    name="tenNhom" id="tenGvhd"
                                                    value="">
                                         </div>
                                         <div
-                                             class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Trạng thái:</span>
                                             <select class="form-control col-7" onchange="loadDataNhomDatn(0)"
                                                     id="trangThai" name="trangThai">
@@ -171,7 +165,7 @@
                                             </select>
                                         </div>
                                         <div
-                                             class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Đợt đăng ký:</span>
                                             <select onchange="loadDataNhomDatn(0)" class="form-control col-7"
                                                     id="dotDangKyId">
@@ -204,18 +198,21 @@
                                         <div class="col-6 d-inline">
                                             <button th:attr="onclick=|openModalCreate()|" data-toggle="tooltip"
                                                     title="Tạo nhóm dự án tốt nghiệp"
+                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                     class="col-8 col-sm-4 col-md-2 btn btn-success">
                                                 Tạo nhóm
                                             </button>
                                             <button class="col-8 col-sm-4 col-md-2 btn btn-success"
                                                     data-toggle="tooltip"
                                                     title="Chốt đề tài của nhiều nhóm"
+                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                     th:attr="onclick=|chotNhieuDeTai('${page.currentPage}')|">
                                                 Chốt đề tài
                                             </button>
                                             <button class="col-8 col-sm-4 col-md-2 btn btn-success"
                                                     data-toggle="tooltip"
                                                     title="Xác nhận nhiều nhóm"
+                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                     th:attr="onclick=|xacNhanNhieuNhom('${page.currentPage}')|">
                                                 Xác nhận
                                             </button>
@@ -238,22 +235,30 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label class="col-form-label"><span style="color: red">(*)</span> Nhóm môn dự án tốt nghiệp</label><br>
-                                                                        <select class="form-control" data-toggle="tooltip" id="nhom_mon_datn_create"
-                                                                                title="Chọn nhóm môn để lọc ra môn tương đương">
-                                                                            <option value="" hidden>Chọn nhóm môn</option>
-                                                                            <option th:each="item : ${listNhomMonDatn}"
-                                                                                    th:value="${item.getId()}" th:text="${item.getTenMonDatn()}"></option>
-                                                                        </select>
+                                                                    <label class="col-form-label"><span
+                                                                            style="color: red">(*)</span> Nhóm môn dự án
+                                                                        tốt nghiệp</label><br>
+                                                                    <select class="form-control" data-toggle="tooltip"
+                                                                            id="nhom_mon_datn_create"
+                                                                            title="Chọn nhóm môn để lọc ra môn tương đương">
+                                                                        <option value="" hidden>Chọn nhóm môn</option>
+                                                                        <option th:each="item : ${listNhomMonDatn}"
+                                                                                th:value="${item.getId()}"
+                                                                                th:text="${item.getTenMonDatn()}"></option>
+                                                                    </select>
                                                                     <span class="text-danger"
                                                                           id="nhom_mon_error"></span><br>
-                                                                    <label class="col-form-label"><span style="color: red">(*)</span> Môn dự án tốt nghiệp</label><br>
-                                                                    <select class="form-control" data-toggle="tooltip" id="mon_datn_create"
+                                                                    <label class="col-form-label"><span
+                                                                            style="color: red">(*)</span> Môn dự án tốt
+                                                                        nghiệp</label><br>
+                                                                    <select class="form-control" data-toggle="tooltip"
+                                                                            id="mon_datn_create"
                                                                             title="Chọn môn để lọc ra giảng viên hướng dẫn">
                                                                     </select>
                                                                     <span class="text-danger"
                                                                           id="mon_datn_error"></span><br>
-                                                                    <label class="col-form-label">Chọn giảng viên hướng dẫn</label><br>
+                                                                    <label class="col-form-label">Chọn giảng viên hướng
+                                                                        dẫn</label><br>
                                                                     <select class="form-control" id="gvhd_create">
                                                                     </select><br>
                                                                     <label class="col-form-label">Mật khẩu nhóm</label>
@@ -264,7 +269,9 @@
                                                                     <span class="text-danger"
                                                                           id="mat_khau_erorr"></span><br>
                                                                     <div class="ui-widget">
-                                                                        <label for="tags"><span style="color: red">(*)</span> Mời nhập sinh viên (Trưởng
+                                                                        <label for="tags"><span
+                                                                                style="color: red">(*)</span> Mời nhập
+                                                                            sinh viên (Trưởng
                                                                             nhóm): </label>
                                                                         <input type="text" data-toggle="tooltip"
                                                                                title="Nhập mã sinh viên hoặc tên"
@@ -294,12 +301,8 @@
                                             <table id="custom-table"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead>
-                                                <th>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                               data-toggle="tooltip"
-                                                               title="Chọn tất cả" id="checkbox_father"/>
-                                                    </div>
+                                                <th><input data-toggle="tooltip"
+                                                           title="Chọn tất cả" type="checkbox" id="checkbox_father">
                                                 </th>
                                                 <th width="50px">STT</th>
                                                 <th>Tên nhóm</th>
@@ -343,65 +346,39 @@
                                                             >
                                                                 <div id="eye-custom" data-toggle="tooltip"
                                                                      title="Xem chi tiết nhóm">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                         width="16" height="16" fill="currentColor"
-                                                                         class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-                                                                    </svg>
+                                                                    <img th:src="@{/img/eye-fill.svg}">
                                                                 </div>
                                                             </a>
                                                             <a type="button"
-                                                               th:style="${nhomDatn.getTrangThai()}==0?'display: block':'display: none'"
+                                                               th:style="${nhomDatn.getTrangThai()}==0 and ${checkHanChuNhiem} == true ? 'display: block' : 'display: none'"
                                                                th:attr="onclick=|CNXacNhanNhom('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 <div id="custom-xac-nhan" data-toggle="tooltip"
                                                                      title="Xác nhận">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                         height="16" fill="currentColor"
-                                                                         class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                                                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                                                                    </svg>
+                                                                    <img th:src="@{/img/check-circle.svg}">
                                                                 </div>
                                                             </a>
                                                             <a type="button"
-                                                               th:style="${nhomDatn.getTrangThai()}==4?'display: block':'display: none'"
+                                                               th:style="${nhomDatn.getTrangThai()}==4 and ${checkHanChuNhiem} == true ?'display: block':'display: none'"
                                                                th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 <div id="custom-chot-de-tai" data-toggle="tooltip"
                                                                      title="Chốt đề tài">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                         height="16" fill="currentColor"
-                                                                         class="bi bi-clipboard-check-fill"
-                                                                         viewBox="0 0 16 16">
-                                                                        <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
-                                                                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
-                                                                    </svg>
+                                                                    <img th:src="@{/img/clipboard-check.svg}">
                                                                 </div>
                                                             </a>
                                                             <a type="button"
-                                                               th:style="${nhomDatn.getTrangThai()}==4?'display: block':'display: none'"
+                                                               th:style="${nhomDatn.getTrangThai()}==4 and ${checkHanChuNhiem} == true ?'display: block':'display: none'"
                                                                th:attr="onclick=|openModalNhanXet('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 <div id="custom-tu-choi" data-toggle="tooltip"
                                                                      title="Từ chối">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                         height="16" fill="currentColor"
-                                                                         class="bi bi-x-lg"
-                                                                         viewBox="0 0 16 16">
-                                                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                                                                    </svg>
+                                                                    <img th:src="@{/img/x-circle.svg}">
                                                                 </div>
                                                             </a>
                                                             <a type="button"
-                                                               th:style="${nhomDatn.getTrangThai()}==5?'display: none':'display: block'"
+                                                               th:style="${nhomDatn.getTrangThai()}==5 or ${checkHanChuNhiem} == false ?'display: none':'display: block'"
                                                                th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 <div id="custom-delete" data-toggle="tooltip"
                                                                      title="Xóa">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                         width="16"
-                                                                         height="16" fill="currentColor"
-                                                                         class="bi bi-trash3" viewBox="0 0 16 16">
-                                                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                                                    </svg>
+                                                                    <img th:src="@{/img/trash3.svg}">
                                                                 </div>
                                                             </a>
                                                         </td>
@@ -668,8 +645,8 @@
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script th:src="@{/js/plugin/bootstrap.bundle.js}"></script>
 <script th:src="@{/js/plugin/bootbox.min.js}"></script>
