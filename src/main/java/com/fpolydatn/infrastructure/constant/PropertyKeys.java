@@ -49,9 +49,7 @@ public class PropertyKeys {
     public static final String INVALID_HAN_CHU_NHIEM_BO_MON = "invalid.han.chu.nhiem.bo.mon";
     public static final String INVALID_DATE = "invalid.date";
     public static final String INVALID_NGAY_KETTHUC = "invalid.ngay.ket.thuc";
-    public static final String EXECUTION_TIME_OUT = "execution.time.out";
-    public static final String THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG = "tham.gia.nhom.sau.khi.roi.nhom.12.tieng";
+    public static final String THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG = "thoi.gian.roi.nhom.chua.du.12.tieng";
     public static final String HET_HAN_QUYEN_SINH_VIEN = "het.han.quyen.sinh.vien";
-    public static final String SV_DOT_DANG_KY_OUT_OF_DATE = "sv.dot.dang.ky.out.of.date";
 
 }

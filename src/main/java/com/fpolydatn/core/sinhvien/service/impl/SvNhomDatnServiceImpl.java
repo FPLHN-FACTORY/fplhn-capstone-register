@@ -99,7 +99,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     public PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request, String idUser) {
         Optional<SinhVien> sv = svSinhVienRepository.findById(idUser);
         Optional<MonDatn> monDatn = svMonDatnRepository.findById(sv.get().getMonChuongTrinhId());
-        System.out.println("aaaaaaaaaaaa "+monDatn.get().getNhomMonDatnId());
+        System.out.println("aaaaaaaaaaaa " + monDatn.get().getNhomMonDatnId());
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<SvNhomDatnResponse> res = svNhomDatnRepository.findAllNhomDatn(pageable, request, monDatn.get().getNhomMonDatnId());
         return new PageableObject(res);
@@ -113,15 +113,16 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     public boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req) {
-        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(req.getIdUser());
-        Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(req.getIdNhom());
-
         boolean check = mocThoiGianCommon.checkMocThoiGianSinhVien();
-        if(!check){
+        if (!check) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
-        if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
-            throw new RestApiException(Message.THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG);
+        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(req.getIdUser());
+        Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(req.getIdNhom());
+        if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null) {
+            if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+                throw new RestApiException(Message.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG);
+            }
         }
         if (!nhomDatn.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -145,6 +146,15 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     public NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest, String idUser) {
+        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
+        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
+        }
+        if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null) {
+            if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+                throw new RestApiException(Message.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG);
+            }
+        }
         String giangVienId = svNhomDatnRequest.getGiangVienId();
         if (giangVienId != null) {
             Optional<GiangVienHuongDan> giangVienHuongDan = svGiangVienHuongDanRepository.findById(giangVienId);
@@ -160,13 +170,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         Optional<MonDatn> monDatn = svMonDatnRepository.findById(svNhomDatnRequest.getIdMonDatn());
         if (!monDatn.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
-        }
-        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
-            throw new RestApiException(Message.SV_DOT_DANG_KY_OUT_OF_DATE);
-        }
-        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
-        if (!sinhVien.get().getMonDatnId().equals(svNhomDatnRequest.getIdMonDatn())){
-            sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());
         }
         NhomDatn nhomDatn = formUtils.convertToObject(NhomDatn.class, svNhomDatnRequest);
         nhomDatn.setTruongNhomId(idUser);
@@ -204,7 +207,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     public Boolean roiNhom(String idUser) {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
-            throw new RestApiException(Message.EXECUTION_TIME_OUT);
+            throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
         Date thoiGianRoiNhom = new Date();
