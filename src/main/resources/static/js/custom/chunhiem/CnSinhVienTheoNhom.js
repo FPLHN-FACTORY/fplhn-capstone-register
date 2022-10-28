@@ -13,36 +13,20 @@ function clearData() {
     $("#keyword").val("");
 }
 
-// function searchSinhVien() {
-//     let text = $(".chosen-search-input").val()
-//     $.ajax({
-//         type: "GET",
-//         contentType: "application/json",
-//         url: sinhVienApi + "/listSinhVienNoGroup" + "?maSinhVien=" + text + "&tenSinhVien=" + text,
-//         dataType: 'json',
-//         success: function (responseData) {
-//             console.log(responseData)
-//             $("#cities").html(
-//                 responseData.data.map(function (item){
-//                     return `<option value="${item.maSinhVien}">${item.thongTinSinhVien}</option>`
-//                 })
-//             )
-//         },
-//         error: function (e) {
-//             console.log("ERROR : ", e);
-//         }
-//     });
-// }
-
 function searchGvhd() {
     let text = $("#tags").val()
+    let idNhom = $("#idNhom").val()
+
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: sinhVienApi + "/listGvhd" + "?tenTaiKhoan=" + text + "&tenGvhd=" + text,
+        url: sinhVienApi + "/listGvhd" + "?tenTaiKhoan=" + text + "&tenGvhd=" + text + "&idNhom=" + idNhom,
         dataType: 'json',
         success: function (responseData) {
-            let array = responseData.data
+            let array = [];
+            for (var item of responseData.data){
+                array.push(item.thongTinGvhd)
+            }
             console.log(array)
             $("#tags").autocomplete({
                 source: array

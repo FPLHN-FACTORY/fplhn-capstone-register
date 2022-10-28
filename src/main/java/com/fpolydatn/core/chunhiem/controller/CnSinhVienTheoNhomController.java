@@ -4,6 +4,7 @@ import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoNhomRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
+import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
@@ -25,6 +26,9 @@ public class CnSinhVienTheoNhomController extends BaseController {
     private CnSinhVienTheoNhomService sinhVienTheoNhomService;
 
     @Autowired
+    private CnNhomDatnService nhomDatnService;
+
+    @Autowired
     private CommonHelper commonHelper;
 
     @GetMapping
@@ -32,14 +36,18 @@ public class CnSinhVienTheoNhomController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setIdNhom(id);
         req.setCoSoId(coSoId);
+        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         request.setCoSoId(session.getCoSoId());
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        request.setIdNhom(req.getIdNhom());
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         List<CnSinhVienSearchResponse> listSinhVienNoGroup = sinhVienTheoNhomService.getListSinhVienNoGroup(request);
+        boolean checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
         model.addAttribute("soThanhVien", sinhVienTheoNhomService.getSizeListSinhVien(id, coSoId));
         model.addAttribute("page", pageSinhVien);
         model.addAttribute("idNhom",req.getIdNhom());
         model.addAttribute("listSinhVienNoGroup", listSinhVienNoGroup);
+        model.addAttribute("checkHanChuNhiem", checkHanChuNhiem);
         return "chunhiem/cn-sinh-vien-theo-nhom";
     }
 

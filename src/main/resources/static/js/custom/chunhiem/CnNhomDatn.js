@@ -130,14 +130,14 @@ function chotDeTai(id, count) {
         url: CNNhomDatnApi + "/chot-de-tai/" + id + "?page=" + count,
         dataType: 'json',
         success: function () {
-            ++flag;
-            if (flag == checkListCbb) {
-                toastr.success('Chốt thành công');
-            }
+            // ++flag;
+            // if (flag == checkListCbb) {
+            //     toastr.success('Chốt thành công');
+            // }
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            toastr.error(e.responseJSON.message);
+            alert(e.responseJSON.message);
             return;
         }
     });
@@ -160,14 +160,14 @@ function xacNhanNhom(id, count) {
         url: CNNhomDatnApi + "/xac-nhan-nhom/" + id + "?page=" + count,
         dataType: 'json',
         success: function () {
-            ++flag;
-            if (flag == checkListCbb) {
-                toastr.success('Xác nhận thành công');
-            }
+            // ++flag;
+            // if (flag == checkListCbb) {
+            //     toastr.success('Xác nhận thành công');
+            // }
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            toastr.error(e.responseJSON.message);
+            alert(e.responseJSON.message);
             return;
         }
     });

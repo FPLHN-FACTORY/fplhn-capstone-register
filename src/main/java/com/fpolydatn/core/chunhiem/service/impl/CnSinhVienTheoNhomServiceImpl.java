@@ -12,6 +12,8 @@ import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.DotDangKy;
+import com.fpolydatn.entity.MonDatn;
+import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
@@ -144,6 +146,11 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
+        String idNhom = req.getIdNhom();
+        Optional<NhomDatn> nhomDatn = cnNhomDatnRepository.findById(idNhom);
+        Optional<SinhVien> truongNhom = cnSinhVienTheoNhomRepository.findById(nhomDatn.get().getTruongNhomId());
+        Optional<MonDatn> nhomMonDatn = cnMonDatnRepository.findById(truongNhom.get().getMonDatnId());
+        req.setNhomMonDatnId(nhomMonDatn.get().getNhomMonDatnId());
         return cnSinhVienTheoNhomRepository.getListSinhVienNoGroup(req);
     }
 

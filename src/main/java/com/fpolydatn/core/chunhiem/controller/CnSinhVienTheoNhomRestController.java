@@ -69,16 +69,14 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @GetMapping("/listSinhVienNoGroup")
     public ResponseObject getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
         req.setCoSoId(session.getCoSoId());
-        String dotDangKyHientai = new CommonHelper().getDotDangKyHienTai();
-        req.setDotDangKyId(dotDangKyHientai);
+        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         return new ResponseObject(sinhVienTheoNhomService.getListSinhVienNoGroup(req));
     }
 
     @GetMapping("/listGvhd")
     public ResponseObject getListGvhd(final CnFindGvhdRequest req) {
         req.setCoSoId(session.getCoSoId());
-        String dotDangKyHientai = commonHelper.getDotDangKyHienTai();
-        req.setDotDangKyId(dotDangKyHientai);
+        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         return new ResponseObject(cnGiangVienHuongDanService.getListGvhd(req));
     }
 

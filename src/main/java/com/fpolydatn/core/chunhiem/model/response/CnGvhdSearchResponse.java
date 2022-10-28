@@ -13,6 +13,6 @@ public interface CnGvhdSearchResponse {
     @Value("#{target.thong_tin}")
     String getThongTinGvhd();
 
-    @Value("#{target.ten_tai_khoan}")
-    String getTenTaiKhoan();
+    @Value("#{target.so_nhom_huong_dan_toi_da}")
+    Short getSoNhomHuongDanToiDa();
 }

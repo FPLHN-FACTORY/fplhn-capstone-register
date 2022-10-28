@@ -1,5 +1,6 @@
 const sinhVienApi = '/api/chu-nhiem/dot-dang-ky/sinh-vien';
 const sinhVienTheoDotDangKyView = '/chu-nhiem/dot-dang-ky/sinh-vien';
+const checkHanChuNhiem = $("#check_han_chu_nhiem").val();
 
 function openModalAddSinhVien(maSinhVien, count) {
     $("#modal_create_nhom").modal('show');
@@ -59,11 +60,11 @@ function loadDataToTable(count) {
                             <td> ${sinhVien.tenSinhVien}</td>
                             <td> ${sinhVien.tenChuyenNganh}</td>
                             <td> ${sinhVien.tenDotDangKy}</td>
-                            <td> ${sinhVien.maMon}</td>
+                            <td> ${sinhVien.maMon == null ? 'Chưa có' : sinhVien.maMon}</td>
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <a
+                  <a style="${checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}"
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">
