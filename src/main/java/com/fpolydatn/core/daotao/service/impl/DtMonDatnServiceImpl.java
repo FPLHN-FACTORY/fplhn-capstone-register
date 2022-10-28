@@ -1,6 +1,7 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.model.request.DtCreateImportMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtCreateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
@@ -9,14 +10,17 @@ import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
+import com.fpolydatn.entity.ChuyenNganh;
+import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
+import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +30,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +54,16 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     private DtCoSoRepository coSoRepository;
 
     private FormUtils formUtils = new FormUtils();
+
+    private HashMap<String, MonDatn> monDatnHashMap;
+
+    private HashMap<String, ChuyenNganh> chuyenNganhHashMap;
+
+    private HashMap<String, CoSo> coSoHashMap;
+
+    private List<String> returnList = new ArrayList<>();
+
+    private HashMap<String, String> listMaMonDatn = new HashMap<>();
 
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
@@ -104,72 +120,236 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         }
     }
 
-    public List<?> convertExcelToList(MultipartFile is) {
+    @Override
+    public List<String> importExcel(MultipartFile file) {
+        coSoHashMap = new HashMap<>();
+        monDatnHashMap = new HashMap<>();
+        chuyenNganhHashMap = new HashMap<>();
+        returnList.clear();
+        // tạo bộ nhớ đệm
+        boNhoDem();
+
+        // check file xlsx
+        if (!checkTypeFile(file)) {
+            returnList.add("Không đúng định dạng file Excel");
+            return returnList;
+        }
+
+        List<DtCreateImportMonDatnRequest> importMonDatnRequests = importExcelList(file);
+
+        // đưa ra môn
+        List<MonDatn> list = checkMaNhom(importMonDatnRequests);
+
+
+        // import in database
+        if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
+            monDatnRepository.saveAll(list);
+        }
+
+        // trả về thông báo
+        return returnList;
+    }
+
+    private List<MonDatn> checkMaNhom(List<DtCreateImportMonDatnRequest> checkValiDate) {
         List<MonDatn> list = new ArrayList<>();
 
+        List<DtCreateImportMonDatnRequest> checkMa = checkImport(checkValiDate);
+
+        checkMa.forEach(el -> {
+            int check = 0;
+            if (!monDatnHashMap.containsKey(el.getNhomMonDatnId())) {
+                returnList.add(formErrors("F" + (el.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
+                check++;
+            }
+            if (check == 0) {
+                if (!el.getMaMon().equals(el.getNhomMonDatnId())) {
+                    monDatnHashMap.get(el.getMaMon()).setNhomMonDatnId(el.getNhomMonDatnId());
+                }
+                list.add(monDatnHashMap.get(el.getMaMon()));
+            }
+        });
+        return list;
+    }
+
+    private List<DtCreateImportMonDatnRequest> checkImport(List<DtCreateImportMonDatnRequest> list) {
+        List<DtCreateImportMonDatnRequest> traVe = new ArrayList<>();
+
+        list.forEach(createMonDant -> {
+            int check = 0;
+            // check mã môn
+            if (monDatnHashMap.containsKey(createMonDant.getMaMon())) {
+                returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã đã tồn tại"));
+                check++;
+            }
+
+            if (createMonDant.getMaMon().trim().length() == 0) {
+                returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được để trống"));
+                check++;
+            }
+
+            if (createMonDant.getMaMon().trim().length() > 10) {
+                returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được quá 10 ký tự"));
+                check++;
+            }
+
+            if (createMonDant.getMaMon().indexOf(" ") > 0) {
+                returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
+                check++;
+            }
+
+            // check tên môn
+            if (createMonDant.getMaMon().trim().length() == 0) {
+                returnList.add(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
+                check++;
+            }
+
+            if (createMonDant.getTenMonDatn().trim().length() > 100) {
+                returnList.add(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được quá 100 ký tự"));
+                check++;
+            }
+
+            // check mã chuyên ngành
+            if (createMonDant.getMaMon().trim().length() == 0) {
+                returnList.add(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được để trống"));
+                check++;
+            }
+
+            if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
+                returnList.add(formErrors("D" + (createMonDant.getStt() + 1), "Không tìm thấy tên chuyên ngành"));
+                check++;
+            }
+
+            if (createMonDant.getChuyenNganhId().trim().length() > 36) {
+                returnList.add(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được quá 36 ký tự"));
+                check++;
+            }
+
+            // check mã Cơ sở
+            if (createMonDant.getMaMon().trim().length() == 0) {
+                returnList.add(formErrors("E" + (createMonDant.getStt() + 1), "Mã cơ sở không được để trống"));
+                check++;
+            }
+
+            if (!coSoHashMap.containsKey(createMonDant.getCoSoId())) {
+                returnList.add(formErrors("E" + (createMonDant.getStt() + 1), "Không tìm thấy mã cơ sở"));
+                check++;
+            }
+
+            if (createMonDant.getCoSoId().trim().length() > 36) {
+                returnList.add(formErrors("E" + (createMonDant.getStt() + 1), "Mã cơ sở không được quá 36 ký tự"));
+                check++;
+            }
+
+            // check mã Nhóm môn
+            if (createMonDant.getMaMon().trim().length() == 0) {
+                returnList.add(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm môn không được để trống"));
+                check++;
+            }
+
+            if (createMonDant.getMaMon().trim().length() > 10) {
+                returnList.add(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
+                check++;
+            }
+
+            if (check == 0) {
+                MonDatn monDatn = new MonDatn();
+                monDatn.setMaMon(createMonDant.getMaMon());
+                monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
+                monDatn.setCoSoId(coSoHashMap.get(createMonDant.getCoSoId()).getId());
+                monDatn.setChuyenNganhId(chuyenNganhHashMap.get(createMonDant.getChuyenNganhId()).getId());
+                monDatnHashMap.put(monDatn.getMaMon(), monDatn);
+                traVe.add(createMonDant);
+            }
+
+        });
+        return traVe;
+    }
+
+    public String formErrors(String vtr, String err) {
+        return "Lỗi tại vị trí " + vtr + " . Lỗi -> " + err;
+    }
+
+    public List<DtCreateImportMonDatnRequest> importExcelList(MultipartFile file) {
+        List<DtCreateImportMonDatnRequest> list = new ArrayList<>();
+
         try {
-            XSSFWorkbook workbook = new XSSFWorkbook(is.getInputStream());
-            XSSFSheet sheet = workbook.getSheetAt(0);
+            Workbook workbook = StreamingReader.builder()
+                    .bufferSize(4096)
+                    .rowCacheSize(50)
+                    .open(file.getInputStream());
+            Sheet sheet = workbook.getSheetAt(0);
             int rowNumber = 0;
             Iterator<Row> iterator = sheet.iterator();
 
             while (iterator.hasNext()) {
                 Row row = iterator.next();
 
+                DtCreateImportMonDatnRequest createMonDatn = new DtCreateImportMonDatnRequest();
                 if (rowNumber == 0) {
                     rowNumber++;
                     continue;
                 }
 
-                Iterator<Cell> cells = row.iterator();
+                createMonDatn.setStt(row.getRowNum());
+                createMonDatn.setMaMon(String.valueOf(getCellValue(row.getCell(1))).trim());
+                createMonDatn.setTenMonDatn(String.valueOf(getCellValue(row.getCell(2))).trim());
+                createMonDatn.setChuyenNganhId(String.valueOf(getCellValue(row.getCell(3))).trim());
+                createMonDatn.setCoSoId(String.valueOf(getCellValue(row.getCell(4))).trim());
+                createMonDatn.setNhomMonDatnId(String.valueOf(getCellValue(row.getCell(5))).trim());
 
-                int cid = 0;
-                MonDatn monDatn = new MonDatn();
-                while (cells.hasNext()) {
-                    Cell cell = cells.next();
-
-                    switch (cid) {
-                        case 1:
-                            String ma = cell.getStringCellValue();
-                            monDatn.setMaMon(ma);
-                            break;
-                        case 2:
-                            String ten = cell.getStringCellValue();
-                            monDatn.setTenMonDatn(ten);
-                            break;
-                        case 3:
-                            String chuyenNganh = cell.getStringCellValue().trim();
-                            monDatn.setChuyenNganhId(this.chuyenNganhRepository.findName(chuyenNganh).getId());
-                            break;
-                        case 4:
-                            String coSo = cell.getStringCellValue().trim();
-                            monDatn.setCoSoId(this.coSoRepository.findName(coSo).getId());
-                            break;
-                        default:
-                            break;
-                    }
-                    cid++;
-
-                }
-                list.add(monDatn);
-
+                list.add(createMonDatn);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        ;
         return list;
     }
 
-    @Override
-    public Boolean importExcel(MultipartFile file) {
-        List<MonDatn> list = (List<MonDatn>) convertExcelToList(file);
-        if (list == null) {
+    public boolean checkTypeFile(MultipartFile file) {
+        String filename = file.getResource().getFilename();
+        String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
+
+        String excel = "xlsx";
+        if (!extension.equals(excel)) {
             return false;
         }
-        monDatnRepository.saveAll(list);
         return true;
+    }
+
+    public void boNhoDem() {
+        // tạo bộ nhớ đệm Môn đồ án tốt nghiệp
+        for (MonDatn x : monDatnRepository.findAll()) {
+            listMaMonDatn.put(x.getMaMon(), x.getMaMon());
+            monDatnHashMap.put(x.getMaMon(), x);
+        }
+        // tạo bộ nhớ đêm Chuyên ngành
+        for (ChuyenNganh x : chuyenNganhRepository.findAll()) {
+            chuyenNganhHashMap.put(x.getTenChuyenNganh(), x);
+        }
+        // tạo bộ nhớ đệm Cớ sở
+        for (CoSo x : coSoRepository.findAll()) {
+            coSoHashMap.put(x.getMaCoSo(), x);
+        }
+
+    }
+
+    private static Object getCellValue(Cell cell) {
+        try {
+            switch (cell.getCellType()) {
+                case NUMERIC -> {
+                    return cell.getNumericCellValue();
+                }
+                case BOOLEAN -> {
+                    return cell.getBooleanCellValue();
+                }
+                default -> {
+                    return cell.getStringCellValue();
+                }
+
+            }
+        } catch (Exception e) {
+            return "";
+        }
     }
 
 }
