@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * @author hungpv
  */
@@ -35,9 +37,15 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
     Page<DtChuyenNganhResponse> findByName(@Param("req") DtFindChuyenNganhRequest req, Pageable page);
 
     @Query(value = """
-            SELECT * FROM do_an_tot_nghiep.chuyen_nganh cn
-             WHERE cn.ten_chuyen_nganh = :tenChuyenNganh    ;
+                SELECT cn.id FROM chuyen_nganh cn LEFT JOIN mon_datn m ON cn.id = m.chuyen_nganh_id
+                 RIGHT JOIN sinh_vien sv ON sv.chuyen_nganh_id = cn.id WHERE cn.id = :id AND cn.co_so_id = :coSoId 
+                 AND sv.dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
+    List<ChuyenNganh> findChuyenNganhById(@Param("id") String id, @Param("coSoId") String coSoId,
+                                          @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+            SELECT * FROM chuyen_nganh cn WHERE cn.ten_chuyen_nganh = tenChuyenNganh
             """, nativeQuery = true)
     ChuyenNganh findName(@Param("tenChuyenNganh") String tenChuyenNganh);
-
 }
