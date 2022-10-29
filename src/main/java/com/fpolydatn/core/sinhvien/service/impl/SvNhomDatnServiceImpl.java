@@ -32,6 +32,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -159,10 +160,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
         if(Objects.nonNull(sinhVien.get().getThoiDiemRoiNhomGanNhat())){
-            Long currentTime = convertDateToTimeStampSecond();
-                if(currentTime - sinhVien.get().getThoiDiemRoiNhomGanNhat() >423000l){
-                    throw new RestApiException(Message.SV_);
-                }
+            if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+                throw new RestApiException(Message.THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG);
+            }
 
         }
         NhomDatn nhomDatn = formUtils.convertToObject(NhomDatn.class, svNhomDatnRequest);
