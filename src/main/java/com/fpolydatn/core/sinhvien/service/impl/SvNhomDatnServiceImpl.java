@@ -32,8 +32,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 /**
  * @author hoangnt
@@ -152,7 +156,15 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.SV_DOT_DANG_KY_OUT_OF_DATE);
         }
+
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
+        if(Objects.nonNull(sinhVien.get().getThoiDiemRoiNhomGanNhat())){
+            Long currentTime = convertDateToTimeStampSecond();
+                if(currentTime - sinhVien.get().getThoiDiemRoiNhomGanNhat() >423000l){
+                    throw new RestApiException(Message.SV_);
+                }
+
+        }
         NhomDatn nhomDatn = formUtils.convertToObject(NhomDatn.class, svNhomDatnRequest);
         nhomDatn.setTruongNhomId(idUser);
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);

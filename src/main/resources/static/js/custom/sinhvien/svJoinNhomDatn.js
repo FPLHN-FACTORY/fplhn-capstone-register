@@ -215,7 +215,19 @@ function createNhomDatn() {
         $("#ten_de_tai_error").text("*Không để trống tên đề tài");
         check = false;
     }
+    if (tenNhom.length > 100) {
+        $("#ten_nhom_error").text("*Tên nhóm không được quá 100 ký tự");
+        check = false;
+    }
 
+    if (tenDeTai.length > 100) {
+        $("#ten_de_tai_error").text("*Tên đề tài không được quá 100 ký tự");
+        check = false;
+    }
+    if (moTa.length > 255) {
+        $("#mo_ta_error").text("*Nội dung mô tả không được quá 255 ký tự");
+        check = false;
+    }
     if (check) {
         let matKhau = "";
         if ($("#checkTrangThaiCreateNhom").is(':checked')) {

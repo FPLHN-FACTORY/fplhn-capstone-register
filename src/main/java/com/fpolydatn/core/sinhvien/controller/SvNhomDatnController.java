@@ -52,6 +52,7 @@ public class SvNhomDatnController extends BaseController {
                 dotDangKyHienTai,
                 idUSer);
         model.addAttribute("checkMocThoiGian", mocThoiGianCommon.checkMocThoiGianSinhVien());
+
         if (nhomId == null || nhomId.trim().isEmpty()) {
             req.setCoSoId(coSoId);
             req.setDotDangKyId(dotDangKyHienTai);
