@@ -132,12 +132,21 @@
                                                                                 <option th:value="${chuyenNganh.id}"
                                                                                         th:text="${chuyenNganh.name}"></option>
                                                                             </div>
-                                                                        </select>
+                                                                        </select><br>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label class="col-form-label">Nhóm môn datn:</label>
+                                                                        <select id="tenNhomMonDatn" class="form-control">
+                                                                            <div th:each="tenNhomMon : ${tenNhomMon}">
+                                                                                <option th:value="${tenNhomMon.id}"
+                                                                                        th:text="${tenNhomMon.tenMonDatn}"></option>
+                                                                            </div>
+                                                                        </select><br>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
+                                                                <button onclick="clearModal()" type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button type="submit" class="btn btn-primary">Thêm mới
@@ -158,6 +167,7 @@
                                                 <th width="50px">STT</th>
                                                 <th width="200px">Mã môn</th>
                                                 <th width="200px">Tên môn</th>
+                                                <th width="200px">Nhóm môn</th>
                                                 <th width="200px">Giảng viên</th>
                                                 <th width="200px">CN bộ môn</th>
                                                 <th width="200px">Chức năng</th>
@@ -168,6 +178,7 @@
                                                         <td th:text="${monDatn.stt}"></td>
                                                         <td th:text="${monDatn.maMon}"></td>
                                                         <td th:text="${monDatn.tenMon}"></td>
+                                                        <td th:text="${monDatn.tenNhomMon}"></td>
                                                         <td>
                                                             <a
                                                                     type="button"
@@ -269,7 +280,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
+                    <button onclick="clearModal()" type="button" class="btn btn-secondary"
                             data-dismiss="modal">Hủy
                     </button>
                     <button type="submit" class="btn btn-primary">Cập
@@ -305,7 +316,7 @@
                     <span id="remove_mon_datn" style="color:red;"></span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
+                    <button onclick="clearModal()" type="button" class="btn btn-secondary"
                             data-dismiss="modal">Hủy
                     </button>
                     <button type="submit" class="btn btn-primary">Xoá

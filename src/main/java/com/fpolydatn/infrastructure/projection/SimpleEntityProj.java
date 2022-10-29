@@ -8,7 +8,5 @@ import org.springframework.data.rest.core.config.Projection;
  */
 @Projection(types = {})
 public interface SimpleEntityProj extends IsIdentified {
-
-    String getId();
     String getName();
 }
