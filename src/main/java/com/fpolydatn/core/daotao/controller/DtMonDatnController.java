@@ -8,6 +8,7 @@ import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.model.request.MuitiPathFile;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
+import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,9 +43,11 @@ public class DtMonDatnController extends BaseController {
         req.setCoSoId(coSoId);
         PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
+        List<MonDatn> tenNhomMon= monDatnService.findByTenNhomMon();
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
+        model.addAttribute("tenNhomMon", tenNhomMon);
         return "daotao/dt-mon-datn";
     }
 

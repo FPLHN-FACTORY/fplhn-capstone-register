@@ -11,10 +11,12 @@ $("#form_create_mon_datn").submit(function (event) {
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
+    let nhomMonId = $("#tenNhomMonDatn").val();
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
+    monDatnRequest["nhomMonDatnId"] = nhomMonId;
     let index = 0;
     if (maMon.trim().length === 0) {
         $("#ma_mon_datn_error").text("Ma mon DATN khong duoc de trong");
@@ -36,8 +38,8 @@ $("#form_create_mon_datn").submit(function (event) {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                    window.open(monDatnView, '_self');
-                    $("#modal_create").modal("hide");
+                window.open(monDatnView, '_self');
+                $("#modal_create").modal("hide");
             },
             error: function (e) {
                 $("#ma_mon_datn_error").text(e.responseJSON.message);
@@ -135,11 +137,34 @@ $("#form_mon_datn_delete").submit(function (event) {
             $("#modal_mon_datn_remove").modal("hide");
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            $("#remove_mon_datn").text(e.responseJSON.message);
         }
     });
 });
 
+function openModalImportMonDatn() {
+    $("#modal_mon_datn_import").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: monDatnApi,
+        data: JSON.stringify(),
+        dataType: 'json',
+        success: function () {
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+function clearModal() {
+    $("#remove_mon_datn").text("");
+    $("#ma_mon_datn_error").text("");
+    $("#ten_mon_datn_error").text("");
+    $("#errorMaMonUpdate").text("");
+    $("#errorTenMonUpdate").text("");
+}
 $("#exampleFormControlFile1").on("input", function () {
     if(!$("#exampleFormControlFile1").val().trim().length == 0) {
         $("#import").removeAttr('disabled');
