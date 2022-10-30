@@ -73,7 +73,8 @@ function loadDataNhomDatn(count) {
                 <td>${item.maSinhVien}-${item.tenSinhVien}</td>
                 <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
                 
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                <td><button type="button" data-toggle="modal" data-target="#modal_create" class="btn btn-primary" onclick="openModalDanhSachSinhVien('${item.id}')">Chi tiết thành viên</button>
+                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                
+                <td><button type="button" data-toggle="modal" data-target="#modal_create" class=" btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
                 <div class="modal fade"></div>
                 </td>
                 </tr>
@@ -96,3 +97,26 @@ function loadDataNhomDatn(count) {
     });
 
 }
+
+$("#form_type_excel").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#type_excel").val();
+    if (typeExcel == '') {
+        $("#type_excel_error").text("Chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/nhom-datn/export?typeExcel=" + typeExcel,
+
+            success: function () {
+                window.open("/api/dao-tao/nhom-datn/export?typeExcel=" + typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+});
+
+

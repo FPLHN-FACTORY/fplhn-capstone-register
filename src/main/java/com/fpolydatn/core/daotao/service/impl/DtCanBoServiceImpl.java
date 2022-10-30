@@ -1,23 +1,22 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtCanBoImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
+import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.CoSo;
+import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,15 +25,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author nguyenvv4
@@ -108,44 +106,62 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         return dtCanBoRepository.findAllSimpleEntityByTenCanBo(id, vaiTro);
     }
 
-
     @Override
-    public List<CanBo> importData(MultipartFile reapExcelDataFile, String id) {
-        List<String> listEmailFe = dtCanBoRepository.findAllEmailFe();
-        List<CanBo> listCanBo;
-        try {
-            listCanBo = new ArrayList<>();
-            XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
-            XSSFSheet worksheet = workbook.getSheetAt(0);
+    public void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
 
-            for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
-                CanBo canBo = new CanBo();
-                XSSFRow row = worksheet.getRow(i);
-                canBo.setEmailFe(row.getCell(0).getStringCellValue());
-                canBo.setEmailFpt(row.getCell(1).getStringCellValue());
-                canBo.setSoDienThoai(row.getCell(2).getStringCellValue());
-                canBo.setTenCanBo(row.getCell(3).getStringCellValue());
-                canBo.setTenTaiKhoan(row.getCell(4).getStringCellValue());
-                canBo.setVaiTro(VaiTro.valueOf(row.getCell(5).getStringCellValue()));
-                canBo.setCoSoId(id);
-                if (!validateDataExcel(listEmailFe, canBo.getEmailFe())) {
-                    throw new RestApiException(Message.HOC_KY_NOT_EXIST);
-                }
-                listCanBo.add(canBo);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return listCanBo;
     }
 
-    public boolean validateDataExcel(List<String> listEmail, String emailFE) {
-        for (String s : listEmail) {
-            if (s.equals(emailFE)) {
-                return false;
+    @Override
+    public RestApiException DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
+        DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
+        List<CanBo> listCB = dtCanBoImportExcel.importData(file, coSoId);
+        Map<String, String> map = new HashMap<>();
+        addDataInMap(map);
+
+        for (CanBo canbo : listCB) {
+            if (map.get(canbo.getEmailFe()) != null || map.get(canbo.getEmailFpt()) != null) {
+                throw new RestApiException(Message.CAN_BO_EXSIT);
+            }
+
+            if (canbo.getEmailFpt().isEmpty() || canbo.getEmailFe().isEmpty() ||
+                    canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
+                    canbo.getTenCanBo().isEmpty() || canbo.getVaiTro().toString().isEmpty()) {
+                throw new RestApiException(Message.EMPTY);
+            }
+
+            if(!canbo.getEmailFpt().matches(Constants.REGEX_EMAIL_FPT)){
+                throw new RestApiException(Message.EMAIL_MALFORMED);
+            }
+
+            if(!canbo.getEmailFe().matches(Constants.REGEX_EMAIL_FE)){
+                throw new RestApiException(Message.EMAIL_MALFORMED);
+            }
+
+            if(!canbo.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)){
+                throw new RestApiException(Message.NUMBER_FORMAT_EXCEPTION);
+            }
+
+            if(canbo.getTenTaiKhoan().contains(" ")){
+                throw new RestApiException(Message.NO_SPACES_ALLOW);
             }
         }
-        return true;
+        dtCanBoRepository.saveAll(listCB);
+        return new RestApiException(Message.SUCCESS) ;
+    }
+
+    public void addDataInMap(Map<String, String> mapAll) {
+        List<String> listEmailFE = dtCanBoRepository.findAllEmailFe();
+        setDataInMap(mapAll, listEmailFE);
+
+        List<String> listEmailFpt = dtCanBoRepository.findAllByEmailFPT();
+        setDataInMap(mapAll, listEmailFpt);
+
+    }
+
+    public void setDataInMap(Map<String, String> mapSimple, List<String> listStr) {
+        for (String s : listStr) {
+            mapSimple.put(s, s);
+        }
     }
 
 }

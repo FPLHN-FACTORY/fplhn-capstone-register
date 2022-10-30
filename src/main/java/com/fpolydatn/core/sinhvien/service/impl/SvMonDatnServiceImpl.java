@@ -2,6 +2,7 @@ package com.fpolydatn.core.sinhvien.service.impl;
 
 import com.fpolydatn.core.sinhvien.model.response.SvMonDatnResponse;
 import com.fpolydatn.core.sinhvien.repository.SvMonDatnRepository;
+import com.fpolydatn.core.sinhvien.repository.SvSinhVienRepository;
 import com.fpolydatn.core.sinhvien.service.SvMonDatnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,14 @@ public class SvMonDatnServiceImpl implements SvMonDatnService {
     @Autowired
     private SvMonDatnRepository svMonDatnRepository;
 
+    @Autowired
+    private SvSinhVienRepository svSinhVienRepository;
+
     @Override
-    public List<SvMonDatnResponse> getMonDatn() {
-        return svMonDatnRepository.findMonDatn();
+    public List<SvMonDatnResponse> getAllMonDatnByIdUser(String id) {
+        return svMonDatnRepository.getMonDatnTuongDuong
+                (svMonDatnRepository.getNhomMonDatnIdByMonChuongTrinhId
+                        (svSinhVienRepository.getMonChuongTrinhIdById(id)));
     }
 
 }

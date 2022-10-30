@@ -1,152 +1,181 @@
 const svNhomDatnApi = '/api/sinh-vien';
 const svNhomDatnView = '/sinh-vien';
 
-function guiYeuCauPheDuyet(id) {
-    var check = confirm("Bạn muốn gửi yêu cầu phê duyệt?");
-    if (check == true) {
-        $.ajax({
-            type: "PUT",
-            contentType: "application/json",
-            url: svNhomDatnApi + "/" + id,
-            dataType: 'json',
-            success: function (responseData) {
-                $("#messageSuccess").text("Gửi yêu cầu phê duyệt thành công");
-                $("#modal_success").modal('show');
-            },
-            error: function (e) {
-                console.log("ERROR : ", e.message);
-            }
-        });
-    }
-}
-
-function openModalDoiTenDeTai() {
-    $("#modal_doi_ten_de_Tai").modal("show");
-}
-
 function doiTenDeTai() {
+    $("#modal_doi_ten_de_Tai").modal('hide');
     let inputTenDeTai = $("#inputTenDeTai").val();
     let updateTenDeTaiRequest = {};
     updateTenDeTaiRequest["tenDeTai"] = inputTenDeTai;
-    let checkConfirm = confirm("Bạn muốn đổi tên đề tài?");
-    if (checkConfirm == true) {
-        $.ajax({
-            type: "PUT",
-            contentType: "application/json",
-            url: svNhomDatnApi + "/update-ten-de-tai",
-            data: JSON.stringify(updateTenDeTaiRequest),
-            datatype: 'json',
-            success: function (responseData) {
-                $("#modal_doi_ten_de_Tai").modal('hide');
-                $("#messageSuccess").text("Đổi đề tài thành công");
-                $("#modal_success").modal('show');
+    bootbox.confirm({
+        title: "Đổi tên đề tài",
+        message: "Bạn muốn đổi tên đề tài?",
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Quay lại'
             },
-            error: function (responseData) {
-                console.log(responseData);
-                $("#errorTenDeTai").text(responseData.responseJSON.message);
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
             }
-        });
-    }
-}
-
-$("#form_success").submit(function (event) {
-    event.preventDefault();
-    window.open(svNhomDatnView, '_self');
-})
-
-$("#form_confirm").submit(function (event) {
-    event.preventDefault();
-    window.open(svNhomDatnView, '_self');
-})
-
-function roiNhom(soThanhVien) {
-    let check = false;
-    let checkConfirm = confirm("Bạn muốn rời nhóm?");
-    if (checkConfirm == true) {
-        check = true;
-        if (soThanhVien == 1) {
-            let checkConfirmXoaNhom = confirm("Nhóm sẽ bị xóa nếu bạn rời nhóm\n Bạn có muốn tiếp tục rời nhóm?");
-            if (checkConfirmXoaNhom == false) {
-                check = false;
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: svNhomDatnApi + "/update-ten-de-tai",
+                    data: JSON.stringify(updateTenDeTaiRequest),
+                    datatype: 'json',
+                    success: function (responseData) {
+                        bootbox.alert({
+                            message: 'Đổi đề tài thành công',
+                            backdrop: true,
+                            callback: function () {
+                                window.open(svNhomDatnView, '_self');
+                            }
+                        });
+                    },
+                    error: function (responseData) {
+                        console.log(responseData);
+                        $("#errorTenDeTai").text(responseData.responseJSON.message);
+                    }
+                });
             }
         }
-    }
+    });
+}
 
-    if (check == true) {
-        $.ajax({
-            type: "PUT",
-            contentType: "application/json",
-            url: svNhomDatnApi + "/roi-nhom",
-            success: function (responseData) {
-                $("#modal_doi_ten_de_Tai").modal('hide');
-                $("#messageSuccess").text("Rời nhóm thành công");
-                $("#modal_success").modal('show');
+function confirmRoiNhom(soThanhVien) {
+    let check = false;
+    if (soThanhVien == 1) {
+        bootbox.confirm({
+            title: "Rời nhóm",
+            message: "Nhóm sẽ bị xóa nếu bạn rời nhóm. \\n Bạn có muốn tiếp tục rời nhóm?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
             },
-            error: function (responseData) {
-                console.log(responseData);
-                alert(responseData.responseJSON.message);
+            callback: function (result) {
+                if (result) {
+                    roiNhom();
+                }
+            }
+        });
+    } else {
+        bootbox.confirm({
+            title: "Rời nhóm",
+            message: "Bạn muốn rời nhóm?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    roiNhom();
+                }
             }
         });
     }
+
+}
+
+function roiNhom() {
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: svNhomDatnApi + "/roi-nhom",
+        success: function (responseData) {
+            bootbox.alert('Rời nhóm thành công', function () {
+                    window.open(svNhomDatnView, '_self');
+                }
+            );
+        },
+        error: function (responseData) {
+            console.log(responseData);
+            alert(responseData.responseJSON.message);
+        }
+    });
 }
 
 function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi) {
-    let checkConfirm = confirm("Bạn muốn chuyển quyển trưởng nhóm cho: " + tenTruongNhomMoi + "?");
-    if (checkConfirm == true) {
-        $.ajax({
-            type: "PUT",
-            contentType: "application/json",
-            url: svNhomDatnApi + "/chuyen-quyen-truong-nhom?idTruongNhomMoi=" + idTruongNhomMoi,
-            success: function (responseData) {
-                $("#modal_doi_ten_de_Tai").modal('hide');
-                $("#messageSuccess").text("Đã chuyển quyền trưởng nhóm cho " + tenTruongNhomMoi);
-                $("#modal_success").modal('show');
+    bootbox.confirm({
+        title: "Chuyển quyền trưởng nhóm",
+        message: "Bạn muốn chuyển quyền trưởng nhóm cho " + tenTruongNhomMoi + "?",
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Quay lại'
             },
-            error: function (responseData) {
-                console.log(responseData);
-                alert(responseData.responseJSON.message);
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
             }
-        });
-    }
-}
-
-function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi) {
-    let checkConfirm = confirm("Bạn muốn chuyển quyển trưởng nhóm cho: " + tenTruongNhomMoi + "?");
-    if (checkConfirm == true) {
-        $.ajax({
-            type: "PUT",
-            contentType: "application/json",
-            url: svNhomDatnApi + "/chuyen-quyen-truong-nhom?idTruongNhomMoi=" + idTruongNhomMoi,
-            success: function (responseData) {
-                $("#modal_doi_ten_de_Tai").modal('hide');
-                $("#messageSuccess").text("Đã chuyển quyền trưởng nhóm cho " + tenTruongNhomMoi);
-                $("#modal_success").modal('show');
-            },
-            error: function (responseData) {
-                console.log(responseData);
-                alert(responseData.responseJSON.message);
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: svNhomDatnApi + "/chuyen-quyen-truong-nhom?idTruongNhomMoi=" + idTruongNhomMoi,
+                    success: function (responseData) {
+                        bootbox.alert({
+                            message: 'Bạn đã chuyển quyền trưởng nhóm cho ' + tenTruongNhomMoi,
+                            backdrop: true,
+                            callback: function () {
+                                window.open(svNhomDatnView, '_self');
+                            }
+                        });
+                    },
+                    error: function (responseData) {
+                        console.log(responseData);
+                        alert(responseData.responseJSON.message);
+                    }
+                });
             }
-        });
-    }
+        }
+    });
 }
 
 function chonGiangVienHuongDan() {
     let idGiangVien = $('#chonGiangVien').val();
-    let checkConfirm = confirm('Bạn có chắc muốn chọn giảng viên này không');
-    if (checkConfirm == true) {
-        $.ajax({
-            type: "PUT",
-            contentType: "application/json",
-            url: svNhomDatnApi + "/chon-giang-vien?idGiangVien=" + idGiangVien,
-            success: function (responseData) {
-                $("#modal_chon_giang_vien").modal('hide');
-                $("#messageSuccess").text("Đã cập nhật giảng viên");
-                $("#modal_success").modal('show');
+    $("#modal_chon_giang_vien").modal('hide');
+    bootbox.confirm({
+        title: "Đổi giảng viên",
+        message: "Bạn chắc chắn muốn đổi sang giảng viên này?",
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Quay lại'
             },
-            error: function (responseData) {
-                console.log(responseData);
-                alert(responseData.responseJSON.message);
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
             }
-        });
-    }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: svNhomDatnApi + "/chon-giang-vien?idGiangVien=" + idGiangVien,
+                    success: function (responseData) {
+                        bootbox.alert({
+                            message: 'Đã cập nhật giảng viên',
+                            backdrop: true,
+                            callback: function () {
+                                window.open(svNhomDatnView, '_self');
+                            }
+                        });
+                    },
+                    error: function (responseData) {
+                        console.log(responseData);
+                        alert(responseData.responseJSON.message);
+                    }
+                });
+            }
+        }
+    });
 }

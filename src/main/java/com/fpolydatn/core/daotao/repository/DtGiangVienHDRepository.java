@@ -2,7 +2,6 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
-import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,13 +22,15 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                 ddk.ten_dot_dang_ky,
                 gvhd.ten_gvhd ,
                 gvhd.so_nhom_huong_dan_toi_da,
+                COUNT(nd.id) AS so_nhom_dang_huong_dan,
                 gvhd.ten_tai_khoan, 
                 gvhd.so_dien_thoai,
                 gvhd.email_fpt,
                 gvhd.email_fe 
                 FROM giang_vien_huong_dan gvhd 
-                JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
-                JOIN co_so cs ON gvhd.co_so_id = cs.id                
+                LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
+                LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
+                LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                
                 WHERE 
                     ( :#{#req.tenGiangVien} IS NULL 
                         OR :#{#req.tenGiangVien} LIKE '' 
@@ -38,12 +39,18 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                      ( :#{#req.coSoId} IS NULL 
                         OR :#{#req.coSoId} LIKE '' 
                         OR cs.id   LIKE %:#{#req.coSoId}% ) 
+                 AND
+                     ( :#{#req.dotDangKyId} IS NULL 
+                        OR :#{#req.dotDangKyId} LIKE '' 
+                        OR ddk.id   LIKE %:#{#req.dotDangKyId}% )
+                GROUP BY gvhd.id
                 ORDER BY gvhd.last_modified_date DESC 
             """, countQuery = """
                 SELECT COUNT(gvhd.id)
                 FROM giang_vien_huong_dan gvhd 
-                JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
-                JOIN co_so cs ON gvhd.co_so_id = cs.id                
+                LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
+                LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
+                LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                
                 WHERE 
                     ( :#{#req.tenGiangVien} IS NULL 
                         OR :#{#req.tenGiangVien} LIKE '' 
@@ -52,6 +59,11 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                      ( :#{#req.coSoId} IS NULL 
                         OR :#{#req.coSoId} LIKE '' 
                         OR cs.id   LIKE %:#{#req.coSoId}% ) 
+                 AND
+                     ( :#{#req.dotDangKyId} IS NULL 
+                        OR :#{#req.dotDangKyId} LIKE '' 
+                        OR ddk.id   LIKE %:#{#req.dotDangKyId}% )
+                GROUP BY gvhd.id
                 ORDER BY gvhd.last_modified_date DESC 
             """, nativeQuery = true)
     Page<DtGiangVienHDResponse> findByName(@Param("req") DtFindGiangVienHDRequest req, Pageable page);
@@ -63,9 +75,6 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt", nativeQuery = true)
     String getIdByEmailFpt(@Param("emailFpt") String emailFpt);
-
-    @Query(value = "SELECT * FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt", nativeQuery = true)
-    GiangVienHuongDan getGVHDByEmailFpt(@Param("emailFpt") String emailFpt);
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND id <> :id", nativeQuery = true)
     String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id);
@@ -81,5 +90,14 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
 
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id", nativeQuery = true)
     String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id);
+
+    @Query(value = "SELECT  COUNT(nd.id) AS so_nhom_dang_huong_dan" +
+            "      FROM giang_vien_huong_dan gvhd \n" +
+            "      LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id \n" +
+            "      LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id\n" +
+            "      LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                \n" +
+            "      WHERE gvhd.id = :idGiangVien \n" +
+            "      GROUP BY gvhd.id  ", nativeQuery = true)
+    int getCountSoNhomDangHuongDan(@Param("idGiangVien") String idGiangVien);
 
 }

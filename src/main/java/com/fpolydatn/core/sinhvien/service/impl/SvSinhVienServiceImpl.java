@@ -46,5 +46,10 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
         return sinhVien.get().getMonDatnId();
     }
 
+    @Override
+    public String getMonChuongTrinhIdById(String id) {
+        return svSinhVienRepository.getMonChuongTrinhIdById(id);
+    }
+
 
 }

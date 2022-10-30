@@ -167,7 +167,7 @@ public class DBGenerator implements CommandLineRunner {
 
         GiangVienHuongDan tiennh21 = new GiangVienHuongDan();
         tiennh21.setEmailFe("tiennh21@fe.edu.vn");
-        tiennh21.setSoDienThoai("09123445678");
+        tiennh21.setSoDienThoai("0912344567");
         tiennh21.setTenTaiKhoan("tiennh21");
         tiennh21.setEmailFpt("tiennh21@fpt.edu.vn");
         tiennh21.setCoSoId(csHN.getId());
@@ -179,7 +179,7 @@ public class DBGenerator implements CommandLineRunner {
 
         GiangVienHuongDan dungna29 = new GiangVienHuongDan();
         dungna29.setEmailFe("dungna29@fe.edu.vn");
-        dungna29.setSoDienThoai("09123445678");
+        dungna29.setSoDienThoai("0912344567");
         dungna29.setTenTaiKhoan("dungna29");
         dungna29.setEmailFpt("dungna29@fpt.edu.vn");
         dungna29.setCoSoId(csHN.getId());
@@ -190,7 +190,7 @@ public class DBGenerator implements CommandLineRunner {
 
         GiangVienHuongDan gvhd = new GiangVienHuongDan();
         gvhd.setEmailFe("giangvien.fcr@gmail.com");
-        gvhd.setSoDienThoai("09123445678");
+        gvhd.setSoDienThoai("0912344567");
         gvhd.setTenTaiKhoan("giangvien");
         gvhd.setEmailFpt("giangvien.fcr@gmail.com");
         gvhd.setCoSoId(csHN.getId());
