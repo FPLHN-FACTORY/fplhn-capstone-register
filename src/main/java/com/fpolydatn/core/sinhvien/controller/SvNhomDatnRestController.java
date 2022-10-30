@@ -16,15 +16,12 @@ import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 import java.util.List;
 
@@ -53,11 +50,6 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject getGiangVienHuongDan(@RequestParam(defaultValue = "", required = true) String idMonDatn) {
         String coSoId = session.getCoSoId();
         return new ResponseObject(svGiangVienHuongDanService.getGvhdByMonDatnId(idMonDatn, coSoId));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseObject guiYeuCauPheDuyet(@PathVariable String id){
-        return new ResponseObject(svNhomDatnService.guiYeuCauPheDuyet(id, session.getUserId()));
     }
 
     @GetMapping("/search")

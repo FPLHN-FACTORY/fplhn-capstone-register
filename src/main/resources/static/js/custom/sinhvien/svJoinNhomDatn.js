@@ -117,25 +117,39 @@ function loadDataNhomDatn(count) {
 function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
     clearform();
     if (Number(matKhauTonTai) == 0) {
-        let checkConfirm = confirm('Bạn muốn tham gia nhóm này?');
-        if (checkConfirm == true) {
-            let addSinhVienRequest = {};
-            addSinhVienRequest["idNhom"] = idNhom;
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: SVNhomDatnApi + "/add",
-                data: JSON.stringify(addSinhVienRequest),
-                datatype: 'json',
-                success: function () {
-                    $("#messageSuccess").text("Tham gia thành công");
-                    $("#modal_confirm_success").modal('show');
+        bootbox.confirm({
+            title: "Tham gia nhóm",
+            message: "Bạn muốn tham gia nhóm này?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Quay lại'
                 },
-                error: function (responseData) {
-                    alert(responseData.responseJSON.message);
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
                 }
-            });
-        }
+            },
+            callback: function (result) {
+                if (result) {
+                    let addSinhVienRequest = {};
+                    addSinhVienRequest["idNhom"] = idNhom;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: SVNhomDatnApi + "/add",
+                        data: JSON.stringify(addSinhVienRequest),
+                        datatype: 'json',
+                        success: function () {
+                            bootbox.alert('Tham gia thành công', function () {
+                                window.open(SVNhomDatnView, '_self');
+                            });
+                        },
+                        error: function (responseData) {
+                            alert(responseData.responseJSON.message);
+                        }
+                    });
+                }
+            }
+        });
     } else {
         $("#modal_add_sinh_vien").modal('show');
         $("#idNhom").val(idNhom);
@@ -156,8 +170,9 @@ function addSinhVienHasPassword() {
         datatype: 'json',
         success: function (responseData) {
             $("#modal_add_sinh_vien").modal('hide');
-            $("#messageSuccess").text("Tham gia thành công");
-            $("#modal_confirm_success").modal('show');
+            bootbox.alert('Tham gia thành công', function () {
+                window.open(SVNhomDatnView, '_self');
+            });
         },
         error: function (responseData) {
             console.log(responseData);
@@ -168,13 +183,6 @@ function addSinhVienHasPassword() {
         }
     });
 }
-
-
-
-$("#form_confirm_success").submit(function (event) {
-    event.preventDefault();
-    window.open(SVNhomDatnView, '_self');
-})
 
 function getGiangVien(idMonDatn) {
     $.ajax({
@@ -248,10 +256,10 @@ function createNhomDatn() {
             data: JSON.stringify(nhomDatnRequest),
             dataType: 'json',
             success: function (responseData) {
-                console.log(responseData)
                 $("#modal_create").modal("hide");
-                $("#messageSuccess").text("Tạo nhóm thành công");
-                $("#modal_confirm_success").modal('show');
+                bootbox.alert('Tạo nhóm thành công', function () {
+                    window.open(SVNhomDatnView, '_self');
+                });
             },
             error: function (e) {
                 console.log("ERROR : ", e);

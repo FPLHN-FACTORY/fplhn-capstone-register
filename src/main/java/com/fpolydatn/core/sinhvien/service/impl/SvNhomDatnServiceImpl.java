@@ -77,25 +77,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
-    public Boolean guiYeuCauPheDuyet(String idNhomDatn, String idUser) {
-        if (svNhomDatnRepository.getTrangThai(idNhomDatn) == 1 ||
-                svNhomDatnRepository.getTrangThai(idNhomDatn) == 3
-        ) {
-            Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(idNhomDatn);
-            if (!nhomDatn.isPresent()) {
-                throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
-            }
-            if (!nhomDatn.get().getTruongNhomId().equals(idUser)) {
-                throw new RestApiException(Message.KHONG_PHAI_TRUONG_NHOM);
-            }
-            nhomDatn.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_XAC_NHAN);
-            svNhomDatnRepository.save(nhomDatn.get());
-            return true;
-        }
-        throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
-    }
-
-    @Override
     public PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request, String idUser) {
         Optional<SinhVien> sv = svSinhVienRepository.findById(idUser);
         Optional<MonDatn> monDatn = svMonDatnRepository.findById(sv.get().getMonChuongTrinhId());

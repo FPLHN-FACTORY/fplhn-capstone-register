@@ -6,7 +6,6 @@ import com.fpolydatn.core.sinhvien.model.request.SvCreateNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
-import com.fpolydatn.core.sinhvien.model.response.SvMonDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.entity.NhomDatn;
@@ -22,8 +21,6 @@ public interface SvNhomDatnService {
     List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id);
 
     Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser);
-
-    Boolean guiYeuCauPheDuyet(String idNhomDatn, String idUser);
 
     PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request, String idUser);
 
