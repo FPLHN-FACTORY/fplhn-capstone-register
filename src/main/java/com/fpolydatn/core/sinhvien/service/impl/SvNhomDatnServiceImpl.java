@@ -165,6 +165,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     public Boolean updateTenDeTai(SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
+        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
+        }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(svUpdateTenDeTaiRequest.getIdUser());
         if (!sinhVien.isPresent()) {
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
@@ -216,6 +219,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     public Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi) {
+        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
+        }
         Optional<SinhVien> truongNhom = svSinhVienRepository.findById(idUser);
         if (!truongNhom.isPresent()) {
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
@@ -244,6 +250,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     public Boolean chonGvhd(String idUser, String idGiangVien) {
+        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
+        }
         Optional<GiangVienHuongDan> giangVienHuongDan = svGiangVienHuongDanRepository.findById(idGiangVien);
         if (!giangVienHuongDan.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
