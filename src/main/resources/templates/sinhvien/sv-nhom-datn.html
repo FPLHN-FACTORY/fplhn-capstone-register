@@ -125,8 +125,8 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div
-                                                th:style="${checkMocThoiGian} == true and ${nhomDatnThamGia[0].getTrangThai()} == 0 ? 'display:block' : 'display: none'"
-                                                class="col-sm-2 col-12 text-center mt-2 d-inline text-center">
+                                                th:style="${checkMocThoiGian} == true and ${nhomDatnThamGia[0].getTrangThai()} == 0 and ${checkTruongNhom} == true ? '' : 'display: none'"
+                                               >
                                             <button
                                                     type="button" class="btn btn-primary"
                                                     data-toggle="modal"
@@ -134,8 +134,9 @@
                                             >Đổi tên đề tài
                                             </button>
                                         </div>
+                                        <div>         </div>
                                         <div
-                                                th:style="${checkMocThoiGian} == true and ${nhomDatnThamGia[0].getTrangThai()} == 0 ? 'display:block' : 'display: none'">
+                                                th:style="${checkMocThoiGian} == true and ${nhomDatnThamGia[0].getTrangThai()} == 0 and ${checkTruongNhom} == true ? '' : 'display: none'">
                                             <button
                                                     type="button" class="btn btn-primary"
                                                     data-toggle="modal"
@@ -173,7 +174,7 @@
                                                         <td th:text="${SvNhomDatn.getTenSinhVien()}"></td>
                                                         <td th:text="${SvNhomDatn.getChucVu()} == 1 ? 'Trưởng nhóm' : 'Thành viên'"></td>
                                                         <td
-                                                                th:style="${checkTruongNhom} == false and ${SvNhomDatn.getChucVu()} == 1 and ${checkMocThoiGian} == false ? 'display:none' : 'display: block'"
+                                                                th:style="${SvNhomDatn.getChucVu()} == 1 or ${checkMocThoiGian} == false and ${checkTruongNhom} == false ? 'display:none' : 'display: block'"
                                                         >
                                                             <button
                                                                     class="btn btn-primary"
@@ -187,8 +188,8 @@
                                                 </tbody>
                                             </table>
                                             <div
-                                                    th:style="${checkMocThoiGian} == false ? 'display:none' : (${soThanhVien} != 1 and ${checkTruongNhom} == true ? 'display:none' : 'display:block')"
-                                                    class="col-4 d-inline text-right">
+                                                    th:style="${checkMocThoiGian} == false or ${soThanhVien} != 1 and ${checkTruongNhom} == true ? 'display:none' : 'display:block'"
+                                                   >
                                                 <button
                                                         class="btn btn-danger text-white"
                                                         th:attr="onclick=|confirmRoiNhom(${soThanhVien})|"

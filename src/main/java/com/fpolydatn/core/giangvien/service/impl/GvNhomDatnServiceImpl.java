@@ -92,7 +92,7 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if(!mocThoiGianCommon.checkMocThoiGianGiangVien()){
             throw new RestApiException(Message.MOC_THOI_GIAN_GVHD);
         }
-        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_XAC_NHAN);
+        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_LIEN_HE);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
@@ -109,7 +109,7 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.GIANG_VIEN_DA_XAC_NHAN &&
+        if(nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.GIANG_VIEN_DA_LIEN_HE &&
                 nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.CAN_SUA){
             throw new RestApiException(Message.DONT_CHOT_DE_TAI_NHOM_DATN);
         }
