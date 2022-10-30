@@ -20,14 +20,14 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
             SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ten_nhom
-              ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien)
-              AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien, e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
-              FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
-              LEFT JOIN sinh_vien d ON d.nhom_id = b.id
-              LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
-              LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
-              LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
-              LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien)
+            AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien, e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
+            FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
             OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
@@ -38,15 +38,16 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND g.id = :#{#req.dotDangKyId}
             AND b.co_so_id = :#{#req.coSoId}
+            AND h.id = :idChuNhiem
             GROUP BY b.id, f.ten_chuyen_nganh ORDER BY b.last_modified_date DESC 
             """, countQuery = """
             SELECT count(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
-              LEFT JOIN sinh_vien d ON d.nhom_id = b.id
-              LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
-              LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
-              LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
-              LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
             OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
@@ -57,9 +58,10 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND g.id = :#{#req.dotDangKyId}
             AND b.co_so_id = :#{#req.coSoId}
+            AND h.id = :idChuNhiem
             GROUP BY b.id, f.ten_chuyen_nganh ORDER BY b.last_modified_date DESC 
             """, nativeQuery = true)
-    Page<CnNhomDatnResponse> findNhomDatn(@Param("req") CnFindNhomDatnRequest req, Pageable page);
+    Page<CnNhomDatnResponse> findNhomDatn(@Param("req") CnFindNhomDatnRequest req, Pageable page, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = "SELECT id FROM nhom_datn WHERE ma_nhom = :maNhom AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
     String getIdByMaNhom(@Param("maNhom") String maNhom, @Param("dotDangKyId") String dotDangKyId);
@@ -95,15 +97,15 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
     void setNhomForTruongNhom(@Param("nhomId") String nhomId, @Param("monDatnId") String monDatnId, @Param("id") String id, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-    SELECT truong_nhom_id FROM nhom_datn where id = :idNhom AND dot_dang_ky_id = :dotDangKyId
-     """,nativeQuery = true)
+            SELECT truong_nhom_id FROM nhom_datn where id = :idNhom AND dot_dang_ky_id = :dotDangKyId
+             """, nativeQuery = true)
     String findIDTruongNhom(@Param("idNhom") String idNhom, @Param("dotDangKyId") String dotDangKyId);
 
     @Modifying
     @Transactional
     @Query(value = """
-      UPDATE nhom_datn SET truong_nhom_id = :truongNhomId WHERE id = :idNhom AND dot_dang_ky_id = :dotDangKyId
-    """,nativeQuery = true)
-    void changeCaptainByTruongNhomId(@Param("truongNhomId") String truongNhomId,@Param("idNhom")String idNhom, @Param("dotDangKyId") String dotDangKyId);
+              UPDATE nhom_datn SET truong_nhom_id = :truongNhomId WHERE id = :idNhom AND dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
+    void changeCaptainByTruongNhomId(@Param("truongNhomId") String truongNhomId, @Param("idNhom") String idNhom, @Param("dotDangKyId") String dotDangKyId);
 
 }

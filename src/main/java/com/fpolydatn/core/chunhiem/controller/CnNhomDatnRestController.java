@@ -47,7 +47,7 @@ public class CnNhomDatnRestController extends BaseController {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
         req.setDotDangKyId(dotDangKyId);
-        PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req);
+        PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req, session.getUserId());
         return new ResponseObject(listNhomDatn);
     }
 

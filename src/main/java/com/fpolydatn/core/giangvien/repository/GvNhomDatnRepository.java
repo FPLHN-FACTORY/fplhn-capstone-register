@@ -1,7 +1,7 @@
-package com.fpolydatn.core.daotao.giangvien.repository;
+package com.fpolydatn.core.giangvien.repository;
 
-import com.fpolydatn.core.daotao.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.daotao.giangvien.model.response.GvNhomDatnResponse;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

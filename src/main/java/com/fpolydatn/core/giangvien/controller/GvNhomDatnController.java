@@ -1,12 +1,12 @@
-package com.fpolydatn.core.daotao.giangvien.controller;
+package com.fpolydatn.core.giangvien.controller;
 
 import com.fpolydatn.core.admin.service.HocKyService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
-import com.fpolydatn.core.daotao.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.daotao.giangvien.model.response.GvNhomDatnResponse;
-import com.fpolydatn.core.daotao.giangvien.service.GvNhomDatnService;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
+import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.core.daotao.service.DtSvChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;

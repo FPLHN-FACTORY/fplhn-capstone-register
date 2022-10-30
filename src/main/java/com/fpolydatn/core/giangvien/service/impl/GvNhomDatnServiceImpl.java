@@ -1,14 +1,14 @@
-package com.fpolydatn.core.daotao.giangvien.service.impl;
+package com.fpolydatn.core.giangvien.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.giangvien.model.request.GvChotNhomDatnRequest;
-import com.fpolydatn.core.daotao.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
-import com.fpolydatn.core.daotao.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.daotao.giangvien.model.request.GvUpdateNhomDatnRequest;
-import com.fpolydatn.core.daotao.giangvien.model.response.GvNhomDatnResponse;
-import com.fpolydatn.core.daotao.giangvien.service.GvNhomDatnService;
-import com.fpolydatn.core.daotao.giangvien.model.request.GvUpdateTenDeTaiRequest;
-import com.fpolydatn.core.daotao.giangvien.repository.GvNhomDatnRepository;
+import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
+import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
+import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
+import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
+import com.fpolydatn.core.giangvien.repository.GvNhomDatnRepository;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;

@@ -57,9 +57,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     private CnGiangVienHuongDanReponsitory cnGiangVienHuongDanReponsitory;
 
     @Override
-    public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request) {
+    public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<CnNhomDatnResponse> res = cnNhomDatnRepository.findNhomDatn(request, pageable);
+        Page<CnNhomDatnResponse> res = cnNhomDatnRepository.findNhomDatn(request, pageable, idChuNhiem);
         return new PageableObject(res);
     }
 

@@ -46,7 +46,7 @@ public class CnNhomDatnController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
-        PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req);
+        PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req, session.getUserId());
         List<SimpleEntityProj> listTenChuyenNganh = chuyenNganhService.listTenChuyenNganh(coSoId);
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
         List<CnMonDatnResponse> listNhomMonDatn = cnMonDatnService.getAllNhomMonDatn(coSoId);

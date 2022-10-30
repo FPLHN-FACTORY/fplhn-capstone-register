@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface CnNhomDatnService {
 
-    PageableObject<CnNhomDatnResponse> search(final CnFindNhomDatnRequest req);
+    PageableObject<CnNhomDatnResponse> search(final CnFindNhomDatnRequest req, String idChuNhiem);
 
     boolean chotDeTai(String id);
 
