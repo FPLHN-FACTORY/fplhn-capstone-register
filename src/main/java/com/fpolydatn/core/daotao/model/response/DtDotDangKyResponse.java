@@ -27,12 +27,6 @@ public interface DtDotDangKyResponse extends IsIdentified {
     @Value("#{target.ngay_ket_thuc}")
     Long getNgayKetThuc();
 
-    @Value("#{target.tong_sinh_vien}")
-    Integer getTongSinhVien();
-
-    @Value("#{target.tong_sinh_vien_co_nhom}")
-    Integer getTongSinhVienCoNhom();
-
     @Value("#{target.trang_thai}")
     Integer getTrangThai();
 

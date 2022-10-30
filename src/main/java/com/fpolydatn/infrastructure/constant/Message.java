@@ -47,8 +47,15 @@ public enum Message {
     SINH_VIEN_KHONG_CO_NHOM(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_KHONG_CO_NHOM)),
     ROI_NHOM_KHI_LA_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.ROI_NHOM_KHI_LA_TRUONG_NHOM)),
     SINH_VIEN_DANG_LA_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_DANG_LA_TRUONG_NHOM)),
-    GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN)),
     TRUONG_NHOM_MOI_KHONG_CUNG_NHOM(PropertiesReader.getProperty(PropertyKeys.TRUONG_NHOM_MOI_KHONG_CUNG_NHOM)),
+    INVALID_HAN_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.INVALID_HAN_SINH_VIEN)),
+    INVALID_HAN_GIANG_VIEN (PropertiesReader.getProperty(PropertyKeys.INVALID_HAN_GIANG_VIEN)),
+    INVALID_HAN_CHU_NHIEM_BO_MON(PropertiesReader.getProperty(PropertyKeys.INVALID_HAN_CHU_NHIEM_BO_MON)),
+    INVALID_DATE(PropertiesReader.getProperty(PropertyKeys.INVALID_DATE)),
+    INVALID_NGAY_KET_THUC(PropertiesReader.getProperty(PropertyKeys.INVALID_NGAY_KETTHUC)),
+    THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG(PropertiesReader.getProperty(PropertyKeys.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG)),
+    HET_HAN_QUYEN_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.HET_HAN_QUYEN_SINH_VIEN)),
+    GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN)),
     KHONG_DUOC_XOA_MON(PropertiesReader.getProperty(PropertyKeys.KHONG_DUOC_XOA_MON)),
     CHUYEN_NGANH_KHONG_DUOC_XOA(PropertiesReader.getProperty(PropertyKeys.CHUYEN_NGANH_KHONG_DUOC_XOA));
 

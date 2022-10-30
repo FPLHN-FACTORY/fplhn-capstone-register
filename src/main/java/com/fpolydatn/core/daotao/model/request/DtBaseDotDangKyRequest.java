@@ -16,9 +16,21 @@ public abstract class DtBaseDotDangKyRequest {
 
     @NotEmpty
     @NotBlank
-    private Long ngayBatDau;
+    private String ngayBatDau;
 
     @NotEmpty
     @NotBlank
-    private Long ngayKetThuc;
+    private String ngayKetThuc;
+
+    @NotEmpty
+    @NotBlank
+    private String hanSinhVien;
+
+    @NotEmpty
+    @NotBlank
+    private String hanGiangVien;
+
+    @NotEmpty
+    @NotBlank
+    private String hanChuNhiemBoMon;
 }

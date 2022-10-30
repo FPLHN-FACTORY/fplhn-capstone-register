@@ -1,5 +1,6 @@
 const SVNhomDatnApi = '/api/sinh-vien';
 const SVNhomDatnView = '/sinh-vien';
+const checkHanSV = $("#check_han_sv").text();
 
 function clearform() {
     $("#tenDeTai").val("");
@@ -62,7 +63,8 @@ function loadDataNhomDatn(count) {
                 $("#listNhomDatn").html(``)
                 $("#list_page").html(``)
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`)
-            } else {
+            }
+            else {
                 $("#empty").html(``)
                 $("#listNhomDatn").html(array.map(function (item) {
                     return `
@@ -74,8 +76,11 @@ function loadDataNhomDatn(count) {
                 <td>${item.maSinhVien}-${item.tenSinhVien}</td>
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenTaiKhoan + ' - ' + item.tenGvhd}</td>
                 <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
-                <td><button type="button" data-toggle="modal" data-target="#modal_create" class="btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
-                <td><div class="row"><div class="col-6 d-inline"><button class=" btn btn-success"
+                <td><button type="button" class="btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
+                <td style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}">
+                    <div class="row">
+                        <div class="col-6 d-inline">
+                            <button class=" btn btn-success"                                    
                                     data-target="#modal_create1"
                                     data-toggle="modal"
                                     onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
@@ -112,25 +117,39 @@ function loadDataNhomDatn(count) {
 function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
     clearform();
     if (Number(matKhauTonTai) == 0) {
-        let checkConfirm = confirm('Bạn muốn tham gia nhóm này?');
-        if (checkConfirm == true) {
-            let addSinhVienRequest = {};
-            addSinhVienRequest["idNhom"] = idNhom;
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: SVNhomDatnApi + "/add",
-                data: JSON.stringify(addSinhVienRequest),
-                datatype: 'json',
-                success: function () {
-                    $("#messageSuccess").text("Tham gia thành công");
-                    $("#modal_confirm_success").modal('show');
+        bootbox.confirm({
+            title: "Tham gia nhóm",
+            message: "Bạn muốn tham gia nhóm này?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Quay lại'
                 },
-                error: function (responseData) {
-                    console.log(responseData);
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
                 }
-            });
-        }
+            },
+            callback: function (result) {
+                if (result) {
+                    let addSinhVienRequest = {};
+                    addSinhVienRequest["idNhom"] = idNhom;
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: SVNhomDatnApi + "/add",
+                        data: JSON.stringify(addSinhVienRequest),
+                        datatype: 'json',
+                        success: function () {
+                            bootbox.alert('Tham gia thành công', function () {
+                                window.open(SVNhomDatnView, '_self');
+                            });
+                        },
+                        error: function (responseData) {
+                            alert(responseData.responseJSON.message);
+                        }
+                    });
+                }
+            }
+        });
     } else {
         $("#modal_add_sinh_vien").modal('show');
         $("#idNhom").val(idNhom);
@@ -151,22 +170,19 @@ function addSinhVienHasPassword() {
         datatype: 'json',
         success: function (responseData) {
             $("#modal_add_sinh_vien").modal('hide');
-            $("#messageSuccess").text("Tham gia thành công");
-            $("#modal_confirm_success").modal('show');
+            bootbox.alert('Tham gia thành công', function () {
+                window.open(SVNhomDatnView, '_self');
+            });
         },
         error: function (responseData) {
             console.log(responseData);
+            alert(responseData.responseJSON.message)
             if (responseData.responseJSON.message === 'Mat Khau Khong Chinh Xac') {
                 $("#errorPassword").text("Mật khẩu không chính xác");
             }
         }
     });
 }
-
-$("#form_confirm_success").submit(function (event) {
-    event.preventDefault();
-    window.open(SVNhomDatnView, '_self');
-})
 
 function getGiangVien(idMonDatn) {
     $.ajax({
@@ -240,14 +256,14 @@ function createNhomDatn() {
             data: JSON.stringify(nhomDatnRequest),
             dataType: 'json',
             success: function (responseData) {
-                console.log(responseData)
                 $("#modal_create").modal("hide");
-                $("#messageSuccess").text("Tạo nhóm thành công");
-                $("#modal_confirm_success").modal('show');
+                bootbox.alert('Tạo nhóm thành công', function () {
+                    window.open(SVNhomDatnView, '_self');
+                });
             },
             error: function (e) {
-                alert(e.responseJSON.message);
                 console.log("ERROR : ", e);
+                alert(e.responseJSON.message);
             }
         });
     }

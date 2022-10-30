@@ -11,6 +11,9 @@ import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,4 +47,9 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         return new ResponseObject(dtApiResponse);
     }
 
+    @GetMapping("/export")
+    public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindSinhVienRequest request) throws IOException {
+        request.setCoSoId(session.getCoSoId());
+        dtNhomDatnTheoDotService.DTNhomDatnExport(response, typeExcel, request);
+    }
 }

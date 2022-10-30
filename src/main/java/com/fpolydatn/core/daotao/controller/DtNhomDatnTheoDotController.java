@@ -2,7 +2,7 @@ package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.excel.NhomDatnExcelExporter;
+import com.fpolydatn.core.daotao.excel.DtNhomDatnTheoDotExport;
 import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
@@ -51,8 +51,8 @@ public class DtNhomDatnTheoDotController extends BaseController {
         String headerValue = "attachment; filename=NhomDuAnTotNghiep.xlsx";
         response.setHeader(headerKey, headerValue);
         List<DtNhomDatnTheoDotResponse> getListNhomDatn = dtNhomDatnTheoDotService.listAllNhomDatnToExcel();
-        NhomDatnExcelExporter nhomDatn = null;
-        nhomDatn = new NhomDatnExcelExporter(getListNhomDatn);
+        DtNhomDatnTheoDotExport nhomDatn = null;
+        nhomDatn = new DtNhomDatnTheoDotExport(getListNhomDatn);
 
         nhomDatn.exportData(response);
     }

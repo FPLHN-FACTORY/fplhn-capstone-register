@@ -11,6 +11,8 @@
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 </head>
 <!-- end::Head -->
 
@@ -42,12 +44,12 @@
                                             <button
                                                     data-toggle="modal"
                                                     data-target="#modal_create"
-                                                    class="col-12 col-sm-8 col-md-4 btn btn-success"
-                                                    onclick="clearData()">
+                                                    class="btn btn-success bi bi-plus-circle-fill"
+                                                    th:attr="onclick=|clearDataAdd()|">
                                                 Tạo đợt đăng ký
                                             </button>
                                             <!--Start Model Create-->
-                                            <div class="modal fade "
+                                            <div class="modal fade"
                                                  id="modal_create"
                                                  tabindex="-1"
                                                  aria-labelledby="exampleModalLabel"
@@ -65,43 +67,80 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label class="col-form-label">Học kỳ</label>
-                                                                    <select class="form-control col-8" id="hocKyAdd">
-                                                                        <option value="" hidden>Chọn học kỳ</option>
-                                                                        <option th:each="hocKy : ${listHocKy}"
-                                                                                th:value="${hocKy.getId()}"
-                                                                                th:text="${hocKy.getName()}"></option>
-                                                                    </select>
-                                                                    <span class="text-danger"
-                                                                          id="errorMessageAddHocKy"></span><br>
-                                                                    <label class="col-form-label">Tên đợt</label>
-                                                                    <input
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="tenDotDangKyAdd">
-                                                                    <span class="text-danger"
-                                                                          id="errorMessageAddTenDot"></span>
-                                                                    <br>
-                                                                    <label class="col-form-label">Ngày bắt đầu</label>
-                                                                    <input
-                                                                            type="datetime-local"
-                                                                            class="form-control"
-                                                                            id="ngayBatDauAdd">
-                                                                    <span class="text-danger"
-                                                                          id="errorMessageAddNgayBatDau"></span>
-                                                                    <br>
-                                                                    <label class="col-form-label">Ngày kết thúc</label>
-                                                                    <input
-                                                                            type="datetime-local"
-                                                                            class="form-control"
-                                                                            id="ngayKetThucAdd">
-                                                                    <span class="text-danger"
-                                                                          id="errorMessageAddNgayKetThuc"></span>
-                                                                    <br>
+                                                                    <div style="width: 48%;margin-right: 2%; float:left">
+                                                                        <label class="col-form-label">Học kỳ</label>
+                                                                        <select class="form-select"
+                                                                                id="hocKyAdd"
+                                                                                style="line-height: 2.2">
+                                                                            <option value="" hidden>Chọn học kỳ</option>
+                                                                            <option th:each="hocKy : ${listHocKy}"
+                                                                                    th:value="${hocKy.getId()}"
+                                                                                    th:text="${hocKy.getName()}"></option>
+                                                                        </select>
+                                                                        <small class="text-danger"
+                                                                               id="errorMessageAddHocKy"></small><br>
+                                                                        <label class="col-form-label">Tên đợt đăng
+                                                                            ký</label>
+                                                                        <input
+                                                                                maxlength="100"
+                                                                                type="text"
+                                                                                class="form-control"
+                                                                                id="tenDotDangKyAdd">
+                                                                        <small class="text-danger"
+                                                                               id="errorMessageAddTenDot"></small>
+                                                                        <br>
+                                                                        <label class="col-form-label">Ngày bắt
+                                                                            đầu</label>
+                                                                        <input
+                                                                                type="datetime-local"
+                                                                                class="form-control"
+                                                                                id="ngayBatDauAdd">
+                                                                        <small class="text-danger"
+                                                                               id="errorMessageAddNgayBatDau"></small>
+                                                                        <br>
+                                                                        <label class="col-form-label">Ngày kết
+                                                                            thúc</label>
+                                                                        <input
+                                                                                type="datetime-local"
+                                                                                class="form-control"
+                                                                                id="ngayKetThucAdd">
+                                                                        <small class="text-danger"
+                                                                               id="errorMessageAddNgayKetThuc"></small>
+                                                                    </div>
+                                                                    <div style="width: 48%;margin-right: 2%; float:left">
+                                                                        <label class="col-form-label">Hạn sinh
+                                                                            viên</label>
+                                                                        <input
+                                                                                type="datetime-local"
+                                                                                class="form-control"
+                                                                                id="hanSinhVienAdd">
+                                                                        <small class="text-danger"
+                                                                               id="errorMessageAddHanSinhVien"></small>
+                                                                        <br>
+                                                                        <label class="col-form-label">Hạn giảng
+                                                                            viên</label>
+                                                                        <input
+                                                                                type="datetime-local"
+                                                                                class="form-control"
+                                                                                id="hanGiangVienAdd">
+                                                                        <small class="text-danger"
+                                                                               id="errorMessageAddHanGiangVien"></small>
+                                                                        <br>
+                                                                        <label class="col-form-label">Hạn chủ nhiệm bộ
+                                                                            môn</label>
+                                                                        <input
+                                                                                type="datetime-local"
+                                                                                class="form-control"
+                                                                                id="hanChuNhiemBoMonAdd">
+                                                                        <small class="text-danger"
+                                                                               id="errorMessageAddHanChuNhiemBoMon"></small>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
+                                                            <br style="clear: left">
+                                                            <div class="modal-footer" style="margin-top: 10px">
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn btn-light"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button type="submit" class="btn btn-primary">Thêm mới
@@ -118,37 +157,35 @@
                                     <div class="table-responsive mt-3">
                                         <table id="custom-table"
                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
-                                            <thead>
+                                            <thead class="table-primary">
                                             <th>STT</th>
                                             <th>Tên học kỳ</th>
                                             <th>Tên đợt</th>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
-                                            <th>Tổng số SV đăng ký</th>
-                                            <th>Tổng số SV đã có nhóm</th>
                                             <th>Trạng thái</th>
                                             <th>Chức năng</th>
                                             </thead>
                                             <tbody>
                                             <th:block th:each="dotDangKy, i: ${page.data}">
-                                                <tr>
+                                                <tr class="table-light">
                                                     <td th:text="${dotDangKy.getSTT()}"></td>
                                                     <td th:text="${dotDangKy.getTenHocKy()}"></td>
                                                     <td th:text="${dotDangKy.getTenDotDangKy()}"></td>
                                                     <td th:text="${#dates.format(dotDangKy.getNgayBatDau(), 'dd-MM-yyyy HH:mm')}"></td>
                                                     <td th:text="${#dates.format(dotDangKy.getNgayKetThuc(), 'dd-MM-yyyy HH:mm')}"></td>
-                                                    <td th:text="${dotDangKy.getTongSinhVien()}"></td>
-                                                    <td th:text="${dotDangKy.getTongSinhVienCoNhom()}"></td>
                                                     <td th:text="${dotDangKy.getTrangThai()} == 1 ? 'Mở' : 'Đóng'"
                                                         style="color: #5867dd; font-weight: bold"></td>
                                                     <td>
-                                                        </button>
                                                         <button
                                                                 type="button"
                                                                 class="btn btn-danger"
                                                                 data-toggle="modal"
                                                                 th:attr="onclick=|openModalUpdateDotDangKy('${dotDangKy.getId()}')|">
-                                                            Sửa
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                        <button class="btn btn-primary bi bi-eye"
+                                                                th:attr="onclick=|detail('${dotDangKy.getId()}')|">
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -180,6 +217,85 @@
     </div>
     <!-- end:: Body -->
 </div>
+<!-- Start modal chi tiết đợt đăng ký-->
+<div class="modal fade" id="modal_detail"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết đợt đăng ký</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="width: 48%;margin-right: 2%; float:left">
+                    <label class="col-form-label">Tên học kỳ</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTenHocKy" value="email@example.com">
+                    </div>
+                    <label class="col-form-label">Tên đợt đăng ký</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTenDotDangKy">
+                    </div>
+                    <label class="col-form-label">Ngày bắt đầu</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailNgayBatDau">
+                    </div>
+                    <label class="col-form-label">Ngày kết thúc</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailNgayKetThuc">
+                    </div>
+                    <label class="col-form-label">Hạn sinh viên</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailHanSinhVien">
+                    </div>
+                    <label class="col-form-label">Hạn giảng viên hướng dẫn</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailHanGiangVien">
+                    </div>
+                    <label class="col-form-label">Hạn chủ nhiệm bộ môn</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailHanChuNhiemBoMon">
+                    </div>
+                </div>
+                <div style="width: 50%; float:left">
+                    <label class="col-form-label">Tổng số sinh viên đăng ký</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTongSoSinhVien">
+                    </div>
+                    <label class="col-form-label">Tổng số sinh viên chưa có nhóm</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTongSoSinhVienChuaCoNhom">
+                        <a class="btn btn-primary bi bi-eye" id="btnShowSinhVienChuaCoNhom"></a>
+                    </div>
+                    <label class="col-form-label">Tổng số sinh viên có nhóm</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTongSoSinhVienCoNhom">
+                    </div>
+                    <label class="col-form-label">Tổng số nhóm</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTongSoNhom">
+                    </div>
+                    <label class="col-form-label">Tỉ lệ xác nhận</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTiLeXacNhan">
+                    </div>
+                    <label class="col-form-label">Trạng thái</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailTrangThai"
+                               style="color: #5867dd; font-weight: bold">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Chi tiết đợt đăng ký-->
 <!--  Start Modal Update-->
 <div
         class="modal fade"
@@ -203,30 +319,57 @@
                     <span id="id_hoc_ky_update" style="color:red;"></span>
                     <span id="id_co_so_update" style="color:red;"></span>
                     <div class="form-group">
-                        <label class="col-form-label">Tên đợt</label>
-                        <input
-                                disabled
-                                type="text"
-                                class="form-control"
-                                id="ten_dot_dang_ky_update"/>
-                        <label class="col-form-label">Ngày bắt đầu</label>
-                        <input
-                                type="datetime-local"
-                                class="form-control"
-                                id="ngay_bat_dau_update"/>
-                        <small class="text-danger"
-                               id="errorMessageNgayBatDauUpdate"></small><br>
-                        <label class="col-form-label">Ngày kết thúc</label>
-                        <input
-                                type="datetime-local"
-                                class="form-control"
-                                id="ngay_ket_thuc_update"/>
-                        <small class="text-danger"
-                               id="errorMessageNgayKetThucUpdate"></small><br>
+                        <div style="width: 48%;margin-right: 2%; float:left">
+                            <label class="col-form-label">Tên đợt</label>
+                            <input
+                                    disabled
+                                    type="text"
+                                    class="form-control"
+                                    id="ten_dot_dang_ky_update"/>
+                            <br>
+                            <label class="col-form-label">Ngày bắt đầu</label>
+                            <input
+                                    type="datetime-local"
+                                    class="form-control"
+                                    id="ngay_bat_dau_update"/>
+                            <small class="text-danger"
+                                   id="errorMessageNgayBatDauUpdate"></small><br>
+                            <label class="col-form-label">Ngày kết thúc</label>
+                            <input
+                                    type="datetime-local"
+                                    class="form-control"
+                                    id="ngay_ket_thuc_update"/>
+                            <small class="text-danger"
+                                   id="errorMessageNgayKetThucUpdate"></small><br>
+                        </div>
+                        <div style="width: 48%;margin-right: 2%; float:left">
+                            <label class="col-form-label">Hạn sinh viên</label>
+                            <input
+                                    type="datetime-local"
+                                    class="form-control"
+                                    id="han_sinh_vien_update"/>
+                            <small class="text-danger"
+                                   id="errorMessageHanSinhVienUpdate"></small><br>
+                            <label class="col-form-label">Hạn giảng viên hướng dẫn</label>
+                            <input
+                                    type="datetime-local"
+                                    class="form-control"
+                                    id="han_giang_vien_update"/>
+                            <small class="text-danger"
+                                   id="errorMessageHanGiangVienUpdate"></small><br>
+                            <label class="col-form-label">Hạn chủ nhiệm bộ môn</label>
+                            <input
+                                    type="datetime-local"
+                                    class="form-control"
+                                    id="han_chu_nhiem_bo_mon_update"/>
+                            <small class="text-danger"
+                                   id="errorMessageHanChuNhiemBoMonUpdate"></small><br>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
+                <br style="clear: left">
+                <div class="modal-footer" style="margin-top: 10px">
+                    <button type="button" class="btn btn-outline-secondary btn btn-light"
                             data-dismiss="modal">Hủy
                     </button>
                     <button type="submit" class="btn btn-primary">Cập
@@ -247,5 +390,6 @@
         crossorigin="anonymous"></script>
 <script th:src="@{/js/plugin/bootstrap.bundle.js}"></script>
 <script th:src="@{/js/custom/daotao/DtDotDangKy.js}" type="text/javascript"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>
