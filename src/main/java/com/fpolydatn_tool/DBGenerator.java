@@ -269,7 +269,7 @@ public class DBGenerator implements CommandLineRunner {
         hangnt169.setTenSinhVien("Nguyễn Thuý Hằng");
         hangnt169.setMaSinhVien("PH34567");
         hangnt169.setNhomId(nhom1.getId());
-        nguyenvv4.setMonDatnId(java.getId());
+        hangnt169.setMonDatnId(java.getId());
         hangnt169.setId(sinhVienRepository.save(hangnt169).getId());
 
         SinhVien khanhpg =  new SinhVien();
