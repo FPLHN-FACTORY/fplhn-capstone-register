@@ -55,4 +55,12 @@ public class PropertyKeys {
 
 
 
+    public static final String MOC_THOI_GIAN_GVHD = "moc.thoi.gian.gvhd";
+
+    public static final String DONT_UPDATE_TEN_DE_TAI = "dont.update.ten.de.tai";
+
+    public static final String DONT_PHE_DUYET_NHOM_DATN = "dont.phe.duyet.nhom.datn";
+
+    public static final String DONT_CHOT_DE_TAI_NHOM_DATN = "dont.chot.de.tai.nhom.datn";
+
 }

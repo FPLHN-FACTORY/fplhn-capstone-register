@@ -4,7 +4,6 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
@@ -40,10 +39,6 @@ public class GvNhomDatnRestController {
         return new ResponseObject(sinhVienService.findByNhomId(request));
     }
 
-    @PutMapping()
-    public ResponseObject chotDuLieu(final GvUpdateNhomDatnRequest request) {
-        return new ResponseObject(nhomDatnService.updateTrangThaiNhom(request));
-    }
 
     @GetMapping("/search")
     public ResponseObject viewSeachNhomDatn(final GvFindNhomDatnRequest request) {
@@ -72,13 +67,8 @@ public class GvNhomDatnRestController {
 
     @PutMapping("/phe-duyet-de-tai-nhom")
     public ResponseObject pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request) {
-        NhomDatn nhomDatnResponse = nhomDatnService.pheDuyetDeTaiNhomDatn(request);
+        NhomDatn nhomDatnResponse = nhomDatnService.chotDeTaiNhomDatn(request);
         return new ResponseObject(nhomDatnResponse);
     }
 
-    @PutMapping("/tu-choi-de-tai-nhom-datn")
-    public ResponseObject tuChoiDeTaiNhomDatn(final GvChotNhomDatnRequest request) {
-        NhomDatn nhomDatnResponse = nhomDatnService.tuChoiDeTaiNhomDatn(request);
-        return new ResponseObject(nhomDatnResponse);
-    }
 }

@@ -2,17 +2,17 @@ package com.fpolydatn.core.giangvien.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
-import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
+import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
+import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.repository.GvNhomDatnRepository;
+import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.util.MocThoiGianCommon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +33,9 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     @Autowired
     private GvNhomDatnRepository nhomDatnRepository;
 
+    @Autowired
+    private MocThoiGianCommon mocThoiGianCommon;
+
     @Override
     public PageableObject<GvNhomDatnResponse> fillAllNhomDatn(final GvFindNhomDatnRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
@@ -40,15 +43,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         return new PageableObject(responses);
     }
 
-    @Override
-    public NhomDatn updateTrangThaiNhom(final GvUpdateNhomDatnRequest request) {
-        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
-        if (Objects.isNull(nhomDatnCheck)) {
-            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
-        }
-        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
-        return nhomDatnRepository.save(nhomDatnCheck.get());
-    }
 
     @Override
     public NhomDatn findById(String maNhom) {
@@ -65,11 +59,15 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(request.getTenDeTai().isEmpty()){
-            throw new RestApiException(Message.EMPTY);
+        if(nhomDatnCheck.get().getTrangThai() == TrangThaiNhom.MOI_THANH_LAP &&
+                nhomDatnCheck.get().getTrangThai() == TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN &&
+                nhomDatnCheck.get().getTrangThai() == TrangThaiNhom.CNBM_CHOT){
+            throw new RestApiException(Message.DONT_UPDATE_TEN_DE_TAI);
+        }
+        if(!mocThoiGianCommon.checkMocThoiGianGiangVien()){
+            throw new RestApiException(Message.MOC_THOI_GIAN_GVHD);
         }
         nhomDatnCheck.get().setTenDeTai(request.getTenDeTai());
-        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
@@ -77,6 +75,7 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     public PageableObject<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnDoiPheDuyet(maGvhd, pageable);
+        System.out.println(responses);
         return new PageableObject(responses);
     }
 
@@ -85,6 +84,13 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN &&
+           nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.MOI_THANH_LAP){
+            throw new RestApiException(Message.DONT_PHE_DUYET_NHOM_DATN);
+        }
+        if(!mocThoiGianCommon.checkMocThoiGianGiangVien()){
+            throw new RestApiException(Message.MOC_THOI_GIAN_GVHD);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_XAC_NHAN);
         return nhomDatnRepository.save(nhomDatnCheck.get());
@@ -98,23 +104,26 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public NhomDatn pheDuyetDeTaiNhomDatn(GvChotNhomDatnRequest request) {
+    public NhomDatn chotDeTaiNhomDatn(GvChotNhomDatnRequest request) {
         Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.GIANG_VIEN_DA_XAC_NHAN &&
+                nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.CAN_SUA){
+            throw new RestApiException(Message.DONT_CHOT_DE_TAI_NHOM_DATN);
+        }
+        if(!mocThoiGianCommon.checkMocThoiGianGiangVien()){
+            throw new RestApiException(Message.MOC_THOI_GIAN_GVHD);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
     @Override
-    public NhomDatn tuChoiDeTaiNhomDatn(GvChotNhomDatnRequest request) {
-        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
-        if (Objects.isNull(nhomDatnCheck)) {
-            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
-        }
-        nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_XAC_NHAN);
-        return nhomDatnRepository.save(nhomDatnCheck.get());
+    public boolean mocThoiGianGiangVienHuongDan() {
+        return mocThoiGianCommon.checkMocThoiGianGiangVien();
     }
+
 
 }

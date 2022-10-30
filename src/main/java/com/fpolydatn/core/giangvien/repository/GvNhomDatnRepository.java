@@ -74,7 +74,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE gvhd.id LIKE :maGvhd
             AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
-            AND nd.trang_thai = 0
+            AND nd.trang_thai = 1
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, countQuery = """
@@ -88,7 +88,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE   gvhd.id LIKE :maGvhd
             AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
-            AND nd.trang_thai = 0
+            AND nd.trang_thai = 1
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, nativeQuery = true)
@@ -106,7 +106,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE gvhd.id LIKE :maGvhd
             AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
-            AND nd.trang_thai !=0
+            AND nd.trang_thai BETWEEN 2 AND 5
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, countQuery = """
@@ -120,7 +120,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE   gvhd.id LIKE :maGvhd
             AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
-            AND nd.trang_thai !=0
+            AND nd.trang_thai BETWEEN 2 AND 5
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, nativeQuery = true)

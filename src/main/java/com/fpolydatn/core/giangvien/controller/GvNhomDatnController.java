@@ -56,9 +56,11 @@ public class GvNhomDatnController extends BaseController {
     public String viewAllNhomDatnDoiPheDuyet(final GvFindNhomDatnHuongDanRequest request, Model model) {
         String maGvhd = session.getUserId();
         String coSoId = session.getCoSoId();
+        boolean mocThoiGianGiangVien = nhomDatnService.mocThoiGianGiangVienHuongDan();
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnDoiPheDuyet(maGvhd, request);
         List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
+        model.addAttribute("mocThoiGianGiangVien", mocThoiGianGiangVien);
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listHocKy", listHocKy);
         model.addAttribute("listDotDangKy", listDotDangKy);
@@ -72,9 +74,11 @@ public class GvNhomDatnController extends BaseController {
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnHuongDan(maGvhd, request);
         List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
+        boolean mocThoiGianGiangVien = nhomDatnService.mocThoiGianGiangVienHuongDan();
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listHocKy", listHocKy);
         model.addAttribute("listDotDangKy", listDotDangKy);
+        model.addAttribute("mocThoiGianGiangVien", mocThoiGianGiangVien);
         return "/giangvien/gv-thong-tin-nhom-datn";
     }
 }
