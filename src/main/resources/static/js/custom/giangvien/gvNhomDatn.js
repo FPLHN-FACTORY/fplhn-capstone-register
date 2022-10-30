@@ -68,11 +68,6 @@ function showDetail(maNhom) {
 }
 
 function pheDuyetNhomDatn(maNhom) {
-    var checkMocThoiGians = $("#mocthoiGian").val()
-    if(checkMocThoiGians == false) {
-        $("#show_error_phe_duyet_nhom_datn").modal('show');
-        $("#showErrorPheDuyetNhomDatn").text("đã hết thời hạn thực hiện ");
-    }else {
         $("#modal_nhom_datn_update").modal('show');
         $.ajax({
             type: "GET",
@@ -85,7 +80,6 @@ function pheDuyetNhomDatn(maNhom) {
                 console.log("ERROR : ", e);
             }
         });
-    }
 }
 
 $("#XacNhanLienHeNhomDatn").submit(function (event) {
@@ -160,11 +154,6 @@ function seachNhomdatn(index) {
 }
 
 function updateTenDeTai(maNhom) {
-    var checkMocThoiGians = $("#mocthoiGian").val()
-    // if(checkMocThoiGians == 'false') {
-    //     $("#show_error_phe_duyet_nhom_datn").modal('show');
-    //     $("#showErrorPheDuyetNhomDatn").text("đã hết thời hạn thực hiện ");
-    // }else {
         $("#modal_update_ten_de_tai").modal('show');
         $.ajax({
             type: "GET",
@@ -179,7 +168,6 @@ function updateTenDeTai(maNhom) {
                 console.log("ERROR : ", e);
             }
         });
-    // }
 }
 
 $("#updateTenDeTaiNhomDatn").submit(function (event) {
@@ -213,11 +201,6 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
 });
 
 function chotDeTaiNhomDatn(maNhom) {
-    var checkMocThoiGians = $("#mocthoiGian").val()
-    // if(checkMocThoiGians == 'false') {
-    //     $("#show_error_phe_duyet_nhom_datn").modal('show');
-    //     $("#showErrorPheDuyetNhomDatn").text("đã hết thời hạn thực hiện ");
-    // }else{
         $("#modal_nhom_datn_chot_de_tai").modal('show');
         $.ajax({
             type: "GET",
@@ -230,7 +213,6 @@ function chotDeTaiNhomDatn(maNhom) {
                 console.log("ERROR : ", e);
             }
         });
-    // }
 }
 
 $("#submitChotDeTaiNhomDatn").submit(function (event) {
