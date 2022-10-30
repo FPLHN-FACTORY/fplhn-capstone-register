@@ -50,7 +50,7 @@
                                         <th>GV hướng dẫn</th>
                                         <th>Trạng thái</th>
                                         <th>Chi tiết nhóm</th>
-                                        <th>Hành động</th>
+                                        <th th:style="${mocThoiGianGiangVien} == true ? '' : 'display: none'">Hành động</th>
                                         </thead>
                                         <tbody id="list_nhom_datn">
                                         <th:block th:each="nhomDatn : ${page.data}">
@@ -72,7 +72,7 @@
                                                         chi tiết nhóm
                                                     </button>
                                                 </td>
-                                                <td >
+                                                <td th:style="${mocThoiGianGiangVien} == true ? '' : 'display: none'">
                                                     <button
                                                             type="button"
                                                             class="btn btn-primary chucNangs"

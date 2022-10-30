@@ -50,29 +50,29 @@
                                         <th>GV hướng dẫn</th>
                                         <th>Trạng thái</th>
                                         <th>Chi tiết nhóm</th>
-                                        <th>Hành động</th>
+                                        <th th:style="${mocThoiGianGiangVien} == true ? '' : 'display: none'">Hành động</th>
                                         </thead>
                                         <tbody id="list_nhom_datn">
                                         <th:block th:each="nhomDatn : ${page.data}">
                                             <tr>
                                                 <td th:text="${nhomDatn.getStt()}"></td>
-                                                <td th:text="${nhomDatn.getTenNhom()}"></td>
-                                                <td th:text="${nhomDatn.getTenDeTai()}"></td>
+                                                <td th:text="${nhomDatn.getTenNhom()} == null ? 'Chưa có' : (${nhomDatn.getTenNhom()})"></td>
+                                                <td th:text="${nhomDatn.getTenDeTai()} == null ? 'Chưa có' : (${nhomDatn.getTenDeTai()})"></td>
                                                 <td th:text="${nhomDatn.getTenChuyenNganh()}"></td>
                                                 <td th:text="${nhomDatn.getTotalMaSinhVien()}"></td>
                                                 <td th:text="${nhomDatn.getTenTruongNhom()} + ' - '+ ${nhomDatn.getMaTruongNhom()} ">
                                                 </td>
-                                                <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()} "></td>
+                                                <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()}"></td>
                                                 <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                 <td>
                                                     <button
                                                             type="button"
                                                             class="btn btn-primary"
                                                             th:attr="onclick=|showDetail('${nhomDatn.getId()}')|">
-                                                        chi tiết nhóm
+                                                        Chi tiết nhóm
                                                     </button>
                                                 </td>
-                                                <td >
+                                                <td th:style="${mocThoiGianGiangVien} == true ? '' : 'display: none'">
                                                     <button
                                                             type="button"
                                                             class="btn btn-primary chucNangs"
@@ -84,9 +84,9 @@
                                                             type="button"
                                                             class="btn btn-primary chucNangs"
                                                             id="updateTenDeTai"
-                                                            th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : (${nhomDatn.getTrangThai()} ==3 ? 'display: block' : (${nhomDatn.getTrangThai()} ==4 ? 'display: block' : 'display: none'))"
+                                                            th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : (${nhomDatn.getTrangThai()} ==3 ? 'display: block' : 'display: none')"
                                                             th:attr="onclick=|updateTenDeTai('${nhomDatn.getId()}')|">
-                                                        sửa đề tài
+                                                        Sửa đề tài
                                                     </button>
                                                 </td>
                                             </tr>

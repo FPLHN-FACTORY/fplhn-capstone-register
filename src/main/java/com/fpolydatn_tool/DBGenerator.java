@@ -124,7 +124,7 @@ public class DBGenerator implements CommandLineRunner {
 
         ChuyenNganh ptpm = new ChuyenNganh();
         ptpm.setCoSoId(csHN.getId());
-        ptpm.setChuNhiemBoMon(minhdq8.getId());
+        ptpm.setChuNhiemBoMon(cnbm.getId());
         ptpm.setTenChuyenNganh("Phát triển phần mềm");
         ptpm.setId(chuyenNganhRepository.save(ptpm).getId());
         ChuyenNganh cntt = new ChuyenNganh();
@@ -232,7 +232,7 @@ public class DBGenerator implements CommandLineRunner {
         NhomDatn nhom1 = new NhomDatn();
         nhom1.setMaNhom("HN0001");
         nhom1.setDotDangKyId(dot1.getId());
-        nhom1.setGiangVienId(tiennh21.getId());
+        nhom1.setGiangVienId(gvhd.getId());
         nhom1.setTruongNhomId(phongtt35.getId());
         nhom1.setCoSoId(csHN.getId());
         nhom1.setMatKhau("123456");

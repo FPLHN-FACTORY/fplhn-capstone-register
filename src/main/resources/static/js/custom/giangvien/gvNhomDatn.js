@@ -7,19 +7,19 @@ function clearDataGVHD() {
     $("#tenDotDangKy").val("");
 }
 
-$(document).ready(function () {
-
-    $('.enityNhomDatn[value="2"]').closest("tr").hide()
-    var checkMocThoiGians = $("#mocthoiGian").val()
-    var chucNangs = document.querySelectorAll(".chucNangs")
-    if(checkMocThoiGians == 'false'){
-        for(var i =0; i< chucNangs.length; i++){
-            chucNangs[i].style.display = "none"
-        }
-    }
-    fillter()
-
-});
+// $(document).ready(function () {
+//
+//     $('.enityNhomDatn[value="2"]').closest("tr").hide()
+//     var checkMocThoiGians = $("#mocthoiGian").val()
+//     var chucNangs = document.querySelectorAll(".chucNangs")
+//     if(checkMocThoiGians == 'false'){
+//         for(var i =0; i< chucNangs.length; i++){
+//             chucNangs[i].style.display = "none"
+//         }
+//     }
+//     fillter()
+//
+// });
 
 function fillter() {
 

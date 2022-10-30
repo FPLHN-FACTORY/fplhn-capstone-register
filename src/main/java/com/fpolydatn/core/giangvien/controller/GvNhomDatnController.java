@@ -60,6 +60,7 @@ public class GvNhomDatnController extends BaseController {
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.findAllNhomDatnDoiPheDuyet(maGvhd, request);
         List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA" + mocThoiGianGiangVien);
         model.addAttribute("mocThoiGianGiangVien", mocThoiGianGiangVien);
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listHocKy", listHocKy);
