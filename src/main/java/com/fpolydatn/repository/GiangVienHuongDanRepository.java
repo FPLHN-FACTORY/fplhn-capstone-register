@@ -16,7 +16,7 @@ public interface GiangVienHuongDanRepository extends JpaRepository<GiangVienHuon
     public static final String NAME = "BaseGiangVienHuongDanRepository";
 
     @Query(value = """
-            SELECT gvhd.id,gvhd .ten_gvhd 
+            SELECT gvhd.id, gvhd.ten_gvhd AS 'name'
              FROM giang_vien_huong_dan gvhd INNER JOIN co_so cs 
              ON gvhd .co_so_id = cs.id
              AND gvhd .dot_dang_ky_id =:dotDangKyID
