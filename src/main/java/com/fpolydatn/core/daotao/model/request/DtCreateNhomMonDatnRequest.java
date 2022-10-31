@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DtCreateNhomMonDatnRequest extends DtBaseNhomMonRequest {
-    private String monDatnId;
+
 }

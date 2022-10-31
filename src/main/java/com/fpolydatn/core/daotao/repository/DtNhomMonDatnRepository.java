@@ -3,11 +3,14 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
+import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.repository.MonDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.Optional;
 
 public interface DtNhomMonDatnRepository extends MonDatnRepository {
     @Query(value = """
@@ -41,4 +44,8 @@ public interface DtNhomMonDatnRepository extends MonDatnRepository {
                 WHERE ma_mon = :maMon 
             """, nativeQuery = true)
     String findByMaMonSave(@Param("maMon") String maMon);
+
+    Optional<MonDatn> findByIdAndCoSoId(String id,String coSoId);
+
+
 }

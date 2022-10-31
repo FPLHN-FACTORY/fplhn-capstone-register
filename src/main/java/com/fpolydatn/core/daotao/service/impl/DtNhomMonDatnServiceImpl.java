@@ -45,8 +45,8 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     public Boolean update(DtUpdateNhomMonDatnRequest command) {
         Optional<MonDatn> update = dtNhomMonDatnRepository.findById(command.getId());
         MonDatn monDatn = update.get();
-        monDatn.setMaMon(command.getMaNhomMon());
-        monDatn.setTenMonDatn(command.getTenNhomMon());
+        monDatn.setMaMon(command.getMaMon());
+        monDatn.setTenMonDatn(command.getTenMonDatn());
         dtNhomMonDatnRepository.save(monDatn);
         return true;
     }
@@ -60,5 +60,14 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
             dtNhomMonDatnRepository.save(monDatn);
             return true;
         }
+    }
+
+    @Override
+    public MonDatn getNhomMonDatnById(String id, String coSoId) {
+        Optional<MonDatn> monCheck = dtNhomMonDatnRepository.findById(id);
+        if (Objects.isNull(monCheck)) {
+            throw new RestApiException(Message.MON_DATN_NOT_EXIST);
+        }
+        return  monCheck.get();
     }
 }

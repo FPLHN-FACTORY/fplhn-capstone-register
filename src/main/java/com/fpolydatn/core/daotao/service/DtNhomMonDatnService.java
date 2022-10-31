@@ -6,6 +6,7 @@ import com.fpolydatn.core.daotao.model.request.DtCreateNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
+import com.fpolydatn.entity.MonDatn;
 
 import javax.validation.Valid;
 
@@ -17,4 +18,6 @@ public interface DtNhomMonDatnService {
     Boolean update(@Valid final DtUpdateNhomMonDatnRequest command);
 
     Boolean add(@Valid final DtCreateNhomMonDatnRequest command);
+
+    MonDatn getNhomMonDatnById(String id, String coSoId);
 }

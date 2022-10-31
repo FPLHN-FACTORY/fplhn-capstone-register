@@ -11,10 +11,18 @@ import javax.validation.constraints.NotEmpty;
 public class DtBaseNhomMonRequest {
     @NotEmpty
     @NotBlank
-    private String maNhomMon;
+    private String maMon;
 
     @NotEmpty
     @NotBlank
-    private String tenNhomMon;
+    private String tenMonDatn;
+
+    @NotEmpty
+    @NotBlank
+    private String chuyenNganhId;
+
+    @NotEmpty
+    @NotBlank
+    private String coSoId;
 
 }

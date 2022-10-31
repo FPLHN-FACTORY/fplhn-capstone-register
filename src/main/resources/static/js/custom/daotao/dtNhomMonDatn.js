@@ -1,11 +1,11 @@
 const monDatnApi = '/api/dao-tao/nhom-mon-datn';
-const monDatnView = '/dao-tao/nhom-mon-datn';
+const nhomMonDatnView = '/dao-tao/nhom-mon-datn';
 
 $(document).ready(function () {
     $("#mon_datn_error").text("");
 });
 
-$("#form_create_mon_datn").submit(function (event) {
+$("#form_create_nhom_mon_datn").submit(function (event) {
     event.preventDefault();
 
     let maMon = $("#maMon").val();
@@ -17,16 +17,16 @@ $("#form_create_mon_datn").submit(function (event) {
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
     let index = 0;
     if (maMon.trim().length === 0) {
-        $("#ma_mon_datn_error").text("Ma mon DATN khong duoc de trong");
+        $("#ma_nhom_mon_datn_error").text("Ma mon DATN khong duoc de trong");
         index++;
     } else {
-        $("#ma_mon_datn_error").text("");
+        $("#ma_nhom_mon_datn_error").text("");
     }
     if (tenMonDatn.trim().length === 0) {
-        $("#ten_mon_datn_error").text("Ten mon DATN khong duoc de trong");
+        $("#ten_nhom_mon_datn_error").text("Ten mon DATN khong duoc de trong");
         index++;
     } else {
-        $("#ten_mon_datn_error").text("");
+        $("#ten_nhom_mon_datn_error").text("");
     }
     if (index == 0) {
         $.ajax({
@@ -36,35 +36,53 @@ $("#form_create_mon_datn").submit(function (event) {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                window.open(monDatnView, '_self');
+                window.open(nhomMonDatnView, '_self');
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
-                $("#ma_mon_datn_error").text(e.responseJSON.message);
+                $("#ma_nhom_mon_datn_error").text(e.responseJSON.message);
             }
         });
     }
 });
 
-function openModalUpdateMonDatn(monDatnId) {
-    $("#modal_update_mon_datn").modal('show');
+function openModalUpdateMonDatn(nhomMonDatnId) {
+    $("#modal_update_nhom_mon_datn").modal('show');
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: monDatnApi + "/" + monDatnId,
-        data: JSON.stringify(monDatnId),
+        url: monDatnApi + "/" + nhomMonDatnId,
+        data: JSON.stringify(nhomMonDatnId),
         dataType: 'json',
         success: function (responseData) {
-            $("#id_mon_datn_update").val(responseData.data.id);
-            $("#ma_mon_datn_update").val(responseData.data.maMon);
-            $("#ten_mon_datn_update").val(responseData.data.tenMonDatn);
+            $("#id_nhom_mon_datn_update").val(responseData.data.id);
+            $("#ma_nhom_mon_datn_update").val(responseData.data.maMon);
+            $("#ten_nhom_mon_datn_update").val(responseData.data.tenMonDatn);
         },
         error: function (e) {
             console.log("ERROR : ", e);
         }
     });
 }
-
+function openModalChiTietNhomMonDatn(nhomMonDatnId) {
+    $("#modal_show_nhom_mon_datn").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: monDatnApi + nhomMonDatnId,
+        data: JSON.stringify(nhomMonDatnId),
+        dataType: 'json',
+        success: function (responseData) {
+            $("#id_mon_datn_show").val(responseData.data.id);
+            $("#ma_mon_datn_show").val(responseData.data.maMon);
+            $("#ten_mon_datn_show").val(responseData.data.tenMonDatn);
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+            alert(e.responseJSON.message)
+        }
+    });
+}
 $("#form_mon_datn_update").submit(function (event) {
     event.preventDefault();
     let maNhomMon = $("#ma_mon_datn_update").val();
@@ -94,7 +112,7 @@ $("#form_mon_datn_update").submit(function (event) {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                window.open(monDatnView, '_self');
+                window.open(nhomMonDatnView, '_self');
                 $("#modal_update_mon_datn").modal("hide");
             },
             error: function (e) {
@@ -131,7 +149,7 @@ $("#form_mon_datn_delete").submit(function (event) {
         data: JSON.stringify(monDatnId),
         dataType: 'json',
         success: function () {
-            window.open(monDatnView, '_self');
+            window.open(nhomMonDatnView, '_self');
             $("#modal_mon_datn_remove").modal("hide");
         },
         error: function (e) {

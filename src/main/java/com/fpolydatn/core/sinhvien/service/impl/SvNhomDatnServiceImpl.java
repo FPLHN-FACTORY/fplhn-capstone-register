@@ -161,7 +161,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
         if(Objects.nonNull(sinhVien.get().getThoiDiemRoiNhomGanNhat())){
             if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
-                throw new RestApiException(Message.THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG);
+//                throw new RestApiException(Message.THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG);
             }
 
         }
