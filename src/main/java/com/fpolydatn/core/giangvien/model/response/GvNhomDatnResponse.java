@@ -18,31 +18,21 @@ public interface GvNhomDatnResponse extends IsIdentified {
     @Value("#{target.stt}")
     Integer getStt();
 
-    @Value("#{target.ten_nhom}")
-    String getTenNhom();
-
     @Value("#{target.ten_de_tai}")
     String getTenDeTai();
 
-    @Value("#{target.ten_chuyen_nganh}")
-    String getTenChuyenNganh();
+    @Value("#{target.ma_nhom}")
+    String getMaNhom();
+    @Value("#{target.ma_mon}")
+    String getMaMon();
 
-    @Value("#{target.ten_sinh_vien}")
-    String getTenTruongNhom();
-
-    @Value("#{target.ma_sinh_vien}")
-    String getMaTruongNhom();
-
-    @Value("#{target.ten_gvhd}")
-    String getTenGvhd();
-
-    @Value("#{target.ten_tai_khoan}")
-    String getAccountGvhd();
-
-    @Value("#{target.trang_thai}")
-    int getTrangThai();
+    @Value("#{target.ten_mon_datn}")
+    String getTenMonDatn();
 
     @Value("#{target.total_ma_sinh_vien}")
     String getTotalMaSinhVien();
+
+    @Value("#{target.trang_thai}")
+    int getTrangThai();
 
 }

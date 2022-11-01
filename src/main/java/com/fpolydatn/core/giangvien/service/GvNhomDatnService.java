@@ -25,11 +25,7 @@ public interface GvNhomDatnService {
 
     NhomDatn updateTenDeTai(@Valid final GvUpdateTenDeTaiRequest request);
 
-    PageableObject<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request);
-
     NhomDatn pheDuyetNhomDatn(final GvChotNhomDatnRequest request);
-
-    PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvFindNhomDatnHuongDanRequest request);
 
     NhomDatn chotDeTaiNhomDatn(final GvChotNhomDatnRequest request);
 

@@ -116,12 +116,8 @@ function seachNhomdatn(index) {
                 return `
                 <tr>
                 <td>${item.stt}</td>
-                <td>${item.tenNhom}</td>
                 <td>${item.tenDeTai}</td>
-                <td>${item.tenChuyenNganh}</td>
                 <td>${item.totalMaSinhVien}</td>
-                <td>${item.tenTruongNhom} - ${item.maTruongNhom} </td>
-                <td>${item.tenGvhd} - ${item.accountGvhd} </td>
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'cần sửa' : (item.trangThai == 4 ? 'Giáo viên đã chốt' : 'CNBM đã chốt'))))}</td>
                 <td>
                      <button
@@ -129,6 +125,29 @@ function seachNhomdatn(index) {
                                     class="btn btn-primary"
                                     onclick= "showDetail('${item.id}')">
                                     chi tiết nhóm
+                     </button>
+                 </td>
+                 <td>
+                     <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    onclick= "pheDuyetNhomDatn('${item.id}')"
+                                    style="${item.trangThai == 1 ? 'display: block' : 'display: none'}">
+                                    xác nhận
+                     </button>
+                     <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    onclick= "updateTenDeTai('${item.id}')"
+                                    style="${item.trangThai ==2 ? 'display: block' : (item.trangThai ==3 ? 'display: block' : (item.trangThai ==4 ? 'display: block' : 'display: none'))}">
+                                    sửa đề tài
+                     </button>
+                     <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    onclick= "chotDeTaiNhomDatn('${item.id}')"
+                                    style="${item.trangThai ==2 ? 'display: block' : (item.trangThai ==3 ? 'display: block' :  'display: none')}">
+                                    Chốt đề tài
                      </button>
                  </td>
                 </tr>
