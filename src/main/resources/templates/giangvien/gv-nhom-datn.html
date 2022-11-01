@@ -11,6 +11,18 @@
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <style>
+        #eye-custom {
+            text-align: center;
+            border: 1px solid white;
+            border-radius: 7px;
+            width: 35px;
+            height: 35px;
+            line-height: 30px;
+            background: #1abb32;
+            float: left;
+        }
+    </style>
 </head>
 <!-- end::Head -->
 
@@ -102,11 +114,16 @@
                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                             <thead>
                                             <th width="50px">STT</th>
-                                            <th> Mã nhóm <div><i class="bi bi-caret-down-fill"></i></div></th>
                                             <th>Tên đề tài</th>
                                             <th>
                                                 Số thành viên
-<!--
+<!--                                                <select class="table-filter" onchange="filter_rows()" style="display: none">-->
+<!--                                                    <option value="3"></option>-->
+<!--                                                    <option value="4"></option>-->
+<!--                                                    <option value="5"></option>-->
+<!--                                                    <option value="6"></option>-->
+<!--                                                    <option value="7"></option>-->
+<!--                                                </select>-->
                                             </th>
                                             <th>Mã môn</th>
                                             <th>Trạng thái</th>
@@ -117,17 +134,24 @@
                                             <th:block th:each="nhomDatn : ${page.data}">
                                                 <tr>
                                                     <td th:text="${nhomDatn.getStt()}"></td>
-                                                    <td th:text="${nhomDatn.getMaNhom()}"></td>
                                                     <td th:text="${nhomDatn.getTenDeTai()}"></td>
                                                     <td th:text="${nhomDatn.getTotalMaSinhVien()}"></td>
                                                     <td th:text="${nhomDatn.getMaMon() + '-' + nhomDatn.getTenMonDatn() }"></td>
                                                     <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                     <td>
-                                                        <button
-                                                                type="button"
-                                                                th:attr="onclick=|showDetail('${nhomDatn.getId()}')|">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
+                                                        <a th:attr="onclick=|showDetail('${nhomDatn.getId()}')|"
+                                                        >
+                                                            <div id="eye-custom" data-toggle="tooltip"
+                                                                 title="Xem chi tiết nhóm">
+                                                                <img th:src="@{/img/eye-fill.svg}">
+                                                            </div>
+                                                        </a>
+<!--                                                        <button-->
+<!--                                                                type="button"-->
+<!--                                                                class="btn btn-info"-->
+<!--                                                                th:attr="onclick=|showDetail('${nhomDatn.getId()}')|">-->
+<!--                                                            <img th:src="@{/img/eye-fill.svg}">-->
+<!--                                                        </button>-->
                                                     </td>
                                                     <td>
                                                         <button
