@@ -54,8 +54,8 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             COUNT(sv.id) - COUNT(sv.nhom_id) AS tong_sinh_vien_chua_co_nhom,
             COUNT(sv.nhom_id) AS tong_sinh_vien_co_nhom,
             (SELECT COUNT(id) FROM nhom_datn WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id) AS tong_so_nhom,
-            (SELECT COUNT(id) FROM nhom_datn WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id AND trang_thai = 1) / 
-            (SELECT COUNT(id) FROM nhom_datn WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id) * 100 AS ti_le_xac_nhan,
+            ROUND((SELECT COUNT(id) FROM nhom_datn WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id AND trang_thai != 1 AND trang_thai != 0) / 
+            (SELECT COUNT(id) FROM nhom_datn WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id) * 100, 1) AS ti_le_xac_nhan,
             FROM_UNIXTIME(ddk.ngay_ket_thuc / 1000) > CURRENT_DATE() AS trang_thai
             FROM dot_dang_ky ddk LEFT JOIN sinh_vien sv ON ddk.id = sv.dot_dang_ky_id
             INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id  WHERE ddk.co_so_id = :coSoId AND ddk.id = :id
