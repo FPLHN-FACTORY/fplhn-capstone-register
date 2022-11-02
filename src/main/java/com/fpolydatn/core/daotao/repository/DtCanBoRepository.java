@@ -3,6 +3,7 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.core.daotao.model.response.DtTenCanBoResponse;
+import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.repository.CanBoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author caodinh
@@ -47,5 +49,9 @@ public interface DtCanBoRepository extends CanBoRepository {
     @Query(value = """
             SELECT email_fe FROM can_bo""", nativeQuery = true)
     List<String> findAllEmailFe();
+
+    @Query(value = """
+            SELECT email_fpt FROM can_bo""", nativeQuery = true)
+    List<String> findAllByEmailFPT();
 
 }

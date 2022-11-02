@@ -12,6 +12,8 @@ public class CnFindGvhdRequest {
 
     private String tenTaiKhoan;
     private String tenGvhd;
+    private String monDatnId;
+    private String idNhom;
     private String coSoId;
     private String dotDangKyId;
 

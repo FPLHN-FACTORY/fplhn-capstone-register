@@ -26,6 +26,7 @@ function viewTable(page) {
                                 <td>${item.soDienThoai}</td>
                                 <td>${item.email}</td>
                                 <td>${item.khoa}</td>
+                                <td>${item.trangThai==0? 'Đủ điều kiện': 'Không đủ điều kiện'}</td>
                                 <td>${item.tenMonDatn == null ? 'chưa có' : item.tenMonDatn}</td>
                                 <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
                                 <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
@@ -119,12 +120,16 @@ $("#form_import_excel").submit(function (event) {
                 data: new FormData(this),
                 processData: false,
                 contentType: false,
-                success: function (data) {
-                    window.open('/dao-tao/sinh-vien', '_self');
+                success: function (response) {
+                    if (response.data.status == true) {
+                        $("#messNotification").text("import file thành công");
+                    } else {
+                        $("#messNotification").text(response.data.message);
+                    }
+                    $('#import_excel').modal("hide");
+                    $("#modal_notification").modal("show");
                 },
                 error: function (e) {
-                    alert(e.responseText);
-                    window.open('/dao-tao/sinh-vien', '_self');
                     console.log("ERROR: " + e);
                 }
             }
@@ -145,7 +150,7 @@ function loaiSinhVien() {
             contentType: false,
             cache: false,
             success: function (response) {
-                if (response.data.status == true){
+                if (response.data.status == true) {
                     $("#messNotification").text("Loại sinh viên không đạt thành công");
                 } else {
                     $("#messNotification").text(response.data.message);
@@ -160,6 +165,6 @@ function loaiSinhVien() {
     );
 }
 
-function reload(){
+function reload() {
     window.open('/dao-tao/sinh-vien', '_self');
 }

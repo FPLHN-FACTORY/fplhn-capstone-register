@@ -16,8 +16,8 @@ public class TrangThaiNhomConverter {
             case CHU_NHIEM_DA_XAC_NHAN:
                 trangThaiNhomStr = "Chủ nhiệm đã xác nhận";
                 break;
-            case GIANG_VIEN_DA_XAC_NHAN:
-                trangThaiNhomStr = "Giảng viên đã xác nhận";
+            case GIANG_VIEN_DA_LIEN_HE:
+                trangThaiNhomStr = "Giảng viên đã liên hệ";
                 break;
             case CAN_SUA:
                 trangThaiNhomStr = "Cần sửa";

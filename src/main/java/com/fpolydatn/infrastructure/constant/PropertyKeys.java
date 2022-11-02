@@ -11,6 +11,8 @@ public class PropertyKeys {
     public static final String CHUYEN_NGANH_NOT_EXIST = "chuyen.nganh.not.exist";
     public static final String CO_SO_NOT_EXIST = "co.so.not.exist";
     public static final String CAN_BO_NOT_EXIST = "can.bo.not.exist";
+    public static final String CAN_BO_EXSIT = "can.bo.exist" ;
+    public static final String NO_SPACES_ALLOW = "no.space.allow";
     public static final String DOT_DANG_KY_NOT_EXIST = "dot.dang.ky.not.exist";
     public static final String HOC_KY_NOT_EXIST = "hoc.ky.not.exist";
     public static final String MON_DATN_NOT_EXIST = "mon.datn.not.exist";
@@ -29,7 +31,6 @@ public class PropertyKeys {
     public static final String TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST = "ten.tai.khoan.giang.vien.huong.dan.exist";
     public static final String DOT_DANG_KY_OVERLAP = "dot.dang.ky.overlap";
     public static final String MAT_KHAU_KHONG_CHINH_XAC = "mat.khau.khong.chinh.xac";
-    public static final String NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC = "ngay.bat.dau.before.ngay.ket.thuc";
     public static final String GIANG_VIEN_HUONG_DAN_NOT_EXIST = "giang.vien.huong.dan.not.exist";
     public static final String FILE_EMPTY = "file.empty";
     public static final String GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM = "giang.vien.da.huong.dan.du.so.nhom";
@@ -44,9 +45,33 @@ public class PropertyKeys {
     public static final String ROI_NHOM_KHI_LA_TRUONG_NHOM = "roi.nhom.khi.la.truong.nhom";
     public static final String SINH_VIEN_DANG_LA_TRUONG_NHOM = "sinh.vien.dang.la.truong.nhom";
     public static final String TRUONG_NHOM_MOI_KHONG_CUNG_NHOM = "truong.nhom.moi.khong.cung.nhom";
-
-    public static final String THAM_GIA_NHOM_SAU_KHI_ROI_NHOM_12_TIENG = "tham.gia.nhom.sau.khi.roi.nhom.12.tieng";
-
+    public static final String INVALID_HAN_SINH_VIEN = "invalid.han.sinh.vien";
+    public static final String INVALID_HAN_GIANG_VIEN = "invalid.han.giang.vien";
+    public static final String INVALID_HAN_CHU_NHIEM_BO_MON = "invalid.han.chu.nhiem.bo.mon";
+    public static final String INVALID_DATE = "invalid.date";
+    public static final String INVALID_NGAY_KETTHUC = "invalid.ngay.ket.thuc";
+    public static final String THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG = "thoi.gian.roi.nhom.chua.du.12.tieng";
     public static final String HET_HAN_QUYEN_SINH_VIEN = "het.han.quyen.sinh.vien";
+    public static final String CHUYEN_NGANH_KHONG_DUOC_XOA = "chuyen.nganh.khong.duoc.xoa";
+    public static final String KHONG_DUOC_XOA_MON = "khong.duoc.xoa.mon";
+    public static final String GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN = "giang.vien.dang.co.nhom.huong.dan";
+    public static final String CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM = "chua.den.thoi.gian.cua.chu.nhiem";
+    public static final String MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN = "mon.datn.khong.thoa.man.voi.sinh.vien";
+
+    public static final String VUOT_QUA_SO_LUONG_CHO_PHEP = "vuot.qua.so.luong.cho.phep";
+
+    public static final String MON_KHONG_TUONG_DUONG = "mon.khong.tuong.duong";
+
+    public static final String GIANG_VIEN_KHONG_DAY_MON_NAY ="giang.vien.khong.day.mon.nay" ;
+
+
+
+    public static final String MOC_THOI_GIAN_GVHD = "moc.thoi.gian.gvhd";
+
+    public static final String DONT_UPDATE_TEN_DE_TAI = "dont.update.ten.de.tai";
+
+    public static final String DONT_PHE_DUYET_NHOM_DATN = "dont.phe.duyet.nhom.datn";
+
+    public static final String DONT_CHOT_DE_TAI_NHOM_DATN = "dont.chot.de.tai.nhom.datn";
 
 }

@@ -38,13 +38,19 @@ public final class DtDotDangKyRestController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseObject detail(@PathVariable("id") String id) {
+    public ResponseObject findById(@PathVariable("id") String id) {
         return new ResponseObject(dotDangKyService.findById(id));
     }
 
     @GetMapping
     public ResponseObject getListDotDangKy() {
         return new ResponseObject(dotDangKyService.getAllByCoSo(session.getCoSoId()));
+    }
+
+    @GetMapping("/search/{id}")
+    public ResponseObject detail(@PathVariable("id") String id) {
+        String coSoId = session.getCoSoId();
+        return new ResponseObject(dotDangKyService.detail(id, coSoId));
     }
 
 }

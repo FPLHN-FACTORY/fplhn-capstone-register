@@ -15,9 +15,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public abstract class CnBaseNhomDatnRequest {
 
-    @NotEmpty()
-    @NotBlank()
-    private String maNhom;
+    private String monDatnId;
 
     @NotEmpty()
     @NotBlank()
@@ -26,7 +24,7 @@ public abstract class CnBaseNhomDatnRequest {
 
     @NotEmpty()
     @NotBlank()
-    private String maGiangVien;
+    private String idGiangVien;
 
     @NotEmpty()
     @NotBlank()

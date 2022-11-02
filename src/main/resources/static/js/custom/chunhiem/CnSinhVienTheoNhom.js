@@ -15,13 +15,19 @@ function clearData() {
 
 function searchGvhd() {
     let text = $("#tags").val()
+    let idNhom = $("#idNhom").val()
+
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: sinhVienApi + "/listGvhd" + "?tenTaiKhoan=" + text + "&tenGvhd=" + text,
+        url: sinhVienApi + "/listGvhd" + "?tenTaiKhoan=" + text + "&tenGvhd=" + text + "&idNhom=" + idNhom,
         dataType: 'json',
         success: function (responseData) {
-            let array = responseData.data
+            let array = [];
+            for (var item of responseData.data){
+                array.push(item.thongTinGvhd)
+            }
+            console.log(array)
             $("#tags").autocomplete({
                 source: array
             });
@@ -36,21 +42,23 @@ loadData()
 
 $("#form_create_ma_nhom").submit(function (event) {
     event.preventDefault();
-    let idNhom = $("#idNhom").val();
-    let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien");
+    let idNhom = $("#idNhom").val()
+    let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien")
+    var maSinhViens = '';
     for (let item of listMaSinhVien) {
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + item.innerHTML,
-            success: function (responseData) {
-                window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
-            },
-            error: function (e) {
-                $("#idStudentError").html(e.responseJSON.message)
-            }
-        });
+        maSinhViens += item.innerHTML+"-";
     }
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + maSinhViens,
+        success: function (responseData) {
+            window.open(sinhVienTheoNhomView + "?id=" + idNhom , '_self');
+        },
+        error: function (e) {
+            $("#idStudentError").html(e.responseJSON.message)
+        }
+    });
 });
 
 function openModalRemoveNhom(maSinhVien) {
@@ -142,6 +150,7 @@ function openModalChangeCaptain() {
 
         }
     })
+
     $.ajax({
         type: "GET",
         contentType: "application/json",

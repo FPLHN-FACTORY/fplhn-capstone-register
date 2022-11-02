@@ -16,15 +16,12 @@ import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
 
 import java.util.List;
 
@@ -55,17 +52,13 @@ public class SvNhomDatnRestController extends BaseController {
         return new ResponseObject(svGiangVienHuongDanService.getGvhdByMonDatnId(idMonDatn, coSoId));
     }
 
-    @PutMapping("/{id}")
-    public ResponseObject guiYeuCauPheDuyet(@PathVariable String id){
-        return new ResponseObject(svNhomDatnService.guiYeuCauPheDuyet(id, session.getUserId()));
-    }
-
     @GetMapping("/search")
     public ResponseObject searchNhomDatn(final SvFindNhomDatnRequest req) {
+        String idUser = session.getUserId();
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
-        PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
+        PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUser);
         return new ResponseObject(listNhomDatn);
     }
 
@@ -97,7 +90,6 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PutMapping("/roi-nhom")
     public ResponseObject roiNhom() {
-        svNhomDatnService.updateThoiGianRoiNhom(session.getUserId());
         return new ResponseObject(svNhomDatnService.roiNhom(session.getUserId()));
     }
 

@@ -27,6 +27,9 @@ public interface DtGiangVienHDResponse extends IsIdentified {
     @Value("#{target.so_nhom_huong_dan_toi_da}")
     Short getSoNhomHuongDanToiDa();
 
+    @Value("#{target.so_nhom_dang_huong_dan}")
+    Short getSoNhomDangHuongDan();
+
     @Value("#{target.ten_tai_khoan}")
     String getTenTaiKhoan();
 

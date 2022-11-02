@@ -10,8 +10,10 @@ import lombok.Setter;
 @Setter
 public class CnFindSinhVienNoGroupRequest {
 
+    private String idNhom;
     private String maSinhVien;
     private String tenSinhVien;
+    private String nhomMonDatnId;
     private String coSoId;
     private String dotDangKyId;
 }
