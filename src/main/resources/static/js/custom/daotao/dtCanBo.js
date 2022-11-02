@@ -295,7 +295,6 @@ $("#form_import_excel").submit(function (event) {
                     window.open(canBoView, '_self');
                 },
                 error: function (e) {
-                    alert(e.responseText);
                     window.open(canBoView, '_self');
                     console.log("ERROR: " + e);
                 }
