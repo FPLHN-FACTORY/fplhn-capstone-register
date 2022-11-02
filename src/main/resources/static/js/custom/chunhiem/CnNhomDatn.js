@@ -88,7 +88,7 @@ function loadDataNhomDatn(count) {
                                                                 </div></a>
                 <a style="${item.trangThai == 5 || checkHanChuNhiem == 'false' ? 'display : none' : 'display : block'}" type="button" onclick="openModalRemoveNhomDatn('${item.id}','${count}')"><div id="custom-delete" data-toggle="tooltip"
                                                                      title="Xóa">
-                                                                    <img src="/img/trash3.svg">
+                                                                    <img src="/img/trash.svg">
                                                                 </div></a></td>
                 </tr>
                 `
