@@ -2,7 +2,7 @@ let DTNhomDatnApi = '/api/dao-tao/nhom-datn';
 let DTNhomDatnView = '/dao-tao/nhom-datn';
 
 function clearform() {
-    $("#tenNhom").val("");
+    $("#maNhom").val("");
     $("#chuyenNganh").val("");
     $("#trangThai").val("");
     $("#dotDangKy").val("");
@@ -24,6 +24,7 @@ function openModalDanhSachSinhVien(id) {
                 <td>${item.stt}</td>
                 <td>${item.maSinhVien}</td>
                 <td>${item.tenSinhVien}</td>
+                <td>${item.chucVu == 1 ? 'Trưởng nhóm' : 'Thành viên'}</td>
                 </tr>
                 `
             })
@@ -42,14 +43,14 @@ $("#form_list_nhom_datn").submit(function (event) {
 })
 
 function loadDataNhomDatn(count) {
-    let tenNhom = $("#tenNhom").val()
+    let maNhom = $("#maNhom").val()
     let chuyenNganhId = $("#chuyenNganh").val()
     let dotDangKyId = $("#dotDangKy").val()
     let trangThai = $("#trangThai").val()
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: DTNhomDatnApi + "/search" + "?tenNhom=" + tenNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
+        url: DTNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)
@@ -66,11 +67,11 @@ function loadDataNhomDatn(count) {
                     return `
                 <tr>
                 <td>${item.stt}</td>
-                <td>${item.tenNhom}</td>
+                <td>${item.maNhom}</td>
+                <td>${item.tenMonDatn}</td>
                 <td>${item.tenDeTai}</td>
                 <td>${item.tenChuyenNganh}</td>
                 <td>${item.countSinhVien}/7</td>
-                <td>${item.maSinhVien}-${item.tenSinhVien}</td>
                 <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
                 
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                

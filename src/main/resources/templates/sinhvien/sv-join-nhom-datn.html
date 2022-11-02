@@ -129,13 +129,14 @@
                                                id="custom-table">
                                             <thead>
                                             <th width="50px">STT</th>
+                                            <th>Mã nhóm</th>
                                             <th>Tên nhóm</th>
                                             <th>Tên đề tài</th>
-                                            <th>Số thành viên</th>
+                                            <th>Tên môn datn</th>
+                                            <th>Số người</th>
                                             <th>Trưởng nhóm</th>
-                                            <th>Gv hướng dẫn</th>
-                                            <th>Trạng thái nhóm</th>
-                                            <th>Danh sách thành viên</th>
+                                            <th>GVHD</th>
+                                            <th>Trạng thái</th>
                                             <th th:style="${checkMocThoiGian} == true ? '' : 'display: none'">
                                                 Hành động</th>
                                             </thead>
@@ -143,8 +144,10 @@
                                             <th:block th:each="nhomDatn : ${page.data}">
                                                 <tr>
                                                     <td th:text="${nhomDatn.getStt()}"></td>
+                                                    <td th:text="${nhomDatn.maNhom}"></td>
                                                     <td th:text="${nhomDatn.tenNhom}"></td>
                                                     <td th:text="${nhomDatn.tenDeTai}"></td>
+                                                    <td th:text="${nhomDatn.tenMonDatn}"></td>
                                                     <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
                                                     <td th:text="${nhomDatn.maSinhVien} + ' - ' + ${nhomDatn.getTenSinhVien()}"></td>
                                                     <td th:text="${nhomDatn.tenGvhd} == null ? 'Chưa có': (${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()})"></td>
@@ -162,9 +165,7 @@
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td th:style="${checkMocThoiGian} == true ? 'display:block' : 'display: none'">
-                                                        <div class="row">
+                                                        <div class="row"  th:style="${checkMocThoiGian} == true ? 'display:block' : 'display: none'">
                                                             <div class="col-6 d-inline">
                                                                 <button
                                                                         type="button"
@@ -234,6 +235,7 @@
                                     <th>STT</th>
                                     <th>Mã sinh viên</th>
                                     <th>Tên sinh viên</th>
+                                    <th>Chức vụ</th>
                                     </thead>
                                     <!-- body-->
                                     <tbody id="show_Dssv">

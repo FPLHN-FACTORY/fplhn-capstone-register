@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
     @Query(value = """
-            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ten_nhom
+            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ma_nhom, i.ten_mon_datn
             ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien, 
             e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
             FROM nhom_datn b JOIN sinh_vien c ON b.truong_nhom_id = c.id
@@ -24,8 +24,9 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
-            WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
-            OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
+            JOIN mon_datn i ON i.id = c.mon_datn_id
+            WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
+            OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
             OR f.id = :#{#req.chuyenNganhId})
             AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
@@ -43,8 +44,9 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
-            WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
-            OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
+            JOIN mon_datn i ON i.id = c.mon_datn_id
+            WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
+            OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
             OR f.id = :#{#req.chuyenNganhId})
             AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
@@ -57,9 +59,11 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             """, nativeQuery = true)
     Page<DtNhomDatnTheoDotResponse> findAllNhomDatn(Pageable page, @Param("req") final FindDtNhomDatnTheoDotRequest req);
 
-    @Query(value = "select a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, a.ma_sinh_vien, a.ten_sinh_vien from sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id\n" +
-            "        where a.nhom_id = :#{#req.id}" +
-            " AND b.co_so_id = :#{#req.coSoId}", nativeQuery = true)
+    @Query(value = "SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt," +
+                    " a.ma_sinh_vien, a.ten_sinh_vien, IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu" +
+                    " FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id\n" +
+                    " WHERE a.nhom_id = :#{#req.id}" +
+                    " AND b.co_so_id = :#{#req.coSoId}", nativeQuery = true)
     Page<DtSinhVienResponse> showDanhSachSinhVien(Pageable page, @Param("req") final FindSinhVienRequest req);
 
     @Query(value = """

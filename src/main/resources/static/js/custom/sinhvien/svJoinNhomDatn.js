@@ -27,6 +27,7 @@ function openModalDanhSachSinhVien(id) {
                 <td>${item.stt}</td>
                 <td>${item.maSinhVien}</td>
                 <td>${item.tenSinhVien}</td>
+                <td>${item.chucVu == 1 ? 'Trưởng nhóm' : 'Thành viên'}</td>
                 </tr>
                 `
             })
@@ -51,8 +52,7 @@ function loadDataNhomDatn(count) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: SVNhomDatnApi + "/search" + "?tenDeTai=" + tenDeTai + "&truongNhom=" + truongNhom
-            + "&soLuong=" + soLuong + "&giangVien=" + giangVien + "&page=" + count,
+        url: SVNhomDatnApi + "/search" + "?tenDeTai=" + tenDeTai + "&truongNhom=" + truongNhom + "&soLuong=" + soLuong + "&giangVien=" + giangVien + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)
@@ -63,32 +63,29 @@ function loadDataNhomDatn(count) {
                 $("#listNhomDatn").html(``)
                 $("#list_page").html(``)
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`)
-            }
-            else {
+            } else {
                 $("#empty").html(``)
                 $("#listNhomDatn").html(array.map(function (item) {
                     return `
                 <tr>
                 <td>${item.stt}</td>
+                <td>${item.maNhom}</td>
                 <td>${item.tenNhom}</td>
                 <td>${item.tenDeTai}</td>
+                <td>${item.tenMonDatn}</td>
                 <td>${item.countSinhVien}/7</td>
                 <td>${item.maSinhVien}-${item.tenSinhVien}</td>
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenTaiKhoan + ' - ' + item.tenGvhd}</td>
                 <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
-                <td><button type="button" class="btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
-                <td style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}">
-                    <div class="row">
-                        <div class="col-6 d-inline">
-                            <button class=" btn btn-success"                                    
-                                    data-target="#modal_create1"
-                                    data-toggle="modal"
-                                    onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
-                                    >
-                                Tham gia nhóm
-                            </button>
-                        </div>
-                    </div>
+                <td>
+                    <button type="button" class="btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
+                    <button class=" btn btn-success" style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}"                                 
+                            data-target="#modal_create1"
+                            data-toggle="modal"
+                            onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
+                            >
+                        Tham gia nhóm
+                    </button>
                 </td>
                 <div class="modal fade"></div>
                 </td>
@@ -118,17 +115,13 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
     clearform();
     if (Number(matKhauTonTai) == 0) {
         bootbox.confirm({
-            title: "Tham gia nhóm",
-            message: "Bạn muốn tham gia nhóm này?",
-            buttons: {
+            title: "Tham gia nhóm", message: "Bạn muốn tham gia nhóm này?", buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Quay lại'
-                },
-                confirm: {
+                }, confirm: {
                     label: '<i class="fa fa-check"></i> Xác nhận'
                 }
-            },
-            callback: function (result) {
+            }, callback: function (result) {
                 if (result) {
                     let addSinhVienRequest = {};
                     addSinhVienRequest["idNhom"] = idNhom;
@@ -144,7 +137,11 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
                             });
                         },
                         error: function (responseData) {
-                            alert(responseData.responseJSON.message);
+                            bootbox.alert({
+                                message: 'Hết hạn quyền sinh viên', backdrop: true, callback: function () {
+                                    window.open(svNhomDatnView, '_self');
+                                }
+                            });
                         }
                     });
                 }
@@ -176,7 +173,9 @@ function addSinhVienHasPassword() {
         },
         error: function (responseData) {
             console.log(responseData);
-            alert(responseData.responseJSON.message)
+            bootbox.alert('Sinh viên sẽ được tham gia nhóm sau 12 tiếng kể từ khi rời nhóm', function () {
+                window.open(SVNhomDatnView, '_self');
+            });
             if (responseData.responseJSON.message === 'Mat Khau Khong Chinh Xac') {
                 $("#errorPassword").text("Mật khẩu không chính xác");
             }
@@ -186,9 +185,7 @@ function addSinhVienHasPassword() {
 
 function getGiangVien(idMonDatn) {
     $.ajax({
-        type: "GET",
-        url: SVNhomDatnApi + "/search-giang-vien?idMonDatn=" + idMonDatn,
-        success: function (data) {
+        type: "GET", url: SVNhomDatnApi + "/search-giang-vien?idMonDatn=" + idMonDatn, success: function (data) {
             var text = "<option value='' selected>Không chọn</option>"
             data.data.map(function (item) {
                 text += `<option value="${item.id}" >${item.tenGvhd}</option>`

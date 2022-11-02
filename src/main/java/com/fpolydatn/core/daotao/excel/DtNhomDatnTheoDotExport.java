@@ -35,13 +35,12 @@ public class DtNhomDatnTheoDotExport {
         font.setFontHeight(12);
         cellStyle.setFont(font);
         createCell(row, 0, "STT", cellStyle);
-        createCell(row, 1, "Tên nhóm", cellStyle);
+        createCell(row, 1, "Mã nhóm", cellStyle);
         createCell(row, 2, "Tên đề tài", cellStyle);
         createCell(row, 3, "Tên chuyên ngành", cellStyle);
         createCell(row, 4, "Số thành viên", cellStyle);
-        createCell(row, 5, "Trưởng nhóm", cellStyle);
-        createCell(row, 6, "Tên GVHD", cellStyle);
-        createCell(row, 7, "Trạng thái", cellStyle);
+        createCell(row, 5, "Tên GVHD", cellStyle);
+        createCell(row, 6, "Trạng thái", cellStyle);
     }
 
     private void createCell(Row row, int countColum, Object value, CellStyle cellStyle) {
@@ -72,11 +71,10 @@ public class DtNhomDatnTheoDotExport {
             Row row = xssfSheet.createRow(xx.getStt());
             int countColum = 0;
             createCell(row, countColum++, xx.getStt(), style);
-            createCell(row, countColum++, xx.getTenNhom(), style);
+            createCell(row, countColum++, xx.getMaNhom(), style);
             createCell(row, countColum++, xx.getTenDeTai(), style);
             createCell(row, countColum++, xx.getTenChuyenNganh(), style);
             createCell(row, countColum++, xx.getCountSinhVien() + "/7", style);
-            createCell(row, countColum++, xx.getMaSinhVien() + "-" + xx.getTenSinhVien(), style);
             createCell(row, countColum++, xx.getTenGvhd() + "-" + xx.getTenTaiKhoan(), style);
             createCell(row, countColum++, xx.getTrangThai() == 0 ? "Mới thành lập" : (xx.getTrangThai() == 1 ? "Đã liên hệ giảng viên" : (xx.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (xx.getTrangThai() == 3 ? "Cần sửa" : (xx.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))), style);
         });
