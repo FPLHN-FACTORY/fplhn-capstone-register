@@ -1,6 +1,7 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtGiangVienHuongDanExport;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
@@ -13,10 +14,11 @@ import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
+import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,8 +28,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +60,8 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     private FormUtils formUtils = new FormUtils();
 
+    private List<DtGiangVienHDResponse> listGiangVienHD;
+
     @Override
     public GiangVienHuongDan create(@Valid DtCreateGiangVienHDRequest command) {
         String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim());
@@ -74,8 +83,12 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public Boolean delete(String id) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(id);
+        int countSoNhomDangHuongDan = dtGiangVienHDRepository.getCountSoNhomDangHuongDan(id);
         if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
+        }
+        if(countSoNhomDangHuongDan != 0){
+            throw new RestApiException(Message.GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN);
         }
         dtGiangVienHDRepository.delete(gvhdCheck.get());
         return true;
@@ -129,17 +142,21 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     public PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<DtGiangVienHDResponse> res = dtGiangVienHDRepository.findByName(request, pageable);
+        listGiangVienHD = res.stream().toList();
         return new PageableObject<>(res);
     }
 
     @Override
-    public List<GiangVienHuongDan> importExcel(MultipartFile file) {
+    public List<GiangVienHuongDan> importExcel(MultipartFile file) throws IOException {
         List<GiangVienHuongDan> list = new ArrayList<>();
 
         try {
-            XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-            XSSFSheet sheet = workbook.getSheetAt(0);
+            Workbook workbook = StreamingReader.builder()
+                    .bufferSize(4096)
+                    .rowCacheSize(50)
+                    .open(file.getInputStream());
             int rowNumber = 0;
+            Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> iterator = sheet.iterator();
 
             while (iterator.hasNext()) {
@@ -156,7 +173,6 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 GiangVienHuongDan gvhd = new GiangVienHuongDan();
                 while (cells.hasNext()) {
                     Cell cell = cells.next();
-
                     switch (cid) {
                         case 1:
                             String tenCoSo = cell.getStringCellValue();
@@ -235,5 +251,30 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         return listGVHD;
     }
 
+    @Override
+    public void DtGiangVienHDExportExcel(HttpServletResponse response, String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
 
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=GiangVienHuongDan" + currentDateTime + "." + typeExcel;
+        response.setHeader(headerKey, headerValue);
+        DtGiangVienHuongDanExport dtGiangVienHuongDanExport = new DtGiangVienHuongDanExport(listGiangVienHD);
+        dtGiangVienHuongDanExport.exportData(response);
+    }
+
+    @Override
+    public void DtGiangVienHDMauExportExcel(HttpServletResponse response, String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=GiangVienHuongDan" + currentDateTime + "." + typeExcel;
+        response.setHeader(headerKey, headerValue);
+        List<DtGiangVienHDResponse> listMau = new ArrayList<>();
+        DtGiangVienHuongDanExport dtGiangVienHuongDanExport = new DtGiangVienHuongDanExport(listMau);
+        dtGiangVienHuongDanExport.exportMauImport(response);
+    }
 }

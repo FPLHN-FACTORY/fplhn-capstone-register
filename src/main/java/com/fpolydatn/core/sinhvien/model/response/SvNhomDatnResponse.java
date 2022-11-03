@@ -44,4 +44,7 @@ public interface SvNhomDatnResponse extends IsIdentified {
     @Value("#{target.nhan_xet}")
     String getNhanXet();
 
+    @Value("#{target.thoi_diem_roi_nhom_gan_nhat}")
+    Long getThoiDiemRoiNhomGanNhat();
+
 }

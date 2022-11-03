@@ -106,10 +106,6 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         return dtCanBoRepository.findAllSimpleEntityByTenCanBo(id, vaiTro);
     }
 
-    @Override
-    public void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
-
-    }
 
     @Override
     public RestApiException DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
@@ -163,7 +159,6 @@ public class DtCanBoServiceImpl implements DtCanBoService {
             mapSimple.put(s, s);
         }
     }
-
 
 }
 

@@ -53,9 +53,9 @@
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="row">
-                                        <div class="col-6 d-inline"
+                                        <div class="d-inline"
                                         >
-                                            <button
+                                            <button th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                     data-toggle="modal"
                                                     data-target="#modal_create"
                                                     class=" btn btn-success">
@@ -64,7 +64,7 @@
                                             <!--                                            them giao vien huong dan -->
 
                                             <a>
-                                                <button
+                                                <button th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                         data-toggle="modal"
                                                         onclick="openModalChangeGvhd()"
                                                         class=" btn btn-success">
@@ -73,7 +73,7 @@
                                             </a>
                                             <!--                                            thay đổi trưởng nhóm-->
                                             <a>
-                                                <button
+                                                <button th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                         id="changeCaptain"
                                                         data-toggle="modal"
                                                         onclick="openModalChangeCaptain()"
@@ -81,7 +81,6 @@
                                                     Thay đổi trưởng nhóm
                                                 </button>
                                             </a>
-
 
                                             <a href="/chu-nhiem/nhom-datn">
                                                 <button
@@ -112,8 +111,8 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <span>Nhập sinh viên cần thêm</span><br>
-                                                                    <select data-placeholder="Start typing to select a city"
+                                                                    <span>Chọn sinh viên cần thêm</span><br>
+                                                                    <select data-placeholder="Vui lòng chọn sinh viên cần thêm"
                                                                             multiple class="chosen-select-width"
                                                                             tabindex="16"
                                                                             id="cities">
@@ -151,7 +150,7 @@
                                                 <th>Đợt đăng ký</th>
                                                 <th>Tên nhóm</th>
                                                 <th width="200px">Giáo viên hướng dẫn</th>
-                                                <th>Chức năng</th>
+                                                <th th:style="${checkHanChuNhiem} == true ? '' : 'display: none'">Chức năng</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
@@ -161,20 +160,18 @@
                                                         <td th:text="${sinhVienResponse.tenSinhVien}"></td>
                                                         <td th:text="${sinhVienResponse.tenChuyenNganh}"></td>
                                                         <td th:text="${sinhVienResponse.tenDotDangKy}"></td>
-                                                        <td th:text="${sinhVienResponse.tenNhom}"></td>
+                                                        <td th:text="${sinhVienResponse.tenNhom}==null ? 'Chưa có' : (${sinhVienResponse.tenNhom})"></td>
                                                         <td th:switch="${sinhVienResponse.tenGvhd}">
-                                                            <p th:case=null>Không có </p>
+                                                            <p th:case=null>Chưa có </p>
                                                             <p th:case="*" th:text="${sinhVienResponse.tenGvhd}"></p>
                                                         </td>
-                                                        </td>
-                                                        <td>
+                                                        <td th:style="${checkHanChuNhiem} == true ? '' : 'display: none'">
                                                             <button
                                                                     type="button"
                                                                     class="btn btn-danger"
                                                                     data-toggle="modal"
                                                                     th:attr="onclick=|openModalRemoveNhom('${sinhVienResponse.maSinhVien}')|">
                                                                 Kick
-                                                            </button>
                                                             </button>
                                                         </td>
                                                     </tr>

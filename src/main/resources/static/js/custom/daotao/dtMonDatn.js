@@ -11,10 +11,12 @@ $("#form_create_mon_datn").submit(function (event) {
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
+    let nhomMonId = $("#tenNhomMonDatn").val();
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
+    monDatnRequest["nhomMonDatnId"] = nhomMonId;
     let index = 0;
     if (maMon.trim().length === 0) {
         $("#ma_mon_datn_error").text("Ma mon DATN khong duoc de trong");
@@ -135,7 +137,7 @@ $("#form_mon_datn_delete").submit(function (event) {
             $("#modal_mon_datn_remove").modal("hide");
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            $("#remove_mon_datn").text(e.responseJSON.message);
         }
     });
 });
@@ -155,3 +157,21 @@ function openModalImportMonDatn() {
         }
     });
 }
+
+function clearModal() {
+    $("#remove_mon_datn").text("");
+    $("#ma_mon_datn_error").text("");
+    $("#ten_mon_datn_error").text("");
+    $("#errorMaMonUpdate").text("");
+    $("#errorTenMonUpdate").text("");
+}
+$("#exampleFormControlFile1").on("input", function () {
+    if(!$("#exampleFormControlFile1").val().trim().length == 0) {
+        $("#import").removeAttr('disabled');
+        $("#import").css( 'cursor', 'pointer' );
+    } else {
+        $("#import").attr('disabled','disabled');
+        $("#import").css( 'cursor', 'not-allowed');
+    }
+
+})

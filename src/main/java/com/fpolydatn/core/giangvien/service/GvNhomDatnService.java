@@ -5,7 +5,6 @@ import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
-import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.entity.NhomDatn;
 
@@ -21,7 +20,6 @@ public interface GvNhomDatnService {
 
     PageableObject<GvNhomDatnResponse> fillAllNhomDatn(final GvFindNhomDatnRequest request);
 
-    NhomDatn updateTrangThaiNhom(final GvUpdateNhomDatnRequest request);
 
     NhomDatn findById(String maNhom);
 
@@ -33,8 +31,8 @@ public interface GvNhomDatnService {
 
     PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvFindNhomDatnHuongDanRequest request);
 
-    NhomDatn pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request);
+    NhomDatn chotDeTaiNhomDatn(final GvChotNhomDatnRequest request);
 
-    NhomDatn tuChoiDeTaiNhomDatn(final GvChotNhomDatnRequest request);
+    boolean mocThoiGianGiangVienHuongDan();
 
 }
