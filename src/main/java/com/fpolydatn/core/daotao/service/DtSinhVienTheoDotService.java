@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author thepvph20110
@@ -28,4 +29,5 @@ public interface DtSinhVienTheoDotService {
 
     DtLoaiSinhVienResponse loaiSinhVienKhongDat(DtLoaiSinhVienKhongDatRequest request);
 
+    DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId);
 }
