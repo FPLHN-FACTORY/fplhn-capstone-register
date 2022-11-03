@@ -51,47 +51,52 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     }
 
     @Override
-    public DotDangKy create(@Valid DtCreateDotDangKyRequest createDotDangKyRequest) {
+    public DotDangKy create(@Valid final DtCreateDotDangKyRequest createDotDangKyRequest) {
+        DtBaseDotDangKyRequest request = new DtCreateDotDangKyRequest();
+        request.setNgayBatDau(createDotDangKyRequest.getNgayBatDau());
+        request.setNgayKetThuc(createDotDangKyRequest.getNgayKetThuc());
+        request.setHanSinhVien(createDotDangKyRequest.getHanSinhVien());
+        request.setHanGiangVien(createDotDangKyRequest.getHanGiangVien());
+        request.setHanChuNhiemBoMon(createDotDangKyRequest.getHanChuNhiemBoMon());
         Optional<HocKy> hocKyCheck = dtHocKyRepository.findById(createDotDangKyRequest.getHocKyId());
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
-//        if (createDotDangKyRequest.getNgayKetThuc() < createDotDangKyRequest.getNgayBatDau()) {
-//            throw new RestApiException((Message.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC));
-//        }
-        List<DotDangKy> listDotDangKy = dtDotDangKyRepository.findAll();
-        for (DotDangKy dotDangKy : listDotDangKy) {
-            if (createDotDangKyRequest.getNgayBatDau() < dotDangKy.getNgayKetThuc()
-                    && createDotDangKyRequest.getNgayKetThuc() > dotDangKy.getNgayBatDau()) {
-                throw new RestApiException(Message.DOT_DANG_KY_OVERLAP);
-            }
-        }
-        DotDangKy dotDangKy = formUtils.convertToObject(DotDangKy.class, createDotDangKyRequest);
+
+        DotDangKy result = checkDateDotDangKy(request, null);
+        DotDangKy dotDangKy = new DotDangKy();
+        dotDangKy.setTenDotDangKy(createDotDangKyRequest.getTenDotDangKy());
+        dotDangKy.setNgayBatDau(result.getNgayBatDau());
+        dotDangKy.setNgayKetThuc(result.getNgayKetThuc());
+        dotDangKy.setHanSinhVien(result.getHanSinhVien());
+        dotDangKy.setHanGiangVien(result.getHanGiangVien());
+        dotDangKy.setHanChuNhiemBoMon(result.getHanChuNhiemBoMon());
+        dotDangKy.setCoSoId(createDotDangKyRequest.getCoSoId());
+        dotDangKy.setHocKyId(createDotDangKyRequest.getHocKyId());
         return dtDotDangKyRepository.save(dotDangKy);
     }
 
     @Override
-    public DotDangKy update(DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest) {
+    public DotDangKy update(@Valid final DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest) {
         Optional<DotDangKy> dotDangKyCheck = dtDotDangKyRepository.findById(dtUpdateDotDangKyRequest.getId());
+
         if (!dotDangKyCheck.isPresent()) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
-//        if (dtUpdateDotDangKyRequest.getNgayKetThuc() < dtUpdateDotDangKyRequest.getNgayBatDau()) {
-//            throw new RestApiException((Message.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC));
-//        }
-        List<DotDangKy> listDotDangKy = dtDotDangKyRepository.findAll();
-        for (DotDangKy dotDangKy : listDotDangKy) {
-            if (dotDangKy.getId().equals(dtUpdateDotDangKyRequest.getId())) {
-                continue;
-            }
-            if (dtUpdateDotDangKyRequest.getNgayBatDau() < dotDangKy.getNgayKetThuc()
-                    && dtUpdateDotDangKyRequest.getNgayKetThuc() > dotDangKy.getNgayBatDau()) {
-                throw new RestApiException(Message.DOT_DANG_KY_OVERLAP);
-            }
-        }
+        DtBaseDotDangKyRequest request = new DtCreateDotDangKyRequest();
+        request.setNgayBatDau(dtUpdateDotDangKyRequest.getNgayBatDau());
+        request.setNgayKetThuc(dtUpdateDotDangKyRequest.getNgayKetThuc());
+        request.setHanSinhVien(dtUpdateDotDangKyRequest.getHanSinhVien());
+        request.setHanGiangVien(dtUpdateDotDangKyRequest.getHanGiangVien());
+        request.setHanChuNhiemBoMon(dtUpdateDotDangKyRequest.getHanChuNhiemBoMon());
+
+        DotDangKy result = checkDateDotDangKy(request, dtUpdateDotDangKyRequest.getId());
         DotDangKy dotDangKy = dotDangKyCheck.get();
-        dotDangKy.setNgayBatDau(dtUpdateDotDangKyRequest.getNgayBatDau());
-        dotDangKy.setNgayKetThuc(dtUpdateDotDangKyRequest.getNgayKetThuc());
+        dotDangKy.setNgayBatDau(result.getNgayBatDau());
+        dotDangKy.setNgayKetThuc(result.getNgayKetThuc());
+        dotDangKy.setHanSinhVien(result.getHanSinhVien());
+        dotDangKy.setHanGiangVien(result.getHanGiangVien());
+        dotDangKy.setHanChuNhiemBoMon(result.getHanChuNhiemBoMon());
         return dtDotDangKyRepository.save(dotDangKy);
     }
 
