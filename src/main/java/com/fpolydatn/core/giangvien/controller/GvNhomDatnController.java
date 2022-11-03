@@ -3,6 +3,7 @@ package com.fpolydatn.core.giangvien.controller;
 import com.fpolydatn.core.admin.service.HocKyService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
@@ -30,26 +31,19 @@ public class GvNhomDatnController extends BaseController {
     private GvNhomDatnService nhomDatnService;
 
     @Autowired
-    private HocKyService hocKyService;
-
-    @Autowired
-    private DtSvChuyenNganhService chuyenNganhService;
-
-    @Autowired
-    private DtSvDotDangKyService dotDangKyService;
+    private DtMonDatnService monDatnService;
 
     @GetMapping()
     public String viewNhomDatn(final GvFindNhomDatnRequest request, Model model) {
         String coSoId = session.getCoSoId();
-        request.setGiangVienHDId(session.getUserId());
+        String idGiangVien = session.getUserId();
+        request.setGiangVienHDId(idGiangVien);
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
-        List<SimpleEntityProj> listDotDangKy = dotDangKyService.getListDotDangKy(coSoId);
-        List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.getListChuyenNganh(coSoId);
-        List<SimpleEntityProj> listHocKy =  hocKyService.getListHocKy();
+        List<SimpleEntityProj> listMon = monDatnService.findAllSimpleEntityByCoSoAndGvhd(idGiangVien, coSoId);
+        boolean mocThoiGianGiangVien = nhomDatnService.mocThoiGianGiangVienHuongDan();
         model.addAttribute("page", listNhomDatn);
-        model.addAttribute("listDotDangKy", listDotDangKy);
-        model.addAttribute("listChuyenNganh", listChuyenNganh);
-        model.addAttribute("listHocKy", listHocKy);
+        model.addAttribute("listMon", listMon);
+        model.addAttribute("mocThoiGianGiangVien", mocThoiGianGiangVien);
         return "/giangvien/gv-nhom-datn";
     }
 

@@ -26,9 +26,6 @@ public interface GvNhomDatnResponse extends IsIdentified {
     @Value("#{target.ma_mon}")
     String getMaMon();
 
-    @Value("#{target.ten_mon_datn}")
-    String getTenMonDatn();
-
     @Value("#{target.total_ma_sinh_vien}")
     String getTotalMaSinhVien();
 

@@ -8,6 +8,7 @@ import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -32,4 +33,5 @@ public interface DtMonDatnService {
 
     List<String> importExcel(MultipartFile file);
 
+    List<SimpleEntityProj> findAllSimpleEntityByCoSoAndGvhd( String idGvhd, String coSoId);
 }

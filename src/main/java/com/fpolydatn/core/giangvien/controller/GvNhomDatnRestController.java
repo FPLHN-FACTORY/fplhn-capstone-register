@@ -1,5 +1,6 @@
 package com.fpolydatn.core.giangvien.controller;
 
+import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
@@ -8,6 +9,7 @@ import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
+import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.entity.NhomDatn;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/giang-vien/nhom-datn")
-public class GvNhomDatnRestController {
+public class GvNhomDatnRestController extends BaseController {
 
     @Autowired
     private GvNhomDatnService nhomDatnService;
@@ -42,6 +44,8 @@ public class GvNhomDatnRestController {
 
     @GetMapping("/search")
     public ResponseObject viewSeachNhomDatn(final GvFindNhomDatnRequest request) {
+        String idGiangVien = session.getUserId();
+        request.setGiangVienHDId(idGiangVien);
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
         return new ResponseObject(listNhomDatn);
     }
