@@ -144,7 +144,6 @@
                                                 <thead>
                                                 <th width="50px">STT</th>
                                                 <th width="200px">Tên Chuyên Ngành</th>
-                                                <th width="200px">Tên Cơ Sở</th>
                                                 <th width="200px">Tên CNBM</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
@@ -153,8 +152,7 @@
                                                     <tr>
                                                         <td th:text="${chuyenNganh.getStt()}"></td>
                                                         <td th:text="${chuyenNganh.getTenChuyenNganh()}"></td>
-                                                        <td th:text="${chuyenNganh.getTenCoSo()}"></td>
-                                                        <td th:text="${chuyenNganh.getTenCanBo()}"></td>
+                                                        <td th:text="${chuyenNganh.getTenCanBo()} + '-' + ${chuyenNganh.getTenTaiKhoan()}"></td>
                                                         <td>
                                                             <button
                                                                     type="button"

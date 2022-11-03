@@ -18,9 +18,9 @@ import java.util.List;
 public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
 
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY cn.last_modified_date DESC) AS stt,cn.id,ten_chuyen_nganh,cs.ten_co_so,
+            SELECT ROW_NUMBER() OVER(ORDER BY cn.last_modified_date DESC) AS stt,cn.id,ten_chuyen_nganh,cb.ten_tai_khoan,
             cb.ten_can_bo FROM chuyen_nganh cn JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id JOIN co_so cs ON 
-            cn.co_so_id = cs.id WHERE cn.co_so_id = :#{#req.coSoId} AND
+            cn.co_so_id = cs.id  WHERE cn.co_so_id = :#{#req.coSoId} AND
                     ( :#{#req.tenChuyenNganh} IS NULL 
                         OR :#{#req.tenChuyenNganh} LIKE '' 
                         OR ten_chuyen_nganh LIKE %:#{#req.tenChuyenNganh}% ) 
@@ -28,7 +28,7 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
             """, countQuery = """
             SELECT COUNT(cn.id)
                 FROM chuyen_nganh cn JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id JOIN co_so cs ON 
-            cn.co_so_id = cs.id WHERE cn.co_so_id = :#{#req.coSoId} AND
+            cn.co_so_id = cs.id  WHERE cn.co_so_id = :#{#req.coSoId} AND
                     ( :#{#req.tenChuyenNganh} IS NULL 
                         OR :#{#req.tenChuyenNganh} LIKE '' 
                         OR ten_chuyen_nganh LIKE %:#{#req.tenChuyenNganh}% ) 

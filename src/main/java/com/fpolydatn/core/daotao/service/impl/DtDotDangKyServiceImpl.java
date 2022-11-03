@@ -54,7 +54,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
         if (createDotDangKyRequest.getNgayKetThuc() < createDotDangKyRequest.getNgayBatDau()) {
-            throw new RestApiException((Message.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC));
+//            throw new RestApiException((Message.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC));
         }
         List<DotDangKy> listDotDangKy = dtDotDangKyRepository.findAll();
         for (DotDangKy dotDangKy : listDotDangKy) {
@@ -74,7 +74,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
         if (dtUpdateDotDangKyRequest.getNgayKetThuc() < dtUpdateDotDangKyRequest.getNgayBatDau()) {
-            throw new RestApiException((Message.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC));
+//            throw new RestApiException((Message.NGAY_BAT_DAU_BEFORE_NGAY_KET_THUC));
         }
         List<DotDangKy> listDotDangKy = dtDotDangKyRepository.findAll();
         for (DotDangKy dotDangKy : listDotDangKy) {
