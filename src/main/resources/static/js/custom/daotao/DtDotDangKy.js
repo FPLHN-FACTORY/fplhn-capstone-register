@@ -346,12 +346,30 @@ function detail(dotDangKyid) {
             $("#detailHanSinhVien").val(hanSinhVien.toLocaleDateString() + " " + hanSinhVien.toLocaleTimeString());
             $("#detailHanGiangVien").val(hanGiangVien.toLocaleDateString() + " " + hanGiangVien.toLocaleTimeString());
             $("#detailHanChuNhiemBoMon").val(hanChuNhiemBoMon.toLocaleDateString() + " " + hanChuNhiemBoMon.toLocaleTimeString());
-            $("#detailTongSoSinhVien").val(responseData.data.tongSinhVien);
-            $("#detailTongSoSinhVienChuaCoNhom").val(responseData.data.tongSinhVienChuaCoNhom);
-            $("#detailTongSoSinhVienCoNhom").val(responseData.data.tongSinhVienCoNhom);
-            $("#detailTongSoNhom").val(responseData.data.tongSoNhom);
-            $("#detailTiLeXacNhan").val(responseData.data.tiLeXacNhan == null ? "0%" : responseData.data.tiLeXacNhan + "%");
-            $("#detailTrangThai").val(responseData.data.trangThai == 1 ? "Mở" : "Đóng");
+            var tongSoSinhVien = responseData.data.tongSinhVien;
+            $("#detailTongSoSinhVien").val(tongSoSinhVien == 0 ? 'Chưa có sinh viên trong đợt' : tongSoSinhVien + ' sinh viên');
+            var tongSinhVienChuaCoNhom = responseData.data.tongSinhVienChuaCoNhom;
+            $("#detailTongSoSinhVienChuaCoNhom").val(tongSoSinhVien == 0 ? 'Chưa có sinh viên trong đợt' :
+                tongSinhVienChuaCoNhom == 0 ? 'Tất cả sinh viên đã có nhóm' : tongSinhVienChuaCoNhom + ' sinh viên');
+            var tongSinhVienCoNhom = responseData.data.tongSinhVienCoNhom;
+            $("#detailTongSoSinhVienCoNhom").val(tongSoSinhVien == 0 ? 'Chưa có sinh viên trong đợt' :
+                tongSinhVienCoNhom == 0 ? 'Chưa có sinh viên nào tham gia nhóm' : tongSinhVienCoNhom + ' sinh viên');
+            $("#detailTongSoNhom").val(responseData.data.tongSoNhom == 0 ? 'Chưa có nhóm nào được thành lập' : responseData.data.tongSoNhom);
+            if (responseData.data.tongSoNhom == 0 || responseData.data.tiLeXacNhan == null) {
+                $("#labelDetailTiLe").attr('style', "display: none");
+            } else {
+                $("#labelDetailTiLe").attr('style', "display: block");
+                var tiLeXacNhan = responseData.data.tiLeXacNhan;
+                $("#detailTiLeXacNhan").val(tiLeXacNhan == 0 ? 'Chưa có nhóm nào được xác nhận' : tiLeXacNhan + "%");
+            }
+
+            if (responseData.data.trangThai == 1) {
+                $("#detailTrangThai").attr('style', 'color: #5867dd; font-weight: bold')
+                $("#detailTrangThai").val("Mở");
+            } else {
+                $("#detailTrangThai").attr('style', 'color: red; font-weight: bold')
+                $("#detailTrangThai").val("Đóng");
+            }
             if (responseData.data.tongSinhVienChuaCoNhom == 0) {
                 $("#btnShowSinhVienChuaCoNhom").attr('style', "display: none");
             } else {
