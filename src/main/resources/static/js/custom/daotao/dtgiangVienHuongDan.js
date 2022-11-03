@@ -4,6 +4,9 @@ const regexFE = new RegExp('[a-z0-9]+@fe.edu.vn');
 const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
 const regexSDT = new RegExp('(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}');
 const regexSoNhom = new RegExp('[0-9]+');
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+})
 
 $(document).ready(function () {
     $("#giang_vien_error").text("");
@@ -272,49 +275,6 @@ $("#form_giang_vien_update").submit(function (event) {
 
 });
 
-function openModalRemoveGiangVien(giangVienId, item) {
-    $("#modal_giang_vien_remove").modal('show');
-    $("#remove_giang_vien_item").val(item);
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: giangVienHuongDanApi + "/" + giangVienId,
-        data: JSON.stringify(giangVienId),
-        dataType: 'json',
-        success: function () {
-            $("#remove_giang_vien").val(giangVienId);
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
-
-$("#form_giang_vien_delete").submit(function (event) {
-    event.preventDefault();
-    let giangVienId = $("#remove_giang_vien").val();
-    let item = $("#remove_giang_vien_item").val();
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: giangVienHuongDanApi + "/" + giangVienId,
-        data: JSON.stringify(giangVienId),
-        dataType: 'json',
-        success: function (responseData) {
-            if(responseData.data.message != null){
-             alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
-            }else{
-               loadTable(item);
-               $("#modal_giang_vien_remove").modal("hide");
-            }
-
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-
-});
 
 $("#searchGvhd").submit(function (event) {
     event.preventDefault();
@@ -341,24 +301,28 @@ function loadTable(count) {
                    <td>
                        <button
                            type="button"
-                           class="btn btn-primary chuc-nang"
+                           class="btn_pencil_square"
+                           data-toggle="tooltip"
+                           title="Sửa "
                            onclick="openModalUpdateGiangVien('${item.id}','${count}')">
-                             Sửa
+                           <img src="/img/pencil-square.svg">
                         </button>
                         </button>
                         <button
                             type="button"
-                            class="btn btn-danger chuc-nang"
-                            data-toggle="modal"
+                            class="btn_trash"
+                            data-toggle="tooltip"
+                            title="Xóa "
                             onclick="openModalRemoveGiangVien('${item.id}','${count}')">
-                            Xoá
+                            <img src="/img/trash.svg">
                         </button>
-                       <a type="button" class="btn btn-success chuc-nang"
+                       <a type="button"
+                            class="btn_clipboard_user"
+                            data-toggle="tooltip"
                             href="/dao-tao/giang-vien-huong-dan/${item.id}">
-                            Phân môn
+                            <img src="/img/clipboard-user.svg">
                         </a>
                    </td>
-
                </tr>
                `
             }))
@@ -451,3 +415,51 @@ $("#modal_excel_mau").submit(function (event) {
         });
     }
 });
+function openModalRemoveGiangVien(giangVienId, item) {
+            bootbox.confirm({
+                title: "Xóa",
+                message: "Bạn chắc chắn xóa không?",
+                buttons: {
+                    cancel: {
+                        className: 'btn-outline-secondary btn btn-light',
+                        label: '<i class="fa fa-times"></i> Quay lại'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Xác nhận'
+                    }
+                },
+                callback: function (result) {
+                    // result trả về true hoặc false; nếu người dùng chọn xác nhận thì trả về true
+                    if (result) {
+                        // Gọi Ajax ở đây hoặc gọi hàm cần thiết confirm ở đây
+                            $.ajax({
+                                type: "DELETE",
+                                contentType: "application/json",
+                                url: giangVienHuongDanApi + "/" + giangVienId,
+                                data: JSON.stringify(giangVienId),
+                                dataType: 'json',
+                                success: function (responseData) {
+                                    if(responseData.data.message != null){
+                                     alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
+                                    }else{
+                                       loadTable(item);
+                                    }
+
+                                },
+                                error: function (e) {
+                                    console.log("ERROR : ", e);
+                                }
+                            });
+                        //đây là ví dụ về Modal Thông báo
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                // Có thể load lại trạng hoặc gọi hàm gì đó
+                                 loadTable(item);
+                            }
+                        });
+                    }
+                }
+            });
+            }

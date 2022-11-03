@@ -10,6 +10,7 @@
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
+    <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
     <style>
         .chuc-nang {
             font-size: 10px;
@@ -161,7 +162,7 @@
                                                                     <form id="form_type_excel" method="post">
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title" id="exampleModalLabel">Export
-                                                                                </h5>
+                                                                            </h5>
                                                                             <button type="button" class="close" data-dismiss="modal"
                                                                                     aria-label="Close">
                                                                                 <span aria-hidden="true">&times;</span>
@@ -365,21 +366,27 @@
                                                                     <td>
                                                                         <button
                                                                                 type="button"
-                                                                                class="btn btn-primary chuc-nang"
+                                                                                class="btn_pencil_square"
+                                                                                data-toggle="tooltip"
+                                                                                title="Sửa "
                                                                                 th:attr="onclick=|openModalUpdateGiangVien('${giangVienHD.id}','${page.currentPage}')|">
-                                                                            Sửa
+                                                                                <img th:src="@{/img/pencil-square.svg}">
                                                                         </button>
                                                                         </button>
                                                                         <button
                                                                                 type="button"
-                                                                                class="btn btn-danger chuc-nang"
-                                                                                data-toggle="modal"
+                                                                                class="btn_trash"
+                                                                                data-toggle="tooltip"
+                                                                                title="Xóa "
                                                                                 th:attr="onclick=|openModalRemoveGiangVien('${giangVienHD.id}','${page.currentPage}')|">
-                                                                            Xoá
+                                                                                <img th:src="@{/img/trash.svg}">
                                                                         </button>
-                                                                        <a type="button" class="btn btn-success chuc-nang"
+                                                                        <a type="button"
+                                                                           class="btn_clipboard_user"
+                                                                           data-toggle="tooltip"
+                                                                           title="Phân công giảng viên"
                                                                            th:href="@{'/dao-tao/giang-vien-huong-dan/'+ ${giangVienHD.getId()}}">
-                                                                            Phân môn
+                                                                           <img th:src="@{/img/clipboard-user.svg}">
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -541,5 +548,6 @@
                     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
                     crossorigin="anonymous"></script>
             <script th:src="@{/js/custom/daotao/dtgiangVienHuongDan.js}" type="text/javascript"></script>
+            <script th:src="@{/js/plugin/bootbox.min.js}"></script>
 </body>
 </html>
