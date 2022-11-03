@@ -33,6 +33,7 @@
             <div>
                 <div class="m-content">
                     <h3>Nhóm đang hướng dẫn </h3>
+                    <p th:text="${mocThoiGianGiangVien}" style="display: none" id="mocthoiGian"></p>
                     <div class="mt-5">
                         <div class="m-portlet">
                             <div class="m-portlet__body">
@@ -49,52 +50,43 @@
                                         <th>GV hướng dẫn</th>
                                         <th>Trạng thái</th>
                                         <th>Chi tiết nhóm</th>
-                                        <th>Hành động</th>
+                                        <th th:style="${mocThoiGianGiangVien} == true ? '' : 'display: none'">Hành động</th>
                                         </thead>
                                         <tbody id="list_nhom_datn">
                                         <th:block th:each="nhomDatn : ${page.data}">
                                             <tr>
                                                 <td th:text="${nhomDatn.getStt()}"></td>
-                                                <td th:text="${nhomDatn.getTenNhom()}"></td>
-                                                <td th:text="${nhomDatn.getTenDeTai()}"></td>
+                                                <td th:text="${nhomDatn.getTenNhom()} == null ? 'Chưa có' : (${nhomDatn.getTenNhom()})"></td>
+                                                <td th:text="${nhomDatn.getTenDeTai()} == null ? 'Chưa có' : (${nhomDatn.getTenDeTai()})"></td>
                                                 <td th:text="${nhomDatn.getTenChuyenNganh()}"></td>
                                                 <td th:text="${nhomDatn.getTotalMaSinhVien()}"></td>
                                                 <td th:text="${nhomDatn.getTenTruongNhom()} + ' - '+ ${nhomDatn.getMaTruongNhom()} ">
                                                 </td>
-                                                <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()} "></td>
+                                                <td th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getAccountGvhd()}"></td>
                                                 <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                 <td>
                                                     <button
                                                             type="button"
                                                             class="btn btn-primary"
                                                             th:attr="onclick=|showDetail('${nhomDatn.getId()}')|">
-                                                        chi tiết nhóm
+                                                        Chi tiết nhóm
                                                     </button>
                                                 </td>
-                                                <td>
+                                                <td th:style="${mocThoiGianGiangVien} == true ? '' : 'display: none'">
                                                     <button
                                                             type="button"
-                                                            class="btn btn-primary "
-                                                            id="chotDuLieu"
-                                                            th:style="${nhomDatn.getTrangThai()} == 2 ? 'display: block' : 'display: none'"
+                                                            class="btn btn-primary chucNangs"
+                                                            th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : (${nhomDatn.getTrangThai()} ==3 ? 'display: block' :  'display: none')"
                                                             th:attr="onclick=|chotDeTaiNhomDatn('${nhomDatn.getId()}')|">
-                                                        Chốt
+                                                        Chốt đề tài
                                                     </button>
                                                     <button
                                                             type="button"
-                                                            class="btn btn-primary "
+                                                            class="btn btn-primary chucNangs"
                                                             id="updateTenDeTai"
-                                                            th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : 'display: none'"
+                                                            th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : (${nhomDatn.getTrangThai()} ==3 ? 'display: block' : 'display: none')"
                                                             th:attr="onclick=|updateTenDeTai('${nhomDatn.getId()}')|">
-                                                        Update
-                                                    </button>
-                                                    <button
-                                                            type="button"
-                                                            class="btn btn-primary "
-                                                            id="tuChoi"
-                                                            th:style="${nhomDatn.getTrangThai()} == 2 ? 'display: block' : 'display: none'"
-                                                            th:attr="onclick=|tuChoiDeTaiNhomDatn('${nhomDatn.getId()}')|">
-                                                        Từ chối
+                                                        Sửa đề tài
                                                     </button>
                                                 </td>
                                             </tr>
@@ -179,7 +171,7 @@
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
-            <form id="form_nhom_datn_update_ten_de_tai">
+            <form id="updateTenDeTaiNhomDatn">
                 <div class="modal-header">
                     <h5 class="modal-title">Cập nhật tên đề tài</h5>
                     <button type="button" class="close"
@@ -224,7 +216,7 @@
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
-            <form id="form_nhom_datn_chot_de_tai">
+            <form id="submitChotDeTaiNhomDatn">
                 <div class="modal-header">
                     <h5 class="modal-title">Phê duyệt đề tài nhóm DATN</h5>
                     <button type="button" class="close"
@@ -249,40 +241,7 @@
 </div>
 <!--   thong bao phe dyet-->
 
-<!--  begin tu choi de tai nhom datn  -->
-<div
-        class="modal fade"
-        id="modal_nhom_datn_tu_choi_de_tai"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_nhom_datn_tu_choi_de_tai">
-                <div class="modal-header">
-                    <h5 class="modal-title">Từ chối nhóm DATN</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn từ chối tên đề tài không ?</p>
-                    <span id="ma_nhom_datn_tu_choi" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Từ chối
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- end  tu choi de tai nhom datn  -->
+
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

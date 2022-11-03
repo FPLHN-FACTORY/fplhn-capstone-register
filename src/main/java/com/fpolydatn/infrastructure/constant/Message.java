@@ -14,6 +14,8 @@ public enum Message {
     CHUYEN_NGANH_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.CHUYEN_NGANH_NOT_EXIST)),
     CO_SO_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.CO_SO_NOT_EXIST)),
     CAN_BO_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.CAN_BO_NOT_EXIST)),
+    CAN_BO_EXSIT(PropertiesReader.getProperty(PropertyKeys.CAN_BO_EXSIT)),
+    NO_SPACES_ALLOW(PropertiesReader.getProperty(PropertyKeys.NO_SPACES_ALLOW)),
     DOT_DANG_KY_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.DOT_DANG_KY_NOT_EXIST)),
     PHAN_CONG_HUONG_DAN_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.PHAN_CONG_HUONG_DAN_NOT_EXIST)),
     HOC_KY_NOT_EXIST(PropertiesReader.getProperty(PropertyKeys.HOC_KY_NOT_EXIST)),
@@ -46,8 +48,25 @@ public enum Message {
     ROI_NHOM_KHI_LA_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.ROI_NHOM_KHI_LA_TRUONG_NHOM)),
     SINH_VIEN_DANG_LA_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_DANG_LA_TRUONG_NHOM)),
     TRUONG_NHOM_MOI_KHONG_CUNG_NHOM(PropertiesReader.getProperty(PropertyKeys.TRUONG_NHOM_MOI_KHONG_CUNG_NHOM)),
-
-    CHUYEN_NGANH_KHONG_DUOC_XOA(PropertiesReader.getProperty(PropertyKeys.CHUYEN_NGANH_KHONG_DUOC_XOA));
+    INVALID_HAN_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.INVALID_HAN_SINH_VIEN)),
+    INVALID_HAN_GIANG_VIEN (PropertiesReader.getProperty(PropertyKeys.INVALID_HAN_GIANG_VIEN)),
+    INVALID_HAN_CHU_NHIEM_BO_MON(PropertiesReader.getProperty(PropertyKeys.INVALID_HAN_CHU_NHIEM_BO_MON)),
+    INVALID_DATE(PropertiesReader.getProperty(PropertyKeys.INVALID_DATE)),
+    INVALID_NGAY_KET_THUC(PropertiesReader.getProperty(PropertyKeys.INVALID_NGAY_KETTHUC)),
+    THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG(PropertiesReader.getProperty(PropertyKeys.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG)),
+    HET_HAN_QUYEN_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.HET_HAN_QUYEN_SINH_VIEN)),
+    GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN)),
+    KHONG_DUOC_XOA_MON(PropertiesReader.getProperty(PropertyKeys.KHONG_DUOC_XOA_MON)),
+    CHUYEN_NGANH_KHONG_DUOC_XOA(PropertiesReader.getProperty(PropertyKeys.CHUYEN_NGANH_KHONG_DUOC_XOA)),
+    MOC_THOI_GIAN_GVHD(PropertiesReader.getProperty(PropertyKeys.MOC_THOI_GIAN_GVHD)),
+    DONT_UPDATE_TEN_DE_TAI(PropertiesReader.getProperty(PropertyKeys.DONT_UPDATE_TEN_DE_TAI)),
+    DONT_PHE_DUYET_NHOM_DATN(PropertiesReader.getProperty(PropertyKeys.DONT_PHE_DUYET_NHOM_DATN)),
+    DONT_CHOT_DE_TAI_NHOM_DATN(PropertiesReader.getProperty(PropertyKeys.DONT_CHOT_DE_TAI_NHOM_DATN)),
+    VUOT_QUA_SO_LUONG_CHO_PHEP(PropertiesReader.getProperty(PropertyKeys.VUOT_QUA_SO_LUONG_CHO_PHEP)),
+    MON_KHONG_TUONG_DUONG(PropertiesReader.getProperty(PropertyKeys.MON_KHONG_TUONG_DUONG)),
+    GIANG_VIEN_KHONG_DAY_MON_NAY(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_KHONG_DAY_MON_NAY)),
+    CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM(PropertiesReader.getProperty(PropertyKeys.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM)),
+    MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN));
 
     private String message;
 

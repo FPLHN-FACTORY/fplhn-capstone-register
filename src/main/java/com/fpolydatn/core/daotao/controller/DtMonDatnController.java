@@ -2,11 +2,13 @@ package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtMonDatnMauImport;
 import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.model.request.MuitiPathFile;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
+import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -37,16 +43,33 @@ public class DtMonDatnController extends BaseController {
         req.setCoSoId(coSoId);
         PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
+        List<MonDatn> tenNhomMon= monDatnService.findByTenNhomMon();
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
+        model.addAttribute("tenNhomMon", tenNhomMon);
         return "daotao/dt-mon-datn";
     }
 
     @PostMapping("/import")
-    public String importExcel(Model model, @RequestBody MultipartFile file) {
-        this.monDatnService.importExcel(file);
+    public String importExcel(RedirectAttributes redirectAttributes, @RequestBody MultipartFile file) {
+        List<String> check = this.monDatnService.importExcel(file);
+        if(check.size() == 0) {
+            redirectAttributes.addFlashAttribute("successMess", "Import file excel thành công.");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMess", check);
+        }
         return "redirect:/dao-tao/mon-datn";
+    }
+
+    @GetMapping("/mau-import")
+    public void exportEcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=MonDatn.xlsx";
+        response.setHeader(headerKey, headerValue);
+        DtMonDatnMauImport mau = new DtMonDatnMauImport();
+        mau.exportData(response);
     }
 
 }

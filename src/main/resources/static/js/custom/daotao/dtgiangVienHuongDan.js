@@ -48,10 +48,7 @@ $("#form_create_giang_vien").submit(function (event) {
     } else if (Number.parseInt(soNhomHuongDanToiDa) <= 0) {
         $("#errorSoNhomHD").text("Số nhóm phải lớn hơn 0");
         index++;
-    } else if (Number.isInteger(soNhomHuongDanToiDa) == false) {
-        $("#errorSoNhomHD").text("Số nhóm phải là số ");
-        index++;
-    } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
+    }  else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
         $("#errorSoNhomHD").text("Số nhóm chỉ từ 1 đến 7");
         index++;
     } else {
@@ -192,9 +189,6 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexSoNhom.test(soNhomHuongDanToiDa) == false) {
         $("#errorSoNhomHDUpdate").text(" Số nhóm phải là số");
         index++;
-    } else if (Number.isInteger(soNhomHuongDanToiDa) == false) {
-        $("#errorSoNhomHDUpdate").text(" Số nhóm phải là số");
-        index++;
     } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
         $("#errorSoNhomHDUpdate").text("Số nhóm chỉ từ 1 đến 7");
         index++;
@@ -306,9 +300,14 @@ $("#form_giang_vien_delete").submit(function (event) {
         url: giangVienHuongDanApi + "/" + giangVienId,
         data: JSON.stringify(giangVienId),
         dataType: 'json',
-        success: function () {
-            loadTable(item);
-            $("#modal_giang_vien_remove").modal("hide");
+        success: function (responseData) {
+            if(responseData.data.message != null){
+             alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
+            }else{
+               loadTable(item);
+               $("#modal_giang_vien_remove").modal("hide");
+            }
+
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -339,26 +338,30 @@ function loadTable(count) {
                    <td >${item.tenDotDangKy}</td>
                    <td >${item.tenGvhd}</td>
                    <td >${item.tenTaiKhoan}</td>
-                   <td >${item.soNhomHuongDanToiDa}</td>
+                   <td >${item.soNhomDangHuongDan +'/'+item.soNhomHuongDanToiDa}</td>
                    <td >${item.soDienThoai}</td>
                    <td >${item.emailFpt}</td>
                    <td >${item.emailFe}</td>
                    <td>
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        onclick="openModalUpdateGiangVien('${item.id}','${count}')">
-                          Sửa
-                     </button>
-                     </button>
-                     <button
-                         type="button"
-                         class="btn btn-danger"
-                         data-toggle="modal"
-                         onclick="openModalRemoveGiangVien('${item.id}','${count}')">
-                         Xoá
-                     </button>
-                    </td>
+                       <button
+                           type="button"
+                           class="btn btn-primary chuc-nang"
+                           onclick="openModalUpdateGiangVien('${item.id}','${count}')">
+                             Sửa
+                        </button>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-danger chuc-nang"
+                            data-toggle="modal"
+                            onclick="openModalRemoveGiangVien('${item.id}','${count}')">
+                            Xoá
+                        </button>
+                       <a type="button" class="btn btn-success chuc-nang"
+                            href="/dao-tao/giang-vien-huong-dan/${item.id}">
+                            Phân môn
+                        </a>
+                   </td>
 
                </tr>
                `
@@ -408,5 +411,47 @@ $("#form_import_excel").submit(function (event) {
         );
     } else {
         $("#import_excel_error").text("chọn đúng file Excel ");
+    }
+});
+
+
+$("#form_type_excel").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#type_excel").val();
+    if (typeExcel == '') {
+        $("#type_excel_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel,
+
+            success: function () {
+                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+});
+$("#modal_excel_mau").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#type_mau_excel").val();
+    if (typeExcel == '') {
+        $("#mau_excel_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel,
+
+            success: function () {
+                window.open("/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
     }
 });

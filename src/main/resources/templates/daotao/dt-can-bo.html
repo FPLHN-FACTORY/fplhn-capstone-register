@@ -10,7 +10,6 @@
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
-    <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
 </head>
 <!-- end::Head -->
 
@@ -148,11 +147,11 @@
                                                  aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
-                                                        <form th:action="@{/dao-tao/can-bo/import}" method="post"
-                                                              enctype="multipart/form-data">
+                                                        <form enctype="multipart/form-data" method="post"
+                                                              th:action="@{/api/dao-tao/can-bo/import}"
+                                                              id="form_import_excel">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">import
-                                                                    file </h5>
+                                                                <h5 class="modal-title">Import Excel</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
@@ -160,22 +159,31 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-
-                                                                    <input
-
-                                                                            class="form-control"
-
-                                                                            type="file" th:name="file">
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text"
+                                                                                  id="inputGroupFileAddon01">Upload</span>
+                                                                        </div>
+                                                                        <div class="custom-file">
+                                                                            <input type="file" class="custom-file-input"
+                                                                                   id="inputGroupFile01"
+                                                                                   aria-describedby="inputGroupFileAddon01"
+                                                                                   name="file">
+                                                                            <label class="custom-file-label"
+                                                                                   for="inputGroupFile01">Choose
+                                                                                file</label>
+                                                                        </div>
+                                                                    </div>
                                                                     <span class="text-danger"
-                                                                          id="hoc_ky_error"></span>
+                                                                          id="import_excel_error"></span>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary"
-                                                                        value="Import">Thêm mới
+                                                                <button type="submit" class="btn btn-primary">Import
+                                                                    excel
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -389,6 +397,5 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script th:src="@{/js/custom/daotao/dtCanBo.js}" type="text/javascript"></script>
-<script th:src="@{/js/plugin/bootstrap.bundle.js}"></script>
 </body>
 </html>

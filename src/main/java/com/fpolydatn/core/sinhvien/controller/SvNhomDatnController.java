@@ -10,10 +10,9 @@ import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvMonDatnService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
-import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.MocThoiGianCommon;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +40,10 @@ public class SvNhomDatnController extends BaseController {
     private SvGiangVienHuongDanService svGiangVienHuongDanService;
     @Autowired
     private CommonHelper commonHelper;
+    @Autowired
+    MocThoiGianCommon mocThoiGianCommon;
+
+
 
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
@@ -50,11 +53,13 @@ public class SvNhomDatnController extends BaseController {
         String nhomId = svSinhVienService.getNhomIdById(coSoId,
                 dotDangKyHienTai,
                 idUSer);
+        model.addAttribute("checkMocThoiGian", mocThoiGianCommon.checkMocThoiGianSinhVien());
+        System.out.println(mocThoiGianCommon.checkMocThoiGianSinhVien());
         if (nhomId == null || nhomId.trim().isEmpty()) {
             req.setCoSoId(coSoId);
             req.setDotDangKyId(dotDangKyHienTai);
-            PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
-            model.addAttribute("listDataMonDatn", svMonDatnService.getMonDatn());
+            PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUSer);
+            model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer));
             model.addAttribute("page", listNhomDatn);
             return "sinhvien/sv-join-nhom-datn";
         } else {
