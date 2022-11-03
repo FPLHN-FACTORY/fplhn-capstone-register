@@ -334,13 +334,9 @@ function loadTable(count) {
                 return `
                <tr>
                    <td >${item.stt}</td>
-                   <td >${item.tenCoSo}</td>
-                   <td >${item.tenDotDangKy}</td>
-                   <td >${item.tenGvhd}</td>
-                   <td >${item.tenTaiKhoan}</td>
+                   <td >${item.tenGvhd +' - '+item.tenTaiKhoan}</td>
                    <td >${item.soNhomDangHuongDan +'/'+item.soNhomHuongDanToiDa}</td>
                    <td >${item.soDienThoai}</td>
-                   <td >${item.emailFpt}</td>
                    <td >${item.emailFe}</td>
                    <td>
                        <button

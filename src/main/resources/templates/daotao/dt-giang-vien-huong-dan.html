@@ -59,7 +59,7 @@
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Tên giảng viên</span>
-                                            <input oninput="loadTable(0)" type="text" class="form-control col-8"
+                                            <input type="text" class="form-control col-8"
                                                    name="tenGiangVien" id="tenGiangVien" value="">
                                         </div>
                                     </div>
@@ -142,14 +142,14 @@
                                                         <button
                                                                 data-toggle="modal"
                                                                 data-target="#modal_excel"
-                                                                class="col-8 col-sm-6 col-md-4 btn btn-success btn-floating btn-sm fas">
-                                                            <i class="fas fa-download"> Export Excel</i>
+                                                                class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                            <i class="fas fa-download"> Export </i>
                                                         </button>
                                                         <button
                                                                 data-toggle="modal"
                                                                 data-target="#import_excel"
-                                                                class="col-8 col-sm-6 col-md-4 btn btn-success btn-floating btn-sm fas">
-                                                            <i class="fas fa-upload"> Import Excel</i>
+                                                                class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                            <i class="fas fa-upload"> Import </i>
                                                         </button>
                                                         <div class="modal fade "
                                                              id="modal_excel"
@@ -161,7 +161,7 @@
                                                                     <form id="form_type_excel" method="post">
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title" id="exampleModalLabel">Export
-                                                                                Excel</h5>
+                                                                                </h5>
                                                                             <button type="button" class="close" data-dismiss="modal"
                                                                                     aria-label="Close">
                                                                                 <span aria-hidden="true">&times;</span>
@@ -203,7 +203,7 @@
                                                                           th:action="@{/api/dao-tao/giang-vien-huong-dan/import}"
                                                                           id="form_import_excel">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title">Import Excel</h5>
+                                                                            <h5 class="modal-title">Import </h5>
                                                                             <button type="button" class="close" data-dismiss="modal"
                                                                                     aria-label="Close">
                                                                                 <span aria-hidden="true">&times;</span>
@@ -225,6 +225,10 @@
                                                                                                for="inputGroupFile01">Choose
                                                                                             file</label>
                                                                                     </div>
+                                                                                    <div class="input-group-append">
+                                                                                        <button class="input-group-text" type="button"  id="mauImport">Mẫu Import</button>
+                                                                                    </div>
+
                                                                                 </div>
                                                                                 <span class="text-danger"
                                                                                       id="import_excel_error"></span>
@@ -234,8 +238,8 @@
                                                                             <button type="button" class="btn btn-secondary"
                                                                                     data-dismiss="modal">Hủy
                                                                             </button>
-                                                                            <button type="submit" class="btn btn-primary">Import
-                                                                                excel
+                                                                            <button type="submit" class="btn btn-primary">Import excel
+
                                                                             </button>
                                                                         </div>
                                                                     </form>
@@ -344,13 +348,9 @@
                                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                             <thead>
                                                             <th width="50px">STT</th>
-                                                            <th>Tên cơ sở</th>
-                                                            <th>Tên đợt đăng ký</th>
-                                                            <th>Tên giảng viên</th>
-                                                            <th>Tên tài khoản</th>
-                                                            <th>Số nhóm hướng dẫn</th>
-                                                            <th>Số điện thoại</th>
-                                                            <th>Email FPT</th>
+                                                            <th>Giảng viên</th>
+                                                            <th>Số nhóm </th>
+                                                            <th>SĐT</th>
                                                             <th>Email Fe</th>
                                                             <th width="200px">Chức năng</th>
                                                             </thead>
@@ -358,13 +358,9 @@
                                                             <th:block th:each="giangVienHD,i : ${page.data}">
                                                                 <tr>
                                                                     <td th:text="${giangVienHD.getSTT()}"></td>
-                                                                    <td th:text="${giangVienHD.getTenCoSo()}"></td>
-                                                                    <td th:text="${giangVienHD.getTenDotDangKy()}"></td>
-                                                                    <td th:text="${giangVienHD.getTenGvhd()}"></td>
-                                                                    <td th:text="${giangVienHD.getTenTaiKhoan()}"></td>
+                                                                    <td th:text="${giangVienHD.getTenGvhd() +' - ' +giangVienHD.getTenTaiKhoan()}"></td>
                                                                     <td th:text="${giangVienHD.getSoNhomDangHuongDan() + '/' + giangVienHD.getSoNhomHuongDanToiDa()}"></td>
                                                                     <td th:text="${giangVienHD.getSoDienThoai()}"></td>
-                                                                    <td th:text="${giangVienHD.getEmailFpt()}"></td>
                                                                     <td th:text="${giangVienHD.getEmailFe()}"></td>
                                                                     <td>
                                                                         <button
