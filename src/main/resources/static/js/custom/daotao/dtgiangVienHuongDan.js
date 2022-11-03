@@ -442,24 +442,21 @@ function openModalRemoveGiangVien(giangVienId, item) {
                                     if(responseData.data.message != null){
                                      alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
                                     }else{
-                                       loadTable(item);
+                                       bootbox.alert({
+                                           message: 'Xóa thành công',
+                                           backdrop: true,
+                                           callback: function () {
+                                           // Có thể load lại trạng hoặc gọi hàm gì đó
+                                           loadTable(item);
+                                         }
+                                       });
                                     }
-
                                 },
                                 error: function (e) {
                                     console.log("ERROR : ", e);
                                 }
                             });
-                        //đây là ví dụ về Modal Thông báo
-                        bootbox.alert({
-                            message: 'Xóa thành công',
-                            backdrop: true,
-                            callback: function () {
-                                // Có thể load lại trạng hoặc gọi hàm gì đó
-                                 loadTable(item);
-                            }
-                        });
                     }
                 }
             });
-            }
+}

@@ -84,15 +84,7 @@
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="row">
-                                        <div class="col-5 d-inline float-right"
-                                        >
-                                            <button id="mauImport"
-                                                    data-toggle="modal"
-                                                    data-target="#modal_excel_mau"
-                                                    class="col-10 col-sm-6 col-md-4 btn btn-secondary btn-floating btn-sm fas">
-                                                <i class="fas fa-download"> Mẫu Import Excel</i>
-                                            </button>
-
+                                        <div class="col-5 d-inline float-right">
                                             <div class="modal fade "
                                                  id="modal_excel_mau"
                                                  tabindex="-1"
@@ -227,7 +219,12 @@
                                                                                             file</label>
                                                                                     </div>
                                                                                     <div class="input-group-append">
-                                                                                        <button class="input-group-text" type="button"  id="mauImport">Mẫu Import</button>
+                                                                                        <button class="btn input-group-text"
+                                                                                                type="button"
+                                                                                                id="mauImport"
+                                                                                                data-dismiss="modal"
+                                                                                                data-toggle="modal"
+                                                                                                data-target="#modal_excel_mau">Mẫu Import</button>
                                                                                     </div>
 
                                                                                 </div>
