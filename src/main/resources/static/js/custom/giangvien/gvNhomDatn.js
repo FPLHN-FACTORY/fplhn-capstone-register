@@ -7,12 +7,19 @@ function clearDataGVHD() {
     $("#tenDotDangKy").val("");
 }
 
-$(document).ready(function () {
-
-    $('.enityNhomDatn[value="1"]').closest("tr").hide()
-    fillter()
-
-});
+// $(document).ready(function () {
+//
+//     $('.enityNhomDatn[value="2"]').closest("tr").hide()
+//     var checkMocThoiGians = $("#mocthoiGian").val()
+//     var chucNangs = document.querySelectorAll(".chucNangs")
+//     if(checkMocThoiGians == 'false'){
+//         for(var i =0; i< chucNangs.length; i++){
+//             chucNangs[i].style.display = "none"
+//         }
+//     }
+//     fillter()
+//
+// });
 
 function fillter() {
 
@@ -61,21 +68,21 @@ function showDetail(maNhom) {
 }
 
 function pheDuyetNhomDatn(maNhom) {
-    $("#modal_nhom_datn_update").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/" + maNhom,
-        success: function (responseData) {
-            $('#update_nhom_datn').val(responseData.data.id)
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
+        $("#modal_nhom_datn_update").modal('show');
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: nhomDatnAPI + "/" + maNhom,
+            success: function (responseData) {
+                $('#update_nhom_datn').val(responseData.data.id)
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
 }
 
-$('#form_nhom_datn_update').submit(function (event) {
+$("#XacNhanLienHeNhomDatn").submit(function (event) {
     event.preventDefault();
     var maNhom = $('#update_nhom_datn').val()
     $.ajax({
@@ -91,9 +98,6 @@ $('#form_nhom_datn_update').submit(function (event) {
     });
 })
 
-$("#form_list_giang_vien").submit(function (event) {
-    event.preventDefault();
-})
 
 function seachNhomdatn(index) {
     if (index == undefined) {
@@ -150,34 +154,34 @@ function seachNhomdatn(index) {
 }
 
 function updateTenDeTai(maNhom) {
-    $("#modal_update_ten_de_tai").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/" + maNhom,
-        dataType: 'json',
-        success: function (responseData) {
-            $("#id_nhom_datn_update").val(responseData.data.id);
-            $("#ten_de_tai_update").val(responseData.data.tenDeTai);
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
+        $("#modal_update_ten_de_tai").modal('show');
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: nhomDatnAPI + "/" + maNhom,
+            dataType: 'json',
+            success: function (responseData) {
+                $("#id_nhom_datn_update").val(responseData.data.id);
+                $("#ten_de_tai_update").val(responseData.data.tenDeTai);
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
 }
 
-$("#form_nhom_datn_update_ten_de_tai").submit(function (event) {
-    event.preventDefault();
+$("#updateTenDeTaiNhomDatn").submit(function (event) {
+    event.preventDefault()
     let tenDeTai = $("#ten_de_tai_update").val();
     let maNhom = $("#id_nhom_datn_update").val();
+
     let NhomDatnRequest = {};
     NhomDatnRequest["tenDeTai"] = tenDeTai;
     NhomDatnRequest["maNhom"] = maNhom;
-
-
+    console.log(NhomDatnRequest)
     if (tenDeTai.trim().length == 0) {
         $("#errorMessageUpdate").text("Tên đề tài không được để trống");
-    } else if (tenDeTai.length < 6) {
+    } else if (tenDeTai.trim().length < 6) {
         $("#errorMessageUpdate").text("Tên đề tài tối thiếu 6 ký tự");
     } else {
         $.ajax({
@@ -197,60 +201,27 @@ $("#form_nhom_datn_update_ten_de_tai").submit(function (event) {
 });
 
 function chotDeTaiNhomDatn(maNhom) {
-    $("#modal_nhom_datn_chot_de_tai").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/" + maNhom,
-        success: function (responseData) {
-            $('#ma_nhom_datn').val(responseData.data.id)
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
+        $("#modal_nhom_datn_chot_de_tai").modal('show');
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: nhomDatnAPI + "/" + maNhom,
+            success: function (responseData) {
+                $('#ma_nhom_datn').val(responseData.data.id)
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
 }
 
-$("#form_nhom_datn_chot_de_tai").submit(function (event) {
-    event.preventDefault();
+$("#submitChotDeTaiNhomDatn").submit(function (event) {
+    event.preventDefault()
     var maNhom = $('#ma_nhom_datn').val()
     $.ajax({
         type: "PUT",
         contentType: "application/json",
         url: nhomDatnAPI + "/phe-duyet-de-tai-nhom?maNhom=" + maNhom,
-        success: function () {
-            window.location.reload(false)
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-})
-
-function tuChoiDeTaiNhomDatn(maNhom) {
-    $("#modal_nhom_datn_tu_choi_de_tai").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/" + maNhom,
-        success: function (responseData) {
-            $('#ma_nhom_datn_tu_choi').val(responseData.data.id)
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
-
-$('#form_nhom_datn_tu_choi_de_tai').submit(function (event) {
-    event.preventDefault();
-    var maNhom = $('#ma_nhom_datn_tu_choi').val()
-    console.log(maNhom)
-    $.ajax({
-        type: "PUT",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/tu-choi-de-tai-nhom-datn?maNhom=" + maNhom,
-        dataType: 'json',
         success: function () {
             window.location.reload(false)
         },

@@ -3,6 +3,7 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.entity.MonDatn;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.MonDatnRepository;
 import org.springframework.data.domain.Page;
@@ -11,20 +12,22 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author hungpv
  */
 public interface DtMonDatnRepository extends MonDatnRepository {
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, cb.ten_tai_khoan 
+            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, 
+             (SELECT b.ten_mon_datn FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon , cb.ten_tai_khoan 
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
                 WHERE m.co_so_id = :#{#req.coSoId} AND
                     ( :#{#req.tenMonDatn} IS NULL 
                         OR :#{#req.tenMonDatn} LIKE '' 
-                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
+                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) AND nhom_mon_datn_id IS NOT NULL
                 ORDER BY m.last_modified_date DESC 
             """, countQuery = """
             SELECT COUNT(m.id)
@@ -34,7 +37,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 WHERE m.co_so_id = :#{#req.coSoId} AND
                     ( :#{#req.tenMonDatn} IS NULL 
                         OR :#{#req.tenMonDatn} LIKE '' 
-                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
+                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) AND nhom_mon_datn_id IS NOT NULL
                 ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
     Page<DtMonDatnResponse> findByName(@Param("req") DtFindMonDatnRequest req, Pageable page);
@@ -43,14 +46,49 @@ public interface DtMonDatnRepository extends MonDatnRepository {
 
     @Query(value = """
                 SELECT 
-                m.id,
-                m.ma_mon AS 'name'
+                 m.id,
+                 m.ma_mon AS 'name'
                  FROM do_an_tot_nghiep.mon_datn m
                  WHERE m.co_so_id = :coSoId
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaMon(@Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT * FROM mon_datn WHERE ma_mon = :maMon AND id <> :id ", nativeQuery = true)
-    MonDatn findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id);
+    @Query(value = """
+                SELECT id 
+                FROM mon_datn
+                WHERE ma_mon = :maMon AND id <> :id 
+            """, nativeQuery = true)
+    String findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id);
 
+    @Query(value = """ 
+                SELECT m.id, 
+                m.created_date, 
+                m.last_modified_date, 
+                m.co_so_id, 
+                m.chuyen_nganh_id, 
+                m.ma_mon, 
+                m.nhom_mon_datn_id, 
+                m.ten_mon_datn
+                FROM mon_datn m 
+                WHERE nhom_mon_datn_id IS NULL
+            """, nativeQuery = true)
+    List<MonDatn> findByTenNhomMon();
+
+    @Query(value = """
+                SELECT m.id,
+                m.created_date, 
+                m.last_modified_date, 
+                m.co_so_id, 
+                m.chuyen_nganh_id, 
+                m.ma_mon, 
+                m.nhom_mon_datn_id, 
+                m.ten_mon_datn
+                FROM mon_datn m 
+                LEFT JOIN sinh_vien s ON m.id = s.mon_datn_id 
+                RIGHT JOIN phan_cong_huong_dan p ON m.id = p.mon_datn_id  
+                WHERE m.id = :id 
+                AND m.co_so_id = :coSoId 
+                AND s.dot_dang_ky_id = :dotDangKyId                                                        
+            """, nativeQuery = true)
+    List<MonDatn> findByIdMon(@Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 }

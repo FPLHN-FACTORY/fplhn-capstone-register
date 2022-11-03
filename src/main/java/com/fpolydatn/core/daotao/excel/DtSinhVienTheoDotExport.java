@@ -2,6 +2,7 @@ package com.fpolydatn.core.daotao.excel;
 
 
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
+import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -38,13 +39,15 @@ public class DtSinhVienTheoDotExport {
         createCell(row, 2, "Họ tên", cellStyle);
         createCell(row, 3, "Số điện thoại", cellStyle);
         createCell(row, 4, "Email", cellStyle);
-        createCell(row, 5, "Khóa", cellStyle);
-        createCell(row, 6, "Môn đăng ký", cellStyle);
-        createCell(row, 7, "ID nhóm", cellStyle);
-        createCell(row, 8, "Tên đề tài", cellStyle);
-        createCell(row, 9, "GV hướng dẫn", cellStyle);
-        createCell(row, 10, "Đợt đăng ký", cellStyle);
-        createCell(row, 11, "Chuyên Ngành", cellStyle);
+        createCell(row, 5, "Trạng thái", cellStyle);
+        createCell(row, 6, "Khóa", cellStyle);
+        createCell(row, 7, "Môn đăng ký", cellStyle);
+        createCell(row, 8, "ID nhóm", cellStyle);
+        createCell(row, 9, "Tên đề tài", cellStyle);
+        createCell(row, 10, "Số thành viên", cellStyle);
+        createCell(row, 11, "GV hướng dẫn", cellStyle);
+        createCell(row, 12, "Đợt đăng ký", cellStyle);
+        createCell(row, 13, "Chuyên Ngành", cellStyle);
     }
 
     private void createCell(Row row, int countColum, Object value, CellStyle cellStyle) {
@@ -69,7 +72,6 @@ public class DtSinhVienTheoDotExport {
         font.setFontHeight(12);
         style.setFont(font);
 
-        int rowCount = 1;
         ListSinhVien.stream().forEach(DtSinhVien -> {
 
             Row row = xssfSheet.createRow(DtSinhVien.getStt());
@@ -80,10 +82,12 @@ public class DtSinhVienTheoDotExport {
             createCell(row, countColum++, DtSinhVien.getTenSinhVien(), style);
             createCell(row, countColum++, DtSinhVien.getSoDienThoai(), style);
             createCell(row, countColum++, DtSinhVien.getEmail(), style);
+            createCell(row, countColum++, DtSinhVien.getTrangThai()== 0? "Đủ điều kiện": "Không đủ điều kiện", style);
             createCell(row, countColum++, DtSinhVien.getKhoa(), style);
-            createCell(row, countColum++, DtSinhVien.getTenMonDatn(), style);
+            createCell(row, countColum++, DtSinhVien.getTenMonDatn()== null? "Chưa có" : DtSinhVien.getTenMonDatn(), style);
             createCell(row, countColum++, DtSinhVien.getMaNhom() == null ? "chưa có" : DtSinhVien.getMaNhom(), style);
             createCell(row, countColum++, DtSinhVien.getTenDeTai() == null ? "Chưa có" : DtSinhVien.getTenDeTai(), style);
+            createCell(row, countColum++, DtSinhVien.getSoThanhVien()== null ? 0: DtSinhVien.getSoThanhVien(), style);
             createCell(row, countColum++, DtSinhVien.getTenGvhd() == null ? "Chưa có" : DtSinhVien.getTenGvhd(), style);
             createCell(row, countColum++, DtSinhVien.getTenDotDangKy(), style);
             createCell(row, countColum++, DtSinhVien.getTenChuyenNganh(), style);

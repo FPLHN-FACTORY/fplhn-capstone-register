@@ -1,7 +1,6 @@
 package com.fpolydatn.core.giangvien.repository;
 
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.domain.Page;
@@ -75,7 +74,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE gvhd.id LIKE :maGvhd
             AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
-            AND nd.trang_thai = 0
+            AND nd.trang_thai = 1
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, countQuery = """
@@ -89,7 +88,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE   gvhd.id LIKE :maGvhd
             AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
-            AND nd.trang_thai = 0
+            AND nd.trang_thai = 1
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, nativeQuery = true)
@@ -107,7 +106,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE gvhd.id LIKE :maGvhd
             AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
-            AND nd.trang_thai !=0
+            AND nd.trang_thai BETWEEN 2 AND 5
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, countQuery = """
@@ -121,7 +120,7 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
             WHERE   gvhd.id LIKE :maGvhd
             AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
-            AND nd.trang_thai !=0
+            AND nd.trang_thai BETWEEN 2 AND 5
             GROUP BY nd.id
             ORDER BY nd.last_modified_date DESC
             """, nativeQuery = true)

@@ -53,9 +53,10 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     }
 
     @PostMapping("/import")
-    public void importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseObject importEcel(@RequestParam("file") MultipartFile file) throws IOException {
         String coSoId = session.getCoSoId();
-        sinhVienService.DtSinhVienImport(file, coSoId);
+        DtLoaiSinhVienResponse response =sinhVienService.DtSinhVienImport(file, coSoId);
+        return new ResponseObject(response);
     }
 
     @PostMapping("/loai-sinh-vien")

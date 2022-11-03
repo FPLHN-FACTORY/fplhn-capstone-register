@@ -15,4 +15,6 @@ public final class DtFindGiangVienHDRequest extends PageableRequest {
 
     private String coSoId;
 
+    private String dotDangKyId;
+
 }

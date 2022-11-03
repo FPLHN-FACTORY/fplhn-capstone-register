@@ -93,7 +93,6 @@ function openModalRemoveChuyenNganh(chuyenNganhId) {
         dataType: 'json',
         success: function () {
             $("#remove_chuyen_nganh").val(chuyenNganhId);
-            console.log("abcc");
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -116,7 +115,11 @@ $("#form_chuyen_nganh_delete").submit(function (event) {
             $("#modal_chuyen_nganh_remove").modal("hide");
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            $("#remove_chuyen_nganh").text(e.responseJSON.message);
         }
     });
 });
+
+function clearModal(){
+    $("#remove_chuyen_nganh").text("");
+}

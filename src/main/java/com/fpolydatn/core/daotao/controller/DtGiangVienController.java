@@ -39,7 +39,7 @@ public class DtGiangVienController extends BaseController {
         PageableObject<DtGiangVienHDResponse> listGiangVien = giangVienHDService.search(rep);
         List<SimpleEntityProj> listDotDangKy = dangKyService.findAllSimpleEntity(coSoid);
         model.addAttribute("listDotDangKy", listDotDangKy);
-        model.addAttribute("file", new MuitiPathFile()); //-- thêm cái này
+        model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("page", listGiangVien);
         return "daotao/dt-giang-vien-huong-dan";
     }

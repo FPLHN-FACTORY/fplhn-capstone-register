@@ -290,6 +290,7 @@
                                             <th>Số điện thoại</th>
                                             <th>Email</th>
                                             <th>Khóa</th>
+                                            <th>Trạng thái</th>
                                             <th>Môn đăng ký</th>
                                             <th>Mã nhóm</th>
                                             <th>Tên Đề tài</th>
@@ -305,6 +306,7 @@
                                                     <td th:text="${sinhVien.soDienThoai}"/>
                                                     <td th:text="${sinhVien.email}"/>
                                                     <td th:text="${sinhVien.khoa}"/>
+                                                    <td th:text="${sinhVien.trangThai}==0? 'Đủ điều kiện': 'Không đủ điều kiện'"/>
                                                     <td th:text="${sinhVien.tenMonDatn}==null? 'chưa có ': ${sinhVien.tenMonDatn}"/>
                                                     <td th:text="${sinhVien.maNhom} ==null? 'chưa có ': ${sinhVien.maNhom}"/>
                                                     <td th:text="${sinhVien.tenDeTai}==null? 'chưa có ':${sinhVien.tenDeTai}"/>
