@@ -14,6 +14,12 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
     @Autowired
     private DtNhomMonDatnService dtNhomMonDatnService;
 
+    @GetMapping("/{id}")
+    public ResponseObject detail(@PathVariable("id") String id) {
+        return new ResponseObject(dtNhomMonDatnService.findById(id));
+    }
+
+
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable("id") String id,
                                  @RequestBody DtUpdateNhomMonDatnRequest dtUpdateNhomMonRequest) {
@@ -21,11 +27,14 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
         return new ResponseObject(dtNhomMonDatnService.update(dtUpdateNhomMonRequest));
     }
 
-    @PostMapping ("/{id}")
-    public ResponseObject save(@PathVariable("id") String id,
-                                 @RequestBody DtCreateNhomMonDatnRequest dtCreateNhomMonDatnRequest) {
+    @PostMapping()
+    public ResponseObject save(
+            @RequestBody DtCreateNhomMonDatnRequest dtCreateNhomMonDatnRequest) {
+        String coSoId = session.getCoSoId();
+        dtCreateNhomMonDatnRequest.setCoSoId(coSoId);
         return new ResponseObject(dtNhomMonDatnService.add(dtCreateNhomMonDatnRequest));
     }
+
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
         return new ResponseObject(dtNhomMonDatnService.delete(id));
