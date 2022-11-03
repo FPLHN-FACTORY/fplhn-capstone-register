@@ -61,7 +61,7 @@
                                         </div>
                                         <br>
                                         <div class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center "
-                                            >
+                                        >
                                             <span for="" class="fillter-name col-4 text-right">Đợt đăng ký</span>
                                             <select onchange="loadDataToTable(0)" class="form-control col-10"
                                                     id="dotDangKyId">
@@ -69,10 +69,10 @@
                                                 <option th:each="item : ${listDotDangKy}"
                                                         th:value="${item.getId()}" th:text="${item.getName()}"></option>
                                             </select>
-                                          </div>
+                                        </div>
                                         <br>
                                         <div class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center ">
-                                        <button type="submit" class="btn btn-primary ml-5">Tìm kiếm</button>
+                                            <button type="submit" class="btn btn-primary ml-5">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </form>
@@ -148,12 +148,13 @@
                                                         <td th:text="${sinhVien.tenSinhVien}"></td>
                                                         <td th:text="${sinhVien.tenChuyenNganh}"></td>
                                                         <td th:text="${sinhVien.tenDotDangKy}"></td>
-                                                        <td th:text="${sinhVien.maMon}"></td>
+                                                        <td th:text="${sinhVien.maMon}==null ? 'Chưa có' : (${sinhVien.maMon})"></td>
                                                         <td th:switch="${sinhVien.maNhom}">
                                                             <a th:case=null
-                                                                    data-toggle="modal"
-                                                                    th:attr="onclick=|openModalAddSinhVien('${sinhVien.maSinhVien}','${page.currentPage}')|"
-                                                                    class=" btn btn-success">
+                                                               th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
+                                                               data-toggle="modal"
+                                                               th:attr="onclick=|openModalAddSinhVien('${sinhVien.maSinhVien}','${page.currentPage}')|"
+                                                               class=" btn btn-success">
                                                                 Thêm nhóm
                                                             </a>
                                                             <p th:case="*" th:text="${sinhVien.maNhom}"></p>
@@ -186,7 +187,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <input id="check_han_chu_nhiem" hidden th:value="${checkHanChuNhiem}">
                             </div>
                         </div>
                     </div>

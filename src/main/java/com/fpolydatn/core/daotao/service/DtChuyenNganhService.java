@@ -22,7 +22,7 @@ public interface DtChuyenNganhService {
 
     ChuyenNganh add(@Valid final DtCreateChuyenNganhRequest req);
 
-    Boolean delete(String id);
+    Boolean delete(String id, String coSoId, String dotDangKyId);
 
     ChuyenNganh findById(String id);
 

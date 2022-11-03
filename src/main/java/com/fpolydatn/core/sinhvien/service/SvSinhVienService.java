@@ -19,4 +19,6 @@ public interface SvSinhVienService {
 
     String getMonDatnIdBySinhVienId(String id);
 
+    String getMonChuongTrinhIdById(String id);
+
 }

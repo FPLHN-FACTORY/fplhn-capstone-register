@@ -1,9 +1,11 @@
 package com.fpolydatn.core.chunhiem.controller;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnMonDatnResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.service.CnChuyenNganhService;
 import com.fpolydatn.core.chunhiem.service.CnDotDangKyService;
+import com.fpolydatn.core.chunhiem.service.CnMonDatnService;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
@@ -34,6 +36,9 @@ public class CnNhomDatnController extends BaseController {
     private CnDotDangKyService dotDangKyService;
 
     @Autowired
+    private CnMonDatnService cnMonDatnService;
+
+    @Autowired
     private CommonHelper commonHelper;
 
     @GetMapping
@@ -41,12 +46,16 @@ public class CnNhomDatnController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
-        PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req);
+        PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req, session.getUserId());
         List<SimpleEntityProj> listTenChuyenNganh = chuyenNganhService.listTenChuyenNganh(coSoId);
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
+        List<CnMonDatnResponse> listNhomMonDatn = cnMonDatnService.getAllNhomMonDatn(coSoId);
+        boolean checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listTenChuyenNganh", listTenChuyenNganh);
+        model.addAttribute("listNhomMonDatn", listNhomMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
+        model.addAttribute("checkHanChuNhiem", checkHanChuNhiem);
         return "chunhiem/cn-nhom-datn";
     }
 }

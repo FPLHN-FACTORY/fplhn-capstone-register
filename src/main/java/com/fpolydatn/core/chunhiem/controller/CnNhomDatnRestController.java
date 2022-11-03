@@ -2,7 +2,10 @@ package com.fpolydatn.core.chunhiem.controller;
 
 import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
+import com.fpolydatn.core.chunhiem.service.CnGiangVienHuongDanService;
+import com.fpolydatn.core.chunhiem.service.CnMonDatnService;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
@@ -30,14 +33,21 @@ public class CnNhomDatnRestController extends BaseController {
     private CnNhomDatnService nhomDatnService;
 
     @Autowired
+    private CnMonDatnService cnMonDatnService;
+
+    @Autowired
+    private CnGiangVienHuongDanService cnGiangVienHuongDanService;
+
+    @Autowired
     private CommonHelper commonHelper;
 
     @GetMapping("/search")
     public ResponseObject viewNhomDatn(final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
-        PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req);
-        System.out.println(listNhomDatn.getData().size());
+        req.setDotDangKyId(dotDangKyId);
+        PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req, session.getUserId());
         return new ResponseObject(listNhomDatn);
     }
 
@@ -48,13 +58,18 @@ public class CnNhomDatnRestController extends BaseController {
         return new ResponseObject(nhomDatnService.create(cnCreateNhomDatnRequest));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/chot-de-tai/{id}")
     public ResponseObject chotDeTai(@PathVariable("id") String id) {
         return new ResponseObject(nhomDatnService.chotDeTai(id));
     }
 
+    @PutMapping("/xac-nhan-nhom/{id}")
+    public ResponseObject xacNhanNhom(@PathVariable("id") String id) {
+        return new ResponseObject(nhomDatnService.xacNhanNhom(id));
+    }
+
     @PutMapping
-    public ResponseObject chotDeTai(@RequestParam("id") String id, @RequestParam("nhanXet") String nhanXet) {
+    public ResponseObject tuChoiChotDeTai(@RequestParam("id") String id, @RequestParam("nhanXet") String nhanXet) {
         return new ResponseObject(nhomDatnService.tuChoiChotDeTai(id, nhanXet));
     }
 
@@ -66,6 +81,26 @@ public class CnNhomDatnRestController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseObject deleteNhomDatn(@PathVariable("id") String id) {
         return new ResponseObject(nhomDatnService.delete(id));
+    }
+
+    @GetMapping("/list-sinh-vien-no-group")
+    public ResponseObject getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
+        req.setCoSoId(session.getCoSoId());
+        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        return new ResponseObject(nhomDatnService.getListSinhVienNoGroup(req));
+    }
+
+    @GetMapping("/list-mon-datn")
+    public ResponseObject getAllMonDatnByNhomMon(@RequestParam("nhomMonId") String nhomMonId) {
+        String coSoId = session.getCoSoId();
+        return new ResponseObject(cnMonDatnService.getAllMonDatnByNhomMon(coSoId, nhomMonId));
+    }
+
+    @GetMapping("/list-gvhd")
+    public ResponseObject getAllGvhdByIdMon(@RequestParam("idMon") String idMon) {
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        return new ResponseObject(cnGiangVienHuongDanService.getGiangVienHuongDanByIdMonDatn(idMon,coSoId,dotDangKyId));
     }
 
 }

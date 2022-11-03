@@ -13,8 +13,10 @@ import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.entity.MonDatn;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
@@ -73,10 +75,14 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
-    public Boolean delete(final String id) {
+    public Boolean delete(final String id, String coSoId, String dotDangKyId) {
         Optional<MonDatn> monCheck = monDatnRepository.findById(id);
+        List<MonDatn> checkIdMon = monDatnRepository.findByIdMon(id, coSoId, dotDangKyId);
         if (Objects.isNull(monCheck)) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
+        }
+        if (checkIdMon.size() != 0) {
+            throw new RestApiException(Message.KHONG_DUOC_XOA_MON);
         }
         monDatnRepository.delete(monCheck.get());
         return true;
@@ -92,10 +98,15 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
+    public List<MonDatn> findByTenNhomMon() {
+        return monDatnRepository.findByTenNhomMon();
+    }
+
+    @Override
     public MonDatn update(@Valid final DtUpdateMonDatnRequest command) {
         Optional<MonDatn> monDatnCheck = monDatnRepository.findById(command.getId());
         MonDatn monDatnTr = formUtils.convertToObject(MonDatn.class, command);
-        MonDatn monDatnInDb = monDatnRepository.findByMaMonUpdate(monDatnTr.getMaMon(), monDatnTr.getId());
+        String monDatnInDb = monDatnRepository.findByMaMonUpdate(monDatnTr.getMaMon(), monDatnTr.getId());
         if (!monDatnCheck.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
