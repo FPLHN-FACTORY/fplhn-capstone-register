@@ -46,14 +46,17 @@ public class CnNhomDatnController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        boolean checkHanChuNhiem = false;
+        if(req.getDotDangKyId() != null){
+            checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
+        }
         PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req, session.getUserId());
-        List<SimpleEntityProj> listTenChuyenNganh = chuyenNganhService.listTenChuyenNganh(coSoId);
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
         List<CnMonDatnResponse> listNhomMonDatn = cnMonDatnService.getAllNhomMonDatn(coSoId);
-        boolean checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
+        List<CnMonDatnResponse> listMonDatn = cnMonDatnService.getAllMonDatnByChuyenNganh(coSoId, session.getUserId());
         model.addAttribute("page", listNhomDatn);
-        model.addAttribute("listTenChuyenNganh", listTenChuyenNganh);
         model.addAttribute("listNhomMonDatn", listNhomMonDatn);
+        model.addAttribute("listMonDatn", listMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("checkHanChuNhiem", checkHanChuNhiem);
         return "chunhiem/cn-nhom-datn";

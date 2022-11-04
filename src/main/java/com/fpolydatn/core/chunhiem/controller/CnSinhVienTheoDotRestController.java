@@ -26,8 +26,8 @@ public class CnSinhVienTheoDotRestController extends BaseController {
     public ResponseObject searchSinhVienTheoDot(final CnFindSinhVienTheoDotRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        PageableObject<CnSinhVienTheoDotResponse> listSinhVienTheoDot = cnSinhVienTheoDotService.searchByIdDotDangKy(req);
-        return new ResponseObject(listSinhVienTheoDot);
+        PageableObject<CnSinhVienTheoDotResponse> listNhomDatnTheoDot = cnSinhVienTheoDotService.searchByIdDotDangKy(req);
+        return new ResponseObject(listNhomDatnTheoDot);
     }
 
     @PostMapping("/addSinhVien")

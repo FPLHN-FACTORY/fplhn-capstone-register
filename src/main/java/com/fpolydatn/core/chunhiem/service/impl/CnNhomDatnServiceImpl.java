@@ -1,5 +1,6 @@
 package com.fpolydatn.core.chunhiem.service.impl;
 
+import com.fpolydatn.core.chunhiem.excel.CnNhomDatnExport;
 import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
@@ -10,6 +11,9 @@ import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
 import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotExport;
+import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
+import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
@@ -24,7 +28,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -56,10 +65,13 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Autowired
     private CnGiangVienHuongDanReponsitory cnGiangVienHuongDanReponsitory;
 
+    private List<CnNhomDatnResponse> list;
+
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<CnNhomDatnResponse> res = cnNhomDatnRepository.findNhomDatn(request, pageable, idChuNhiem);
+        list = cnNhomDatnRepository.findNhomDatnExport(request, idChuNhiem);
         return new PageableObject(res);
     }
 
@@ -152,7 +164,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
         }
         String idGiangVien = cnCreateNhomDatnRequest.getIdGiangVien();
-        if(cnGiangVienHuongDanReponsitory.findById(idGiangVien) == null){
+        if (cnGiangVienHuongDanReponsitory.findById(idGiangVien) == null) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
         }
         if (!idGiangVien.equals("")) {
@@ -193,6 +205,19 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Override
     public List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
         return cnSinhVienRepository.getStringListSinhVienNoGroup(req);
+    }
+
+    @Override
+    public void DTSinhVienExport(HttpServletResponse response, String typeExcel, CnFindNhomDatnRequest request) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=NhomDatn" + currentDateTime + "." + typeExcel;
+        response.setHeader(headerKey, headerValue);
+        CnNhomDatnExport cnNhomDatnExport = new CnNhomDatnExport(list);
+        cnNhomDatnExport.exportData(response);
     }
 
     @Override

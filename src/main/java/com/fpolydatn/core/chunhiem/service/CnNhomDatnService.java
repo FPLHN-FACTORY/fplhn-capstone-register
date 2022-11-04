@@ -5,9 +5,12 @@ import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.entity.NhomDatn;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -30,6 +33,8 @@ public interface CnNhomDatnService {
     boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest);
 
     List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req);
+
+    void DTSinhVienExport(HttpServletResponse response, String typeExcel, CnFindNhomDatnRequest request) throws IOException;
 
     boolean checkHanChuNhiem();
 

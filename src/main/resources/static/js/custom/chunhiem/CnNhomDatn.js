@@ -14,11 +14,12 @@ $(document).ready(function () {
 });
 
 function clearData() {
-    $("#tenNhom").val("");
-    $("#chuyenNganhId").val("");
-    $("#tenGvhd").val("");
+    $("#maNhom").val("");
+    $("#tenDeTai").val("");
+    $("#tenTaiKhoan").val("");
     $("#trangThai").val("");
     $("#dotDangKyId").val("");
+    $("#monDatnId").val("");
 }
 
 $("#form_list_nhom_datn").submit(function (event) {
@@ -28,9 +29,10 @@ $("#form_list_nhom_datn").submit(function (event) {
 
 function loadDataNhomDatn(count) {
 
-    let tenNhom = $("#tenNhom").val()
-    let chuyenNganhId = $("#chuyenNganhId").val()
-    let tenGvhd = $("#tenGvhd").val()
+    let maNhom = $("#maNhom").val()
+    let tenTaiKhoan = $("#tenTaiKhoan").val()
+    let tenDeTai = $("#tenDeTai").val()
+    let monDatnId = $("#monDatnId").val()
     let trangThai = $("#trangThai").val()
     let dotDangKyId = $("#dotDangKyId").val()
     currentPaging = count;
@@ -38,8 +40,8 @@ function loadDataNhomDatn(count) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: CNNhomDatnApi + "/search" + "?tenNhom=" + tenNhom + "&chuyenNganhId=" + chuyenNganhId
-            + "&tenGvhd=" + tenGvhd + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
+        url: CNNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&tenDeTai=" + tenDeTai + "&monDatnId=" + monDatnId
+            + "&tenTaiKhoan=" + tenTaiKhoan + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
             let array = responseData.data.data
@@ -51,7 +53,7 @@ function loadDataNhomDatn(count) {
                     loadDataNhomDatn(0);
                     return;
                 }
-                if (count == responseData.data.totalPages) {
+                if (count == responseData.data.totalPages && count != 0) {
                     loadDataNhomDatn(count - 1);
                     return;
                 }
@@ -66,41 +68,52 @@ function loadDataNhomDatn(count) {
                         + templateString +
                         `
                 <td>${item.stt}</td>
-                <td>${item.tenNhom == null ? 'Chưa có' : item.tenNhom}</td>
+                <td>${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
                 <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
-                <td>${item.tenChuyenNganh}</td>
+                <td>${item.maMonDatn}</td>
                 <td>${item.total}</td>
-                <td>${item.maSinhVien + ' - ' + item.tenSinhVien}</td>
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã xác nhận' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
+                <td>${item.tenDotDangKy}</td>
+                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
                 <td><a href="/chu-nhiem/sinh-vien?id=${item.id}"><div id="eye-custom" data-toggle="tooltip" title="Xem chi tiết nhóm">
                                                                     <img src="/img/eye-fill.svg"></div></a>
-                <a style="${item.trangThai == 0 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" type="button" onclick="CNXacNhanNhom('${item.id}','${count}')"><div id="custom-xac-nhan" data-toggle="tooltip" title="Xác nhận">
-                                                                    <img src="/img/check-circle.svg">
-                                                                </div></a>
-                <a style="${item.trangThai == 4 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" type="button" onclick="CNChotDuLieu('${item.id}','${count}')"><div id="custom-chot-de-tai" data-toggle="tooltip"
-                                                                     title="Chốt đề tài">
-                                                                    <img src="/img/clipboard-check.svg">
-                                                                </div></a>
-                <a type="button" style="${item.trangThai == 4 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" onclick="openModalNhanXet('${item.id}','${count}')"><div id="custom-tu-choi" data-toggle="tooltip"
-                                                                     title="Từ chối">
-                                                                    <img src="/img/x-circle.svg">
-                                                                </div></a>
-                <a style="${item.trangThai == 5 || checkHanChuNhiem == 'false' ? 'display : none' : 'display : block'}" type="button" onclick="openModalRemoveNhomDatn('${item.id}','${count}')"><div id="custom-delete" data-toggle="tooltip"
-                                                                     title="Xóa">
-                                                                    <img src="/img/trash.svg">
-                                                                </div></a></td>
+                <button class="btn_check_circle" style="${item.trangThai == 0 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" data-toggle="tooltip" title="Xác nhận nhóm" onclick="CNXacNhanNhom('${item.id}','${count}')">
+                                                                    <img src="/img/check-circle.svg"></button>
+                <button class="btn_check" style="${item.trangThai == 4 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" data-toggle="tooltip" title="Chốt đề tài" onclick="CNChotDuLieu('${item.id}','${count}')">
+                                                                    <img src="/img/clipboard-check.svg"></button>
+                <button class="btn_x_circle" style="${item.trangThai == 4 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" data-toggle="tooltip" title="Từ chối chốt đề tài" onclick="openModalNhanXet('${item.id}','${count}')">
+                                                                    <img src="/img/x-circle.svg"></button>
+                <button class="btn_trash" style="${item.trangThai == 5 || checkHanChuNhiem == 'false' ? 'display : none' : 'display : block'}" data-toggle="tooltip" title="Xóa" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">
+                                                                    <img src="/img/trash.svg"></button></td>
                 </tr>
                 `
                 }))
                 $('[data-toggle = "tooltip"]').tooltip()
                 $("#page").html(``)
-                let templateHtml = ``;
+                let templatePageMid = ``;
+                let templatePageBefore = `
+                <li class="page-item">
+                     <a class="page-link" onclick="loadDataNhomDatn(0)">First</a>
+                </li>
+                <li class="page-item">
+                     <a class="page-link" onclick="loadDataNhomDatn(count - 1)">Back</a>
+                </li>
+                `;
                 for (let i = 0; i < responseData.data.totalPages; i++) {
-                    templateHtml += `<li class="page-item" >
+                    templatePageMid += `<li class="page-item" >
                                         <a class="page-link" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
                                     </li>`
                 }
+                let templatePageAfter = `
+                <li class="page-item">
+                     <a class="page-link" onclick="loadDataNhomDatn(count + 1)">First</a>
+                </li>
+                <li class="page-item">
+                     <a class="page-link" onclick="loadDataNhomDatn(responseData.data.totalPages - 1)">Back</a>
+                </li>
+                `;
+                let templateHtml = ``;
+                templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
                 if (responseData.data.totalPages == 1) {
                     templateHtml = ``;
                 }
@@ -501,3 +514,24 @@ function searchSinhVienNoGroup() {
         }
     });
 }
+
+$("#form_type_excel").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#type_excel").val();
+    if (typeExcel == '') {
+        $("#type_excel_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/chu-nhiem/nhom-datn/export?typeExcel=" + typeExcel,
+
+            success: function () {
+                window.open("/api/chu-nhiem/nhom-datn/export?typeExcel=" + typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+});

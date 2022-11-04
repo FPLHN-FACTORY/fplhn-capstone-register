@@ -15,6 +15,7 @@
     <!-- CSS only -->
     <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <link href="/css/custom/button-icon.css" rel="stylesheet">
     <style>
         #th-hanh-dong {
             width: 165px;
@@ -128,37 +129,44 @@
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Tên nhóm:</span>
-                                            <input type="text" oninput="loadDataNhomDatn(0)" class="form-control col-7"
-                                                   name="tenNhom" id="tenNhom"
+                                            <span for="" class="fillter-name col-4 text-center">Mã nhóm:</span>
+                                            <input type="text" class="form-control col-7"
+                                                   name="maNhom" id="maNhom"
                                                    value="">
                                         </div>
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Chuyên ngành:</span>
-                                            <select onchange="loadDataNhomDatn(0)" class="form-control col-7"
-                                                    id="chuyenNganhId" name="tenChuyenNganh">
-                                                <option value="" hidden>Chọn chuyên ngành</option>
-                                                <option th:each="item : ${listTenChuyenNganh}"
-                                                        th:value="${item.getId()}" th:text="${item.getName()}"></option>
+                                            <span for="" class="fillter-name col-4 text-center">Tên đề tài:</span>
+                                            <input type="text" class="form-control col-7"
+                                                   name="tenDeTai" id="tenDeTai"
+                                                   value="">
+                                        </div>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Môn Datn:</span>
+                                            <select class="form-control col-7"
+                                                    id="monDatnId" name="monDatnId">
+                                                <option value="" hidden>Chọn môn dự án tốt nghiệp</option>
+                                                <option th:each="item : ${listMonDatn}" th:value="${item.getId()}"
+                                                        th:text="${item.getMaMonDatn() + ' - ' + item.getTenMonDatn}"></option>
                                             </select>
                                         </div>
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Tên GVHD:</span>
-                                            <input oninput="loadDataNhomDatn(0)" type="text" class="form-control col-7"
-                                                   name="tenNhom" id="tenGvhd"
+                                            <span for="" class="fillter-name col-4 text-center">GVHD:</span>
+                                            <input type="text" class="form-control col-7"
+                                                   name="tenTaiKhoan" id="tenTaiKhoan"
                                                    value="">
                                         </div>
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Trạng thái:</span>
-                                            <select class="form-control col-7" onchange="loadDataNhomDatn(0)"
+                                            <select class="form-control col-7"
                                                     id="trangThai" name="trangThai">
                                                 <option value="" hidden>Trạng thái</option>
                                                 <option value="0">Mới thành lập</option>
                                                 <option value="1">Chủ nhiệm đã xác nhận</option>
-                                                <option value="2">Giảng viên đã xác nhận</option>
+                                                <option value="2">Giảng viên đã liên hệ</option>
                                                 <option value="3">Cần sửa</option>
                                                 <option value="4">Giảng viên viên đã chốt</option>
                                                 <option value="5">CNBM đã chốt</option>
@@ -167,7 +175,7 @@
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Đợt đăng ký:</span>
-                                            <select onchange="loadDataNhomDatn(0)" class="form-control col-7"
+                                            <select class="form-control col-7"
                                                     id="dotDangKyId">
                                                 <option value="" hidden>Chọn đợt đăng ký</option>
                                                 <option th:each="item : ${listDotDangKy}"
@@ -216,6 +224,62 @@
                                                     th:attr="onclick=|xacNhanNhieuNhom('${page.currentPage}')|">
                                                 Xác nhận
                                             </button>
+                                            <button class="col-8 col-sm-4 col-md-2 btn btn-success"
+                                                    data-toggle="modal"
+                                                    data-target="#modal_excel"
+                                            >
+                                                <img th:src="@{/img/export.svg}">
+                                                Export
+                                            </button>
+                                            <button class="col-8 col-sm-4 col-md-2 btn btn-success"
+                                                    data-toggle="modal"
+                                                    data-target="#modal_excel"
+                                            >
+                                                <img th:src="@{/img/import.svg}">
+                                                Import
+                                            </button>
+                                            <!--                                            modal export-->
+                                            <div class="modal fade "
+                                                 id="modal_excel"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form id="form_type_excel" method="post">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Export
+                                                                    Excel</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <p class="col-form-label">Định dạng file excel </p>
+                                                                    <select id="type_excel" class="form-control col-5">
+                                                                        <option value="">chọn kiểu file excel</option>
+                                                                        <option value="xls">.xls</option>
+                                                                        <option value="xlsx">.xlsx</option>
+                                                                    </select>
+                                                                    <span class="text-danger"
+                                                                          id="type_excel_error"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Hủy
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">Download
+                                                                    excel
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--                                            modal create nhóm-->
                                             <div
                                                     class="modal fade"
                                                     id="modal_create"
@@ -305,12 +369,12 @@
                                                            title="Chọn tất cả" type="checkbox" id="checkbox_father">
                                                 </th>
                                                 <th width="50px">STT</th>
-                                                <th>Tên nhóm</th>
+                                                <th>Mã nhóm</th>
                                                 <th>Tên đề tài</th>
-                                                <th>Chuyên ngành</th>
+                                                <th>Mã môn</th>
                                                 <th>SL thành viên</th>
-                                                <th>Trưởng nhóm</th>
                                                 <th>GVHD</th>
+                                                <th>Đợt đăng ký</th>
                                                 <th>Trạng thái</th>
                                                 <th id="th-hanh-dong">Hành động</th>
                                                 <!--                                            <th width="200px">Chức năng</th>-->
@@ -328,20 +392,21 @@
                                                                         id="checkbox_son"
                                                                         th:value="${nhomDatn.getId()}"
                                                                         onchange="checkBoxSonListener()"/>
-                                                            <input hidden id="check-trang-thai" th:value="${nhomDatn.getTrangThai()}">
+                                                                <input hidden id="check-trang-thai"
+                                                                       th:value="${nhomDatn.getTrangThai()}">
                                                             </div>
                                                         </td>
                                                         <td th:text="${nhomDatn.getStt()}"></td>
-                                                        <td th:text="${nhomDatn.getTenNhom()}==null ? 'Chưa có' : (${nhomDatn.getTenNhom()})"></td>
+                                                        <td th:text="${nhomDatn.getMaNhom()}==null ? 'Chưa có' : (${nhomDatn.getMaNhom()})"></td>
                                                         <td th:text="${nhomDatn.getTenDeTai()}==null ? 'Chưa có' : (${nhomDatn.getTenDeTai()})"></td>
-                                                        <td th:text="${nhomDatn.getTenChuyenNganh()}"></td>
+                                                        <td th:text="${nhomDatn.getMaMonDatn()}"></td>
                                                         <td th:text="${nhomDatn.getTotal()}"></td>
-                                                        <td th:text="${nhomDatn.getMaSinhVien()} + ' - ' + ${nhomDatn.getTenSinhVien()}"></td>
                                                         <td th:switch="${nhomDatn.getTenGvhd()}">
                                                             <p th:case=null>Chưa có</p>
                                                             <p th:case="*"
                                                                th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></p>
                                                         </td>
+                                                        <td th:text="${nhomDatn.getTenDotDangKy()}"></td>
                                                         <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                         <td>
                                                             <a th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}"
@@ -351,38 +416,29 @@
                                                                     <img th:src="@{/img/eye-fill.svg}">
                                                                 </div>
                                                             </a>
-                                                            <a type="button"
-                                                               th:style="${nhomDatn.getTrangThai()}==0 and ${checkHanChuNhiem} == true ? 'display: block' : 'display: none'"
-                                                               th:attr="onclick=|CNXacNhanNhom('${nhomDatn.getId()}','${page.currentPage}')|">
-                                                                <div id="custom-xac-nhan" data-toggle="tooltip"
-                                                                     title="Xác nhận">
-                                                                    <img th:src="@{/img/check-circle.svg}">
-                                                                </div>
-                                                            </a>
-                                                            <a type="button"
-                                                               th:style="${nhomDatn.getTrangThai()}==4 and ${checkHanChuNhiem} == true ?'display: block':'display: none'"
-                                                               th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
-                                                                <div id="custom-chot-de-tai" data-toggle="tooltip"
-                                                                     title="Chốt đề tài">
-                                                                    <img th:src="@{/img/clipboard-check.svg}">
-                                                                </div>
-                                                            </a>
-                                                            <a type="button"
-                                                               th:style="${nhomDatn.getTrangThai()}==4 and ${checkHanChuNhiem} == true ?'display: block':'display: none'"
-                                                               th:attr="onclick=|openModalNhanXet('${nhomDatn.getId()}','${page.currentPage}')|">
-                                                                <div id="custom-tu-choi" data-toggle="tooltip"
-                                                                     title="Từ chối">
-                                                                    <img th:src="@{/img/x-circle.svg}">
-                                                                </div>
-                                                            </a>
-                                                            <a type="button"
-                                                               th:style="${nhomDatn.getTrangThai()}==5 or ${checkHanChuNhiem} == false ?'display: none':'display: block'"
-                                                               th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">
-                                                                <div id="custom-delete" data-toggle="tooltip"
-                                                                     title="Xóa">
-                                                                    <img th:src="@{/img/trash.svg}">
-                                                                </div>
-                                                            </a>
+                                                            <button class="btn_check_circle" data-toggle="tooltip"
+                                                                    title="Xác nhận nhóm"
+                                                                    th:style="${nhomDatn.getTrangThai()}==0 and ${checkHanChuNhiem} == true ? 'display: block' : 'display: none'"
+                                                                    th:attr="onclick=|CNXacNhanNhom('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                <img th:src="@{/img/check-circle.svg}">
+                                                            </button>
+                                                            <button class="btn_check" data-toggle="tooltip"
+                                                                    title="Chốt đề tài"
+                                                                    th:style="${nhomDatn.getTrangThai()}==4 and ${checkHanChuNhiem} == true ?'display: block':'display: none'"
+                                                                    th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                <img th:src="@{/img/clipboard-check.svg}">
+                                                            </button>
+                                                            <button class="btn_x_circle" data-toggle="tooltip"
+                                                                    title="Từ chối chốt đề tài"
+                                                                    th:style="${nhomDatn.getTrangThai()}==4 and ${checkHanChuNhiem} == true ?'display: block':'display: none'"
+                                                                    th:attr="onclick=|openModalNhanXet('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                <img th:src="@{/img/x-circle.svg}">
+                                                            </button>
+                                                            <button class="btn_trash" data-toggle="tooltip" title="Xóa"
+                                                                    th:style="${nhomDatn.getTrangThai()}==5 or ${checkHanChuNhiem} == false ?'display: none':'display: block'"
+                                                                    th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                <img th:src="@{/img/trash.svg}">
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </th:block>
@@ -392,6 +448,19 @@
                                             <!-- Paging-->
                                             <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
                                                 <ul class="pagination justify-content-end" id="page">
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           th:href="@{/chu-nhiem/nhom-datn?page=0}"
+                                                           th:text="First">
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           th:if="${page.currentPage >= 1}"
+                                                           th:href="@{/chu-nhiem/nhom-datn?page={page.currentPage}(page.currentPage=${page.currentPage}-1)}"
+                                                           th:text="Back">
+                                                        </a>
+                                                    </li>
                                                     <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                         <li class="page-item">
                                                             <a class="page-link"
@@ -400,6 +469,19 @@
                                                             </a>
                                                         </li>
                                                     </div>
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           th:if="${page.currentPage} <= ${page.totalPages} - 2"
+                                                           th:href="@{/chu-nhiem/nhom-datn?page={page.currentPage}(page.currentPage=${page.currentPage}+1)}"
+                                                           th:text="Next">
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           th:href="@{/chu-nhiem/nhom-datn?page={page.totalPages}(page.totalPages=${page.totalPages}-1)}"
+                                                           th:text="Last">
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </nav>
                                         </div>

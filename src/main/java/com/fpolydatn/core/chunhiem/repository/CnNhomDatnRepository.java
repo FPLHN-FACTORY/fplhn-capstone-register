@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author thangncph26123
@@ -19,49 +20,106 @@ import javax.transaction.Transactional;
 public interface CnNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
-            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ten_nhom
-            ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien)
-            AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien, e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
+            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ma_nhom
+            ,b.ten_de_tai, k.ma_mon AS ma_mon_datn, COUNT(d.ma_sinh_vien)
+            AS total_ma_sinh_vien, e.ten_gvhd, e.ten_tai_khoan, g.ten_dot_dang_ky, b.trang_thai, b.last_modified_date
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+            LEFT JOIN mon_datn k ON k.id = c.mon_datn_id
             LEFT JOIN sinh_vien d ON d.nhom_id = b.id
             LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
-            WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
-            OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
-            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
-            OR f.id = :#{#req.chuyenNganhId})
-            AND (:#{#req.tenGvhd} IS NULL OR :#{#req.tenGvhd} LIKE ''
-            OR e.ten_gvhd LIKE %:#{#req.tenGvhd}% OR e.ten_tai_khoan LIKE %:#{#req.tenGvhd}%)
+            WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
+            OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
+            AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
+            OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%)
+            AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE ''
+            OR k.id = :#{#req.monDatnId})
+            AND (:#{#req.tenTaiKhoan} IS NULL OR :#{#req.tenTaiKhoan} LIKE ''
+            OR e.ten_gvhd LIKE %:#{#req.tenTaiKhoan}% OR e.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND g.id = :#{#req.dotDangKyId}
             AND b.co_so_id = :#{#req.coSoId}
             AND h.id = :idChuNhiem
-            GROUP BY b.id, f.ten_chuyen_nganh ORDER BY b.last_modified_date DESC 
+            GROUP BY b.id ORDER BY b.last_modified_date DESC 
             """, countQuery = """
             SELECT count(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+            LEFT JOIN mon_datn k ON k.id = c.mon_datn_id
             LEFT JOIN sinh_vien d ON d.nhom_id = b.id
             LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
-            WHERE (:#{#req.tenNhom} IS NULL OR :#{#req.tenNhom} LIKE ''
-            OR b.ten_nhom LIKE %:#{#req.tenNhom}%) 
-            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
-            OR f.id = :#{#req.chuyenNganhId})
-            AND (:#{#req.tenGvhd} IS NULL OR :#{#req.tenGvhd} LIKE ''
-            OR e.ten_gvhd LIKE %:#{#req.tenGvhd}% OR e.ten_tai_khoan LIKE %:#{#req.tenGvhd}%)
+            WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
+            OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
+            AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
+            OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%)
+            AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE ''
+            OR k.id = :#{#req.monDatnId})
+            AND (:#{#req.tenTaiKhoan} IS NULL OR :#{#req.tenTaiKhoan} LIKE ''
+            OR e.ten_gvhd LIKE %:#{#req.tenTaiKhoan}% OR e.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND g.id = :#{#req.dotDangKyId}
             AND b.co_so_id = :#{#req.coSoId}
             AND h.id = :idChuNhiem
-            GROUP BY b.id, f.ten_chuyen_nganh ORDER BY b.last_modified_date DESC 
+            GROUP BY b.id ORDER BY b.last_modified_date DESC 
             """, nativeQuery = true)
     Page<CnNhomDatnResponse> findNhomDatn(@Param("req") CnFindNhomDatnRequest req, Pageable page, @Param("idChuNhiem") String idChuNhiem);
+
+    @Query(value = """
+            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ma_nhom
+            ,b.ten_de_tai, k.ma_mon AS ma_mon_datn, COUNT(d.ma_sinh_vien)
+            AS total_ma_sinh_vien, e.ten_gvhd, e.ten_tai_khoan, g.ten_dot_dang_ky, b.trang_thai, b.last_modified_date
+            FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+            LEFT JOIN mon_datn k ON k.id = c.mon_datn_id
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
+            OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
+            AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
+            OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%)
+            AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE ''
+            OR k.id = :#{#req.monDatnId})
+            AND (:#{#req.tenTaiKhoan} IS NULL OR :#{#req.tenTaiKhoan} LIKE ''
+            OR e.ten_gvhd LIKE %:#{#req.tenTaiKhoan}% OR e.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}%)
+            AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
+            OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
+            AND g.id = :#{#req.dotDangKyId}
+            AND b.co_so_id = :#{#req.coSoId}
+            AND h.id = :idChuNhiem
+            GROUP BY b.id ORDER BY b.last_modified_date DESC 
+            """, countQuery = """
+            SELECT count(b.id)
+            FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+            LEFT JOIN mon_datn k ON k.id = c.mon_datn_id
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
+            OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
+            AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
+            OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%)
+            AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE ''
+            OR k.id = :#{#req.monDatnId})
+            AND (:#{#req.tenTaiKhoan} IS NULL OR :#{#req.tenTaiKhoan} LIKE ''
+            OR e.ten_gvhd LIKE %:#{#req.tenTaiKhoan}% OR e.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}%)
+            AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
+            OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
+            AND g.id = :#{#req.dotDangKyId}
+            AND b.co_so_id = :#{#req.coSoId}
+            AND h.id = :idChuNhiem
+            GROUP BY b.id ORDER BY b.last_modified_date DESC 
+            """, nativeQuery = true)
+    List<CnNhomDatnResponse> findNhomDatnExport(@Param("req") CnFindNhomDatnRequest req, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = "SELECT id FROM nhom_datn WHERE ma_nhom = :maNhom AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
     String getIdByMaNhom(@Param("maNhom") String maNhom, @Param("dotDangKyId") String dotDangKyId);
