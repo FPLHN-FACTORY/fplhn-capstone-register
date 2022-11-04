@@ -19,13 +19,13 @@ $("#form_create_mon_datn").submit(function (event) {
     monDatnRequest["nhomMonDatnId"] = nhomMonId;
     let index = 0;
     if (maMon.trim().length === 0) {
-        $("#ma_mon_datn_error").text("Ma mon DATN khong duoc de trong");
+        $("#ma_mon_datn_error").text("Mã môn không được để trống");
         index++;
     } else {
         $("#ma_mon_datn_error").text("");
     }
     if (tenMonDatn.trim().length === 0) {
-        $("#ten_mon_datn_error").text("Ten mon DATN khong duoc de trong");
+        $("#ten_mon_datn_error").text("Tên môn không được để trống");
         index++;
     } else {
         $("#ten_mon_datn_error").text("");
@@ -42,7 +42,7 @@ $("#form_create_mon_datn").submit(function (event) {
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
-                $("#ma_mon_datn_error").text(e.responseJSON.message);
+                $("#ma_mon_datn_error").text("Môn đã tồn tại");
             }
         });
     }
@@ -77,13 +77,13 @@ $("#form_mon_datn_update").submit(function (event) {
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     let index = 0;
     if (maMon.trim().length === 0) {
-        $("#errorMaMonUpdate").text("Ma mon DATN khong duoc de trong");
+        $("#errorMaMonUpdate").text("Mã môn không được để trống");
         index++;
     } else {
         $("#errorMaMonUpdate").text("");
     }
     if (tenMonDatn.trim().length === 0) {
-        $("#errorTenMonUpdate").text("Ten mon DATN khong duoc de trong");
+        $("#errorTenMonUpdate").text("Tên môn không được để trống");
         index++;
     } else {
         $("#errorTenMonUpdate").text("");
@@ -137,7 +137,7 @@ $("#form_mon_datn_delete").submit(function (event) {
             $("#modal_mon_datn_remove").modal("hide");
         },
         error: function (e) {
-            $("#remove_mon_datn").text(e.responseJSON.message);
+            $("#remove_mon_datn").text("Không xóa được (môn đang tồn tại trong đợt đăng ký)");
         }
     });
 });
@@ -159,19 +159,23 @@ function openModalImportMonDatn() {
 }
 
 function clearModal() {
-    $("#remove_mon_datn").text("");
     $("#ma_mon_datn_error").text("");
     $("#ten_mon_datn_error").text("");
     $("#errorMaMonUpdate").text("");
     $("#errorTenMonUpdate").text("");
 }
+
+function clearModalRemove() {
+    $("#remove_mon_datn").text("");
+}
+
 $("#exampleFormControlFile1").on("input", function () {
-    if(!$("#exampleFormControlFile1").val().trim().length == 0) {
+    if (!$("#exampleFormControlFile1").val().trim().length == 0) {
         $("#import").removeAttr('disabled');
-        $("#import").css( 'cursor', 'pointer' );
+        $("#import").css('cursor', 'pointer');
     } else {
-        $("#import").attr('disabled','disabled');
-        $("#import").css( 'cursor', 'not-allowed');
+        $("#import").attr('disabled', 'disabled');
+        $("#import").css('cursor', 'not-allowed');
     }
 
 })

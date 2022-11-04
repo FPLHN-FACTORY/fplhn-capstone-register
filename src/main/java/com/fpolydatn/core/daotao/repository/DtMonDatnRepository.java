@@ -19,8 +19,8 @@ import java.util.Optional;
  */
 public interface DtMonDatnRepository extends MonDatnRepository {
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, 
-             (SELECT b.ten_mon_datn FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon , cb.ten_tai_khoan 
+            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, cn.ten_chuyen_nganh,
+             (SELECT CONCAT(b.ten_mon_datn, ' - ', b.ma_mon) FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon, cb.ten_tai_khoan 
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
