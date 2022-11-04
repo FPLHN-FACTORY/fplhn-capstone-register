@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,12 +32,12 @@ public class EmailSender {
     private SpringTemplateEngine thymeleafTemplateEngine;
 
     @Async
-    public void sendRegisterPasswordMail(String toEmail, String name, String password) {
+    public void sendRegisterPasswordMail(String[] toEmails, String bodyEmail, String titleEmail) {
         Map<String, Object> model = new HashMap<>();
-        model.put("name", name);
-        model.put("password", password);
+        model.put("bodyEmail", bodyEmail);
+        model.put("titleEmail", titleEmail);
         String htmlBody = loadMailBody(MailConstant.TEMPLATE_REGISTER_PASSWORD, model);
-        sendSimpleMail(new String[]{toEmail}, htmlBody, MailConstant.SUBJECT_REGISTER_PASSWORD);
+        sendSimpleMail(toEmails, htmlBody, MailConstant.SUBJECT_REGISTER_PASSWORD);
     }
 
     private String loadMailBody(String templateName, Map<String, Object> model) {
@@ -44,7 +46,7 @@ public class EmailSender {
         return thymeleafTemplateEngine.process(templateName, thymeleafContext);
     }
 
-    public void sendSimpleMail(String[] recipients, String msgBody, String subject) {
+    private void sendSimpleMail(String[] recipients, String msgBody, String subject) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.toString());
