@@ -1,0 +1,70 @@
+.btn_eye{
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    background: #1abb32;
+    float: left;
+}
+.btn_trash{
+    background: #d31613;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_x_circle{
+    background: #eae345;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_check_circle {
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_pencil_square {
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_check {
+    background: #4bcbb5;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_clipboard_user {
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}

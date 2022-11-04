@@ -17,7 +17,7 @@ public class DtCreateDotDangKyRequest extends DtBaseDotDangKyRequest {
 
     @NotEmpty
     @NotBlank
-    @Length(min = 6, max = 15)
+    @Length(min = 6, max = 100)
     private String tenDotDangKy;
 
     @NotEmpty

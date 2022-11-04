@@ -11,6 +11,7 @@ function doiTenDeTai() {
         message: "Bạn muốn đổi tên đề tài?",
         buttons: {
             cancel: {
+                className: 'btn-outline-secondary btn btn-light',
                 label: '<i class="fa fa-times"></i> Quay lại'
             },
             confirm: {
@@ -52,6 +53,7 @@ function confirmRoiNhom(soThanhVien) {
             message: "Nhóm sẽ bị xóa nếu bạn rời nhóm. \\n Bạn có muốn tiếp tục rời nhóm?",
             buttons: {
                 cancel: {
+                    className: 'btn-outline-secondary btn btn-light',
                     label: '<i class="fa fa-times"></i> Quay lại'
                 },
                 confirm: {
@@ -70,6 +72,7 @@ function confirmRoiNhom(soThanhVien) {
             message: "Bạn muốn rời nhóm?",
             buttons: {
                 cancel: {
+                    className: 'btn-outline-secondary btn btn-light',
                     label: '<i class="fa fa-times"></i> Quay lại'
                 },
                 confirm: {
@@ -110,6 +113,7 @@ function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi) {
         message: "Bạn muốn chuyển quyền trưởng nhóm cho " + tenTruongNhomMoi + "?",
         buttons: {
             cancel: {
+                className: 'btn-outline-secondary btn btn-light',
                 label: '<i class="fa fa-times"></i> Quay lại'
             },
             confirm: {
@@ -149,6 +153,7 @@ function chonGiangVienHuongDan() {
         message: "Bạn chắc chắn muốn đổi sang giảng viên này?",
         buttons: {
             cancel: {
+                className: 'btn-outline-secondary btn btn-light',
                 label: '<i class="fa fa-times"></i> Quay lại'
             },
             confirm: {
