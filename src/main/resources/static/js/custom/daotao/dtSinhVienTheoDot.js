@@ -37,7 +37,7 @@ function viewTable(page) {
                                             onclick="detail('${item.id}')">
                                             <img src="/img/eye-fill.svg">
                                     </button>
-                                <td/>
+                                </td>
                         </tr>`
                     }else {
                         return ` <tr class="text-danger">
@@ -57,7 +57,7 @@ function viewTable(page) {
                                             onclick="detail('${item.id}')">
                                             <img src="/img/eye-fill.svg">
                                     </button>
-                                <td/>
+                                </td>
                         </tr>`
                     }
 
@@ -80,11 +80,18 @@ function viewTable(page) {
                     `
                     }));
                 } else {
-                    $("#list_page").html('')
+                    $("#list_page").html(function () {
+                        return ``
+                    })
                 }
             } else (
                 $("#list").html(''),
-                $("#is_empty").html('không có dữ liệu')
+                $("#list_page").html(function () {
+                    return ``
+                }),
+                $("#is_empty").html(function () {
+                    return `<span>Không có dữ liệu</span>`
+                })
             )
         },
         error: function (e) {

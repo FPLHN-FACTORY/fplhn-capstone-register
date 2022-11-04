@@ -15,9 +15,7 @@ import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
 import com.fpolydatn.entity.SinhVien;
-import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
-import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.apache.poi.ss.usermodel.Cell;
@@ -109,7 +107,20 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=QLSinhVienFpoly" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
-        System.out.println("aaaaaaaaaaaaaa "+request.getCoSoId()+" "+request.getIdDotDangKy());
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (request.getIdDotDangKy() == null) {
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
+        } else if (request.getIdDotDangKy().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
+        }
         List<DtSinhVienTheoDotResponse> list = sinhVienRepository.exportExcel(request);
         DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(list);
         dtSinhVienExport.exportData(response);
