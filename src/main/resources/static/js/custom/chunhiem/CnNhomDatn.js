@@ -3,6 +3,7 @@ const CNNhomDatnView = '/chu-nhiem/nhom-datn';
 let flag = 0;
 let checkListCbb = 0;
 let currentPaging = -1;
+let totalPages = 0;
 const checkHanChuNhiem = $("#check_han_chu_nhiem").val();
 
 function submitModal() {
@@ -45,6 +46,7 @@ function loadDataNhomDatn(count) {
         dataType: 'json',
         success: function (responseData) {
             let array = responseData.data.data
+            totalPages = responseData.data.totalPages
             if (array.length == 0) {
                 $("#listNhomDatn").html(``)
                 $("#page").html(``)
@@ -92,24 +94,24 @@ function loadDataNhomDatn(count) {
                 $("#page").html(``)
                 let templatePageMid = ``;
                 let templatePageBefore = `
-                <li class="page-item">
+                <li style="color: #0a8cf0" class="page-item">
                      <a class="page-link" onclick="loadDataNhomDatn(0)">First</a>
                 </li>
-                <li class="page-item">
-                     <a class="page-link" onclick="loadDataNhomDatn(count - 1)">Back</a>
+                <li style="${currentPaging == 0 ? 'display : none' : 'display : block'} ; color: #0a8cf0" class="page-item">
+                     <a class="page-link" onclick="loadDataNhomDatn(currentPaging - 1)">Back</a>
                 </li>
                 `;
                 for (let i = 0; i < responseData.data.totalPages; i++) {
-                    templatePageMid += `<li class="page-item" >
+                    templatePageMid += `<li class="page-item" id="pageColor" style="color: #0a8cf0">
                                         <a class="page-link" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
                                     </li>`
                 }
                 let templatePageAfter = `
-                <li class="page-item">
-                     <a class="page-link" onclick="loadDataNhomDatn(count + 1)">First</a>
+                <li style="${currentPaging == totalPages - 1 ? 'display : none' : 'display : block'} ; color: #0a8cf0" class="page-item">
+                     <a class="page-link" onclick="loadDataNhomDatn(currentPaging + 1)">Next</a>
                 </li>
-                <li class="page-item">
-                     <a class="page-link" onclick="loadDataNhomDatn(responseData.data.totalPages - 1)">Back</a>
+                <li class="page-item" style="color: #0a8cf0">
+                     <a class="page-link" onclick="loadDataNhomDatn(totalPages - 1)">Last</a>
                 </li>
                 `;
                 let templateHtml = ``;
@@ -118,6 +120,8 @@ function loadDataNhomDatn(count) {
                     templateHtml = ``;
                 }
                 $("#page").html(templateHtml);
+                let colorPage = document.querySelectorAll("#pageColor");
+                colorPage[count].backgroundColor = 'red';
             }
         },
         error: function (e) {
