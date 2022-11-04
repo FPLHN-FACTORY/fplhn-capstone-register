@@ -9,7 +9,6 @@ import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
-import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.entity.NhomDatn;
 import org.springframework.beans.factory.annotation.Autowired;
