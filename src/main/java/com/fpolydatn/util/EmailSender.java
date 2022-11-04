@@ -32,12 +32,12 @@ public class EmailSender {
     private SpringTemplateEngine thymeleafTemplateEngine;
 
     @Async
-    public void sendRegisterPasswordMail(String[] toEmails, String bodyEmail, String titleEmail) {
+    public void sendEmail(String[] toEmails, String subject, String titleEmail, String bodyEmail) {
         Map<String, Object> model = new HashMap<>();
         model.put("bodyEmail", bodyEmail);
         model.put("titleEmail", titleEmail);
-        String htmlBody = loadMailBody(MailConstant.TEMPLATE_REGISTER_PASSWORD, model);
-        sendSimpleMail(toEmails, htmlBody, MailConstant.SUBJECT_REGISTER_PASSWORD);
+        String htmlBody = loadMailBody(MailConstant.TEMPLATE_MAIL, model);
+        sendSimpleMail(toEmails, htmlBody, subject);
     }
 
     private String loadMailBody(String templateName, Map<String, Object> model) {
