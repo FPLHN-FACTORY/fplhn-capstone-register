@@ -30,7 +30,7 @@ function genPagzing() {
     }
     let templatePageAfter = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage + 1)">Next</a>
+                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(Number(currentPage) + 1)">Next</a>
                 </li>
                 `;
     let templateHtml = ``;
