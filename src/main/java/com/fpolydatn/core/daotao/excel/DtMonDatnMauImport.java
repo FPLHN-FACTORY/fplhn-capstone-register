@@ -35,8 +35,26 @@ public class DtMonDatnMauImport {
         createCell(row, 1, "Mã môn", cellStyle);
         createCell(row, 2, "Tên môn", cellStyle);
         createCell(row, 3, "Tên chuyên ngành", cellStyle);
-        createCell(row, 4, "Mã cơ sở", cellStyle);
-        createCell(row, 5, "Mã nhóm môn", cellStyle);
+        createCell(row, 4, "Mã nhóm môn", cellStyle);
+
+        CellStyle cellDataStyle = xssfWorkbook.createCellStyle();
+        XSSFFont fontData = xssfWorkbook.createFont();
+        fontData.setFontHeight(11);
+        cellDataStyle.setFont(fontData);
+
+        Row row1 = xssfSheet.createRow(1);
+        createCell(row1,0,1,cellDataStyle);
+        createCell(row1,1,"PRO2112",cellDataStyle);
+        createCell(row1,2,"Dự án tốt nghiệp (UDPM-Spring Boot)",cellDataStyle);
+        createCell(row1,3,"Công nghệ thông tin",cellDataStyle);
+        createCell(row1,4,"PRO",cellDataStyle);
+
+        Row row2 = xssfSheet.createRow(2);
+        createCell(row2,0,2,cellDataStyle);
+        createCell(row2,1,"PRO2113",cellDataStyle);
+        createCell(row2,2,"Dự án tốt nghiệp C#",cellDataStyle);
+        createCell(row2,3,"Công nghệ thông tin",cellDataStyle);
+        createCell(row2,4,"PRO",cellDataStyle);
     }
 
     private void createCell(Row row, int countColum, Object value, CellStyle cellStyle) {
@@ -57,12 +75,9 @@ public class DtMonDatnMauImport {
     }
 
     public void exportData(HttpServletResponse response) throws IOException {
-        final long startTime = System.currentTimeMillis();
         headerLine();
         ServletOutputStream outputStream = response.getOutputStream();
         xssfWorkbook.write(outputStream);
-        final long endTime = System.currentTimeMillis();
-        System.out.println("Total execution time end: " + (endTime - startTime));
         xssfWorkbook.close();
         outputStream.close();
     }

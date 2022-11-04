@@ -165,13 +165,59 @@ function clearModal() {
     $("#errorMaMonUpdate").text("");
     $("#errorTenMonUpdate").text("");
 }
-$("#exampleFormControlFile1").on("input", function () {
-    if(!$("#exampleFormControlFile1").val().trim().length == 0) {
+
+$("#form_import_excel").submit(function (event) {
+    event.preventDefault();
+        $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                enctype: 'multipart/form-data',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    $('#import_excel').modal("hide");
+                    if (response.data.status == true) {
+                        bootbox.alert({
+                            title: "Import Excel",
+                            message: "<div class='alert alert-success alert-dismissible fade show' "+
+                                    " role='alert'><strong>SUCCESS !!! </strong><p>Import thành công</p></div>",
+                            backdrop: true,
+                            callback: function () {
+                                reload();
+                            }
+                        });
+                    } else {
+                        let mess = "";
+                        response.data.message.forEach(el => {
+                            mess = mess + "</br>" + el;
+                        });
+                        bootbox.alert({
+                            title: "Import Excel",
+                            message: '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>ERROR !!! </strong><div><p>'+ mess +'</p></div></div>',
+                            backdrop: true,
+                            callback: function () {
+                                reload();
+                            }
+                        });
+                    }
+                },
+                error: function (e) {
+                }
+            }
+        );
+});
+
+function reload() {
+    window.open('/dao-tao/mon-datn', '_self');
+}
+
+$("#inputGroupFile04").on("input", function () {
+    if(!$("#inputGroupFile04").val().trim().length == 0) {
         $("#import").removeAttr('disabled');
         $("#import").css( 'cursor', 'pointer' );
     } else {
         $("#import").attr('disabled','disabled');
         $("#import").css( 'cursor', 'not-allowed');
     }
-
 })
