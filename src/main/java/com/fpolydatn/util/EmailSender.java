@@ -30,12 +30,12 @@ public class EmailSender {
     private SpringTemplateEngine thymeleafTemplateEngine;
 
     @Async
-    public void sendRegisterPasswordMail(String toEmail, String name, String password) {
+    public void sendEmail(String[] toEmails, String subject, String titleEmail, String bodyEmail) {
         Map<String, Object> model = new HashMap<>();
-        model.put("name", name);
-        model.put("password", password);
-        String htmlBody = loadMailBody(MailConstant.TEMPLATE_REGISTER_PASSWORD, model);
-        sendSimpleMail(new String[]{toEmail}, htmlBody, MailConstant.SUBJECT_REGISTER_PASSWORD);
+        model.put("bodyEmail", bodyEmail);
+        model.put("titleEmail", titleEmail);
+        String htmlBody = loadMailBody(MailConstant.TEMPLATE_MAIL, model);
+        sendSimpleMail(toEmails, htmlBody, subject);
     }
 
     private String loadMailBody(String templateName, Map<String, Object> model) {
@@ -44,7 +44,7 @@ public class EmailSender {
         return thymeleafTemplateEngine.process(templateName, thymeleafContext);
     }
 
-    public void sendSimpleMail(String[] recipients, String msgBody, String subject) {
+    private void sendSimpleMail(String[] recipients, String msgBody, String subject) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.toString());
