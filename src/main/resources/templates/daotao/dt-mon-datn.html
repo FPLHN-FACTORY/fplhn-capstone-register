@@ -168,8 +168,8 @@
                                                 <th width="200px">Mã môn</th>
                                                 <th width="200px">Tên môn</th>
                                                 <th width="200px">Nhóm môn</th>
+                                                <th width="200px">Chuyên ngành</th>
                                                 <th width="200px">Giảng viên</th>
-                                                <th width="200px">CN bộ môn</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
                                                 <tbody>
@@ -179,6 +179,7 @@
                                                         <td th:text="${monDatn.maMon}"></td>
                                                         <td th:text="${monDatn.tenMon}"></td>
                                                         <td th:text="${monDatn.tenNhomMon}"></td>
+                                                        <td th:text="${monDatn.chuNhiemBoMon}"></td>
                                                         <td>
                                                             <a
                                                                     type="button"
@@ -187,7 +188,6 @@
                                                                 Chi tiết giảng viên
                                                             </a>
                                                         </td>
-                                                        <td th:text="${monDatn.chuNhiemBoMon}"></td>
                                                         <td>
                                                             <button
                                                                     type="button"
