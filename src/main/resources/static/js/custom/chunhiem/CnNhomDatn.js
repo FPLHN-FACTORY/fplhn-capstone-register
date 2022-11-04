@@ -2,9 +2,44 @@ const CNNhomDatnApi = '/api/chu-nhiem/nhom-datn';
 const CNNhomDatnView = '/chu-nhiem/nhom-datn';
 let flag = 0;
 let checkListCbb = 0;
-let currentPaging = -1;
-let totalPages = 0;
+let totalPages = $("#totalPages").val()
+let currentPage = $("#currentPage").val()
 const checkHanChuNhiem = $("#check_han_chu_nhiem").val();
+
+genPagingAndFillColor()
+
+function genPagingAndFillColor(){
+    genPagzing();
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
+}
+
+function genPagzing() {
+    $("#page").html(``)
+    let templatePageMid = ``;
+    let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage - 1)">Back</a>
+                </li>
+                `;
+    for (let i = 0; i < totalPages; i++) {
+        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
+                                        <a class="page-link" id="pageColor" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
+                                    </li>`
+    }
+    let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage + 1)">Next</a>
+                </li>
+                `;
+    let templateHtml = ``;
+    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+    if (totalPages == 1) {
+        templateHtml = ``;
+    }
+    $("#page").html(templateHtml);
+}
 
 function submitModal() {
     $("#modal_confirm_success").modal('hide')
@@ -36,7 +71,7 @@ function loadDataNhomDatn(count) {
     let monDatnId = $("#monDatnId").val()
     let trangThai = $("#trangThai").val()
     let dotDangKyId = $("#dotDangKyId").val()
-    currentPaging = count;
+    currentPage = count;
 
     $.ajax({
         type: "GET",
@@ -77,51 +112,30 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
                 <td>${item.tenDotDangKy}</td>
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
-                <td><a href="/chu-nhiem/sinh-vien?id=${item.id}"><div id="eye-custom" data-toggle="tooltip" title="Xem chi tiết nhóm">
-                                                                    <img src="/img/eye-fill.svg"></div></a>
-                <button class="btn_check_circle" style="${item.trangThai == 0 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" data-toggle="tooltip" title="Xác nhận nhóm" onclick="CNXacNhanNhom('${item.id}','${count}')">
-                                                                    <img src="/img/check-circle.svg"></button>
-                <button class="btn_check" style="${item.trangThai == 4 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" data-toggle="tooltip" title="Chốt đề tài" onclick="CNChotDuLieu('${item.id}','${count}')">
-                                                                    <img src="/img/clipboard-check.svg"></button>
-                <button class="btn_x_circle" style="${item.trangThai == 4 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" data-toggle="tooltip" title="Từ chối chốt đề tài" onclick="openModalNhanXet('${item.id}','${count}')">
-                                                                    <img src="/img/x-circle.svg"></button>
-                <button class="btn_trash" style="${item.trangThai == 5 || checkHanChuNhiem == 'false' ? 'display : none' : 'display : block'}" data-toggle="tooltip" title="Xóa" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">
-                                                                    <img src="/img/trash.svg"></button></td>
+                <td><a href="/chu-nhiem/sinh-vien?id=${item.id}">
+                <div id="eye-custom" data-toggle="tooltip" title="Xem chi tiết nhóm">
+                <img src="/img/eye-fill.svg"></div></a>
+                <button class="btn_check_circle" 
+                style="${item.trangThai == 0 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" 
+                data-toggle="tooltip" title="Xác nhận nhóm" onclick="CNXacNhanNhom('${item.id}','${count}')">
+                <img src="/img/check-circle.svg"></button>
+                <button class="btn_check" 
+                style="${item.trangThai == 4 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" 
+                data-toggle="tooltip" title="Chốt đề tài" onclick="CNChotDuLieu('${item.id}','${count}')">
+                <img src="/img/clipboard-check.svg"></button>
+                <button class="btn_x_circle" 
+                style="${item.trangThai == 4 && checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}" 
+                data-toggle="tooltip" title="Từ chối chốt đề tài" onclick="openModalNhanXet('${item.id}','${count}')">
+                <img src="/img/x-circle.svg"></button>
+                <button class="btn_trash" 
+                style="${item.trangThai == 5 || checkHanChuNhiem == 'false' ? 'display : none' : 'display : block'}" 
+                data-toggle="tooltip" title="Xóa" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">
+                <img src="/img/trash.svg"></button></td>
                 </tr>
                 `
                 }))
                 $('[data-toggle = "tooltip"]').tooltip()
-                $("#page").html(``)
-                let templatePageMid = ``;
-                let templatePageBefore = `
-                <li style="color: #0a8cf0" class="page-item">
-                     <a class="page-link" onclick="loadDataNhomDatn(0)">First</a>
-                </li>
-                <li style="${currentPaging == 0 ? 'display : none' : 'display : block'} ; color: #0a8cf0" class="page-item">
-                     <a class="page-link" onclick="loadDataNhomDatn(currentPaging - 1)">Back</a>
-                </li>
-                `;
-                for (let i = 0; i < responseData.data.totalPages; i++) {
-                    templatePageMid += `<li class="page-item" id="pageColor" style="color: #0a8cf0">
-                                        <a class="page-link" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
-                                    </li>`
-                }
-                let templatePageAfter = `
-                <li style="${currentPaging == totalPages - 1 ? 'display : none' : 'display : block'} ; color: #0a8cf0" class="page-item">
-                     <a class="page-link" onclick="loadDataNhomDatn(currentPaging + 1)">Next</a>
-                </li>
-                <li class="page-item" style="color: #0a8cf0">
-                     <a class="page-link" onclick="loadDataNhomDatn(totalPages - 1)">Last</a>
-                </li>
-                `;
-                let templateHtml = ``;
-                templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
-                if (responseData.data.totalPages == 1) {
-                    templateHtml = ``;
-                }
-                $("#page").html(templateHtml);
-                let colorPage = document.querySelectorAll("#pageColor");
-                colorPage[count].backgroundColor = 'red';
+                genPagingAndFillColor()
             }
         },
         error: function (e) {
@@ -388,10 +402,10 @@ function chotNhieuDeTai(count) {
             if (item) {
                 for (var xx of list_checkbox_son) {
                     if (xx.checked) {
-                        if (currentPaging == -1) {
+                        if (currentPage == -1) {
                             chotDeTai(xx.value, count);
                         } else {
-                            chotDeTai(xx.value, currentPaging);
+                            chotDeTai(xx.value, currentPage);
                         }
                     }
                 }
@@ -434,10 +448,10 @@ function xacNhanNhieuNhom(count) {
             if (item) {
                 for (var xx of list_checkbox_son) {
                     if (xx.checked) {
-                        if (currentPaging == -1) {
+                        if (currentPage == -1) {
                             xacNhanNhom(xx.value, count);
                         } else {
-                            xacNhanNhom(xx.value, currentPaging);
+                            xacNhanNhom(xx.value, currentPage);
                         }
                     }
                 }
@@ -529,7 +543,6 @@ $("#form_type_excel").submit(function (event) {
             type: "GET",
             contentType: "application/json",
             url: "/api/chu-nhiem/nhom-datn/export?typeExcel=" + typeExcel,
-
             success: function () {
                 window.open("/api/chu-nhiem/nhom-datn/export?typeExcel=" + typeExcel, '_self');
             },
