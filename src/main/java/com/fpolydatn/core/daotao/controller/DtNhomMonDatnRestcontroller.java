@@ -24,6 +24,8 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
     public ResponseObject update(@PathVariable("id") String id,
                                  @RequestBody DtUpdateNhomMonDatnRequest dtUpdateNhomMonRequest) {
         dtUpdateNhomMonRequest.setId(id);
+        String coSoId = session.getCoSoId();
+        dtUpdateNhomMonRequest.setCoSoId(coSoId);
         return new ResponseObject(dtNhomMonDatnService.update(dtUpdateNhomMonRequest));
     }
 

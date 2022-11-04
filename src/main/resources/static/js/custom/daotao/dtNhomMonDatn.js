@@ -74,7 +74,6 @@ $("#form_nhom_mon_datn_update").submit(function (event) {
     monDatnRequest["maNhomMon"] = maNhomMon;
     monDatnRequest["tenNhomMon"] = tenNhomMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
-    monDatnRequest["monDatnId"] = monDatnId;
     let index = 0;
     if (maNhomMon.trim().length === 0) {
         $("#errorMaMonUpdate").text("Ma mon DATN khong duoc de trong");

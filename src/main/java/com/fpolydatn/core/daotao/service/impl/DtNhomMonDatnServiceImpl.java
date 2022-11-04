@@ -5,6 +5,8 @@ import com.fpolydatn.core.daotao.model.request.DtCreateNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanMonDatnChoGiangVienHuongDanResponse;
 import com.fpolydatn.core.daotao.repository.DtNhomMonDatnRepository;
 import com.fpolydatn.core.daotao.service.DtNhomMonDatnService;
 import com.fpolydatn.entity.CanBo;
@@ -46,6 +48,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     public Boolean update(DtUpdateNhomMonDatnRequest command) {
         Optional<MonDatn> update = dtNhomMonDatnRepository.findById(command.getId());
         MonDatn monDatn = update.get();
+        monDatn.setChuyenNganhId(command.getChuyenNganhId());
         monDatn.setTenMonDatn(command.getTenNhomMon());
         dtNhomMonDatnRepository.save(monDatn);
         return true;
@@ -69,5 +72,12 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
         return monDatn.get();
+    }
+
+    @Override
+    public PageableObject<DtNhomMonDatnResponse> getMonChiTiet(String id, DtFindNhomMonDatnRequest req) {
+        Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
+        Page<DtNhomMonDatnResponse> res = dtNhomMonDatnRepository.findMonById(id, req, pageable);
+        return new PageableObject(res);
     }
 }

@@ -4,8 +4,10 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtCreateNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindNhomMonDatnRequest;
+import com.fpolydatn.core.daotao.model.request.DtFindPhanMonGiangVienHuongDanRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
+import com.fpolydatn.core.daotao.model.response.DtPhanMonDatnChoGiangVienHuongDanResponse;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.MonDatn;
@@ -23,4 +25,6 @@ public interface DtNhomMonDatnService {
     Boolean add(@Valid final DtCreateNhomMonDatnRequest command);
 
     MonDatn findById(String id);
+
+    PageableObject<DtNhomMonDatnResponse> getMonChiTiet(String id, final DtFindNhomMonDatnRequest req);
 }

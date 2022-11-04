@@ -29,6 +29,9 @@ public interface DtCanBoResponse extends IsIdentified {
     @Value("#{target.ten_tai_khoan}")
     String getTenTaiKhoan();
 
+    @Value("#{target.ten_chuyen_nganh}")
+    String getTenChuyenNganh();
+
     @Value("#{target.vai_tro}")
     int getVaiTro();
 
