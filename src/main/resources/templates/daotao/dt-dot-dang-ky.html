@@ -203,7 +203,7 @@
                                             <ul class="pagination justify-content-end">
                                                 <li class="page-item">
                                                     <a class="page-link"
-                                                       th:if="${page.currentPage >= 1}"
+                                                       th:style="${page.currentPage} == 0 ? 'pointer-events: none' : ''"
                                                        th:href="@{/dao-tao/dot-dang-ky?page={page.currentPage}(page.currentPage=${page.currentPage}-1)}"
                                                        th:text="Back">
                                                     </a>
@@ -219,7 +219,7 @@
                                                 </div>
                                                 <li class="page-item">
                                                     <a class="page-link"
-                                                       th:if="${page.currentPage} <= ${page.totalPages} - 2"
+                                                       th:style="${page.currentPage} == ${page.totalPages} - 1 ? 'pointer-events: none' : ''"
                                                        th:href="@{/dao-tao/dot-dang-ky?page={page.currentPage}(page.currentPage=${page.currentPage}+1)}"
                                                        th:text="Next">
                                                     </a>
