@@ -6,7 +6,6 @@ $(document).ready(function () {
 });
 
 function openModalUpdateDotDangKy(dotDangKyId) {
-
     $("#errorMessageNgayBatDauUpdate").text("");
     $("#errorMessageNgayKetThucUpdate").text("");
     $("#errorMessageHanSinhVienUpdate").text("");
@@ -50,6 +49,7 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     event.preventDefault();
     let dotDangKyId = $("#id_dot_dang_ky_update").val();
     let ngayBatDauStr = $("#ngay_bat_dau_update").val();
+    let tenDotDangKy = $("#ten_dot_dang_ky_update").val().trim();
     let ngayBatDau = new Date(ngayBatDauStr);
     let ngayKetThucStr = $("#ngay_ket_thuc_update").val();
     let ngayKetThuc = new Date(ngayKetThucStr);
@@ -61,6 +61,7 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     let hanChuNhiemBoMon = new Date(hanChuNhiemBoMonStr);
 
     let dotDangKyRequest = {};
+    dotDangKyRequest["tenDotDangKy"] = tenDotDangKy;
     dotDangKyRequest["ngayBatDau"] = ngayBatDau.toLocaleString('en-CA', {hour12: false});
     dotDangKyRequest["ngayKetThuc"] = ngayKetThuc.toLocaleString('en-CA', {hour12: false});
     dotDangKyRequest["hanSinhVien"] = hanSinhVien.toLocaleString('en-CA', {hour12: false});
@@ -68,6 +69,14 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     dotDangKyRequest["hanChuNhiemBoMon"] = hanChuNhiemBoMon.toLocaleString('en-CA', {hour12: false});
 
     let check = 0;
+    if  (tenDotDangKy === "") {
+        $("#errorMessageTenDotDangKyUpdate").text("Tên đợt đăng ký không được để trống");
+        check += 1;
+    } else if (tenDotDangKy.length > 100) {
+        $("#errorMessageTenDotDangKyUpdate").text("Quá số ký cho phép");
+        check += 1;
+    }
+
     if (ngayBatDauStr === "") {
         $("#errorMessageNgayBatDauUpdate").text("Ngày giờ bắt đầu không được để trống");
         check += 1;
@@ -120,6 +129,12 @@ $("#form_dot_dang_ky_update").submit(function (event) {
     } else {
         $("#errorMessageHanChuNhiemBoMonUpdate").text("");
     }
+
+    ngayBatDau.setSeconds(0);
+    ngayKetThuc.setSeconds(0);
+    hanSinhVien.setSeconds(0);
+    hanGiangVien.setSeconds(0);
+    hanChuNhiemBoMon.setSeconds(0);
 
     $.ajax({
         type: "GET",
@@ -280,6 +295,12 @@ $("#form_create_dot_dang_ky").submit(function (event) {
     } else {
         $("#errorMessageAddHanChuNhiemBoMon").text("");
     }
+
+    ngayBatDau.setSeconds(0);
+    ngayKetThuc.setSeconds(0);
+    hanSinhVien.setSeconds(0);
+    hanGiangVien.setSeconds(0);
+    hanChuNhiemBoMon.setSeconds(0);
 
     $.ajax({
         type: "GET",

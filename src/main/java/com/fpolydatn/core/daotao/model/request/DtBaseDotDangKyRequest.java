@@ -2,6 +2,7 @@ package com.fpolydatn.core.daotao.model.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -13,6 +14,11 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 public abstract class DtBaseDotDangKyRequest {
+
+    @NotEmpty
+    @NotBlank
+    @Length(min = 6, max = 100)
+    private String tenDotDangKy;
 
     @NotEmpty
     @NotBlank

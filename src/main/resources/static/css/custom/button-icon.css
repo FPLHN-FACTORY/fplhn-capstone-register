@@ -68,3 +68,33 @@
     line-height: 12px;
     float: left;
 }
+.btn_person_off{
+    background: #d31613;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_box_arrow {
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_change_role {
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}

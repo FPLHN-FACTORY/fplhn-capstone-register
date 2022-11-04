@@ -17,11 +17,6 @@ public class DtCreateDotDangKyRequest extends DtBaseDotDangKyRequest {
 
     @NotEmpty
     @NotBlank
-    @Length(min = 6, max = 100)
-    private String tenDotDangKy;
-
-    @NotEmpty
-    @NotBlank
     private String hocKyId;
 
     private String coSoId;
