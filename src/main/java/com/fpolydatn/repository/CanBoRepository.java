@@ -35,4 +35,5 @@ public interface CanBoRepository extends JpaRepository<CanBo, String> {
     SimpleEntityProj findSimpleEntityByTenCanBo(@Param("coSoId") String coSoId, @Param("emailFPT") String emailFPT,
                                                 @Param("vaiTro") int vaiTro);
 
+
 }
