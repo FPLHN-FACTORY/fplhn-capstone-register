@@ -21,10 +21,10 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
                          LEFT JOIN sinh_vien c ON nd.truong_nhom_id = c.id
                          LEFT JOIN sinh_vien sv ON sv.nhom_id = nd.id
                          LEFT JOIN chuyen_nganh cn ON cn.id = sv.chuyen_nganh_id
-                         LEFT JOIN mon_datn mdatn on mdatn.id = c.mon_datn_id
+                         LEFT JOIN mon_datn mdatn ON mdatn.id = c.mon_datn_id
                          LEFT JOIN giang_vien_huong_dan gvhd ON gvhd.id = nd.giang_vien_id
                          LEFT JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
-                         LEFT JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
+                         LEFT JOIN hoc_ky hk ON hk.id = ddk.hoc_ky_id
             WHERE   gvhd.id LIKE :#{#request.giangVienHDId}
                   AND ( :#{#request.monId} IS NULL\s
                           OR :#{#request.monId} LIKE ''\s
@@ -40,10 +40,10 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
                          LEFT JOIN sinh_vien c ON nd.truong_nhom_id = c.id
                          LEFT JOIN sinh_vien sv ON sv.nhom_id = nd.id
                          LEFT JOIN chuyen_nganh cn ON cn.id = sv.chuyen_nganh_id
-                         LEFT JOIN mon_datn mdatn on mdatn.id = c.mon_datn_id
+                         LEFT JOIN mon_datn mdatn ON mdatn.id = c.mon_datn_id
                          LEFT JOIN giang_vien_huong_dan gvhd ON gvhd.id = nd.giang_vien_id
                          LEFT JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
-                         LEFT JOIN hoc_ky hk on hk.id = ddk.hoc_ky_id
+                         LEFT JOIN hoc_ky hk ON hk.id = ddk.hoc_ky_id
             WHERE   gvhd.id LIKE :#{#request.giangVienHDId}
                   AND ( :#{#request.monId} IS NULL\s
                           OR :#{#request.monId} LIKE ''\s
