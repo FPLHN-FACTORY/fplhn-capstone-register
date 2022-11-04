@@ -161,6 +161,11 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         return returnList;
     }
 
+    @Override
+    public List<SimpleEntityProj> findAllSimpleEntityByCoSoAndGvhd(String idGvhd, String coSoId) {
+        return monDatnRepository.findAllSimpleEntityByCoSoAndGvhd(idGvhd, coSoId);
+    }
+
     private List<MonDatn> checkMaNhom(List<DtCreateImportMonDatnRequest> checkValiDate) {
         List<MonDatn> list = new ArrayList<>();
 

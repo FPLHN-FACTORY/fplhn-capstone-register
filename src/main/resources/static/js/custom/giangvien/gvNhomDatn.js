@@ -7,37 +7,25 @@ function clearDataGVHD() {
     $("#tenDotDangKy").val("");
 }
 
-// $(document).ready(function () {
-//
-//     $('.enityNhomDatn[value="2"]').closest("tr").hide()
-//     var checkMocThoiGians = $("#mocthoiGian").val()
-//     var chucNangs = document.querySelectorAll(".chucNangs")
-//     if(checkMocThoiGians == 'false'){
-//         for(var i =0; i< chucNangs.length; i++){
-//             chucNangs[i].style.display = "none"
-//         }
-//     }
-//     fillter()
-//
-// });
+$(document).ready(function () {
+
+    var checkMocThoiGians = $("#mocthoiGian").val()
+    var chucNangs = document.querySelectorAll(".chucNangs")
+    if(checkMocThoiGians == 'false'){
+        for(var i =0; i< chucNangs.length; i++){
+            chucNangs[i].style.display = "none"
+        }
+    }
+    fillter()
+
+});
 
 function fillter() {
 
-    $("#ten_de_tai_update").on('change', function () {
-        $("#errorMessageUpdate").text("");
-    });
-
-    $('#tenChuyenNganh').change(function () {
-        seachNhomdatn(0);
-    })
-
-    $("#tenHocKy").on('change', function () {
+    $("#idMon").on('change', function () {
         seachNhomdatn(0);
     });
 
-    $("#tenDotDangKy").on('change', function () {
-        seachNhomdatn(0);
-    });
 
 }
 
@@ -53,10 +41,12 @@ function showDetail(maNhom) {
                 return `
                     <tr>
                     <td>${item.stt}</td>
+                    <td>${item.chucVu != 0 ? "trưởng nhóm" : "thành viên"}</td>
                     <td>${item.maSinhVien}</td>
                     <td>${item.tenSinhVien}</td>
                     <td>${item.soDienThoai}</td>
                     <td>${item.email}</td>
+                    <td>${item.maMon}</td>
                     <td>${item.khoa}</td>
                     `
             }))
@@ -67,69 +57,82 @@ function showDetail(maNhom) {
     });
 }
 
-function pheDuyetNhomDatn(maNhom) {
-        $("#modal_nhom_datn_update").modal('show');
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: nhomDatnAPI + "/" + maNhom,
-            success: function (responseData) {
-                $('#update_nhom_datn').val(responseData.data.id)
+function xacDaNhanLienHe(idNhom, maNhom){
+    bootbox.confirm({
+        title: "Xác nhận nhóm đã liên hệ",
+        message: "Bạn có muốn xác nhận đã liên hệ với nhóm "+maNhom+" ?",
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Quay lại'
             },
-            error: function (e) {
-                console.log("ERROR : ", e);
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
             }
-        });
-}
-
-$("#XacNhanLienHeNhomDatn").submit(function (event) {
-    event.preventDefault();
-    var maNhom = $('#update_nhom_datn').val()
-    $.ajax({
-        type: "PUT",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + maNhom,
-        success: function () {
-            window.location.reload(false)
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + idNhom,
+                    datatype: 'json',
+                    success: function () {
+                        bootbox.alert('Xác nhận thành công', function () {
+                            window.location.reload(false)
+                        });
+                    },
+                    error: function (e) {
+                        console.log("ERROR : ", e);
+                    }
+                });
+            }
         }
     });
-})
+}
 
 
 function seachNhomdatn(index) {
     if (index == undefined) {
         index = 0
     }
-    let tenChuyenNganh = $("#tenChuyenNganh").val()
-    let tenHocKy = $("#tenHocKy").val()
-    let tenDotDangKy = $("#tenDotDangKy").val()
+    var checkMocThoiGians = $("#mocthoiGian").val()
+    let monId = $("#idMon").val()
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: nhomDatnAPI + "/search" + "?chuyenNganhId=" + tenChuyenNganh
-            + "&hocKyId=" + tenHocKy + "&dotDangKyId=" + tenDotDangKy + "&page=" + index,
+        url: nhomDatnAPI + "/search" + "?monId=" + monId+ "&page=" + index,
         success: function (responseData) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
-                <tr>
+                <tr class="chucNangs">
                 <td>${item.stt}</td>
-                <td>${item.tenNhom}</td>
+                <td>${item.maNhom}</td>
                 <td>${item.tenDeTai}</td>
-                <td>${item.tenChuyenNganh}</td>
                 <td>${item.totalMaSinhVien}</td>
-                <td>${item.tenTruongNhom} - ${item.maTruongNhom} </td>
-                <td>${item.tenGvhd} - ${item.accountGvhd} </td>
+                <td>${item.maMon}</td>
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'cần sửa' : (item.trangThai == 4 ? 'Giáo viên đã chốt' : 'CNBM đã chốt'))))}</td>
                 <td>
-                     <button
-                                    type="button"
-                                    class="btn btn-primary"
-                                    onclick= "showDetail('${item.id}')">
-                                    chi tiết nhóm
-                     </button>
+                         <button onclick=showDetail('${item.id}') class="btn_eye" data-toggle="tooltip" title="Xem chi tiết nhóm">
+                                    <img src="/img/eye-fill.svg">
+                         </button>
+                 </td>
+                 <td style="${checkMocThoiGians == 'true' ? 'display: block' : 'display: none'}">
+                        <button onclick= "xacDaNhanLienHe('${item.id}', '${item.maNhom}')"
+                                style="${item.trangThai == 1 ? 'display: block' : 'display: none'}" 
+                                class="btn_check_circle" data-toggle="tooltip" title="Xác nhận nhóm">
+                                    <img src="/img/check-circle.svg">
+                         </button>
+                        <button onclick= "chotDeTaiNhomDatn('${item.id}', '${item.maNhom}')"
+                                style="${item.trangThai ==2 ? 'display: block' : (item.trangThai ==3 ? 'display: block' :  'display: none')}"
+                                class="btn_check" data-toggle="tooltip" title="Xác nhận đề tài">
+                                    <img src="/img/clipboard-check.svg">
+                         </button>
+                         <button onclick= "updateTenDeTai('${item.id}')"
+                                style="${item.trangThai ==2 ? 'display: block' : (item.trangThai ==3 ? 'display: block' : (item.trangThai ==4 ? 'display: block' : 'display: none'))}"
+                                class="btn_pencil_square" data-toggle="tooltip" title="Xác nhận đề tài">
+                                    <img src="/img/pencil-square.svg">
+                         </button>
+   
                  </td>
                 </tr>
                 `
@@ -200,33 +203,34 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
     }
 });
 
-function chotDeTaiNhomDatn(maNhom) {
-        $("#modal_nhom_datn_chot_de_tai").modal('show');
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: nhomDatnAPI + "/" + maNhom,
-            success: function (responseData) {
-                $('#ma_nhom_datn').val(responseData.data.id)
+function chotDeTaiNhomDatn(idNhom, maNhom) {
+    bootbox.confirm({
+        title: "Xác nhận chốt đề tài",
+        message: "Bạn có muốn xác nhận đề tài nhóm "+maNhom+" ?",
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Quay lại'
             },
-            error: function (e) {
-                console.log("ERROR : ", e);
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
             }
-        });
-}
-
-$("#submitChotDeTaiNhomDatn").submit(function (event) {
-    event.preventDefault()
-    var maNhom = $('#ma_nhom_datn').val()
-    $.ajax({
-        type: "PUT",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/phe-duyet-de-tai-nhom?maNhom=" + maNhom,
-        success: function () {
-            window.location.reload(false)
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: nhomDatnAPI + "/phe-duyet-de-tai-nhom?maNhom=" + idNhom,
+                    success: function () {
+                        bootbox.alert('Xác nhận thành công', function () {
+                            window.location.reload(false)
+                        });
+                    },
+                    error: function (e) {
+                        console.log("ERROR : ", e);
+                    }
+                });
+            }
         }
     });
-})
+}
