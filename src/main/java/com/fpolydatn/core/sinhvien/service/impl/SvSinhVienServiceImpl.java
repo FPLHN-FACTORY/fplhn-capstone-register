@@ -2,13 +2,9 @@ package com.fpolydatn.core.sinhvien.service.impl;
 
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvSinhVienTheoNhomResponse;
-import com.fpolydatn.core.sinhvien.repository.SvNhomDatnRepository;
 import com.fpolydatn.core.sinhvien.repository.SvSinhVienRepository;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
-import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
-import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

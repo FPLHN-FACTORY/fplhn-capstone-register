@@ -137,17 +137,6 @@ function seachNhomdatn(index) {
                 </tr>
                 `
             }))
-            $("#page").html(``)
-            let templateHtml = ``;
-            for (let i = 0; i < responseData.data.totalPages; i++) {
-                templateHtml += `<li class="page-item" >
-                                <a class="page-link" onclick="seachNhomdatn(${i})">${i + 1}</a>
-                            </li>`
-            }
-            if (responseData.data.totalPages == 1) {
-                templateHtml = ``;
-            }
-            $("#page").html(templateHtml)
 
         },
         error: function (e) {
