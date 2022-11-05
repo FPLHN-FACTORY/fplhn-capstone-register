@@ -56,7 +56,7 @@ public class SvNhomDatnController extends BaseController {
         model.addAttribute("checkMocThoiGian", mocThoiGianCommon.checkMocThoiGianSinhVien());
         System.out.println(mocThoiGianCommon.checkMocThoiGianSinhVien());
         if (nhomId == null || nhomId.trim().isEmpty()) {
-            req.setCoSoId(coSoId);
+            req.setCoSoId(coSoId );
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUSer);
             model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer));
