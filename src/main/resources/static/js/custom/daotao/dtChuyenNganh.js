@@ -30,7 +30,13 @@ $("#form_create_chuyen_nganh").submit(function (event) {
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if(e.responseJSON.message == 'Chuyen nganh da ton tai'){
+                    $("#chuyennganhUpdate_error").text("Chuyên ngành đã tồn tại trong đợt");
+                    $("#chuyennganh_error").text("");
+                }else{
+                    $("#chuyennganh_error").text("Chủ nhiệm bộ môn đang tồn tại trong đợt");
+                    $("#chuyennganhUpdate_error").text("");
+                }
             }
         });
     }
@@ -59,12 +65,11 @@ $("#form_chuyen_nganh_update").submit(function (event) {
     let tenchuyennganh = $("#tenChuyenNganhUpdate").val();
     let chuyenNganhId = $("#id_chuyen_nganh_update").val();
     let tenCNBM = $("#tenCNBMhUpdate").val();
-    console.log(chuyenNganhId);
     let chuyenNganhrequest = {};
     chuyenNganhrequest["tenChuyenNganh"] = tenchuyennganh;
     chuyenNganhrequest["chuNhiemBoMon"] = tenCNBM;
     if (tenchuyennganh.trim().length === 0) {
-        $("#chuyennganh_error").text("Tên Chuyen Nganh không được để trống");
+        $("#chuyennganhUpdate_error").text("Tên chuyên ngành không được bỏ trống");
     } else {
         $.ajax({
             type: "PUT",
@@ -74,10 +79,16 @@ $("#form_chuyen_nganh_update").submit(function (event) {
             dataType: 'json',
             success: function () {
                 window.open(chuyenNganhView, '_self');
-                $("##modal_update_chuyen_nganh").modal("hide");
+                $("#modal_update_chuyen_nganh").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if(e.responseJSON.message == 'Chuyen nganh da ton tai'){
+                    $("#chuyennganhUpdate_error").text("Chuyên ngành đã tồn tại trong đợt");
+                    $("#chuyennganh_error").text("");
+                }else{
+                    $("#chuyennganh_error").text("Chủ nhiệm bộ môn đang tồn tại trong đợt");
+                    $("#chuyennganhUpdate_error").text("");
+                }
             }
         });
     }
@@ -115,7 +126,7 @@ $("#form_chuyen_nganh_delete").submit(function (event) {
             $("#modal_chuyen_nganh_remove").modal("hide");
         },
         error: function (e) {
-            $("#remove_chuyen_nganh").text(e.responseJSON.message);
+            $("#remove_chuyen_nganh").text("Chuyên ngành có trong đợt đăng ký");
         }
     });
 });

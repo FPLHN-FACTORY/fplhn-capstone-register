@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author hungpv
@@ -36,6 +37,8 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
             """, nativeQuery = true)
     Page<DtChuyenNganhResponse> findByName(@Param("req") DtFindChuyenNganhRequest req, Pageable page);
 
+    ChuyenNganh findByTenChuyenNganh(String tenChuyenNganh);
+
     @Query(value = """
                 SELECT cn.id FROM chuyen_nganh cn LEFT JOIN mon_datn m ON cn.id = m.chuyen_nganh_id
                  RIGHT JOIN sinh_vien sv ON sv.chuyen_nganh_id = cn.id WHERE cn.id = :id AND cn.co_so_id = :coSoId 
@@ -45,7 +48,17 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
                                           @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT * FROM chuyen_nganh cn WHERE cn.ten_chuyen_nganh = tenChuyenNganh
+                SELECT cn.id FROM chuyen_nganh cn JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id WHERE 
+                cn.co_so_id = :coSoId AND cn.ten_chuyen_nganh = :tenChuyenNganh AND cn.id <> :id 
             """, nativeQuery = true)
-    ChuyenNganh findName(@Param("tenChuyenNganh") String tenChuyenNganh);
+    String checkChuyenNganhByName(@Param("coSoId") String coSoId, @Param("tenChuyenNganh") String tenChuyenNganh,
+                                  @Param("id") String id);
+
+    @Query(value = """
+                SELECT cb.id FROM chuyen_nganh cn JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id WHERE 
+                cn.co_so_id = :coSoId AND cn.chu_nhiem_bo_mon = :chuNhiemBoMon AND cn.id <> :id 
+            """, nativeQuery = true)
+    String findByChuNhiem(@Param("coSoId") String coSoId, @Param("chuNhiemBoMon") String chuNhiemBoMon,
+                          @Param("id") String id);
+
 }
