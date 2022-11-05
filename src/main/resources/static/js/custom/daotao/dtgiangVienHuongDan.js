@@ -7,10 +7,48 @@ const regexSoNhom = new RegExp('[0-9]+');
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 })
+let totalPages = $("#totalPages").val()
+let currentPage = $("#currentPage").val()
 
 $(document).ready(function () {
     $("#giang_vien_error").text("");
 });
+
+genPagingAndFillColor()
+
+function genPagingAndFillColor(){
+    genPageZing ()
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
+}
+function genPageZing(){
+$("#page").html(``)
+            let templateHtml = ``;
+            let templatePageMid = ``;
+            let templatePageBefore = `
+                           <li style="color: #0a8cf0" class="page-item">
+                                <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
+                           </li>
+                           `;
+            let templatePageAfter = `
+                            <li style="color: #0a8cf0" class="page-item">
+                                 <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
+                            </li>
+                            `;
+            for (let i = 0; i < totalPages; i++) {
+                templatePageMid += `<li class="page-item" >
+                                         <a id="pageColor" class="page-link" onclick="loadTable(${i})">${i + 1}</a>
+                                     </li>`
+            }
+            templateHtml = templatePageBefore + templatePageMid +templatePageAfter
+            if (totalPages == 1) {
+                templateHtml = ``;
+            }
+            $("#page").html(templateHtml);
+}
+
+
 
 function clearData() {
     $("#tenGiangVien").val("");
@@ -283,6 +321,7 @@ $("#searchGvhd").submit(function (event) {
 
 function loadTable(count) {
     let tenGiangVien = $("#tenGiangVien").val();
+    currentPage = count;
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -290,6 +329,7 @@ function loadTable(count) {
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)
+            totalPages = responseData.data.totalPages
             $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                 return `
                <tr>
@@ -326,17 +366,7 @@ function loadTable(count) {
                </tr>
                `
             }))
-            $("#page").html(``)
-            let templateHtml = ``;
-            for (let i = 0; i < responseData.data.totalPages; i++) {
-                templateHtml += `<li class="page-item" >
-                                         <a class="page-link" onclick="loadTable(${i})">${i + 1}</a>
-                                     </li>`
-            }
-            if (responseData.data.totalPages == 1) {
-                templateHtml = ``;
-            }
-            $("#page").html(templateHtml);
+            genPagingAndFillColor()
         },
         error: function (e) {
             console.log("ERROR : ", e);
