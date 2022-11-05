@@ -535,7 +535,7 @@ function searchSinhVienNoGroup() {
 
 $("#form_type_excel").submit(function (event) {
     event.preventDefault();
-    let typeExcel = $("#type_excel").val();
+    let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
         $("#type_excel_error").text("chọn định dạng file download");
     } else {
@@ -552,3 +552,41 @@ $("#form_type_excel").submit(function (event) {
         });
     }
 });
+
+$("#form_import_excel").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#inputGroupFile01").val();
+    let indexDot = typeExcel.indexOf('.');
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    if (typeExcel.length <= 0) {
+        $("#import_excel_error").text("chọn file");
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                enctype: 'multipart/form-data',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.data.status == true) {
+                        $("#messNotification").text("Import File Excel thành công!");
+                    } else {
+                        $("#messNotification").text(response.data.message);
+                    }
+                    $('#import_excel').modal("hide");
+                    $("#modal_notification").modal("show");
+                },
+                error: function (e) {
+                    console.log("ERROR: " + e);
+                }
+            }
+        );
+    } else {
+        $("#import_excel_error").text("chọn đúng file Excel ");
+    }
+});
+
+function reload() {
+    window.open('/chu-nhiem/nhom-datn', '_self');
+}

@@ -22,11 +22,6 @@
             overflow: hidden;
         }
 
-        .custom-checkbox {
-            width: 15px;
-            height: 15px;
-        }
-
         #eye-custom {
             text-align: center;
             border: 1px solid white;
@@ -35,50 +30,6 @@
             height: 35px;
             line-height: 30px;
             background: #1abb32;
-            float: left;
-        }
-
-        #custom-delete {
-            text-align: center;
-            border: 1px solid white;
-            border-radius: 7px;
-            width: 35px;
-            height: 35px;
-            line-height: 30px;
-            background: #d31613;
-            float: left;
-        }
-
-        #custom-xac-nhan {
-            text-align: center;
-            border: 1px solid white;
-            border-radius: 7px;
-            width: 35px;
-            height: 35px;
-            line-height: 30px;
-            background: #4284d3;
-            float: left;
-        }
-
-        #custom-tu-choi {
-            text-align: center;
-            border: 1px solid white;
-            border-radius: 7px;
-            width: 35px;
-            height: 35px;
-            line-height: 30px;
-            background: #eae345;
-            float: left;
-        }
-
-        #custom-chot-de-tai {
-            text-align: center;
-            border: 1px solid white;
-            border-radius: 7px;
-            width: 35px;
-            height: 35px;
-            line-height: 30px;
-            background: #4bcbb5;
             float: left;
         }
 
@@ -125,7 +76,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <form id="form_list_nhom_datn" th:action="@{/chu-nhiem/nhom-datn}">
+                                <form id="form_list_nhom_datn">
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
@@ -233,7 +184,7 @@
                                             </button>
                                             <button class="col-8 col-sm-4 col-md-2 btn btn-success"
                                                     data-toggle="modal"
-                                                    data-target="#modal_excel"
+                                                    data-target="#import_excel"
                                             >
                                                 <img th:src="@{/img/import.svg}">
                                                 Import
@@ -272,6 +223,57 @@
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button type="submit" class="btn btn-primary">Download
+                                                                    excel
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+<!--                                            import excel-->
+                                            <div class="modal fade "
+                                                 id="import_excel"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form enctype="multipart/form-data" method="post"
+                                                              th:action="@{/api/chu-nhiem/nhom-datn/import}"
+                                                              id="form_import_excel">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Import Excel</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text"
+                                                                                  id="inputGroupFileAddon01">Upload</span>
+                                                                        </div>
+                                                                        <div class="custom-file">
+                                                                            <input type="file" class="custom-file-input"
+                                                                                   id="inputGroupFile01"
+                                                                                   aria-describedby="inputGroupFileAddon01"
+                                                                                   name="file">
+                                                                            <label class="custom-file-label"
+                                                                                   for="inputGroupFile01">Choose
+                                                                                file</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="text-danger"
+                                                                          id="import_excel_error"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Hủy
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">Import
                                                                     excel
                                                                 </button>
                                                             </div>
@@ -687,6 +689,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" th:attr="onclick=|submitModal()|">OK</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_notification">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="messNotification">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" th:attr="onclick=|reload()|">OK</button>
             </div>
         </div>
     </div>

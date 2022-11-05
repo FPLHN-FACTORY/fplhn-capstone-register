@@ -5,6 +5,7 @@ import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
+import com.fpolydatn.core.chunhiem.model.response.CnSinhVienImport;
 import com.fpolydatn.core.chunhiem.service.CnGiangVienHuongDanService;
 import com.fpolydatn.core.chunhiem.service.CnMonDatnService;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
@@ -12,6 +13,7 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
+import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -113,7 +116,15 @@ public class CnNhomDatnRestController extends BaseController {
     @GetMapping("/export")
     public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, CnFindNhomDatnRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
-        nhomDatnService.DTSinhVienExport(response, typeExcel, request);
+        nhomDatnService.CnSinhVienExport(response, typeExcel, request);
+    }
+
+    @PostMapping("/import")
+    public ResponseObject importExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        CnSinhVienImport response = nhomDatnService.CnSinhVienImport(file,dotDangKyId, coSoId, session.getUserId());
+        return new ResponseObject(response);
     }
 
 }

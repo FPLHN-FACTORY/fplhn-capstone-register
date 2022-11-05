@@ -38,6 +38,6 @@ public interface CnSinhVienTheoDotExcel {
     String getTenDotDangKy();
 
     @Value("#{target.trang_thai}")
-    Integer getTrangThai();
+    String getTrangThai();
 
 }
