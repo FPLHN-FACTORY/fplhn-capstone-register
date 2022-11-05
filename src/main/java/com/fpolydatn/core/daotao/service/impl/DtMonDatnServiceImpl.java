@@ -12,7 +12,6 @@ import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.entity.ChuyenNganh;
-import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
@@ -38,7 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author hungpv

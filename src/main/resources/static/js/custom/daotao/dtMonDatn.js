@@ -168,56 +168,73 @@ function clearModal() {
 
 $("#form_import_excel").submit(function (event) {
     event.preventDefault();
-        $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                enctype: 'multipart/form-data',
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    $('#import_excel').modal("hide");
-                    if (response.data.status == true) {
-                        bootbox.alert({
-                            title: "Import Excel",
-                            message: "<div class='alert alert-success alert-dismissible fade show' "+
-                                    " role='alert'><strong>SUCCESS !!! </strong><p>Import thành công</p></div>",
-                            backdrop: true,
-                            callback: function () {
-                                reload();
-                            }
-                        });
-                    } else {
-                        let mess = "";
-                        response.data.message.forEach(el => {
-                            mess = mess + "</br>" + el;
-                        });
-                        bootbox.alert({
-                            title: "Import Excel",
-                            message: '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>ERROR !!! </strong><div><p>'+ mess +'</p></div></div>',
-                            backdrop: true,
-                            callback: function () {
-                                reload();
-                            }
-                        });
-                    }
-                },
-                error: function (e) {
+    const newFile = $("#inputGroupFile04").val();
+    if(newFile.trim().length === 0) {
+        $("#errImport").text("Bạn hãy chọn file");
+        return;
+    }
+
+    if(newFile.substring(newFile.lastIndexOf(".")+1, newFile.length) !== "xlsx") {
+        $("#errImport").text("Không đúng định dạng xlsx");
+        return;
+    }
+    $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            enctype: 'multipart/form-data',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $('#import_excel').modal("hide");
+                if (response.data.status == true) {
+                    bootbox.alert({
+                        title: "Import Excel",
+                        message: "<div class='alert alert-success alert-dismissible fade show' "+
+                                " role='alert'><strong>SUCCESS !!! </strong><p>Import thành công</p></div>",
+                        backdrop: true,
+                        callback: function () {
+                            reload();
+                        }
+                    });
+                } else {
+                    let mess = "";
+                    response.data.message.forEach(el => {
+                        mess = mess + "</br>" + el;
+                    });
+                    bootbox.alert({
+                        title: "Import Excel",
+                        message: '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>ERROR !!! </strong><div><p>'+ mess +'</p></div></div>',
+                        backdrop: true,
+                        callback: function () {
+                            reload();
+                        }
+                    });
                 }
+            },
+            error: function (e) {
             }
-        );
+        }
+    );
 });
 
 function reload() {
     window.open('/dao-tao/mon-datn', '_self');
 }
 
-$("#inputGroupFile04").on("input", function () {
-    if(!$("#inputGroupFile04").val().trim().length == 0) {
-        $("#import").removeAttr('disabled');
-        $("#import").css( 'cursor', 'pointer' );
-    } else {
-        $("#import").attr('disabled','disabled');
-        $("#import").css( 'cursor', 'not-allowed');
+$("#inputGroupFile04").on("change", function (event) {
+
+    const files = event.target.files;
+    if(files[0] == null) {
+        return;
     }
+    const getSizeImage = files[0].size;
+
+    if(getSizeImage > 4096*4096){
+        $("#errImport").text("Chỉ cho phép tải tệp tin nhỏ hơn 4096");
+        return;
+    }
+
+    $("#errImport").text("");
+
 })
