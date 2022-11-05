@@ -78,7 +78,13 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenTaiKhoan + ' - ' + item.tenGvhd}</td>
                 <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
                 <td>
-                    <button type="button" class="btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
+                    <button type="button"
+                        class="btn_eye"
+                        title="Xem chi tiết nhóm"
+                        onclick="openModalDanhSachSinhVien('${item.id}')"
+                    >  
+                        <img src="/img/eye-fill.svg">
+                    </button>
                     <button class=" btn btn-success" style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}"                                 
                             data-target="#modal_create1"
                             data-toggle="modal"

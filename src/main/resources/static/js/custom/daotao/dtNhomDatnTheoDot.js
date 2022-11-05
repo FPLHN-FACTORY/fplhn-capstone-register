@@ -1,6 +1,9 @@
 let DTNhomDatnApi = '/api/dao-tao/nhom-datn';
 let DTNhomDatnView = '/dao-tao/nhom-datn';
 
+let totalPages = $("#totalPages").val()
+let currentPage = $("#currentPage").val()
+
 function clearform() {
     $("#maNhom").val("");
     $("#chuyenNganh").val("");
@@ -47,6 +50,7 @@ function loadDataNhomDatn(count) {
     let chuyenNganhId = $("#chuyenNganh").val()
     let dotDangKyId = $("#dotDangKy").val()
     let trangThai = $("#trangThai").val()
+    currentPage = count;
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -54,7 +58,7 @@ function loadDataNhomDatn(count) {
         dataType: 'json',
         success: function (responseData) {
             console.log(responseData)
-            let array = responseData.data.data.data
+            let array = responseData.data.data
             console.log(array)
             if (array.length == 0) {
                 console.log(array.length)
@@ -75,32 +79,36 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
                 
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                
-                <td><button type="button" data-toggle="modal" data-target="#modal_create" class=" btn btn-success" onclick="openModalDanhSachSinhVien('${item.id}')">Xem chi tiết</button>
+                <td>
+                <button type="button"
+                        class="btn_eye"
+                        data-target="#modal_create"
+                        data-toggle="modal"
+                        title="Xem chi tiết nhóm"
+                        onclick="openModalDanhSachSinhVien('${item.id}')"
+                >
+                    <img src="/img/eye-fill.svg">
+                </button>
                 <div class="modal fade"></div>
                 </td>
                 </tr>
                 `
                 }))
-                $("#list_page").html(``)
-                $("#list_page").html(responseData.data.list.map(function (item, index) {
-                    if (responseData.data.list.length == 1) {
-                        return ``
-                    }
-                    return `<li class="page-item" >
-                                <a class="page-link" onclick="loadDataNhomDatn(${index})">${item}</a>
-                            </li>`
-                }))
+                genPagingAndFillColor()
             }
         },
         error: function (e) {
             console.log("ERROR : ", e);
         }
     });
-
 }
 
 $("#form_type_excel").submit(function (event) {
     event.preventDefault();
+    let maNhom = $("#maNhom").val()
+    let chuyenNganhId = $("#chuyenNganh").val()
+    let dotDangKyId = $("#dotDangKy").val()
+    let trangThai = $("#trangThai").val()
     let typeExcel = $("#type_excel").val();
     if (typeExcel == '') {
         $("#type_excel_error").text("Chọn định dạng file download");
@@ -108,10 +116,9 @@ $("#form_type_excel").submit(function (event) {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/nhom-datn/export?typeExcel=" + typeExcel,
-
+            url: "/api/dao-tao/nhom-datn/export?typeExcel=" + typeExcel + "&maNhom=" + maNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId,
             success: function () {
-                window.open("/api/dao-tao/nhom-datn/export?typeExcel=" + typeExcel, '_self');
+                window.open("/api/dao-tao/nhom-datn/export?typeExcel=" + typeExcel + "&maNhom=" + maNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId, '_self');
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -119,5 +126,41 @@ $("#form_type_excel").submit(function (event) {
         });
     }
 });
+
+genPagingAndFillColor()
+
+function genPagingAndFillColor() {
+    genPagzing();
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
+}
+
+function genPagzing() {
+    $("#page").html(``)
+    let templatePageMid = ``;
+    let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage - 1)">Back</a>
+                </li>
+                `;
+    for (let i = 0; i < totalPages; i++) {
+        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
+                                        <a class="page-link" id="pageColor" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
+                                    </li>`
+    }
+    let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage + 1)">Next</a>
+                </li>
+                `;
+    let templateHtml = ``;
+    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+    if (totalPages == 1) {
+        templateHtml = ``;
+    }
+    $("#page").html(templateHtml);
+}
+
 
 

@@ -36,11 +36,12 @@ public class DtNhomDatnTheoDotExport {
         cellStyle.setFont(font);
         createCell(row, 0, "STT", cellStyle);
         createCell(row, 1, "Mã nhóm", cellStyle);
-        createCell(row, 2, "Tên đề tài", cellStyle);
-        createCell(row, 3, "Tên chuyên ngành", cellStyle);
-        createCell(row, 4, "Số thành viên", cellStyle);
-        createCell(row, 5, "Tên GVHD", cellStyle);
-        createCell(row, 6, "Trạng thái", cellStyle);
+        createCell(row, 2, "Môn đăng ký", cellStyle);
+        createCell(row, 3, "Tên đề tài", cellStyle);
+        createCell(row, 4, "Tên chuyên ngành", cellStyle);
+        createCell(row, 5, "Số thành viên", cellStyle);
+        createCell(row, 6, "Tên GVHD", cellStyle);
+        createCell(row, 7, "Trạng thái", cellStyle);
     }
 
     private void createCell(Row row, int countColum, Object value, CellStyle cellStyle) {
@@ -62,7 +63,6 @@ public class DtNhomDatnTheoDotExport {
 
     private void writeDataLines() {
         final long startTime = System.currentTimeMillis();
-
         CellStyle style = xssfWorkbook.createCellStyle();
         XSSFFont font = xssfWorkbook.createFont();
         font.setFontHeight(12);
@@ -72,6 +72,7 @@ public class DtNhomDatnTheoDotExport {
             int countColum = 0;
             createCell(row, countColum++, xx.getStt(), style);
             createCell(row, countColum++, xx.getMaNhom(), style);
+            createCell(row, countColum++, xx.getTenMonDatn(), style);
             createCell(row, countColum++, xx.getTenDeTai(), style);
             createCell(row, countColum++, xx.getTenChuyenNganh(), style);
             createCell(row, countColum++, xx.getCountSinhVien() + "/7", style);

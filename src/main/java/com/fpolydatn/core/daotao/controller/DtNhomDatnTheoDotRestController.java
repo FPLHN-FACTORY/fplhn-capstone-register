@@ -9,6 +9,7 @@ import com.fpolydatn.core.daotao.model.response.DtApiResponse;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,9 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     @Autowired
     private DtNhomDatnTheoDotService dtNhomDatnTheoDotService;
 
+    @Autowired
+    private CommonHelper commonHelper;
+
     @GetMapping("")
     public ResponseObject showDanhSachSinhVien(@RequestParam("keyword") String id, final FindSinhVienRequest req) {
         String coSoId = session.getCoSoId();
@@ -35,20 +39,15 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     @GetMapping("/search")
     public ResponseObject viewHocKy(final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
+        req.setDotDangKyId(dotDangKyId);
         PageableObject<DtNhomDatnTheoDotResponse> listNhomDatn = dtNhomDatnTheoDotService.findAllNhomDatn(req);
-        DtApiResponse<DtNhomDatnTheoDotResponse> dtApiResponse = new DtApiResponse<>();
-        dtApiResponse.setData(listNhomDatn);
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < listNhomDatn.getTotalPages(); i++) {
-            list.add(i + 1);
-        }
-        dtApiResponse.setList(list);
-        return new ResponseObject(dtApiResponse);
+        return new ResponseObject(listNhomDatn);
     }
 
     @GetMapping("/export")
-    public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindSinhVienRequest request) throws IOException {
+    public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtNhomDatnTheoDotRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
         dtNhomDatnTheoDotService.DTNhomDatnExport(response, typeExcel, request);
     }
