@@ -121,6 +121,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 request.setIdDotDangKy("");
             }
         }
+
         List<DtSinhVienTheoDotResponse> list = sinhVienRepository.exportExcel(request);
         DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(list);
         dtSinhVienExport.exportData(response);
@@ -316,6 +317,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
     @Override
     public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId) {
-        return sinhVienRepository.searchStudentById(id,coSoId);
+        return sinhVienRepository.searchStudentById(id, coSoId);
     }
 }
