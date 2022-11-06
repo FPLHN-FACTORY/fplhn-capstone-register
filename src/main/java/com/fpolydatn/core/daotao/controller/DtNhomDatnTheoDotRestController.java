@@ -41,7 +41,9 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         String coSoId = session.getCoSoId();
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
-        req.setDotDangKyId(dotDangKyId);
+        if (req.getDotDangKyId() == null) {
+            req.setDotDangKyId(dotDangKyId);
+        }
         PageableObject<DtNhomDatnTheoDotResponse> listNhomDatn = dtNhomDatnTheoDotService.findAllNhomDatn(req);
         return new ResponseObject(listNhomDatn);
     }

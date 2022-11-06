@@ -75,338 +75,332 @@
                                 </form>
                             </div>
                         </section>
-
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
 
-                                    <div class="m-portlet">
-                                        <div class="m-portlet">
-                                            <div class="m-portlet__body">
-
-                                                <div class="row">
-                                                    <div class="col-4 d-inline float-left"
-                                                    >
-                                                        <button class="col-12 col-sm-8 col-md-4 btn btn-success"
-                                                                th:attr="onclick=|openModalExport()|"
-                                                        >
-                                                            <img th:src="@{/img/export.svg}">
-                                                            Export
-                                                        </button>
-                                                        <button class="col-12 col-sm-8 col-md-4 btn btn-success"
-                                                                data-toggle="modal"
-                                                                data-target="#modal_import_excel"
-                                                        >
-                                                            <img th:src="@{/img/import.svg}">
-                                                            Import
-                                                        </button>
-                                                        <!--                                            modal export-->
-                                                        <div class="modal fade "
-                                                             id="modal_excel"
-                                                             tabindex="-1"
-                                                             aria-labelledby="exampleModalLabel"
-                                                             aria-hidden="true">
-                                                            <div class="modal-dialog modal-lg">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">Export
-                                                                            Excel</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal"
-                                                                                aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="form-group">
-                                                                            <p class="col-form-label">Định dạng file excel </p>
-                                                                            <select id="type_excel" class="form-control col-5">
-                                                                                <option value="">Chọn kiểu file excel</option>
-                                                                                <option value="xls">.xls</option>
-                                                                                <option value="xlsx">.xlsx</option>
-                                                                            </select>
-                                                                            <span class="text-danger"
-                                                                                  id="type_excel_error"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                                data-dismiss="modal">Hủy
-                                                                        </button>
-                                                                        <button class="btn btn-primary"
-                                                                                th:attr="onclick=|exportFile()|">Download
-                                                                            excel
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
+                                    <div class="row">
+                                        <div class="col-4 d-inline float-left"
+                                        >
+                                            <!--     modal export      -->
+                                            <div class="modal fade "
+                                                 id="modal_excel"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Export
+                                                                Excel</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <p class="col-form-label">Định dạng file excel </p>
+                                                                <select id="type_excel" class="form-control col-5">
+                                                                    <option value="">Chọn kiểu file excel</option>
+                                                                    <option value="xls">.xls</option>
+                                                                    <option value="xlsx">.xlsx</option>
+                                                                </select>
+                                                                <span class="text-danger"
+                                                                      id="type_excel_error"></span>
                                                             </div>
                                                         </div>
-<!--                                                                                                    modal mau import-->
-                                                        <div class="modal fade "
-                                                             id="modal_import_mau"
-                                                             tabindex="-1"
-                                                             aria-labelledby="exampleModalLabel"
-                                                             aria-hidden="true">
-                                                            <div class="modal-dialog modal-lg">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">Export
-                                                                            Excel</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal"
-                                                                                aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="form-group">
-                                                                            <p class="col-form-label">Định dạng file excel </p>
-                                                                            <select id="type_mau_import" class="form-control col-5">
-                                                                                <option value="">Chọn kiểu file excel</option>
-                                                                                <option value="xls">.xls</option>
-                                                                                <option value="xlsx">.xlsx</option>
-                                                                            </select>
-                                                                            <span class="text-danger"
-                                                                                  id="mau_import_error"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                                data-dismiss="modal">Hủy
-                                                                        </button>
-                                                                        <button class="btn btn-primary"
-                                                                                th:attr="onclick=|importFileMau()|">Download
-                                                                            excel
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!--                                            import excel-->
-                                                        <div class="modal fade "
-                                                             id="modal_import_excel"
-                                                             tabindex="-1"
-                                                             aria-labelledby="exampleModalLabel"
-                                                             aria-hidden="true">
-                                                            <div class="modal-dialog modal-lg">
-                                                                <div class="modal-content">
-                                                                    <form id="form_import_excel" enctype="multipart/form-data">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title">
-                                                                                Import file excel
-                                                                            </h5>
-                                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                                    aria-label="Close">
-                                                                                <span aria-hidden="true">x</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <div class="form-group">
-                                                                                <div class="input-group">
-                                                                                    <div class="input-group-prepend">
-                                                                            <span class="input-group-text"
-                                                                                  id="inputGroupFileAddon01">Upload</span>
-                                                                                    </div>
-                                                                                    <div class="custom-file">
-                                                                                        <input type="file" class="custom-file-input"
-                                                                                               id="inputGroupFile01"
-                                                                                               aria-describedby="inputGroupFileAddon01"
-                                                                                               name="file">
-                                                                                        <label class="custom-file-label"
-                                                                                               for="inputGroupFile01">Choose
-                                                                                            file</label>
-                                                                                    </div>
-                                                                                    <div class="input-group-append">
-                                                                                        <button class="btn input-group-text"
-                                                                                                type="button"
-                                                                                                id="mauImport"
-                                                                                                data-dismiss="modal"
-                                                                                                data-toggle="modal"
-                                                                                                data-target="#modal_import_mau">Mẫu Import</button>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <span class="text-danger"
-                                                                                      id="import_excel_error"></span>
-                                                                            </div>
-
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary"
-                                                                                    data-dismiss="modal">Hủy
-                                                                            </button>
-                                                                            <button
-                                                                                    th:attr="onclick=|importExcel()|"
-                                                                                    type="button" class="btn btn-primary">
-                                                                                Upload
-                                                                            </button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Hủy
+                                                            </button>
+                                                            <button class="btn btn-primary"
+                                                                    th:attr="onclick=|exportFile()|">Download
+                                                                excel
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-6 d-inline">
-                                                        <br>
-                                                        <button data-toggle="modal"
-                                                                data-target="#modal_create"
-                                                                class="col-12 col-sm-8 col-md-4 btn btn-success">
-                                                            Thêm giảng viên
-                                                        </button>
-                                                        <div class="modal fade "
-                                                             id="modal_create"
-                                                             tabindex="-1"
-                                                             aria-labelledby="exampleModalLabel"
-                                                             aria-hidden="true">
-                                                            <div class="modal-dialog modal-lg">
-                                                                <div class="modal-content">
-                                                                    <form id="form_create_giang_vien">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="exampleModalLabel">Thêm
-                                                                                giảng viên</h5>
-                                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                                    aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <div class="form-group">
-                                                                                <label class="col-form-label">Đợt đăng ký</label>
-                                                                                <br>
-                                                                                <select class="form-control col-8" id="dotDangKyId">
-                                                                                    <option value="Chọn đợt đăng kí" hidden>Chọn đợt
-                                                                                        đăng kí
-                                                                                    </option>
-                                                                                    <option th:each="item : ${listDotDangKy}"
-                                                                                            th:value="${item.id}"
-                                                                                            th:text="${item.getName()}"></option>
-                                                                                </select>
-                                                                                <small class="text-danger"
-                                                                                       id="errorDotDangKy"></small><br>
-                                                                                <br>
-                                                                                <label class="col-form-label">Tên giảng viên</label><br>
-                                                                                <input
-                                                                                        type="text"
-                                                                                        class="form-control"
-                                                                                        id="tenGvhd">
-                                                                                <span class="text-danger"
-                                                                                      id="errorTenGiangVien"></span><br>
-                                                                                <label class="col-form-label">Số nhóm hướng
-                                                                                    dẫn</label>
-                                                                                <input
-                                                                                        type="text"
-                                                                                        class="form-control"
-                                                                                        id="soNhomHuongDanToiDa">
-                                                                                <span class="text-danger" id="errorSoNhomHD"></span><br>
-                                                                                <label class="col-form-label">Tên tài khoản</label>
-                                                                                <input
-                                                                                        type="text"
-                                                                                        class="form-control"
-                                                                                        id="tenTaiKhoan">
-                                                                                <span class="text-danger"
-                                                                                      id="errorTenTaiKhoan"></span><br>
-                                                                                <label class="col-form-label">Số điện thoại</label>
-                                                                                <input
-                                                                                        type="text"
-                                                                                        class="form-control"
-                                                                                        id="soDienThoai">
-                                                                                <span class="text-danger" id="errorSDT"></span><br>
-                                                                                <label class="col-form-label">Email Fpt</label>
-                                                                                <input
-                                                                                        type="text"
-                                                                                        class="form-control"
-                                                                                        id="emailFpt">
-                                                                                <span class="text-danger" id="errorEmailFpt"></span><br>
-                                                                                <label class="col-form-label">Email Fe</label>
-                                                                                <input
-                                                                                        type="text"
-                                                                                        class="form-control"
-                                                                                        id="emailFe">
-                                                                                <span class="text-danger" id="errorEmailFe"></span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary"
-                                                                                    data-dismiss="modal">Hủy
-                                                                            </button>
-                                                                            <button type="submit" class="btn btn-primary">Thêm mới
-                                                                            </button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
+                                            </div>
+                                            <!--                                                                                                    modal mau import-->
+                                            <div class="modal fade "
+                                                 id="modal_import_mau"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Export
+                                                                Excel</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <p class="col-form-label">Định dạng file excel </p>
+                                                                <select id="type_mau_import" class="form-control col-5">
+                                                                    <option value="">Chọn kiểu file excel</option>
+                                                                    <option value="xls">.xls</option>
+                                                                    <option value="xlsx">.xlsx</option>
+                                                                </select>
+                                                                <span class="text-danger"
+                                                                      id="mau_import_error"></span>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="table-responsive mt-3">
-                                                    <div th:unless="${page.data.isEmpty()}">
-                                                        <table id="custom-table"
-                                                               class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
-                                                            <thead>
-                                                            <th width="50px">STT</th>
-                                                            <th>Giảng viên</th>
-                                                            <th>Số nhóm </th>
-                                                            <th>SĐT</th>
-                                                            <th>Email Fe</th>
-                                                            <th width="200px">Chức năng</th>
-                                                            </thead>
-                                                            <tbody id="searchListGvhd">
-                                                            <th:block th:each="giangVienHD,i : ${page.data}">
-                                                                <tr>
-                                                                    <td th:text="${giangVienHD.getSTT()}"></td>
-                                                                    <td th:text="${giangVienHD.getTenGvhd() +' - ' +giangVienHD.getTenTaiKhoan()}"></td>
-                                                                    <td th:text="${giangVienHD.getSoNhomDangHuongDan() + '/' + giangVienHD.getSoNhomHuongDanToiDa()}"></td>
-                                                                    <td th:text="${giangVienHD.getSoDienThoai()}"></td>
-                                                                    <td th:text="${giangVienHD.getEmailFe()}"></td>
-                                                                    <td>
-                                                                        <button
-                                                                                type="button"
-                                                                                class="btn_pencil_square"
-                                                                                data-toggle="tooltip"
-                                                                                title="Sửa "
-                                                                                th:attr="onclick=|openModalUpdateGiangVien('${giangVienHD.id}','${page.currentPage}')|">
-                                                                                <img th:src="@{/img/pencil-square.svg}">
-                                                                        </button>
-                                                                        </button>
-                                                                        <button
-                                                                                type="button"
-                                                                                class="btn_trash"
-                                                                                data-toggle="tooltip"
-                                                                                title="Xóa "
-                                                                                th:attr="onclick=|openModalRemoveGiangVien('${giangVienHD.id}','${page.currentPage}')|">
-                                                                                <img th:src="@{/img/trash.svg}">
-                                                                        </button>
-                                                                        <a type="button"
-                                                                           class="btn_clipboard_user"
-                                                                           data-toggle="tooltip"
-                                                                           title="Phân công giảng viên"
-                                                                           th:href="@{'/dao-tao/giang-vien-huong-dan/'+ ${giangVienHD.getId()}}">
-                                                                           <img th:src="@{/img/clipboard-user.svg}">
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                            </th:block>
-                                                            </tbody>
-                                                        </table>
-                                                        <!-- Paging-->
-                                                        <input hidden th:value="${page.totalPages}" id="totalPages">
-                                                        <input hidden th:value="${page.currentPage}" id="currentPage">
-                                                        <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
-                                                            <ul class="pagination justify-content-end" id="page">
-
-                                                            </ul>
-                                                        </nav>
-                                                    </div>
-                                                    <div th:if="${page.data.isEmpty()}">
-                                                        <h3>Không có dữ liệu</h3>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Hủy
+                                                            </button>
+                                                            <button class="btn btn-primary"
+                                                                    th:attr="onclick=|importFileMau()|">Download
+                                                                excel
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
 
+                                            <!--                                            import excel-->
+                                            <div class="modal fade "
+                                                 id="modal_import_excel"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form id="form_import_excel" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">
+                                                                    Import file excel
+                                                                </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">x</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text"
+                                                                                  id="inputGroupFileAddon01">Upload</span>
+                                                                        </div>
+                                                                        <div class="custom-file">
+                                                                            <input type="file" class="custom-file-input"
+                                                                                   id="inputGroupFile01"
+                                                                                   aria-describedby="inputGroupFileAddon01"
+                                                                                   name="file">
+                                                                            <label class="custom-file-label"
+                                                                                   for="inputGroupFile01">Choose
+                                                                                file</label>
+                                                                        </div>
+                                                                        <div class="input-group-append">
+                                                                            <button class="btn input-group-text"
+                                                                                    type="button"
+                                                                                    id="mauImport"
+                                                                                    data-dismiss="modal"
+                                                                                    data-toggle="modal"
+                                                                                    data-target="#modal_import_mau">
+                                                                                Tải mẫu
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="text-danger"
+                                                                          id="import_excel_error"></span>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Hủy
+                                                                </button>
+                                                                <button
+                                                                        th:attr="onclick=|importExcel()|"
+                                                                        type="button" class="btn btn-primary">
+                                                                    Upload
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 d-inline">
+                                            <br>
+                                            <button data-toggle="modal"
+                                                    data-target="#modal_create"
+                                                    class="btn btn-success">
+                                                Thêm giảng viên
+                                            </button>
+                                            <button class="btn btn-success"
+                                                    th:attr="onclick=|openModalExport()|"
+                                            >
+                                                Export
+                                            </button>
+                                            <button class="btn btn-success"
+                                                    data-toggle="modal"
+                                                    data-target="#modal_import_excel"
+                                            >
+                                                Import
+                                            </button>
+                                            <div class="modal fade "
+                                                 id="modal_create"
+                                                 tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form id="form_create_giang_vien">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Thêm
+                                                                    giảng viên</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label">Đợt đăng ký</label>
+                                                                    <br>
+                                                                    <select class="form-control col-8" id="dotDangKyId">
+                                                                        <option value="Chọn đợt đăng kí" hidden>Chọn đợt
+                                                                            đăng kí
+                                                                        </option>
+                                                                        <option th:each="item : ${listDotDangKy}"
+                                                                                th:value="${item.id}"
+                                                                                th:text="${item.getName()}"></option>
+                                                                    </select>
+                                                                    <small class="text-danger"
+                                                                           id="errorDotDangKy"></small><br>
+                                                                    <br>
+                                                                    <label class="col-form-label">Tên giảng viên</label><br>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="tenGvhd">
+                                                                    <span class="text-danger"
+                                                                          id="errorTenGiangVien"></span><br>
+                                                                    <label class="col-form-label">Số nhóm hướng
+                                                                        dẫn</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="soNhomHuongDanToiDa">
+                                                                    <span class="text-danger" id="errorSoNhomHD"></span><br>
+                                                                    <label class="col-form-label">Tên tài khoản</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="tenTaiKhoan">
+                                                                    <span class="text-danger"
+                                                                          id="errorTenTaiKhoan"></span><br>
+                                                                    <label class="col-form-label">Số điện thoại</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="soDienThoai">
+                                                                    <span class="text-danger" id="errorSDT"></span><br>
+                                                                    <label class="col-form-label">Email Fpt</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="emailFpt">
+                                                                    <span class="text-danger" id="errorEmailFpt"></span><br>
+                                                                    <label class="col-form-label">Email Fe</label>
+                                                                    <input
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="emailFe">
+                                                                    <span class="text-danger" id="errorEmailFe"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Hủy
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">Thêm mới
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive mt-3">
+                                        <div th:unless="${page.data.isEmpty()}">
+                                            <table id="custom-table"
+                                                   class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                                <thead>
+                                                <th width="50px">STT</th>
+                                                <th>Giảng viên</th>
+                                                <th>Số nhóm</th>
+                                                <th>SĐT</th>
+                                                <th>Email Fe</th>
+                                                <th width="200px">Chức năng</th>
+                                                </thead>
+                                                <tbody id="searchListGvhd">
+                                                <th:block th:each="giangVienHD,i : ${page.data}">
+                                                    <tr>
+                                                        <td th:text="${giangVienHD.getSTT()}"></td>
+                                                        <td th:text="${giangVienHD.getTenGvhd() +' - ' +giangVienHD.getTenTaiKhoan()}"></td>
+                                                        <td th:text="${giangVienHD.getSoNhomDangHuongDan() + '/' + giangVienHD.getSoNhomHuongDanToiDa()}"></td>
+                                                        <td th:text="${giangVienHD.getSoDienThoai()}"></td>
+                                                        <td th:text="${giangVienHD.getEmailFe()}"></td>
+                                                        <td>
+                                                            <button
+                                                                    type="button"
+                                                                    class="btn_pencil_square"
+                                                                    data-toggle="tooltip"
+                                                                    title="Sửa "
+                                                                    th:attr="onclick=|openModalUpdateGiangVien('${giangVienHD.id}','${page.currentPage}')|">
+                                                                <img th:src="@{/img/pencil-square.svg}">
+                                                            </button>
+                                                            </button>
+                                                            <button
+                                                                    type="button"
+                                                                    class="btn_trash"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xóa "
+                                                                    th:attr="onclick=|openModalRemoveGiangVien('${giangVienHD.id}','${page.currentPage}')|">
+                                                                <img th:src="@{/img/trash.svg}">
+                                                            </button>
+                                                            <a type="button"
+                                                               class="btn_clipboard_user"
+                                                               data-toggle="tooltip"
+                                                               title="Phân công giảng viên"
+                                                               th:href="@{'/dao-tao/giang-vien-huong-dan/'+ ${giangVienHD.getId()}}">
+                                                                <img th:src="@{/img/clipboard-user.svg}">
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
+                                            <!-- Paging-->
+                                            <input hidden th:value="${page.totalPages}" id="totalPages">
+                                            <input hidden th:value="${page.currentPage}" id="currentPage">
+                                            <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
+                                                <ul class="pagination justify-content-end" id="page">
+
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                        <div id="empty">
+                                            <div th:if="${page.data.isEmpty()}">
+                                                <h3>Không có dữ liệu</h3>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

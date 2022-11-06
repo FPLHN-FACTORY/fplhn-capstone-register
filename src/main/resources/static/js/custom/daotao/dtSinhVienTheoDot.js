@@ -25,10 +25,10 @@ function viewTable(page) {
                                 <td>${item.maSinhVien}</td>
                                 <td>${item.tenSinhVien}</td>
                                 <td>${item.khoa}</td>
-                                <td>${item.monChuongTrinh == null ? 'chưa có' : item.monChuongTrinh + ' - ' + item.maMonChuongTrinh}</td>
-                                <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
-                                <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
-                                <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
+                                <td>${item.monChuongTrinh == null ? 'Chưa có' : item.monChuongTrinh + ' - ' + item.maMonChuongTrinh}</td>
+                                <td>${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
+                                <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
+                                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd}</td>
                                 <td>${item.tenChuyenNganh}</td>
                                 <td>
                                     <button class="btn_eye"
@@ -45,10 +45,10 @@ function viewTable(page) {
                                 <td>${item.maSinhVien}</td>
                                 <td>${item.tenSinhVien}</td>
                                 <td>${item.khoa}</td>
-                                <td>${item.getMonChuongTrinh == null ? 'chưa có' : item.getMonChuongTrinh + ' - ' + item.getMaMonChuongTrinh}</td>
-                                <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
-                                <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
-                                <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
+                                <td>${item.getMonChuongTrinh == null ? 'Chưa có' : item.getMonChuongTrinh + ' - ' + item.getMaMonChuongTrinh}</td>
+                                <td>${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
+                                <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
+                                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd}</td>
                                 <td>${item.tenChuyenNganh}</td>
                                 <td>
                                     <button class="btn_eye"
@@ -89,7 +89,7 @@ $("#form_type_excel").submit(function (event) {
     let dotDangKy = $("#dotDangKy").val();
     let typeExcel = $("#type_excel").val();
     if (typeExcel == '') {
-        $("#type_excel_error").text("chọn định dạng file download");
+        $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -109,7 +109,7 @@ $("#modal_excel_mau").submit(function (event) {
     event.preventDefault();
     let typeExcel = $("#type_mau_excel").val();
     if (typeExcel == '') {
-        $("#mau_excel_error").text("chọn định dạng file download");
+        $("#mau_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -142,7 +142,7 @@ $("#form_import_excel").submit(function (event) {
                 contentType: false,
                 success: function (response) {
                     if (response.data.status == true) {
-                        $("#messNotification").text("import file thành công");
+                        $("#messNotification").text("Import file thành công");
                     } else {
                         $("#messNotification").text(response.data.message);
                     }
@@ -155,7 +155,7 @@ $("#form_import_excel").submit(function (event) {
             }
         );
     } else {
-        $("#import_excel_error").text("chọn đúng file Excel ");
+        $("#import_excel_error").text("Chọn đúng file Excel ");
     }
 });
 
@@ -202,15 +202,15 @@ function detail(sinhVienId) {
             $("#sdt").val(responseData.data.soDienThoai);
             $("#email").val(responseData.data.email);
             $("#khoa").val(responseData.data.khoa);
-            $("#monDATN").val(responseData.data.tenMonDatn == null ? "chưa có" : responseData.data.tenMonDatn + ' - ' + responseData.data.maMonDatn);
-            $("#tenCN").val(responseData.data.tenChuyenNganh == null ? "chưa có" : responseData.data.tenChuyenNganh);
-            $("#maNhom").val(responseData.data.maNhom == null ? "chưa có" : responseData.data.maNhom);
-            $("#tenDeTai").val(responseData.data.tenDeTai == null ? "chưa có" : responseData.data.tenDeTai);
-            $("#GVDH").val(responseData.data.tenGvhd == null ? "chưa có" : responseData.data.tenGvhd);
+            $("#monDATN").val(responseData.data.tenMonDatn == null ? "Chưa có" : responseData.data.tenMonDatn + ' - ' + responseData.data.maMonDatn);
+            $("#tenCN").val(responseData.data.tenChuyenNganh == null ? "Chưa có" : responseData.data.tenChuyenNganh);
+            $("#maNhom").val(responseData.data.maNhom == null ? "Chưa có" : responseData.data.maNhom);
+            $("#tenDeTai").val(responseData.data.tenDeTai == null ? "Chưa có" : responseData.data.tenDeTai);
+            $("#GVDH").val(responseData.data.tenGvhd == null ? "Chưa có" : responseData.data.tenGvhd);
             $("#DDK").val(responseData.data.tenDotDangKy);
-            $("#trangT").val(responseData.data.trangThai == 0 ? "đủ điều kiện" : "không đủ điều kiện");
-            $("#soTV").val(responseData.data.soThanhVien == null ? "chưa tham gia nhóm" : responseData.data.soThanhVien + '/7');
-            $("#monCT").val(responseData.data.monChuongTrinh == null ? "chưa có" : responseData.data.monChuongTrinh + ' - ' + responseData.data.maMonChuongTrinh);
+            $("#trangT").val(responseData.data.trangThai == 0 ? "Đủ điều kiện" : "Không đủ điều kiện");
+            $("#soTV").val(responseData.data.soThanhVien == null ? "Chưa tham gia nhóm" : responseData.data.soThanhVien + '/7');
+            $("#monCT").val(responseData.data.monChuongTrinh == null ? "Chưa có" : responseData.data.monChuongTrinh + ' - ' + responseData.data.maMonChuongTrinh);
         },
         error: function (e) {
             console.log("ERROR : ", e);
