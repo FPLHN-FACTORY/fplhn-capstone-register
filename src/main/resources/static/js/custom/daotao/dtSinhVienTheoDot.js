@@ -4,6 +4,43 @@ function clearform() {
     $("#trangThai").val('');
     $("#dotDangKy").val('');
 }
+let totalPages = $("#totalPages").val()
+let currentPage = $("#currentPage").val()
+genPagingAndFillColor()
+
+function genPagingAndFillColor(){
+    genPagzing();
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
+}
+
+function genPagzing() {
+    $("#page").html(``)
+    let templatePageMid = ``;
+    let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(currentPage-1)">Back</a>
+                </li>
+                `;
+    for (let i = 0; i < totalPages; i++) {
+        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
+                                        <a class="page-link" id="pageColor" onclick="viewTable(${i})">${i + 1}</a>
+                                    </li>`
+    }
+    let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(Number(currentPage) + 1)">Next</a>
+                </li>
+                `;
+    let templateHtml = ``;
+    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+    if (totalPages == 1) {
+        templateHtml = ``;
+    }
+    $("#page").html(templateHtml);
+}
+
 
 function viewTable(page) {
     let keyword = $("#keyword").val();
@@ -62,33 +99,34 @@ function viewTable(page) {
                     }
 
                 }));
-                var arr = new Array();
-                if (responseData.data.totalPages > 1) {
-                    for (let i = 1; i <= responseData.data.totalPages; i++) {
-                        arr.push(i)
-                    }
-                    $("#list_page").html(arr.map(function (value) {
-                        return `
-                        <div>
-                            <li class="page-item">
-                                  <a class="page-link"
-                                    onclick="viewTable(${value - 1})"
-                                    >${value}
-                                  </a>
-                              </li>
-                        </div>
-                    `
-                    }));
-                } else {
-                    $("#list_page").html(function () {
-                        return ``
-                    })
-                }
+                // var arr = new Array();
+                // if (responseData.data.totalPages > 1) {
+                //     for (let i = 1; i <= responseData.data.totalPages; i++) {
+                //         arr.push(i)
+                //     }
+                //     $("#list_page").html(arr.map(function (value) {
+                //         return `
+                //         <div>
+                //             <li class="page-item">
+                //                   <a class="page-link"
+                //                     onclick="viewTable(${value - 1})"
+                //                     >${value}
+                //                   </a>
+                //               </li>
+                //         </div>
+                //     `
+                //     }));
+                // } else {
+                //     $("#list_page").html(function () {
+                //         return ``
+                //     })
+                // }
+                genPagingAndFillColor()
             } else (
                 $("#list").html(''),
-                $("#list_page").html(function () {
-                    return ``
-                }),
+                // $("#list_page").html(function () {
+                //     return ``
+                // }),
                 $("#is_empty").html(function () {
                     return `<span>Không có dữ liệu</span>`
                 })

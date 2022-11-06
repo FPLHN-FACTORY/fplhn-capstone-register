@@ -334,22 +334,32 @@
                                             </th:block>
                                             </tbody>
                                         </table>
+
                                         <!-- Paging-->
-                                        <div id="list_page">
-                                            <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
-                                                <ul class="pagination justify-content-end" >
-                                                    <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                        <li class="page-item">
-                                                            <a class="page-link"
-                                                               th:attr="onclick=|viewTable('${i}'-1)|"
-                                                               th:text="${i}">
-                                                            </a>
-                                                        </li>
-                                                    </div>
-                                                </ul>
-                                            </nav>
-                                        </div>
+                                        <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
+                                            <ul class="pagination justify-content-end" id="page">
+                                            </ul>
+                                        </nav>
                                     </div>
+                                    <input hidden th:value="${page.totalPages}" id="totalPages">
+                                    <input hidden th:value="${page.currentPage}" id="currentPage">
+
+<!--                                        &lt;!&ndash; Paging&ndash;&gt;-->
+<!--                                        <div id="list_page">-->
+<!--                                            <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">-->
+<!--                                                <ul class="pagination justify-content-end" >-->
+<!--                                                    <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">-->
+<!--                                                        <li class="page-item">-->
+<!--                                                            <a class="page-link"-->
+<!--                                                               th:attr="onclick=|viewTable('${i}'-1)|"-->
+<!--                                                               th:text="${i}">-->
+<!--                                                            </a>-->
+<!--                                                        </li>-->
+<!--                                                    </div>-->
+<!--                                                </ul>-->
+<!--                                            </nav>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <div id="is_empty">
                                         <div th:if="${page.data.isEmpty()}"  class="text-center">
                                             <span>Không có dữ liệu</span>
