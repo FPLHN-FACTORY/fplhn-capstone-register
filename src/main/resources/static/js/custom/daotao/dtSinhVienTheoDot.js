@@ -5,123 +5,75 @@ function clearform() {
     $("#dotDangKy").val('');
 }
 
-let totalPages = $("#totalPages").val()
-let currentPage = $("#currentPage").val()
-
-genPagingAndFillColor()
-
-function genPagingAndFillColor() {
-    genPagzing();
-    let colorPage = document.querySelectorAll("#pageColor");
-    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
-    colorPage[currentPage].style.color = 'white';
-}
-
-function genPagzing() {
-    $("#page").html(``)
-    let templatePageMid = ``;
-    let templatePageBefore = `
-                <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(currentPage-1)">Back</a>
-                </li>
-                `;
-    for (let i = 0; i < totalPages; i++) {
-        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
-                                        <a class="page-link" id="pageColor" onclick="viewTable(${i})">${i + 1}</a>
-                                    </li>`
-    }
-    let templatePageAfter = `
-                <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(Number(currentPage) + 1)">Next</a>
-                </li>
-                `;
-    let templateHtml = ``;
-    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
-    if (totalPages == 1) {
-        templateHtml = ``;
-    }
-    $("#page").html(templateHtml);
-}
-
-
 function viewTable(page) {
     let keyword = $("#keyword").val();
     let chuyenNganh = $("#chuyenNganh").val();
     let trangThai = $("#trangThai").val();
     let dotDangKy = $("#dotDangKy").val();
-    currentPage = page;
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "/api/dao-tao/sinh-vien?page=" + page + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy,
         dataType: 'json',
         success: function (responseData) {
-            console.log("tttttttttt"+ totalPages)
-            console.log("ccccccccccc"+currentPage)
-            let array = responseData.data.data
-            totalPages = responseData.data.totalPages
-            console.log("tttttttttt: "+ totalPages)
-            if (array.length == 0) {
-                $("#list").html(``)
-                $("#page").html(``)
-                $("#is_empty").html(function () {
-                    return `<span>Không có dữ liệu</span>`
-                })
-                if (responseData.data.totalPages == 1) {
-                    viewTable(0);
-                    return;
-                }
-                if (page == responseData.data.totalPages && page != 0) {
-                    viewTable(page - 1);
-                    return;
-                }
-            } else {
+            if (responseData.data.data.length > 0) {
                 $("#is_empty").html('')
                 $("#list").html(responseData.data.data.map(function (item) {
                     if (item.trangThai == 0) {
                         return ` <tr>
-                                    <td>${item.stt}</td>
-                                    <td>${item.maSinhVien}</td>
-                                    <td>${item.tenSinhVien}</td>
-                                    <td>${item.khoa}</td>
-                                    <td>${item.monChuongTrinh == null ? 'chưa có' : item.monChuongTrinh + ' - ' + item.maMonChuongTrinh}</td>
-                                    <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
-                                    <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
-                                    <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
-                                    <td>${item.tenChuyenNganh}</td>
-                                    <td>
-                                        <button class="btn_eye"
-                                                data-toggle="tooltip"
-                                                title="Xem chi tiết"
-                                                onclick="detail('${item.id}')">
-                                                <img src="/img/eye-fill.svg">
-                                        </button>
-                                    </td>
-                            </tr>`
+                                <td>${item.stt}</td>
+                                <td>${item.maSinhVien}</td>
+                                <td>${item.tenSinhVien}</td>
+                                <td>${item.khoa}</td>
+                                <td>${item.monChuongTrinh == null ? 'chưa có' : item.monChuongTrinh + ' - ' + item.maMonChuongTrinh}</td>
+                                <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
+                                <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
+                                <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
+                                <td>${item.tenChuyenNganh}</td>
+                                <td>
+                                    <button class="btn_eye"
+                                            data-toggle="tooltip"
+                                            title="Xem chi tiết"
+                                            onclick="detail('${item.id}')">
+                                            <img src="/img/eye-fill.svg">
+                                    </button>
+                                </td>
+                        </tr>`
                     } else {
                         return ` <tr class="text-danger">
-                                    <td>${item.stt}</td>
-                                    <td>${item.maSinhVien}</td>
-                                    <td>${item.tenSinhVien}</td>
-                                    <td>${item.khoa}</td>
-                                    <td>${item.getMonChuongTrinh == null ? 'chưa có' : item.getMonChuongTrinh + ' - ' + item.getMaMonChuongTrinh}</td>
-                                    <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
-                                    <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
-                                    <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
-                                    <td>${item.tenChuyenNganh}</td>
-                                    <td>
-                                        <button class="btn_eye"
-                                                data-toggle="tooltip"
-                                                title="Xem chi tiết"
-                                                onclick="detail('${item.id}')">
-                                                <img src="/img/eye-fill.svg">
-                                        </button>
-                                    </td>
-                            </tr>`
+                                <td>${item.stt}</td>
+                                <td>${item.maSinhVien}</td>
+                                <td>${item.tenSinhVien}</td>
+                                <td>${item.khoa}</td>
+                                <td>${item.getMonChuongTrinh == null ? 'chưa có' : item.getMonChuongTrinh + ' - ' + item.getMaMonChuongTrinh}</td>
+                                <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
+                                <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
+                                <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
+                                <td>${item.tenChuyenNganh}</td>
+                                <td>
+                                    <button class="btn_eye"
+                                            data-toggle="tooltip"
+                                            title="Xem chi tiết"
+                                            onclick="detail('${item.id}')">
+                                            <img src="/img/eye-fill.svg">
+                                    </button>
+                                </td>
+                        </tr>`
                     }
+
                 }));
-                genPagingAndFillColor()
-            }
+                if (responseData.data.totalPages > 1) {
+                    genPagingAndFillColor(responseData.data.totalPages,responseData.data.currentPage)
+                } else {
+                    $("#list_page").html(function () {
+                        return ``
+                    })
+                }
+            } else ($("#list").html(''), $("#list_page").html(function () {
+                return ``
+            }), $("#is_empty").html(function () {
+                return `<span>Không có dữ liệu</span>`
+            }))
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -136,7 +88,6 @@ $("#form_type_excel").submit(function (event) {
     let trangThai = $("#trangThai").val();
     let dotDangKy = $("#dotDangKy").val();
     let typeExcel = $("#type_excel").val();
-    console.log("aaaaaaaaaa"+ dotDangKy)
     if (typeExcel == '') {
         $("#type_excel_error").text("chọn định dạng file download");
     } else {
@@ -265,4 +216,28 @@ function detail(sinhVienId) {
             console.log("ERROR : ", e);
         }
     });
+}
+function genPagingAndFillColor(totalPages,currentPage){
+    let templatePageMid = ``;
+    let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(${currentPage - 1})">Back</a>
+                </li>
+                `;
+    for (let i = 0; i < totalPages; i++) {
+        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
+                                        <a class="page-link" id="pageColor" onclick="viewTable(${i})">${i + 1}</a>
+                                    </li>`
+    }
+    let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(${currentPage + 1})">Next</a>
+                </li>
+                `;
+    let templateHtml = ``;
+    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+    $("#list_page").html('<ul class="pagination justify-content-end">'+templateHtml+'</ul>');
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
 }
