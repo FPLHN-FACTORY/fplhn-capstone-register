@@ -10,6 +10,7 @@
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
+    <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
 </head>
 <!-- end::Head -->
 
@@ -128,11 +129,11 @@
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead>
                                                 <th width="50px">STT</th>
-                                                <th width="200px">Mã môn</th>
+                                                <th width="150px">Mã môn</th>
                                                 <th width="200px">Tên môn</th>
-                                                <th width="200px">Nhóm môn</th>
+                                                <th width="250px" >Nhóm môn</th>
+                                                <th width="200px">Chuyên ngành</th>
                                                 <th width="200px">Giảng viên</th>
-                                                <th width="200px">CN bộ môn</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
                                                 <tbody>
@@ -142,29 +143,31 @@
                                                         <td th:text="${monDatn.maMon}"></td>
                                                         <td th:text="${monDatn.tenMon}"></td>
                                                         <td th:text="${monDatn.tenNhomMon}"></td>
+                                                        <td th:text="${monDatn.tenChuyenNganh}"></td>
                                                         <td>
                                                             <a
                                                                     type="button"
                                                                     class="btn btn-primary"
                                                                     th:href="@{'/dao-tao/mon-datn/'+ ${monDatn.getId()}}">
-                                                                Chi tiết giảng viên
+                                                                Phân môn
                                                             </a>
                                                         </td>
-                                                        <td th:text="${monDatn.chuNhiemBoMon}"></td>
                                                         <td>
                                                             <button
                                                                     type="button"
-                                                                    class="btn btn-primary"
+                                                                    class="btn_pencil_square"
+                                                                    data-toggle="tooltip"
+                                                                    title="Sửa môn datn"
                                                                     th:attr="onclick=|openModalUpdateMonDatn('${monDatn.getId()}')|">
-                                                                Sửa
-                                                            </button>
+                                                                <img th:src="@{/img/pencil-square.svg}">
                                                             </button>
                                                             <button
                                                                     type="button"
-                                                                    class="btn btn-danger"
-                                                                    data-toggle="modal"
+                                                                    class="btn_trash"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xóa môn datn"
                                                                     th:attr="onclick=|openModalRemoveMonDatn('${monDatn.getId()}')|">
-                                                                Xoá
+                                                                <img th:src="@{/img/trash.svg}">
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -279,7 +282,7 @@
                     <span id="remove_mon_datn" style="color:red;"></span>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="clearModal()" type="button" class="btn btn-secondary"
+                    <button onclick="clearModalRemove()" type="button" class="btn btn-secondary"
                             data-dismiss="modal">Hủy
                     </button>
                     <button type="submit" class="btn btn-primary">Xoá
