@@ -176,15 +176,14 @@
                                                 Xác nhận
                                             </button>
                                             <button class="col-8 col-sm-4 col-md-2 btn btn-success"
-                                                    data-toggle="modal"
-                                                    data-target="#modal_excel"
+                                                    th:attr="onclick=|openModalExport()|"
                                             >
                                                 <img th:src="@{/img/export.svg}">
                                                 Export
                                             </button>
                                             <button class="col-8 col-sm-4 col-md-2 btn btn-success"
                                                     data-toggle="modal"
-                                                    data-target="#import_excel"
+                                                    data-target="#modal_import_excel"
                                             >
                                                 <img th:src="@{/img/import.svg}">
                                                 Import
@@ -197,55 +196,54 @@
                                                  aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
-                                                        <form id="form_type_excel" method="post">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Export
-                                                                    Excel</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Export
+                                                                Excel</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <p class="col-form-label">Định dạng file excel </p>
+                                                                <select id="type_excel" class="form-control col-5">
+                                                                    <option value="">Chọn kiểu file excel</option>
+                                                                    <option value="xls">.xls</option>
+                                                                    <option value="xlsx">.xlsx</option>
+                                                                </select>
+                                                                <span class="text-danger"
+                                                                      id="type_excel_error"></span>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                <div class="form-group">
-                                                                    <p class="col-form-label">Định dạng file excel </p>
-                                                                    <select id="type_excel" class="form-control col-5">
-                                                                        <option value="">chọn kiểu file excel</option>
-                                                                        <option value="xls">.xls</option>
-                                                                        <option value="xlsx">.xlsx</option>
-                                                                    </select>
-                                                                    <span class="text-danger"
-                                                                          id="type_excel_error"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Hủy
-                                                                </button>
-                                                                <button type="submit" class="btn btn-primary">Download
-                                                                    excel
-                                                                </button>
-                                                            </div>
-                                                        </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Hủy
+                                                            </button>
+                                                            <button class="btn btn-primary"
+                                                                    th:attr="onclick=|exportFile()|">Download
+                                                                excel
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-<!--                                            import excel-->
+                                            <!--                                            import excel-->
                                             <div class="modal fade "
-                                                 id="import_excel"
+                                                 id="modal_import_excel"
                                                  tabindex="-1"
                                                  aria-labelledby="exampleModalLabel"
                                                  aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
-                                                        <form enctype="multipart/form-data" method="post"
-                                                              th:action="@{/api/chu-nhiem/nhom-datn/import}"
-                                                              id="form_import_excel">
+                                                        <form id="form_import_excel" enctype="multipart/form-data">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Import Excel</h5>
+                                                                <h5 class="modal-title">
+                                                                    Import file excel
+                                                                </h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                         aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
+                                                                    <span aria-hidden="true">x</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
@@ -273,8 +271,10 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Import
-                                                                    excel
+                                                                <button
+                                                                        th:attr="onclick=|importExcel()|"
+                                                                        type="button" class="btn btn-primary">
+                                                                    Upload
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -706,7 +706,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" th:attr="onclick=|reload()|">OK</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" th:attr="onclick=|reload()|">OK
+                </button>
             </div>
         </div>
     </div>

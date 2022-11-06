@@ -15,6 +15,7 @@ import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
 import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
@@ -24,7 +25,6 @@ import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
-import org.apache.commons.math3.analysis.function.Sinh;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -78,6 +78,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     HashMap<String, SinhVien> mapSinhVien;
 
     HashMap<String, NhomDatn> mapNhomDatn;
+
+    HashMap<String, GiangVienHuongDan> mapGiangVien;
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
@@ -244,20 +246,31 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         CnSinhVienTheoDotImport sinhVienTheoDotImport = new CnSinhVienTheoDotImport();
         List<CnCreateSinhVienTheoDotRequest> sinhVienList = sinhVienTheoDotImport.importData(file);
         List<SinhVien> listSinhVienEntity = new ArrayList<>();
+        List<NhomDatn> listNhomDatnEntity = new ArrayList<>();
         map = new HashMap<>();
         mapSinhVien = new HashMap<>();
         mapNhomDatn = new HashMap<>();
+        mapGiangVien = new HashMap<>();
 
         addDataInMapSinhVien(mapSinhVien, dotDangKyId, coSoId, idChuNhiem);
         addDataInMapNhomDatn(mapNhomDatn, dotDangKyId, coSoId, idChuNhiem);
+        addDataInMapGiangVien(mapGiangVien, dotDangKyId, coSoId);
 
         sinhVienList.parallelStream().forEach(sinhVien -> {
             SinhVien sv = mapSinhVien.get(sinhVien.getMaSinhVien());
             NhomDatn nhomDatn = mapNhomDatn.get(sinhVien.getMaNhom());
+            GiangVienHuongDan giangVien = mapGiangVien.get(sinhVien.getGvhd());
+
             if (nhomDatn != null) {
                 sv.setNhomId(nhomDatn.getId());
                 SinhVien truongNhom = mapSinhVien.get(nhomDatn.getId());
-                sv.setMonDatnId(truongNhom.getMonDatnId());
+                if(!sv.getMaSinhVien().equals(truongNhom.getMaSinhVien())) {
+                    sv.setMonDatnId(truongNhom.getMonDatnId());
+                }
+                if (!sinhVien.getChucVu().isEmpty()) {
+                    nhomDatn.setTruongNhomId(sv.getId());
+                    nhomDatn.setGiangVienId(giangVien.getId());
+                }
             }
 
             if (sinhVien.getMaNhom().isEmpty()) {
@@ -266,8 +279,12 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             }
 
             listSinhVienEntity.add(sv);
+            if(nhomDatn != null) {
+                listNhomDatnEntity.add(nhomDatn);
+            }
         });
         cnSinhVienRepository.saveAll(listSinhVienEntity);
+        cnNhomDatnRepository.saveAll(listNhomDatnEntity);
         return response;
     }
 
@@ -302,6 +319,11 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         getALlPutMapNhomDatn(mapAll, nhomDatnList);
     }
 
+    public void addDataInMapGiangVien(HashMap<String, GiangVienHuongDan> mapAll, String dotDangKyId, String coSoId) {
+        List<GiangVienHuongDan> giangVienHuongDanList = cnGiangVienHuongDanReponsitory.getAllGiangVienByIdCoSoAndByIdDotDangKy(dotDangKyId, coSoId);
+        getALlPutMapGiangVien(mapAll, giangVienHuongDanList);
+    }
+
     public void getAllPutMap(HashMap<String, String> mapSimple, List<SimpleEntityProj> getAllSimpleEntityProjs) {
         for (SimpleEntityProj simpleEntityProj : getAllSimpleEntityProjs) {
             mapSimple.put(simpleEntityProj.getName(), simpleEntityProj.getId());
@@ -323,6 +345,12 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     public void getALlPutMapNhomDatn(HashMap<String, NhomDatn> mapSimple, List<NhomDatn> listNhomDatn) {
         for (NhomDatn xx : listNhomDatn) {
             mapSimple.put(xx.getMaNhom(), xx);
+        }
+    }
+
+    public void getALlPutMapGiangVien(HashMap<String, GiangVienHuongDan> mapSimple, List<GiangVienHuongDan> listGiangVien) {
+        for (GiangVienHuongDan xx : listGiangVien) {
+            mapSimple.put(xx.getTenTaiKhoan(), xx);
         }
     }
 

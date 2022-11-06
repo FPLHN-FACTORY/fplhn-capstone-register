@@ -8,7 +8,6 @@ import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.repository.SinhVienRepository;
-import org.apache.commons.math3.analysis.function.Sinh;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;

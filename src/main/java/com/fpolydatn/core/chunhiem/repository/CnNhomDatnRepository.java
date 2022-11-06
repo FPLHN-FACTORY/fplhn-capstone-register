@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author thangncph26123
  */
-@Repository
+@Transactional
 public interface CnNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
@@ -51,8 +51,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             SELECT count(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
             LEFT JOIN mon_datn k ON k.id = c.mon_datn_id
-            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
-            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN chuyen_nganh f ON f.id = c.chuyen_nganh_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon

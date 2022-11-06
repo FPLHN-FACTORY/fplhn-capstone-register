@@ -3,6 +3,7 @@ package com.fpolydatn.core.chunhiem.repository;
 import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnGvhdSearchResponse;
+import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -52,4 +53,8 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
                                                                       @Param("coSoId") String coSoId,
                                                                       @Param("dotDangKyId") String dotDangKyId);
 
+    @Query(value = """
+            SELECT * FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
+    List<GiangVienHuongDan> getAllGiangVienByIdCoSoAndByIdDotDangKy(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
 }
