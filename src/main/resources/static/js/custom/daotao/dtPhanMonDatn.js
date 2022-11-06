@@ -9,11 +9,11 @@ $("#form_add_phan_cong").submit(function (event) {
     let table = $("#table-add");
     let row = table.get(0).lastElementChild.children
     for (const a of row) {
-        if (a.children[2].children[0].checked === true) {
+        if (a.children[3].children[0].checked === true) {
             index = true;
             let phanCongRequest = {};
             phanCongRequest["giangVienId"] = giangVienHuongDanId;
-            phanCongRequest["monDatnId"] = a.children[1].getAttribute('value');
+            phanCongRequest["monDatnId"] = a.children[2].getAttribute('value');
             listPhanCong.push(phanCongRequest)
         }
     }

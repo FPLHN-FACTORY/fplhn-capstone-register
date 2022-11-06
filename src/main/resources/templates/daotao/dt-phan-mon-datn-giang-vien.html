@@ -141,13 +141,15 @@
                                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                                 <thead>
                                                                 <th width="50px">STT</th>
-                                                                <th>Tên môn đồ án tốt nghiệp</th>
+                                                                <th>Mã môn</th>
+                                                                <th>Tên môn</th>
                                                                 <th width="200px">Chức năng</th>
                                                                 </thead>
                                                                 <tbody>
                                                                 <th:block th:each="phanCongHuongDan : ${page.data}">
                                                                     <tr>
                                                                         <td th:text="${phanCongHuongDan.stt}"></td>
+                                                                        <td th:text="${phanCongHuongDan.MaMonDatn}"></td>
                                                                         <td th:text="${phanCongHuongDan.MonDatn}"></td>
                                                                         <td>
                                                                             <button
@@ -216,13 +218,15 @@
                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                 <thead>
                                 <th width="50px">STT</th>
-                                <th>Tên môn đồ án tốt nghiệp</th>
+                                <th>Mã môn</th>
+                                <th>Tên môn</th>
                                 <th width="200px">Chức năng</th>
                                 </thead>
                                 <tbody>
                                 <th:block th:each="phanMonDatn : ${phanMonDatns}">
                                     <tr>
                                         <td th:text="${phanMonDatn.stt}"></td>
+                                        <td th:text="${phanMonDatn.getMaMonDatn()}"></td>
                                         <td th:text="${phanMonDatn.getMonDatn()}" class="giangVienId"
                                             th:value="${phanMonDatn.id}"></td>
                                         <td>

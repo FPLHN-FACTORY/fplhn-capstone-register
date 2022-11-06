@@ -64,9 +64,11 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
 
     //    [UC-DT-GV-CT-1] Phân môn cho GVHD
     @Query(value = """
-            SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
+            SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn, m.ma_mon FROM do_an_tot_nghiep.mon_datn m
             JOIN do_an_tot_nghiep.phan_cong_huong_dan pc on m.id = pc.mon_datn_id
-            WHERE pc.giang_vien_id = :giangVienId AND
+            WHERE pc.giang_vien_id = :giangVienId
+              AND m.nhom_mon_datn_id IS NOT NULL
+             AND
                 ( :#{#req.tenMonDatn} IS NULL 
                     OR :#{#req.tenMonDatn} LIKE '' 
                     OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
@@ -74,7 +76,9 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
             """, countQuery = """
             SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
             JOIN do_an_tot_nghiep.phan_cong_huong_dan pc on m.id = pc.mon_datn_id
-            WHERE pc.giang_vien_id = :giangVienId AND
+            WHERE pc.giang_vien_id = :giangVienId
+              AND m.nhom_mon_datn_id IS NOT NULL 
+             AND
                 ( :#{#req.tenMonDatn} IS NULL 
                     OR :#{#req.tenMonDatn} LIKE '' 
                     OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
@@ -103,8 +107,8 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
     DtGiangVienHDResponse getGiangVienHD(@Param("maGiangVienHuongDan") String maGiangVienHuongDan, @Param("coSoId") String coSoId, @Param("doDangKyId") String doDangKyId);
 
     @Query(value = """
-            SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
-            WHERE m.co_so_id = :coSoId 
+            SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn, m.ma_mon FROM do_an_tot_nghiep.mon_datn m
+            WHERE m.co_so_id = :coSoId AND nhom_mon_datn_id IS NOT NULL
             AND m.id NOT IN (SELECT mon_datn_id FROM do_an_tot_nghiep.phan_cong_huong_dan WHERE giang_vien_id = :maGiangVienHuongDan)
             """
             , nativeQuery = true)

@@ -65,7 +65,7 @@ public class DtMonDatnRestController extends BaseController {
     }
 
     @PostMapping("/import")
-    public ResponseObject importExcel(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseObject importExcel(@RequestParam("file") MultipartFile file) {
         DtMessMonDatnReponse check = this.monDatnService.importExcel(file, session.getCoSoId());
         return new ResponseObject(check);
     }

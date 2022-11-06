@@ -186,6 +186,7 @@ $("#form_import_excel").submit(function (event) {
             contentType: false,
             success: function (response) {
                 $('#import_excel').modal("hide");
+                console.log(response.data)
                 if (response.data.status == true) {
                     bootbox.alert({
                         title: "Import Excel",
@@ -221,31 +222,7 @@ function reload() {
     window.open('/dao-tao/mon-datn', '_self');
 }
 
-$("#inputGroupFile04").on("change", function (event) {
-
-    const files = event.target.files;
-    if(files[0] == null) {
-        return;
-
 function clearModalRemove() {
     $("#remove_mon_datn").text("");
 }
 
-$("#exampleFormControlFile1").on("input", function () {
-    if (!$("#exampleFormControlFile1").val().trim().length == 0) {
-        $("#import").removeAttr('disabled');
-        $("#import").css('cursor', 'pointer');
-    } else {
-        $("#import").attr('disabled', 'disabled');
-        $("#import").css('cursor', 'not-allowed');
-    }
-    const getSizeImage = files[0].size;
-
-    if(getSizeImage > 4096*4096){
-        $("#errImport").text("Chỉ cho phép tải tệp tin nhỏ hơn 4096");
-        return;
-    }
-
-    $("#errImport").text("");
-
-})
