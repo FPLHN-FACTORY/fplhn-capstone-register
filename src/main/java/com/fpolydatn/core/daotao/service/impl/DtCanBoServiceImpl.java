@@ -103,7 +103,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
 
     @Override
     public List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro) {
-        return dtCanBoRepository.findAllSimpleEntityByTenCanBo(id, vaiTro);
+        return dtCanBoRepository.findCanBoByVaiTro(id, vaiTro);
     }
 
     @Override

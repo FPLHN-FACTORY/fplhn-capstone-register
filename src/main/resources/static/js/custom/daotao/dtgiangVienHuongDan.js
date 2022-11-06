@@ -15,9 +15,6 @@ $(document).ready(function () {
 });
 
 
-
-
-
 function clearData() {
     $("#tenGiangVien").val("");
 }
@@ -57,7 +54,7 @@ $("#form_create_giang_vien").submit(function (event) {
     } else if (Number.parseInt(soNhomHuongDanToiDa) <= 0) {
         $("#errorSoNhomHD").text("Số nhóm phải lớn hơn 0");
         index++;
-    }  else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
+    } else if (Number.parseInt(soNhomHuongDanToiDa) < 1 || Number.parseInt(soNhomHuongDanToiDa) > 7) {
         $("#errorSoNhomHD").text("Số nhóm chỉ từ 1 đến 7");
         index++;
     } else {
@@ -288,49 +285,49 @@ $("#searchGvhd").submit(function (event) {
 })
 
 function openModalRemoveGiangVien(giangVienId, item) {
-            bootbox.confirm({
-                title: "Xóa",
-                message: "Bạn chắc chắn xóa không?",
-                buttons: {
-                    cancel: {
-                        className: 'btn-outline-secondary btn btn-light',
-                        label: '<i class="fa fa-times"></i> Quay lại'
-                    },
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> Xác nhận'
-                    }
-                },
-                callback: function (result) {
-                    // result trả về true hoặc false; nếu người dùng chọn xác nhận thì trả về true
-                    if (result) {
-                        // Gọi Ajax ở đây hoặc gọi hàm cần thiết confirm ở đây
-                            $.ajax({
-                                type: "DELETE",
-                                contentType: "application/json",
-                                url: giangVienHuongDanApi + "/" + giangVienId,
-                                data: JSON.stringify(giangVienId),
-                                dataType: 'json',
-                                success: function (responseData) {
-                                    if(responseData.data.message != null){
-                                     alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
-                                    }else{
-                                       bootbox.alert({
-                                           message: 'Xóa thành công',
-                                           backdrop: true,
-                                           callback: function () {
-                                           // Có thể load lại trạng hoặc gọi hàm gì đó
-                                           loadTable(item);
-                                         }
-                                       });
-                                    }
-                                },
-                                error: function (e) {
-                                    console.log("ERROR : ", e);
+    bootbox.confirm({
+        title: "Xóa",
+        message: "Bạn chắc chắn xóa không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: giangVienHuongDanApi + "/" + giangVienId,
+                    data: JSON.stringify(giangVienId),
+                    dataType: 'json',
+                    success: function (responseData) {
+                        if (responseData.data.message != null) {
+                            bootbox.alert({
+                                message: 'Giảng viên đang có nhóm hướng dẫn không thể xóa',
+                                backdrop: true,
+                            });
+                        } else {
+                            bootbox.alert({
+                                message: 'Xóa thành công',
+                                backdrop: true,
+                                callback: function () {
+                                    loadTable(item);
                                 }
                             });
+                        }
+                    },
+                    error: function (e) {
+                        console.log("ERROR : ", e);
                     }
-                }
-            });
+                });
+            }
+        }
+    });
 }
 
 function openModalExport() {
@@ -377,14 +374,14 @@ function importExcel() {
                 data: new FormData(form),
                 contentType: false,
                 cache: false,
-                 success: function (data) {
-                         window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                 },
-                 error: function (e) {
-                       alert(e.responseText);
-                       window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                       console.log("ERROR: " + e);
-                 }
+                success: function (data) {
+                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
+                },
+                error: function (e) {
+                    alert(e.responseText);
+                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
+                    console.log("ERROR: " + e);
+                }
             }
         );
     } else {
@@ -394,56 +391,57 @@ function importExcel() {
 
 function importFileMau() {
     let typeExcel = $("#type_mau_import").val();
-        if (typeExcel == '') {
-            $("#mau_import_error").text("chọn định dạng file download");
-        } else {
-            $.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: "/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel,
+    if (typeExcel == '') {
+        $("#mau_import_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel,
 
-                success: function () {
-                    window.open("/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel, '_self');
-                },
-                error: function (e) {
-                    console.log("ERROR : ", e);
-                }
-            });
- }
+            success: function () {
+                window.open("/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
 }
 
 genPagingAndFillColor();
 
-function genPagingAndFillColor(){
-    genPageZing ()
+function genPagingAndFillColor() {
+    genPageZing()
     let colorPage = document.querySelectorAll("#pageColor");
     colorPage[currentPage].style.backgroundColor = '#0a8cf0';
     colorPage[currentPage].style.color = 'white';
 }
-function genPageZing(){
-$("#page").html(``)
-            let templateHtml = ``;
-            let templatePageMid = ``;
-            let templatePageBefore = `
+
+function genPageZing() {
+    $("#page").html(``)
+    let templateHtml = ``;
+    let templatePageMid = ``;
+    let templatePageBefore = `
                            <li style="color: #0a8cf0" class="page-item">
                                 <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
                            </li>
                            `;
-            let templatePageAfter = `
+    let templatePageAfter = `
                             <li style="color: #0a8cf0" class="page-item">
                                  <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
                             </li>
                             `;
-            for (let i = 0; i < totalPages; i++) {
-                templatePageMid += `<li class="page-item" >
+    for (let i = 0; i < totalPages; i++) {
+        templatePageMid += `<li class="page-item" >
                                          <a id="pageColor" class="page-link" onclick="loadTable(${i})">${i + 1}</a>
                                      </li>`
-            }
-            templateHtml = templatePageBefore + templatePageMid +templatePageAfter
-            if (totalPages == 1) {
-                templateHtml = ``;
-            }
-            $("#page").html(templateHtml);
+    }
+    templateHtml = templatePageBefore + templatePageMid + templatePageAfter
+    if (totalPages == 1) {
+        templateHtml = ``;
+    }
+    $("#page").html(templateHtml);
 }
 
 function loadTable(count) {
@@ -455,14 +453,26 @@ function loadTable(count) {
         url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData)
-            totalPages = responseData.data.totalPages
-            $("#searchListGvhd").html(responseData.data.data.map(function (item) {
-                return `
+            if (responseData.data.data.length == 0) {
+                $("#searchListGvhd").html(``)
+                $("#page").html(``)
+                $("#empty").html(`<h3>Không có dữ liệu</h3>`)
+                if (responseData.data.totalPages == 1) {
+                    loadTable(0);
+                    return;
+                }
+                if (count == responseData.data.totalPages && count != 0) {
+                    loadTable(count - 1);
+                    return;
+                }
+            } else {
+                totalPages = responseData.data.totalPages
+                $("#searchListGvhd").html(responseData.data.data.map(function (item) {
+                    return `
                <tr>
                    <td >${item.stt}</td>
-                   <td >${item.tenGvhd +' - '+item.tenTaiKhoan}</td>
-                   <td >${item.soNhomDangHuongDan +'/'+item.soNhomHuongDanToiDa}</td>
+                   <td >${item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
+                   <td >${item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa}</td>
                    <td >${item.soDienThoai}</td>
                    <td >${item.emailFe}</td>
                    <td>
@@ -492,8 +502,9 @@ function loadTable(count) {
                    </td>
                </tr>
                `
-            }))
-            genPagingAndFillColor()
+                }))
+                genPagingAndFillColor()
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);

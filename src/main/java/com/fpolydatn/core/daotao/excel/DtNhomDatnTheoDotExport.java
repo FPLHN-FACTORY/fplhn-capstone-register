@@ -35,11 +35,11 @@ public class DtNhomDatnTheoDotExport {
         font.setFontHeight(12);
         cellStyle.setFont(font);
         createCell(row, 0, "STT", cellStyle);
-        createCell(row, 1, "Tên nhóm", cellStyle);
-        createCell(row, 2, "Tên đề tài", cellStyle);
-        createCell(row, 3, "Tên chuyên ngành", cellStyle);
-        createCell(row, 4, "Số thành viên", cellStyle);
-        createCell(row, 5, "Trưởng nhóm", cellStyle);
+        createCell(row, 1, "Mã nhóm", cellStyle);
+        createCell(row, 2, "Môn đăng ký", cellStyle);
+        createCell(row, 3, "Tên đề tài", cellStyle);
+        createCell(row, 4, "Tên chuyên ngành", cellStyle);
+        createCell(row, 5, "Số thành viên", cellStyle);
         createCell(row, 6, "Tên GVHD", cellStyle);
         createCell(row, 7, "Trạng thái", cellStyle);
     }
@@ -63,22 +63,21 @@ public class DtNhomDatnTheoDotExport {
 
     private void writeDataLines() {
         final long startTime = System.currentTimeMillis();
-
         CellStyle style = xssfWorkbook.createCellStyle();
         XSSFFont font = xssfWorkbook.createFont();
         font.setFontHeight(12);
         style.setFont(font);
-        listNhomDatn.stream().forEach(xx -> {
-            Row row = xssfSheet.createRow(xx.getStt());
+        listNhomDatn.stream().forEach(nhomDatn -> {
+            Row row = xssfSheet.createRow(nhomDatn.getStt());
             int countColum = 0;
-            createCell(row, countColum++, xx.getStt(), style);
-            createCell(row, countColum++, xx.getTenNhom(), style);
-            createCell(row, countColum++, xx.getTenDeTai(), style);
-            createCell(row, countColum++, xx.getTenChuyenNganh(), style);
-            createCell(row, countColum++, xx.getCountSinhVien() + "/7", style);
-            createCell(row, countColum++, xx.getMaSinhVien() + "-" + xx.getTenSinhVien(), style);
-            createCell(row, countColum++, xx.getTenGvhd() + "-" + xx.getTenTaiKhoan(), style);
-            createCell(row, countColum++, xx.getTrangThai() == 0 ? "Mới thành lập" : (xx.getTrangThai() == 1 ? "Đã liên hệ giảng viên" : (xx.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (xx.getTrangThai() == 3 ? "Cần sửa" : (xx.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))), style);
+            createCell(row, countColum++, nhomDatn.getStt(), style);
+            createCell(row, countColum++, nhomDatn.getMaNhom(), style);
+            createCell(row, countColum++, nhomDatn.getTenMonDatn(), style);
+            createCell(row, countColum++, nhomDatn.getTenDeTai(), style);
+            createCell(row, countColum++, nhomDatn.getTenChuyenNganh(), style);
+            createCell(row, countColum++, nhomDatn.getCountSinhVien() + "/7", style);
+            createCell(row, countColum++, nhomDatn.getTenGvhd() + "-" + nhomDatn.getTenTaiKhoan(), style);
+            createCell(row, countColum++, nhomDatn.getTrangThai() == 0 ? "Mới thành lập" : (nhomDatn.getTrangThai() == 1 ? "Đã liên hệ giảng viên" : (nhomDatn.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (nhomDatn.getTrangThai() == 3 ? "Cần sửa" : (nhomDatn.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))), style);
         });
 
         final long endTime = System.currentTimeMillis();
