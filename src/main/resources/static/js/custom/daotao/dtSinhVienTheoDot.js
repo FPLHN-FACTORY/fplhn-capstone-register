@@ -7,6 +7,7 @@ function clearform() {
 
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
+
 genPagingAndFillColor()
 
 function genPagingAndFillColor() {
@@ -55,8 +56,11 @@ function viewTable(page) {
         url: "/api/dao-tao/sinh-vien?page=" + page + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy,
         dataType: 'json',
         success: function (responseData) {
+            console.log("tttttttttt"+ totalPages)
+            console.log("ccccccccccc"+currentPage)
             let array = responseData.data.data
             totalPages = responseData.data.totalPages
+            console.log("tttttttttt: "+ totalPages)
             if (array.length == 0) {
                 $("#list").html(``)
                 $("#page").html(``)
