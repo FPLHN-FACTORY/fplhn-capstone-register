@@ -168,29 +168,60 @@ function clearModal(){
     $("#ma_mon_datn_error").text("");
     $("#ten_mon_datn_error").text("");
 }
-function openModalImportMonDatn() {
-    $("#modal_mon_datn_import").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: monDatnApi,
-        data: JSON.stringify(),
-        dataType: 'json',
-        success: function () {
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
 
-$("#exampleFormControlFile1").on("input", function () {
-    if (!$("#exampleFormControlFile1").val().trim().length == 0) {
-        $("#import").removeAttr('disabled');
-        $("#import").css('cursor', 'pointer');
-    } else {
-        $("#import").attr('disabled', 'disabled');
-        $("#import").css('cursor', 'not-allowed');
+$("#form_import_excel").submit(function (event) {
+    event.preventDefault();
+    const newFile = $("#inputGroupFile04").val();
+    if(newFile.trim().length === 0) {
+        $("#errImport").text("Bạn hãy chọn file");
+        return;
     }
 
-})
+    if(newFile.substring(newFile.lastIndexOf(".")+1, newFile.length) !== "xlsx") {
+        $("#errImport").text("Không đúng định dạng xlsx");
+        return;
+    }
+    $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            enctype: 'multipart/form-data',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $('#import_excel').modal("hide");
+                console.log(response.data)
+                if (response.data.status == true) {
+                    bootbox.alert({
+                        title: "Import Excel",
+                        message: "<div class='alert alert-success alert-dismissible fade show' "+
+                                " role='alert'><strong>SUCCESS !!! </strong><p>Import thành công</p></div>",
+                        backdrop: true,
+                        callback: function () {
+                            reload();
+                        }
+                    });
+                } else {
+                    let mess = "";
+                    response.data.message.forEach(el => {
+                        mess = mess + "</br>" + el;
+                    });
+                    bootbox.alert({
+                        title: "Import Excel",
+                        message: '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>ERROR !!! </strong><div><p>'+ mess +'</p></div></div>',
+                        backdrop: true,
+                        callback: function () {
+                            reload();
+                        }
+                    });
+                }
+            },
+            error: function (e) {
+            }
+        }
+    );
+});
+
+function reload() {
+    window.open('/dao-tao/mon-datn', '_self');
+}
