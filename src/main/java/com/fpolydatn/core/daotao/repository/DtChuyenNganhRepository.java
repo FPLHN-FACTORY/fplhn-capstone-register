@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author hungpv
@@ -58,7 +57,12 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
                 SELECT cb.id FROM chuyen_nganh cn JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id WHERE 
                 cn.co_so_id = :coSoId AND cn.chu_nhiem_bo_mon = :chuNhiemBoMon AND cn.id <> :id 
             """, nativeQuery = true)
-    String findByChuNhiem(@Param("coSoId") String coSoId, @Param("chuNhiemBoMon") String chuNhiemBoMon,
+    String checkChuyenNganhByChuNhiem(@Param("coSoId") String coSoId, @Param("chuNhiemBoMon") String chuNhiemBoMon,
                           @Param("id") String id);
 
+    @Query(value = """
+                SELECT id FROM chuyen_nganh WHERE 
+                co_so_id = :coSoId AND chu_nhiem_bo_mon = :chuNhiemBoMon
+            """, nativeQuery = true)
+    String checkChuyenNganhByCNBM(@Param("coSoId") String coSoId, @Param("chuNhiemBoMon") String chuNhiemBoMon);
 }

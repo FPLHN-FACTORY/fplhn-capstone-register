@@ -3,7 +3,6 @@ package com.fpolydatn.core.daotao.service.impl;
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import org.apache.poi.sl.draw.geom.GuideIf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fpolydatn.core.common.base.PageableObject;
@@ -44,7 +43,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
         String chuyenNganhCheck = dtChuyenNganhRepository.checkChuyenNganhByName(chuyenNganh.getCoSoId(),
                 chuyenNganh.getTenChuyenNganh(), chuyenNganh.getId());
-        String chuNhiemBoMonCheck = dtChuyenNganhRepository.findByChuNhiem(chuyenNganh.getCoSoId(),
+        String chuNhiemBoMonCheck = dtChuyenNganhRepository.checkChuyenNganhByChuNhiem(chuyenNganh.getCoSoId(),
                 chuyenNganh.getChuNhiemBoMon(), chuyenNganh.getId());
         if (!Objects.isNull(chuyenNganhCheck)){
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
@@ -64,8 +63,8 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     public ChuyenNganh add(@Valid DtCreateChuyenNganhRequest req) {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
         ChuyenNganh chuyenNganhCheck = dtChuyenNganhRepository.findByTenChuyenNganh(chuyenNganh.getTenChuyenNganh());
-        String chuNhiemBoMonCheck = dtChuyenNganhRepository.findByChuNhiem(chuyenNganh.getCoSoId(),
-                chuyenNganh.getChuNhiemBoMon(), chuyenNganh.getId());
+        String chuNhiemBoMonCheck = dtChuyenNganhRepository.checkChuyenNganhByCNBM(chuyenNganh.getCoSoId(),
+                chuyenNganh.getChuNhiemBoMon());
         if (!Objects.isNull(chuyenNganhCheck)){
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
         }
@@ -108,15 +107,5 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
 
         return new PageableObject(res);
     }
-
-//    @Override
-//    public Optional<ChuyenNganh> chuyenNganhCheckByName(DtFindChuyenNganhRequest req) {
-////        Optional<ChuyenNganh> chuyenNganhCheck = dtChuyenNganhRepository.checkChuyenNganhByName(req);
-////        if (!chuyenNganhCheck.isPresent()){
-////            return null;
-////        }
-////
-//        return chuyenNganhCheck;
-//    }
 
 }

@@ -9,6 +9,12 @@ function clearData() {
     $("#ten-chuyen-nganh-search").val("");
 }
 
+function clearForm(){
+    $("#tenChuyenNganhAdd").val("");
+    $("#chuyen_nganh_create_error").text("");
+    $("#chuyen_nganh_error").text("");
+}
+
 $("#form_create_chuyen_nganh").submit(function (event) {
     event.preventDefault();
     let tenchuyenNganh = $("#tenChuyenNganhAdd").val();
@@ -26,16 +32,18 @@ $("#form_create_chuyen_nganh").submit(function (event) {
             data: JSON.stringify(chuyenNganhRequest),
             dataType: 'json',
             success: function () {
-                window.open(chuyenNganhView, '_self');
                 $("#modal_create").modal("hide");
+                bootbox.alert('Thêm thành công', function () {
+                    window.open(chuyenNganhView, '_self');
+                });
             },
             error: function (e) {
                 if(e.responseJSON.message == 'Chuyen nganh da ton tai'){
-                    $("#chuyennganhUpdate_error").text("Chuyên ngành đã tồn tại trong đợt");
-                    $("#chuyennganh_error").text("");
+                    $("#chuyen_nganh_error").text("Chuyên ngành đã tồn tại trong đợt");
+                    $("#chuyen_nganh_create_error").text("");
                 }else{
-                    $("#chuyennganh_error").text("Chủ nhiệm bộ môn đang tồn tại trong đợt");
-                    $("#chuyennganhUpdate_error").text("");
+                    $("#chuyen_nganh_create_error").text("Chủ nhiệm bộ môn đang tồn tại trong đợt");
+                    $("#chuyen_nganh_error").text("");
                 }
             }
         });
@@ -44,6 +52,8 @@ $("#form_create_chuyen_nganh").submit(function (event) {
 
 function openModalUpdateChuyenNganh(chuyenNganhId) {
     $("#modal_update_chuyen_nganh").modal('show');
+    $("#chuyennganh_error").text("");
+    $("#chuyennganhUpdate_error").text("");
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -78,8 +88,10 @@ $("#form_chuyen_nganh_update").submit(function (event) {
             data: JSON.stringify(chuyenNganhrequest),
             dataType: 'json',
             success: function () {
-                window.open(chuyenNganhView, '_self');
                 $("#modal_update_chuyen_nganh").modal("hide");
+                    bootbox.alert('Cập nhật thành công', function () {
+                    window.open(chuyenNganhView, '_self');
+                });
             },
             error: function (e) {
                 if(e.responseJSON.message == 'Chuyen nganh da ton tai'){
@@ -95,6 +107,7 @@ $("#form_chuyen_nganh_update").submit(function (event) {
 });
 
 function openModalRemoveChuyenNganh(chuyenNganhId) {
+    $("#remove_chuyen_nganh").text("")
     $("#modal_chuyen_nganh_remove").modal('show');
     $.ajax({
         type: "GET",
@@ -122,15 +135,13 @@ $("#form_chuyen_nganh_delete").submit(function (event) {
         data: JSON.stringify(chuyenNganhId),
         dataType: 'json',
         success: function () {
-            window.open(chuyenNganhView, '_self');
             $("#modal_chuyen_nganh_remove").modal("hide");
+                bootbox.alert('Xóa thành công', function () {
+                window.open(chuyenNganhView, '_self');
+            });
         },
         error: function (e) {
             $("#remove_chuyen_nganh").text("Chuyên ngành có trong đợt đăng ký");
         }
     });
 });
-
-function clearModal(){
-    $("#remove_chuyen_nganh").text("");
-}
