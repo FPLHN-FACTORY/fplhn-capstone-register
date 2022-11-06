@@ -104,7 +104,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     public MonDatn update(@Valid final DtUpdateMonDatnRequest command) {
         Optional<MonDatn> monDatnCheck = monDatnRepository.findById(command.getId());
         MonDatn monDatnTr = formUtils.convertToObject(MonDatn.class, command);
-        String monDatnInDb = monDatnRepository.findByMaMonUpdate(monDatnTr.getMaMon(), monDatnTr.getId());
+        String monDatnInDb = monDatnRepository.findByMaMonUpdate(monDatnTr.getMaMon(), monDatnTr.getId(), monDatnTr.getCoSoId());
         if (!monDatnCheck.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }

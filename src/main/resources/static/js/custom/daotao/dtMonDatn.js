@@ -7,7 +7,6 @@ $(document).ready(function () {
 
 $("#form_create_mon_datn").submit(function (event) {
     event.preventDefault();
-
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
@@ -38,17 +37,26 @@ $("#form_create_mon_datn").submit(function (event) {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                window.open(monDatnView, '_self');
                 $("#modal_create").modal("hide");
+                bootbox.alert({
+                    message: 'Thêm thành công',
+                    backdrop: true,
+                    callback: function (e) {
+                        window.open(monDatnView, '_self');
+                    }
+                });
             },
             error: function (e) {
-                $("#ma_mon_datn_error").text("Môn đã tồn tại");
+                console.log(e);
+                $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
             }
         });
     }
 });
 
 function openModalUpdateMonDatn(monDatnId) {
+    $("#errorMaMonUpdate").text("");
+    $("#errorTenMonUpdate").text("");
     $("#modal_update_mon_datn").modal('show');
     $.ajax({
         type: "GET",
@@ -96,17 +104,24 @@ $("#form_mon_datn_update").submit(function (event) {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                window.open(monDatnView, '_self');
                 $("#modal_update_mon_datn").modal("hide");
+                bootbox.alert({
+                    message: 'Update thành công',
+                    backdrop: true,
+                    callback: function (e) {
+                        window.open(monDatnView, '_self');
+                    }
+                });
             },
             error: function (e) {
-                $("#errorMaMonUpdate").text(e.responseJSON.message);
+                $("#errorMaMonUpdate").text("Mã môn đã tồn tại ");
             }
         });
     }
 });
 
 function openModalRemoveMonDatn(monDatnId) {
+    $("#remove_mon_datn").text("");
     $("#modal_mon_datn_remove").modal('show');
     $.ajax({
         type: "GET",
@@ -133,8 +148,14 @@ $("#form_mon_datn_delete").submit(function (event) {
         data: JSON.stringify(monDatnId),
         dataType: 'json',
         success: function () {
-            window.open(monDatnView, '_self');
             $("#modal_mon_datn_remove").modal("hide");
+            bootbox.alert({
+                message: 'Xóa thành công',
+                backdrop: true,
+                callback: function (e) {
+                    window.open(monDatnView, '_self');
+                }
+            });
         },
         error: function (e) {
             $("#remove_mon_datn").text("Không xóa được (môn đang tồn tại trong đợt đăng ký)");
@@ -161,12 +182,6 @@ function openModalImportMonDatn() {
 function clearModal() {
     $("#ma_mon_datn_error").text("");
     $("#ten_mon_datn_error").text("");
-    $("#errorMaMonUpdate").text("");
-    $("#errorTenMonUpdate").text("");
-}
-
-function clearModalRemove() {
-    $("#remove_mon_datn").text("");
 }
 
 $("#exampleFormControlFile1").on("input", function () {

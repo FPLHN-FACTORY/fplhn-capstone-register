@@ -48,6 +48,8 @@ public class DtMonDatnRestController extends BaseController {
     public ResponseObject update(@PathVariable("id") String id,
                                  @RequestBody DtUpdateMonDatnRequest monDatnRequest) {
         monDatnRequest.setId(id);
+        String coSoId = session.getCoSoId();
+        monDatnRequest.setCoSoId(coSoId);
         return new ResponseObject(monDatnService.update(monDatnRequest));
     }
 
