@@ -287,6 +287,131 @@ $("#searchGvhd").submit(function (event) {
     loadTable(0);
 })
 
+function openModalRemoveGiangVien(giangVienId, item) {
+            bootbox.confirm({
+                title: "Xóa",
+                message: "Bạn chắc chắn xóa không?",
+                buttons: {
+                    cancel: {
+                        className: 'btn-outline-secondary btn btn-light',
+                        label: '<i class="fa fa-times"></i> Quay lại'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Xác nhận'
+                    }
+                },
+                callback: function (result) {
+                    // result trả về true hoặc false; nếu người dùng chọn xác nhận thì trả về true
+                    if (result) {
+                        // Gọi Ajax ở đây hoặc gọi hàm cần thiết confirm ở đây
+                            $.ajax({
+                                type: "DELETE",
+                                contentType: "application/json",
+                                url: giangVienHuongDanApi + "/" + giangVienId,
+                                data: JSON.stringify(giangVienId),
+                                dataType: 'json',
+                                success: function (responseData) {
+                                    if(responseData.data.message != null){
+                                     alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
+                                    }else{
+                                       bootbox.alert({
+                                           message: 'Xóa thành công',
+                                           backdrop: true,
+                                           callback: function () {
+                                           // Có thể load lại trạng hoặc gọi hàm gì đó
+                                           loadTable(item);
+                                         }
+                                       });
+                                    }
+                                },
+                                error: function (e) {
+                                    console.log("ERROR : ", e);
+                                }
+                            });
+                    }
+                }
+            });
+}
+
+function openModalExport() {
+    $("#modal_excel").modal('show')
+}
+
+function openModalImportMau() {
+    $("#modal_import_mau").modal('show')
+}
+
+function exportFile() {
+    let typeExcel = $("#type_excel").val()
+    if (typeExcel == '') {
+        $("#type_excel_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel,
+            success: function () {
+                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel, '_self');
+                $("#modal_excel").modal('hide')
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+}
+
+function importExcel() {
+    var form = $('#form_import_excel')[0];
+    let typeExcel = $("#inputGroupFile01").val();
+    let indexDot = typeExcel.indexOf('.');
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    if (typeExcel.length <= 0) {
+        $("#import_excel_error").text("Hãy chọn file excel cần import");
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        $.ajax({
+                type: 'POST',
+                url: '/api/dao-tao/giang-vien-huong-dan/import',
+                enctype: 'multipart/form-data',
+                processData: false,
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                 success: function (data) {
+                         window.open('/dao-tao/giang-vien-huong-dan', '_self');
+                 },
+                 error: function (e) {
+                       alert(e.responseText);
+                       window.open('/dao-tao/giang-vien-huong-dan', '_self');
+                       console.log("ERROR: " + e);
+                 }
+            }
+        );
+    } else {
+        $("#import_excel_error").text("Hãy chọn đúng file excel");
+    }
+}
+
+function importFileMau() {
+    let typeExcel = $("#type_mau_import").val();
+        if (typeExcel == '') {
+            $("#mau_import_error").text("chọn định dạng file download");
+        } else {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel,
+
+                success: function () {
+                    window.open("/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel, '_self');
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                }
+            });
+ }
+}
+
 genPagingAndFillColor();
 
 function genPagingAndFillColor(){
@@ -374,121 +499,4 @@ function loadTable(count) {
             console.log("ERROR : ", e);
         }
     });
-}
-
-$("#form_import_excel").submit(function (event) {
-    event.preventDefault();
-    let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
-    if (typeExcel.length <= 0) {
-        $("#import_excel_error").text("chọn file");
-    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
-        $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                enctype: 'multipart/form-data',
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                },
-                error: function (e) {
-                    alert(e.responseText);
-                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                    console.log("ERROR: " + e);
-                }
-            }
-        );
-    } else {
-        $("#import_excel_error").text("chọn đúng file Excel ");
-    }
-});
-
-
-$("#form_type_excel").submit(function (event) {
-    event.preventDefault();
-    let typeExcel = $("#type_excel").val();
-    if (typeExcel == '') {
-        $("#type_excel_error").text("chọn định dạng file download");
-    } else {
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel,
-
-            success: function () {
-                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel, '_self');
-            },
-            error: function (e) {
-                console.log("ERROR : ", e);
-            }
-        });
-    }
-});
-$("#modal_excel_mau").submit(function (event) {
-    event.preventDefault();
-    let typeExcel = $("#type_mau_excel").val();
-    if (typeExcel == '') {
-        $("#mau_excel_error").text("chọn định dạng file download");
-    } else {
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel,
-
-            success: function () {
-                window.open("/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel, '_self');
-            },
-            error: function (e) {
-                console.log("ERROR : ", e);
-            }
-        });
-    }
-});
-function openModalRemoveGiangVien(giangVienId, item) {
-            bootbox.confirm({
-                title: "Xóa",
-                message: "Bạn chắc chắn xóa không?",
-                buttons: {
-                    cancel: {
-                        className: 'btn-outline-secondary btn btn-light',
-                        label: '<i class="fa fa-times"></i> Quay lại'
-                    },
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> Xác nhận'
-                    }
-                },
-                callback: function (result) {
-                    // result trả về true hoặc false; nếu người dùng chọn xác nhận thì trả về true
-                    if (result) {
-                        // Gọi Ajax ở đây hoặc gọi hàm cần thiết confirm ở đây
-                            $.ajax({
-                                type: "DELETE",
-                                contentType: "application/json",
-                                url: giangVienHuongDanApi + "/" + giangVienId,
-                                data: JSON.stringify(giangVienId),
-                                dataType: 'json',
-                                success: function (responseData) {
-                                    if(responseData.data.message != null){
-                                     alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
-                                    }else{
-                                       bootbox.alert({
-                                           message: 'Xóa thành công',
-                                           backdrop: true,
-                                           callback: function () {
-                                           // Có thể load lại trạng hoặc gọi hàm gì đó
-                                           loadTable(item);
-                                         }
-                                       });
-                                    }
-                                },
-                                error: function (e) {
-                                    console.log("ERROR : ", e);
-                                }
-                            });
-                    }
-                }
-            });
 }
