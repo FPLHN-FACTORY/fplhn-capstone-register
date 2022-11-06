@@ -4,10 +4,19 @@ const regexFE = new RegExp('[a-z0-9]+@fe.edu.vn');
 const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
 const regexSDT = new RegExp('(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}');
 const regexSoNhom = new RegExp('[0-9]+');
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+})
+let totalPages = $("#totalPages").val()
+let currentPage = $("#currentPage").val()
 
 $(document).ready(function () {
     $("#giang_vien_error").text("");
 });
+
+
+
+
 
 function clearData() {
     $("#tenGiangVien").val("");
@@ -272,152 +281,68 @@ $("#form_giang_vien_update").submit(function (event) {
 
 });
 
-function openModalRemoveGiangVien(giangVienId, item) {
-    $("#modal_giang_vien_remove").modal('show');
-    $("#remove_giang_vien_item").val(item);
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: giangVienHuongDanApi + "/" + giangVienId,
-        data: JSON.stringify(giangVienId),
-        dataType: 'json',
-        success: function () {
-            $("#remove_giang_vien").val(giangVienId);
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
-
-$("#form_giang_vien_delete").submit(function (event) {
-    event.preventDefault();
-    let giangVienId = $("#remove_giang_vien").val();
-    let item = $("#remove_giang_vien_item").val();
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: giangVienHuongDanApi + "/" + giangVienId,
-        data: JSON.stringify(giangVienId),
-        dataType: 'json',
-        success: function (responseData) {
-            if(responseData.data.message != null){
-             alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
-            }else{
-               loadTable(item);
-               $("#modal_giang_vien_remove").modal("hide");
-            }
-
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-
-});
 
 $("#searchGvhd").submit(function (event) {
     event.preventDefault();
     loadTable(0);
 })
 
-function loadTable(count) {
-    let tenGiangVien = $("#tenGiangVien").val();
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&page=" + count,
-        dataType: 'json',
-        success: function (responseData) {
-            console.log(responseData)
-            $("#searchListGvhd").html(responseData.data.data.map(function (item) {
-                return `
-               <tr>
-                   <td >${item.stt}</td>
-                   <td >${item.tenCoSo}</td>
-                   <td >${item.tenDotDangKy}</td>
-                   <td >${item.tenGvhd}</td>
-                   <td >${item.tenTaiKhoan}</td>
-                   <td >${item.soNhomDangHuongDan +'/'+item.soNhomHuongDanToiDa}</td>
-                   <td >${item.soDienThoai}</td>
-                   <td >${item.emailFpt}</td>
-                   <td >${item.emailFe}</td>
-                   <td>
-                       <button
-                           type="button"
-                           class="btn btn-primary chuc-nang"
-                           onclick="openModalUpdateGiangVien('${item.id}','${count}')">
-                             Sửa
-                        </button>
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-danger chuc-nang"
-                            data-toggle="modal"
-                            onclick="openModalRemoveGiangVien('${item.id}','${count}')">
-                            Xoá
-                        </button>
-                       <a type="button" class="btn btn-success chuc-nang"
-                            href="/dao-tao/giang-vien-huong-dan/${item.id}">
-                            Phân môn
-                        </a>
-                   </td>
-
-               </tr>
-               `
-            }))
-            $("#page").html(``)
-            let templateHtml = ``;
-            for (let i = 0; i < responseData.data.totalPages; i++) {
-                templateHtml += `<li class="page-item" >
-                                         <a class="page-link" onclick="loadTable(${i})">${i + 1}</a>
-                                     </li>`
-            }
-            if (responseData.data.totalPages == 1) {
-                templateHtml = ``;
-            }
-            $("#page").html(templateHtml);
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
+function openModalRemoveGiangVien(giangVienId, item) {
+            bootbox.confirm({
+                title: "Xóa",
+                message: "Bạn chắc chắn xóa không?",
+                buttons: {
+                    cancel: {
+                        className: 'btn-outline-secondary btn btn-light',
+                        label: '<i class="fa fa-times"></i> Quay lại'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Xác nhận'
+                    }
+                },
+                callback: function (result) {
+                    // result trả về true hoặc false; nếu người dùng chọn xác nhận thì trả về true
+                    if (result) {
+                        // Gọi Ajax ở đây hoặc gọi hàm cần thiết confirm ở đây
+                            $.ajax({
+                                type: "DELETE",
+                                contentType: "application/json",
+                                url: giangVienHuongDanApi + "/" + giangVienId,
+                                data: JSON.stringify(giangVienId),
+                                dataType: 'json',
+                                success: function (responseData) {
+                                    if(responseData.data.message != null){
+                                     alert("Giang viên đang có nhóm hướng dẫn không thể xóa");
+                                    }else{
+                                       bootbox.alert({
+                                           message: 'Xóa thành công',
+                                           backdrop: true,
+                                           callback: function () {
+                                           // Có thể load lại trạng hoặc gọi hàm gì đó
+                                           loadTable(item);
+                                         }
+                                       });
+                                    }
+                                },
+                                error: function (e) {
+                                    console.log("ERROR : ", e);
+                                }
+                            });
+                    }
+                }
+            });
 }
 
-$("#form_import_excel").submit(function (event) {
-    event.preventDefault();
-    let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
-    if (typeExcel.length <= 0) {
-        $("#import_excel_error").text("chọn file");
-    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
-        $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                enctype: 'multipart/form-data',
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                },
-                error: function (e) {
-                    alert(e.responseText);
-                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                    console.log("ERROR: " + e);
-                }
-            }
-        );
-    } else {
-        $("#import_excel_error").text("chọn đúng file Excel ");
-    }
-});
+function openModalExport() {
+    $("#modal_excel").modal('show')
+}
 
+function openModalImportMau() {
+    $("#modal_import_mau").modal('show')
+}
 
-$("#form_type_excel").submit(function (event) {
-    event.preventDefault();
-    let typeExcel = $("#type_excel").val();
+function exportFile() {
+    let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
         $("#type_excel_error").text("chọn định dạng file download");
     } else {
@@ -425,33 +350,153 @@ $("#form_type_excel").submit(function (event) {
             type: "GET",
             contentType: "application/json",
             url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel,
-
             success: function () {
                 window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel, '_self');
+                $("#modal_excel").modal('hide')
             },
             error: function (e) {
                 console.log("ERROR : ", e);
             }
         });
     }
-});
-$("#modal_excel_mau").submit(function (event) {
-    event.preventDefault();
-    let typeExcel = $("#type_mau_excel").val();
-    if (typeExcel == '') {
-        $("#mau_excel_error").text("chọn định dạng file download");
-    } else {
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel,
+}
 
-            success: function () {
-                window.open("/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel, '_self');
-            },
-            error: function (e) {
-                console.log("ERROR : ", e);
+function importExcel() {
+    var form = $('#form_import_excel')[0];
+    let typeExcel = $("#inputGroupFile01").val();
+    let indexDot = typeExcel.indexOf('.');
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    if (typeExcel.length <= 0) {
+        $("#import_excel_error").text("Hãy chọn file excel cần import");
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        $.ajax({
+                type: 'POST',
+                url: '/api/dao-tao/giang-vien-huong-dan/import',
+                enctype: 'multipart/form-data',
+                processData: false,
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                 success: function (data) {
+                         window.open('/dao-tao/giang-vien-huong-dan', '_self');
+                 },
+                 error: function (e) {
+                       alert(e.responseText);
+                       window.open('/dao-tao/giang-vien-huong-dan', '_self');
+                       console.log("ERROR: " + e);
+                 }
             }
-        });
+        );
+    } else {
+        $("#import_excel_error").text("Hãy chọn đúng file excel");
     }
-});
+}
+
+function importFileMau() {
+    let typeExcel = $("#type_mau_import").val();
+        if (typeExcel == '') {
+            $("#mau_import_error").text("chọn định dạng file download");
+        } else {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel,
+
+                success: function () {
+                    window.open("/api/dao-tao/giang-vien-huong-dan/export/mau?typeExcel=" + typeExcel, '_self');
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                }
+            });
+ }
+}
+
+genPagingAndFillColor();
+
+function genPagingAndFillColor(){
+    genPageZing ()
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
+}
+function genPageZing(){
+$("#page").html(``)
+            let templateHtml = ``;
+            let templatePageMid = ``;
+            let templatePageBefore = `
+                           <li style="color: #0a8cf0" class="page-item">
+                                <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
+                           </li>
+                           `;
+            let templatePageAfter = `
+                            <li style="color: #0a8cf0" class="page-item">
+                                 <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
+                            </li>
+                            `;
+            for (let i = 0; i < totalPages; i++) {
+                templatePageMid += `<li class="page-item" >
+                                         <a id="pageColor" class="page-link" onclick="loadTable(${i})">${i + 1}</a>
+                                     </li>`
+            }
+            templateHtml = templatePageBefore + templatePageMid +templatePageAfter
+            if (totalPages == 1) {
+                templateHtml = ``;
+            }
+            $("#page").html(templateHtml);
+}
+
+function loadTable(count) {
+    let tenGiangVien = $("#tenGiangVien").val();
+    currentPage = count;
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&page=" + count,
+        dataType: 'json',
+        success: function (responseData) {
+            console.log(responseData)
+            totalPages = responseData.data.totalPages
+            $("#searchListGvhd").html(responseData.data.data.map(function (item) {
+                return `
+               <tr>
+                   <td >${item.stt}</td>
+                   <td >${item.tenGvhd +' - '+item.tenTaiKhoan}</td>
+                   <td >${item.soNhomDangHuongDan +'/'+item.soNhomHuongDanToiDa}</td>
+                   <td >${item.soDienThoai}</td>
+                   <td >${item.emailFe}</td>
+                   <td>
+                       <button
+                           type="button"
+                           class="btn_pencil_square"
+                           data-toggle="tooltip"
+                           title="Sửa "
+                           onclick="openModalUpdateGiangVien('${item.id}','${count}')">
+                           <img src="/img/pencil-square.svg">
+                        </button>
+                        </button>
+                        <button
+                            type="button"
+                            class="btn_trash"
+                            data-toggle="tooltip"
+                            title="Xóa "
+                            onclick="openModalRemoveGiangVien('${item.id}','${count}')">
+                            <img src="/img/trash.svg">
+                        </button>
+                       <a type="button"
+                            class="btn_clipboard_user"
+                            data-toggle="tooltip"
+                            href="/dao-tao/giang-vien-huong-dan/${item.id}">
+                            <img src="/img/clipboard-user.svg">
+                        </a>
+                   </td>
+               </tr>
+               `
+            }))
+            genPagingAndFillColor()
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
