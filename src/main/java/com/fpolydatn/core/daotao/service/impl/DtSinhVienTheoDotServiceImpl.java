@@ -14,10 +14,9 @@ import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
+import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
-import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
-import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.apache.poi.ss.usermodel.Cell;
@@ -252,6 +251,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
         response.setStatus(true);
         List<String> listMsvLoai = new ArrayList<>();
+        List<String> listNhomDatnId = new ArrayList<>();
         int columnIndex = -1;
         try {
             Workbook workbook = StreamingReader.builder()
@@ -281,6 +281,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         List<SinhVien> listSvKhongDat = new ArrayList<>();
         Map<String, SinhVien> mapSinhVien = new HashMap<>();
         List<SinhVien> listSinhVien = sinhVienRepository.findAllSinhVienByDotDangKyId(request.getDotDangKyId(),
@@ -288,20 +289,51 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         listSinhVien.stream().forEach(sinhVien -> {
             mapSinhVien.put(sinhVien.getMaSinhVien(), sinhVien);
         });
-
+        List<NhomDatn> listNhomDatnDoiTruongNhom = new ArrayList<>();
+        List<NhomDatn> listNhomDatnDelete = new ArrayList<>();
+        List<NhomDatn> listNhomDatn = nhomDatnTheoDotRepository.findAllByDotDangKyId(request.getDotDangKyId(), request.getCoSoId());
+        Map<String, NhomDatn> mapNhomDatn = new HashMap<>();
+        listNhomDatn.stream().forEach(nhomDatn -> {
+            mapNhomDatn.put(nhomDatn.getTruongNhomId(), nhomDatn);
+        });
         listMsvLoai.parallelStream().forEach(msv -> {
             SinhVien sv = mapSinhVien.get(msv);
-            if (sv != null) {
-                if (sv.getTrangThai() == TrangThaiSinhVien.DU_DIEU_KIEN) {
-                    sv.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
-                    listSvKhongDat.add(sv);
-                }
-            } else {
+            if (sv == null) {
                 response.setStatus(false);
                 response.setMessage("Mã sinh viên " + msv + " không tồn tại");
                 return;
             }
+            if (sv.getTrangThai() == TrangThaiSinhVien.DU_DIEU_KIEN) {
+                sv.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                listSvKhongDat.add(sv);
+            }
+            if (sv.getNhomId() != null) {
+                NhomDatn nhomDatn = mapNhomDatn.get(sv.getId());
+                if (nhomDatn != null) {
+                    boolean check = true;
+                    for (SinhVien sinhVien:  listSinhVien) {
+                        if (nhomDatn.getId().equals(sinhVien.getNhomId()) && !sinhVien.getId().equals(sv.getId())) {
+                            nhomDatn.setTruongNhomId(sinhVien.getId());
+                            check = false;
+                            break;
+                        }
+                    }
+                    if (check) {
+                        listNhomDatnDelete.add(nhomDatn);
+                    } else {
+                        listNhomDatnDoiTruongNhom.add(nhomDatn);
+                    }
+                }
+                sv.setNhomId(null);
+                sv.setMonDatnId(null);
+            }
         });
+        if (listNhomDatnDelete.size() != 0) {
+            nhomDatnTheoDotRepository.deleteAll(listNhomDatnDelete);
+        }
+        if (listNhomDatnDoiTruongNhom.size() != 0) {
+            nhomDatnTheoDotRepository.saveAll(listNhomDatnDoiTruongNhom);
+        }
         if (response.getStatus()) {
             sinhVienRepository.saveAll(listSvKhongDat);
         }
