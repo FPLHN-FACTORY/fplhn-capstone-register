@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import javax.validation.Valid;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.List;
 
@@ -38,20 +39,38 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
 
     @Override
     public ChuyenNganh update(@Valid DtUpdateChuyenNganhRequest req) {
-        Optional<ChuyenNganh> chuyenNganhCheck = dtChuyenNganhRepository.findById(req.getId());
-        if (!chuyenNganhCheck.isPresent()) {
-            throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
+        Optional<ChuyenNganh> chuyenNganhById = dtChuyenNganhRepository.findById(req.getId());
+        ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
+        String chuyenNganhCheck = dtChuyenNganhRepository.checkChuyenNganhByName(chuyenNganh.getCoSoId(),
+                chuyenNganh.getTenChuyenNganh(), chuyenNganh.getId());
+        String chuNhiemBoMonCheck = dtChuyenNganhRepository.checkChuyenNganhByChuNhiem(chuyenNganh.getCoSoId(),
+                chuyenNganh.getChuNhiemBoMon(), chuyenNganh.getId());
+        if (!Objects.isNull(chuyenNganhCheck)){
+            throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
         }
-        ChuyenNganh chuyenNganh = chuyenNganhCheck.get();
-        chuyenNganh.setTenChuyenNganh(req.getTenChuyenNganh());
-        chuyenNganh.setChuNhiemBoMon(req.getChuNhiemBoMon());
+        if (!Objects.isNull(chuNhiemBoMonCheck)){
+            throw new RestApiException(Message.CHU_NHIEM_ALREADY_EXIST);
+        }
 
-        return dtChuyenNganhRepository.save(chuyenNganh);
+        ChuyenNganh chuyenNganhUpdate = chuyenNganhById.get();
+        chuyenNganhUpdate.setTenChuyenNganh(req.getTenChuyenNganh());
+        chuyenNganhUpdate.setChuNhiemBoMon(req.getChuNhiemBoMon());
+
+        return dtChuyenNganhRepository.save(chuyenNganhUpdate);
     }
 
     @Override
     public ChuyenNganh add(@Valid DtCreateChuyenNganhRequest req) {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
+        ChuyenNganh chuyenNganhCheck = dtChuyenNganhRepository.findByTenChuyenNganh(chuyenNganh.getTenChuyenNganh());
+        String chuNhiemBoMonCheck = dtChuyenNganhRepository.checkChuyenNganhByCNBM(chuyenNganh.getCoSoId(),
+                chuyenNganh.getChuNhiemBoMon());
+        if (!Objects.isNull(chuyenNganhCheck)){
+            throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
+        }
+        if (!Objects.isNull(chuNhiemBoMonCheck)){
+            throw new RestApiException(Message.CHU_NHIEM_ALREADY_EXIST);
+        }
 
         return dtChuyenNganhRepository.save(chuyenNganh);
     }
