@@ -10,6 +10,7 @@
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
+    <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
 </head>
 <!-- end::Head -->
 
@@ -33,63 +34,16 @@
                 <div class="m-content">
                     <h3>Quản lý Môn DATN</h3>
                     <div class="mt-5">
-                        <section class="fillter-area  mb-5">
-                            <div class="m-portlet">
-
-                                <div class="row">
-                                    <div class="col-12 d-inline" >
-                                        <!--  Start Modal Import Excel-->
-                                        <form style = "margin:20px" id="modal_mon_datn_import" th:object="${file}" th:action="@{'/dao-tao/mon-datn/import'}" method="POST" enctype="multipart/form-data">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Import Excel</h5>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${errorMess}">
-                                                    <strong>ERROR !!! </strong>
-                                                    <div th:each="mess : ${errorMess}">
-                                                        <p th:text="${mess}"></p>
-                                                    </div>
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${successMess}">
-                                                    <strong>SUCCESS !!! </strong><p th:text="${successMess}"></p>
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-
-                                                <h5 class="modal-title">Import file Excel</h5>
-                                                <div class="form-group">
-                                                    <label for="exampleFormControlFile1">Example file input</label>
-                                                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="fileupload" th:field="*{file}" multiple >
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a th:href="@{/dao-tao/mon-datn/mau-import}" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Mẫu Import Excel">
-                                                    <i class="fas fa-download">Mẫu Import</i>
-                                                </a>
-                                                <button type="submit" class="btn btn-primary" style="cursor: not-allowed" id="import" data-toggle="tooltip" data-placement="top" title="Import Excel" disabled>
-                                                    <i class="fas fa-upload">Import excel</i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                        <!--   End Modal Import Excel -->
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="row">
                                         <div class="col-6 d-inline">
-                                            <a
-                                                    data-toggle="modal"
-                                                    data-target="#modal_create"
-                                                    class="col-12 col-sm-8 col-md-4 btn btn-success"
-                                                    th:href="@{/dao-tao/mon-datn/}">
+                                            <a onclick="clearModal()"
+                                               data-toggle="modal"
+                                               data-target="#modal_create"
+                                               class="col-12 col-sm-8 col-md-4 btn btn-success"
+                                               th:href="@{/dao-tao/mon-datn/}">
                                                 Tạo môn
                                             </a>
                                             <div class="modal fade "
@@ -135,8 +89,10 @@
                                                                         </select><br>
                                                                     </div>
                                                                     <div>
-                                                                        <label class="col-form-label">Nhóm môn datn:</label>
-                                                                        <select id="tenNhomMonDatn" class="form-control">
+                                                                        <label class="col-form-label">Nhóm môn
+                                                                            datn:</label>
+                                                                        <select id="tenNhomMonDatn"
+                                                                                class="form-control">
                                                                             <div th:each="tenNhomMon : ${tenNhomMon}">
                                                                                 <option th:value="${tenNhomMon.id}"
                                                                                         th:text="${tenNhomMon.tenMonDatn}"></option>
@@ -146,7 +102,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button onclick="clearModal()" type="button" class="btn btn-secondary"
+                                                                <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button type="submit" class="btn btn-primary">Thêm mới
@@ -156,6 +112,13 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <button
+                                                    data-toggle="modal" data-target="#import_excel" class="btn btn-success">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                                    <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                                                </svg>  Import
+                                            </button>
                                         </div>
                                     </div>
 
@@ -165,11 +128,11 @@
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead>
                                                 <th width="50px">STT</th>
-                                                <th width="200px">Mã môn</th>
+                                                <th width="150px">Mã môn</th>
                                                 <th width="200px">Tên môn</th>
-                                                <th width="200px">Nhóm môn</th>
+                                                <th width="250px">Nhóm môn</th>
+                                                <th width="200px">Chuyên ngành</th>
                                                 <th width="200px">Giảng viên</th>
-                                                <th width="200px">CN bộ môn</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
                                                 <tbody>
@@ -179,29 +142,31 @@
                                                         <td th:text="${monDatn.maMon}"></td>
                                                         <td th:text="${monDatn.tenMon}"></td>
                                                         <td th:text="${monDatn.tenNhomMon}"></td>
+                                                        <td th:text="${monDatn.tenChuyenNganh}"></td>
                                                         <td>
                                                             <a
                                                                     type="button"
-                                                                    class="btn btn-primary"
+                                                                    class="btn_clipboard_user" data-toggle="tooltip" title="Phân môn đồ án tốt nghiệp"
                                                                     th:href="@{'/dao-tao/mon-datn/'+ ${monDatn.getId()}}">
-                                                                Chi tiết giảng viên
+                                                                <img th:src="@{/img/clipboard-user.svg}">
                                                             </a>
                                                         </td>
-                                                        <td th:text="${monDatn.chuNhiemBoMon}"></td>
                                                         <td>
                                                             <button
                                                                     type="button"
-                                                                    class="btn btn-primary"
+                                                                    class="btn_pencil_square"
+                                                                    data-toggle="tooltip"
+                                                                    title="Sửa môn datn"
                                                                     th:attr="onclick=|openModalUpdateMonDatn('${monDatn.getId()}')|">
-                                                                Sửa
-                                                            </button>
+                                                                <img th:src="@{/img/pencil-square.svg}">
                                                             </button>
                                                             <button
                                                                     type="button"
-                                                                    class="btn btn-danger"
-                                                                    data-toggle="modal"
+                                                                    class="btn_trash"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xóa môn datn"
                                                                     th:attr="onclick=|openModalRemoveMonDatn('${monDatn.getId()}')|">
-                                                                Xoá
+                                                                <img th:src="@{/img/trash.svg}">
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -312,11 +277,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Bạn có muốn xoá không ?</p>
                     <span id="remove_mon_datn" style="color:red;"></span>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="clearModal()" type="button" class="btn btn-secondary"
+                    <button type="button" class="btn btn-secondary"
                             data-dismiss="modal">Hủy
                     </button>
                     <button type="submit" class="btn btn-primary">Xoá
@@ -328,6 +292,60 @@
 </div>
 <!--   End Modal Remove -->
 
+<!--  Start Modal Import-->
+<div class="modal fade "
+     id="import_excel"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form style="margin:20px" id="form_import_excel"
+                  th:action="@{'/api/dao-tao/mon-datn/import'}" method="POST"
+                  enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Import excel</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <h5 class="modal-title">Import file Excel</h5>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile04" name="file">
+                            <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                        </div>
+                        <div class="input-group-append">
+                            <a th:href="@{/dao-tao/mon-datn/mau-import}" class="btn btn-outline-secondary" type="button">Mẫu</a>
+                        </div>
+                    </div>
+                    <span class="text-danger"
+                          id="errImport"></span><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Hủy
+                    </button>
+                    <button type="submit" class="btn btn-primary"
+                            id="import" data-toggle="tooltip"
+                            data-placement="top" title="Import Excel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                        </svg>  Import</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--   End Modal Import -->
+
+
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -336,5 +354,6 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script th:src="@{/js/custom/daotao/dtMonDatn.js}" type="text/javascript"></script>
+<script th:src="@{/js/plugin/bootbox.min.js}"></script>
 </body>
 </html>

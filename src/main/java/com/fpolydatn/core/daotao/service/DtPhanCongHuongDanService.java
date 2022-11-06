@@ -24,14 +24,14 @@ public interface DtPhanCongHuongDanService {
 
     Boolean delete(String idMon, String idGV);
 
-    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId);
+    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId, String dotDangKy);
 
     List<PhanCongHuongDan> addAll(List<PhanCongHuongDan> list);
 
     //    [UC-DT-GV-CT-1] Phân môn cho GVHD
     PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatn(String id, final DtFindPhanMonGiangVienHuongDanRequest req);
 
-    DtGiangVienHDResponse getGiangVienHuongDan(String id);
+    DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId, String doDangKyId);
 
     List<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatnList(String coSoId, String maMonId);
 

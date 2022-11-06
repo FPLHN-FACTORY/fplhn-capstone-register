@@ -27,7 +27,7 @@ import java.util.Optional;
  * @author huynq
  */
 @Service
-public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService {
+public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService{
 
     @Autowired
     private DtPhanCongHuongDanRepository phanCongHuongDanRepository;
@@ -67,8 +67,8 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
-    public List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId) {
-        return phanCongHuongDanRepository.getPhanCongGiaoVien(coSoId, maMonId);
+    public List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId, String dotDangKy) {
+        return phanCongHuongDanRepository.getPhanCongGiaoVien(coSoId, maMonId, dotDangKy);
     }
 
     @Override
@@ -84,8 +84,8 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
-    public DtGiangVienHDResponse getGiangVienHuongDan(String id) {
-        return phanCongHuongDanRepository.getGiangVienHD(id);
+    public DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId, String doDangKyId) {
+        return phanCongHuongDanRepository.getGiangVienHD(id, coSoId, doDangKyId);
     }
 
     @Override
