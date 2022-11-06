@@ -1,6 +1,5 @@
 let DTNhomDatnApi = '/api/dao-tao/nhom-datn';
 let DTNhomDatnView = '/dao-tao/nhom-datn';
-
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
@@ -19,9 +18,9 @@ function openModalDanhSachSinhVien(id) {
         url: DTNhomDatnApi + "?keyword=" + id,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData.data.data)
+            console.log(responseData.data)
             var text = "";
-            responseData.data.data.map(function (item) {
+            responseData.data.map(function (item) {
                 text += `
                 <tr>
                 <td>${item.stt}</td>
@@ -45,63 +44,7 @@ $("#form_list_nhom_datn").submit(function (event) {
     loadDataNhomDatn(0);
 })
 
-function loadDataNhomDatn(count) {
-    let maNhom = $("#maNhom").val()
-    let chuyenNganhId = $("#chuyenNganh").val()
-    let dotDangKyId = $("#dotDangKy").val()
-    let trangThai = $("#trangThai").val()
-    currentPage = count;
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: DTNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
-        dataType: 'json',
-        success: function (responseData) {
-            console.log(responseData)
-            let array = responseData.data.data
-            console.log(array)
-            if (array.length == 0) {
-                console.log(array.length)
-                $("#listNhomDatn").html(``)
-                $("#list_page").html(``)
-                $("#empty").html(`<h3>Không có dữ liệu</h3>`)
-            } else {
-                $("#empty").html(``)
-                $("#listNhomDatn").html(array.map(function (item) {
-                    return `
-                <tr>
-                <td>${item.stt}</td>
-                <td>${item.maNhom}</td>
-                <td>${item.tenMonDatn}</td>
-                <td>${item.tenDeTai}</td>
-                <td>${item.tenChuyenNganh}</td>
-                <td>${item.countSinhVien}/7</td>
-                <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
-                
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                
-                <td>
-                <button type="button"
-                        class="btn_eye"
-                        data-target="#modal_create"
-                        data-toggle="modal"
-                        title="Xem chi tiết nhóm"
-                        onclick="openModalDanhSachSinhVien('${item.id}')"
-                >
-                    <img src="/img/eye-fill.svg">
-                </button>
-                <div class="modal fade"></div>
-                </td>
-                </tr>
-                `
-                }))
-                genPagingAndFillColor()
-            }
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
+
 
 $("#form_type_excel").submit(function (event) {
     event.preventDefault();
@@ -151,7 +94,7 @@ function genPagzing() {
     }
     let templatePageAfter = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage + 1)">Next</a>
+                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(Number(currentPage) + 1)">Next</a>
                 </li>
                 `;
     let templateHtml = ``;
@@ -161,6 +104,63 @@ function genPagzing() {
     }
     $("#page").html(templateHtml);
 }
-
+function loadDataNhomDatn(count) {
+    let maNhom = $("#maNhom").val()
+    let chuyenNganhId = $("#chuyenNganh").val()
+    let dotDangKyId = $("#dotDangKy").val()
+    let trangThai = $("#trangThai").val()
+    currentPage = count;
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: DTNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
+        dataType: 'json',
+        success: function (responseData) {
+            console.log(responseData)
+            let array = responseData.data.data
+            totalPages = responseData.data.totalPages
+            console.log(array)
+            if (array.length == 0) {
+                console.log(array.length)
+                $("#listNhomDatn").html(``)
+                $("#page").html(``)
+                $("#empty").html(`<h3>Không có dữ liệu</h3>`)
+            } else {
+                $("#empty").html(``)
+                $("#listNhomDatn").html(array.map(function (item) {
+                    return `
+                <tr>
+                <td>${item.stt}</td>
+                <td>${item.maNhom}</td>
+                <td>${item.tenMonDatn}</td>
+                <td>${item.tenDeTai}</td>
+                <td>${item.tenChuyenNganh}</td>
+                <td>${item.countSinhVien}/7</td>
+                <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
+                
+                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                
+                <td>
+                <button type="button"
+                        class="btn_eye"
+                        data-target="#modal_create"
+                        data-toggle="modal"
+                        title="Xem chi tiết nhóm"
+                        onclick="openModalDanhSachSinhVien('${item.id}')"
+                >
+                    <img src="/img/eye-fill.svg">
+                </button>
+                <div class="modal fade"></div>
+                </td>
+                </tr>
+                `
+                }))
+                genPagingAndFillColor()
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
 
 

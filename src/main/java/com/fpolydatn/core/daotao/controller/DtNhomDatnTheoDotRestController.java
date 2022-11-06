@@ -32,7 +32,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         req.setId(id);
-        PageableObject<DtSinhVienResponse> listDanhSachSinhVien = dtNhomDatnTheoDotService.showDanhSachSinhVien(req);
+        List<DtSinhVienResponse> listDanhSachSinhVien = dtNhomDatnTheoDotService.showDanhSachSinhVien(req);
         return new ResponseObject(listDanhSachSinhVien);
     }
 

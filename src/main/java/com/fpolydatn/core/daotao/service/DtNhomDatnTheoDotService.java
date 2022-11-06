@@ -8,11 +8,12 @@ import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public interface DtNhomDatnTheoDotService {
     PageableObject<DtNhomDatnTheoDotResponse> findAllNhomDatn(final FindDtNhomDatnTheoDotRequest request);
 
-    PageableObject<DtSinhVienResponse> showDanhSachSinhVien(final FindSinhVienRequest request);
+    List<DtSinhVienResponse> showDanhSachSinhVien(final FindSinhVienRequest request);
 
     void DTNhomDatnExport(HttpServletResponse response, String typeExcel, final FindDtNhomDatnTheoDotRequest request) throws IOException;
 

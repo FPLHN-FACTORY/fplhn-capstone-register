@@ -139,18 +139,11 @@
                                                     <td th:text="${nhomDatn.tenGvhd} == null ? 'Chưa có': (${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()})"></td>
                                                     <td th:text="${nhomDatn.getMatKhauTonTai} == '0' ? 'Công khai' : 'Nhóm kín'"></td>
                                                     <td>
-<!--                                                        <button-->
-<!--                                                                class=" btn btn-success"-->
-<!--                                                                data-toggle="modal"-->
-<!--                                                                th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"-->
-<!--                                                        >-->
-<!--                                                            Xem chi tiết-->
-<!--                                                        </button>-->
-                                                        <button type="button"
-                                                                class="btn_eye"
+                                                        <button class="btn_eye"
                                                                 data-toggle="modal"
-                                                                title="Xem chi tiết nhóm"
                                                                 th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
+                                                                title="Xem chi tiết nhóm"
+                                                                type="button"
                                                         >
                                                             <img th:src="@{/img/eye-fill.svg}">
                                                         </button>
@@ -172,19 +165,14 @@
 
                                         <!-- Paging-->
                                         <nav aria-label="Page navigation" th:if="${page.totalPages > 1}">
-                                            <ul class="pagination justify-content-end" id="list_page">
-                                                <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                           th:href="@{/sinh-vien/?page={page.currentPage}(page.currentPage=${i}-1)}"
-                                                           th:text="${i}">
-                                                        </a>
-                                                    </li>
-                                                </div>
+                                            <ul class="pagination justify-content-end" id="page">
                                             </ul>
                                         </nav>
                                     </div>
+                                    <input hidden id="totalPages" th:value="${page.totalPages}">
+                                    <input hidden id="currentPage" th:value="${page.currentPage}">
                                     <div id="empty">
+                                        <input hidden id="checkData" th:value="${page.data.isEmpty()}">
                                         <div th:if="${page.data.isEmpty()}">
                                             <h3>Không có dữ liệu</h3>
                                         </div>

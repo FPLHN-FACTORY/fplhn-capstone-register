@@ -1,6 +1,8 @@
 const SVNhomDatnApi = '/api/sinh-vien';
 const SVNhomDatnView = '/sinh-vien';
 const checkHanSV = $("#check_han_sv").text();
+let totalPages = $("#totalPages").val()
+let currentPage = $("#currentPage").val()
 
 function clearform() {
     $("#tenDeTai").val("");
@@ -44,78 +46,6 @@ $("#form_search").submit(function (event) {
     loadDataNhomDatn(0);
 })
 
-function loadDataNhomDatn(count) {
-    let tenDeTai = $("#tenDeTai").val().trim();
-    let soLuong = $("#soLuong").val().trim();
-    let giangVien = $("#giangVien").val().trim();
-    let truongNhom = $("#truongNhom").val().trim();
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: SVNhomDatnApi + "/search" + "?tenDeTai=" + tenDeTai + "&truongNhom=" + truongNhom + "&soLuong=" + soLuong + "&giangVien=" + giangVien + "&page=" + count,
-        dataType: 'json',
-        success: function (responseData) {
-            console.log(responseData)
-            let array = responseData.data.data
-            console.log(array)
-            if (array.length == 0) {
-                console.log(array.length)
-                $("#listNhomDatn").html(``)
-                $("#list_page").html(``)
-                $("#empty").html(`<h3>Không có dữ liệu</h3>`)
-            } else {
-                $("#empty").html(``)
-                $("#listNhomDatn").html(array.map(function (item) {
-                    return `
-                <tr>
-                <td>${item.stt}</td>
-                <td>${item.maNhom}</td>
-                <td>${item.tenNhom}</td>
-                <td>${item.tenDeTai}</td>
-                <td>${item.tenMonDatn}</td>
-                <td>${item.countSinhVien}/7</td>
-                <td>${item.maSinhVien}-${item.tenSinhVien}</td>
-                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenTaiKhoan + ' - ' + item.tenGvhd}</td>
-                <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
-                <td>
-                    <button type="button"
-                        class="btn_eye"
-                        title="Xem chi tiết nhóm"
-                        onclick="openModalDanhSachSinhVien('${item.id}')"
-                    >  
-                        <img src="/img/eye-fill.svg">
-                    </button>
-                    <button class=" btn btn-success" style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}"                                 
-                            data-target="#modal_create1"
-                            data-toggle="modal"
-                            onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
-                            >
-                        Tham gia nhóm
-                    </button>
-                </td>
-                <div class="modal fade"></div>
-                </td>
-                </tr>
-                `
-                }))
-                $("#list_page").html(``)
-                let templateHtml = ``;
-                for (let i = 0; i < responseData.data.totalPages; i++) {
-                    templateHtml += `<li class="page-item" >
-                                        <a class="page-link" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
-                                    </li>`
-                }
-                if (responseData.data.totalPages == 1) {
-                    templateHtml = ``;
-                }
-                $("#list_page").html(templateHtml);
-            }
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
 
 function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
     clearform();
@@ -270,4 +200,103 @@ function createNhomDatn() {
             }
         });
     }
+}
+
+genPagingAndFillColor()
+
+function genPagingAndFillColor() {
+    genPagzing();
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
+}
+
+function genPagzing() {
+    $("#page").html(``)
+    let templatePageMid = ``;
+    let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage - 1)">Back</a>
+                </li>
+                `;
+    for (let i = 0; i < totalPages; i++) {
+        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
+                                        <a class="page-link" id="pageColor" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
+                                    </li>`
+    }
+    let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(Number(currentPage) + 1)">Next</a>
+                </li>
+                `;
+    let templateHtml = ``;
+    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+    if (totalPages == 1) {
+        templateHtml = ``;
+    }
+    $("#page").html(templateHtml);
+}
+function loadDataNhomDatn(count) {
+    let tenDeTai = $("#tenDeTai").val().trim();
+    let soLuong = $("#soLuong").val().trim();
+    let giangVien = $("#giangVien").val().trim();
+    let truongNhom = $("#truongNhom").val().trim();
+    currentPage = count;
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: SVNhomDatnApi + "/search" + "?tenDeTai=" + tenDeTai + "&truongNhom=" + truongNhom + "&soLuong=" + soLuong + "&giangVien=" + giangVien + "&page=" + count,
+        dataType: 'json',
+        success: function (responseData) {
+            console.log(responseData)
+            let array = responseData.data.data
+            totalPages = responseData.data.totalPages
+            console.log(array)
+            if (array.length == 0) {
+                console.log(array.length)
+                $("#listNhomDatn").html(``)
+                $("#page").html(``)
+                $("#empty").html(`<h3>Không có dữ liệu</h3>`)
+            } else {
+                $("#empty").html(``)
+                $("#listNhomDatn").html(array.map(function (item) {
+                    return `
+                <tr>
+                <td>${item.stt}</td>
+                <td>${item.maNhom}</td>
+                <td>${item.tenNhom}</td>
+                <td>${item.tenDeTai}</td>
+                <td>${item.tenMonDatn}</td>
+                <td>${item.countSinhVien}/7</td>
+                <td>${item.maSinhVien}-${item.tenSinhVien}</td>
+                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenTaiKhoan + ' - ' + item.tenGvhd}</td>
+                <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
+                <td>
+                    <button type="button"
+                        class="btn_eye"
+                        title="Xem chi tiết nhóm"
+                        onclick="openModalDanhSachSinhVien('${item.id}')"
+                    >  
+                        <img src="/img/eye-fill.svg">
+                    </button>
+                    <button class=" btn btn-success" style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}"                                 
+                            data-target="#modal_create1"
+                            data-toggle="modal"
+                            onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
+                            >
+                        Tham gia nhóm
+                    </button>
+                </td>
+                <div class="modal fade"></div>
+                </td>
+                </tr>
+                `
+                }))
+                genPagingAndFillColor()
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
 }

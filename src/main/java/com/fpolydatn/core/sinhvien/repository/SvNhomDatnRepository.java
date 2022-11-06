@@ -67,8 +67,7 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             """, countQuery = """
             SELECT count(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
-            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
-            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+            LEFT JOIN chuyen_nganh f ON f.id = c.chuyen_nganh_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             LEFT JOIN mon_datn i ON i.id = c.mon_datn_id
@@ -81,21 +80,20 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             AND b.co_so_id = :#{#req.coSoId}
             AND g.id = :#{#req.dotDangKyId}
             AND b.trang_thai = 0
-            AND (SELECT i.nhom_mon_datn_id FROM mon_datn i WHERE i.id = d.mon_datn_id) = :idNhomMon
+            AND (SELECT i.nhom_mon_datn_id FROM mon_datn i WHERE i.id = c.mon_datn_id) = :idNhomMon
             GROUP BY b.id
             HAVING (:#{#req.soLuong} IS NULL OR :#{#req.soLuong} LIKE ''
-            OR CONVERT(COUNT(d.ma_sinh_vien), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED)) AND COUNT(d.ma_sinh_vien) < 7
+            OR CONVERT((select count(sv.id) from nhom_datn mn join sinh_vien sv on mn.id = sv.nhom_id
+               where b.id = mn.id), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED)) 
+               AND (select count(sv.id) from nhom_datn mn join sinh_vien sv on mn.id = sv.nhom_id
+               where b.id = mn.id ) < 7
             ORDER BY b.last_modified_date DESC
             """, nativeQuery = true)
     Page<SvNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") SvFindNhomDatnRequest req, @Param("idNhomMon") String idNhomMon);
 
-//    @Query(value = "SELECT id, ROW_NUMBER() OVER(ORDER BY last_modified_date DESC) AS stt, ma_sinh_vien, ten_sinh_vien " +
-//            "FROM sinh_vien \n" +
-//            "WHERE nhom_id = :id"
-//            , nativeQuery = true)
     @Query(value = "SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt," +
             " a.ma_sinh_vien, a.ten_sinh_vien, IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu" +
-            " FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id\n" +
+            " FROM sinh_vien a LEFT JOIN nhom_datn b ON a.nhom_id = b.id\n" +
             " WHERE a.nhom_id = :id", nativeQuery = true)
     List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(@Param("id") String id);
 

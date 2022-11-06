@@ -54,10 +54,9 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     }
 
     @Override
-    public PageableObject<DtSinhVienResponse> showDanhSachSinhVien(final FindSinhVienRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable, request);
-        return new PageableObject<>(res);
+    public List<DtSinhVienResponse> showDanhSachSinhVien(final FindSinhVienRequest request) {
+        List<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(request);
+        return res;
     }
 
     @Override
