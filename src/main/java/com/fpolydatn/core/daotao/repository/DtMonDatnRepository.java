@@ -91,4 +91,19 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 AND s.dot_dang_ky_id = :dotDangKyId                                                        
             """, nativeQuery = true)
     List<MonDatn> findByIdMon(@Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+            SELECT *
+                FROM mon_datn m 
+                WHERE m.nhom_mon_datn_id IS NULL 
+                AND m.co_so_id = :coSoId 
+            """, nativeQuery = true)
+    List<MonDatn> getListNhomMonDatn(@Param("coSoId") String coSoId);
+
+    @Query(value = """
+            SELECT *
+                FROM mon_datn m 
+                WHERE m.co_so_id = :coSoId 
+            """, nativeQuery = true)
+    List<MonDatn> getListMonDatnByIdCoSo(@Param("coSoId") String coSoId);
 }

@@ -7,6 +7,7 @@ $(document).ready(function () {
 
 $("#form_create_mon_datn").submit(function (event) {
     event.preventDefault();
+
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
@@ -177,11 +178,6 @@ function openModalImportMonDatn() {
             console.log("ERROR : ", e);
         }
     });
-}
-
-function clearModal() {
-    $("#ma_mon_datn_error").text("");
-    $("#ten_mon_datn_error").text("");
 }
 
 $("#exampleFormControlFile1").on("input", function () {

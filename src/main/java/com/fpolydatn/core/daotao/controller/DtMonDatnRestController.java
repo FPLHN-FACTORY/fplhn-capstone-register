@@ -4,6 +4,7 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
+import com.fpolydatn.core.daotao.model.response.DtMessMonDatnReponse;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,9 +66,10 @@ public class DtMonDatnRestController extends BaseController {
         return new ResponseObject(monDatnService.add(monDatnRequest));
     }
 
-    @GetMapping
-    public ResponseEntity<?> get() {
-        return ResponseEntity.ok(Map.of("message", "ok"));
+    @PostMapping("/import")
+    public ResponseObject importExcel(@RequestParam("file") MultipartFile file) {
+        DtMessMonDatnReponse check = this.monDatnService.importExcel(file, session.getCoSoId());
+        return new ResponseObject(check);
     }
 
 }

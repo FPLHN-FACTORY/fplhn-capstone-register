@@ -10,7 +10,7 @@
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
-    <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 
@@ -30,19 +30,12 @@
             <div>
                 <div>
                     <h3 style="margin: 50px 0 0 50px;">Phân công hướng dẫn</h3>
-                    <div class="m-content" style="margin: 50px 0 0 50px ; background-color: #fff; width: 1200px;">
-
+                    <div class="m-content" style="margin: 50px ; background-color: #fff;">
                         <div id="main">
                             <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="kt-portlet">
-                                            <div class="kt-portlet__head">
-                                                <div class="kt-portlet__head-label">
-                                                    <h3 class="kt-portlet__head-title">Thông tin giảng viên hướng
-                                                        dẫn</h3>
-                                                </div>
-                                            </div>
                                             <form class="kt-form kt-form--label-right">
                                                 <div class="kt-portlet__body">
                                                     <div class="kt-section kt-section--first">
@@ -60,22 +53,12 @@
                                                                     giảng viên hướng dẫn</label>
                                                                 <div class="col-lg-9 col-xl-6">
                                                                     <input type="text"
-                                                                           th:value="${giangVienHuongDan.tenGvhd}"
+                                                                           th:value="${giangVienHuongDan.tenTaiKhoan} + ' - ' +${giangVienHuongDan.tenGvhd}"
                                                                            readonly="readonly" class="form-control">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="col-xl-3 col-lg-3 col-form-label">Tên tài
-                                                                    khoản</label>
-                                                                <div class="col-lg-9 col-xl-6">
-                                                                    <input type="text"
-                                                                           th:value="${giangVienHuongDan.tenTaiKhoan}"
-                                                                           readonly="readonly" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label class="col-xl-3 col-lg-3 col-form-label">Số điện
-                                                                    thoai</label>
+                                                                <label class="col-xl-3 col-lg-3 col-form-label">SĐT</label>
                                                                 <div class="col-lg-9 col-xl-6">
                                                                     <input type="text"
                                                                            th:value="${giangVienHuongDan.soDienThoai}"
@@ -101,11 +84,10 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="col-xl-3 col-lg-3 col-form-label">Cơ
-                                                                    sở</label>
+                                                                <label class="col-xl-3 col-lg-3 col-form-label">Tên đợt đăng ký</label>
                                                                 <div class="col-lg-9 col-xl-6">
                                                                     <input type="text"
-                                                                           th:value="${giangVienHuongDan.tenCoSo}"
+                                                                           th:value="${giangVienHuongDan.tenDotDangKy}"
                                                                            readonly="readonly" class="form-control">
                                                                 </div>
                                                             </div>
@@ -113,6 +95,18 @@
                                                     </div>
                                                 </div>
                                             </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-content" style="margin: 50px; background-color: #fff;">
+                        <div id="main">
+                            <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="kt-portlet">
                                             <div class="kt-section__body">
                                                 <div class="row">
                                                     <label class="col-xl-3"></label>
@@ -127,15 +121,15 @@
                                                         <div class="col-sm-6 text-left" style="padding: 0 ;">
                                                             <div class="col-6 d-inline">
                                                                 <button data-toggle="modal" data-target="#modal_create"
-                                                                        class="col-12 col-sm-8 col-md-4 btn btn-success">
-                                                                    Phân môn đồ án tốt nghiệp
+                                                                        class="btn btn-success">
+                                                                    Phân môn DATN
                                                                 </button>
 
                                                             </div>
                                                             <div class="col-6 d-inline">
                                                                 <a th:href="@{/dao-tao/giang-vien-huong-dan}"
-                                                                   class="col-12 col-sm-8 col-md-4 btn btn-success">
-                                                                    Thoát
+                                                                   class="btn-secondary btn btn-light">
+                                                                    Quay lại
                                                                 </a>
 
                                                             </div>
@@ -147,21 +141,22 @@
                                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                                 <thead>
                                                                 <th width="50px">STT</th>
-                                                                <th>Tên môn đồ án tốt nghiệp</th>
+                                                                <th>Mã môn</th>
+                                                                <th>Tên môn</th>
                                                                 <th width="200px">Chức năng</th>
                                                                 </thead>
                                                                 <tbody>
                                                                 <th:block th:each="phanCongHuongDan : ${page.data}">
                                                                     <tr>
                                                                         <td th:text="${phanCongHuongDan.stt}"></td>
+                                                                        <td th:text="${phanCongHuongDan.MaMonDatn}"></td>
                                                                         <td th:text="${phanCongHuongDan.MonDatn}"></td>
                                                                         <td>
                                                                             <button
-                                                                                    type="button"
-                                                                                    class="btn btn-danger"
-                                                                                    data-toggle="modal"
+                                                                                    class="btn_trash" data-toggle="tooltip"
+                                                                                    title="Xóa"
                                                                                     th:attr="onclick=|openModalRemovePhanCongHuongDan('${giangVienHuongDan.getId()}', '${phanCongHuongDan.getId()}')|">
-                                                                                Xoá
+                                                                                <img th:src="@{/img/trash.svg}" alt="">
                                                                             </button>
                                                                         </td>
                                                                     </tr>
@@ -223,13 +218,15 @@
                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                 <thead>
                                 <th width="50px">STT</th>
-                                <th>Tên môn đồ án tốt nghiệp</th>
+                                <th>Mã môn</th>
+                                <th>Tên môn</th>
                                 <th width="200px">Chức năng</th>
                                 </thead>
                                 <tbody>
                                 <th:block th:each="phanMonDatn : ${phanMonDatns}">
                                     <tr>
                                         <td th:text="${phanMonDatn.stt}"></td>
+                                        <td th:text="${phanMonDatn.getMaMonDatn()}"></td>
                                         <td th:text="${phanMonDatn.getMonDatn()}" class="giangVienId"
                                             th:value="${phanMonDatn.id}"></td>
                                         <td>
@@ -240,46 +237,14 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div id="errLoi" style="color:red"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
                                 data-dismiss="modal">Hủy
                         </button>
-                        <input class="btn btn-success" onclick="checkAll()" value="Thêm tất cả" type="button"/>
+                        <input class="btn btn-success" onclick="checkAll()" value="Chọn tất cả" type="button"/>
                         <button type="submit" class="btn btn-success">Thêm
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!--  Start Modal Remove-->
-    <div
-            class="modal fade"
-            id="modal_phan_cong_huong_dan_remove"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-lg"
-             role="document">
-            <div class="modal-content">
-                <form id="form_phan_cong_huong_dan_delete">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Xoá môn đồ án tốt nghiệp</h5>
-                        <button type="button" class="close"
-                                data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Bạn có muốn xoá không ?</p>
-                        <span id="remove_phan_cong_huong_dan" style="color:red;"></span>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">Hủy
-                        </button>
-                        <button type="submit" class="btn btn-primary">Xoá
                         </button>
                     </div>
                 </form>
@@ -296,6 +261,6 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script th:src="@{/js/custom/daotao/dtPhanMonDatn.js}" type="text/javascript"></script>
-<script th:src="@{/js/plugin/bootstrap.bundle.js}"></script>
+<script th:src="@{/js/plugin/bootbox.min.js}"></script>
 </body>
 </html>

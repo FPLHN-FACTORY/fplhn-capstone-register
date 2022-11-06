@@ -48,4 +48,10 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
             SELECT * FROM chuyen_nganh cn WHERE cn.ten_chuyen_nganh = tenChuyenNganh
             """, nativeQuery = true)
     ChuyenNganh findName(@Param("tenChuyenNganh") String tenChuyenNganh);
+
+
+    @Query(value = """
+            SELECT * FROM chuyen_nganh cn WHERE cn.co_so_id = :coSoId
+            """, nativeQuery = true)
+    List<ChuyenNganh> getAllByIdCoSo(@Param("coSoId") String coSoId);
 }
