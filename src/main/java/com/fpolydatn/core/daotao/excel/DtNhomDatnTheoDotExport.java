@@ -67,17 +67,17 @@ public class DtNhomDatnTheoDotExport {
         XSSFFont font = xssfWorkbook.createFont();
         font.setFontHeight(12);
         style.setFont(font);
-        listNhomDatn.stream().forEach(xx -> {
-            Row row = xssfSheet.createRow(xx.getStt());
+        listNhomDatn.stream().forEach(nhomDatn -> {
+            Row row = xssfSheet.createRow(nhomDatn.getStt());
             int countColum = 0;
-            createCell(row, countColum++, xx.getStt(), style);
-            createCell(row, countColum++, xx.getMaNhom(), style);
-            createCell(row, countColum++, xx.getTenMonDatn(), style);
-            createCell(row, countColum++, xx.getTenDeTai(), style);
-            createCell(row, countColum++, xx.getTenChuyenNganh(), style);
-            createCell(row, countColum++, xx.getCountSinhVien() + "/7", style);
-            createCell(row, countColum++, xx.getTenGvhd() + "-" + xx.getTenTaiKhoan(), style);
-            createCell(row, countColum++, xx.getTrangThai() == 0 ? "Mới thành lập" : (xx.getTrangThai() == 1 ? "Đã liên hệ giảng viên" : (xx.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (xx.getTrangThai() == 3 ? "Cần sửa" : (xx.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))), style);
+            createCell(row, countColum++, nhomDatn.getStt(), style);
+            createCell(row, countColum++, nhomDatn.getMaNhom(), style);
+            createCell(row, countColum++, nhomDatn.getTenMonDatn(), style);
+            createCell(row, countColum++, nhomDatn.getTenDeTai(), style);
+            createCell(row, countColum++, nhomDatn.getTenChuyenNganh(), style);
+            createCell(row, countColum++, nhomDatn.getCountSinhVien() + "/7", style);
+            createCell(row, countColum++, nhomDatn.getTenGvhd() + "-" + nhomDatn.getTenTaiKhoan(), style);
+            createCell(row, countColum++, nhomDatn.getTrangThai() == 0 ? "Mới thành lập" : (nhomDatn.getTrangThai() == 1 ? "Đã liên hệ giảng viên" : (nhomDatn.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (nhomDatn.getTrangThai() == 3 ? "Cần sửa" : (nhomDatn.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))), style);
         });
 
         final long endTime = System.currentTimeMillis();
