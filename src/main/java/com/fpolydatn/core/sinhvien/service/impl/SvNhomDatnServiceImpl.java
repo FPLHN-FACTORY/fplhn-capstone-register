@@ -80,7 +80,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     public PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request, String idUser) {
         Optional<SinhVien> sv = svSinhVienRepository.findById(idUser);
         Optional<MonDatn> monDatn = svMonDatnRepository.findById(sv.get().getMonChuongTrinhId());
-        System.out.println("aaaaaaaaaaaa " + monDatn.get().getNhomMonDatnId());
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<SvNhomDatnResponse> res = svNhomDatnRepository.findAllNhomDatn(pageable, request, monDatn.get().getNhomMonDatnId());
         return new PageableObject(res);

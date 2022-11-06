@@ -12,6 +12,7 @@ import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -66,5 +67,9 @@ public class DtSinhVienTheoDotRestController extends BaseController {
         DtLoaiSinhVienResponse response = sinhVienService.loaiSinhVienKhongDat(request);
         return new ResponseObject(response);
     }
-
+    @GetMapping("/search/{id}")
+    public ResponseObject searchStudentById(@PathVariable("id") String id){
+        String coSoId= session.getCoSoId();
+        return new ResponseObject(sinhVienService.searchStudentById(id,coSoId));
+    }
 }
