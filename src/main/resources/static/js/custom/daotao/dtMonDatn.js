@@ -164,6 +164,10 @@ $("#form_mon_datn_delete").submit(function (event) {
     });
 });
 
+function clearModal(){
+    $("#ma_mon_datn_error").text("");
+    $("#ten_mon_datn_error").text("");
+}
 function openModalImportMonDatn() {
     $("#modal_mon_datn_import").modal('show');
     $.ajax({
