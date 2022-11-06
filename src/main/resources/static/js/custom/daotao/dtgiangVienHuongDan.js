@@ -14,39 +14,7 @@ $(document).ready(function () {
     $("#giang_vien_error").text("");
 });
 
-genPagingAndFillColor()
 
-function genPagingAndFillColor(){
-    genPageZing ()
-    let colorPage = document.querySelectorAll("#pageColor");
-    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
-    colorPage[currentPage].style.color = 'white';
-}
-function genPageZing(){
-$("#page").html(``)
-            let templateHtml = ``;
-            let templatePageMid = ``;
-            let templatePageBefore = `
-                           <li style="color: #0a8cf0" class="page-item">
-                                <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
-                           </li>
-                           `;
-            let templatePageAfter = `
-                            <li style="color: #0a8cf0" class="page-item">
-                                 <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
-                            </li>
-                            `;
-            for (let i = 0; i < totalPages; i++) {
-                templatePageMid += `<li class="page-item" >
-                                         <a id="pageColor" class="page-link" onclick="loadTable(${i})">${i + 1}</a>
-                                     </li>`
-            }
-            templateHtml = templatePageBefore + templatePageMid +templatePageAfter
-            if (totalPages == 1) {
-                templateHtml = ``;
-            }
-            $("#page").html(templateHtml);
-}
 
 
 
@@ -318,6 +286,40 @@ $("#searchGvhd").submit(function (event) {
     event.preventDefault();
     loadTable(0);
 })
+
+genPagingAndFillColor();
+
+function genPagingAndFillColor(){
+    genPageZing ()
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
+}
+function genPageZing(){
+$("#page").html(``)
+            let templateHtml = ``;
+            let templatePageMid = ``;
+            let templatePageBefore = `
+                           <li style="color: #0a8cf0" class="page-item">
+                                <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
+                           </li>
+                           `;
+            let templatePageAfter = `
+                            <li style="color: #0a8cf0" class="page-item">
+                                 <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
+                            </li>
+                            `;
+            for (let i = 0; i < totalPages; i++) {
+                templatePageMid += `<li class="page-item" >
+                                         <a id="pageColor" class="page-link" onclick="loadTable(${i})">${i + 1}</a>
+                                     </li>`
+            }
+            templateHtml = templatePageBefore + templatePageMid +templatePageAfter
+            if (totalPages == 1) {
+                templateHtml = ``;
+            }
+            $("#page").html(templateHtml);
+}
 
 function loadTable(count) {
     let tenGiangVien = $("#tenGiangVien").val();
