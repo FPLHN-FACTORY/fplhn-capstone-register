@@ -33,8 +33,12 @@ $("#form_create_chuyen_nganh").submit(function (event) {
             dataType: 'json',
             success: function () {
                 $("#modal_create").modal("hide");
-                bootbox.alert('Thêm thành công', function () {
-                    window.open(chuyenNganhView, '_self');
+                bootbox.alert({
+                    message: 'Thêm thành công',
+                    backdrop: true,
+                    callback: function () {
+                        window.open(chuyenNganhView, '_self');
+                    }
                 });
             },
             error: function (e) {
@@ -89,8 +93,12 @@ $("#form_chuyen_nganh_update").submit(function (event) {
             dataType: 'json',
             success: function () {
                 $("#modal_update_chuyen_nganh").modal("hide");
-                    bootbox.alert('Cập nhật thành công', function () {
-                    window.open(chuyenNganhView, '_self');
+                bootbox.alert({
+                    message: 'Cập nhật thành công',
+                    backdrop: true,
+                    callback: function () {
+                        window.open(chuyenNganhView, '_self');
+                    }
                 });
             },
             error: function (e) {
@@ -136,8 +144,12 @@ $("#form_chuyen_nganh_delete").submit(function (event) {
         dataType: 'json',
         success: function () {
             $("#modal_chuyen_nganh_remove").modal("hide");
-                bootbox.alert('Xóa thành công', function () {
-                window.open(chuyenNganhView, '_self');
+            bootbox.alert({
+                message: 'Xóa thành công',
+                  backdrop: true,
+                  callback: function () {
+                    window.open(chuyenNganhView, '_self');
+                  }
             });
         },
         error: function (e) {

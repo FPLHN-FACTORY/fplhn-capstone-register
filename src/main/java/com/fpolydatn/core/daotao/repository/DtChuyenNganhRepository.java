@@ -65,8 +65,6 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
                 co_so_id = :coSoId AND chu_nhiem_bo_mon = :chuNhiemBoMon
             """, nativeQuery = true)
     String checkChuyenNganhByCNBM(@Param("coSoId") String coSoId, @Param("chuNhiemBoMon") String chuNhiemBoMon);
-    ChuyenNganh findName(@Param("tenChuyenNganh") String tenChuyenNganh);
-
 
     @Query(value = """
             SELECT * FROM chuyen_nganh cn WHERE cn.co_so_id = :coSoId
