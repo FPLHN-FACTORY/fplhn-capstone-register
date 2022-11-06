@@ -16,4 +16,7 @@ public interface DtPhanMonDatnChoGiangVienHuongDanResponse extends IsIdentified 
     @Value("#{target.ten_mon_datn}")
     String getMonDatn();
 
+    @Value("#{target.ma_mon}")
+    String getMaMonDatn();
+
 }

@@ -4,8 +4,10 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.DtFindPhanMonGiangVienHuongDanRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanMonDatnChoGiangVienHuongDanResponse;
+import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
 import com.fpolydatn.core.common.base.BaseController;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,13 +26,16 @@ public class DtPhanMonChoGiangVienHuongDanController extends BaseController {
     @Autowired
     private DtPhanCongHuongDanService phanCongHuongDanService;
 
+    @Autowired
+    private CommonHelper commonHelper;
+
     @GetMapping("/{id}")
     public String viewPhanCongHuongDan(Model model
             , final DtFindPhanMonGiangVienHuongDanRequest req
             , @PathVariable("id") String id) {
         String coSoid = session.getCoSoId();
         PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> listPhanCong = phanCongHuongDanService.getPhanMonDatn(id, req);
-        DtGiangVienHDResponse giangVienHuongDan = phanCongHuongDanService.getGiangVienHuongDan(id);
+        DtGiangVienHDResponse giangVienHuongDan = phanCongHuongDanService.getGiangVienHuongDan(id, coSoid, commonHelper.getDotDangKyHienTai());
         List<DtPhanMonDatnChoGiangVienHuongDanResponse> phanMonDatns = phanCongHuongDanService.getPhanMonDatnList(coSoid, id);
 
         model.addAttribute("page", listPhanCong);

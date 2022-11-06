@@ -64,8 +64,6 @@ public class PropertyKeys {
 
     public static final String GIANG_VIEN_KHONG_DAY_MON_NAY ="giang.vien.khong.day.mon.nay" ;
 
-
-
     public static final String MOC_THOI_GIAN_GVHD = "moc.thoi.gian.gvhd";
 
     public static final String DONT_UPDATE_TEN_DE_TAI = "dont.update.ten.de.tai";
@@ -73,5 +71,9 @@ public class PropertyKeys {
     public static final String DONT_PHE_DUYET_NHOM_DATN = "dont.phe.duyet.nhom.datn";
 
     public static final String DONT_CHOT_DE_TAI_NHOM_DATN = "dont.chot.de.tai.nhom.datn";
+
+    public static final String CHUYEN_NGANH_ALREADY_EXIST = "chuyen.nganh.already.exist";
+
+    public static final String CHU_NHIEM_ALREADY_EXIST = "chu.nhiem.already.exist";
 
 }

@@ -16,4 +16,7 @@ public interface DtPhanCongHuongDanResponse extends IsIdentified {
     @Value("#{target.ten_gvhd}")
     String getTenGV();
 
+    @Value("#{target.ten_dot_dang_ky}")
+    String getDotDangKy();
+
 }
