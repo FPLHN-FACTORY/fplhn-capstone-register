@@ -8,7 +8,6 @@ import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtMessMonDatnReponse;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
-import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.entity.ChuyenNganh;
@@ -49,9 +48,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     @Autowired
     private DtChuyenNganhRepository chuyenNganhRepository;
-
-    @Autowired
-    private DtCoSoRepository coSoRepository;
 
     private FormUtils formUtils = new FormUtils();
 
@@ -133,30 +129,22 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         chuyenNganhHashMap = new HashMap<>();
         nhomMonDatnHashMap = new HashMap<>();
         returnList.clear();
-        // tạo bộ nhớ đệm
         boNhoDem(coSoId);
 
-        // check file xlsx
         if (!checkTypeFile(file)) {
             returnList.add("file không đúng định dạng XLSX");
             return new DtMessMonDatnReponse(false, returnList);
         }
 
         List<DtCreateImportMonDatnRequest> importMonDatnRequests = importExcelList(file);
-
-        // đưa ra môn
         List<MonDatn> list = checkImport(importMonDatnRequests, coSoId);
 
-
-        // import in database
         if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
             monDatnRepository.saveAll(list);
         }
         if(returnList.size() ==0) {
             return new DtMessMonDatnReponse(true, null);
         }
-
-        // trả về thông báo
         return new DtMessMonDatnReponse(false, returnList);
     }
 
@@ -180,7 +168,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 check ++;
             }
 
-            // check tên môn
             if (createMonDant.getTenMonDatn().trim().length() == 0) {
                 returnList.add(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
                 check++;
@@ -189,7 +176,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 check++;
             }
 
-            // check mã chuyên ngành
             if (createMonDant.getChuyenNganhId().trim().length() == 0) {
                 returnList.add(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được để trống"));
                 check++;
@@ -201,7 +187,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 check++;
             }
 
-            // check mã Nhóm môn
             if (createMonDant.getNhomMonDatnId().trim().length() == 0) {
                 returnList.add(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm môn không được để trống"));
                 check++;
@@ -278,17 +263,14 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         return true;
     }
 
-    public void boNhoDem(String coSoId) {
-        // tạo bộ nhớ đệm Môn đồ án tốt nghiệp
+    private void boNhoDem(String coSoId) {
         for (MonDatn x : monDatnRepository.getListMonDatnByIdCoSo(coSoId)) {
             monDatnHashMap.put(x.getMaMon(), x);
         }
-        // tạo bộ nhớ đêm Chuyên ngành
         for (ChuyenNganh x : chuyenNganhRepository.getAllByIdCoSo(coSoId)) {
             chuyenNganhHashMap.put(x.getTenChuyenNganh(), x);
         }
 
-        // tạo bộ nhó đệm nhóm môn
         for (MonDatn e: monDatnRepository.getListNhomMonDatn(coSoId)) {
             nhomMonDatnHashMap.put(e.getMaMon(), e);
         }

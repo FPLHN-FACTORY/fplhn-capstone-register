@@ -54,26 +54,20 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     }
 
     @Override
-    public PageableObject<DtSinhVienResponse> showDanhSachSinhVien(final FindSinhVienRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        System.out.println(dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable, request).getSize());
-        Page<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(pageable, request);
-        return new PageableObject<>(res);
+    public List<DtSinhVienResponse> showDanhSachSinhVien(final FindSinhVienRequest request) {
+        List<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(request);
+        return res;
     }
 
     @Override
-    public List<DtNhomDatnTheoDotResponse> listAllNhomDatnToExcel() {
-        return dtNhomDatnTheoDotRepository.findAllNhomDatnToExcel();
-    }
-
-    @Override
-    public void DTNhomDatnExport(HttpServletResponse response, String typeExcel, FindSinhVienRequest request) throws IOException {
+    public void DTNhomDatnExport(HttpServletResponse response, String typeExcel, FindDtNhomDatnTheoDotRequest request) throws IOException {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=NhomDatn" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
+        listNhomDatn = dtNhomDatnTheoDotRepository.findAllNhomDatnToExcel(request);
         DtNhomDatnTheoDotExport dtNhomDatnTheoDotExport = new DtNhomDatnTheoDotExport(listNhomDatn);
         dtNhomDatnTheoDotExport.exportData(response);
     }

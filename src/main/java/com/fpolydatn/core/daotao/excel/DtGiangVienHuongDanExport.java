@@ -12,6 +12,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+
 /**
  * @author Vinhnv
  */
@@ -39,9 +40,10 @@ public class DtGiangVienHuongDanExport {
         createCell(row, 4, "Tên tài khoản", cellStyle);
         createCell(row, 5, "Số nhóm đang hướng dẫn", cellStyle);
         createCell(row, 6, "Số nhóm hướng dẫn tối đa", cellStyle);
-        createCell(row, 7, "Số điện thoại", cellStyle);
-        createCell(row, 8, "Email FPT", cellStyle);
-        createCell(row, 9, "Email FE", cellStyle);
+        createCell(row, 7, "Số nhóm ", cellStyle);
+        createCell(row, 8, "Số điện thoại", cellStyle);
+        createCell(row, 9, "Email FPT", cellStyle);
+        createCell(row, 10, "Email FE", cellStyle);
 
     }
 
@@ -80,8 +82,9 @@ public class DtGiangVienHuongDanExport {
             createCell(row, countColum++, giangVien.getTenDotDangKy(), style);
             createCell(row, countColum++, giangVien.getTenGvhd(), style);
             createCell(row, countColum++, giangVien.getTenTaiKhoan(), style);
-            createCell(row, countColum++, giangVien.getSoNhomDangHuongDan() , style);
+            createCell(row, countColum++, giangVien.getSoNhomDangHuongDan(), style);
             createCell(row, countColum++, giangVien.getSoNhomHuongDanToiDa(), style);
+            createCell(row, countColum++, giangVien.getSoNhomDangHuongDan() + "/" + giangVien.getSoNhomHuongDanToiDa(), style);
             createCell(row, countColum++, giangVien.getSoDienThoai(), style);
             createCell(row, countColum++, giangVien.getEmailFpt(), style);
             createCell(row, countColum++, giangVien.getEmailFe(), style);

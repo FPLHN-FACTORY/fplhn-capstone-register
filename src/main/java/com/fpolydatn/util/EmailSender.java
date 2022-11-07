@@ -50,7 +50,7 @@ public class EmailSender {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.toString());
             ClassPathResource resource = new ClassPathResource(MailConstant.LOGO_PATH);
             mimeMessageHelper.setFrom(sender);
-            mimeMessageHelper.setTo(recipients);
+            mimeMessageHelper.setBcc(recipients);
             mimeMessageHelper.setText(msgBody, true);
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.addInline("logoImage", resource);

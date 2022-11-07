@@ -66,7 +66,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Autowired
     private CommonHelper commonHelper;
 
-    private List<DtSinhVienTheoDotResponse> list;
 
     private HashMap<String, String> map;
 
@@ -88,14 +87,12 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<DtSinhVienTheoDotResponse> res = sinhVienRepository.searchStudent(request, pageable);
-        list = res.stream().toList();
         return new PageableObject<>(res);
     }
 
     public boolean checkTypeFile(MultipartFile file) {
         String filename = file.getName();
         String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
-
         String excel = "xls";
         if (!extension.equals(excel)) {
             return false;
@@ -108,10 +105,25 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=QLSinhVienFpoly" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (request.getIdDotDangKy() == null) {
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
+        } else if (request.getIdDotDangKy().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
+        }
+
+        List<DtSinhVienTheoDotResponse> list = sinhVienRepository.exportExcel(request);
         DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(list);
         dtSinhVienExport.exportData(response);
     }
@@ -121,7 +133,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=MauImportExcel" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
@@ -138,9 +149,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         List<DtCreateSinhVienTheoDotRequest> sinhVienList = sinhVienTheoDotImport.importData(file);
         List<SinhVien> listSinhVienEntity = new ArrayList<>();
         map = new HashMap<>();
-
         addDataInMap(map, coSoId);
-
         sinhVienList.parallelStream().forEach(sinhVien -> {
             SinhVien sinhVienEntity = new SinhVien();
             if (map.get(sinhVien.getMaSinhVien()) != null) {
@@ -340,4 +349,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         return response;
     }
 
+    @Override
+    public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId) {
+        return sinhVienRepository.searchStudentById(id, coSoId);
+    }
 }
