@@ -122,7 +122,7 @@
                                             <th>Trưởng nhóm</th>
                                             <th>GVHD</th>
                                             <th>Trạng thái</th>
-                                            <th th:style="${checkMocThoiGian} == true ? '' : 'display: none'">
+                                            <th width="100px">
                                                 Hành động
                                             </th>
                                             </thead>
@@ -150,11 +150,10 @@
                                                         <div class="row"
                                                              th:style="${checkMocThoiGian} == true ? 'display:block' : 'display: none'">
                                                             <button
-                                                                    class="btn btn-success"
+                                                                    class="btn_box_arrow"
                                                                     th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|"
-
                                                                     type="button">
-                                                                Tham gia nhóm
+                                                                <img th:src="@{/img/box-arrow.svg}">
                                                             </button>
                                                         </div>
                                                     </td>

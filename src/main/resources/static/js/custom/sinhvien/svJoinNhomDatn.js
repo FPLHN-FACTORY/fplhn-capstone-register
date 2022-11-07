@@ -21,7 +21,6 @@ function openModalDanhSachSinhVien(id) {
         url: SVNhomDatnApi + "?id=" + id,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData.data)
             var text = "";
             responseData.data.map(function (item) {
                 text += `
@@ -248,12 +247,9 @@ function loadDataNhomDatn(count) {
         url: SVNhomDatnApi + "/search" + "?tenDeTai=" + tenDeTai + "&truongNhom=" + truongNhom + "&soLuong=" + soLuong + "&giangVien=" + giangVien + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData)
             let array = responseData.data.data
             totalPages = responseData.data.totalPages
-            console.log(array)
             if (array.length == 0) {
-                console.log(array.length)
                 $("#listNhomDatn").html(``)
                 $("#page").html(``)
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`)
@@ -269,7 +265,7 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenMonDatn}</td>
                 <td>${item.countSinhVien}/7</td>
                 <td>${item.maSinhVien}-${item.tenSinhVien}</td>
-                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenTaiKhoan + ' - ' + item.tenGvhd}</td>
+                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
                 <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
                 <td>
                     <button type="button"
@@ -279,12 +275,12 @@ function loadDataNhomDatn(count) {
                     >  
                         <img src="/img/eye-fill.svg">
                     </button>
-                    <button class=" btn btn-success" style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}"                                 
+                    <button class="btn_box_arrow" style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}"                                 
                             data-target="#modal_create1"
                             data-toggle="modal"
                             onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
                             >
-                        Tham gia nhóm
+                        <img src="/img/box-arrow.svg">
                     </button>
                 </td>
                 <div class="modal fade"></div>
