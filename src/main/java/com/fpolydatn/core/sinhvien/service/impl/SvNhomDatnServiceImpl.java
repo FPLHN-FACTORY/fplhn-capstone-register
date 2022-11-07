@@ -268,4 +268,15 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         return true;
     }
 
+    @Override
+    public Boolean checkThoiGianRoiNhom(String idUser) {
+        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
+        if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null) {
+            if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

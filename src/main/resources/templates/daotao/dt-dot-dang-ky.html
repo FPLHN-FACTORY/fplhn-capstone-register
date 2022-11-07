@@ -41,10 +41,8 @@
                                     <div class="row">
                                         <div class="col-6 d-inline">
                                             <button
-                                                    data-toggle="modal"
-                                                    data-target="#modal_create"
                                                     class="btn btn-success"
-                                                    th:attr="onclick=|clearDataAdd()|">
+                                                    th:attr="onclick=|openModalCreate()|">
                                                 Tạo đợt đăng ký
                                             </button>
                                             <!--Start Model Create-->
@@ -144,7 +142,10 @@
                                                                         class="btn btn-outline-secondary btn btn-light"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Thêm mới
+                                                                <button
+                                                                        th:attr="onclick=|create()|"
+                                                                        type="button" class="btn btn-primary">
+                                                                    Thêm mới
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -409,8 +410,10 @@
                     <button type="button" class="btn btn-outline-secondary btn btn-light"
                             data-dismiss="modal">Hủy
                     </button>
-                    <button type="submit" class="btn btn-primary">Cập
-                        nhật
+                    <button
+                            th:attr="onclick=|update()|"
+                            type="button" class="btn btn-primary">
+                        Cập nhật
                     </button>
                 </div>
             </form>

@@ -13,6 +13,10 @@ function clearform() {
     $("#inputPassword").val("");
 }
 
+function openModalCreate(){
+    $("#modal_create").modal('show');
+}
+
 function openModalDanhSachSinhVien(id) {
     $("#modal_show_detail").modal('show');
     $.ajax({
@@ -45,12 +49,11 @@ $("#form_search").submit(function (event) {
     loadDataNhomDatn(0);
 })
 
-
 function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
     clearform();
     if (Number(matKhauTonTai) == 0) {
         bootbox.confirm({
-            title: "Tham gia nhóm", message: "Bạn muốn tham gia nhóm này?", buttons: {
+            title: "Tham gia nhóm", message: "Bạn muốn tha m gia nhóm này?", buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Quay lại'
                 }, confirm: {
@@ -74,7 +77,7 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
                         error: function (responseData) {
                             bootbox.alert({
                                 message: 'Hết hạn quyền sinh viên', backdrop: true, callback: function () {
-                                    window.open(svNhomDatnView, '_self');
+                                    window.open(SVNhomDatnView, '_self');
                                 }
                             });
                         }
@@ -108,9 +111,6 @@ function addSinhVienHasPassword() {
         },
         error: function (responseData) {
             console.log(responseData);
-            bootbox.alert('Sinh viên sẽ được tham gia nhóm sau 12 tiếng kể từ khi rời nhóm', function () {
-                window.open(SVNhomDatnView, '_self');
-            });
             if (responseData.responseJSON.message === 'Mat Khau Khong Chinh Xac') {
                 $("#errorPassword").text("Mật khẩu không chính xác");
             }
