@@ -4,6 +4,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateNhomMonDatnRequest;
+import com.fpolydatn.core.daotao.model.response.DtFindNhomMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanMonDatnChoGiangVienHuongDanResponse;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -75,9 +77,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     }
 
     @Override
-    public PageableObject<DtNhomMonDatnResponse> getMonChiTiet(String id, DtFindNhomMonDatnRequest req) {
-        Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
-        Page<DtNhomMonDatnResponse> res = dtNhomMonDatnRepository.findMonById(id, req, pageable);
-        return new PageableObject(res);
+    public List<DtFindNhomMonDatnResponse> getMonChiTiet(String id, DtFindNhomMonDatnRequest req) {
+        return dtNhomMonDatnRepository.findMonById(id, req);
     }
 }

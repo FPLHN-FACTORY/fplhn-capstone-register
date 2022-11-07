@@ -116,7 +116,6 @@
                                                 <th width="200px">Tên Nhóm Môn</th>
                                                 <th width="200px">Tên Chuyên Ngành</th>
                                                 <th width="200px">Số Môn Trong Nhóm</th>
-                                                <th width="200px">Chi Tiết Môn DATN</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
                                                 <tbody>
@@ -127,14 +126,6 @@
                                                         <td th:text="${nhomMonDatn.tenNhomMon}"></td>
                                                         <td th:text="${nhomMonDatn.getTenChuyenNganh()}"></td>
                                                         <td th:text="${nhomMonDatn.getSoMon()}"></td>
-                                                        <td>
-                                                            <a
-                                                                    type="button"
-                                                                    class="btn btn-primary"
-                                                                    th:href="@{'/dao-tao/nhom-mon-datn/'+ ${nhomMonDatn.getId()}}">
-                                                                Chi tiết môn DATN
-                                                            </a>
-                                                        </td>
                                                         <td>
                                                             <button
                                                                     class="btn_pencil_square" data-toggle="tooltip"
@@ -148,6 +139,12 @@
                                                                     th:attr="onclick=|openModalRemoveNhomMonDatn('${nhomMonDatn.getId()}')|">
                                                                 <img th:src="@{/img/trash.svg}">
                                                             </button>
+                                                            <button class="btn_eye"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xem chi tiết"
+                                                                    th:attr="onclick=|openModalChiTietNhomMonDatn('${nhomMonDatn.getId()}')|">
+                                                                <img th:src="@{/img/eye-fill.svg}">
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </th:block>
@@ -159,7 +156,7 @@
                                                     <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                         <li class="page-item">
                                                             <a class="page-link"
-                                                               th:href="@{/dao-tao/mon-datn?page={page.currentPage}(page.currentPage=${i}-1)}"
+                                                               th:href="@{/dao-tao/nhom-mon-datn?page={page.currentPage}(page.currentPage=${i}-1)}"
                                                                th:text="${i}">
                                                             </a>
                                                         </li>
@@ -256,8 +253,7 @@
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
+    <div class="modal-header">
         <div class="modal-content">
             <form id="form_nhom_mon_datn_delete">
                 <div class="modal-header">
@@ -283,6 +279,65 @@
     </div>
 </div>
 <!--   End Modal Remove -->
+
+<!--  Start Modal Nhom Mon Chi Tiet-->
+<div
+        class="modal fade"
+        id="modal_nhom_mon_chi_tiet"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div>
+        <div>
+            <h3 style="margin: 50px 0 0 50px;">Chi Tiết Nhóm Môn</h3>
+            <div class="m-content" style="margin: 50px 0 0 50px ; background-color: #fff; width: 1200px;">
+
+                <div class="kt-section__body">
+                    <div class="row">
+                        <label class="col-xl-3"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <h3 class="kt-section__title kt-section__title-sm"
+                                style="margin: 20px 0 ;">Danh Sách Chi Tiết Nhóm Môn</h3>
+                        </div>
+                    </div>
+                    <div class="table-responsive mt-3" style="overflow: hidden;">
+                        <div class="row" style="padding: 20px 0 ;">
+
+                            <div class="col-sm-6 text-left" style="padding: 0 ;">
+                                <div class="col-6 d-inline">
+                                    <a th:href="@{/dao-tao/nhom-mon-datn}"
+                                       class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                        Thoát
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive mt-3">
+                            <div>
+                                <table id="custom-table_chi_tiet"
+                                       class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                    <thead>
+                                    <th width="20px">STT</th>
+                                    <th width="40px">Mã Môn</th>
+                                    <th width="40px">Tên Môn</th>
+                                    </thead>
+                                    <tbody id="searchListNomMon">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="data">
+                                <h3>Không có dữ liệu</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--   End Nhom Mon Chi Tiet -->
 
 
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>

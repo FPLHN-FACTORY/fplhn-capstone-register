@@ -43,13 +43,4 @@ public class DtNhomMonController extends BaseController {
         return "daotao/dt-nhom-mon-datn";
     }
 
-    @GetMapping("/{id}")
-    public String viewChiTietNhomMonDatn( Model model, final  DtFindNhomMonDatnRequest req
-            , @PathVariable("id") String id) {
-        String coSoId = session.getCoSoId();
-        req.setCoSoId(coSoId);
-        PageableObject<DtNhomMonDatnResponse> listPhanCong = dtNhomMonDatnService.getMonChiTiet(id,req);
-        model.addAttribute("page", listPhanCong);
-        return "daotao/dt-chi-tiet-nhom-mon";
-    }
 }

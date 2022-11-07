@@ -1,12 +1,15 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtCanBoExportExcel;
 import com.fpolydatn.core.daotao.excel.DtCanBoImportExcel;
+import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotExport;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
+import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
@@ -28,6 +31,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,6 +150,17 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         }
         dtCanBoRepository.saveAll(listCB);
         return new RestApiException(Message.SUCCESS) ;
+    }
+
+    @Override
+    public void MauImportExcel(HttpServletResponse response, String typeExcel) throws IOException {
+        DtCanBoExportExcel dtCanBoExportExcel =  new DtCanBoExportExcel();
+        response.setContentType("application/octet-stream");
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=MauImportExcel" + "." + typeExcel;
+        response.setHeader(headerKey, headerValue);
+        dtCanBoExportExcel.exportData(response);
     }
 
     public void addDataInMap(Map<String, String> mapAll) {

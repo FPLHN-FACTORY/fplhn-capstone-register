@@ -304,3 +304,23 @@ $("#form_import_excel").submit(function (event) {
         $("#import_excel_error").text("chọn đúng file Excel ");
     }
 });
+
+$("#modal_excel_mau").submit(function (event) {
+    event.preventDefault();
+    let typeExcel = $("#type_mau_excel").val();
+    if (typeExcel == '') {
+        $("#mau_excel_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/can-bo/export-mau?typeExcel=" + typeExcel,
+            success: function () {
+                window.open("/api/dao-tao/can-bo/export-mau?typeExcel=" + typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+});

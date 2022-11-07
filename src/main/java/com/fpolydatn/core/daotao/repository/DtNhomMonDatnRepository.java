@@ -1,12 +1,15 @@
 package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindNhomMonDatnRequest;
+import com.fpolydatn.core.daotao.model.response.DtFindNhomMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
 import com.fpolydatn.repository.MonDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface DtNhomMonDatnRepository extends MonDatnRepository {
     @Query(value = """
@@ -46,7 +49,7 @@ public interface DtNhomMonDatnRepository extends MonDatnRepository {
                                     OR m.ten_mon_datn LIKE %:#{#req.tenNhomMon}% )
                             ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
-    Page<DtNhomMonDatnResponse> findMonById(@Param("nhomMonID") String id, @Param("req") DtFindNhomMonDatnRequest req, Pageable page);
+    List<DtFindNhomMonDatnResponse> findMonById(@Param("nhomMonID") String id, @Param("req") DtFindNhomMonDatnRequest req);
 
 
     @Query(value = """

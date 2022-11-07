@@ -36,6 +36,58 @@
                     <h3>Quản lý cán bộ</h3>
                     <div class="mt-5">
                         <div class="m-portlet">
+                            <!-- Export Mau -->
+                                    <button id="mauImport"
+                                            data-toggle="modal"
+                                            data-target="#modal_excel_mau"
+                                            class="col-10 col-sm-6 col-md-4 btn btn-secondary btn-floating btn-sm fas">
+                                        <i class="fas fa-download"> Mẫu Import Excel</i>
+                                    </button>
+
+                                    <div class="modal fade "
+                                         id="modal_excel_mau"
+                                         tabindex="-1"
+                                         aria-labelledby="exampleModalLabel"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <form id="form_mau_excel" method="post">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"> Mẫu Export Excel</h5>
+                                                        <button type="button" class="close"
+                                                                data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <p class="col-form-label">Định dạng file
+                                                                excel </p>
+                                                            <select id="type_mau_excel"
+                                                                    class="form-control col-5">
+                                                                <option value="">chọn kiểu file excel
+                                                                </option>
+                                                                <option value="xls">.xls</option>
+                                                                <option value="xlsx">.xlsx</option>
+                                                            </select>
+                                                            <span class="text-danger"
+                                                                  id="mau_excel_error"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Hủy
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary">
+                                                            Download excel
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                            <!-- End Export Mau -->
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="row">
@@ -201,10 +253,10 @@
                                             <thead>
                                             <th width="50px">STT</th>
                                             <th width="100px">Email FE</th>
-                                            <th width="100px">Số Điện Thoại</th>
-                                            <th width="100px">Tên Cán Bộ</th>
-                                            <th width="100px">Vai Trò</th>
-                                            <th width="150px">Chức Năng</th>
+                                            <th width="100px">Số điện thoại</th>
+                                            <th width="100px">Tên cán bộ</th>
+                                            <th width="100px">Vai trò</th>
+                                            <th width="150px">Chức năng</th>
                                             </thead>
                                             <tbody>
                                             <th:block th:each="canbo,i : ${page.data}">
@@ -216,7 +268,7 @@
                                                     <td th:switch="${canbo.getVaiTro}">
                                                         <span th:case="'0'" th:text="'Đào Tạo'"></span>
                                                         <span th:case="'1'"
-                                                              th:text="${canbo.getTenChuyenNganh} != null ?  'Chủ Nhiệm Bộ Môn' + ' - ' +  ${canbo.getTenChuyenNganh} : 'Chủ Nhiệm Bộ Môn' "> </span>
+                                                              th:text="${canbo.getTenChuyenNganh} != null ?  'CNBM' + ' - ' +  ${canbo.getTenChuyenNganh} : 'CNBM' "> </span>
                                                     </td>
                                                     <td>
                                                         <button

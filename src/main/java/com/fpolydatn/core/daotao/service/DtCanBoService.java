@@ -38,5 +38,6 @@ public interface DtCanBoService {
 
     RestApiException DtCanBoImport(MultipartFile file, String coSoId) throws IOException;
 
+    void MauImportExcel(HttpServletResponse response, String typeExcel) throws IOException;
 
 }
