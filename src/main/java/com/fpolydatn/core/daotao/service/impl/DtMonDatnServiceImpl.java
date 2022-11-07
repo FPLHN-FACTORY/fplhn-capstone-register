@@ -228,11 +228,11 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         return traVe;
     }
 
-    public String formErrors(String vtr, String err) {
+    private String formErrors(String vtr, String err) {
         return "Lỗi tại vị trí " + vtr + " . Lỗi -> " + err;
     }
 
-    public List<DtCreateImportMonDatnRequest> importExcelList(MultipartFile file) {
+    private List<DtCreateImportMonDatnRequest> importExcelList(MultipartFile file) {
         List<DtCreateImportMonDatnRequest> list = new ArrayList<>();
 
         try {
@@ -267,7 +267,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         return list;
     }
 
-    public boolean checkTypeFile(MultipartFile file) {
+    private boolean checkTypeFile(MultipartFile file) {
         String filename = file.getResource().getFilename();
         String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
 
