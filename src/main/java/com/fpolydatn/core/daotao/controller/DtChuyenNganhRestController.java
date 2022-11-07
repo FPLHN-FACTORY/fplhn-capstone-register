@@ -3,6 +3,7 @@ package com.fpolydatn.core.daotao.controller;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateChuyenNganhRequest;
+import com.fpolydatn.core.daotao.model.request.DtFindChuyenNganhRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.ChuyenNganh;
@@ -54,6 +55,8 @@ public class DtChuyenNganhRestController extends BaseController {
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable("id") String id, @RequestBody DtUpdateChuyenNganhRequest request){
         request.setId(id);
+        String coSoId = session.getCoSoId();
+        request.setCoSoId(coSoId);
         return new ResponseObject(chuyenNganhService.update(request));
     }
 }

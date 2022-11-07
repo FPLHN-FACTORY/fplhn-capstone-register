@@ -70,18 +70,20 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <div style="width: 48%;margin-right: 2%; float:left">
+                                                                    <div style="width: 48%;margin-right: 2%;" class="float-left">
                                                                         <label class="col-form-label">Học kỳ</label>
-                                                                        <select class="form-select"
+                                                                        <select class="custom-select"
                                                                                 id="hocKyAdd"
                                                                                 style="line-height: 2.2">
                                                                             <option value="" hidden>Chọn học kỳ</option>
                                                                             <option th:each="hocKy : ${listHocKy}"
                                                                                     th:value="${hocKy.getId()}"
                                                                                     th:text="${hocKy.getName()}"></option>
-                                                                        </select>
+                                                                        </select><br>
                                                                         <small class="text-danger"
-                                                                               id="errorMessageAddHocKy"></small><br>
+                                                                               style="clear: left"
+                                                                               id="errorMessageAddHocKy"></small>
+                                                                        <br>
                                                                         <label class="col-form-label">Tên đợt đăng
                                                                             ký</label>
                                                                         <input
@@ -110,7 +112,7 @@
                                                                         <small class="text-danger"
                                                                                id="errorMessageAddNgayKetThuc"></small>
                                                                     </div>
-                                                                    <div style="width: 48%;margin-right: 2%; float:left">
+                                                                    <div class="float-left" style="width: 48%;margin-right: 2%;">
                                                                         <label class="col-form-label">Hạn sinh
                                                                             viên</label>
                                                                         <input
@@ -203,19 +205,38 @@
                                         <!-- Paging-->
                                         <nav th:if="${page.totalPages > 1}" aria-label="Page navigation ">
                                             <ul class="pagination justify-content-end">
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                       th:style="${page.currentPage} == 0 ? 'pointer-events: none' : ''"
+                                                       th:href="@{/dao-tao/dot-dang-ky?page={page.currentPage}(page.currentPage=${page.currentPage}-1)}"
+                                                       th:text="Back">
+                                                    </a>
+                                                </li>
                                                 <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                     <li class="page-item">
                                                         <a class="page-link"
+                                                           th:style="${page.currentPage} == ${i} - 1 ? 'background-color : #0a8cf0; color : white' : ''"
                                                            th:href="@{/dao-tao/dot-dang-ky?page={page.currentPage}(page.currentPage=${i}-1)}"
                                                            th:text="${i}">
                                                         </a>
                                                     </li>
                                                 </div>
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                       th:style="${page.currentPage} == ${page.totalPages} - 1 ? 'pointer-events: none' : ''"
+                                                       th:href="@{/dao-tao/dot-dang-ky?page={page.currentPage}(page.currentPage=${page.currentPage}+1)}"
+                                                       th:text="Next">
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </nav>
                                     </div>
+                                    <div>
+                                        <div th:if="${page.data.isEmpty()}">
+                                            <h3>Không có dữ liệu</h3>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -337,10 +358,12 @@
                         <div style="width: 48%;margin-right: 2%; float:left">
                             <label class="col-form-label">Tên đợt</label>
                             <input
-                                    disabled
+                                    maxlength="100"
                                     type="text"
                                     class="form-control"
                                     id="ten_dot_dang_ky_update"/>
+                            <small class="text-danger"
+                                   id="errorMessageTenDotDangKyUpdate"></small>
                             <br>
                             <label class="col-form-label">Ngày bắt đầu</label>
                             <input
@@ -348,14 +371,15 @@
                                     class="form-control"
                                     id="ngay_bat_dau_update"/>
                             <small class="text-danger"
-                                   id="errorMessageNgayBatDauUpdate"></small><br>
+                                   id="errorMessageNgayBatDauUpdate"></small>
+                            <br>
                             <label class="col-form-label">Ngày kết thúc</label>
                             <input
                                     type="datetime-local"
                                     class="form-control"
                                     id="ngay_ket_thuc_update"/>
                             <small class="text-danger"
-                                   id="errorMessageNgayKetThucUpdate"></small><br>
+                                   id="errorMessageNgayKetThucUpdate"></small>
                         </div>
                         <div style="width: 48%;margin-right: 2%; float:left">
                             <label class="col-form-label">Hạn sinh viên</label>
@@ -364,21 +388,23 @@
                                     class="form-control"
                                     id="han_sinh_vien_update"/>
                             <small class="text-danger"
-                                   id="errorMessageHanSinhVienUpdate"></small><br>
+                                   id="errorMessageHanSinhVienUpdate"></small>
+                            <br>
                             <label class="col-form-label">Hạn giảng viên hướng dẫn</label>
                             <input
                                     type="datetime-local"
                                     class="form-control"
                                     id="han_giang_vien_update"/>
                             <small class="text-danger"
-                                   id="errorMessageHanGiangVienUpdate"></small><br>
+                                   id="errorMessageHanGiangVienUpdate"></small>
+                            <br>
                             <label class="col-form-label">Hạn chủ nhiệm bộ môn</label>
                             <input
                                     type="datetime-local"
                                     class="form-control"
                                     id="han_chu_nhiem_bo_mon_update"/>
                             <small class="text-danger"
-                                   id="errorMessageHanChuNhiemBoMonUpdate"></small><br>
+                                   id="errorMessageHanChuNhiemBoMonUpdate"></small>
                         </div>
                     </div>
                 </div>

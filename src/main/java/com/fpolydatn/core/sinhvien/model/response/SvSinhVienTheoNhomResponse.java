@@ -11,6 +11,9 @@ public interface SvSinhVienTheoNhomResponse {
     @Value("#{target.stt}")
     String getStt();
 
+    @Value("#{target.chuc_vu}")
+    String getChucVu();
+
     @Value("#{target.ma_sinh_vien}")
     String getMaSinhVien();
 
@@ -25,5 +28,8 @@ public interface SvSinhVienTheoNhomResponse {
 
     @Value("#{target.khoa}")
     String getKhoa();
+
+    @Value("#{target.ma_mon}")
+    String getMaMon();
 
 }

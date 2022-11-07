@@ -39,6 +39,9 @@ public interface DtSinhVienTheoDotResponse extends IsIdentified {
     @Value("#{target.ten_chuyen_nganh}")
     String getTenChuyenNganh();
 
+    @Value("#{target.ma_mon}")
+    String getMaMonDatn();
+
     @Value("#{target.ten_mon_datn}")
     String getTenMonDatn();
 
@@ -59,5 +62,11 @@ public interface DtSinhVienTheoDotResponse extends IsIdentified {
 
     @Value("#{target.so_thanh_vien}")
     Long getSoThanhVien();
+
+    @Value("#{target.ten_mon_chuong_trinh}")
+    String getMonChuongTrinh();
+
+    @Value("#{target.ma_mom_chuong_trinh}")
+    String getMaMonChuongTrinh();
 
 }

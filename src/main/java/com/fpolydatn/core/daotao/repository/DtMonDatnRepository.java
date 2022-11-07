@@ -3,7 +3,6 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.entity.MonDatn;
-import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.MonDatnRepository;
 import org.springframework.data.domain.Page;
@@ -12,15 +11,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author hungpv
  */
 public interface DtMonDatnRepository extends MonDatnRepository {
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, 
-             (SELECT b.ten_mon_datn FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon , cb.ten_tai_khoan 
+            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, cn.ten_chuyen_nganh,
+             (SELECT CONCAT(b.ten_mon_datn, ' - ', b.ma_mon) FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon, cb.ten_tai_khoan 
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
@@ -56,9 +54,9 @@ public interface DtMonDatnRepository extends MonDatnRepository {
     @Query(value = """
                 SELECT id 
                 FROM mon_datn
-                WHERE ma_mon = :maMon AND id <> :id 
+                WHERE ma_mon = :maMon AND id <> :id AND co_so_id = :coSoId
             """, nativeQuery = true)
-    String findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id);
+    String findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id, @Param("coSoId") String coSoId);
 
     @Query(value = """ 
                 SELECT m.id, 
@@ -91,4 +89,19 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 AND s.dot_dang_ky_id = :dotDangKyId                                                        
             """, nativeQuery = true)
     List<MonDatn> findByIdMon(@Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+            SELECT *
+                FROM mon_datn m 
+                WHERE m.nhom_mon_datn_id IS NULL 
+                AND m.co_so_id = :coSoId 
+            """, nativeQuery = true)
+    List<MonDatn> getListNhomMonDatn(@Param("coSoId") String coSoId);
+
+    @Query(value = """
+            SELECT *
+                FROM mon_datn m 
+                WHERE m.co_so_id = :coSoId 
+            """, nativeQuery = true)
+    List<MonDatn> getListMonDatnByIdCoSo(@Param("coSoId") String coSoId);
 }

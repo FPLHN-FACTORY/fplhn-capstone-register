@@ -3,6 +3,7 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.core.daotao.model.response.DtTenCanBoResponse;
+import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.repository.CanBoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author caodinh
@@ -44,8 +46,11 @@ public interface DtCanBoRepository extends CanBoRepository {
     Page<DtCanBoResponse> findAllByTenCanBo(@Param("req") DtFindCanBoRequest canBoRequest, Pageable page);
 
     @Query(value = """
-            SELECT id,ten_can_bo FROM can_bo WHERE vai_tro = 2""", nativeQuery = true)
-    List<DtTenCanBoResponse> findCanBoByVaiTro();
+            SELECT id, ten_can_bo AS 'name' FROM can_bo a            
+            WHERE co_so_id = :coSoId AND vai_tro = :vaiTro 
+            AND (SELECT b.chu_nhiem_bo_mon FROM chuyen_nganh b WHERE b.chu_nhiem_bo_mon = a.id) IS NULL
+            """, nativeQuery = true)
+    List<SimpleEntityProj> findCanBoByVaiTro(@Param("coSoId") String coSoId, @Param("vaiTro") int vaiTro);
 
     @Query(value = """
             SELECT email_fe FROM can_bo""", nativeQuery = true)

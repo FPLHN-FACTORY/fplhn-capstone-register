@@ -66,7 +66,10 @@ public enum Message {
     MON_KHONG_TUONG_DUONG(PropertiesReader.getProperty(PropertyKeys.MON_KHONG_TUONG_DUONG)),
     GIANG_VIEN_KHONG_DAY_MON_NAY(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_KHONG_DAY_MON_NAY)),
     CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM(PropertiesReader.getProperty(PropertyKeys.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM)),
-    MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN));
+    MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN(PropertiesReader.getProperty(PropertyKeys.MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN)),
+    CHUYEN_NGANH_ALREADY_EXIST(PropertiesReader.getProperty(PropertyKeys.CHUYEN_NGANH_ALREADY_EXIST)),
+
+    CHU_NHIEM_ALREADY_EXIST(PropertiesReader.getProperty(PropertyKeys.CHU_NHIEM_ALREADY_EXIST));
 
     private String message;
 
