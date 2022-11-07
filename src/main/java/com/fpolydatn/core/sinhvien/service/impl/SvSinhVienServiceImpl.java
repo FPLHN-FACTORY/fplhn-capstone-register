@@ -22,11 +22,6 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
     private SvSinhVienRepository svSinhVienRepository;
 
     @Override
-    public List<SvSinhVienTheoNhomResponse> findByNhomId(final SvFindSinhVienRequest request) {
-        return svSinhVienRepository.findByNhomId(request);
-    }
-
-    @Override
     public String getNhomIdById(String coSoId, String dotDangKyId, String id) {
         return svSinhVienRepository.getNhomIdById(coSoId, dotDangKyId, id);
     }

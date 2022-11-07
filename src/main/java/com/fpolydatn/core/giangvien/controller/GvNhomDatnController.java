@@ -5,6 +5,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
+import com.fpolydatn.core.giangvien.service.GvMonDatnService;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class GvNhomDatnController extends BaseController {
     private GvNhomDatnService nhomDatnService;
 
     @Autowired
-    private DtMonDatnService monDatnService;
+    private GvMonDatnService monDatnService;
 
     @GetMapping()
     public String viewNhomDatn(final GvFindNhomDatnRequest request, Model model) {

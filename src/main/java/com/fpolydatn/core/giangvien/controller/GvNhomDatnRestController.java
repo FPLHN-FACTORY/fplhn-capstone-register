@@ -8,8 +8,8 @@ import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
+import com.fpolydatn.core.giangvien.service.GvSinhVienService;
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
-import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.entity.NhomDatn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
 
 /**
  * @author thangdt
@@ -33,13 +31,12 @@ public class GvNhomDatnRestController extends BaseController {
     private GvNhomDatnService nhomDatnService;
 
     @Autowired
-    private SvSinhVienService sinhVienService;
+    private GvSinhVienService sinhVienService;
 
     @GetMapping()
     public ResponseObject detailToTalSinhVien(final SvFindSinhVienRequest request) {
         return new ResponseObject(sinhVienService.findByNhomId(request));
     }
-
 
     @GetMapping("/search")
     public ResponseObject viewSeachNhomDatn(final GvFindNhomDatnRequest request) {

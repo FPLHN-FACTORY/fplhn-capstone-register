@@ -11,8 +11,6 @@ import java.util.List;
  */
 public interface SvSinhVienService {
 
-    List<SvSinhVienTheoNhomResponse> findByNhomId(final SvFindSinhVienRequest request);
-
     String getNhomIdById(String coSoId, String dotDangKyId, String id);
 
     Integer getSoThanhVienByNhomId(String nhomId);
