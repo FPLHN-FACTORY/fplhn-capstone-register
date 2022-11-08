@@ -4,6 +4,7 @@ import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.core.daotao.model.response.DtTenCanBoResponse;
 import com.fpolydatn.entity.CanBo;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.CanBoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -141,16 +141,15 @@ $("#form_nhom_mon_datn_delete").submit(function (event) {
 
 function openModalChiTietNhomMonDatn(monDatnId) {
     $("#modal_nhom_mon_chi_tiet").modal('show');
-    console.log(monDatnId);
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: monDatnApi + "/detail/" + monDatnId,
         dataType: 'json',
         success: function (responseData) {
+            $("#data").html()
             if(responseData.data.length > 0) {
-                $("#data").html('')
-                $("#searchListNomMon").html(responseData.data.map(function (item) {
+               $("#searchListNomMon").html(responseData.data.map(function (item) {
                     return `
                <tr>
                    <td >${item.stt}</td>
