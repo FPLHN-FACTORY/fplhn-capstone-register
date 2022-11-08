@@ -5,6 +5,10 @@ $(document).ready(function () {
     $("#dot_dang_ky_error").text("");
 });
 
+function openModalCreate() {
+    $("#modal_create").modal('show');
+}
+
 function openModalUpdateDotDangKy(dotDangKyId) {
     $("#errorMessageNgayBatDauUpdate").text("");
     $("#errorMessageNgayKetThucUpdate").text("");
@@ -45,8 +49,7 @@ function openModalUpdateDotDangKy(dotDangKyId) {
     });
 }
 
-$("#form_dot_dang_ky_update").submit(function (event) {
-    event.preventDefault();
+function update() {
     let dotDangKyId = $("#id_dot_dang_ky_update").val();
     let ngayBatDauStr = $("#ngay_bat_dau_update").val();
     let tenDotDangKy = $("#ten_dot_dang_ky_update").val().trim();
@@ -182,7 +185,7 @@ $("#form_dot_dang_ky_update").submit(function (event) {
             }
         });
     }
-});
+};
 
 function clearDataAdd() {
     $("#hocKyAdd").val("");
@@ -198,8 +201,7 @@ function clearDataAdd() {
     $("#errorMessageAddHanChuNhiemBoMon").text("");
 }
 
-$("#form_create_dot_dang_ky").submit(function (event) {
-    event.preventDefault();
+function create() {
     let tenDotDangKy = $("#tenDotDangKyAdd").val().trim();
     let ngayBatDauStr = $("#ngayBatDauAdd").val();
     let ngayBatDau = new Date(ngayBatDauStr);
@@ -345,7 +347,7 @@ $("#form_create_dot_dang_ky").submit(function (event) {
             }
         });
     }
-});
+}
 
 function detail(dotDangKyid) {
     $("#modal_detail").modal('show');

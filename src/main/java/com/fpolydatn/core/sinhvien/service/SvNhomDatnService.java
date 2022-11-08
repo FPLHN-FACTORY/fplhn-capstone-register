@@ -38,4 +38,6 @@ public interface SvNhomDatnService {
 
     Boolean chonGvhd(String idUser, String idGiangVien);
 
+    Boolean checkThoiGianRoiNhom(String idUser);
+
 }
