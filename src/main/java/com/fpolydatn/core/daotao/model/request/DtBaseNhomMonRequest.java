@@ -17,4 +17,8 @@ public class DtBaseNhomMonRequest {
     @NotBlank
     private String tenNhomMon;
 
+    @NotEmpty
+    @NotBlank
+    private String chuyenNganhId;
+
 }

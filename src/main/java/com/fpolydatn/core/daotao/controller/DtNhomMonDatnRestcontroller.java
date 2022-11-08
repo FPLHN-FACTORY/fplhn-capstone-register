@@ -1,16 +1,12 @@
 package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
-import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateNhomMonDatnRequest;
-import com.fpolydatn.core.daotao.model.request.DtFindNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateNhomMonDatnRequest;
-import com.fpolydatn.core.daotao.model.response.DtFindNhomMonDatnResponse;
-import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
+import com.fpolydatn.core.daotao.model.response.DtDetailNhomMonResponse;
 import com.fpolydatn.core.daotao.service.DtNhomMonDatnService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,26 +23,21 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
     }
 
     @GetMapping("/detail/{id}")
-    public ResponseObject viewChiTietNhomMonDatn(final DtFindNhomMonDatnRequest req
-            , @PathVariable("id") String id) {
+    public ResponseObject showDanhSachMonDatn(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        req.setCoSoId(coSoId);
-        List<DtFindNhomMonDatnResponse> dtFindNhomMonDatnResponses = dtNhomMonDatnService.getMonChiTiet(id,req);
-        return new ResponseObject(dtFindNhomMonDatnResponses);
+        List<DtDetailNhomMonResponse> dtDetailNhomMonRespons = dtNhomMonDatnService.detail(id,coSoId);
+        return new ResponseObject(dtDetailNhomMonRespons);
     }
 
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable("id") String id,
                                  @RequestBody DtUpdateNhomMonDatnRequest dtUpdateNhomMonRequest) {
         dtUpdateNhomMonRequest.setId(id);
-        String coSoId = session.getCoSoId();
-        dtUpdateNhomMonRequest.setCoSoId(coSoId);
         return new ResponseObject(dtNhomMonDatnService.update(dtUpdateNhomMonRequest));
     }
 
     @PostMapping()
-    public ResponseObject save(
-            @RequestBody DtCreateNhomMonDatnRequest dtCreateNhomMonDatnRequest) {
+    public ResponseObject create(@RequestBody DtCreateNhomMonDatnRequest dtCreateNhomMonDatnRequest) {
         String coSoId = session.getCoSoId();
         dtCreateNhomMonDatnRequest.setCoSoId(coSoId);
         return new ResponseObject(dtNhomMonDatnService.add(dtCreateNhomMonDatnRequest));
@@ -54,6 +45,7 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
-        return new ResponseObject(dtNhomMonDatnService.delete(id));
+        String coSoId = session.getCoSoId();
+        return new ResponseObject(dtNhomMonDatnService.delete(id, coSoId));
     }
 }

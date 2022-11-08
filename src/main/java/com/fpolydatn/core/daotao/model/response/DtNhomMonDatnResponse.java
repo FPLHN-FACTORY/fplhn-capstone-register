@@ -20,7 +20,7 @@ public interface DtNhomMonDatnResponse extends IsIdentified {
     @Value("#{target.ten_chuyen_nganh}")
     String getTenChuyenNganh();
 
-    @Value("#{target.somon}")
+    @Value("#{target.so_mon_datn}")
     String getSoMon();
 
 }
