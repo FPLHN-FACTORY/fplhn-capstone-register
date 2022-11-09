@@ -23,9 +23,9 @@ public class SvCreateNhomDatnRequest {
     @NotBlank()
     private String tenNhom;
 
-    private String matKhau;
-    private String moTa;
+    private Boolean matKhau;
 
+    private String moTa;
 
     @NotEmpty
     @NotBlank

@@ -104,7 +104,8 @@
                                         <button
                                                 class="btn btn-primary"
                                                 th:attr="onclick=|openModalCreate()|"
-                                                th:style="${checkMocThoiGian} == true ? 'display:block' : 'display: none'">
+                                                th:style="${checkMocThoiGian} == false ? 'display: none' :
+                                                                (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')">
                                             Tạo nhóm DATN
                                         </button>
                                         <br><br>
@@ -146,7 +147,8 @@
                                                             <img th:src="@{/img/eye-fill.svg}">
                                                         </button>
                                                         <button
-                                                                th:style="${checkMocThoiGian} == false ? 'display: none' : (${checkThoiGiangRoiNhom} == true ? 'display: block' : 'display: none')"
+                                                                th:style="${checkMocThoiGian} == false ? 'display: none' :
+                                                                (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')"
                                                                 title="Tham gia nhóm"
                                                                 class="btn_box_arrow"
                                                                 th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|"
@@ -243,11 +245,10 @@
                         <span class="text-danger">(*)</span>
                         <label class="col-form-label">Môn DATN</label>
                         <select class="form-control col-8" id="monDatnCreateNhom">
+                            <option hidden value="">Chọn môn DATN</option>
                             <option th:each="i : ${listDataMonDatn}"
                                     th:text="${i.getTenMon()}"
                                     th:value="${i.getId()}">
-                            </option>
-                            <option selected value="">Không chọn
                             </option>
                         </select>
                         <p class="text-danger" id="mon_datn_error"></p>
@@ -346,6 +347,7 @@
 </div>
 <!--                        end add Sinh vien-->
 <span hidden id="check_han_sv" style="color:red;" th:text="${checkMocThoiGian}"></span>
+<span hidden id="check_thoi_gian_roi_nhom" style="color:red;" th:text="${checkThoiGianRoiNhom}"></span>
 <!--        End confirm Success                -->
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>

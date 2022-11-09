@@ -1,6 +1,7 @@
 const SVNhomDatnApi = '/api/sinh-vien';
 const SVNhomDatnView = '/sinh-vien';
 const checkHanSV = $("#check_han_sv").text();
+const checkThoiGianRoiNhom = $("#check_thoi_gian_roi_nhom").text();
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
@@ -13,7 +14,7 @@ function clearform() {
     $("#inputPassword").val("");
 }
 
-function openModalCreate(){
+function openModalCreate() {
     $("#modal_create").modal('show');
 }
 
@@ -53,7 +54,7 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
     clearform();
     if (Number(matKhauTonTai) == 0) {
         bootbox.confirm({
-            title: "Tham gia nhóm", message: "Bạn muốn tha m gia nhóm này?", buttons: {
+            title: "Tham gia nhóm", message: "Bạn muốn tham gia nhóm này?", buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Quay lại'
                 }, confirm: {
@@ -75,11 +76,13 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
                             });
                         },
                         error: function (responseData) {
-                            bootbox.alert({
-                                message: 'Hết hạn quyền sinh viên', backdrop: true, callback: function () {
-                                    window.open(SVNhomDatnView, '_self');
-                                }
-                            });
+                            if (responseData.responseJSON.message === 'Het han quyen sinh vien') {
+                                bootbox.alert({
+                                    message: 'Hết hạn quyền sinh viên', backdrop: true, callback: function () {
+                                        window.open(SVNhomDatnView, '_self');
+                                    }
+                                });
+                            }
                         }
                     });
                 }
@@ -164,9 +167,9 @@ function createNhomDatn() {
     if (check) {
         let matKhau = "";
         if ($("#checkTrangThaiCreateNhom").is(':checked')) {
-            matKhau = Math.floor(Math.random() * 100000000)
+            matKhau = true;
         } else {
-            matKhau = null;
+            matKhau = false;
         }
         if (moTa.length == 0) {
             moTa = null;
@@ -235,6 +238,7 @@ function genPagzing() {
     }
     $("#page").html(templateHtml);
 }
+
 function loadDataNhomDatn(count) {
     let tenDeTai = $("#tenDeTai").val().trim();
     let soLuong = $("#soLuong").val().trim();
@@ -264,7 +268,7 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenDeTai}</td>
                 <td>${item.tenMonDatn}</td>
                 <td>${item.countSinhVien}/7</td>
-                <td>${item.maSinhVien}-${item.tenSinhVien}</td>
+                <td>${item.maSinhVien + ' - ' + item.tenSinhVien}</td>
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
                 <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
                 <td>
@@ -275,7 +279,7 @@ function loadDataNhomDatn(count) {
                     >  
                         <img src="/img/eye-fill.svg">
                     </button>
-                    <button class="btn_box_arrow" style="${checkHanSV == 'true' ? 'display:block' : 'display:none'}"                                 
+                    <button class="btn_box_arrow" style="${checkHanSV == 'false' ? 'display:none' : checkThoiGianRoiNhom == 'true' ? 'display: block' : 'display:none'}"                                 
                             data-target="#modal_create1"
                             data-toggle="modal"
                             onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
