@@ -165,7 +165,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         nhomDatn.setCoSoId(svNhomDatnRequest.getCoSoId());
         if (svNhomDatnRequest.getMatKhau()) {
             nhomDatn.setMatKhau(String.valueOf((int) (Math.random() * 100000000)));
-            System.out.println("**************--------------------------" + nhomDatn.getMatKhau());
         } else {
             nhomDatn.setMatKhau(null);
         }
