@@ -32,7 +32,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import java.sql.Array;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -52,8 +51,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Autowired
     private SvSinhVienRepository svSinhVienRepository;
-
-    private final FormUtils formUtils = new FormUtils();
 
     @Autowired
     private NhomDatnHelper nhomDatnHelper;
