@@ -63,7 +63,7 @@ function loadDataToTable(count) {
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <a style="${checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}"
+                  <a style="${checkHanChuNhiem == 'false' ? 'display : block' : 'display : none'}"
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">
