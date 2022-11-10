@@ -8,7 +8,6 @@ import com.fpolydatn.core.daotao.model.response.DtMessMonDatnReponse;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 
 import com.fpolydatn.entity.MonDatn;
-import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
