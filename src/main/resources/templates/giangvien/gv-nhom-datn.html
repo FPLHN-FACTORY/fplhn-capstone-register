@@ -75,6 +75,7 @@
             <div>
                 <div class="m-content">
                     <h3>Quản lý nhóm dự án tốt nghiệp </h3>
+                    <input th:value="${mocThoiGianGiangVien}" hidden id="hanGiangVien"></input>
                     <div class="mt-5">
                         <section class="fillter-area  mb-5">
                             <div class="m-portlet">
@@ -106,9 +107,9 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button class="btn btn-primary" onclick="seachNhomdatn()">Tìm
+                                            <a class="btn btn-primary" onclick="seachNhomdatn(0)">Tìm
                                                 kiếm
-                                            </button>
+                                            </a>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a href="#" class="btn btn-danger text-white" onclick="clearDataGVHD();">
@@ -276,8 +277,6 @@
     </div>
 </div>
 <!--   End Modal Update -->
-<p th:text="${mocThoiGianGiangVien}" style="display: none" id="mocthoiGian"></p>
-
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

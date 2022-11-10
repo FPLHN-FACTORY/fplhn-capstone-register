@@ -1,21 +1,13 @@
 const nhomDatnAPI = '/api/giang-vien/nhom-datn';
 const nhomDatnView = '/giang-vien/nhom-datn';
-
+const hanGiangVien = $("#hanGiangVien").val()
 function clearDataGVHD() {
-    $("#tenHocKy").val("");
-    $("#tenChuyenNganh").val("");
-    $("#tenDotDangKy").val("");
+    $("#idMon").val("");
 }
 
 $(document).ready(function () {
 
-    var checkMocThoiGians = $("#mocthoiGian").val()
-    var chucNangs = document.querySelectorAll(".chucNangs")
-    if(checkMocThoiGians == 'false'){
-        for(var i =0; i< chucNangs.length; i++){
-            chucNangs[i].style.display = "none"
-        }
-    }
+
     fillter()
 
 });
@@ -25,7 +17,6 @@ function fillter() {
     $("#idMon").on('change', function () {
         seachNhomdatn(0);
     });
-
 
 }
 
@@ -95,8 +86,7 @@ function seachNhomdatn(index) {
     if (index == undefined) {
         index = 0
     }
-    var checkMocThoiGians = $("#mocthoiGian").val()
-    let monId = $("#idMon").val()
+    var monId = $("#idMon").val()
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -116,20 +106,20 @@ function seachNhomdatn(index) {
                                     <img src="/img/eye-fill.svg">
                          </button>
                  </td>
-                 <td style="${checkMocThoiGians == 'true' ? 'display: block' : 'display: none'}">
+                 <td style="${hanGiangVien == 'true' ? 'display: block' : 'display: none' }">
                         <button onclick= "xacDaNhanLienHe('${item.id}', '${item.maNhom}')"
-                                style="${item.trangThai == 1 ? 'display: block' : 'display: none'}" 
-                                class="btn_check_circle" data-toggle="tooltip" title="Xác nhận nhóm">
+                                style="${item.trangThai == 1 && hanGiangVien == 'true' ? 'display: block' : 'display: none'}" 
+                                class="btn_check_circle " data-toggle="tooltip" title="Xác nhận nhóm">
                                     <img src="/img/check-circle.svg">
                          </button>
                         <button onclick= "chotDeTaiNhomDatn('${item.id}', '${item.maNhom}')"
-                                style="${item.trangThai ==2 ? 'display: block' : (item.trangThai ==3 ? 'display: block' :  'display: none')}"
-                                class="btn_check" data-toggle="tooltip" title="Xác nhận đề tài">
+                                style="${item.trangThai ==2 && hanGiangVien == 'true'  ? 'display: block' : (item.trangThai ==3 && hanGiangVien == 'true'  ? 'display: block' :  'display: none')}"
+                                class="btn_check " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/clipboard-check.svg">
                          </button>
                          <button onclick= "updateTenDeTai('${item.id}')"
-                                style="${item.trangThai ==2 ? 'display: block' : (item.trangThai ==3 ? 'display: block' : (item.trangThai ==4 ? 'display: block' : 'display: none'))}"
-                                class="btn_pencil_square" data-toggle="tooltip" title="Xác nhận đề tài">
+                                style="${item.trangThai ==2 && hanGiangVien == 'true'  ? 'display: block' : (item.trangThai ==3 && hanGiangVien == 'true'  ? 'display: block' : (item.trangThai ==4 && hanGiangVien == 'true'  ? 'display: block' : 'display: none'))}"
+                                class="btn_pencil_square " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/pencil-square.svg">
                          </button>
    
@@ -168,9 +158,8 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
     let maNhom = $("#id_nhom_datn_update").val();
 
     let NhomDatnRequest = {};
-    NhomDatnRequest["tenDeTai"] = tenDeTai;
+    NhomDatnRequest["tenDeTai"] = tenDeTai.trim();
     NhomDatnRequest["maNhom"] = maNhom;
-    console.log(NhomDatnRequest)
     if (tenDeTai.trim().length == 0) {
         $("#errorMessageUpdate").text("Tên đề tài không được để trống");
     } else if (tenDeTai.trim().length < 6) {
