@@ -19,4 +19,10 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
                 WHERE dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
     String genMaNhomTuDong(@Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+                SELECT c.ma_co_so FROM  co_so c 
+                WHERE  c.id = :coSoId
+            """, nativeQuery = true)
+    String getMaCoSo(@Param("coSoId") String coSoId);
 }

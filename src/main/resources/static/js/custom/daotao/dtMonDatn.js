@@ -5,9 +5,12 @@ $(document).ready(function () {
     $("#mon_datn_error").text("");
 });
 
-$("#form_create_mon_datn").submit(function (event) {
-    event.preventDefault();
+function openModalCreate() {
+    $("#modal_create").modal('show');
+}
 
+function create() {
+    event.preventDefault();
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
@@ -42,18 +45,19 @@ $("#form_create_mon_datn").submit(function (event) {
                 bootbox.alert({
                     message: 'Thêm thành công',
                     backdrop: true,
-                    callback: function (e) {
+                    callback: function () {
                         window.open(monDatnView, '_self');
                     }
                 });
             },
             error: function (e) {
-                console.log(e);
-                $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
+                if (e.responseJSON.message != null) {
+                    $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
+                }
             }
         });
     }
-});
+};
 
 function openModalUpdateMonDatn(monDatnId) {
     $("#errorMaMonUpdate").text("");
@@ -76,7 +80,7 @@ function openModalUpdateMonDatn(monDatnId) {
     });
 }
 
-$("#form_mon_datn_update").submit(function (event) {
+function update() {
     event.preventDefault();
     let maMon = $("#ma_mon_datn_update").val();
     let tenMonDatn = $("#ten_mon_datn_update").val();
@@ -109,62 +113,66 @@ $("#form_mon_datn_update").submit(function (event) {
                 bootbox.alert({
                     message: 'Update thành công',
                     backdrop: true,
-                    callback: function (e) {
+                    callback: function () {
                         window.open(monDatnView, '_self');
                     }
                 });
             },
             error: function (e) {
-                $("#errorMaMonUpdate").text("Mã môn đã tồn tại ");
+                if (e.responseJSON.message != null) {
+                    $("#errorMaMonUpdate").text("Mã môn đã tồn tại");
+                }
             }
         });
     }
-});
+};
 
 function openModalRemoveMonDatn(monDatnId) {
     $("#remove_mon_datn").text("");
-    $("#modal_mon_datn_remove").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: monDatnApi + "/" + monDatnId,
-        data: JSON.stringify(monDatnId),
-        dataType: 'json',
-        success: function () {
-            $("#remove_mon_datn").val(monDatnId);
+    bootbox.confirm({
+        title: "Xóa",
+        message: "Bạn chắc chắn xóa không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: monDatnApi + "/" + monDatnId,
+                    data: JSON.stringify(monDatnId),
+                    dataType: 'json',
+                    success: function (responseData) {
+                            bootbox.alert({
+                                message: 'Xóa thành công',
+                                backdrop: true,
+                                callback: function (e) {
+                                    window.open(monDatnView, '_self');
+                                }
+                            });
+                    },
+                    error: function (e) {
+                        if (e.responseJSON.message != null) {
+                            bootbox.alert({
+                                message: '<div style="color: red">Môn đang tồn tại trong đợt đăng ký không thể xóa</div>',
+                                backdrop: true,
+                            });
+                        }
+                    }
+                });
+            }
         }
     });
 }
 
-$("#form_mon_datn_delete").submit(function (event) {
-    event.preventDefault();
-    let monDatnId = $("#remove_mon_datn").val();
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: monDatnApi + "/" + monDatnId,
-        data: JSON.stringify(monDatnId),
-        dataType: 'json',
-        success: function () {
-            $("#modal_mon_datn_remove").modal("hide");
-            bootbox.alert({
-                message: 'Xóa thành công',
-                backdrop: true,
-                callback: function (e) {
-                    window.open(monDatnView, '_self');
-                }
-            });
-        },
-        error: function (e) {
-            $("#remove_mon_datn").text("Không xóa được (môn đang tồn tại trong đợt đăng ký)");
-        }
-    });
-});
-
-function clearModal(){
+function clearModal() {
     $("#ma_mon_datn_error").text("");
     $("#ten_mon_datn_error").text("");
 }
