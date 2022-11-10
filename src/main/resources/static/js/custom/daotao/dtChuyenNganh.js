@@ -14,17 +14,25 @@ function clearForm(){
     $("#chuyen_nganh_create_error").text("");
     $("#chuyen_nganh_error").text("");
 }
-
-$("#form_create_chuyen_nganh").submit(function (event) {
+function create () {
     event.preventDefault();
-    let tenchuyenNganh = $("#tenChuyenNganhAdd").val();
+    let tenChuyenNganh = $("#tenChuyenNganhAdd").val();
     let CNBMId = $("#tenCNBMhAdd").val();
     let chuyenNganhRequest = {};
     chuyenNganhRequest["chuNhiemBoMon"] = CNBMId;
-    chuyenNganhRequest["tenChuyenNganh"] = tenchuyenNganh;
-    if (tenchuyenNganh.trim().length === 0) {
-        $("#chuyen_nganh_error").text("Tên chuyên ngành không được để trống");
-    } else {
+    chuyenNganhRequest["tenChuyenNganh"] = tenChuyenNganh;
+    let index = 0;
+    if (tenChuyenNganh.trim().length === 0) {
+            $("#chuyen_nganh_error").text("Tên chuyên ngành không được để trống");
+            index ++;
+    }
+
+    if (CNBMId == null) {
+        $("#chuyen_nganh_create_error").text("Không có chủ nhiệm bộ môn");
+        index ++;
+    }
+
+    if(index == 0) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -52,7 +60,7 @@ $("#form_create_chuyen_nganh").submit(function (event) {
             }
         });
     }
-});
+};
 
 function openModalUpdateChuyenNganh(chuyenNganhId) {
     $("#modal_update_chuyen_nganh").modal('show');
@@ -74,17 +82,26 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
     });
 }
 
-$("#form_chuyen_nganh_update").submit(function (event) {
+function update() {
     event.preventDefault();
-    let tenchuyennganh = $("#tenChuyenNganhUpdate").val();
+    let tenChuyenNganh = $("#tenChuyenNganhUpdate").val();
     let chuyenNganhId = $("#id_chuyen_nganh_update").val();
     let tenCNBM = $("#tenCNBMhUpdate").val();
     let chuyenNganhrequest = {};
-    chuyenNganhrequest["tenChuyenNganh"] = tenchuyennganh;
+    chuyenNganhrequest["tenChuyenNganh"] = tenChuyenNganh;
     chuyenNganhrequest["chuNhiemBoMon"] = tenCNBM;
-    if (tenchuyennganh.trim().length === 0) {
-        $("#chuyennganhUpdate_error").text("Tên chuyên ngành không được bỏ trống");
-    } else {
+    let index = 0;
+    if (tenChuyenNganh.trim().length === 0) {
+            $("#chuyen_nganh_error").text("Tên chuyên ngành không được để trống");
+            index ++;
+    }
+
+    if (tenCNBM == null) {
+        $("#chuyennganh_error").text("Không có chủ nhiệm bộ môn");
+        index ++;
+    }
+
+    if(index == 0) {
         $.ajax({
             type: "PUT",
             contentType: "application/json",
@@ -109,7 +126,7 @@ $("#form_chuyen_nganh_update").submit(function (event) {
             }
         });
     }
-});
+};
 
 function openModalRemoveChuyenNganh(chuyenNganhId) {
     $("#remove_chuyen_nganh").text("")
@@ -129,7 +146,7 @@ function openModalRemoveChuyenNganh(chuyenNganhId) {
     });
 }
 
-$("#form_chuyen_nganh_delete").submit(function (event) {
+function deleteChuyenNganh() {
     event.preventDefault();
     let chuyenNganhId = $("#remove_chuyen_nganh").val();
 
@@ -153,4 +170,4 @@ $("#form_chuyen_nganh_delete").submit(function (event) {
             $("#remove_chuyen_nganh").text("Chuyên ngành có trong đợt đăng ký");
         }
     });
-});
+};
