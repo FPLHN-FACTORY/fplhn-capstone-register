@@ -33,12 +33,12 @@ function phanCong() {
             $("#modal_create").modal("hide");
             $("#errLoi").text("");
             bootbox.alert({
-                  message: 'Thêm thành công',
-                  backdrop: true,
-                  callback: function () {
-                      window.open(phanCongHuongDanView, '_self');
-                  }
-              });
+              message: 'Thêm thành công',
+              backdrop: true,
+              callback: function () {
+                  window.open(phanCongHuongDanView, '_self');
+              }
+            });
         },
         error: function (e) {
         }
@@ -77,24 +77,23 @@ function openModalRemovePhanCongHuongDan(giangVienHuongDanId, monDatnId) {
         callback: function (result) {
             if (result) {
                 $.ajax({
-                        type: "DELETE",
-                        contentType: "application/json",
-                        url: phanCongHuongDanApi + "?idGiangVien=" + giangVienHuongDanId + "&idMon=" + monDatnId,
-                        data: JSON.stringify(giangVienHuongDanId, monDatnId),
-                        dataType: 'json',
-                        success: function () {
-                            bootbox.alert({
-                                  message: 'Xóa thành công',
-                                  backdrop: true,
-                                  callback: function () {
-                                      window.open(phanCongHuongDanView, '_self');
-                                  }
-                              });
-                        },
-                        error: function (e) {
-                        }
-                    });
-
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: phanCongHuongDanApi + "?idGiangVien=" + giangVienHuongDanId + "&idMon=" + monDatnId,
+                    data: JSON.stringify(giangVienHuongDanId, monDatnId),
+                    dataType: 'json',
+                    success: function () {
+                        bootbox.alert({
+                              message: 'Xóa thành công',
+                              backdrop: true,
+                              callback: function () {
+                                  window.open(phanCongHuongDanView, '_self');
+                              }
+                          });
+                    },
+                    error: function (e) {
+                    }
+                });
             }
         }
     });

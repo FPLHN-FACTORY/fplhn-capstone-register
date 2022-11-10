@@ -93,8 +93,7 @@ function openModalRemovePhanCongHuongDan(giangVienHuongDanId, monDatnId) {
                         },
                         error: function (e) {
                         }
-                    });
-
+                });
             }
         }
     });

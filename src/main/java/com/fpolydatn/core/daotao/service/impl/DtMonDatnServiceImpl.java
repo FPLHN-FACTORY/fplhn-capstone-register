@@ -153,7 +153,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
         list.forEach(createMonDant -> {
             int check = 0;
-            // check mã môn
             if (monDatnHashMap.containsKey(createMonDant.getMaMon())) {
                 returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã đã tồn tại"));
                 check++;

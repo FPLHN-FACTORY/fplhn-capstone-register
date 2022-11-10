@@ -39,7 +39,7 @@ public class DtMonDatnController extends BaseController {
         req.setCoSoId(coSoId);
         PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
-        List<MonDatn> tenNhomMon= monDatnService.findByTenNhomMon();
+        List<MonDatn> tenNhomMon = monDatnService.findByTenNhomMon();
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
