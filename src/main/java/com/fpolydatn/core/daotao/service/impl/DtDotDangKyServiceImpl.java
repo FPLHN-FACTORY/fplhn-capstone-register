@@ -25,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -92,6 +93,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
 
         DotDangKy result = checkDateDotDangKy(request, dtUpdateDotDangKyRequest.getId());
         DotDangKy dotDangKy = dotDangKyCheck.get();
+        dotDangKy.setTenDotDangKy(dtUpdateDotDangKyRequest.getTenDotDangKy());
         dotDangKy.setNgayBatDau(result.getNgayBatDau());
         dotDangKy.setNgayKetThuc(result.getNgayKetThuc());
         dotDangKy.setHanSinhVien(result.getHanSinhVien());
@@ -136,21 +138,31 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Override
     public DotDangKy checkDateDotDangKy(DtBaseDotDangKyRequest request, String id) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
-        Long ngayBatDau = null;
-        Long ngayKetThuc = null;
-        Long hanSinhVien = null;
-        Long hanGiangVien = null;
-        Long hanChuNhiemBoMon = null;
+        Date ngayBatDau = null;
+        Date ngayKetThuc = null;
+        Date hanSinhVien = null;
+        Date hanGiangVien = null;
+        Date hanChuNhiemBoMon = null;
         try {
-            ngayBatDau = sdf.parse(request.getNgayBatDau()).getTime();
-            ngayKetThuc = sdf.parse(request.getNgayKetThuc()).getTime();
-            hanSinhVien = sdf.parse(request.getHanSinhVien()).getTime();
-            hanGiangVien = sdf.parse(request.getHanGiangVien()).getTime();
-            hanChuNhiemBoMon = sdf.parse(request.getHanChuNhiemBoMon()).getTime();
+            ngayBatDau = sdf.parse(request.getNgayBatDau());
+            ngayKetThuc = sdf.parse(request.getNgayKetThuc());
+            hanSinhVien = sdf.parse(request.getHanSinhVien());
+            hanGiangVien = sdf.parse(request.getHanGiangVien());
+            hanChuNhiemBoMon = sdf.parse(request.getHanChuNhiemBoMon());
         } catch (ParseException e) {
             throw new RestApiException(Message.INVALID_DATE);
         }
-        if (ngayKetThuc < ngayBatDau) {
+        ngayBatDau.setSeconds(0);
+        ngayKetThuc.setSeconds(0);
+        hanSinhVien.setSeconds(0);
+        hanGiangVien.setSeconds(0);
+        hanChuNhiemBoMon.setSeconds(0);
+        Long ngayBatDauLong = ngayBatDau.getTime();
+        Long ngayKetThucLong = ngayKetThuc.getTime();
+        Long hanSinhVienLong = hanSinhVien.getTime();
+        Long hanGiangVienLong = hanGiangVien.getTime();
+        Long hanChuNhiemBoMonLong = hanChuNhiemBoMon.getTime();
+        if (ngayKetThucLong < ngayBatDauLong) {
             throw new RestApiException((Message.INVALID_NGAY_KET_THUC));
         }
         List<DotDangKy> listDotDangKy = dtDotDangKyRepository.findAll();
@@ -160,26 +172,27 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
                     continue;
                 }
             }
-            if (ngayBatDau < dotDangKy.getNgayKetThuc()
-                    && ngayKetThuc > dotDangKy.getNgayBatDau()) {
+            if (ngayBatDauLong < dotDangKy.getNgayKetThuc()
+                    && ngayKetThucLong > dotDangKy.getNgayBatDau()) {
                 throw new RestApiException(Message.DOT_DANG_KY_OVERLAP);
             }
         }
-        if (hanSinhVien <= ngayBatDau || hanSinhVien >= ngayKetThuc) {
+        if (hanSinhVienLong <= ngayBatDauLong || hanSinhVienLong >= ngayKetThucLong) {
             throw new RestApiException(Message.INVALID_HAN_SINH_VIEN);
         }
-        if (hanGiangVien <= ngayBatDau || hanSinhVien >= ngayKetThuc || hanGiangVien < hanSinhVien) {
+        if (hanGiangVienLong <= ngayBatDauLong || hanSinhVienLong >= ngayKetThucLong || hanGiangVienLong < hanSinhVienLong) {
             throw new RestApiException(Message.INVALID_HAN_GIANG_VIEN);
         }
-        if (hanChuNhiemBoMon <= ngayBatDau || hanChuNhiemBoMon >= ngayKetThuc || hanChuNhiemBoMon < hanGiangVien || hanChuNhiemBoMon < hanSinhVien) {
+        if (hanChuNhiemBoMonLong <= ngayBatDauLong || hanChuNhiemBoMonLong >= ngayKetThucLong
+                || hanChuNhiemBoMonLong < hanGiangVienLong || hanChuNhiemBoMonLong < hanSinhVienLong) {
             throw new RestApiException(Message.INVALID_HAN_CHU_NHIEM_BO_MON);
         }
         DotDangKy result = new DotDangKy();
-        result.setNgayBatDau(ngayBatDau);
-        result.setNgayKetThuc(ngayKetThuc);
-        result.setHanSinhVien(hanSinhVien);
-        result.setHanGiangVien(hanGiangVien);
-        result.setHanChuNhiemBoMon(hanChuNhiemBoMon);
+        result.setNgayBatDau(ngayBatDauLong);
+        result.setNgayKetThuc(ngayKetThucLong);
+        result.setHanSinhVien(hanSinhVienLong);
+        result.setHanGiangVien(hanGiangVienLong);
+        result.setHanChuNhiemBoMon(hanChuNhiemBoMonLong);
         return result;
     }
 

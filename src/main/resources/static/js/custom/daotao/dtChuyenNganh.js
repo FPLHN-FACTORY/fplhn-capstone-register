@@ -105,9 +105,6 @@ $("#form_chuyen_nganh_update").submit(function (event) {
                 if(e.responseJSON.message == 'Chuyen nganh da ton tai'){
                     $("#chuyennganhUpdate_error").text("Chuyên ngành đã tồn tại trong đợt");
                     $("#chuyennganh_error").text("");
-                }else{
-                    $("#chuyennganh_error").text("Chủ nhiệm bộ môn đang tồn tại trong đợt");
-                    $("#chuyennganhUpdate_error").text("");
                 }
             }
         });

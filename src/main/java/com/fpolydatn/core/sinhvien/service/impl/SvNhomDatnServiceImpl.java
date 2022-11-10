@@ -21,6 +21,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.EmailSender;
 import com.fpolydatn.util.FormUtils;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
@@ -51,8 +52,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Autowired
     private SvSinhVienRepository svSinhVienRepository;
 
-    private final FormUtils formUtils = new FormUtils();
-
     @Autowired
     private NhomDatnHelper nhomDatnHelper;
 
@@ -64,6 +63,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Autowired
     private SvGiangVienHuongDanRepository svGiangVienHuongDanRepository;
+
+    @Autowired
+    private EmailSender emailSender;
 
     @Override
     public List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id) {
@@ -80,7 +82,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     public PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request, String idUser) {
         Optional<SinhVien> sv = svSinhVienRepository.findById(idUser);
         Optional<MonDatn> monDatn = svMonDatnRepository.findById(sv.get().getMonChuongTrinhId());
-        System.out.println("aaaaaaaaaaaa " + monDatn.get().getNhomMonDatnId());
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<SvNhomDatnResponse> res = svNhomDatnRepository.findAllNhomDatn(pageable, request, monDatn.get().getNhomMonDatnId());
         return new PageableObject(res);
@@ -152,7 +153,18 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if (!monDatn.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
-        NhomDatn nhomDatn = formUtils.convertToObject(NhomDatn.class, svNhomDatnRequest);
+        NhomDatn nhomDatn = new NhomDatn();
+        nhomDatn.setGiangVienId(svNhomDatnRequest.getGiangVienId());
+        nhomDatn.setTenDeTai(svNhomDatnRequest.getTenDeTai());
+        nhomDatn.setTenNhom(svNhomDatnRequest.getTenNhom());
+        nhomDatn.setMoTa(svNhomDatnRequest.getMoTa());
+        nhomDatn.setDotDangKyId(svNhomDatnRequest.getDotDangKyId());
+        nhomDatn.setCoSoId(svNhomDatnRequest.getCoSoId());
+        if (svNhomDatnRequest.getMatKhau()) {
+            nhomDatn.setMatKhau(String.valueOf((int) (Math.random() * 100000000)));
+        } else {
+            nhomDatn.setMatKhau(null);
+        }
         nhomDatn.setTruongNhomId(idUser);
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
         nhomDatn.setMaNhom(nhomDatnHelper.genMaNhomTuDong());
@@ -160,6 +172,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         sinhVien.get().setNhomId(nhomDatn.getId());
         sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());
         svSinhVienRepository.save(sinhVien.get());
+        String[] email = new String[]{sinhVien.get().getEmail()};
+        emailSender.sendEmail(email, "[FCR] Thông báo mật khẩu nhóm",
+                "Tạo nhóm thành công", "Mật khẩu nhóm DATN của bạn là: " + nhomDatn.getMatKhau());
         return nhomDatn;
     }
 
@@ -244,6 +259,10 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             throw new RestApiException(Message.TRUONG_NHOM_MOI_KHONG_CUNG_NHOM);
         }
         nhomDatn.get().setTruongNhomId(truongNhomMoi.get().getId());
+        String[] email = new String[]{truongNhomMoi.get().getEmail()};
+        emailSender.sendEmail(email, "[FCR] Thông báo mật khẩu nhóm",
+                "Chuyển quyền trưởng nhóm",
+                "Bạn đã trở thành trưởng nhóm. Mật khẩu nhóm DATN của bạn là: " + nhomDatn.get().getMatKhau());
         svNhomDatnRepository.save(nhomDatn.get());
         return true;
     }
@@ -266,6 +285,17 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         nhomDatn.setGiangVienId(idGiangVien);
         svNhomDatnRepository.save(nhomDatn);
+        return true;
+    }
+
+    @Override
+    public Boolean checkThoiGianRoiNhom(String idUser) {
+        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
+        if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null) {
+            if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+                return false;
+            }
+        }
         return true;
     }
 

@@ -70,4 +70,5 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
             SELECT * FROM chuyen_nganh cn WHERE cn.co_so_id = :coSoId
             """, nativeQuery = true)
     List<ChuyenNganh> getAllByIdCoSo(@Param("coSoId") String coSoId);
+
 }

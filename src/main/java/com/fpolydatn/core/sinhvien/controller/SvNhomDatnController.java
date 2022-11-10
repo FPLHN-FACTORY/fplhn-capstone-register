@@ -59,8 +59,10 @@ public class SvNhomDatnController extends BaseController {
             req.setCoSoId(coSoId );
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUSer);
+            Boolean checkThoiGianRoiNhom = svNhomDatnService.checkThoiGianRoiNhom(idUSer);
             model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer));
             model.addAttribute("page", listNhomDatn);
+            model.addAttribute("checkThoiGianRoiNhom", checkThoiGianRoiNhom);
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,

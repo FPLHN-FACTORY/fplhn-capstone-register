@@ -3,7 +3,6 @@ package com.fpolydatn.core.giangvien.service.impl;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.repository.GvNhomDatnRepository;
@@ -72,14 +71,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     }
 
     @Override
-    public PageableObject<GvNhomDatnResponse> findAllNhomDatnDoiPheDuyet(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnDoiPheDuyet(maGvhd, pageable);
-        System.out.println(responses);
-        return new PageableObject(responses);
-    }
-
-    @Override
     public NhomDatn pheDuyetNhomDatn(GvChotNhomDatnRequest request) {
         Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
         if (Objects.isNull(nhomDatnCheck)) {
@@ -94,13 +85,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_LIEN_HE);
         return nhomDatnRepository.save(nhomDatnCheck.get());
-    }
-
-    @Override
-    public  PageableObject<GvNhomDatnResponse> findAllNhomDatnHuongDan(String maGvhd, final GvFindNhomDatnHuongDanRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<GvNhomDatnResponse> responses = nhomDatnRepository.findAllNhomDatnHuongDan(maGvhd,  pageable);
-        return new PageableObject(responses);
     }
 
     @Override
@@ -124,6 +108,5 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
     public boolean mocThoiGianGiangVienHuongDan() {
         return mocThoiGianCommon.checkMocThoiGianGiangVien();
     }
-
 
 }

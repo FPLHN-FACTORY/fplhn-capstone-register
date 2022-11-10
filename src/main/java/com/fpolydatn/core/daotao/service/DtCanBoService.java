@@ -26,7 +26,7 @@ public interface DtCanBoService {
 
     CanBo create(@Valid DtCreateCanBoRequest canBo);
 
-    public CanBo createcb(CanBo canBo);
+    CanBo createcb(CanBo canBo);
 
     Boolean delete(String id);
 
@@ -36,10 +36,8 @@ public interface DtCanBoService {
 
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
 
-
-    void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException;
-
     RestApiException DtCanBoImport(MultipartFile file, String coSoId) throws IOException;
 
+    void MauImportExcel(HttpServletResponse response, String typeExcel) throws IOException;
 
 }

@@ -4,6 +4,7 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
+import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -60,4 +62,8 @@ public final class DtCanBoRestController extends BaseController {
         canBoService.DtCanBoImport(file,coSoId);
     }
 
+    @GetMapping("/export-mau")
+    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel) throws IOException {
+        canBoService.MauImportExcel(response, typeExcel);
+    }
 }

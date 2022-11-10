@@ -11,6 +11,7 @@
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
 </head>
 <!-- end::Head -->
 
@@ -125,23 +126,21 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div
-                                                th:style="${checkMocThoiGian} == true and ${nhomDatnThamGia[0].getTrangThai()} == 0 and ${checkTruongNhom} == true ? '' : 'display: none'"
+                                                th:style="${checkMocThoiGian} == true
+                                                            and ${nhomDatnThamGia[0].getTrangThai()} == 0
+                                                            and ${checkTruongNhom} == true ? '' : 'display: none'"
                                                >
                                             <button
                                                     type="button" class="btn btn-primary"
                                                     data-toggle="modal"
-                                                    data-target="#modal_doi_ten_de_Tai"
-                                            >Đổi tên đề tài
+                                                    data-target="#modal_doi_ten_de_Tai">
+                                                Đổi tên đề tài
                                             </button>
-                                        </div>
-                                        <div>         </div>
-                                        <div
-                                                th:style="${checkMocThoiGian} == true and ${nhomDatnThamGia[0].getTrangThai()} == 0 and ${checkTruongNhom} == true ? '' : 'display: none'">
                                             <button
                                                     type="button" class="btn btn-primary"
                                                     data-toggle="modal"
-                                                    data-target="#modal_chon_giang_vien"
-                                            >Chọn giảng viên
+                                                    data-target="#modal_chon_giang_vien">
+                                                Chọn GVHG
                                             </button>
                                         </div>
                                     </div>
@@ -161,8 +160,12 @@
                                                 <th width="50px">STT</th>
                                                 <th>Mã Sinh Viên</th>
                                                 <th>Tên Sinh Viên</th>
+                                                <th>Môn Theo Chương Trình</th>
                                                 <th>Chức Vụ</th>
-                                                <th th:style="${checkTruongNhom} == false and ${checkMocThoiGian} == false ? 'display:none' : 'display:block'">
+                                                <th
+                                                    th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
+                                                                (${checkTruongNhom} == false ? 'display:none' : 'display:block')"
+                                                >
                                                     Chức năng
                                                 </th>
                                                 </thead>
@@ -172,15 +175,20 @@
                                                         <td th:text="${SvNhomDatn.getStt()}"></td>
                                                         <td th:text="${SvNhomDatn.getMaSinhVien()}"></td>
                                                         <td th:text="${SvNhomDatn.getTenSinhVien()}"></td>
+                                                        <td th:text="${SvNhomDatn.getTenMonChuongTrinh()}"></td>
                                                         <td th:text="${SvNhomDatn.getChucVu()} == 1 ? 'Trưởng nhóm' : 'Thành viên'"></td>
                                                         <td
-                                                                th:style="${SvNhomDatn.getChucVu()} == 1 or ${checkMocThoiGian} == false and ${checkTruongNhom} == false ? 'display:none' : 'display: block'"
+                                                                th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
+                                                                            (${checkTruongNhom} == false ? 'display:none' :
+                                                                            (${SvNhomDatn.getChucVu()} == 1 ? 'display: none' : 'display: block'))"
                                                         >
                                                             <button
-                                                                    class="btn btn-primary"
+                                                                    class="btn_change_role"
+                                                                    data-toggle="tooltip"
+                                                                    title="Chuyển quyền trưởng nhóm"
                                                                     th:attr="onclick=|chuyenQuyenTruongNhom('${SvNhomDatn.getIdSinhVien()}', '${SvNhomDatn.getTenSinhVien()}')|"
                                                             >
-                                                                Chuyển quyền trưởng nhóm
+                                                                <img th:src="@{/img/change-role.svg}">
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -188,7 +196,9 @@
                                                 </tbody>
                                             </table>
                                             <div
-                                                    th:style="${checkMocThoiGian} == false or ${soThanhVien} != 1 and ${checkTruongNhom} == true ? 'display:none' : 'display:block'"
+                                                    th:style="${checkMocThoiGian} == false ? 'display:none' :
+                                                                (${soThanhVien} == 1 ? 'display: block' :
+                                                                (${checkTruongNhom} == true ? 'display:none' : 'display:block'))"
                                                    >
                                                 <button
                                                         class="btn btn-danger text-white"

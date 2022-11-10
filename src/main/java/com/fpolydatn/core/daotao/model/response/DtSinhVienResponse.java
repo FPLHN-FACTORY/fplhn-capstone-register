@@ -18,4 +18,7 @@ public interface DtSinhVienResponse {
     @Value("#{target.ten_sinh_vien}")
     String getTenSinhVien();
 
+    @Value("#{target.chuc_vu}")
+    Integer getChucVu();
+
 }

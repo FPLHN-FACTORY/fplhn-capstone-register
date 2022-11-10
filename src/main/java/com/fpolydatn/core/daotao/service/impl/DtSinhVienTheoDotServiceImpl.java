@@ -14,10 +14,9 @@ import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
+import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
-import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
-import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.apache.poi.ss.usermodel.Cell;
@@ -67,7 +66,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Autowired
     private CommonHelper commonHelper;
 
-    private List<DtSinhVienTheoDotResponse> list;
 
     private HashMap<String, String> map;
 
@@ -89,14 +87,12 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<DtSinhVienTheoDotResponse> res = sinhVienRepository.searchStudent(request, pageable);
-        list = res.stream().toList();
         return new PageableObject<>(res);
     }
 
     public boolean checkTypeFile(MultipartFile file) {
         String filename = file.getName();
         String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
-
         String excel = "xls";
         if (!extension.equals(excel)) {
             return false;
@@ -109,10 +105,25 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=QLSinhVienFpoly" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (request.getIdDotDangKy() == null) {
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
+        } else if (request.getIdDotDangKy().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
+        }
+
+        List<DtSinhVienTheoDotResponse> list = sinhVienRepository.exportExcel(request);
         DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(list);
         dtSinhVienExport.exportData(response);
     }
@@ -122,7 +133,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=MauImportExcel" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
@@ -139,9 +149,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         List<DtCreateSinhVienTheoDotRequest> sinhVienList = sinhVienTheoDotImport.importData(file);
         List<SinhVien> listSinhVienEntity = new ArrayList<>();
         map = new HashMap<>();
-
         addDataInMap(map, coSoId);
-
         sinhVienList.parallelStream().forEach(sinhVien -> {
             SinhVien sinhVienEntity = new SinhVien();
             if (map.get(sinhVien.getMaSinhVien()) != null) {
@@ -252,6 +260,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
         response.setStatus(true);
         List<String> listMsvLoai = new ArrayList<>();
+        List<String> listNhomDatnId = new ArrayList<>();
         int columnIndex = -1;
         try {
             Workbook workbook = StreamingReader.builder()
@@ -281,6 +290,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         List<SinhVien> listSvKhongDat = new ArrayList<>();
         Map<String, SinhVien> mapSinhVien = new HashMap<>();
         List<SinhVien> listSinhVien = sinhVienRepository.findAllSinhVienByDotDangKyId(request.getDotDangKyId(),
@@ -288,24 +298,59 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         listSinhVien.stream().forEach(sinhVien -> {
             mapSinhVien.put(sinhVien.getMaSinhVien(), sinhVien);
         });
-
+        List<NhomDatn> listNhomDatnDoiTruongNhom = new ArrayList<>();
+        List<NhomDatn> listNhomDatnDelete = new ArrayList<>();
+        List<NhomDatn> listNhomDatn = nhomDatnTheoDotRepository.findAllByDotDangKyId(request.getDotDangKyId(), request.getCoSoId());
+        Map<String, NhomDatn> mapNhomDatn = new HashMap<>();
+        listNhomDatn.stream().forEach(nhomDatn -> {
+            mapNhomDatn.put(nhomDatn.getTruongNhomId(), nhomDatn);
+        });
         listMsvLoai.parallelStream().forEach(msv -> {
             SinhVien sv = mapSinhVien.get(msv);
-            if (sv != null) {
-                if (sv.getTrangThai() == TrangThaiSinhVien.DU_DIEU_KIEN) {
-                    sv.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
-                    listSvKhongDat.add(sv);
-                }
-            } else {
+            if (sv == null) {
                 response.setStatus(false);
                 response.setMessage("Mã sinh viên " + msv + " không tồn tại");
                 return;
             }
+            if (sv.getTrangThai() == TrangThaiSinhVien.DU_DIEU_KIEN) {
+                sv.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                listSvKhongDat.add(sv);
+            }
+            if (sv.getNhomId() != null) {
+                NhomDatn nhomDatn = mapNhomDatn.get(sv.getId());
+                if (nhomDatn != null) {
+                    boolean check = true;
+                    for (SinhVien sinhVien:  listSinhVien) {
+                        if (nhomDatn.getId().equals(sinhVien.getNhomId()) && !sinhVien.getId().equals(sv.getId())) {
+                            nhomDatn.setTruongNhomId(sinhVien.getId());
+                            check = false;
+                            break;
+                        }
+                    }
+                    if (check) {
+                        listNhomDatnDelete.add(nhomDatn);
+                    } else {
+                        listNhomDatnDoiTruongNhom.add(nhomDatn);
+                    }
+                }
+                sv.setNhomId(null);
+                sv.setMonDatnId(null);
+            }
         });
+        if (listNhomDatnDelete.size() != 0) {
+            nhomDatnTheoDotRepository.deleteAll(listNhomDatnDelete);
+        }
+        if (listNhomDatnDoiTruongNhom.size() != 0) {
+            nhomDatnTheoDotRepository.saveAll(listNhomDatnDoiTruongNhom);
+        }
         if (response.getStatus()) {
             sinhVienRepository.saveAll(listSvKhongDat);
         }
         return response;
     }
 
+    @Override
+    public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId) {
+        return sinhVienRepository.searchStudentById(id, coSoId);
+    }
 }
