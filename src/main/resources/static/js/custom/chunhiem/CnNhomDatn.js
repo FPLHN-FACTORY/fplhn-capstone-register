@@ -10,6 +10,11 @@ function submitModal() {
     $("#modal_confirm_success").modal('hide')
 }
 
+$("#form_list_nhom_datn").submit(function (event) {
+    event.preventDefault();
+    loadDataNhomDatn(0);
+})
+
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 });
@@ -229,7 +234,6 @@ document.querySelector("#checkbox_father").addEventListener("change", function (
     }
 })
 
-
 function checkBoxSonListener() {
     var checkboxFather = document.querySelector("#checkbox_father")
     checkboxFather.checked = check();
@@ -381,7 +385,6 @@ $("#form_create_nhom_datn").submit(function (event) {
             data: JSON.stringify(nhomDatnRequest),
             dataType: 'json',
             success: function () {
-                // window.open(CNNhomDatnView, '_self');
                 loadDataNhomDatn(0)
                 $("#modal_create").modal("hide");
             },
@@ -417,6 +420,10 @@ function openModalExport() {
     $("#modal_excel").modal('show')
 }
 
+function openModalImport() {
+    $("#modal_import_excel").modal('show')
+}
+
 function exportFile() {
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
@@ -425,9 +432,9 @@ function exportFile() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/chu-nhiem/nhom-datn/export?typeExcel=" + typeExcel,
+            url: CNNhomDatnApi + "/export?typeExcel=" + typeExcel,
             success: function () {
-                window.open("/api/chu-nhiem/nhom-datn/export?typeExcel=" + typeExcel, '_self');
+                window.open(CNNhomDatnApi + "/export?typeExcel=" + typeExcel, '_self');
                 $("#modal_excel").modal('hide')
             },
             error: function (e) {
@@ -447,7 +454,7 @@ function importExcel() {
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         $.ajax({
                 type: 'POST',
-                url: '/api/chu-nhiem/nhom-datn/import',
+                url: CNNhomDatnApi + '/import',
                 enctype: 'multipart/form-data',
                 processData: false,
                 data: new FormData(form),
@@ -456,11 +463,13 @@ function importExcel() {
                 success: function (response) {
                     if (response.data.status == true) {
                         $("#messNotification").text("Import file excel thành công");
+                        loadDataNhomDatn(0);
                     } else {
                         $("#messNotification").text(response.data.message);
                     }
                     $('#modal_import_excel').modal("hide");
                     $("#modal_notification").modal("show");
+                    loadDataNhomDatn(0)
                 },
                 error: function (e) {
                     console.log("ERROR : ", e);
@@ -475,7 +484,6 @@ function importExcel() {
 function reload() {
     window.open('/chu-nhiem/nhom-datn', '_self');
 }
-
 
 genPagingAndFillColor()
 
@@ -511,11 +519,6 @@ function genPagzing() {
     }
     $("#page").html(templateHtml);
 }
-
-$("#form_list_nhom_datn").submit(function (event) {
-    event.preventDefault();
-    loadDataNhomDatn(0);
-})
 
 function loadDataNhomDatn(count) {
 

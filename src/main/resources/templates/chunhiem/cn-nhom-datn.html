@@ -176,20 +176,17 @@
                                                 Xác nhận
                                             </button>
                                             <button class="col-8 col-sm-4 col-md-2 btn btn-success"
-                                                    th:attr="onclick=|openModalExport()|"
-                                            >
-                                                <img th:src="@{/img/export.svg}">
+                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
+                                                    th:attr="onclick=|openModalExport()|">
                                                 Export
                                             </button>
-                                            <button class="col-8 col-sm-4 col-md-2 btn btn-success"
-                                                    data-toggle="modal"
-                                                    data-target="#modal_import_excel"
-                                            >
-                                                <img th:src="@{/img/import.svg}">
+                                            <button th:attr="onclick=|openModalImport()|"
+                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
+                                                    class="col-8 col-sm-4 col-md-2 btn btn-success">
                                                 Import
                                             </button>
                                             <!--                                            modal export-->
-                                            <div class="modal fade "
+                                            <div class="modal fade"
                                                  id="modal_excel"
                                                  tabindex="-1"
                                                  aria-labelledby="exampleModalLabel"
@@ -229,7 +226,7 @@
                                                 </div>
                                             </div>
                                             <!--                                            import excel-->
-                                            <div class="modal fade "
+                                            <div class="modal fade"
                                                  id="modal_import_excel"
                                                  tabindex="-1"
                                                  aria-labelledby="exampleModalLabel"
@@ -706,8 +703,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" th:attr="onclick=|reload()|">OK
-                </button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" th:attr="onclick=|reload()|">OK</button>
             </div>
         </div>
     </div>
