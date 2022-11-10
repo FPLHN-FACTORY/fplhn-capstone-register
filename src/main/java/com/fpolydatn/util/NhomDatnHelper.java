@@ -28,11 +28,11 @@ public class NhomDatnHelper {
     @Synchronized
     public String genMaNhomTuDong() {
         String coSoId = session.getCoSoId();
-        String text = nhomDatnRepository.genMaNhomTuDong(coSoId);
+        String text = nhomDatnRepository.getMaCoSo(coSoId);
         System.out.println(text);
         String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
         int count = Integer.parseInt(nhomDatnRepository.genMaNhomTuDong(dotDangKyHienTai));
         count++;
-        return text + count;
+        return text + "_" + count;
     }
 }
