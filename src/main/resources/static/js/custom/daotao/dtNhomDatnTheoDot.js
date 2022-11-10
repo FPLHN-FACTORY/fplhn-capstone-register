@@ -133,10 +133,10 @@ function loadDataNhomDatn(count) {
                 <td>${item.stt}</td>
                 <td>${item.maNhom}</td>
                 <td>${item.tenMonDatn}</td>
-                <td>${item.tenDeTai}</td>
+                <td>${item.tenDeTai != null ? item.tenDeTai : 'Chưa có'}</td>
                 <td>${item.tenChuyenNganh}</td>
                 <td>${item.countSinhVien}/7</td>
-                <td>${item.tenGvhd}-${item.tenTaiKhoan}</td>
+                <td>${item.tenGvhd != null ? item.tenGvhd + ' - ' + item.tenTaiKhoan : 'Chưa có'}</td>
                 
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                
                 <td>

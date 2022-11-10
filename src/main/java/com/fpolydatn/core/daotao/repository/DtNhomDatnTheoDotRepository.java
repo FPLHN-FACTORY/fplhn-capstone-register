@@ -30,8 +30,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
             OR f.id = :#{#req.chuyenNganhId})
-            AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
-            OR g.id = :#{#req.dotDangKyId})
+            AND g.id = :#{#req.dotDangKyId}
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND b.co_so_id = :#{#req.coSoId}
@@ -49,8 +48,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
             OR f.id = :#{#req.chuyenNganhId})
-            AND (:#{#req.dotDangKyId} IS NULL OR :#{#req.dotDangKyId} LIKE ''
-            OR g.id = :#{#req.dotDangKyId})
+            AND g.id = :#{#req.dotDangKyId}
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND b.co_so_id = :#{#req.coSoId}
