@@ -142,7 +142,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
             monDatnRepository.saveAll(list);
         }
-        if(returnList.size() ==0) {
+        if (returnList.size() == 0) {
             return new DtMessMonDatnReponse(true, null);
         }
         return new DtMessMonDatnReponse(false, returnList);
@@ -156,16 +156,16 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             // check mã môn
             if (monDatnHashMap.containsKey(createMonDant.getMaMon())) {
                 returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã đã tồn tại"));
-                check ++;
+                check++;
             } else if (createMonDant.getMaMon().trim().length() == 0) {
                 returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được để trống"));
-                check ++;
+                check++;
             } else if (createMonDant.getMaMon().trim().length() > 10) {
                 returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được quá 10 ký tự"));
-                check ++;
+                check++;
             } else if (createMonDant.getMaMon().indexOf(" ") > 0) {
                 returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
-                check ++;
+                check++;
             }
 
             if (createMonDant.getTenMonDatn().trim().length() == 0) {
@@ -191,14 +191,14 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 returnList.add(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm môn không được để trống"));
                 check++;
             } else if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
-                returnList.add( formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
+                returnList.add(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
                 check++;
-            } else if(!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
-                returnList.add( formErrors("F" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
+            } else if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
+                returnList.add(formErrors("F" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
                 check++;
             }
 
-            if (check==0) {
+            if (check == 0) {
                 MonDatn monDatn = new MonDatn();
                 monDatn.setMaMon(createMonDant.getMaMon());
                 monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
@@ -271,7 +271,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             chuyenNganhHashMap.put(x.getTenChuyenNganh(), x);
         }
 
-        for (MonDatn e: monDatnRepository.getListNhomMonDatn(coSoId)) {
+        for (MonDatn e : monDatnRepository.getListNhomMonDatn(coSoId)) {
             nhomMonDatnHashMap.put(e.getMaMon(), e);
         }
 
