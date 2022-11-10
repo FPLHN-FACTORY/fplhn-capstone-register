@@ -25,7 +25,7 @@ public interface CanBoRepository extends JpaRepository<CanBo, String> {
                                                          @Param("vaiTro") int vaiTro);
 
     @Query(value = """
-            SELECT cb.id, cb.ten_can_bo AS 'name'
+            SELECT cb.id, cb.ten_can_bo AS 'name', cb.mat_khau as password
             FROM can_bo cb INNER JOIN co_so cs
             ON cb.co_so_id = cs.id
             WHERE cb.co_so_id = :coSoId

@@ -45,7 +45,7 @@ dependencies {
     implementation group: 'com.github.pjfanning', name: 'excel-streaming-reader', version: '4.0.1'
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.1.0.RELEASE'
+//    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.1.0.RELEASE'
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '1.2.5.RELEASE'

@@ -53,9 +53,7 @@
                                     </th:block>
                                 </select>
                             </div>
-                            <div th:text="${session.messageError}" id="error" class="error" style="font-size: 0.9rem;
-    padding-left: 1.6rem;">
-                            </div>
+
                             <div class="kt-login__divider" style="margin: 15px 0">
                                 <div class="kt-divider">
                                     <span></span>
@@ -63,9 +61,10 @@
                                     <span></span>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-danger kt-btn btn-block kt-login__options text-center">
-                                Google
+                            <button type="submit" >
+                                Login
                             </button>
+
                         </form>
                     </div>
                 </div>
@@ -86,7 +85,7 @@
             data: JSON.stringify(coSoSelected),
             dataType: 'json',
             success: function () {
-                window.open("/oauth2/authorization/google", '_self');
+                window.open("/authentication/login", '_self');
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -94,5 +93,5 @@
         });
     });
 </script>
-</body>
+</body
 </html>

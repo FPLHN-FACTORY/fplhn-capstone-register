@@ -9,4 +9,7 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(types = {})
 public interface SimpleEntityProj extends IsIdentified {
     String getName();
+
+    String getPassword();
+
 }

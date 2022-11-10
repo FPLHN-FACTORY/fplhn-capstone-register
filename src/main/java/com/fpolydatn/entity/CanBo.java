@@ -38,6 +38,9 @@ public class CanBo extends MultiTenantEntity implements Serializable {
     private String emailFe;
 
     @Column
+    private String password;
+
+    @Column
     private VaiTro vaiTro;
 
 }

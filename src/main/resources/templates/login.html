@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8"/>
+
+    <title>FPT Polytechnic</title>
+    <meta name="description" content="Login page example">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--begin::Page Custom Styles(used by this page) -->
+    <link href="https://gv.poly.edu.vn/theme/admin_v1/css/demo1/pages/login/login-3.css" rel="stylesheet"
+          type="text/css"/>
+    <!--end::Page Custom Styles -->
+
+    <!--begin::Global Theme Styles(used by all pages) -->
+    <link href="https://gv.poly.edu.vn/theme/admin_v1/vendors/global/vendors.bundle.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://gv.poly.edu.vn/theme/admin_v1/css/demo1/style.bundle.css" rel="stylesheet" type="text/css"/>
+    <!--end::Global Theme Styles -->
+    <link href="https://gv.poly.edu.vn/css/web.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://gv.poly.edu.vn/images/favicon.ico"/>
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
+</head>
+<!-- end::Head -->
+<body>
+<form th:action="@{/authentication/login}" method="GET" style="max-width: 400px; margin: 0 auto;">
+    <div class="border border-secondary rounded p-3">
+        <!--        <div th:if="${param.error}">-->
+        <!--            <p class="text-danger">Invalid username or password.</p>-->
+        <!--        </div>-->
+        <!--        <div th:if="${param.logout}">-->
+        <!--            <p class="text-warning">You have been logged out.</p>-->
+        <!--        </div>-->
+        <div>
+            <p><input type="email" name="email" required class="form-control" placeholder="E-mail" /></p>
+        </div>
+                <div>
+                    <p><input type="password" name="pass" required class="form-control" placeholder="Password" /></p>
+                </div>
+        <div>
+            <p><input type="submit" value="Login" class="btn btn-primary" /></p>
+        </div>
+    </div>
+</form>
+</body>
+</html>

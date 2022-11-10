@@ -5,10 +5,16 @@ import com.fpolydatn.infrastructure.constant.SessionConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.servlet.http.HttpSession;
@@ -20,17 +26,36 @@ import java.util.Objects;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-public class SecurityConfig {
+public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserService userService;
+    private CustomerUserService customerUserService;
 
-    @Autowired
-    private HttpSession session;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(customerUserService);
+        return auth;
+    }
 
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.userDetailsService(customerUserService);
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/authentication/*", "/")
                 .permitAll()
@@ -42,33 +67,13 @@ public class SecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .oauth2Login()
-                .successHandler((request, response, authentication) -> {
-                    CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
-                    String role = (String) session.getAttribute(SessionConstant.ROLE);
-                    String coSoID = (String) session.getAttribute(SessionConstant.CO_SO_ID);
-                    if (Objects.isNull(role) || Objects.isNull(coSoID)) {
-                        response.sendRedirect("/");
-                    } else {
-                        userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), role);
-                    }
-                })
-                .failureUrl("/authentication")
+                .formLogin()
+                .loginPage("/authentication/login")
+                .usernameParameter("email")
+                .passwordParameter("pass")
+//                .loginProcessingUrl("/chu-nhiem/dot-dang-ky/sinh-vien")
+                .failureUrl("/authenticationication/login")
                 .and()
-                .logout()
-                .logoutUrl("/doLogout")
-                .logoutSuccessUrl("/")
-                .permitAll().invalidateHttpSession(true)
-                .and()
-                .exceptionHandling().accessDeniedPage("/authentication/403");
-
-        http.headers().frameOptions().sameOrigin();
-        return http.build();
+                .logout().invalidateHttpSession(true).permitAll().and().csrf().disable().cors();
     }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**", "/css/**");
-    }
-
 }
