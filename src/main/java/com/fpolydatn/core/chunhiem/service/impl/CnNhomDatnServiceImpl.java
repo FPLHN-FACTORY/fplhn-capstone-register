@@ -339,7 +339,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 listSinhVienEntity.get(i).setMonDatnId(null);
             }
         }
-
         Map<String, NhomDatn> listNhomDatnCreate = new HashMap<>();
         for (int i = 0; i < listMaNhomCreate.size(); i++) {
             NhomDatn nhomDatn = new NhomDatn();
@@ -347,8 +346,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             nhomDatn.setCoSoId(coSoId);
             nhomDatn.setDotDangKyId(dotDangKyId);
             nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
-            if(mapSinhVienTaoNhom.get(listMaNhomCreate.get(i)).getChucVu().equalsIgnoreCase("Trưởng nhóm")){
-                nhomDatn.setTruongNhomId(mapSinhVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaSinhVien()).getId());
+            for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapTruongNhomCreate.entrySet()){
+                if(xx.getValue().getChucVu().equalsIgnoreCase("Trưởng nhóm")){
+                    nhomDatn.setTruongNhomId(mapSinhVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaSinhVien()).getId());
+                }
             }
             listNhomDatnCreate.put(nhomDatn.getTruongNhomId(), nhomDatn);
         }
@@ -360,6 +361,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 truongNhomCreate.setNhomId(listNhomDatnCreate.get(truongNhomCreate.getId()).getId());
                 if(xx.getValue().getMaNhom().equals(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaNhom())){
                     mapSinhVien.get(xx.getValue().getMaSinhVien()).setNhomId(truongNhomCreate.getNhomId());
+                    mapSinhVien.get(xx.getValue().getMaSinhVien()).setMonDatnId(truongNhomCreate.getMonDatnId());
                     listSinhVienEntity.add(mapSinhVien.get(xx.getValue().getMaSinhVien()));
                 }
                 listSinhVienEntity.add(truongNhomCreate);
