@@ -37,11 +37,14 @@ public class CnSinhVienTheoDotController extends BaseController {
     @GetMapping
     public String viewSinhVienTheoDot(Model model, final CnFindSinhVienTheoDotRequest req){
         req.setIdDotDangKy(commonHelper.getDotDangKyHienTai());
+        boolean checkHanChuNhiem = false;
+        if(req.getIdDotDangKy() != null){
+            checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
+        }
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
         PageableObject<CnSinhVienTheoDotResponse> pageSinhVien = cnSinhVienTheoDotService.searchByIdDotDangKy(req);
-        boolean checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
         model.addAttribute("page",pageSinhVien);
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("checkHanChuNhiem", checkHanChuNhiem);

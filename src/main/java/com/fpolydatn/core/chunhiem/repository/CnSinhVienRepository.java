@@ -46,6 +46,9 @@ public interface CnSinhVienRepository extends SinhVienRepository {
     @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien LIKE :maSinhVien AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
     String getIdSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien, @Param("dotDangKyId") String dotDangKyId);
 
+    @Query(value = "SELECT * FROM sinh_vien WHERE ma_sinh_vien LIKE :maSinhVien AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
+    SinhVien getSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien, @Param("dotDangKyId") String dotDangKyId);
+
     @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien = :maSinhVien AND nhom_id IS NULL AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
     String getIdByMaSinhVienAndMaNhom(@Param("maSinhVien") String maSinhVien, @Param("dotDangKyId") String dotDangKyId);
 
@@ -146,4 +149,16 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             """, nativeQuery = true)
     String checkMonTuongDuong(@Param("monDatnId") String monDatnId, @Param("sinhVienId") String sinhVienId, @Param("dotDangKyId") String dotDangKyId);
 
+    @Query(value = """
+            SELECT * FROM sinh_vien a LEFT JOIN chuyen_nganh b ON a.chuyen_nganh_id = b.id
+            WHERE a.dot_dang_ky_id = :dotDangKyId AND a.co_so_id = :coSoId AND b.chu_nhiem_bo_mon = :idChuNhiem
+            """, nativeQuery = true)
+    List<SinhVien> getALlSinhVienByIdChuNhiem(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId, @Param("idChuNhiem") String idChuNhiem);
+
+    @Query(value = """
+            SELECT * FROM sinh_vien a LEFT JOIN chuyen_nganh b ON a.chuyen_nganh_id = b.id
+            LEFT JOIN nhom_datn c ON a.nhom_id = c.id WHERE c.truong_nhom_id = a.id 
+            AND a.dot_dang_ky_id = :dotDangKyId AND a.co_so_id = :coSoId AND b.chu_nhiem_bo_mon = :idChuNhiem
+            """, nativeQuery = true)
+    List<SinhVien> getALlTruongNhomByIdChuNhiem(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId, @Param("idChuNhiem") String idChuNhiem);
 }

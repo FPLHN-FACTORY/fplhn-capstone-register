@@ -36,13 +36,16 @@ public class CnSinhVienTheoNhomController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setIdNhom(id);
         req.setCoSoId(coSoId);
+        boolean checkHanChuNhiem = false;
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        if(req.getDotDangKyId() != null){
+            checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
+        }
         request.setCoSoId(session.getCoSoId());
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         request.setIdNhom(req.getIdNhom());
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         List<CnSinhVienSearchResponse> listSinhVienNoGroup = sinhVienTheoNhomService.getListSinhVienNoGroup(request);
-        boolean checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
         model.addAttribute("soThanhVien", sinhVienTheoNhomService.getSizeListSinhVien(id, coSoId));
         model.addAttribute("page", pageSinhVien);
         model.addAttribute("idNhom",req.getIdNhom());

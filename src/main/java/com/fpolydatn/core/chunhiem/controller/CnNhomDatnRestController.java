@@ -1,15 +1,19 @@
 package com.fpolydatn.core.chunhiem.controller;
 
 import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
+import com.fpolydatn.core.chunhiem.model.response.CnSinhVienImport;
 import com.fpolydatn.core.chunhiem.service.CnGiangVienHuongDanService;
 import com.fpolydatn.core.chunhiem.service.CnMonDatnService;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
+import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +25,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author thangncph26123
@@ -46,7 +54,9 @@ public class CnNhomDatnRestController extends BaseController {
         String coSoId = session.getCoSoId();
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
-        req.setDotDangKyId(dotDangKyId);
+        if (dotDangKyId != null) {
+            req.setDotDangKyId(dotDangKyId);
+        }
         PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req, session.getUserId());
         return new ResponseObject(listNhomDatn);
     }
@@ -84,7 +94,7 @@ public class CnNhomDatnRestController extends BaseController {
     }
 
     @GetMapping("/list-sinh-vien-no-group")
-    public ResponseObject getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
+    public ResponseObject getlistNhomDatnNoGroup(final CnFindSinhVienNoGroupRequest req) {
         req.setCoSoId(session.getCoSoId());
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         return new ResponseObject(nhomDatnService.getListSinhVienNoGroup(req));
@@ -100,7 +110,21 @@ public class CnNhomDatnRestController extends BaseController {
     public ResponseObject getAllGvhdByIdMon(@RequestParam("idMon") String idMon) {
         String coSoId = session.getCoSoId();
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        return new ResponseObject(cnGiangVienHuongDanService.getGiangVienHuongDanByIdMonDatn(idMon,coSoId,dotDangKyId));
+        return new ResponseObject(cnGiangVienHuongDanService.getGiangVienHuongDanByIdMonDatn(idMon, coSoId, dotDangKyId));
+    }
+
+    @GetMapping("/export")
+    public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, CnFindNhomDatnRequest request) throws IOException {
+        request.setCoSoId(session.getCoSoId());
+        nhomDatnService.CnSinhVienExport(response, typeExcel, request);
+    }
+
+    @PostMapping("/import")
+    public ResponseObject importExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        CnSinhVienImport response = nhomDatnService.CnSinhVienImport(file,dotDangKyId, coSoId, session.getUserId());
+        return new ResponseObject(response);
     }
 
 }
