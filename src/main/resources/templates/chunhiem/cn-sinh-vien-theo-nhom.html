@@ -144,11 +144,11 @@
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead>
                                                 <th width="50px">STT</th>
-                                                <th>Mã số sinh viên</th>
+                                                <th >Mã số sinh viên</th>
                                                 <th>Họ tên</th>
-                                                <th>Chuyên ngành</th>
-                                                <th>Đợt đăng ký</th>
-                                                <th>Tên nhóm</th>
+                                                <th>Môn chương trình</th>
+                                                <th>Môn đăng ký</th>
+                                                <th width="70px">Tên nhóm</th>
                                                 <th width="200px">Giáo viên hướng dẫn</th>
                                                 <th th:style="${checkHanChuNhiem} == true ? '' : 'display: none'">Chức năng</th>
                                                 </thead>
@@ -158,8 +158,8 @@
                                                         <td th:text="${sinhVienResponse.getStt()}"></td>
                                                         <td th:text="${sinhVienResponse.maSinhVien}"></td>
                                                         <td th:text="${sinhVienResponse.tenSinhVien}"></td>
-                                                        <td th:text="${sinhVienResponse.tenChuyenNganh}"></td>
-                                                        <td th:text="${sinhVienResponse.tenDotDangKy}"></td>
+                                                        <td th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
+                                                        <td th:text="${sinhVienResponse.maMonDuAn}"></td>
                                                         <td th:text="${sinhVienResponse.tenNhom}==null ? 'Chưa có' : (${sinhVienResponse.tenNhom})"></td>
                                                         <td th:switch="${sinhVienResponse.tenGvhd}">
                                                             <p th:case=null>Chưa có </p>

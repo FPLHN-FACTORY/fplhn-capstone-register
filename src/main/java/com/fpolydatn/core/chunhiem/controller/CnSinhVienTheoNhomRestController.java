@@ -29,6 +29,7 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @Autowired
     private CommonHelper commonHelper;
 
+
     @DeleteMapping("")
     public ResponseObject updateSinhVienByNhom(@RequestParam("maSinhVien") String maSinhVien, @RequestParam("idNhom") String idNhom) {
         return new ResponseObject(sinhVienTheoNhomService.deleteFromIdSinhVien(idNhom, maSinhVien, session.getCoSoId()));
