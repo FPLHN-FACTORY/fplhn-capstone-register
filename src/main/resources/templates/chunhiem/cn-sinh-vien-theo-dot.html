@@ -63,7 +63,7 @@
                                         <div class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center "
                                         >
                                             <span for="" class="fillter-name col-4 text-right">Đợt đăng ký</span>
-                                            <select class="form-control col-10"
+                                            <select   class="form-control col-10"
                                                     id="dotDangKyId">
                                                 <option value="" hidden>Chọn đợt đăng ký</option>
                                                 <option th:each="item : ${listDotDangKy}"
@@ -153,7 +153,7 @@
                                                                data-toggle="modal"
                                                                th:attr="onclick=|openModalAddSinhVien('${sinhVien.maSinhVien}','${page.currentPage}')|"
                                                                class=" btn btn-success">
-                                                                Thêm nhóm
+                                                                <img th:src="@{/img/pencil-square.svg}">
                                                             </a>
                                                             <p th:case="*" th:text="${sinhVien.maNhom}"></p>
                                                         </td>
