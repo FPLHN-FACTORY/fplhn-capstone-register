@@ -5,9 +5,12 @@ $(document).ready(function () {
     $("#mon_datn_error").text("");
 });
 
-$("#form_create_mon_datn").submit(function (event) {
-    event.preventDefault();
+function openModalCreate() {
+    $("#modal_create").modal('show');
+}
 
+function create() {
+    event.preventDefault();
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
@@ -42,18 +45,19 @@ $("#form_create_mon_datn").submit(function (event) {
                 bootbox.alert({
                     message: 'Thêm thành công',
                     backdrop: true,
-                    callback: function (e) {
+                    callback: function () {
                         window.open(monDatnView, '_self');
                     }
                 });
             },
             error: function (e) {
-                console.log(e);
-                $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
+                if (e.responseJSON.message != null) {
+                    $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
+                }
             }
         });
     }
-});
+};
 
 function openModalUpdateMonDatn(monDatnId) {
     $("#errorMaMonUpdate").text("");
@@ -76,7 +80,7 @@ function openModalUpdateMonDatn(monDatnId) {
     });
 }
 
-$("#form_mon_datn_update").submit(function (event) {
+function update() {
     event.preventDefault();
     let maMon = $("#ma_mon_datn_update").val();
     let tenMonDatn = $("#ten_mon_datn_update").val();
@@ -109,17 +113,19 @@ $("#form_mon_datn_update").submit(function (event) {
                 bootbox.alert({
                     message: 'Update thành công',
                     backdrop: true,
-                    callback: function (e) {
+                    callback: function () {
                         window.open(monDatnView, '_self');
                     }
                 });
             },
             error: function (e) {
-                $("#errorMaMonUpdate").text("Mã môn đã tồn tại ");
+                if (e.responseJSON.message != null) {
+                    $("#errorMaMonUpdate").text("Mã môn đã tồn tại");
+                }
             }
         });
     }
-});
+};
 
 function openModalRemoveMonDatn(monDatnId) {
     $("#remove_mon_datn").text("");
@@ -144,13 +150,6 @@ function openModalRemoveMonDatn(monDatnId) {
                     data: JSON.stringify(monDatnId),
                     dataType: 'json',
                     success: function (responseData) {
-                        if (responseData.data.message != null) {
-                            bootbox.alert({
-                                message: 'Môn đang tồn tại trong đợt đăng ký không thể xóa',
-                                backdrop: true,
-                            });
-                        }
-                        else{
                             bootbox.alert({
                                 message: 'Xóa thành công',
                                 backdrop: true,
@@ -158,10 +157,14 @@ function openModalRemoveMonDatn(monDatnId) {
                                     window.open(monDatnView, '_self');
                                 }
                             });
-                        }
                     },
                     error: function (e) {
-                        console.log("ERROR : ", e);
+                        if (e.responseJSON.message != null) {
+                            bootbox.alert({
+                                message: '<div style="color: red">Môn đang tồn tại trong đợt đăng ký không thể xóa</div>',
+                                backdrop: true,
+                            });
+                        }
                     }
                 });
             }
@@ -169,7 +172,7 @@ function openModalRemoveMonDatn(monDatnId) {
     });
 }
 
-function clearModal(){
+function clearModal() {
     $("#ma_mon_datn_error").text("");
     $("#ten_mon_datn_error").text("");
 }
@@ -177,12 +180,12 @@ function clearModal(){
 $("#form_import_excel").submit(function (event) {
     event.preventDefault();
     const newFile = $("#inputGroupFile04").val();
-    if(newFile.trim().length === 0) {
+    if (newFile.trim().length === 0) {
         $("#errImport").text("Bạn hãy chọn file");
         return;
     }
 
-    if(newFile.substring(newFile.lastIndexOf(".")+1, newFile.length) !== "xlsx") {
+    if (newFile.substring(newFile.lastIndexOf(".") + 1, newFile.length) !== "xlsx") {
         $("#errImport").text("Không đúng định dạng xlsx");
         return;
     }
@@ -199,8 +202,8 @@ $("#form_import_excel").submit(function (event) {
                 if (response.data.status == true) {
                     bootbox.alert({
                         title: "Import Excel",
-                        message: "<div class='alert alert-success alert-dismissible fade show' "+
-                                " role='alert'><strong>SUCCESS !!! </strong><p>Import thành công</p></div>",
+                        message: "<div class='alert alert-success alert-dismissible fade show' " +
+                            " role='alert'><strong>SUCCESS !!! </strong><p>Import thành công</p></div>",
                         backdrop: true,
                         callback: function () {
                             reload();
@@ -213,7 +216,7 @@ $("#form_import_excel").submit(function (event) {
                     });
                     bootbox.alert({
                         title: "Import Excel",
-                        message: '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>ERROR !!! </strong><div><p>'+ mess +'</p></div></div>',
+                        message: '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>ERROR !!! </strong><div><p>' + mess + '</p></div></div>',
                         backdrop: true,
                         callback: function () {
                             reload();
