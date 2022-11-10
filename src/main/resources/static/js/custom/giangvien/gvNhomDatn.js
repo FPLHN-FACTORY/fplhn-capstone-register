@@ -1,12 +1,12 @@
 const nhomDatnAPI = '/api/giang-vien/nhom-datn';
 const nhomDatnView = '/giang-vien/nhom-datn';
 const hanGiangVien = $("#hanGiangVien").val()
+
 function clearDataGVHD() {
     $("#idMon").val("");
 }
 
 $(document).ready(function () {
-
 
     fillter()
 
@@ -48,15 +48,14 @@ function showDetail(maNhom) {
     });
 }
 
-function xacDaNhanLienHe(idNhom, maNhom){
+function xacDaNhanLienHe(idNhom, maNhom) {
     bootbox.confirm({
         title: "Xác nhận nhóm đã liên hệ",
-        message: "Bạn có muốn xác nhận đã liên hệ với nhóm "+maNhom+" ?",
+        message: "Bạn có muốn xác nhận đã liên hệ với nhóm " + maNhom + " ?",
         buttons: {
             cancel: {
                 label: '<i class="fa fa-times"></i> Quay lại'
-            },
-            confirm: {
+            }, confirm: {
                 label: '<i class="fa fa-check"></i> Xác nhận'
             }
         },
@@ -90,7 +89,7 @@ function seachNhomdatn(index) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: nhomDatnAPI + "/search" + "?monId=" + monId+ "&page=" + index,
+        url: nhomDatnAPI + "/search" + "?monId=" + monId + "&page=" + index,
         success: function (responseData) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
@@ -106,19 +105,19 @@ function seachNhomdatn(index) {
                                     <img src="/img/eye-fill.svg">
                          </button>
                  </td>
-                 <td style="${hanGiangVien == 'true' ? 'display: block' : 'display: none' }">
+                 <td style="${hanGiangVien == 'true' ? 'display: block' : 'display: none'}">
                         <button onclick= "xacDaNhanLienHe('${item.id}', '${item.maNhom}')"
                                 style="${item.trangThai == 1 && hanGiangVien == 'true' ? 'display: block' : 'display: none'}" 
                                 class="btn_check_circle " data-toggle="tooltip" title="Xác nhận nhóm">
                                     <img src="/img/check-circle.svg">
                          </button>
                         <button onclick= "chotDeTaiNhomDatn('${item.id}', '${item.maNhom}')"
-                                style="${item.trangThai ==2 && hanGiangVien == 'true'  ? 'display: block' : (item.trangThai ==3 && hanGiangVien == 'true'  ? 'display: block' :  'display: none')}"
+                                style="${item.trangThai == 2 && hanGiangVien == 'true' ? 'display: block' : (item.trangThai == 3 && hanGiangVien == 'true' ? 'display: block' : 'display: none')}"
                                 class="btn_check " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/clipboard-check.svg">
                          </button>
                          <button onclick= "updateTenDeTai('${item.id}')"
-                                style="${item.trangThai ==2 && hanGiangVien == 'true'  ? 'display: block' : (item.trangThai ==3 && hanGiangVien == 'true'  ? 'display: block' : (item.trangThai ==4 && hanGiangVien == 'true'  ? 'display: block' : 'display: none'))}"
+                                style="${item.trangThai == 2 && hanGiangVien == 'true' ? 'display: block' : (item.trangThai == 3 && hanGiangVien == 'true' ? 'display: block' : (item.trangThai == 4 && hanGiangVien == 'true' ? 'display: block' : 'display: none'))}"
                                 class="btn_pencil_square " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/pencil-square.svg">
                          </button>
@@ -136,20 +135,20 @@ function seachNhomdatn(index) {
 }
 
 function updateTenDeTai(maNhom) {
-        $("#modal_update_ten_de_tai").modal('show');
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: nhomDatnAPI + "/" + maNhom,
-            dataType: 'json',
-            success: function (responseData) {
-                $("#id_nhom_datn_update").val(responseData.data.id);
-                $("#ten_de_tai_update").val(responseData.data.tenDeTai);
-            },
-            error: function (e) {
-                console.log("ERROR : ", e);
-            }
-        });
+    $("#modal_update_ten_de_tai").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/" + maNhom,
+        dataType: 'json',
+        success: function (responseData) {
+            $("#id_nhom_datn_update").val(responseData.data.id);
+            $("#ten_de_tai_update").val(responseData.data.tenDeTai);
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
 }
 
 $("#updateTenDeTaiNhomDatn").submit(function (event) {
@@ -183,17 +182,13 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
 
 function chotDeTaiNhomDatn(idNhom, maNhom) {
     bootbox.confirm({
-        title: "Xác nhận chốt đề tài",
-        message: "Bạn có muốn xác nhận đề tài nhóm "+maNhom+" ?",
-        buttons: {
+        title: "Xác nhận chốt đề tài", message: "Bạn có muốn xác nhận đề tài nhóm " + maNhom + " ?", buttons: {
             cancel: {
                 label: '<i class="fa fa-times"></i> Quay lại'
-            },
-            confirm: {
+            }, confirm: {
                 label: '<i class="fa fa-check"></i> Xác nhận'
             }
-        },
-        callback: function (result) {
+        }, callback: function (result) {
             if (result) {
                 $.ajax({
                     type: "PUT",
