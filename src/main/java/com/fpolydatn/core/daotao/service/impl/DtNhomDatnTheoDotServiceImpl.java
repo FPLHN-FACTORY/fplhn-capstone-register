@@ -34,7 +34,6 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     @Override
     public PageableObject<DtNhomDatnTheoDotResponse> findAllNhomDatn(FindDtNhomDatnTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        System.out.println(dotDangKyId);
         if(dotDangKyId != null){
             request.setDotDangKyId(dotDangKyId);
         }
