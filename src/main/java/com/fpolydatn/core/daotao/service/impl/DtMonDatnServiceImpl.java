@@ -151,7 +151,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     private List<MonDatn> checkImport(List<DtCreateImportMonDatnRequest> list, String coSoId) {
         List<MonDatn> traVe = new ArrayList<>();
 
-        list.parallelStream().forEach(createMonDant -> {
+        list.forEach(createMonDant -> {
             int check = 0;
             // check mã môn
             if (monDatnHashMap.containsKey(createMonDant.getMaMon())) {

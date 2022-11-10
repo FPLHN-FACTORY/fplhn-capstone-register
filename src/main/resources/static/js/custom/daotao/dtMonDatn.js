@@ -169,11 +169,18 @@ function clearModal(){
     $("#ten_mon_datn_error").text("");
 }
 
-$("#form_import_excel").submit(function (event) {
+
+function importExcel () {
     event.preventDefault();
     const newFile = $("#inputGroupFile04").val();
+
     if(newFile.trim().length === 0) {
         $("#errImport").text("Bạn hãy chọn file");
+        return;
+    }
+
+    if($("#inputGroupFile04")[0].files[0].size > 1048576) {
+        $("#errImport").text("File quá hơn 1048576 byte");
         return;
     }
 
@@ -181,16 +188,16 @@ $("#form_import_excel").submit(function (event) {
         $("#errImport").text("Không đúng định dạng xlsx");
         return;
     }
+    var importDocoment = document.getElementById("form_import_excel")
     $.ajax({
             type: 'POST',
-            url: $(this).attr('action'),
-            enctype: 'multipart/form-data',
-            data: new FormData(this),
+            url: "/api/dao-tao/mon-datn/import",
+            enctype: $(this).attr('action'),
+            data: new FormData(importDocoment),
             processData: false,
             contentType: false,
             success: function (response) {
                 $('#import_excel').modal("hide");
-                console.log(response.data)
                 if (response.data.status == true) {
                     bootbox.alert({
                         title: "Import Excel",
@@ -220,7 +227,7 @@ $("#form_import_excel").submit(function (event) {
             }
         }
     );
-});
+};
 
 function reload() {
     window.open('/dao-tao/mon-datn', '_self');

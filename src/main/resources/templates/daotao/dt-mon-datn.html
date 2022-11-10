@@ -294,7 +294,7 @@
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form style="margin:20px" id="form_import_excel"
+            <form style="margin:20px" id="form_import_excel" th:onsubmit="importExcel()"
                   th:action="@{'/api/dao-tao/mon-datn/import'}" method="POST"
                   enctype="multipart/form-data">
                 <div class="modal-header">

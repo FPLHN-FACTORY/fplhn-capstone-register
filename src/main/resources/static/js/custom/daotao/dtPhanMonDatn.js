@@ -1,7 +1,7 @@
 const phanCongHuongDanApi = "/api/dao-tao/phan-cong-hong-dan";
 const phanCongHuongDanView = document.URL;
 
-$("#form_add_phan_cong").submit(function (event) {
+function phanCong() {
     event.preventDefault();
     let giangVienHuongDanId = $("#getGiangVienHuongDanId").attr('value');
     let listPhanCong = [];
@@ -43,7 +43,7 @@ $("#form_add_phan_cong").submit(function (event) {
         error: function (e) {
         }
     });
-});
+};
 
 let checkOut = 0;
 
