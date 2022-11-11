@@ -16,7 +16,6 @@ import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
@@ -170,8 +169,6 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                     continue;
                 }
                 Iterator<Cell> cells = row.iterator();
-                map = new HashMap<>();
-                addDataInMap(map, idCoSo);
                 int cid = 0;
                 DtGiagVienHDImportResquest gvhd = new DtGiagVienHDImportResquest();
                 while (cells.hasNext()) {
@@ -227,6 +224,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public List<GiangVienHuongDan> checkValidFile(List<DtGiagVienHDImportResquest> list) {
         List<GiangVienHuongDan> listGVHD = new ArrayList<>();
+        List<GiangVienHuongDan> listGVHDUpdate = new ArrayList<>();
         Map<String, GiangVienHuongDan> mapGiangVien = new HashMap<>();
         if (list == null) {
             throw new RestApiException(Message.FILE_EMPTY);
@@ -287,21 +285,10 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=GiangVienHuongDan" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
-        List<DtGiangVienHDResponse> listMau = new ArrayList<>();
         DtGiangVienHuongDanExport dtGiangVienHuongDanExport = new DtGiangVienHuongDanExport();
         dtGiangVienHuongDanExport.exportMauImport(response);
     }
 
-    public void addDataInMap(HashMap<String, String> mapAll, String coSoId) {
-        // lấy id, monDatn tất cả đợt đăng ký theo cơ sở
-        List<SimpleEntityProj> getAllMaMon = dtMonDatnRepository.getAllMaMon(coSoId);
-        getAllPutMap(mapAll, getAllMaMon);
-    }
 
-    public void getAllPutMap(HashMap<String, String> mapSimple, List<SimpleEntityProj> getAllSimpleEntityProjs) {
-        for (SimpleEntityProj simpleEntityProj : getAllSimpleEntityProjs) {
-            mapSimple.put(simpleEntityProj.getName(), simpleEntityProj.getId());
-        }
-    }
 
 }
