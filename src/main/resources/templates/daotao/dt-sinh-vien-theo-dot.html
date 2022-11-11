@@ -132,7 +132,7 @@
                                                     <div class="form-group">
                                                         <p class="col-form-label">Định dạng file excel </p>
                                                         <select id="type_mau_excel" class="form-control col-5">
-                                                            <option value="">chọn kiểu file excel</option>
+                                                            <option value="">Chọn kiểu file excel</option>
                                                             <option value="xls">.xls</option>
                                                             <option value="xlsx">.xlsx</option>
                                                         </select>
@@ -144,7 +144,8 @@
                                                     <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Hủy
                                                     </button>
-                                                    <button type="submit" class="btn btn-primary">Download excel
+                                                    <button type="button" class="btn btn-primary"
+                                                            th:attr="onclick=|mauImport()|">Download excel
                                                     </button>
                                                 </div>
                                             </form>
@@ -160,10 +161,12 @@
                                     <div class="row">
                                         <div class="col-4 d-inline float-left"
                                         >
-                                            <button data-toggle="modal" data-target="#modal_excel" class="btn btn-success">
+                                            <button data-toggle="modal" data-target="#modal_excel"
+                                                    class="btn btn-success">
                                                 Export
                                             </button>
-                                            <button data-toggle="modal" data-target="#import_excel" class="btn btn-success">
+                                            <button data-toggle="modal" data-target="#import_excel"
+                                                    class="btn btn-success">
                                                 Import
                                             </button>
                                             <div class="modal fade "
@@ -186,7 +189,7 @@
                                                                 <div class="form-group">
                                                                     <p class="col-form-label">Định dạng file excel </p>
                                                                     <select id="type_excel" class="form-control col-5">
-                                                                        <option value="">chọn kiểu file excel</option>
+                                                                        <option value="">Chọn kiểu file excel</option>
                                                                         <option value="xls">.xls</option>
                                                                         <option value="xlsx">.xlsx</option>
                                                                     </select>
@@ -198,7 +201,9 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Download
+                                                                <button type="button"
+                                                                        th:attr="onclick=|exportExcel()|"
+                                                                        class="btn btn-primary">Download
                                                                     excel
                                                                 </button>
                                                             </div>
@@ -246,7 +251,9 @@
                                                                                     id="mauImport"
                                                                                     data-dismiss="modal"
                                                                                     data-toggle="modal"
-                                                                                    data-target="#modal_excel_mau">Tải Mẫu</button>
+                                                                                    data-target="#modal_excel_mau"
+                                                                            >Tải Mẫu
+                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                     <span class="text-danger"
@@ -257,7 +264,10 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">
+                                                                <button type="button"
+                                                                        th:attr="onclick=|importExcel()|"
+                                                                        class="btn btn-primary"
+                                                                >
                                                                     Import
                                                                 </button>
                                                             </div>
@@ -335,7 +345,7 @@
                                             </tbody>
                                         </table>
                                         <!-- Paging-->
-                                        <div id="list_page" >
+                                        <div id="list_page">
                                             <nav th:if="${page.totalPages > 1}" aria-label="Page navigation ">
                                                 <ul class="pagination justify-content-end">
                                                     <li class="page-item">
@@ -365,177 +375,158 @@
                                             </nav>
                                         </div>
 
-                                    <div id="is_empty" class="text-center">
-                                        <div th:if="${page.data.isEmpty()}" >
-                                            <span>Không có dữ liệu</span>
+                                        <div id="is_empty" class="text-center">
+                                            <div th:if="${page.data.isEmpty()}">
+                                                <span>Không có dữ liệu</span>
+                                            </div>
                                         </div>
+                                        <p class="text-danger" id="note">*Chú ý: Dòng bôi đỏ là sinh viên không đủ điều
+                                            kiện làm dự án tốt nghiệp</p>
                                     </div>
-                                    <p class="text-danger" id="note">*Chú ý: Dòng bôi đỏ là sinh viên không đủ điều kiện làm dự án tốt nghiệp</p>
-                                </div>
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- end:: Body -->
     </div>
-    <!-- end:: Body -->
-</div>
 
-<!--Start Model Loại sinh viên-->
-<div class="modal fade "
-     id="modal_loai_sinh_vien"
-     tabindex="-1"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="form_loai_sinh_vien"
-                  enctype="multipart/form-data"
-            >
+    <!--Start Model Loại sinh viên-->
+    <div class="modal fade "
+         id="modal_loai_sinh_vien"
+         tabindex="-1"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="form_loai_sinh_vien"
+                      enctype="multipart/form-data"
+                >
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Loại sinh viên không đạt
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="fileLoaiSv"
+                                       aria-describedby="inputGroupFileAddon01" name="fileLoaiSv" required>
+                                <label class="custom-file-label" for="fileLoaiSv">Choose file</label>
+                            </div>
+                        </div>
+                        <span class="text-danger"
+                              id="errorImportFile"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Hủy
+                        </button>
+                        <button
+                                th:attr="onclick=|loaiSinhVien()|"
+                                type="button" class="btn btn-primary">
+                            Upload
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--End Model Loại sinh viên-->
+    <!-- Start modal chi tiết sinh viên-->
+    <div class="modal fade" id="modal_detail"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-lg"
+             role="document">
+            <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">
-                        Loại sinh viên không đạt
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">x</span>
+                    <h5 class="modal-title">Chi tiết sinh viên</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Upload</span>
-                        </div>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="fileLoaiSv"
-                                   aria-describedby="inputGroupFileAddon01" name="fileLoaiSv">
-                            <label class="custom-file-label" for="fileLoaiSv">Choose file</label>
-                        </div>
-                    </div>
-                    <span class="text-danger"
-                          id="errorImportFile"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button
-                            th:attr="onclick=|loaiSinhVien()|"
-                            type="button" class="btn btn-primary">
-                        Upload
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--End Model Loại sinh viên-->
-<!--   Start Model Notifications-->
-<div class="modal fade" tabindex="-1" role="dialog" id="modal_notification">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thông báo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="messNotification">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" th:attr="onclick=|reload()|">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--End Model Notifications-->
-<!-- Start modal chi tiết sinh viên-->
-<div class="modal fade" id="modal_detail"
-     tabindex="-1"
-     role="dialog"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Chi tiết sinh viên</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div style="width: 48%;margin-right: 2%; float:left">
-                    <label class="col-form-label">Mã sinh viên</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="maSV" >
-                    </div>
-                    <label class="col-form-label">Tên sinh viên</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="tenSV">
-                    </div>
-                    <label class="col-form-label">Số điện thoại</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="sdt">
-                    </div>
-                    <label class="col-form-label">Email</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="email">
-                    </div>
-                    <label class="col-form-label">Khóa</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="khoa">
-                    </div>
-                    <label class="col-form-label">Môn DATN</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="monDATN">
-                    </div>
-                    <label class="col-form-label">Tên chuyên ngành</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="tenCN">
-                    </div>
-                </div>
-                <div style="width: 50%; float:left">
-                    <label class="col-form-label">Mã nhóm</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="maNhom">
-                    </div>
-                    <label class="col-form-label">Tên đề tài</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="tenDeTai">
-                    </div>
-                    <label class="col-form-label">Tên GVHD</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="GVDH">
-                    </div>
-                    <label class="col-form-label">Đợt đăng ký</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="DDK">
-                    </div>
-                    <label class="col-form-label">Trạng thái</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="trangT">
-                    </div>
-                    <div id="labelDetailTiLe">
-                        <label class="col-form-label">Số thành viên</label>
+                    <div style="width: 48%;margin-right: 2%; float:left">
+                        <label class="col-form-label">Mã sinh viên</label>
                         <div class="input-group mb-3">
-                            <input type="text" readonly class="form-control" id="soTV">
+                            <input type="text" readonly class="form-control" id="maSV">
+                        </div>
+                        <label class="col-form-label">Tên sinh viên</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="tenSV">
+                        </div>
+                        <label class="col-form-label">Số điện thoại</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="sdt">
+                        </div>
+                        <label class="col-form-label">Email</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="email">
+                        </div>
+                        <label class="col-form-label">Khóa</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="khoa">
+                        </div>
+                        <label class="col-form-label">Môn DATN</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="monDATN">
+                        </div>
+                        <label class="col-form-label">Tên chuyên ngành</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="tenCN">
                         </div>
                     </div>
-                    <label class="col-form-label">Môn chương trình</label>
-                    <div class="input-group mb-3">
-                        <input type="text" readonly class="form-control" id="monCT">
+                    <div style="width: 50%; float:left">
+                        <label class="col-form-label">Mã nhóm</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="maNhom">
+                        </div>
+                        <label class="col-form-label">Tên đề tài</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="tenDeTai">
+                        </div>
+                        <label class="col-form-label">Tên GVHD</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="GVDH">
+                        </div>
+                        <label class="col-form-label">Đợt đăng ký</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="DDK">
+                        </div>
+                        <label class="col-form-label">Trạng thái</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="trangT">
+                        </div>
+                        <div id="labelDetailTiLe">
+                            <label class="col-form-label">Số thành viên</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="soTV">
+                            </div>
+                        </div>
+                        <label class="col-form-label">Môn chương trình</label>
+                        <div class="input-group mb-3">
+                            <input type="text" readonly class="form-control" id="monCT">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- END Chi tiết sinh viên-->
 </div>
-<!-- END Chi tiết sinh viên-->
-
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -546,5 +537,6 @@
 <script th:src="@{/js/plugin/bootstrap.bundle.js}"></script>
 <script th:src="@{/js/custom/daotao/dtSinhVienTheoDot.js}" type="text/javascript"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script th:src="@{/js/plugin/bootbox.min.js}"></script>
 </body>
 </html>
