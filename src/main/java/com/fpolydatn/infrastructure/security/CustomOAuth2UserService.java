@@ -23,6 +23,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user =  super.loadUser(userRequest);
 
+        String avatar = user.getAttribute("picture");
+        session.setAttribute(SessionConstant.AVATAR, avatar);
+
         String role = (String) session.getAttribute(SessionConstant.ROLE);
         String coSoId = (String) session.getAttribute(SessionConstant.CO_SO_ID);
 
