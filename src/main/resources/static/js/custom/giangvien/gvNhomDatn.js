@@ -49,35 +49,53 @@ function showDetail(maNhom) {
 }
 
 function xacDaNhanLienHe(idNhom, maNhom) {
-    bootbox.confirm({
-        title: "Xác nhận nhóm đã liên hệ",
-        message: "Bạn có muốn xác nhận đã liên hệ với nhóm " + maNhom + " ?",
-        buttons: {
-            cancel: {
-                label: '<i class="fa fa-times"></i> Quay lại'
-            }, confirm: {
-                label: '<i class="fa fa-check"></i> Xác nhận'
+    if(hanGiangVien  == 'false'){
+        bootbox.confirm({
+            title: "Thông báo",
+            message: "Đã hết hạn giảng viên",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                }, confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            },
+            callback: function (result) {
+              window.location.reload(false)
             }
-        },
-        callback: function (result) {
-            if (result) {
-                $.ajax({
-                    type: "PUT",
-                    contentType: "application/json",
-                    url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + idNhom,
-                    datatype: 'json',
-                    success: function () {
-                        bootbox.alert('Xác nhận thành công', function () {
-                            window.location.reload(false)
-                        });
-                    },
-                    error: function (e) {
-                        console.log("ERROR : ", e);
-                    }
-                });
+        });
+    }else{
+        bootbox.confirm({
+            title: "Xác nhận nhóm đã liên hệ",
+            message: "Bạn có muốn xác nhận đã liên hệ với nhóm " + maNhom + " ?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                }, confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "PUT",
+                        contentType: "application/json",
+                        url: nhomDatnAPI + "/phe-duyet-nhom?maNhom=" + idNhom,
+                        datatype: 'json',
+                        success: function () {
+                            bootbox.alert('Xác nhận thành công', function () {
+                                window.location.reload(false)
+                            });
+                        },
+                        error: function (e) {
+                            console.log("ERROR : ", e);
+                        }
+                    });
+                }
             }
-        }
-    });
+        });
+    }
+
 }
 
 
@@ -105,19 +123,19 @@ function seachNhomdatn(index) {
                                     <img src="/img/eye-fill.svg">
                          </button>
                  </td>
-                 <td style="${hanGiangVien == 'true' ? 'display: block' : 'display: none'}">
+                 <td >
                         <button onclick= "xacDaNhanLienHe('${item.id}', '${item.maNhom}')"
-                                style="${item.trangThai == 1 && hanGiangVien == 'true' ? 'display: block' : 'display: none'}" 
+                                style="${item.trangThai == 1  ? 'display: block' : 'display: none'}" 
                                 class="btn_check_circle " data-toggle="tooltip" title="Xác nhận nhóm">
                                     <img src="/img/check-circle.svg">
                          </button>
                         <button onclick= "chotDeTaiNhomDatn('${item.id}', '${item.maNhom}')"
-                                style="${item.trangThai == 2 && hanGiangVien == 'true' ? 'display: block' : (item.trangThai == 3 && hanGiangVien == 'true' ? 'display: block' : 'display: none')}"
+                                style="${item.trangThai == 2   ? 'display: block' : (item.trangThai == 3 && hanGiangVien == 'true' ? 'display: block' : 'display: none')}"
                                 class="btn_check " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/clipboard-check.svg">
                          </button>
                          <button onclick= "updateTenDeTai('${item.id}')"
-                                style="${item.trangThai == 2 && hanGiangVien == 'true' ? 'display: block' : (item.trangThai == 3 && hanGiangVien == 'true' ? 'display: block' : (item.trangThai == 4 && hanGiangVien == 'true' ? 'display: block' : 'display: none'))}"
+                                style="${item.trangThai == 2  ? 'display: block' : (item.trangThai == 3 && hanGiangVien == 'true' ? 'display: block' : (item.trangThai == 4 && hanGiangVien == 'true' ? 'display: block' : 'display: none'))}"
                                 class="btn_pencil_square " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/pencil-square.svg">
                          </button>
@@ -135,20 +153,37 @@ function seachNhomdatn(index) {
 }
 
 function updateTenDeTai(maNhom) {
-    $("#modal_update_ten_de_tai").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: nhomDatnAPI + "/" + maNhom,
-        dataType: 'json',
-        success: function (responseData) {
-            $("#id_nhom_datn_update").val(responseData.data.id);
-            $("#ten_de_tai_update").val(responseData.data.tenDeTai);
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
+    if(hanGiangVien  == 'false'){
+        bootbox.confirm({
+            title: "Thong báo",
+            message: "Đã hết hạn giảng viên",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                }, confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            },
+            callback: function (result) {
+                window.location.reload(false)
+            }
+        });
+    }else {
+        $("#modal_update_ten_de_tai").modal('show');
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: nhomDatnAPI + "/" + maNhom,
+            dataType: 'json',
+            success: function (responseData) {
+                $("#id_nhom_datn_update").val(responseData.data.id);
+                $("#ten_de_tai_update").val(responseData.data.tenDeTai);
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
 }
 
 $("#updateTenDeTaiNhomDatn").submit(function (event) {
@@ -181,29 +216,46 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
 });
 
 function chotDeTaiNhomDatn(idNhom, maNhom) {
-    bootbox.confirm({
-        title: "Xác nhận chốt đề tài", message: "Bạn có muốn xác nhận đề tài nhóm " + maNhom + " ?", buttons: {
-            cancel: {
-                label: '<i class="fa fa-times"></i> Quay lại'
-            }, confirm: {
-                label: '<i class="fa fa-check"></i> Xác nhận'
+    if(hanGiangVien  == 'false'){
+        bootbox.confirm({
+            title: "Thông báo",
+            message: "Đã hết hạn giảng viên",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                }, confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            },
+            callback: function (result) {
+                window.location.reload(false)
             }
-        }, callback: function (result) {
-            if (result) {
-                $.ajax({
-                    type: "PUT",
-                    contentType: "application/json",
-                    url: nhomDatnAPI + "/phe-duyet-de-tai-nhom?maNhom=" + idNhom,
-                    success: function () {
-                        bootbox.alert('Xác nhận thành công', function () {
-                            window.location.reload(false)
-                        });
-                    },
-                    error: function (e) {
-                        console.log("ERROR : ", e);
-                    }
-                });
+        });
+    }else {
+        bootbox.confirm({
+            title: "Xác nhận chốt đề tài", message: "Bạn có muốn xác nhận đề tài nhóm " + maNhom + " ?", buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                }, confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            }, callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "PUT",
+                        contentType: "application/json",
+                        url: nhomDatnAPI + "/phe-duyet-de-tai-nhom?maNhom=" + idNhom,
+                        success: function () {
+                            bootbox.alert('Xác nhận thành công', function () {
+                                window.location.reload(false)
+                            });
+                        },
+                        error: function (e) {
+                            console.log("ERROR : ", e);
+                        }
+                    });
+                }
             }
-        }
-    });
+        });
+    }
 }

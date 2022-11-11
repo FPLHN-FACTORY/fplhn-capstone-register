@@ -139,7 +139,7 @@
                                             <th>Mã môn</th>
                                             <th>Trạng thái</th>
                                             <th>Chi tiết nhóm</th>
-                                            <th th:style="${mocThoiGianGiangVien} == true ? 'display: block' : 'display: none'">
+                                            <th>
                                                 Hành động
                                             </th>
                                             </thead>
@@ -159,7 +159,7 @@
                                                             <img th:src="@{/img/eye-fill.svg}">
                                                         </button>
                                                     </td>
-                                                    <td th:style="${mocThoiGianGiangVien} == true ? 'display: block' : 'display: none'">
+                                                    <td>
                                                         <button th:style="${nhomDatn.getTrangThai()} == 1 ? 'display: block' : 'display: none'"
                                                                 th:attr="onclick=|xacDaNhanLienHe('${nhomDatn.getId()}', '${nhomDatn.getMaNhom()}')|"
                                                                 class="btn_check_circle" data-toggle="tooltip"
