@@ -62,7 +62,7 @@ public class DtCanBoExportExcel {
         // calling method headerLine
         headerLine();
         // calling methods writedataline
-        ServletOutputStream outputStream  = response.getOutputStream();
+        ServletOutputStream outputStream = response.getOutputStream();
         workbook.write(outputStream);
 
         workbook.close();
