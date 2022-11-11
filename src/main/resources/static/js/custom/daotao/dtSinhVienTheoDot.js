@@ -105,8 +105,7 @@ $("#form_type_excel").submit(function (event) {
         });
     }
 });
-$("#modal_excel_mau").submit(function (event) {
-    event.preventDefault();
+function mauImport() {
     let typeExcel = $("#type_mau_excel").val();
     if (typeExcel == '') {
         $("#mau_excel_error").text("Chọn định dạng file download");
@@ -124,14 +123,14 @@ $("#modal_excel_mau").submit(function (event) {
             }
         });
     }
-});
+};
 $("#form_import_excel").submit(function (event) {
     event.preventDefault();
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
     if (typeExcel.length <= 0) {
-        $("#import_excel_error").text("chọn file");
+        $("#import_excel_error").text("Chọn file");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         $.ajax({
                 type: 'POST',
@@ -142,12 +141,19 @@ $("#form_import_excel").submit(function (event) {
                 contentType: false,
                 success: function (response) {
                     if (response.data.status == true) {
-                        $("#messNotification").text("Import file thành công");
+                        bootbox.alert({
+                            message: 'Import file thành công',
+                            backdrop: true,
+                            callback: function () {
+                                viewTable(0);
+                            }
+                        });
                     } else {
-                        $("#messNotification").text(response.data.message);
+                        bootbox.alert({
+                            message: response.data.message,
+                            backdrop: true,
+                        });
                     }
-                    $('#import_excel').modal("hide");
-                    $("#modal_notification").modal("show");
                 },
                 error: function (e) {
                     console.log("ERROR: " + e);
@@ -175,7 +181,6 @@ function loaiSinhVien() {
                 } else {
                     $("#messNotification").text(response.data.message);
                 }
-                $('#modal_loai_sinh_vien').modal("hide");
                 $("#modal_notification").modal("show");
             },
             error: function (e) {

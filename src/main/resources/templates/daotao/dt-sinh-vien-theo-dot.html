@@ -144,7 +144,8 @@
                                                     <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Hủy
                                                     </button>
-                                                    <button type="submit" class="btn btn-primary">Download excel
+                                                    <button type="button" class="btn btn-primary"
+                                                            th:attr="onclick=|mauImport()|">Download excel
                                                     </button>
                                                 </div>
                                             </form>
@@ -246,7 +247,8 @@
                                                                                     id="mauImport"
                                                                                     data-dismiss="modal"
                                                                                     data-toggle="modal"
-                                                                                    data-target="#modal_excel_mau">Tải Mẫu</button>
+                                                                                    data-target="#modal_excel_mau"
+                                                                                    >Tải Mẫu</button>
                                                                         </div>
                                                                     </div>
                                                                     <span class="text-danger"
@@ -257,7 +259,8 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">
+                                                                <button type="submit" class="btn btn-primary"
+                                                                        >
                                                                     Import
                                                                 </button>
                                                             </div>
@@ -546,5 +549,6 @@
 <script th:src="@{/js/plugin/bootstrap.bundle.js}"></script>
 <script th:src="@{/js/custom/daotao/dtSinhVienTheoDot.js}" type="text/javascript"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script th:src="@{/js/plugin/bootbox.min.js}"></script>
 </body>
 </html>
