@@ -116,7 +116,11 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         if (!Objects.isNull(monDatnInDb)) {
             throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
         } else {
-            monDatnRepository.save(monDatn);
+            MonDatn mon = monDatnRepository.save(monDatn);
+            if(mon.getNhomMonDatnId().trim().length() == 0){
+                mon.setNhomMonDatnId(mon.getId());
+                monDatnRepository.save(mon);
+            }
             return true;
         }
     }
