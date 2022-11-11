@@ -127,7 +127,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());
         List<DtSinhVienTheoDotResponse> list = sinhVienRepository.exportExcel(request);
         DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport();
-        dtSinhVienExport.employeeDetailReport(response,list);
+        dtSinhVienExport.employeeDetailReport(response, list);
     }
 
     @Override
@@ -262,7 +262,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
         response.setStatus(true);
         List<String> listMsvLoai = new ArrayList<>();
-        List<String> listNhomDatnId = new ArrayList<>();
         int columnIndex = -1;
         try {
             Workbook workbook = StreamingReader.builder()
@@ -274,16 +273,23 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 for (Row row : sheet) {
                     for (Cell cell : row) {
                         CellType type = cell.getCellType();
+                        String val = cell.getStringCellValue();
                         if (type == CellType.STRING &&
-                                (cell.getStringCellValue().equals("Mã sinh viên") ||
-                                        cell.getStringCellValue().equals("MSV"))) {
+                                ("Mã sinh viên".equals(val) ||
+                                        "MSV".equals(val)) ||
+                                "MSSV".equals(val)) {
                             columnIndex = cell.getColumnIndex();
                             continue;
                         }
                         if (columnIndex != -1 &&
                                 cell.getColumnIndex() == columnIndex &&
                                 type == CellType.STRING) {
-                            listMsvLoai.add(cell.getStringCellValue());
+                            if (!val.matches("[a-zA-Z]{2}\\d+")) {
+                                response.setStatus(false);
+                                response.setMessage("Mã sinh viên " + val + " không đúng định dạng");
+                                return response;
+                            }
+                            listMsvLoai.add(val);
                         }
                     }
                 }
@@ -322,7 +328,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 NhomDatn nhomDatn = mapNhomDatn.get(sv.getId());
                 if (nhomDatn != null) {
                     boolean check = true;
-                    for (SinhVien sinhVien:  listSinhVien) {
+                    for (SinhVien sinhVien : listSinhVien) {
                         if (nhomDatn.getId().equals(sinhVien.getNhomId()) && !sinhVien.getId().equals(sv.getId())) {
                             nhomDatn.setTruongNhomId(sinhVien.getId());
                             check = false;
@@ -345,8 +351,13 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         if (listNhomDatnDoiTruongNhom.size() != 0) {
             nhomDatnTheoDotRepository.saveAll(listNhomDatnDoiTruongNhom);
         }
+        if (listSvKhongDat.size() == 0) {
+            response.setStatus(false);
+            response.setMessage("Lỗi. Loại không thành công");
+        }
         if (response.getStatus()) {
             sinhVienRepository.saveAll(listSvKhongDat);
+            response.setMessage("Đã loại sinh viên không đủ điều kiện");
         }
         return response;
     }

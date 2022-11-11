@@ -81,8 +81,7 @@ function viewTable(page) {
     });
 }
 
-$("#form_type_excel").submit(function (event) {
-    event.preventDefault();
+function exportExcel() {
     let keyword = $("#keyword").val();
     let chuyenNganh = $("#chuyenNganh").val();
     let trangThai = $("#trangThai").val();
@@ -104,7 +103,8 @@ $("#form_type_excel").submit(function (event) {
             }
         });
     }
-});
+}
+
 function mauImport() {
     let typeExcel = $("#type_mau_excel").val();
     if (typeExcel == '') {
@@ -124,11 +124,11 @@ function mauImport() {
         });
     }
 };
-$("#form_import_excel").submit(function (event) {
-    event.preventDefault();
+
+function importExcel() {
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length);
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("Chọn file");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
@@ -163,31 +163,41 @@ $("#form_import_excel").submit(function (event) {
     } else {
         $("#import_excel_error").text("Chọn đúng file Excel ");
     }
-});
+}
 
 function loaiSinhVien() {
-    var form = $('#form_loai_sinh_vien')[0];
-    $.ajax({
-            type: 'POST',
-            url: '/api/dao-tao/sinh-vien/loai-sinh-vien',
-            enctype: 'multipart/form-data',
-            processData: false,
-            data: new FormData(form),
-            contentType: false,
-            cache: false,
-            success: function (response) {
-                if (response.data.status == true) {
-                    $("#messNotification").text("Loại sinh viên không đạt thành công");
-                } else {
-                    $("#messNotification").text(response.data.message);
+    let typeExcel = $("#fileLoaiSv").val();
+    let indexDot = typeExcel.indexOf('.');
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length);
+    if (typeExcel.length <= 0) {
+        $("#errorImportFile").text("Chọn file");
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        var form = $('#form_loai_sinh_vien')[0];
+        $.ajax({
+                type: 'POST',
+                url: '/api/dao-tao/sinh-vien/loai-sinh-vien',
+                enctype: 'multipart/form-data',
+                processData: false,
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    bootbox.alert({
+                        message: response.data.message + '',
+                        backdrop: true,
+                        callback: function () {
+                            location.reload();
+                        }
+                    });
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
                 }
-                $("#modal_notification").modal("show");
-            },
-            error: function (e) {
-                console.log("ERROR : ", e);
             }
-        }
-    );
+        );
+    } else {
+        $("#errorImportFile").text("Chọn đúng file Excel ");
+    }
 }
 
 function reload() {
