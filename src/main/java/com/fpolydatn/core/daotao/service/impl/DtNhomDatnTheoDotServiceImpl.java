@@ -34,12 +34,12 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     @Override
     public PageableObject<DtNhomDatnTheoDotResponse> findAllNhomDatn(FindDtNhomDatnTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        if(dotDangKyId != null){
+        if (dotDangKyId != null) {
             request.setDotDangKyId(dotDangKyId);
         }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<DtNhomDatnTheoDotResponse> res = dtNhomDatnTheoDotRepository.findAllNhomDatn(pageable ,request);
-        listNhomDatn = res.stream().toList();
+        Page<DtNhomDatnTheoDotResponse> res = dtNhomDatnTheoDotRepository.findAllNhomDatn(pageable, request);
+        listNhomDatn = res.toList();
         return new PageableObject<>(res);
     }
 
@@ -58,7 +58,7 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         String headerValue = "attachment; filename=NhomDatn" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
         listNhomDatn = dtNhomDatnTheoDotRepository.findAllNhomDatnToExcel(request);
-        DtNhomDatnTheoDotExport dtNhomDatnTheoDotExport = new DtNhomDatnTheoDotExport(listNhomDatn);
-        dtNhomDatnTheoDotExport.exportData(response);
+        DtNhomDatnTheoDotExport dtNhomDatnTheoDotExport = new DtNhomDatnTheoDotExport();
+        dtNhomDatnTheoDotExport.exportData(response, listNhomDatn);
     }
 }

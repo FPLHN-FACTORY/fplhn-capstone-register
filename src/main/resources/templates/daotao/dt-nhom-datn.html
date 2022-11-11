@@ -119,7 +119,7 @@
                                     <div class="row">
                                         <!--   export excel-->
                                         <div class="col-4 d-inline float-left">
-                                            <button class="btn btn-success" data-target="#modal_excel"
+                                            <button  class="btn btn-success" data-target="#modal_excel"
                                                     data-toggle="modal">
                                                 Export
                                             </button>
@@ -156,7 +156,7 @@
                                                                 <button class="btn btn-secondary" data-dismiss="modal"
                                                                         type="button">Hủy
                                                                 </button>
-                                                                <button class="btn btn-primary" type="submit">Download
+                                                                <button  class="btn btn-primary" th:attr="onclick=|exportFileExcel()|">Download
                                                                     excel
                                                                 </button>
                                                             </div>
@@ -257,7 +257,7 @@
                                         <input hidden id="totalPages" th:value="${page.totalPages}">
                                         <input hidden id="currentPage" th:value="${page.currentPage}">
                                         <div id="empty">
-                                            <input hidden id="checkData" th:value="${page.data.isEmpty()}">
+                                        <input hidden id="checkData" th:value="${page.data.isEmpty()}">
                                             <div th:if="${page.data.isEmpty()}">
                                                 <h3>Không có dữ liệu</h3>
                                             </div>
