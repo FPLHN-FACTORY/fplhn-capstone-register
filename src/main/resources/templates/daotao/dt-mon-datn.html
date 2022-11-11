@@ -11,6 +11,7 @@
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
 </head>
 <!-- end::Head -->
 
@@ -55,7 +56,7 @@
                                                     <div class="modal-content">
                                                         <form id="form_create_mon_datn">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Tạo
+                                                                <h5 class="modal-title">Tạo
                                                                     môn </h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                         aria-label="Close">
@@ -104,7 +105,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
+                                                                <button type="button" class="btn btn-outline-secondary btn btn-light"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button th:attr="onclick=|create()|"
@@ -128,7 +129,7 @@
                                         <div th:unless="${page.data.isEmpty()}">
                                             <table id="custom-table"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
-                                                <thead>
+                                                <thead class="table-primary">
                                                 <th width="50px">STT</th>
                                                 <th width="150px">Mã môn</th>
                                                 <th width="200px">Tên môn</th>
@@ -138,7 +139,7 @@
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="monDatn,i : ${page.data}">
-                                                    <tr>
+                                                    <tr class="table-light">
                                                         <td th:text="${monDatn.stt}"></td>
                                                         <td th:text="${monDatn.maMon}"></td>
                                                         <td th:text="${monDatn.tenMon}"></td>
@@ -245,7 +246,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button onclick="clearModal()" type="button" class="btn btn-secondary"
+                    <button onclick="clearModal()" type="button" class="btn btn-outline-secondary btn btn-light"
                             data-dismiss="modal">Hủy
                     </button>
                     <button th:attr="onclick=|update()|" class="btn btn-primary">
@@ -293,7 +294,7 @@
                           id="errImport"></span><br>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
+                    <button type="button" class="btn btn-outline-secondary btn btn-light"
                             data-dismiss="modal">Hủy
                     </button>
                     <button type="submit" class="btn btn-primary"
@@ -315,6 +316,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script th:src="@{/js/custom/daotao/dtMonDatn.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
 <script th:src="@{/js/plugin/bootbox.min.js}"></script>
 </body>
 </html>
