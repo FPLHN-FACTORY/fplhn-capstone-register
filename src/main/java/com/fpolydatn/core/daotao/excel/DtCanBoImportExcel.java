@@ -2,10 +2,11 @@ package com.fpolydatn.core.daotao.excel;
 
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.infrastructure.constant.VaiTro;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.github.pjfanning.xlsx.StreamingReader;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,32 +18,32 @@ import java.util.List;
  */
 public class DtCanBoImportExcel {
 
-    public List<CanBo> importData(MultipartFile reapExcelDataFile, String id) {
-        List<CanBo> listCanBo;
-        try {
-            listCanBo = new ArrayList<>();
-            XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
-            XSSFSheet worksheet = workbook.getSheetAt(0);
-
-            for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
-                CanBo canBo = new CanBo();
-                XSSFRow row = worksheet.getRow(i);
-                canBo.setEmailFe(String.valueOf(getCellValue(row.getCell(1))));
-                canBo.setEmailFpt(String.valueOf(getCellValue(row.getCell(2))));
-                canBo.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))));
-                canBo.setTenCanBo(String.valueOf(getCellValue(row.getCell(4))));
-                canBo.setTenTaiKhoan(String.valueOf(getCellValue(row.getCell(5))));
-                canBo.setVaiTro(VaiTro.valueOf(String.valueOf(getCellValue(row.getCell(6)))));
-                canBo.setCoSoId(id);
-                listCanBo.add(canBo);
+    public List<CanBo> importData(MultipartFile reapExcelDataFile, String id) throws IOException {
+        List<CanBo> listCanBo = new ArrayList<>();
+        Workbook workbook = StreamingReader.builder()
+                .bufferSize(4096)
+                .rowCacheSize(50)
+                .open(reapExcelDataFile.getInputStream());
+        Sheet worksheet = workbook.getSheetAt(0);
+        for (Row row : worksheet) {
+            if (row.getRowNum() == 0) {
+                continue;
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            CanBo canBo = new CanBo();
+            canBo.setEmailFe(String.valueOf(getCellValue(row.getCell(1))));
+            canBo.setEmailFpt(String.valueOf(getCellValue(row.getCell(2))));
+            canBo.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))));
+            canBo.setTenCanBo(String.valueOf(getCellValue(row.getCell(4))));
+            canBo.setTenTaiKhoan(String.valueOf(getCellValue(row.getCell(5))));
+            canBo.setVaiTro(VaiTro.valueOf(String.valueOf(getCellValue(row.getCell(6)))));
+            canBo.setCoSoId(id);
+            listCanBo.add(canBo);
         }
+
         return listCanBo;
     }
 
-    private static Object getCellValue(XSSFCell cell) {
+    private static Object getCellValue(Cell cell) {
         try {
             switch (cell.getCellType()) {
                 case NUMERIC -> {
@@ -60,4 +61,5 @@ public class DtCanBoImportExcel {
             return "";
         }
     }
+
 }
