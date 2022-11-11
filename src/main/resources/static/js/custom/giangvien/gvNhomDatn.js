@@ -32,7 +32,7 @@ function showDetail(maNhom) {
                 return `
                     <tr>
                     <td>${item.stt}</td>
-                    <td>${item.chucVu != 0 ? "trưởng nhóm" : "thành viên"}</td>
+                    <td>${item.chucVu != 0 ? "Trưởng nhóm" : "Thành viên"}</td>
                     <td>${item.maSinhVien}</td>
                     <td>${item.tenSinhVien}</td>
                     <td>${item.soDienThoai}</td>

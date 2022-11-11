@@ -163,7 +163,7 @@
                                                         <button th:style="${nhomDatn.getTrangThai()} == 1 ? 'display: block' : 'display: none'"
                                                                 th:attr="onclick=|xacDaNhanLienHe('${nhomDatn.getId()}', '${nhomDatn.getMaNhom()}')|"
                                                                 class="btn_check_circle" data-toggle="tooltip"
-                                                                title="Xác nhận nhóm">
+                                                                title="Xác nhận nhóm đã liên hệ">
                                                             <img th:src="@{/img/check-circle.svg}">
                                                         </button>
                                                         <button th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : (${nhomDatn.getTrangThai()} ==3 ? 'display: block' :  'display: none')"
