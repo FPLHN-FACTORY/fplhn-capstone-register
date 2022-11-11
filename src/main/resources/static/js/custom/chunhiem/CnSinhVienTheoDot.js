@@ -58,13 +58,12 @@ function loadDataToTable(count) {
                             <td >${sinhVien.stt}</td>
                             <td> ${sinhVien.maSinhVien}</td>
                             <td> ${sinhVien.tenSinhVien}</td>
-                            <td> ${sinhVien.tenChuyenNganh}</td>
-                            <td> ${sinhVien.tenDotDangKy}</td>
-                            <td> ${sinhVien.maMon == null ? 'Chưa có' : sinhVien.maMon}</td>
+                            <td> ${sinhVien.maMonChuongTrinh == null ? 'Chưa có' : sinhVien.maMonChuongTrinh}</td>
+                            <td> ${sinhVien.maMonDuAn == null ? 'Chưa có' : sinhVien.maMonDuAn                           }</td>
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <a style="${checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}"
+                  <a style="${checkHanChuNhiem == 'false' ? 'display : block' : 'display : none'}"
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">
