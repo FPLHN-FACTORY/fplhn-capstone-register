@@ -266,8 +266,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             String headerKey = "Content-Disposition";
             String headerValue = "attachment; filename=SinhVienTheoDot" + currentDateTime + "." + typeExcel;
             response.setHeader(headerKey, headerValue);
-            CnSinhVienTheoDotExport cnNhomDatnExport = new CnSinhVienTheoDotExport(list);
-            cnNhomDatnExport.exportData(response);
+            CnSinhVienTheoDotExport cnNhomDatnExport = new CnSinhVienTheoDotExport();
+            cnNhomDatnExport.employeeDetailReport(response, list);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
