@@ -93,7 +93,8 @@
                                                                             datn:</label>
                                                                         <select id="tenNhomMonDatn"
                                                                                 class="form-control">
-                                                                            <option value=""></option>
+                                                                            <option value="select" hidden>Chọn nhóm môn DATN</option>
+                                                                            <option value="">Môn độc lập</option>
                                                                             <div th:each="tenNhomMon : ${tenNhomMon}">
                                                                                 <option th:value="${tenNhomMon.id}"
                                                                                         th:text="${tenNhomMon.tenMonDatn}"></option>
