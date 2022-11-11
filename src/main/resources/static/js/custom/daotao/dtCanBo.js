@@ -241,40 +241,50 @@ $("#form_hoc_ky_update").submit(function (event) {
 });
 
 function openModalRemoveCanBo(canBoId) {
-    $("#modal_can_bo_remove").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: canBoApi + "/" + canBoId,
-        dataType: 'json',
-        success: function () {
-            $("#remove_can_bo").val(canBoId);
+    bootbox.confirm({
+        title: "Xóa nhóm môn",
+        message: "Bạn muốn xóa cán bộ này?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: canBoApi + "/" + canBoId,
+                    dataType: 'json',
+                    success: function (responseData) {
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                window.open(canBoView, '_self');
+                            }
+                        });
+                    },
+                    error: function (responseData) {
+                        if (responseData.responseJSON.message === 'Can Bo not exist') {
+                            bootbox.alert({
+                                message: 'Cán Bộ Không Tồn Tại',
+                                backdrop: true,
+                                callback: function () {
+                                    window.open(nhomMonDatnView, '_self');
+                                }
+                            });
+                        }
+                    }
+                });
+            }
         }
     });
 }
-
-$("#form_can_bo_delete").submit(function (event) {
-    event.preventDefault();
-    let canBoId = $("#remove_can_bo").val();
-    console.log(canBoId)
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: canBoApi + "/" + canBoId,
-        data: JSON.stringify(canBoId),
-        dataType: 'json',
-        success: function () {
-            window.open(canBoView, '_self');
-            $("#modal_update_hoc_ky").modal("hide");
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-});
 
 $("#form_import_excel").submit(function (event) {
     event.preventDefault();
@@ -296,7 +306,7 @@ $("#form_import_excel").submit(function (event) {
                 },
                 error: function (e) {
                     window.open(canBoView, '_self');
-                    console.log("ERROR: " + e);
+                    alert("ERROR: " + e);
                 }
             }
         );
