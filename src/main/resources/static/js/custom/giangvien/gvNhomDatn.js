@@ -50,19 +50,8 @@ function showDetail(maNhom) {
 
 function xacDaNhanLienHe(idNhom, maNhom) {
     if(hanGiangVien  == 'false'){
-        bootbox.confirm({
-            title: "Thông báo",
-            message: "Đã hết hạn giảng viên",
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Quay lại'
-                }, confirm: {
-                    label: '<i class="fa fa-check"></i> Xác nhận'
-                }
-            },
-            callback: function (result) {
-              window.location.reload(false)
-            }
+        bootbox.alert('Đã hết hạn giảng viên', function () {
+            window.location.reload(false)
         });
     }else{
         bootbox.confirm({
@@ -154,19 +143,8 @@ function seachNhomdatn(index) {
 
 function updateTenDeTai(maNhom) {
     if(hanGiangVien  == 'false'){
-        bootbox.confirm({
-            title: "Thong báo",
-            message: "Đã hết hạn giảng viên",
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Quay lại'
-                }, confirm: {
-                    label: '<i class="fa fa-check"></i> Xác nhận'
-                }
-            },
-            callback: function (result) {
-                window.location.reload(false)
-            }
+        bootbox.alert('Đã hết hạn giảng viên', function () {
+            window.location.reload(false)
         });
     }else {
         $("#modal_update_ten_de_tai").modal('show');
@@ -217,19 +195,8 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
 
 function chotDeTaiNhomDatn(idNhom, maNhom) {
     if(hanGiangVien  == 'false'){
-        bootbox.confirm({
-            title: "Thông báo",
-            message: "Đã hết hạn giảng viên",
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Quay lại'
-                }, confirm: {
-                    label: '<i class="fa fa-check"></i> Xác nhận'
-                }
-            },
-            callback: function (result) {
-                window.location.reload(false)
-            }
+        bootbox.alert('Đã hết hạn giảng viên', function () {
+            window.location.reload(false)
         });
     }else {
         bootbox.confirm({
