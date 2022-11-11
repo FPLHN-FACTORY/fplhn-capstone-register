@@ -29,7 +29,7 @@ public class DailyCheckNhomDatn {
     @Qualifier(SinhVienRepository.NAME)
     private SinhVienRepository sinhVienRepository;
 
-    @Scheduled(cron = "*/3600 * * * * ?")
+    @Scheduled(fixedDelay = 3600000)
     public void daiLyChecking() throws InterruptedException {
         List<String> listNhomKhongDuDieuKien = nhomDatnRepository.listNhomKhongDuDieuKien(convertDateToTimeStampSecond());
         if (listNhomKhongDuDieuKien != null) {

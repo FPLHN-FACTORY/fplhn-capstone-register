@@ -97,10 +97,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean chotDeTai(String id) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
-        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -115,10 +111,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean xacNhanNhom(String id) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
-        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -133,10 +125,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean tuChoiChotDeTai(String id, String nhanXet) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
-        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -152,10 +140,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public Boolean delete(String id) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
-        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -179,10 +163,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM);
-        }
         String idGiangVien = cnCreateNhomDatnRequest.getIdGiangVien();
         if (cnGiangVienHuongDanReponsitory.findById(idGiangVien) == null) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);

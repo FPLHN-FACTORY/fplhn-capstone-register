@@ -133,7 +133,7 @@
                                                 <th width="50px">STT</th>
                                                 <th>Mã sinh viên</th>
                                                 <th>Tên sinh viên</th>
-                                                <th>Mã môn chương trìn</th>
+                                                <th>Mã môn chương trình</th>
                                                 <th>Mã môn dự án</th>
                                                 <th>Mã nhóm</th>
                                                 <th>Tên đề tài</th>
@@ -149,7 +149,7 @@
                                                         <td th:text="${sinhVien.maMonDuAn}==null ? 'Chưa có' : (${sinhVien.maMonDuAn})"></td>
                                                         <td th:switch="${sinhVien.maNhom}">
                                                             <a th:case=null
-                                                               th:style="${checkHanChuNhiem} == false ? '' : 'display: none'"
+                                                               th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                                data-toggle="modal"
                                                                th:attr="onclick=|openModalAddSinhVien('${sinhVien.maSinhVien}','${page.currentPage}')|"
                                                                class=" btn btn-success">
