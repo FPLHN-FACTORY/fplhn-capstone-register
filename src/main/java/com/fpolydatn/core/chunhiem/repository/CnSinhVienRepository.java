@@ -87,13 +87,15 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
             LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
+            LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
             WHERE a.co_so_id = :#{#req.coSoId} 
             AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
             OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%  
             OR a.ma_sinh_vien LIKE %:#{#req.tenSinhVien}%) 
-            AND (:#{#req.idDotDangKy} IS NULL OR :#{#req.idDotDangKy} LIKE ''
-                    OR f.id = :#{#req.idDotDangKy})
-             ORDER BY ten_sinh_vien
+            AND f.id = :#{#req.idDotDangKy}
+            AND g.id = :#{#req.idChuNhiem}
+            AND a.trang_thai = 0
+            ORDER BY ten_sinh_vien
             """, countQuery = """
             SELECT COUNT(a.id)
             FROM sinh_vien a
@@ -102,9 +104,13 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
             LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
+            LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
             WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId}
             AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%) ORDER BY ten_sinh_vien
+            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)
+            AND g.id = :#{#req.idChuNhiem}
+            AND a.trang_thai = 0
+            ORDER BY ten_sinh_vien
              """, nativeQuery = true)
     Page<CnSinhVienTheoDotResponse> searchSinhVien(@Param("req") CnFindSinhVienTheoDotRequest req, Pageable page);
 

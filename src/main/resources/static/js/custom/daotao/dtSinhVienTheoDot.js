@@ -140,11 +140,12 @@ function importExcel() {
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("Chọn file");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        var form = $('#form_import_excel')[0];
         $.ajax({
                 type: 'POST',
-                url: $(this).attr('action'),
+                url: '/api/dao-tao/sinh-vien/import',
                 enctype: 'multipart/form-data',
-                data: new FormData(this),
+                data: new FormData(form),
                 processData: false,
                 contentType: false,
                 success: function (response) {
@@ -153,18 +154,27 @@ function importExcel() {
                             message: 'Import file thành công',
                             backdrop: true,
                             callback: function () {
-                                viewTable(0);
+                                location.reload();
                             }
                         });
                     } else {
                         bootbox.alert({
-                            message: response.data.message,
+                            message: response.data.message + '',
                             backdrop: true,
+                            callback: function () {
+                                location.reload();
+                            }
                         });
                     }
                 },
                 error: function (e) {
-                    console.log("ERROR: " + e);
+                    bootbox.alert({
+                        message: e.responseJSON.message + '',
+                        backdrop: true,
+                        callback: function () {
+                            location.reload();
+                        }
+                    });
                 }
             }
         );
