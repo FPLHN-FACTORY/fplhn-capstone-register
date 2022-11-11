@@ -40,7 +40,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
 
     @Override
     public Boolean delete(String id, String coSoId) {
-        Optional<MonDatn> nhomMonDatn= dtNhomMonDatnRepository.findById(id);
+        Optional<MonDatn> nhomMonDatn = dtNhomMonDatnRepository.findById(id);
         if (!nhomMonDatn.isPresent()) {
             throw new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST);
         }

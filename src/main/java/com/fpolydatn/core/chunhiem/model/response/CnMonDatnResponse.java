@@ -11,6 +11,9 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(types = {MonDatn.class})
 public interface CnMonDatnResponse extends IsIdentified {
 
+    @Value("#{target.ma_mon}")
+    String getMaMonDatn();
+
     @Value("#{target.ten_mon_datn}")
     String getTenMonDatn();
 }

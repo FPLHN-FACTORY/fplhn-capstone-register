@@ -11,11 +11,13 @@ import lombok.Setter;
 @Setter
 public final class CnFindNhomDatnRequest extends PageableRequest {
 
-    private String tenNhom;
+    private String maNhom;
 
-    private String chuyenNganhId;
+    private String tenDeTai;
 
-    private String tenGvhd;
+    private String tenTaiKhoan;
+
+    private String monDatnId;
 
     private String trangThai;
 

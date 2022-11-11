@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author phongtt35
  */
@@ -19,4 +21,17 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
                 WHERE dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
     String genMaNhomTuDong(@Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+                SELECT c.ma_co_so FROM  co_so c 
+                WHERE  c.id = :coSoId
+            """, nativeQuery = true)
+    String getMaCoSo(@Param("coSoId") String coSoId);
+
+    @Query(value = """
+            SELECT a.id FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
+            WHERE a.created_date + 43200000 < :currentTime
+            GROUP BY a.id HAVING COUNT(b.id) <= 3
+            """, nativeQuery = true)
+    List<String> listNhomKhongDuDieuKien(@Param("currentTime") Long currentTime);
 }

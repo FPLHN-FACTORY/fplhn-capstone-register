@@ -23,6 +23,7 @@ public interface GvNhomDatnResponse extends IsIdentified {
 
     @Value("#{target.ma_nhom}")
     String getMaNhom();
+
     @Value("#{target.ma_mon}")
     String getMaMon();
 

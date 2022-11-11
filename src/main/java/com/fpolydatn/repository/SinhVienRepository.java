@@ -2,10 +2,13 @@ package com.fpolydatn.repository;
 
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import org.apache.commons.math3.analysis.function.Sinh;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author phongtt35
@@ -26,4 +29,8 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
     SimpleEntityProj findSimpleEntityByTenSinhVien(@Param("coSoId") String coSoId, @Param("email") String email,
                                                    @Param("dotDangKyID") String dotDangKyID);
 
+    @Query(value = """
+            SELECT * FROM sinh_vien WHERE nhom_id = :id
+            """, nativeQuery = true)
+    List<SinhVien> getListSinhVienByNhomId(@Param("id") String id);
 }

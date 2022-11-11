@@ -32,7 +32,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import java.sql.Array;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -52,8 +51,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Autowired
     private SvSinhVienRepository svSinhVienRepository;
-
-    private final FormUtils formUtils = new FormUtils();
 
     @Autowired
     private NhomDatnHelper nhomDatnHelper;
@@ -165,7 +162,6 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         nhomDatn.setCoSoId(svNhomDatnRequest.getCoSoId());
         if (svNhomDatnRequest.getMatKhau()) {
             nhomDatn.setMatKhau(String.valueOf((int) (Math.random() * 100000000)));
-            System.out.println("**************--------------------------" + nhomDatn.getMatKhau());
         } else {
             nhomDatn.setMatKhau(null);
         }
@@ -177,8 +173,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());
         svSinhVienRepository.save(sinhVien.get());
         String[] email = new String[]{sinhVien.get().getEmail()};
+        String[] message = new String[]{"Mật khẩu nhóm DATN của bạn là: " + nhomDatn.getMatKhau()};
         emailSender.sendEmail(email, "[FCR] Thông báo mật khẩu nhóm",
-                "Tạo nhóm thành công", "Mật khẩu nhóm DATN của bạn là: " + nhomDatn.getMatKhau());
+                "Tạo nhóm thành công", message);
         return nhomDatn;
     }
 
@@ -264,9 +261,10 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         nhomDatn.get().setTruongNhomId(truongNhomMoi.get().getId());
         String[] email = new String[]{truongNhomMoi.get().getEmail()};
+        String[] message = new String[] {"Bạn đã trở thành trưởng nhóm", "Mật khẩu nhóm DATN của bạn là: " + nhomDatn.get().getMatKhau()};
         emailSender.sendEmail(email, "[FCR] Thông báo mật khẩu nhóm",
                 "Chuyển quyền trưởng nhóm",
-                "Bạn đã trở thành trưởng nhóm. Mật khẩu nhóm DATN của bạn là: " + nhomDatn.get().getMatKhau());
+                message);
         svNhomDatnRepository.save(nhomDatn.get());
         return true;
     }

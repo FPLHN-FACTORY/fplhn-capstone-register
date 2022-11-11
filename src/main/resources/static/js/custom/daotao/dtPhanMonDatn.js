@@ -1,7 +1,7 @@
 const phanCongHuongDanApi = "/api/dao-tao/phan-cong-hong-dan";
 const phanCongHuongDanView = document.URL;
 
-$("#form_add_phan_cong").submit(function (event) {
+function phanCong() {
     event.preventDefault();
     let giangVienHuongDanId = $("#getGiangVienHuongDanId").attr('value');
     let listPhanCong = [];
@@ -33,17 +33,17 @@ $("#form_add_phan_cong").submit(function (event) {
             $("#modal_create").modal("hide");
             $("#errLoi").text("");
             bootbox.alert({
-                  message: 'Thêm thành công',
-                  backdrop: true,
-                  callback: function () {
-                      window.open(phanCongHuongDanView, '_self');
-                  }
-              });
+              message: 'Thêm thành công',
+              backdrop: true,
+              callback: function () {
+                  window.open(phanCongHuongDanView, '_self');
+              }
+            });
         },
         error: function (e) {
         }
     });
-});
+};
 
 let checkOut = 0;
 
@@ -77,24 +77,23 @@ function openModalRemovePhanCongHuongDan(giangVienHuongDanId, monDatnId) {
         callback: function (result) {
             if (result) {
                 $.ajax({
-                        type: "DELETE",
-                        contentType: "application/json",
-                        url: phanCongHuongDanApi + "?idGiangVien=" + giangVienHuongDanId + "&idMon=" + monDatnId,
-                        data: JSON.stringify(giangVienHuongDanId, monDatnId),
-                        dataType: 'json',
-                        success: function () {
-                            bootbox.alert({
-                                  message: 'Xóa thành công',
-                                  backdrop: true,
-                                  callback: function () {
-                                      window.open(phanCongHuongDanView, '_self');
-                                  }
-                              });
-                        },
-                        error: function (e) {
-                        }
-                    });
-
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: phanCongHuongDanApi + "?idGiangVien=" + giangVienHuongDanId + "&idMon=" + monDatnId,
+                    data: JSON.stringify(giangVienHuongDanId, monDatnId),
+                    dataType: 'json',
+                    success: function () {
+                        bootbox.alert({
+                              message: 'Xóa thành công',
+                              backdrop: true,
+                              callback: function () {
+                                  window.open(phanCongHuongDanView, '_self');
+                              }
+                          });
+                    },
+                    error: function (e) {
+                    }
+                });
             }
         }
     });

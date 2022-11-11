@@ -14,16 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.List;
+
 
 /**
  * @author hungpv
@@ -43,14 +39,13 @@ public class DtMonDatnController extends BaseController {
         req.setCoSoId(coSoId);
         PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
-        List<MonDatn> tenNhomMon= monDatnService.findByTenNhomMon();
+        List<MonDatn> tenNhomMon = monDatnService.findByTenNhomMon();
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
         model.addAttribute("tenNhomMon", tenNhomMon);
         return "daotao/dt-mon-datn";
     }
-
 
     @GetMapping("/mau-import")
     public void exportEcel(HttpServletResponse response) throws IOException {
