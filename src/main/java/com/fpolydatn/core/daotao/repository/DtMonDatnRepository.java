@@ -3,7 +3,6 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.entity.MonDatn;
-import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.MonDatnRepository;
 import org.springframework.data.domain.Page;
@@ -12,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author hungpv
@@ -93,7 +91,14 @@ public interface DtMonDatnRepository extends MonDatnRepository {
     List<MonDatn> findByIdMon(@Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT *
+            SELECT m.id, 
+                m.created_date, 
+                m.last_modified_date, 
+                m.co_so_id, 
+                m.chuyen_nganh_id, 
+                m.ma_mon, 
+                m.nhom_mon_datn_id, 
+                m.ten_mon_datn
                 FROM mon_datn m 
                 WHERE m.nhom_mon_datn_id IS NULL 
                 AND m.co_so_id = :coSoId 
@@ -101,7 +106,14 @@ public interface DtMonDatnRepository extends MonDatnRepository {
     List<MonDatn> getListNhomMonDatn(@Param("coSoId") String coSoId);
 
     @Query(value = """
-            SELECT *
+            SELECT m.id, 
+                m.created_date, 
+                m.last_modified_date, 
+                m.co_so_id, 
+                m.chuyen_nganh_id, 
+                m.ma_mon, 
+                m.nhom_mon_datn_id, 
+                m.ten_mon_datn
                 FROM mon_datn m 
                 WHERE m.co_so_id = :coSoId 
             """, nativeQuery = true)

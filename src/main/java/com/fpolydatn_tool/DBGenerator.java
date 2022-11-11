@@ -29,7 +29,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author phongtt35
@@ -157,7 +157,9 @@ public class DBGenerator implements CommandLineRunner {
         DotDangKy dot1 = new DotDangKy();
         dot1.setCoSoId(csHN.getId());
         dot1.setHocKyId(su22.getId());
-        dot1.setNgayBatDau(Calendar.getInstance().getTimeInMillis());
+        Date now = new Date();
+        now.setSeconds(0);
+        dot1.setNgayBatDau(now.getTime());
         dot1.setHanSinhVien(dot1.getNgayBatDau() + 1296000000L);
         dot1.setHanGiangVien(dot1.getNgayBatDau() + 1900800000L);
         dot1.setHanChuNhiemBoMon(dot1.getNgayBatDau() + 2629800000L);

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -56,8 +57,12 @@ public final class DtCanBoRestController extends BaseController {
 
     @PostMapping("/import")
     public void importEcel(@RequestParam("file") MultipartFile file) throws IOException {
-        String coSoId =session.getCoSoId();
-        canBoService.DtCanBoImport(file,coSoId);
+        String coSoId = session.getCoSoId();
+        canBoService.DtCanBoImport(file, coSoId);
     }
 
+    @GetMapping("/export-mau")
+    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel) throws IOException {
+        canBoService.MauImportExcel(response, typeExcel);
+    }
 }

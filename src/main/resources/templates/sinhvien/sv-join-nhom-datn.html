@@ -103,11 +103,17 @@
                                     <div class="mt-3 overflow-hidden">
                                         <button
                                                 class="btn btn-primary"
-                                                data-target="#modal_create"
-                                                data-toggle="modal"
-                                                th:style="${checkMocThoiGian} == true ? 'display:block' : 'display: none'">
-                                            Tạo nhóm Dự án tốt nghiệp
+                                                th:attr="onclick=|openModalCreate()|"
+                                                th:style="${checkMocThoiGian} == false ? 'display: none' :
+                                                                (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')">
+                                            Tạo nhóm DATN
                                         </button>
+                                        <i
+                                                style="color: red"
+                                                th:text="${checkMocThoiGian} == false ? '*Hết hạn sinh viên tham gia và tạo nhóm' :
+                                                                (${checkThoiGianRoiNhom} == false ? '*Thời gian rời nhóm gần nhất của bạn chưa đủ 12 giờ' : '')">
+
+                                        </i>
                                         <br><br>
                                         <!--                Table body       -->
                                         <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
@@ -122,7 +128,7 @@
                                             <th>Trưởng nhóm</th>
                                             <th>GVHD</th>
                                             <th>Trạng thái</th>
-                                            <th th:style="${checkMocThoiGian} == true ? '' : 'display: none'">
+                                            <th width="100px">
                                                 Hành động
                                             </th>
                                             </thead>
@@ -140,23 +146,21 @@
                                                     <td th:text="${nhomDatn.getMatKhauTonTai} == '0' ? 'Công khai' : 'Nhóm kín'"></td>
                                                     <td>
                                                         <button class="btn_eye"
-                                                                data-toggle="modal"
                                                                 th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
                                                                 title="Xem chi tiết nhóm"
                                                                 type="button"
                                                         >
                                                             <img th:src="@{/img/eye-fill.svg}">
                                                         </button>
-                                                        <div class="row"
-                                                             th:style="${checkMocThoiGian} == true ? 'display:block' : 'display: none'">
-                                                            <button
-                                                                    class="btn btn-success"
-                                                                    th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|"
-
-                                                                    type="button">
-                                                                Tham gia nhóm
-                                                            </button>
-                                                        </div>
+                                                        <button
+                                                                th:style="${checkMocThoiGian} == false ? 'display: none' :
+                                                                (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')"
+                                                                title="Tham gia nhóm"
+                                                                class="btn_box_arrow"
+                                                                th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|"
+                                                                type="button">
+                                                            <img th:src="@{/img/box-arrow.svg}">
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             </th:block>
@@ -247,11 +251,10 @@
                         <span class="text-danger">(*)</span>
                         <label class="col-form-label">Môn DATN</label>
                         <select class="form-control col-8" id="monDatnCreateNhom">
+                            <option hidden value="">Chọn môn DATN</option>
                             <option th:each="i : ${listDataMonDatn}"
                                     th:text="${i.getTenMon()}"
                                     th:value="${i.getId()}">
-                            </option>
-                            <option selected value="">Không chọn
                             </option>
                         </select>
                         <p class="text-danger" id="mon_datn_error"></p>
@@ -350,6 +353,7 @@
 </div>
 <!--                        end add Sinh vien-->
 <span hidden id="check_han_sv" style="color:red;" th:text="${checkMocThoiGian}"></span>
+<span hidden id="check_thoi_gian_roi_nhom" style="color:red;" th:text="${checkThoiGianRoiNhom}"></span>
 <!--        End confirm Success                -->
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>

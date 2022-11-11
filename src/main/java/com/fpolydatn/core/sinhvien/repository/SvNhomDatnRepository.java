@@ -19,12 +19,14 @@ import java.util.List;
 public interface SvNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = "SELECT a.id, b.id AS id_sinh_vien, ROW_NUMBER() OVER() AS Stt, ma_nhom, ten_nhom, ten_dot_dang_ky, " +
-            "ten_de_tai, ma_sinh_vien, ten_sinh_vien, ten_gvhd, f.ten_mon_datn,\n" +
+            "ten_de_tai, ma_sinh_vien, ten_sinh_vien, ten_gvhd, " +
+            "(SELECT CONCAT(e.ma_mon, ' - ', e.ten_mon_datn) FROM mon_datn e WHERE e.id = b.mon_chuong_trinh_id) as ten_mon_chuong_trinh, " +
+            "CONCAT(f.ma_mon, ' - ', f.ten_mon_datn) AS ten_mon_datn, " +
             "IF(b.id = a.truong_nhom_id, 1, 0) AS chuc_vu, a.trang_thai, " +
-            "IF(a.nhan_xet IS NULL, 'Không có nhận xét', a.nhan_xet) AS nhan_xet\n" +
+            "IF(a.nhan_xet IS NULL, 'Không có nhận xét', a.nhan_xet) AS nhan_xet " +
             "FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id " +
-            "LEFT JOIN giang_vien_huong_dan c ON c.id = a.giang_vien_id\n" +
-            "JOIN mon_datn f ON f.id = b.mon_datn_id\n" +
+            "LEFT JOIN giang_vien_huong_dan c ON c.id = a.giang_vien_id " +
+            "JOIN mon_datn f ON f.id = b.mon_datn_id " +
             "LEFT JOIN dot_dang_ky d ON d.id = a.dot_dang_ky_id WHERE a.id = :nhomDatnId", nativeQuery = true)
     List<SvDetailNhomDatnResponse> getDetailNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
 

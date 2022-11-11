@@ -4,6 +4,7 @@ import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
+import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.NhomDatnRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -123,5 +124,12 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
                  WHERE n.co_so_id = :coSoId
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaNhom(@Param("coSoId") String coSoId);
+
+    @Query(value = """
+            SELECT a.id, a.created_date, a.last_modified_date, a.co_so_id, a.dot_dang_ky_id, a.giang_vien_id, a.ma_nhom, a.mat_khau,
+            a.mo_ta, a.nhan_xet, a.ten_de_tai, a.ten_nhom, a.trang_thai, a.truong_nhom_id
+            FROM nhom_datn a WHERE a.dot_dang_ky_id = :dotDangKyId AND a.co_so_id = :coSoId
+            """, nativeQuery = true)
+    List<NhomDatn> findAllByDotDangKyId(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
 
 }

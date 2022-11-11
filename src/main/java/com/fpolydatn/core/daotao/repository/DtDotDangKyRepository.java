@@ -22,13 +22,13 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             SELECT ROW_NUMBER() OVER(ORDER BY ddk.last_modified_date DESC) AS STT, ddk.id, hk.ten_hoc_ky, 
             ddk.ten_dot_dang_ky, ddk.ngay_bat_dau, ddk.ngay_ket_thuc, 
             FROM_UNIXTIME(ddk.ngay_ket_thuc / 1000) > CURRENT_DATE() AS trang_thai 
-            FROM dot_dang_ky ddk LEFT JOIN sinh_vien sv ON ddk.id = sv.dot_dang_ky_id 
+            FROM dot_dang_ky ddk 
             INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id WHERE ddk.co_so_id = :#{#req.coSoId} 
             GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
             """,
             countQuery = """
                     SELECT COUNT(ddk.id) 
-                    FROM dot_dang_ky ddk LEFT JOIN sinh_vien sv ON ddk.id = sv.dot_dang_ky_id 
+                    FROM dot_dang_ky ddk
                     INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id WHERE ddk.co_so_id = :#{#req.coSoId} 
                     GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
                     """,

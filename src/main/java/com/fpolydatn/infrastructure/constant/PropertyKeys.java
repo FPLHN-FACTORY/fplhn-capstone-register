@@ -76,4 +76,10 @@ public class PropertyKeys {
 
     public static final String CHU_NHIEM_ALREADY_EXIST = "chu.nhiem.already.exist";
 
+    public static final String MA_NHOM_MON_DATN_ALREADY_EXIST = "ma.nhom.mon.already.exist";
+
+    public static final String NHOM_MON_DATN_NOT_EXIST = "nhom.mon.datn.not.exist";
+
+    public static final String NHOM_MON_DANG_TON_TAI_MON = "nhom.mon.dang.ton.tai.mon";
+
 }
