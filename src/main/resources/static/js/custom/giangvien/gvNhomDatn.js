@@ -114,12 +114,12 @@ function seachNhomdatn(index) {
                                     <img src="/img/check-circle.svg">
                          </button>
                         <button onclick= "chotDeTaiNhomDatn('${item.id}', '${item.maNhom}')"
-                                style="${item.trangThai == 2   ? 'display: block' : (item.trangThai == 3 && hanGiangVien == 'true' ? 'display: block' : 'display: none')}"
+                                style="${item.trangThai == 2   ? 'display: block' : (item.trangThai == 3 ? 'display: block' : 'display: none')}"
                                 class="btn_check " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/clipboard-check.svg">
                          </button>
                          <button onclick= "updateTenDeTai('${item.id}')"
-                                style="${item.trangThai == 2  ? 'display: block' : (item.trangThai == 3 && hanGiangVien == 'true' ? 'display: block' : (item.trangThai == 4 && hanGiangVien == 'true' ? 'display: block' : 'display: none'))}"
+                                style="${item.trangThai == 2  ? 'display: block' : (item.trangThai == 3 ? 'display: block' : (item.trangThai == 4 ? 'display: block' : 'display: none'))}"
                                 class="btn_pencil_square " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/pencil-square.svg">
                          </button>

@@ -30,7 +30,7 @@ function clearUpdate() {
     $('#ten_tai_khoan_error_update').text("");
 }
 
-$("#form_create_can_bo").submit(function (event) {
+function save() {
     event.preventDefault();
     clear();
     let emailFe = $("#emailfe").val().trim();
@@ -119,7 +119,7 @@ $("#form_create_can_bo").submit(function (event) {
             }
         });
     }
-});
+};
 
 function openModalUpdateCanBo(canBoId) {
     clearUpdate();
@@ -146,7 +146,7 @@ function openModalUpdateCanBo(canBoId) {
     });
 }
 
-$("#form_hoc_ky_update").submit(function (event) {
+function update() {
     event.preventDefault();
     let emailFpt = $("#email_fpt_update").val().trim();
     let emailFe = $("#email_fe_update").val().trim();
@@ -238,7 +238,7 @@ $("#form_hoc_ky_update").submit(function (event) {
             }
         });
     }
-});
+};
 
 function openModalRemoveCanBo(canBoId) {
     bootbox.confirm({

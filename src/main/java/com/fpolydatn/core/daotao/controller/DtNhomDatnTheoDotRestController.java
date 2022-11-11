@@ -5,17 +5,18 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
-import com.fpolydatn.core.daotao.model.response.DtApiResponse;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         String coSoId = session.getCoSoId();
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
-        if (req.getDotDangKyId() == null) {
+        if (dotDangKyId != null) {
             req.setDotDangKyId(dotDangKyId);
         }
         PageableObject<DtNhomDatnTheoDotResponse> listNhomDatn = dtNhomDatnTheoDotService.findAllNhomDatn(req);
@@ -51,6 +52,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     @GetMapping("/export")
     public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtNhomDatnTheoDotRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
+        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         dtNhomDatnTheoDotService.DTNhomDatnExport(response, typeExcel, request);
     }
 }

@@ -175,4 +175,5 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             AND a.dot_dang_ky_id = :dotDangKyId AND a.co_so_id = :coSoId AND b.chu_nhiem_bo_mon = :idChuNhiem
             """, nativeQuery = true)
     List<SinhVien> getALlTruongNhomByIdChuNhiem(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId, @Param("idChuNhiem") String idChuNhiem);
+
 }
