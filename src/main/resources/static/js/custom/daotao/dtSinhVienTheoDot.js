@@ -81,6 +81,10 @@ function viewTable(page) {
     });
 }
 
+function openModalExportExcel() {
+    $("#modal_excel").modal('show');
+}
+
 function exportExcel() {
     let keyword = $("#keyword").val();
     let chuyenNganh = $("#chuyenNganh").val();
@@ -125,6 +129,10 @@ function mauImport() {
     }
 };
 
+function openModalImportExcel() {
+    $("#import_excel").modal('show');
+}
+
 function importExcel() {
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
@@ -165,13 +173,17 @@ function importExcel() {
     }
 }
 
+function openModalLoaiSinhVien() {
+    $("#modal_loai_sinh_vien").modal('show');
+}
+
 function loaiSinhVien() {
     let typeExcel = $("#fileLoaiSv").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length);
     if (typeExcel.length <= 0) {
         $("#errorImportFile").text("Chọn file");
-    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+    } else if (typeFile == 'xlsx') {
         var form = $('#form_loai_sinh_vien')[0];
         $.ajax({
                 type: 'POST',
@@ -182,6 +194,7 @@ function loaiSinhVien() {
                 contentType: false,
                 cache: false,
                 success: function (response) {
+                    $("#modal_loai_sinh_vien").modal('hide');
                     bootbox.alert({
                         message: response.data.message + '',
                         backdrop: true,

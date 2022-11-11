@@ -161,11 +161,13 @@
                                     <div class="row">
                                         <div class="col-4 d-inline float-left"
                                         >
-                                            <button data-toggle="modal" data-target="#modal_excel"
+                                            <button
+                                                    th:attr="onclick=|openModalExportExcel()|"
                                                     class="btn btn-success">
                                                 Export
                                             </button>
-                                            <button data-toggle="modal" data-target="#import_excel"
+                                            <button
+                                                    th:attr="onclick=|openModalImportExcel()|"
                                                     class="btn btn-success">
                                                 Import
                                             </button>
@@ -278,8 +280,7 @@
                                         </div>
                                         <div class="col-8 d-inline text-right">
                                             <button
-                                                    data-toggle="modal"
-                                                    data-target="#modal_loai_sinh_vien"
+                                                    th:attr="onclick=|openModalLoaiSinhVien()|"
                                                     class="btn btn-primary">
                                                 Loại sinh viên
                                             </button>
