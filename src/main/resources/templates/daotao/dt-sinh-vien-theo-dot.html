@@ -320,6 +320,12 @@
                                                                 th:attr="onclick=|detail('${sinhVien.getId()}')|">
                                                             <img th:src="@{/img/eye-fill.svg}">
                                                         </button>
+                                                        <button class="btn_pencil_square"
+                                                                data-toggle="tooltip"
+                                                                title="Loại sinh viên"
+                                                                th:attr="onclick=|loaiSinhVienDetail('${sinhVien.getId()}','${page.currentPage}')|">
+                                                            <img th:src="@{/img/person-off.svg}">
+                                                        </button>
                                                     </td>
                                                 </tr>
                                                 <tr th:unless="${sinhVien.trangThai}== 0" class="text-danger">

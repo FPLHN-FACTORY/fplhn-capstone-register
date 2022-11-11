@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,4 +73,10 @@ public class DtSinhVienTheoDotRestController extends BaseController {
         String coSoId= session.getCoSoId();
         return new ResponseObject(sinhVienService.searchStudentById(id,coSoId));
     }
+
+    @PutMapping("/loai-sv/{id}")
+    public ResponseObject loaiSinhVien(@PathVariable("id") String id){
+        return new ResponseObject(sinhVienService.loaiSinhVien(id));
+    }
+
 }
