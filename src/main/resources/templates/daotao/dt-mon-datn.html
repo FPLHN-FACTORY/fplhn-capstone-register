@@ -105,7 +105,8 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Thêm mới
+                                                                <button th:attr="onclick=|create()|" class="btn btn-primary">
+                                                                    Thêm mới
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -113,7 +114,8 @@
                                                 </div>
                                             </div>
                                             <button
-                                                    data-toggle="modal" data-target="#import_excel" class="btn btn-success">
+                                                    data-toggle="modal" data-target="#import_excel"
+                                                    class="btn btn-success">
                                                 Import
                                             </button>
                                         </div>
@@ -142,7 +144,8 @@
                                                         <td>
                                                             <a
                                                                     type="button"
-                                                                    class="btn_clipboard_user" data-toggle="tooltip" title="Phân môn đồ án tốt nghiệp"
+                                                                    class="btn_clipboard_user" data-toggle="tooltip"
+                                                                    title="Phân môn đồ án tốt nghiệp"
                                                                     th:href="@{'/dao-tao/mon-datn/'+ ${monDatn.getId()}}">
                                                                 <img th:src="@{/img/clipboard-user.svg}">
                                                             </a>
@@ -242,8 +245,8 @@
                     <button onclick="clearModal()" type="button" class="btn btn-secondary"
                             data-dismiss="modal">Hủy
                     </button>
-                    <button type="submit" class="btn btn-primary">Cập
-                        nhật
+                    <button th:attr="onclick=|update()|" class="btn btn-primary">
+                        Cập nhật
                     </button>
                 </div>
             </form>
@@ -251,40 +254,6 @@
     </div>
 </div>
 <!--   End Modal Update -->
-
-<!--  Start Modal Remove-->
-<div
-        class="modal fade"
-        id="modal_mon_datn_remove"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_mon_datn_delete">
-                <div class="modal-header">
-                    <h5 class="modal-title">Xoá môn DATN</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <span id="remove_mon_datn" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Xoá
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--   End Modal Remove -->
 
 <!--  Start Modal Import-->
 <div class="modal fade "
@@ -294,7 +263,7 @@
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form style="margin:20px" id="form_import_excel"
+            <form style="margin:20px" id="form_import_excel" th:onsubmit="importExcel()"
                   th:action="@{'/api/dao-tao/mon-datn/import'}" method="POST"
                   enctype="multipart/form-data">
                 <div class="modal-header">
@@ -313,7 +282,8 @@
                             <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
                         </div>
                         <div class="input-group-append">
-                            <a th:href="@{/dao-tao/mon-datn/mau-import}" class="btn input-group-text" type="button">Tải mẫu</a>
+                            <a th:href="@{/dao-tao/mon-datn/mau-import}" class="btn input-group-text" type="button">Tải
+                                mẫu</a>
                         </div>
                     </div>
                     <span class="text-danger"
@@ -333,9 +303,6 @@
         </div>
     </div>
 </div>
-
-<!--   End Modal Import -->
-
 
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>

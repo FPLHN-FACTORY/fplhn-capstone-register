@@ -43,18 +43,18 @@ public class DtMonDatnMauImport {
         cellDataStyle.setFont(fontData);
 
         Row row1 = xssfSheet.createRow(1);
-        createCell(row1,0,1,cellDataStyle);
-        createCell(row1,1,"PRO2112",cellDataStyle);
-        createCell(row1,2,"Dự án tốt nghiệp (UDPM-Spring Boot)",cellDataStyle);
-        createCell(row1,3,"Công nghệ thông tin",cellDataStyle);
-        createCell(row1,4,"PRO",cellDataStyle);
+        createCell(row1, 0, 1, cellDataStyle);
+        createCell(row1, 1, "PRO2112", cellDataStyle);
+        createCell(row1, 2, "Dự án tốt nghiệp (UDPM-Spring Boot)", cellDataStyle);
+        createCell(row1, 3, "Công nghệ thông tin", cellDataStyle);
+        createCell(row1, 4, "PRO", cellDataStyle);
 
         Row row2 = xssfSheet.createRow(2);
-        createCell(row2,0,2,cellDataStyle);
-        createCell(row2,1,"PRO2113",cellDataStyle);
-        createCell(row2,2,"Dự án tốt nghiệp C#",cellDataStyle);
-        createCell(row2,3,"Công nghệ thông tin",cellDataStyle);
-        createCell(row2,4,"PRO",cellDataStyle);
+        createCell(row2, 0, 2, cellDataStyle);
+        createCell(row2, 1, "PRO2113", cellDataStyle);
+        createCell(row2, 2, "Dự án tốt nghiệp C#", cellDataStyle);
+        createCell(row2, 3, "Công nghệ thông tin", cellDataStyle);
+        createCell(row2, 4, "PRO", cellDataStyle);
     }
 
     private void createCell(Row row, int countColum, Object value, CellStyle cellStyle) {

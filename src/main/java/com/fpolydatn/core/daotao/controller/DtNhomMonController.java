@@ -26,7 +26,7 @@ public class DtNhomMonController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<DtNhomMonDatnResponse> pageNhomMonDatn = dtNhomMonDatnService.findAllByCoSo(req);
-        model.addAttribute("listChuyenNganh",chuyenNganhService.getListChuyenNganh(coSoId));
+        model.addAttribute("listChuyenNganh", chuyenNganhService.getListChuyenNganh(coSoId));
         model.addAttribute("page", pageNhomMonDatn);
         return "daotao/dt-nhom-mon-datn";
     }
