@@ -24,6 +24,7 @@ import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.EmailSender;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Autowired
     private CnGiangVienHuongDanReponsitory cnGiangVienHuongDanReponsitory;
 
+    @Autowired
+    private EmailSender emailSender;
+
     private List<CnSinhVienTheoDotExcel> list;
 
     List<CnCreateSinhVienTheoDotRequest> sinhVienList;
@@ -121,6 +125,37 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
         cnNhomDatnRepository.save(nhomDatnCheck.get());
+        Optional<GiangVienHuongDan> gvhd = null;
+        List<SinhVien> listSinhVien = cnSinhVienRepository.getAllSinhVien(nhomDatnCheck.get().getId(), commonHelper.getDotDangKyHienTai());
+        int soThanhvien = listSinhVien.size();
+        String[] email = new String[soThanhvien];
+        for (int i = 0; i < soThanhvien; i++) {
+            email[i] = listSinhVien.get(i).getEmail();
+        }
+        if (nhomDatnCheck.get().getDotDangKyId() != null) {
+            SinhVien truongNhom = null;
+            for (SinhVien sv : listSinhVien) {
+                if (sv.getId().equals(nhomDatnCheck.get().getTruongNhomId())) {
+                    truongNhom = sv;
+                }
+            }
+            gvhd = cnGiangVienHuongDanReponsitory.findById(nhomDatnCheck.get().getGiangVienId());
+            String[] messageGV = new String[]{"CNBM đã xác nhận nhóm bạn hướng dẫn nhóm:",
+                    "Mã nhóm: " + nhomDatnCheck.get().getMaNhom(), "Số thành viên: " + soThanhvien,
+                    "Trưởng nhóm: " + truongNhom.getMaSinhVien() + " - " + truongNhom.getTenSinhVien(),
+                    "SĐT: " + truongNhom.getSoDienThoai()};
+            emailSender.sendEmail(new String[]{gvhd.get().getEmailFe()}, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
+                    "Xác nhận nhóm thành lập", messageGV);
+        }
+        String tenGvhd = "Chưa có";
+        if (gvhd != null) {
+            tenGvhd = gvhd.get().getTenGvhd() + " - " + gvhd.get().getTenTaiKhoan();
+        }
+        String[] messageSV = new String[] {"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:",
+                "GVHD: " + tenGvhd,
+                "Tên đề tài: " + (nhomDatnCheck.get().getTenDeTai() == null ? "chưa có" : nhomDatnCheck.get().getTenDeTai())};
+        emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
+                "Xác nhận nhóm thành lập", messageSV);
         return true;
     }
 
@@ -150,6 +185,14 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         for (SinhVien xx : listSinhVien) {
             cnSinhVienRepository.deleteSinhVienOutGroup(xx.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
         }
+        int soThanhvien = listSinhVien.size();
+        String[] email = new String[soThanhvien];
+        for (int i = 0; i < soThanhvien; i++) {
+            email[i] = listSinhVien.get(i).getEmail();
+        }
+        String[] message = new String[] {"Chủ nhiệm đã xóa nhóm của bạn"};
+        emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xóa nhóm",
+                "Nhóm đã bị xóa", message);
         return true;
     }
 
