@@ -93,6 +93,7 @@
                                                                             datn:</label>
                                                                         <select id="tenNhomMonDatn"
                                                                                 class="form-control">
+                                                                            <option value=""></option>
                                                                             <div th:each="tenNhomMon : ${tenNhomMon}">
                                                                                 <option th:value="${tenNhomMon.id}"
                                                                                         th:text="${tenNhomMon.tenMonDatn}"></option>
@@ -105,7 +106,8 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button th:attr="onclick=|create()|" class="btn btn-primary">
+                                                                <button th:attr="onclick=|create()|"
+                                                                        class="btn btn-primary">
                                                                     Thêm mới
                                                                 </button>
                                                             </div>

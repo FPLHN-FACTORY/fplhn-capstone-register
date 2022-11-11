@@ -186,8 +186,8 @@ function importExcel () {
         return;
     }
 
-    if($("#inputGroupFile04")[0].files[0].size > 1048576) {
-        $("#errImport").text("File quá hơn 1048576 byte");
+    if($("#inputGroupFile04")[0].files[0].size > 104857600) {
+        $("#errImport").text("File quá hơn 104857600 byte");
         return;
     }
 
@@ -199,7 +199,7 @@ function importExcel () {
     $.ajax({
             type: 'POST',
             url: "/api/dao-tao/mon-datn/import",
-            enctype: $(this).attr('action'),
+            enctype: $("#form_import_excel").attr('action'),
             data: new FormData(importDocoment),
             processData: false,
             contentType: false,
@@ -207,22 +207,17 @@ function importExcel () {
                 $('#import_excel').modal("hide");
                 if (response.data.status == true) {
                     bootbox.alert({
-                        title: "Import Excel",
-                        message: "<div class='alert alert-success alert-dismissible fade show' "+
-                                " role='alert'><strong>SUCCESS !!! </strong><p>Import thành công</p></div>",
+                        title: "Thành công",
+                        message: "<strong>Import thành công</strong>",
                         backdrop: true,
                         callback: function () {
                             reload();
                         }
                     });
                 } else {
-                    let mess = "";
-                    response.data.message.forEach(el => {
-                        mess = mess + "</br>" + el;
-                    });
                     bootbox.alert({
-                        title: "Import Excel",
-                        message: '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>ERROR !!! </strong><div><p>'+ mess +'</p></div></div>',
+                        title: "Thất bại",
+                        message: '<strong>'+ response.data.message +'</strong>',
                         backdrop: true,
                         callback: function () {
                             reload();
