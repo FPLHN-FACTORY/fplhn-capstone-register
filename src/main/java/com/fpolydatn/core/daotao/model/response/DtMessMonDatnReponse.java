@@ -18,6 +18,6 @@ public class DtMessMonDatnReponse {
 
     private Boolean status;
 
-    private List<String> message;
+    private String message;
 
 }

@@ -57,8 +57,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     private HashMap<String, MonDatn> nhomMonDatnHashMap;
 
-    private List<String> returnList = new ArrayList<>();
-
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
@@ -128,88 +126,95 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         monDatnHashMap = new HashMap<>();
         chuyenNganhHashMap = new HashMap<>();
         nhomMonDatnHashMap = new HashMap<>();
-        returnList.clear();
         boNhoDem(coSoId);
 
+        DtMessMonDatnReponse mess = new DtMessMonDatnReponse();
+
         if (!checkTypeFile(file)) {
-            returnList.add("file không đúng định dạng XLSX");
-            return new DtMessMonDatnReponse(false, returnList);
+            return new DtMessMonDatnReponse(false, "file không đúng định dạng XLSX");
         }
 
         List<DtCreateImportMonDatnRequest> importMonDatnRequests = importExcelList(file);
-        List<MonDatn> list = checkImport(importMonDatnRequests, coSoId);
+
+        List<MonDatn> list = new ArrayList<>();
+
+        importMonDatnRequests.forEach(createMonDant -> {
+            if (monDatnHashMap.containsKey(createMonDant.getMaMon())) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã đã tồn tại"));
+                return;
+            } else if (createMonDant.getMaMon().trim().length() == 0) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được để trống"));
+                return;
+
+            } else if (createMonDant.getMaMon().trim().length() > 10) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được quá 10 ký tự"));
+                return;
+
+            } else if (createMonDant.getMaMon().indexOf(" ") > 0) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
+                return;
+            }
+
+            if (createMonDant.getTenMonDatn().trim().length() == 0) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
+                return;
+
+            } else if (createMonDant.getTenMonDatn().trim().length() > 100) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được quá 100 ký tự"));
+                return;
+            }
+
+            if (createMonDant.getChuyenNganhId().trim().length() == 0) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được để trống"));
+                return;
+            } else if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Không tìm thấy tên chuyên ngành"));
+                return;
+            } else if (createMonDant.getChuyenNganhId().trim().length() > 36) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được quá 36 ký tự"));
+                return;
+            }
+
+            if (createMonDant.getNhomMonDatnId().trim().length() == 0) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm môn không được để trống"));
+                return;
+            } else if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
+                return;
+            } else if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
+                mess.setStatus(false);
+                mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
+                return;
+            }
+
+            MonDatn monDatn = new MonDatn();
+            monDatn.setMaMon(createMonDant.getMaMon());
+            monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
+            monDatn.setCoSoId(coSoId);
+            monDatn.setChuyenNganhId(chuyenNganhHashMap.get(createMonDant.getChuyenNganhId()).getId());
+            monDatn.setNhomMonDatnId(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getId());
+            monDatnHashMap.put(monDatn.getMaMon(), monDatn);
+            list.add(monDatn);
+
+        });
 
         if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
             monDatnRepository.saveAll(list);
         }
-        if (returnList.size() == 0) {
-            return new DtMessMonDatnReponse(true, null);
-        }
-        return new DtMessMonDatnReponse(false, returnList);
-    }
 
-    private List<MonDatn> checkImport(List<DtCreateImportMonDatnRequest> list, String coSoId) {
-        List<MonDatn> traVe = new ArrayList<>();
-
-        list.forEach(createMonDant -> {
-            int check = 0;
-            if (monDatnHashMap.containsKey(createMonDant.getMaMon())) {
-                returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã đã tồn tại"));
-                check++;
-            } else if (createMonDant.getMaMon().trim().length() == 0) {
-                returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được để trống"));
-                check++;
-            } else if (createMonDant.getMaMon().trim().length() > 10) {
-                returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được quá 10 ký tự"));
-                check++;
-            } else if (createMonDant.getMaMon().indexOf(" ") > 0) {
-                returnList.add(formErrors("B" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
-                check++;
-            }
-
-            if (createMonDant.getTenMonDatn().trim().length() == 0) {
-                returnList.add(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
-                check++;
-            } else if (createMonDant.getTenMonDatn().trim().length() > 100) {
-                returnList.add(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được quá 100 ký tự"));
-                check++;
-            }
-
-            if (createMonDant.getChuyenNganhId().trim().length() == 0) {
-                returnList.add(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được để trống"));
-                check++;
-            } else if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
-                returnList.add(formErrors("D" + (createMonDant.getStt() + 1), "Không tìm thấy tên chuyên ngành"));
-                check++;
-            } else if (createMonDant.getChuyenNganhId().trim().length() > 36) {
-                returnList.add(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được quá 36 ký tự"));
-                check++;
-            }
-
-            if (createMonDant.getNhomMonDatnId().trim().length() == 0) {
-                returnList.add(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm môn không được để trống"));
-                check++;
-            } else if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
-                returnList.add(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
-                check++;
-            } else if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
-                returnList.add(formErrors("F" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
-                check++;
-            }
-
-            if (check == 0) {
-                MonDatn monDatn = new MonDatn();
-                monDatn.setMaMon(createMonDant.getMaMon());
-                monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
-                monDatn.setCoSoId(coSoId);
-                monDatn.setChuyenNganhId(chuyenNganhHashMap.get(createMonDant.getChuyenNganhId()).getId());
-                monDatn.setNhomMonDatnId(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getId());
-                monDatnHashMap.put(monDatn.getMaMon(), monDatn);
-                traVe.add(monDatn);
-            }
-
-        });
-        return traVe;
+        mess.setStatus(true);
+        return mess;
     }
 
     private String formErrors(String vtr, String err) {
@@ -233,6 +238,15 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
                 DtCreateImportMonDatnRequest createMonDatn = new DtCreateImportMonDatnRequest();
                 if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
+                }
+                if(String.valueOf(getCellValue(row.getCell(0))).trim().length() == 0 &&
+                        String.valueOf(getCellValue(row.getCell(1))).trim().length() == 0 &&
+                        String.valueOf(getCellValue(row.getCell(2))).trim().length() == 0 &&
+                        String.valueOf(getCellValue(row.getCell(3))).trim().length() == 0 &&
+                        String.valueOf(getCellValue(row.getCell(4))).trim().length() == 0
+                ) {
                     rowNumber++;
                     continue;
                 }
