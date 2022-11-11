@@ -20,6 +20,7 @@ import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
+import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
@@ -91,7 +92,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<CnNhomDatnResponse> res = cnNhomDatnRepository.findNhomDatn(request, pageable, idChuNhiem);
-        list = cnNhomDatnRepository.findNhomDatnExport(request, idChuNhiem);
+        list = cnNhomDatnRepository.findNhomDatnExport(request, idChuNhiem, TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
         return new PageableObject(res);
     }
 

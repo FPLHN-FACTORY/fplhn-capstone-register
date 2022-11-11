@@ -76,14 +76,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             SELECT ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT, ma_sinh_vien,
             a.ten_sinh_vien as ten_sinh_vien, e.ma_nhom,
             if(a.id = e.truong_nhom_id, 'Trưởng nhóm', '') as chuc_vu
-            , e.ten_de_tai, f.ten_tai_khoan AS 'gvhd', d.ten_dot_dang_ky,
-            if(e.trang_thai = 0, 'Mới thành lập',
-            if(e.trang_thai = 1, 'Chủ nhiệm bộ môn đã xác nhận',
-            if(e.trang_thai = 2, 'Giảng viên đã liên hệ',
-            if(e.trang_thai = 3, 'Cần sửa',
-            if(e.trang_thai = 4, 'Giảng viên đã chốt',
-            if(e.trang_thai = 5, 'Chủ nhiệm bộ môn đã chốt',
-            '')))))) as trang_thai
+            , e.ten_de_tai, f.ten_tai_khoan AS 'gvhd', d.ten_dot_dang_ky
             FROM sinh_vien a
             LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
             LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
@@ -92,6 +85,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN nhom_datn e ON e.id= a.nhom_id
             LEFT JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id
             WHERE d.id = :#{#req.dotDangKyId} AND a.co_so_id = :#{#req.coSoId} AND g.id = :idChuNhiem
+            AND a.trang_thai = :trangThai
             """, countQuery = """
             SELECT COUNT(a.id)
             FROM sinh_vien a
@@ -103,7 +97,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id
             WHERE d.id = :#{#req.dotDangKyId} AND a.co_so_id = :#{#req.coSoId} AND g.id = :idChuNhiem
             """, nativeQuery = true)
-    List<CnSinhVienTheoDotExcel> findNhomDatnExport(@Param("req") CnFindNhomDatnRequest req, @Param("idChuNhiem") String idChuNhiem);
+    List<CnSinhVienTheoDotExcel> findNhomDatnExport(@Param("req") CnFindNhomDatnRequest req, @Param("idChuNhiem") String idChuNhiem, @Param("trangThai") int trangThai);
 
     @Query(value = "SELECT id FROM nhom_datn WHERE ma_nhom = :maNhom AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
     String getIdByMaNhom(@Param("maNhom") String maNhom, @Param("dotDangKyId") String dotDangKyId);
