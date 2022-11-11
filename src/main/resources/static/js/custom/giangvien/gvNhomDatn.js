@@ -49,11 +49,6 @@ function showDetail(maNhom) {
 }
 
 function xacDaNhanLienHe(idNhom, maNhom) {
-    if(hanGiangVien  == 'false'){
-        bootbox.alert('Đã hết hạn giảng viên', function () {
-            window.location.reload(false)
-        });
-    }else{
         bootbox.confirm({
             title: "Xác nhận nhóm đã liên hệ",
             message: "Bạn có muốn xác nhận đã liên hệ với nhóm " + maNhom + " ?",
@@ -83,7 +78,7 @@ function xacDaNhanLienHe(idNhom, maNhom) {
                 }
             }
         });
-    }
+
 
 }
 
@@ -142,11 +137,7 @@ function seachNhomdatn(index) {
 }
 
 function updateTenDeTai(maNhom) {
-    if(hanGiangVien  == 'false'){
-        bootbox.alert('Đã hết hạn giảng viên', function () {
-            window.location.reload(false)
-        });
-    }else {
+
         $("#modal_update_ten_de_tai").modal('show');
         $.ajax({
             type: "GET",
@@ -161,7 +152,6 @@ function updateTenDeTai(maNhom) {
                 console.log("ERROR : ", e);
             }
         });
-    }
 }
 
 $("#updateTenDeTaiNhomDatn").submit(function (event) {
@@ -194,11 +184,7 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
 });
 
 function chotDeTaiNhomDatn(idNhom, maNhom) {
-    if(hanGiangVien  == 'false'){
-        bootbox.alert('Đã hết hạn giảng viên', function () {
-            window.location.reload(false)
-        });
-    }else {
+
         bootbox.confirm({
             title: "Xác nhận chốt đề tài", message: "Bạn có muốn xác nhận đề tài nhóm " + maNhom + " ?", buttons: {
                 cancel: {
@@ -224,5 +210,4 @@ function chotDeTaiNhomDatn(idNhom, maNhom) {
                 }
             }
         });
-    }
 }

@@ -61,9 +61,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if (nhomDatnCheck.get().getTrangThai() == TrangThaiNhom.MOI_THANH_LAP && nhomDatnCheck.get().getTrangThai() == TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN && nhomDatnCheck.get().getTrangThai() == TrangThaiNhom.CNBM_CHOT) {
             throw new RestApiException(Message.DONT_UPDATE_TEN_DE_TAI);
         }
-        if (!mocThoiGianCommon.checkMocThoiGianGiangVien()) {
-            throw new RestApiException(Message.MOC_THOI_GIAN_GVHD);
-        }
         nhomDatnCheck.get().setTenDeTai(request.getTenDeTai());
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
@@ -77,9 +74,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         if (nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN && nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.MOI_THANH_LAP) {
             throw new RestApiException(Message.DONT_PHE_DUYET_NHOM_DATN);
         }
-        if (!mocThoiGianCommon.checkMocThoiGianGiangVien()) {
-            throw new RestApiException(Message.MOC_THOI_GIAN_GVHD);
-        }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_LIEN_HE);
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
@@ -92,9 +86,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         }
         if (nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.GIANG_VIEN_DA_LIEN_HE && nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.CAN_SUA) {
             throw new RestApiException(Message.DONT_CHOT_DE_TAI_NHOM_DATN);
-        }
-        if (!mocThoiGianCommon.checkMocThoiGianGiangVien()) {
-            throw new RestApiException(Message.MOC_THOI_GIAN_GVHD);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
         return nhomDatnRepository.save(nhomDatnCheck.get());
