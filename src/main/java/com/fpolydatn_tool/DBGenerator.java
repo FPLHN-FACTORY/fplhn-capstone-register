@@ -78,7 +78,7 @@ public class DBGenerator implements CommandLineRunner {
         CanBo yenlh5 = new CanBo();
         yenlh5.setCoSoId(csHN.getId());
         yenlh5.setEmailFe("yenlh5@fe.edu.vn");
-        yenlh5.setEmailFpt("yenlh5@fpt.edu.vn");
+        yenlh5.setEmailFpt("vinhnvph23845@fpt.edu.vn");
         yenlh5.setSoDienThoai("0912345678");
         yenlh5.setTenCanBo("Lê Hải Yến");
         yenlh5.setTenTaiKhoan("yenlh5");

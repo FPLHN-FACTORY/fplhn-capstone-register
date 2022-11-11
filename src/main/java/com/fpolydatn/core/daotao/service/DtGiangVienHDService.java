@@ -3,6 +3,7 @@ package com.fpolydatn.core.daotao.service;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
+import com.fpolydatn.core.daotao.model.request.DtGiagVienHDImportResquest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.entity.GiangVienHuongDan;
@@ -30,9 +31,9 @@ public interface DtGiangVienHDService {
 
     PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest req);
 
-    List<GiangVienHuongDan> importExcel(MultipartFile file) throws IOException;
+    List<DtGiagVienHDImportResquest> importExcel(MultipartFile file, String idCoSo , String idDotDangKy ) throws IOException;
 
-    Object checkValidFile(List<GiangVienHuongDan> list);
+    Object checkValidFile(List<DtGiagVienHDImportResquest> list);
 
     void DtGiangVienHDExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
 
