@@ -126,7 +126,8 @@
                                                                     <button type="button" class="btn btn-secondary"
                                                                             data-dismiss="modal">Hủy
                                                                     </button>
-                                                                    <button type="submit" class="btn btn-primary">Thêm
+                                                                    <button th:attr="onclick=|save()|"
+                                                                            class="btn btn-primary">Thêm
                                                                         mới
                                                                     </button>
                                                                 </div>
@@ -371,8 +372,9 @@
                     <button type="button" class="btn btn-secondary"
                             data-dismiss="modal">Hủy
                     </button>
-                    <button type="submit" class="btn btn-primary">Cập
-                        nhật
+                    <button th:attr="onclick=|update()|"
+                        class="btn btn-primary">
+                        Cập nhật
                     </button>
                 </div>
             </form>
