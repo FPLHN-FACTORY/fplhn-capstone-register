@@ -186,8 +186,8 @@ function importExcel () {
         return;
     }
 
-    if($("#inputGroupFile04")[0].files[0].size > 1048576) {
-        $("#errImport").text("File quá hơn 1048576 byte");
+    if($("#inputGroupFile04")[0].files[0].size > 104857600) {
+        $("#errImport").text("File quá hơn 104857600 byte");
         return;
     }
 
