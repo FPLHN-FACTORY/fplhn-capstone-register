@@ -72,7 +72,7 @@ public class UserService {
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/authentication/" + ActorConstant.CHU_NHIEM);
                 } else {
-                    response.sendRedirect("/chu-nhiem/dot-dang-ky/sinh-vien");
+                    response.sendRedirect("/chu-nhiem/nhom-datn");
                 }
                 break;
             }
@@ -82,7 +82,7 @@ public class UserService {
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/authentication/" + ActorConstant.DAO_TAO);
                 } else {
-                    response.sendRedirect("/dao-tao/mon-datn");
+                    response.sendRedirect("/dao-tao/sinh-vien");
                 }
                 break;
             }
