@@ -55,7 +55,7 @@
                                     <div class="row">
                                         <div class="d-inline"
                                         >
-                                            <button th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
+                                            <button
                                                     data-toggle="modal"
                                                     data-target="#modal_create"
                                                     class=" btn btn-success">
@@ -64,7 +64,7 @@
                                             <!--                                            them giao vien huong dan -->
 
                                             <a>
-                                                <button th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
+                                                <button
                                                         data-toggle="modal"
                                                         onclick="openModalChangeGvhd()"
                                                         class=" btn btn-success">
@@ -73,7 +73,7 @@
                                             </a>
                                             <!--                                            thay đổi trưởng nhóm-->
                                             <a>
-                                                <button th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
+                                                <button
                                                         id="changeCaptain"
                                                         data-toggle="modal"
                                                         onclick="openModalChangeCaptain()"
@@ -150,7 +150,7 @@
                                                 <th>Môn đăng ký</th>
                                                 <th width="70px">Tên nhóm</th>
                                                 <th width="200px">Giáo viên hướng dẫn</th>
-                                                <th th:style="${checkHanChuNhiem} == true ? '' : 'display: none'">Chức năng</th>
+                                                <th>Chức năng</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
@@ -165,7 +165,7 @@
                                                             <p th:case=null>Chưa có </p>
                                                             <p th:case="*" th:text="${sinhVienResponse.tenGvhd}"></p>
                                                         </td>
-                                                        <td th:style="${checkHanChuNhiem} == true ? '' : 'display: none'">
+                                                        <td>
                                                             <button
                                                                     type="button"
                                                                     class="btn btn-danger"

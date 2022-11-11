@@ -1,6 +1,5 @@
 const sinhVienApi = '/api/chu-nhiem/dot-dang-ky/sinh-vien';
 const sinhVienTheoDotDangKyView = '/chu-nhiem/dot-dang-ky/sinh-vien';
-const checkHanChuNhiem = $("#check_han_chu_nhiem").val();
 
 function openModalAddSinhVien(maSinhVien, count) {
     $("#modal_create_nhom").modal('show');
@@ -63,7 +62,7 @@ function loadDataToTable(count) {
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <a style="${checkHanChuNhiem == 'false' ? 'display : block' : 'display : none'}"
+                  <a
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">

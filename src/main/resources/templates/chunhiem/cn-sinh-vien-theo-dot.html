@@ -63,7 +63,7 @@
                                         <div class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center "
                                         >
                                             <span for="" class="fillter-name col-4 text-right">Đợt đăng ký</span>
-                                            <select   class="form-control col-10"
+                                            <select class="form-control col-10"
                                                     id="dotDangKyId">
                                                 <option value="" hidden>Chọn đợt đăng ký</option>
                                                 <option th:each="item : ${listDotDangKy}"
@@ -149,7 +149,6 @@
                                                         <td th:text="${sinhVien.maMonDuAn}==null ? 'Chưa có' : (${sinhVien.maMonDuAn})"></td>
                                                         <td th:switch="${sinhVien.maNhom}">
                                                             <a th:case=null
-                                                               th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                                data-toggle="modal"
                                                                th:attr="onclick=|openModalAddSinhVien('${sinhVien.maSinhVien}','${page.currentPage}')|"
                                                                class=" btn btn-success">
@@ -180,7 +179,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input id="check_han_chu_nhiem" hidden th:value="${checkHanChuNhiem}">
                             </div>
                         </div>
                     </div>
