@@ -264,6 +264,13 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     }
                 }
                 GiangVienHuongDan giangVien = mapGiangVien.get(sinhVien.getGvhd());
+                if (giangVien != null) {
+                    if (countSoNhomGiangVienDangHuongDan(giangVien.getTenTaiKhoan())) {
+                        response.setStatus(false);
+                        response.setMessage("Giảng viên " + giangVien.getTenTaiKhoan() + " đang hướng dẫn số nhóm nhiều hơn đăng ký");
+                        return;
+                    }
+                }
                 if (nhomDatn != null) {
                     if (countTruongNhom(nhomDatn.getMaNhom()) == 0) {
                         response.setStatus(false);
@@ -274,13 +281,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         response.setStatus(false);
                         response.setMessage("Nhóm " + nhomDatn.getMaNhom() + " đang nhiều hơn 1 trưởng nhóm");
                         return;
-                    }
-                    if (giangVien != null) {
-                        if (countSoNhomGiangVienDangHuongDan(giangVien.getTenTaiKhoan())) {
-                            response.setStatus(false);
-                            response.setMessage("Giảng viên " + giangVien.getTenTaiKhoan() + " đang hướng dẫn số nhóm nhiều hơn đăng ký");
-                            return;
-                        }
                     }
                     if (!sinhVien.getChucVu().isEmpty()) {
                         if (sinhVien.getGvhd().isEmpty()) {
@@ -334,7 +334,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
                 for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapTruongNhomCreate.entrySet()) {
                     if (xx.getValue().getChucVu().equalsIgnoreCase("Trưởng nhóm")) {
+                        GiangVienHuongDan giangVien = mapGiangVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getGvhd());
                         nhomDatn.setTruongNhomId(mapSinhVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaSinhVien()).getId());
+                        nhomDatn.setGiangVienId(giangVien.getId());
                     }
                 }
                 listNhomDatnCreate.put(nhomDatn.getTruongNhomId(), nhomDatn);
