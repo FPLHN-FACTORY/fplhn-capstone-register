@@ -302,6 +302,16 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     }
                 }
                 if (sinhVien.getMaNhom() != null && nhomDatn == null) {
+                    if (countTruongNhom(sinhVien.getMaNhom()) == 0) {
+                        response.setStatus(false);
+                        response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang không có trưởng nhóm");
+                        return;
+                    }
+                    if (countTruongNhom(nhomDatn.getMaNhom()) > 1) {
+                        response.setStatus(false);
+                        response.setMessage("Nhóm " + nhomDatn.getMaNhom() + " đang nhiều hơn 1 trưởng nhóm");
+                        return;
+                    }
                     mapSinhVienTaoNhom.put(sinhVien.getMaSinhVien(), sinhVien);
                     if (sinhVien.getChucVu().equalsIgnoreCase("Trưởng nhóm")) {
                         mapTruongNhomCreate.put(sinhVien.getMaNhom(), sinhVien);
