@@ -173,8 +173,8 @@ function openModalChiTietNhomMonDatn(nhomMonDatnId) {
         dataType: 'json',
         success: function (responseData) {
             $("#data").html()
-            if(responseData.data.length > 0) {
-               $("#table_detail").html(responseData.data.map(function (item) {
+            if (responseData.data.length > 0) {
+                $("#table_detail").html(responseData.data.map(function (item) {
                     return `
                <tr>
                    <td >${item.stt}</td>
@@ -183,7 +183,7 @@ function openModalChiTietNhomMonDatn(nhomMonDatnId) {
                </tr>
                `
                 }))
-            }else {
+            } else {
                 $("#data").html('<h3>Không có dữ liệu</h3>')
             }
         },
