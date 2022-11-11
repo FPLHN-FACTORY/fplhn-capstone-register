@@ -37,7 +37,4 @@ public interface CnSinhVienTheoDotExcel {
     @Value("#{target.ten_dot_dang_ky}")
     String getTenDotDangKy();
 
-    @Value("#{target.trang_thai}")
-    String getTrangThai();
-
 }

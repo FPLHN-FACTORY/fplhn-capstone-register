@@ -1,6 +1,5 @@
 const sinhVienApi = '/api/chu-nhiem/dot-dang-ky/sinh-vien';
 const sinhVienTheoDotDangKyView = '/chu-nhiem/dot-dang-ky/sinh-vien';
-const checkHanChuNhiem = $("#check_han_chu_nhiem").val();
 
 function openModalAddSinhVien(maSinhVien, count) {
     $("#modal_create_nhom").modal('show');
@@ -58,17 +57,16 @@ function loadDataToTable(count) {
                             <td >${sinhVien.stt}</td>
                             <td> ${sinhVien.maSinhVien}</td>
                             <td> ${sinhVien.tenSinhVien}</td>
-                            <td> ${sinhVien.tenChuyenNganh}</td>
-                            <td> ${sinhVien.tenDotDangKy}</td>
-                            <td> ${sinhVien.maMon == null ? 'Chưa có' : sinhVien.maMon}</td>
+                            <td> ${sinhVien.maMonChuongTrinh == null ? 'Chưa có' : sinhVien.maMonChuongTrinh}</td>
+                            <td> ${sinhVien.maMonDuAn == null ? 'Chưa có' : sinhVien.maMonDuAn                           }</td>
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <a style="${checkHanChuNhiem == 'true' ? 'display : block' : 'display : none'}"
+                  <a
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">
-                      Thêm nhóm</a>
+                       <img src="/img/pencil-square.svg">   </a>
                       </td>
                 ` : `
                 <td>

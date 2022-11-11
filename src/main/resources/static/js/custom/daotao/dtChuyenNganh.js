@@ -83,7 +83,6 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
 }
 
 function update() {
-    event.preventDefault();
     let tenChuyenNganh = $("#tenChuyenNganhUpdate").val();
     let chuyenNganhId = $("#id_chuyen_nganh_update").val();
     let tenCNBM = $("#tenCNBMhUpdate").val();

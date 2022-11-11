@@ -6,10 +6,7 @@ import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoDotService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.repository.DotDangKyRepository;
-import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +22,7 @@ public class CnSinhVienTheoDotRestController extends BaseController {
     @GetMapping("/search")
     public ResponseObject searchSinhVienTheoDot(final CnFindSinhVienTheoDotRequest req) {
         String coSoId = session.getCoSoId();
+        req.setIdChuNhiem(session.getUserId());
         req.setCoSoId(coSoId);
         PageableObject<CnSinhVienTheoDotResponse> listNhomDatnTheoDot = cnSinhVienTheoDotService.searchByIdDotDangKy(req);
         return new ResponseObject(listNhomDatnTheoDot);

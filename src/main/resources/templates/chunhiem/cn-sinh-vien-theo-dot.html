@@ -54,16 +54,16 @@
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center ">
-                                            <span for="" class="fillter-name col-4 text-right">Tên sinh viên</span>
+                                            <span for="" class="fillter-name col-4 text-right">Tên/Mã sinh viên</span>
                                             <input type="text" class="form-control col-10 "
-                                                   name="tenHocKy" oninput="loadDataToTable(0)" id="ten-hoc-ky"
+                                                   name="tenHocKy" id="ten-hoc-ky"
                                                    value="">
                                         </div>
                                         <br>
                                         <div class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center "
                                         >
                                             <span for="" class="fillter-name col-4 text-right">Đợt đăng ký</span>
-                                            <select onchange="loadDataToTable(0)" class="form-control col-10"
+                                            <select class="form-control col-10"
                                                     id="dotDangKyId">
                                                 <option value="" hidden>Chọn đợt đăng ký</option>
                                                 <option th:each="item : ${listDotDangKy}"
@@ -133,9 +133,8 @@
                                                 <th width="50px">STT</th>
                                                 <th>Mã sinh viên</th>
                                                 <th>Tên sinh viên</th>
-                                                <th>Tên chuyên ngành</th>
-                                                <th>Tên đợt đăng ký</th>
-                                                <th>Mã môn</th>
+                                                <th>Mã môn chương trình</th>
+                                                <th>Mã môn dự án</th>
                                                 <th>Mã nhóm</th>
                                                 <th>Tên đề tài</th>
                                                 <th>Tên giáo viên hướng dẫn</th>
@@ -146,16 +145,14 @@
                                                         <td th:text="${sinhVien.stt}"></td>
                                                         <td th:text="${sinhVien.maSinhVien}"></td>
                                                         <td th:text="${sinhVien.tenSinhVien}"></td>
-                                                        <td th:text="${sinhVien.tenChuyenNganh}"></td>
-                                                        <td th:text="${sinhVien.tenDotDangKy}"></td>
-                                                        <td th:text="${sinhVien.maMon}==null ? 'Chưa có' : (${sinhVien.maMon})"></td>
+                                                        <td th:text="${sinhVien.maMonChuongTrinh}==null ? 'Chưa có' : (${sinhVien.maMonChuongTrinh})"></td>
+                                                        <td th:text="${sinhVien.maMonDuAn}==null ? 'Chưa có' : (${sinhVien.maMonDuAn})"></td>
                                                         <td th:switch="${sinhVien.maNhom}">
                                                             <a th:case=null
-                                                               th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                                data-toggle="modal"
                                                                th:attr="onclick=|openModalAddSinhVien('${sinhVien.maSinhVien}','${page.currentPage}')|"
                                                                class=" btn btn-success">
-                                                                Thêm nhóm
+                                                                <img th:src="@{/img/pencil-square.svg}">
                                                             </a>
                                                             <p th:case="*" th:text="${sinhVien.maNhom}"></p>
                                                         </td>
@@ -180,14 +177,8 @@
                                                 </ul>
                                             </nav>
                                         </div>
-                                        <div id="empty">
-                                            <div th:if="${page.data.isEmpty()}">
-                                                <h3>Không có dữ liệu</h3>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                <input id="check_han_chu_nhiem" hidden th:value="${checkHanChuNhiem}">
                             </div>
                         </div>
                     </div>

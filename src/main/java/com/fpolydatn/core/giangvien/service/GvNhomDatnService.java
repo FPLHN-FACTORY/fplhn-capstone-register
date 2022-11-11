@@ -17,7 +17,6 @@ public interface GvNhomDatnService {
 
     PageableObject<GvNhomDatnResponse> fillAllNhomDatn(final GvFindNhomDatnRequest request);
 
-
     NhomDatn findById(String maNhom);
 
     NhomDatn updateTenDeTai(@Valid final GvUpdateTenDeTaiRequest request);
