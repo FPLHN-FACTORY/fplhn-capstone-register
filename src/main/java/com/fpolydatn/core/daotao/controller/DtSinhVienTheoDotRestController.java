@@ -48,7 +48,7 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     }
 
     @GetMapping("/export-mau")
-    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
+    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtSinhVienTheoDotRequest request) throws Exception {
         request.setCoSoId(session.getCoSoId());
         sinhVienService.MauImportExcel(response, typeExcel, request);
     }
