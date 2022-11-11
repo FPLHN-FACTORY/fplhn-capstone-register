@@ -111,14 +111,14 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <a class="btn btn-primary" onclick="seachNhomdatn(0)">Tìm
-                                                kiếm
-                                            </a>
+                                            <button type="button" class="btn btn-primary" th:attr="onclick=|seachNhomdatn(0)|">
+                                                Tìm kiếm
+                                            </button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <a href="#" class="btn btn-danger text-white" onclick="clearDataGVHD();">
+                                            <button class="btn btn-danger text-white" th:attr="onclick=|clearDataGVHD()|">
                                                 Làm mới bộ lọc
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
