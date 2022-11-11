@@ -59,7 +59,6 @@
             <div>
                 <div class="m-content">
                     <h3>Quản lý nhóm dự án tốt nghiệp theo đợt</h3>
-                    <input id="check_han_chu_nhiem" hidden th:value="${checkHanChuNhiem}">
                     <div class="mt-5">
                         <section class="fillter-area  mb-5">
                             <div class="m-portlet">
@@ -157,31 +156,26 @@
                                         <div class="col-6 d-inline">
                                             <button th:attr="onclick=|openModalCreate()|" data-toggle="tooltip"
                                                     title="Tạo nhóm dự án tốt nghiệp"
-                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                     class="col-8 col-sm-4 col-md-2 btn btn-success">
                                                 Tạo nhóm
                                             </button>
                                             <button class="col-8 col-sm-4 col-md-2 btn btn-success"
                                                     data-toggle="tooltip"
                                                     title="Chốt đề tài của nhiều nhóm"
-                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                     th:attr="onclick=|chotNhieuDeTai('${page.currentPage}')|">
                                                 Chốt đề tài
                                             </button>
                                             <button class="col-8 col-sm-4 col-md-2 btn btn-success"
                                                     data-toggle="tooltip"
                                                     title="Xác nhận nhiều nhóm"
-                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                     th:attr="onclick=|xacNhanNhieuNhom('${page.currentPage}')|">
                                                 Xác nhận
                                             </button>
                                             <button class="col-8 col-sm-4 col-md-2 btn btn-success"
-                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                     th:attr="onclick=|openModalExport()|">
                                                 Export
                                             </button>
                                             <button th:attr="onclick=|openModalImport()|"
-                                                    th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
                                                     class="col-8 col-sm-4 col-md-2 btn btn-success">
                                                 Import
                                             </button>
@@ -417,24 +411,24 @@
                                                             </a>
                                                             <button class="btn_check_circle" data-toggle="tooltip"
                                                                     title="Xác nhận nhóm"
-                                                                    th:style="${nhomDatn.getTrangThai()}==0 and ${checkHanChuNhiem} == true ? 'display: block' : 'display: none'"
+                                                                    th:style="${nhomDatn.getTrangThai()}==0 ? 'display: block' : 'display: none'"
                                                                     th:attr="onclick=|CNXacNhanNhom('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 <img th:src="@{/img/check-circle.svg}">
                                                             </button>
                                                             <button class="btn_check" data-toggle="tooltip"
                                                                     title="Chốt đề tài"
-                                                                    th:style="${nhomDatn.getTrangThai()}==4 and ${checkHanChuNhiem} == true ?'display: block':'display: none'"
+                                                                    th:style="${nhomDatn.getTrangThai()}==4 ?'display: block':'display: none'"
                                                                     th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 <img th:src="@{/img/clipboard-check.svg}">
                                                             </button>
                                                             <button class="btn_x_circle" data-toggle="tooltip"
                                                                     title="Từ chối chốt đề tài"
-                                                                    th:style="${nhomDatn.getTrangThai()}==4 and ${checkHanChuNhiem} == true ?'display: block':'display: none'"
+                                                                    th:style="${nhomDatn.getTrangThai()}==4 ?'display: block':'display: none'"
                                                                     th:attr="onclick=|openModalNhanXet('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 <img th:src="@{/img/x-circle.svg}">
                                                             </button>
                                                             <button class="btn_trash" data-toggle="tooltip" title="Xóa"
-                                                                    th:style="${nhomDatn.getTrangThai()}==5 or ${checkHanChuNhiem} == false ?'display: none':'display: block'"
+                                                                    th:style="${nhomDatn.getTrangThai()}==5 ?'display: none':'display: block'"
                                                                     th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">
                                                                 <img th:src="@{/img/trash.svg}">
                                                             </button>

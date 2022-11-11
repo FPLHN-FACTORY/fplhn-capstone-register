@@ -53,8 +53,7 @@ public class GvNhomDatnRestController extends BaseController {
     }
 
     @PutMapping("/update-ten-de-tai/{maNhom}")
-    public ResponseObject updateTenDeTaiNhomDatn(@PathVariable("maNhom") String maNhom,
-                                                 @RequestBody GvUpdateTenDeTaiRequest request) {
+    public ResponseObject updateTenDeTaiNhomDatn(@PathVariable("maNhom") String maNhom, @RequestBody GvUpdateTenDeTaiRequest request) {
         NhomDatn nhomDatnResponse = nhomDatnService.updateTenDeTai(request);
         return new ResponseObject(nhomDatnResponse);
     }

@@ -55,7 +55,7 @@
                                     <div class="row">
                                         <div class="d-inline"
                                         >
-                                            <button th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
+                                            <button
                                                     data-toggle="modal"
                                                     data-target="#modal_create"
                                                     class=" btn btn-success">
@@ -64,7 +64,7 @@
                                             <!--                                            them giao vien huong dan -->
 
                                             <a>
-                                                <button th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
+                                                <button
                                                         data-toggle="modal"
                                                         onclick="openModalChangeGvhd()"
                                                         class=" btn btn-success">
@@ -73,7 +73,7 @@
                                             </a>
                                             <!--                                            thay đổi trưởng nhóm-->
                                             <a>
-                                                <button th:style="${checkHanChuNhiem} == true ? '' : 'display: none'"
+                                                <button
                                                         id="changeCaptain"
                                                         data-toggle="modal"
                                                         onclick="openModalChangeCaptain()"
@@ -144,13 +144,13 @@
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead>
                                                 <th width="50px">STT</th>
-                                                <th>Mã số sinh viên</th>
+                                                <th >Mã số sinh viên</th>
                                                 <th>Họ tên</th>
-                                                <th>Chuyên ngành</th>
-                                                <th>Đợt đăng ký</th>
-                                                <th>Tên nhóm</th>
+                                                <th>Môn chương trình</th>
+                                                <th>Môn đăng ký</th>
+                                                <th width="70px">Tên nhóm</th>
                                                 <th width="200px">Giáo viên hướng dẫn</th>
-                                                <th th:style="${checkHanChuNhiem} == true ? '' : 'display: none'">Chức năng</th>
+                                                <th>Chức năng</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
@@ -158,20 +158,20 @@
                                                         <td th:text="${sinhVienResponse.getStt()}"></td>
                                                         <td th:text="${sinhVienResponse.maSinhVien}"></td>
                                                         <td th:text="${sinhVienResponse.tenSinhVien}"></td>
-                                                        <td th:text="${sinhVienResponse.tenChuyenNganh}"></td>
-                                                        <td th:text="${sinhVienResponse.tenDotDangKy}"></td>
+                                                        <td th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
+                                                        <td th:text="${sinhVienResponse.maMonDuAn}"></td>
                                                         <td th:text="${sinhVienResponse.tenNhom}==null ? 'Chưa có' : (${sinhVienResponse.tenNhom})"></td>
                                                         <td th:switch="${sinhVienResponse.tenGvhd}">
                                                             <p th:case=null>Chưa có </p>
                                                             <p th:case="*" th:text="${sinhVienResponse.tenGvhd}"></p>
                                                         </td>
-                                                        <td th:style="${checkHanChuNhiem} == true ? '' : 'display: none'">
+                                                        <td>
                                                             <button
                                                                     type="button"
                                                                     class="btn btn-danger"
                                                                     data-toggle="modal"
                                                                     th:attr="onclick=|openModalRemoveNhom('${sinhVienResponse.maSinhVien}')|">
-                                                                Kick
+                                                                <img th:src="@{/img/trash.svg}">
                                                             </button>
                                                         </td>
                                                     </tr>

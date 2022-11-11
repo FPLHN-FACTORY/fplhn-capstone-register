@@ -21,15 +21,18 @@ import java.util.List;
 public interface CnSinhVienRepository extends SinhVienRepository {
 
     @Query(value = """
-            SELECT a.id, ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT, ma_sinh_vien,
-            if(a.id = e.truong_nhom_id, CONCAT(a.ten_sinh_vien, ' (C)'),a.ten_sinh_vien) as ten_sinh_vien,
-            b.ten_chuyen_nganh,d.ten_dot_dang_ky,e.ten_nhom,f.ten_gvhd FROM sinh_vien a 
-            LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id 
-            LEFT JOIN mon_datn c ON c.id = a.mon_datn_id 
-            LEFT JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id 
-            LEFT JOIN nhom_datn e ON e.id= a.nhom_id 
-            LEFT JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id 
-            WHERE e.id = :#{#req.idNhom} AND d.id = :#{#req.dotDangKyId} AND a.co_so_id = :#{#req.coSoId} ORDER BY ten_sinh_vien """,
+        SELECT a.id, ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT, ma_sinh_vien,
+                if(a.id = e.truong_nhom_id, CONCAT(a.ten_sinh_vien, ' (C)'),a.ten_sinh_vien) as ten_sinh_vien,
+                (select ma_mon from mon_datn where id = a.mon_chuong_trinh_id ) as 'ma_mon_chuong_trinh',
+                (select ma_mon from mon_datn where id = a.mon_datn_id ) as 'ma_mon_du_an'
+                ,e.ten_nhom,
+                CONCAT(f.ten_gvhd, '-',f.ten_tai_khoan) as ten_gvhd FROM sinh_vien a 
+                LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id 
+                LEFT JOIN mon_datn c ON c.id = a.mon_datn_id 
+                LEFT JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id 
+                LEFT JOIN nhom_datn e ON e.id= a.nhom_id 
+                LEFT JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id 
+        WHERE e.id = :#{#req.idNhom} AND d.id = :#{#req.dotDangKyId} AND a.co_so_id = :#{#req.coSoId} ORDER BY ten_sinh_vien """,
             countQuery = """ 
                     SELECT COUNT(a.id) FROM sinh_vien a
                     LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
@@ -73,19 +76,26 @@ public interface CnSinhVienRepository extends SinhVienRepository {
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT,a.ma_sinh_vien,a.ten_sinh_vien,
-            b.ten_chuyen_nganh,f.ten_dot_dang_ky, c.ma_mon,d.ma_nhom,d.ten_de_tai,e.ten_gvhd
+            b.ten_chuyen_nganh,f.ten_dot_dang_ky,
+            (select ma_mon from mon_datn where id = a.mon_chuong_trinh_id ) as 'ma_mon_chuong_trinh',
+            (select ma_mon from mon_datn where id = a.mon_datn_id ) as 'ma_mon_du_an'
+            ,d.ma_nhom,d.ten_de_tai,
+            CONCAT(e.ten_gvhd, '-',e.ten_tai_khoan) as ten_gvhd
             FROM sinh_vien a
             LEFT JOIN chuyen_nganh b  ON b.id = a.chuyen_nganh_id
             LEFT JOIN mon_datn c ON c.id = a.mon_datn_id
             LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
             LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
+            LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
             WHERE a.co_so_id = :#{#req.coSoId} 
             AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)
-            AND (:#{#req.idDotDangKy} IS NULL OR :#{#req.idDotDangKy} LIKE ''
-                    OR f.id = :#{#req.idDotDangKy})
-             ORDER BY ten_sinh_vien
+            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%  
+            OR a.ma_sinh_vien LIKE %:#{#req.tenSinhVien}%) 
+            AND f.id = :#{#req.idDotDangKy}
+            AND g.id = :#{#req.idChuNhiem}
+            AND a.trang_thai = 0
+            ORDER BY ten_sinh_vien
             """, countQuery = """
             SELECT COUNT(a.id)
             FROM sinh_vien a
@@ -94,9 +104,13 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             LEFT JOIN nhom_datn d  ON d.id = a.nhom_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
             LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
+            LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
             WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId}
             AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%) ORDER BY ten_sinh_vien
+            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)
+            AND g.id = :#{#req.idChuNhiem}
+            AND a.trang_thai = 0
+            ORDER BY ten_sinh_vien
              """, nativeQuery = true)
     Page<CnSinhVienTheoDotResponse> searchSinhVien(@Param("req") CnFindSinhVienTheoDotRequest req, Pageable page);
 
@@ -161,4 +175,5 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             AND a.dot_dang_ky_id = :dotDangKyId AND a.co_so_id = :coSoId AND b.chu_nhiem_bo_mon = :idChuNhiem
             """, nativeQuery = true)
     List<SinhVien> getALlTruongNhomByIdChuNhiem(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId, @Param("idChuNhiem") String idChuNhiem);
+
 }

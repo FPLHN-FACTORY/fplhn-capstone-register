@@ -37,6 +37,7 @@ public class CnSinhVienTheoDotController extends BaseController {
     @GetMapping
     public String viewSinhVienTheoDot(Model model, final CnFindSinhVienTheoDotRequest req){
         req.setIdDotDangKy(commonHelper.getDotDangKyHienTai());
+        req.setIdChuNhiem(session.getUserId());
         boolean checkHanChuNhiem = false;
         if(req.getIdDotDangKy() != null){
             checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();

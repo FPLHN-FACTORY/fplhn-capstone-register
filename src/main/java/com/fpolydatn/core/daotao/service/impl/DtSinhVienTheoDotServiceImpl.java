@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.github.pjfanning.xlsx.StreamingReader;
@@ -122,23 +123,24 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 request.setIdDotDangKy("");
             }
         }
-
+        response.setHeader("Content-Disposition", headerValue);
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());
         List<DtSinhVienTheoDotResponse> list = sinhVienRepository.exportExcel(request);
-        DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(list);
-        dtSinhVienExport.exportData(response);
+        DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport();
+        dtSinhVienExport.employeeDetailReport(response, list);
     }
 
     @Override
-    public void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
+    public void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws Exception {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=MauImportExcel" + currentDateTime + "." + typeExcel;
+        String headerValue = "attachment; filename=MauQlSinhVien" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
         List<DtSinhVienTheoDotResponse> listSv = new ArrayList<>();
         DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(listSv);
-        dtSinhVienExport.exportMauImport(response);
+        dtSinhVienExport.headerLineMau(response);
     }
 
     @Override
@@ -196,10 +198,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             }
 
             if (map.get(sinhVien.getMonDATN()) != null) {
-                sinhVienEntity.setMonDatnId(map.get(sinhVien.getMonDATN()));
+                sinhVienEntity.setMonChuongTrinhId(map.get(sinhVien.getMonDATN()));
             } else if (!map.containsKey(sinhVien.getMonDATN())) {
                 response.setStatus(false);
-                response.setMessage("Mã môn DATN \"" + sinhVien.getMonDATN() + "\" không tồn tại");
+                response.setMessage("Mã môn chương trình \"" + sinhVien.getMonDATN() + "\" không tồn tại");
                 return;
             }
 
@@ -260,7 +262,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
         response.setStatus(true);
         List<String> listMsvLoai = new ArrayList<>();
-        List<String> listNhomDatnId = new ArrayList<>();
         int columnIndex = -1;
         try {
             Workbook workbook = StreamingReader.builder()
@@ -272,16 +273,23 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 for (Row row : sheet) {
                     for (Cell cell : row) {
                         CellType type = cell.getCellType();
+                        String val = cell.getStringCellValue();
                         if (type == CellType.STRING &&
-                                (cell.getStringCellValue().equals("Mã sinh viên") ||
-                                        cell.getStringCellValue().equals("MSV"))) {
+                                ("Mã sinh viên".equals(val) ||
+                                        "MSV".equals(val)) ||
+                                "MSSV".equals(val)) {
                             columnIndex = cell.getColumnIndex();
                             continue;
                         }
                         if (columnIndex != -1 &&
                                 cell.getColumnIndex() == columnIndex &&
                                 type == CellType.STRING) {
-                            listMsvLoai.add(cell.getStringCellValue());
+                            if (!val.matches("[a-zA-Z]{2}\\d+")) {
+                                response.setStatus(false);
+                                response.setMessage("Mã sinh viên " + val + " không đúng định dạng");
+                                return response;
+                            }
+                            listMsvLoai.add(val);
                         }
                     }
                 }
@@ -320,7 +328,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 NhomDatn nhomDatn = mapNhomDatn.get(sv.getId());
                 if (nhomDatn != null) {
                     boolean check = true;
-                    for (SinhVien sinhVien:  listSinhVien) {
+                    for (SinhVien sinhVien : listSinhVien) {
                         if (nhomDatn.getId().equals(sinhVien.getNhomId()) && !sinhVien.getId().equals(sv.getId())) {
                             nhomDatn.setTruongNhomId(sinhVien.getId());
                             check = false;
@@ -343,8 +351,13 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         if (listNhomDatnDoiTruongNhom.size() != 0) {
             nhomDatnTheoDotRepository.saveAll(listNhomDatnDoiTruongNhom);
         }
+        if (listSvKhongDat.size() == 0) {
+            response.setStatus(false);
+            response.setMessage("Lỗi. Loại không thành công");
+        }
         if (response.getStatus()) {
             sinhVienRepository.saveAll(listSvKhongDat);
+            response.setMessage("Đã loại sinh viên không đủ điều kiện");
         }
         return response;
     }
@@ -352,5 +365,14 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Override
     public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId) {
         return sinhVienRepository.searchStudentById(id, coSoId);
+    }
+
+    @Override
+    public int loaiSinhVien(String id) {
+        try {
+            return sinhVienRepository.loaiSinhVien(id);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

@@ -18,6 +18,15 @@ $(document).ready(function () {
 function clearData() {
     $("#tenGiangVien").val("");
 }
+function clearErrorUpdate(){
+    $("#errorTenGiangVienUpdate").text("");
+    $("#errorSoNhomHDUpdate").text("");
+    $("#errorTenTaiKhoanUpdate").text("");
+    $("#errorSDTUpdate").text("");
+    $("#errorEmailFptUpdate").text("");
+    $("#errorEmailFeUpdate").text("");
+    $("#errorDotDangKyUpdate").text("");
+}
 
 $("#form_create_giang_vien").submit(function (event) {
     event.preventDefault();
@@ -126,7 +135,13 @@ $("#form_create_giang_vien").submit(function (event) {
                     window.open(giangVienHuongDanView, '_self');
                     $("#modal_create").modal("hide");
                 } else {
-                    alert(responseData.data.message)
+                    bootbox.alert({
+                        message: responseData.data.message,
+                        backdrop: true,
+                        callback: function () {
+                            loadTable(item);
+                        }
+                    });
                 }
             },
             error: function (e) {
@@ -146,6 +161,7 @@ function openModalUpdateGiangVien(giangVienId, item) {
         data: JSON.stringify(giangVienId),
         dataType: 'json',
         success: function (responseData) {
+            clearErrorUpdate();
             $("#giangVienId").val(responseData.data.id);
             $("#ten_giang_vien_update").val(responseData.data.tenGvhd);
             $("#so_nhom_update").val(responseData.data.soNhomHuongDanToiDa);
@@ -199,7 +215,7 @@ $("#form_giang_vien_update").submit(function (event) {
         $("#errorSoNhomHDUpdate").text("Số nhóm chỉ từ 1 đến 7");
         index++;
     } else {
-        $("#errorSoNhomHD").text("");
+        $("#errorSoNhomHDUpdate").text("");
     }
 
     if (tenTaiKhoan.length === 0) {
@@ -266,7 +282,13 @@ $("#form_giang_vien_update").submit(function (event) {
                     window.open(giangVienHuongDanView, '_self');
                     $("#modal_create").modal("hide");
                 } else {
-                    alert(responseData.data.message)
+                    bootbox.alert({
+                        message: responseData.data.message,
+                        backdrop: true,
+                        callback: function () {
+                            loadTable(item);
+                        }
+                    });
                 }
 
             },

@@ -30,7 +30,7 @@ public class EmailSender {
     private SpringTemplateEngine thymeleafTemplateEngine;
 
     @Async
-    public void sendEmail(String[] toEmails, String subject, String titleEmail, String bodyEmail) {
+    public void sendEmail(String[] toEmails, String subject, String titleEmail, String[] bodyEmail) {
         Map<String, Object> model = new HashMap<>();
         model.put("bodyEmail", bodyEmail);
         model.put("titleEmail", titleEmail);

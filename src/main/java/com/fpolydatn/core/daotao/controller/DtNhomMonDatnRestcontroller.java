@@ -7,7 +7,14 @@ import com.fpolydatn.core.daotao.model.request.DtUpdateNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtDetailNhomMonResponse;
 import com.fpolydatn.core.daotao.service.DtNhomMonDatnService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,7 +32,7 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
     @GetMapping("/detail/{id}")
     public ResponseObject showDanhSachMonDatn(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        List<DtDetailNhomMonResponse> dtDetailNhomMonRespons = dtNhomMonDatnService.detail(id,coSoId);
+        List<DtDetailNhomMonResponse> dtDetailNhomMonRespons = dtNhomMonDatnService.detail(id, coSoId);
         return new ResponseObject(dtDetailNhomMonRespons);
     }
 

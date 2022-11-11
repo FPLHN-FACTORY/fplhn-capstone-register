@@ -83,7 +83,6 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
 }
 
 function update() {
-    event.preventDefault();
     let tenChuyenNganh = $("#tenChuyenNganhUpdate").val();
     let chuyenNganhId = $("#id_chuyen_nganh_update").val();
     let tenCNBM = $("#tenCNBMhUpdate").val();
@@ -92,7 +91,7 @@ function update() {
     chuyenNganhrequest["chuNhiemBoMon"] = tenCNBM;
     let index = 0;
     if (tenChuyenNganh.trim().length === 0) {
-            $("#chuyen_nganh_error").text("Tên chuyên ngành không được để trống");
+            $("#chuyennganhUpdate_error").text("Tên chuyên ngành không được để trống");
             index ++;
     }
 
@@ -167,7 +166,14 @@ function deleteChuyenNganh() {
             });
         },
         error: function (e) {
-            $("#remove_chuyen_nganh").text("Chuyên ngành có trong đợt đăng ký");
+            $("#modal_chuyen_nganh_remove").modal("hide");
+            bootbox.alert({
+                message: '<div style="color:red;">Chuyên ngành có trong đợt đăng ký </div>',
+                  backdrop: true,
+                  callback: function () {
+                    window.open(chuyenNganhView, '_self');
+                  }
+            });
         }
     });
 };

@@ -8,6 +8,7 @@ import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,9 @@ public class DtGiangVienRestController extends BaseController {
 
     @Autowired
     private DtGiangVienHDService giangVienHDService;
+
+    @Autowired
+    private CommonHelper commonHelper;
 
     @PostMapping
     public ResponseObject add(@RequestBody DtCreateGiangVienHDRequest cmd) {
@@ -78,12 +82,15 @@ public class DtGiangVienRestController extends BaseController {
 
     @PostMapping("/import")
     public void importEcel(@RequestParam("file") MultipartFile file) throws IOException {
-        this.giangVienHDService.importExcel(file);
+        String idCoSo = session.getCoSoId();
+        String idDotDangKy = commonHelper.getDotDangKyHienTai();
+        this.giangVienHDService.importExcel(file,idCoSo,idDotDangKy);
     }
 
     @GetMapping("/export")
     public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
+        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         giangVienHDService.DtGiangVienHDExportExcel(response, typeExcel, request);
     }
 

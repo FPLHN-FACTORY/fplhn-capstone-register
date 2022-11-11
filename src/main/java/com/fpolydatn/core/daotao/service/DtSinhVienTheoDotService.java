@@ -21,11 +21,13 @@ public interface DtSinhVienTheoDotService {
 
     void DTSinhVienExport(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException;
 
-    void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException;
+    void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws Exception;
 
     DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException;
 
     DtLoaiSinhVienResponse loaiSinhVienKhongDat(DtLoaiSinhVienKhongDatRequest request);
 
     DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId);
+
+    int loaiSinhVien(String id);
 }
