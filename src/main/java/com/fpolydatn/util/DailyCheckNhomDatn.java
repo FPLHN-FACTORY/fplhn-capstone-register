@@ -44,7 +44,6 @@ public class DailyCheckNhomDatn {
             }
             sinhVienRepository.saveAll(listSinhVien);
             nhomDatnRepository.deleteAllById(listNhomKhongDuDieuKien);
-            System.out.println("Xóa");
         }
     }
 
