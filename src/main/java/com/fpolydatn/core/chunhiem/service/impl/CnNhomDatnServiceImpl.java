@@ -307,10 +307,17 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang không có trưởng nhóm");
                         return;
                     }
-                    if (countTruongNhom(nhomDatn.getMaNhom()) > 1) {
+                    if (countTruongNhom(sinhVien.getMaNhom()) > 1) {
                         response.setStatus(false);
-                        response.setMessage("Nhóm " + nhomDatn.getMaNhom() + " đang nhiều hơn 1 trưởng nhóm");
+                        response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang nhiều hơn 1 trưởng nhóm");
                         return;
+                    }
+                    if(!sinhVien.getChucVu().isEmpty()){
+                        if(sinhVien.getGvhd().isEmpty()){
+                            response.setStatus(false);
+                            response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang không có giảng viên hướng dẫn");
+                            return;
+                        }
                     }
                     mapSinhVienTaoNhom.put(sinhVien.getMaSinhVien(), sinhVien);
                     if (sinhVien.getChucVu().equalsIgnoreCase("Trưởng nhóm")) {
@@ -326,47 +333,48 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     listNhomDatnEntity.add(nhomDatn);
                 }
             });
-
-            for (int i = 0; i < listSinhVienEntity.size(); i++) {
-                if (listSinhVienEntity.get(i).getNhomId() == null) {
-                    listSinhVienEntity.get(i).setMonDatnId(null);
-                }
-            }
-            Map<String, NhomDatn> listNhomDatnCreate = new HashMap<>();
-
-            String maNhom = nhomDatnHelper.genMaNhomTuDong();
-            String array[] = maNhom.split("_");
-            Long count = Long.parseLong(array[1]);
-            for (int i = 0; i < listMaNhomCreate.size(); i++) {
-                NhomDatn nhomDatn = new NhomDatn();
-                nhomDatn.setMaNhom(array[0] + "_" + count++);
-                nhomDatn.setCoSoId(coSoId);
-                nhomDatn.setDotDangKyId(dotDangKyId);
-                nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
-                for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapTruongNhomCreate.entrySet()) {
-                    if (xx.getValue().getChucVu().equalsIgnoreCase("Trưởng nhóm")) {
-                        GiangVienHuongDan giangVien = mapGiangVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getGvhd());
-                        nhomDatn.setTruongNhomId(mapSinhVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaSinhVien()).getId());
-                        nhomDatn.setGiangVienId(giangVien.getId());
+            if(response.getStatus() == true) {
+                for (int i = 0; i < listSinhVienEntity.size(); i++) {
+                    if (listSinhVienEntity.get(i).getNhomId() == null) {
+                        listSinhVienEntity.get(i).setMonDatnId(null);
                     }
                 }
-                listNhomDatnCreate.put(nhomDatn.getTruongNhomId(), nhomDatn);
-            }
-            cnNhomDatnRepository.saveAll(new ArrayList<>(listNhomDatnCreate.values()));
-            for (int i = 0; i < listMaNhomCreate.size(); i++) {
-                for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapSinhVienTaoNhom.entrySet()) {
-                    SinhVien truongNhomCreate = mapSinhVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaSinhVien());
-                    truongNhomCreate.setMonDatnId(truongNhomCreate.getMonChuongTrinhId());
-                    truongNhomCreate.setNhomId(listNhomDatnCreate.get(truongNhomCreate.getId()).getId());
-                    if (xx.getValue().getMaNhom().equals(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaNhom())) {
-                        mapSinhVien.get(xx.getValue().getMaSinhVien()).setNhomId(truongNhomCreate.getNhomId());
-                        mapSinhVien.get(xx.getValue().getMaSinhVien()).setMonDatnId(truongNhomCreate.getMonDatnId());
-                        listSinhVienEntity.add(mapSinhVien.get(xx.getValue().getMaSinhVien()));
+                Map<String, NhomDatn> listNhomDatnCreate = new HashMap<>();
+
+                String maNhom = nhomDatnHelper.genMaNhomTuDong();
+                String array[] = maNhom.split("_");
+                Long count = Long.parseLong(array[1]);
+                for (int i = 0; i < listMaNhomCreate.size(); i++) {
+                    NhomDatn nhomDatn = new NhomDatn();
+                    nhomDatn.setMaNhom(array[0] + "_" + count++);
+                    nhomDatn.setCoSoId(coSoId);
+                    nhomDatn.setDotDangKyId(dotDangKyId);
+                    nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
+                    for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapTruongNhomCreate.entrySet()) {
+                        if (xx.getValue().getChucVu().equalsIgnoreCase("Trưởng nhóm")) {
+                            GiangVienHuongDan giangVien = mapGiangVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getGvhd());
+                            nhomDatn.setTruongNhomId(mapSinhVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaSinhVien()).getId());
+                            nhomDatn.setGiangVienId(giangVien.getId());
+                        }
                     }
-                    listSinhVienEntity.add(truongNhomCreate);
+                    listNhomDatnCreate.put(nhomDatn.getTruongNhomId(), nhomDatn);
                 }
+                cnNhomDatnRepository.saveAll(new ArrayList<>(listNhomDatnCreate.values()));
+                for (int i = 0; i < listMaNhomCreate.size(); i++) {
+                    for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapSinhVienTaoNhom.entrySet()) {
+                        SinhVien truongNhomCreate = mapSinhVien.get(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaSinhVien());
+                        truongNhomCreate.setMonDatnId(truongNhomCreate.getMonChuongTrinhId());
+                        truongNhomCreate.setNhomId(listNhomDatnCreate.get(truongNhomCreate.getId()).getId());
+                        if (xx.getValue().getMaNhom().equals(mapTruongNhomCreate.get(listMaNhomCreate.get(i)).getMaNhom())) {
+                            mapSinhVien.get(xx.getValue().getMaSinhVien()).setNhomId(truongNhomCreate.getNhomId());
+                            mapSinhVien.get(xx.getValue().getMaSinhVien()).setMonDatnId(truongNhomCreate.getMonDatnId());
+                            listSinhVienEntity.add(mapSinhVien.get(xx.getValue().getMaSinhVien()));
+                        }
+                        listSinhVienEntity.add(truongNhomCreate);
+                    }
+                }
+                cnSinhVienRepository.saveAll(listSinhVienEntity);
             }
-            cnSinhVienRepository.saveAll(listSinhVienEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
