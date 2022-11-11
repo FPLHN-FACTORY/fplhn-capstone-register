@@ -64,7 +64,7 @@
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-5 text-center">Chuyên ngành</span>
                                             <select name="chuyenNganh" id="chuyenNganh" class="form-control col-6">
-                                                <option value="">chọn chuyên ngành</option>
+                                                <option value="">Chọn chuyên ngành</option>
                                                 <option th:each="chuyenhNganh : ${listChuyenNganh}"
                                                         th:value="${chuyenhNganh.getId}"
                                                         th:text="${chuyenhNganh.getName}">
@@ -75,7 +75,7 @@
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-5 text-center">Trạng thái</span>
                                             <select name="trangThai" id="trangThai" class="form-control col-6">
-                                                <option value="">chọn trạng thái</option>
+                                                <option value="">Chọn trạng thái</option>
                                                 <option value="a">Đã có nhóm
                                                 </option>
                                                 <option value="b">Chưa có nhóm
@@ -86,7 +86,7 @@
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-5 text-center">Đợt đăng ký</span>
                                             <select name="dotDangKy" id="dotDangKy" class="form-control col-6">
-                                                <option value="">chọn đợt đăng ký</option>
+                                                <option value="">Chọn đợt đăng ký</option>
                                                 <option th:each="dotDangKy : ${listDotDangKy}"
                                                         th:value="${dotDangKy.getId}"
                                                         th:text="${dotDangKy.getName}">
@@ -287,7 +287,7 @@
                                             <th>Môn chương trình</th>
                                             <th>Mã nhóm</th>
                                             <th>Tên Đề tài</th>
-                                            <th>GV hướng dẫn</th>
+                                            <th>GVHD</th>
                                             <th>Chuyên Ngành</th>
                                             <th>Chức năng</th>
                                             </thead>
