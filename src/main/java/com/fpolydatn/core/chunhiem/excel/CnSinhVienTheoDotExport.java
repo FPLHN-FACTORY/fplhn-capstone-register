@@ -40,7 +40,6 @@ public class CnSinhVienTheoDotExport {
         createCell(row, 5, "Tên đề tài", cellStyle);
         createCell(row, 6, "Giảng viên hướng dẫn", cellStyle);
         createCell(row, 7, "Đợt đăng ký", cellStyle);
-        createCell(row, 8, "Trạng thái", cellStyle);
     }
 
     private void createCell(Row row, int countColum, Object value, CellStyle cellStyle) {
@@ -78,7 +77,6 @@ public class CnSinhVienTheoDotExport {
             createCell(row, countColum++, sinhVien.getTenDeTai() == null ? "Chưa có" : sinhVien.getTenDeTai(), style);
             createCell(row, countColum++, sinhVien.getGvhd(), style);
             createCell(row, countColum++, sinhVien.getTenDotDangKy(), style);
-            createCell(row, countColum++, sinhVien.getTrangThai(), style);
         });
     }
 
