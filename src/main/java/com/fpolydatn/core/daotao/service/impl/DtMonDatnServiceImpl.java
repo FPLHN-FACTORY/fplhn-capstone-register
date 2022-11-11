@@ -117,7 +117,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
         } else {
             MonDatn mon = monDatnRepository.save(monDatn);
-            if(mon.getNhomMonDatnId().trim().length() == 0){
+            if (mon.getNhomMonDatnId().trim().length() == 0) {
                 mon.setNhomMonDatnId(mon.getId());
                 monDatnRepository.save(mon);
             }
@@ -188,7 +188,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 return;
             }
 
-            if(createMonDant.getNhomMonDatnId().trim().length() != 0) {
+            if (createMonDant.getNhomMonDatnId().trim().length() != 0) {
                 if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
@@ -205,7 +205,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
             monDatn.setCoSoId(coSoId);
             monDatn.setChuyenNganhId(chuyenNganhHashMap.get(createMonDant.getChuyenNganhId()).getId());
-            if(createMonDant.getNhomMonDatnId().trim().length() == 0) {
+            if (createMonDant.getNhomMonDatnId().trim().length() == 0) {
                 monDatn.setNhomMonDatnId(createMonDant.getMaMon());
             } else {
                 monDatn.setNhomMonDatnId(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getId());
@@ -217,7 +217,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
         if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
             monDatnRepository.saveAll(list).forEach(el -> {
-                if(el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
+                if (el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
                     el.setNhomMonDatnId(el.getId());
                     monDatnRepository.save(el);
                 }
@@ -251,7 +251,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     rowNumber++;
                     continue;
                 }
-                if(String.valueOf(getCellValue(row.getCell(0))).trim().length() == 0 &&
+                if (String.valueOf(getCellValue(row.getCell(0))).trim().length() == 0 &&
                         String.valueOf(getCellValue(row.getCell(1))).trim().length() == 0 &&
                         String.valueOf(getCellValue(row.getCell(2))).trim().length() == 0 &&
                         String.valueOf(getCellValue(row.getCell(3))).trim().length() == 0 &&
