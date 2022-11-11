@@ -371,7 +371,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     public int loaiSinhVien(String id) {
         try {
             return sinhVienRepository.loaiSinhVien(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
     }

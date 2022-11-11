@@ -287,7 +287,7 @@ function genPagingAndFillColor(totalPages, currentPage) {
     colorPage[currentPage].style.color = 'white';
 }
 
-function loaiSinhVienDetail(id,page) {
+function loaiSinhVienDetail(id, page) {
     bootbox.confirm({
         title: "Loại sinh viên",
         message: "Bạn chắc chắn loại sinh viên không?",
@@ -309,7 +309,7 @@ function loaiSinhVienDetail(id,page) {
                     data: JSON.stringify(id),
                     dataType: 'json',
                     success: function (responseData) {
-                        if (responseData.data <1) {
+                        if (responseData.data < 1) {
                             bootbox.alert({
                                 message: 'Loại sing viên thất bại',
                                 backdrop: true,

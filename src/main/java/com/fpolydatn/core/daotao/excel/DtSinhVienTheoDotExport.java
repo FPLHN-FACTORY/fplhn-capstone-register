@@ -231,7 +231,7 @@ public class DtSinhVienTheoDotExport {
 
                 Cell empSoThanhVienCell = empDataRow.createCell(10);
                 empSoThanhVienCell.setCellStyle(cellStyle);
-                empSoThanhVienCell.setCellValue(DtSinhVien.getSoThanhVien() == null ? "Chưa tham gia nhóm" : DtSinhVien.getSoThanhVien()+"/7");
+                empSoThanhVienCell.setCellValue(DtSinhVien.getSoThanhVien() == null ? "Chưa tham gia nhóm" : DtSinhVien.getSoThanhVien() + "/7");
 
                 Cell empTenGvhdCell = empDataRow.createCell(11);
                 empTenGvhdCell.setCellStyle(cellStyle);
