@@ -188,18 +188,16 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 return;
             }
 
-            if (createMonDant.getNhomMonDatnId().trim().length() == 0) {
-                mess.setStatus(false);
-                mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm môn không được để trống"));
-                return;
-            } else if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
-                mess.setStatus(false);
-                mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
-                return;
-            } else if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
-                mess.setStatus(false);
-                mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
-                return;
+            if(createMonDant.getNhomMonDatnId().trim().length() != 0) {
+                if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
+                    mess.setStatus(false);
+                    mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
+                    return;
+                } else if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
+                    mess.setStatus(false);
+                    mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
+                    return;
+                }
             }
 
             MonDatn monDatn = new MonDatn();
@@ -207,17 +205,25 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
             monDatn.setCoSoId(coSoId);
             monDatn.setChuyenNganhId(chuyenNganhHashMap.get(createMonDant.getChuyenNganhId()).getId());
-            monDatn.setNhomMonDatnId(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getId());
+            if(createMonDant.getNhomMonDatnId().trim().length() == 0) {
+                monDatn.setNhomMonDatnId(createMonDant.getMaMon());
+            } else {
+                monDatn.setNhomMonDatnId(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getId());
+            }
             monDatnHashMap.put(monDatn.getMaMon(), monDatn);
             list.add(monDatn);
-
+            mess.setStatus(true);
         });
 
         if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
-            monDatnRepository.saveAll(list);
+            monDatnRepository.saveAll(list).forEach(el -> {
+                if(el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
+                    el.setNhomMonDatnId(el.getId());
+                    monDatnRepository.save(el);
+                }
+            });
         }
 
-        mess.setStatus(true);
         return mess;
     }
 

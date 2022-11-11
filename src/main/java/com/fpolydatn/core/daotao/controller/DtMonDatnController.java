@@ -38,7 +38,6 @@ public class DtMonDatnController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
-        System.out.println(pageMonDatn.getData().size());
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         List<MonDatn> tenNhomMon = monDatnService.findByTenNhomMon();
         model.addAttribute("page", pageMonDatn);
