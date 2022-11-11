@@ -28,4 +28,6 @@ public interface DtSinhVienTheoDotService {
     DtLoaiSinhVienResponse loaiSinhVienKhongDat(DtLoaiSinhVienKhongDatRequest request);
 
     DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId);
+
+    int loaiSinhVien(String id);
 }

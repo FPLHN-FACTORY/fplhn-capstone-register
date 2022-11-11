@@ -31,6 +31,7 @@ public class DtSinhVienTheoDotExport {
         this.ListSinhVien = ListSinhVien;
         xssfWorkbook = new XSSFWorkbook();
     }
+
     public DtSinhVienTheoDotExport() {
     }
 
@@ -107,20 +108,6 @@ public class DtSinhVienTheoDotExport {
         outputStream.close();
     }
 
-    //
-//    public void exportMauImport(HttpServletResponse response) throws IOException {
-//        final long startTime = System.currentTimeMillis();
-//        headerLineMau();
-//
-//        writeDataLines();
-//        ServletOutputStream outputStream = response.getOutputStream();
-//        xssfWorkbook.write(outputStream);
-//
-//        final long endTime = System.currentTimeMillis();
-//
-//        xssfWorkbook.close();
-//        outputStream.close();
-//    }
     public void employeeDetailReport(HttpServletResponse response, List<DtSinhVienTheoDotResponse> listDtSinhVien) {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Employee TechGeekNext Example");
@@ -169,7 +156,7 @@ public class DtSinhVienTheoDotExport {
             cell6.setCellStyle(cellStyle);
 
             Cell cell7 = row.createCell(7);
-            cell7.setCellValue("ôn đăng ký");
+            cell7.setCellValue("Môn đăng ký");
             cell7.setCellStyle(cellStyle);
 
             Cell cell8 = row.createCell(8);
@@ -244,7 +231,7 @@ public class DtSinhVienTheoDotExport {
 
                 Cell empSoThanhVienCell = empDataRow.createCell(10);
                 empSoThanhVienCell.setCellStyle(cellStyle);
-                empSoThanhVienCell.setCellValue(DtSinhVien.getSoThanhVien() == null ? 0 : DtSinhVien.getSoThanhVien());
+                empSoThanhVienCell.setCellValue(DtSinhVien.getSoThanhVien() == null ? "Chưa tham gia nhóm" : DtSinhVien.getSoThanhVien() + "/7");
 
                 Cell empTenGvhdCell = empDataRow.createCell(11);
                 empTenGvhdCell.setCellStyle(cellStyle);
