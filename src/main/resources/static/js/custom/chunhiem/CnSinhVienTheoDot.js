@@ -67,7 +67,7 @@ function loadDataToTable(count) {
                       data-toggle="modal"
                       onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class=" btn btn-success">
-                      Thêm nhóm</a>
+                       <img src="/img/pencil-square.svg">   </a>
                       </td>
                 ` : `
                 <td>
