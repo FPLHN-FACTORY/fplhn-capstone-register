@@ -36,58 +36,6 @@
                     <h3>Quản lý cán bộ</h3>
                     <div class="mt-5">
                         <div class="m-portlet">
-                            <!-- Export Mau -->
-                            <!--                                    <button id="mauImport"-->
-                            <!--                                            data-toggle="modal"-->
-                            <!--                                            data-target="#modal_excel_mau"-->
-                            <!--                                            class="col-10 col-sm-6 col-md-4 btn btn-secondary btn-floating btn-sm fas">-->
-                            <!--                                        <i class="fas fa-download"> Mẫu Import Excel</i>-->
-                            <!--                                    </button>-->
-
-                            <!--                                    <div class="modal fade "-->
-                            <!--                                         id="modal_excel_mau"-->
-                            <!--                                         tabindex="-1"-->
-                            <!--                                         aria-labelledby="exampleModalLabel"-->
-                            <!--                                         aria-hidden="true">-->
-                            <!--                                        <div class="modal-dialog modal-lg">-->
-                            <!--                                            <div class="modal-content">-->
-                            <!--                                                <form id="form_mau_excel" method="post">-->
-                            <!--                                                    <div class="modal-header">-->
-                            <!--                                                        <h5 class="modal-title"> Mẫu Export Excel</h5>-->
-                            <!--                                                        <button type="button" class="close"-->
-                            <!--                                                                data-dismiss="modal"-->
-                            <!--                                                                aria-label="Close">-->
-                            <!--                                                            <span aria-hidden="true">&times;</span>-->
-                            <!--                                                        </button>-->
-                            <!--                                                    </div>-->
-                            <!--                                                    <div class="modal-body">-->
-                            <!--                                                        <div class="form-group">-->
-                            <!--                                                            <p class="col-form-label">Định dạng file-->
-                            <!--                                                                excel </p>-->
-                            <!--                                                            <select id="type_mau_excel"-->
-                            <!--                                                                    class="form-control col-5">-->
-                            <!--                                                                <option value="">chọn kiểu file excel-->
-                            <!--                                                                </option>-->
-                            <!--                                                                <option value="xls">.xls</option>-->
-                            <!--                                                                <option value="xlsx">.xlsx</option>-->
-                            <!--                                                            </select>-->
-                            <!--                                                            <span class="text-danger"-->
-                            <!--                                                                  id="mau_excel_error"></span>-->
-                            <!--                                                        </div>-->
-                            <!--                                                    </div>-->
-                            <!--                                                    <div class="modal-footer">-->
-                            <!--                                                        <button type="button" class="btn btn-secondary"-->
-                            <!--                                                                data-dismiss="modal">Hủy-->
-                            <!--                                                        </button>-->
-                            <!--                                                        <button type="submit" class="btn btn-primary">-->
-                            <!--                                                            Download excel-->
-                            <!--                                                        </button>-->
-                            <!--                                                    </div>-->
-                            <!--                                                </form>-->
-                            <!--                                            </div>-->
-                            <!--                                        </div>-->
-                            <!--                                    </div>-->
-                            <!-- End Export Mau -->
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="row">
@@ -301,21 +249,38 @@
                                             </tbody>
                                         </table>
                                         <!-- Paging-->
-                                        <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
+                                        <nav th:if="${page.totalPages > 1}" aria-label="Page navigation ">
                                             <ul class="pagination justify-content-end">
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                       th:style="${page.currentPage} == 0 ? 'pointer-events: none' : ''"
+                                                       th:href="@{/dao-tao/can-bo?page={page.currentPage}(page.currentPage=${page.currentPage}-1)}"
+                                                       th:text="Back">
+                                                    </a>
+                                                </li>
                                                 <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                     <li class="page-item">
                                                         <a class="page-link"
+                                                           th:style="${page.currentPage} == ${i} - 1 ? 'background-color : #0a8cf0; color : white' : ''"
                                                            th:href="@{/dao-tao/can-bo?page={page.currentPage}(page.currentPage=${i}-1)}"
                                                            th:text="${i}">
                                                         </a>
                                                     </li>
                                                 </div>
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                       th:style="${page.currentPage} == ${page.totalPages} - 1 ? 'pointer-events: none' : ''"
+                                                       th:href="@{/dao-tao/can-bo?page={page.currentPage}(page.currentPage=${page.currentPage}+1)}"
+                                                       th:text="Next">
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </nav>
                                     </div>
+                                    <div th:if="${page.data.isEmpty()}">
+                                        <h3>Không có dữ liệu</h3>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -323,8 +288,9 @@
             </div>
         </div>
     </div>
-    <!-- end:: Body -->
 </div>
+    <!-- end:: Body -->
+
 <!--  Start Modal Update-->
 <div
         class="modal fade"
@@ -415,41 +381,6 @@
 </div>
 <!--   End Modal Update -->
 
-<!--  Start Modal Remove-->
-<div
-        class="modal fade"
-        id="modal_can_bo_remove"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_can_bo_delete">
-                <div class="modal-header">
-                    <h5 class="modal-title">Xoá Cán Bộ</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn xoá không ?</p>
-                    <span id="remove_can_bo" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Xoá
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--   End Modal Remove -->
-
 <!-- Begin Mẫu Excel -->
 <div class="row">
     <div class="col-5 d-inline float-right"
@@ -504,6 +435,7 @@
         crossorigin="anonymous"></script>
 <script th:src="@{/js/plugin/bootstrap.bundle.js}"></script>
 <script th:src="@{/js/custom/daotao/dtCanBo.js}" type="text/javascript"></script>
+<script th:src="@{/js/plugin/bootbox.min.js}"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>

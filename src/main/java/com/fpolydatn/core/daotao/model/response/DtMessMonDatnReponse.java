@@ -15,7 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DtMessMonDatnReponse {
+
     private Boolean status;
 
     private List<String> message;
+
 }

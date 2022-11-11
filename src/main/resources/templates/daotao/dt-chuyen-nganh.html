@@ -95,7 +95,7 @@
                                                  aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
-                                                        <form id="form_create_chuyen_nganh">
+                                                        <form id="form_create_chuyen_nganh" th:onsubmit="create()">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Thêm chuyên
                                                                     ngành</h5>
@@ -219,7 +219,7 @@
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
-            <form id="form_chuyen_nganh_update">
+            <form id="form_chuyen_nganh_update" onsubmit="update()">
                 <div class="modal-header">
                     <h5 class="modal-title">Cập
                         nhật chuyên ngành</h5>
@@ -276,7 +276,7 @@
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
-            <form id="form_chuyen_nganh_delete">
+            <form id="form_chuyen_nganh_delete" onsubmit="deleteChuyenNganh()">
                 <div class="modal-header">
                     <h5 class="modal-title">Xoá chuyên ngành</h5>
                     <button type="button" class="close"

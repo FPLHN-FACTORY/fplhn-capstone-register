@@ -91,7 +91,14 @@ public interface DtMonDatnRepository extends MonDatnRepository {
     List<MonDatn> findByIdMon(@Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT *
+            SELECT m.id, 
+                m.created_date, 
+                m.last_modified_date, 
+                m.co_so_id, 
+                m.chuyen_nganh_id, 
+                m.ma_mon, 
+                m.nhom_mon_datn_id, 
+                m.ten_mon_datn
                 FROM mon_datn m 
                 WHERE m.nhom_mon_datn_id IS NULL 
                 AND m.co_so_id = :coSoId 
@@ -99,7 +106,14 @@ public interface DtMonDatnRepository extends MonDatnRepository {
     List<MonDatn> getListNhomMonDatn(@Param("coSoId") String coSoId);
 
     @Query(value = """
-            SELECT *
+            SELECT m.id, 
+                m.created_date, 
+                m.last_modified_date, 
+                m.co_so_id, 
+                m.chuyen_nganh_id, 
+                m.ma_mon, 
+                m.nhom_mon_datn_id, 
+                m.ten_mon_datn
                 FROM mon_datn m 
                 WHERE m.co_so_id = :coSoId 
             """, nativeQuery = true)

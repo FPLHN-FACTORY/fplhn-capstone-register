@@ -27,7 +27,7 @@ import java.util.Optional;
  * @author huynq
  */
 @Service
-public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService{
+public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService {
 
     @Autowired
     private DtPhanCongHuongDanRepository phanCongHuongDanRepository;
