@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.github.pjfanning.xlsx.StreamingReader;
@@ -122,23 +123,24 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 request.setIdDotDangKy("");
             }
         }
-
+        response.setHeader("Content-Disposition", headerValue);
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());
         List<DtSinhVienTheoDotResponse> list = sinhVienRepository.exportExcel(request);
-        DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(list);
-        dtSinhVienExport.exportData(response);
+        DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport();
+        dtSinhVienExport.employeeDetailReport(response,list);
     }
 
     @Override
-    public void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
+    public void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws Exception {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=MauImportExcel" + currentDateTime + "." + typeExcel;
+        String headerValue = "attachment; filename=MauQlSinhVien" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
         List<DtSinhVienTheoDotResponse> listSv = new ArrayList<>();
         DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(listSv);
-        dtSinhVienExport.exportMauImport(response);
+        dtSinhVienExport.headerLineMau(response);
     }
 
     @Override
@@ -196,10 +198,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             }
 
             if (map.get(sinhVien.getMonDATN()) != null) {
-                sinhVienEntity.setMonDatnId(map.get(sinhVien.getMonDATN()));
+                sinhVienEntity.setMonChuongTrinhId(map.get(sinhVien.getMonDATN()));
             } else if (!map.containsKey(sinhVien.getMonDATN())) {
                 response.setStatus(false);
-                response.setMessage("Mã môn DATN \"" + sinhVien.getMonDATN() + "\" không tồn tại");
+                response.setMessage("Mã môn chương trình \"" + sinhVien.getMonDATN() + "\" không tồn tại");
                 return;
             }
 
