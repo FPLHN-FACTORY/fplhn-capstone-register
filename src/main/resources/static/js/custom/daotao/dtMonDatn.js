@@ -10,6 +10,7 @@ function openModalCreate() {
 }
 
 function create() {
+    event.preventDefault();
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
