@@ -1,6 +1,5 @@
 const nhomDatnAPI = '/api/giang-vien/nhom-datn';
 const nhomDatnView = '/giang-vien/nhom-datn';
-const hanGiangVien = $("#hanGiangVien").val()
 
 function clearDataGVHD() {
     $("#idMon").val("");
@@ -95,7 +94,7 @@ function seachNhomdatn(index) {
         success: function (responseData) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
-                <tr class="chucNangs">
+                <tr class="table-light">
                 <td>${item.stt}</td>
                 <td>${item.maNhom}</td>
                 <td>${item.tenDeTai}</td>
@@ -103,20 +102,20 @@ function seachNhomdatn(index) {
                 <td>${item.maMon}</td>
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giáo viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
                  <td >
-                        <button onclick=showDetail('${item.id}') class="btn_eye" data-toggle="tooltip" title="Xem chi tiết nhóm">
+                        <button type="button" onclick=showDetail('${item.id}') class="btn_eye" data-toggle="tooltip" title="Xem chi tiết nhóm">
                                     <img src="/img/eye-fill.svg">
                         </button>
-                        <button onclick= "xacDaNhanLienHe('${item.id}', '${item.maNhom}')"
+                        <button type="button" onclick= "xacDaNhanLienHe('${item.id}', '${item.maNhom}')"
                                 style="${item.trangThai == 1 ? 'display: block' : 'display: none'}" 
                                 class="btn_check_circle " data-toggle="tooltip" title="Xác nhận nhóm">
                                     <img src="/img/check-circle.svg">
                         </button>
-                        <button onclick= "chotDeTaiNhomDatn('${item.id}', '${item.maNhom}')"
+                        <button type="button" onclick= "chotDeTaiNhomDatn('${item.id}', '${item.maNhom}')"
                                 style="${item.trangThai == 2 ? 'display: block' : (item.trangThai == 3 ? 'display: block' : 'display: none')}"
                                 class="btn_check " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/clipboard-check.svg">
                          </button>
-                         <button onclick= "updateTenDeTai('${item.id}')"
+                         <button type="button" onclick= "updateTenDeTai('${item.id}')"
                                 style="${item.trangThai == 2 ? 'display: block' : (item.trangThai == 3 ? 'display: block' : (item.trangThai == 4 ? 'display: block' : 'display: none'))}"
                                 class="btn_pencil_square " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/pencil-square.svg">
@@ -152,8 +151,7 @@ function updateTenDeTai(maNhom) {
     });
 }
 
-$("#updateTenDeTaiNhomDatn").submit(function (event) {
-    event.preventDefault()
+function updateTenDeTaiSubmit() {
     let tenDeTai = $("#ten_de_tai_update").val();
     let maNhom = $("#id_nhom_datn_update").val();
 
@@ -164,6 +162,8 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
         $("#errorMessageUpdate").text("Tên đề tài không được để trống");
     } else if (tenDeTai.trim().length < 6) {
         $("#errorMessageUpdate").text("Tên đề tài tối thiếu 6 ký tự");
+    }else if (tenDeTai.trim().length > 100) {
+        $("#errorMessageUpdate").text("Tên đề tài quá 100 ký tự");
     } else {
         $.ajax({
             type: "PUT",
@@ -179,7 +179,7 @@ $("#updateTenDeTaiNhomDatn").submit(function (event) {
             }
         });
     }
-});
+};
 
 function chotDeTaiNhomDatn(idNhom, maNhom) {
 
