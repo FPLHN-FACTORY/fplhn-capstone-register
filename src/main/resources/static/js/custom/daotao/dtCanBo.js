@@ -9,6 +9,7 @@ $(document).ready(function () {
     clear();
 });
 
+
 function clearData() {
     $("#keyword").val("");
 }
@@ -240,6 +241,41 @@ function update() {
     }
 };
 
+function importCanBo() {
+    let typeExcel = $("#inputGroupFile01").val();
+    let indexDot = typeExcel.indexOf('.');
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    if (typeExcel.trim().length <= 0) {
+        $("#import_excel_error").text("Hãy chọn file excel cần import");
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        var form = $('#form_import_excel')[0];
+        $.ajax({
+                type: 'POST',
+                url: canBoApi + '/import',
+                enctype: 'multipart/form-data',
+                processData: false,
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response.data.status == true) {
+                        alert("Import file excel thành công");
+                        window.open(canBoView, '_self');
+                    } else {
+                        alert(response.data.message);
+                        $("#inputGroupFile01").val("");
+                        $("#inputGroupFile01").clear()
+                    }
+                },
+                error: function (e) {
+                }
+            }
+        );
+    } else {
+        $("#import_excel_error").text("Hãy chọn đúng file excel");
+    }
+}
+
 function openModalRemoveCanBo(canBoId) {
     bootbox.confirm({
         title: "Xóa nhóm môn",
@@ -286,34 +322,7 @@ function openModalRemoveCanBo(canBoId) {
     });
 }
 
-$("#form_import_excel").submit(function (event) {
-    event.preventDefault();
-    let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
-    if (typeExcel.length <= 0) {
-        $("#import_excel_error").text("chọn file");
-    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
-        $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                enctype: 'multipart/form-data',
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    window.open(canBoView, '_self');
-                },
-                error: function (e) {
-                    window.open(canBoView, '_self');
-                    alert("ERROR: " + e);
-                }
-            }
-        );
-    } else {
-        $("#import_excel_error").text("chọn đúng file Excel ");
-    }
-});
+
 
 $("#modal_excel_mau").submit(function (event) {
     event.preventDefault();

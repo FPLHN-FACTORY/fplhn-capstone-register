@@ -1,5 +1,7 @@
 package com.fpolydatn.core.daotao.excel;
 
+import com.fpolydatn.core.chunhiem.model.request.CnCreateSinhVienTheoDotRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoExcelImport;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.github.pjfanning.xlsx.StreamingReader;
@@ -18,28 +20,32 @@ import java.util.List;
  */
 public class DtCanBoImportExcel {
 
-    public List<CanBo> importData(MultipartFile reapExcelDataFile, String id) throws IOException {
-        List<CanBo> listCanBo = new ArrayList<>();
+    public static List<DtCanBoExcelImport> importData(MultipartFile reapExcelDataFile, String id) throws IOException {
+        List<DtCanBoExcelImport> listCanBo = new ArrayList<>();
         Workbook workbook = StreamingReader.builder()
                 .bufferSize(4096)
                 .rowCacheSize(50)
                 .open(reapExcelDataFile.getInputStream());
         Sheet worksheet = workbook.getSheetAt(0);
-        for (Row row : worksheet) {
-            if (row.getRowNum() == 0) {
+        for (Row row :
+                worksheet) {
+            if (row.getRowNum()==0){
                 continue;
             }
-            CanBo canBo = new CanBo();
-            canBo.setEmailFe(String.valueOf(getCellValue(row.getCell(1))));
-            canBo.setEmailFpt(String.valueOf(getCellValue(row.getCell(2))));
+            DtCanBoExcelImport canBo = new DtCanBoExcelImport();
+            canBo.setEmailFE(String.valueOf(getCellValue(row.getCell(1))));
+            canBo.setEmailFPT(String.valueOf(getCellValue(row.getCell(2))));
             canBo.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))));
             canBo.setTenCanBo(String.valueOf(getCellValue(row.getCell(4))));
             canBo.setTenTaiKhoan(String.valueOf(getCellValue(row.getCell(5))));
-            canBo.setVaiTro(VaiTro.valueOf(String.valueOf(getCellValue(row.getCell(6)))));
+            if(String.valueOf(getCellValue(row.getCell(6))).equals("DAO_TAO")){
+                canBo.setVaiTro(VaiTro.DAO_TAO);
+            }else if(String.valueOf(getCellValue(row.getCell(6))).equals("CHU_NHIEM_BO_MON")){
+                canBo.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
+            }
             canBo.setCoSoId(id);
             listCanBo.add(canBo);
         }
-
         return listCanBo;
     }
 

@@ -82,8 +82,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     List<CnCreateSinhVienTheoDotRequest> sinhVienList;
 
-    HashMap<String, String> map;
-
     HashMap<String, SinhVien> mapSinhVien;
 
     HashMap<String, SinhVien> mapTruongNhom;
@@ -266,8 +264,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             String headerKey = "Content-Disposition";
             String headerValue = "attachment; filename=SinhVienTheoDot" + currentDateTime + "." + typeExcel;
             response.setHeader(headerKey, headerValue);
-            CnSinhVienTheoDotExport cnNhomDatnExport = new CnSinhVienTheoDotExport(list);
-            cnNhomDatnExport.exportData(response);
+            CnSinhVienTheoDotExport cnNhomDatnExport = new CnSinhVienTheoDotExport();
+            cnNhomDatnExport.employeeDetailReport(response, list);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -285,7 +283,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             List<NhomDatn> listNhomDatnEntity = new ArrayList<>();
             List<String> listMaNhomCreate = new ArrayList<>();
             Map<String, CnCreateSinhVienTheoDotRequest> mapTruongNhomCreate = new HashMap<>();
-//        map = new HashMap<>();
             mapSinhVien = new HashMap<>();
             mapNhomDatn = new HashMap<>();
             mapGiangVien = new HashMap<>();
@@ -420,6 +417,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            response.setStatus(false);
+            response.setMessage("Lỗi hệ thống");
+            return response;
         }
         return response;
     }
@@ -458,25 +458,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             return true;
         }
         return false;
-    }
-
-    public void addDataInMap(HashMap<String, String> mapAll, String dotDangKyId, String coSoId) {
-
-        //lấy id, MaSv của tất cả sv theo cơ sở
-        List<SimpleEntityProj> getAllNhomDatn = cnNhomDatnRepository.getAllNhomDatn(dotDangKyId, coSoId);
-        getAllPutMap(mapAll, getAllNhomDatn);
-        // lấy id, MaNhom tất cả nhóm theo cơ sở
-//        List<SimpleEntityProj> getAllMaNhom = nhomDatnTheoDotRepository.getAllMaNhom(coSoId);
-//        getAllPutMap(mapAll, getAllMaNhom);
-//        // lấy id, tenChuyenNganh tất cả chuyên ngành theo cơ sở
-//        List<SimpleEntityProj> getAllTenCN = chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
-//        getAllPutMap(mapAll, getAllTenCN);
-//        // lấy id, tenDotDangKy tất cả đợt đăng ký theo cơ sở
-//        List<SimpleEntityProj> getAllTenDDK = dotDangKyRepository.findAllSimpleEntity(coSoId);
-//        getAllPutMap(mapAll, getAllTenDDK);
-//        // lấy id, monDatn tất cả đợt đăng ký theo cơ sở
-//        List<SimpleEntityProj> getAllMaMon = monDatnRepository.getAllMaMon(coSoId);
-//        getAllPutMap(mapAll, getAllMaMon);
     }
 
     public void addDataInMapSinhVien(HashMap<String, SinhVien> mapAll, String dotDangKyId, String coSoId, String idChuNhiem) {

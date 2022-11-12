@@ -1,5 +1,7 @@
 const sinhVienApi = '/api/chu-nhiem/dot-dang-ky/sinh-vien';
 const sinhVienTheoDotDangKyView = '/chu-nhiem/dot-dang-ky/sinh-vien';
+let totalPages = $("#totalPages").val()
+let currentPage = $("#currentPage").val()
 
 function openModalAddSinhVien(maSinhVien, count) {
     $("#modal_create_nhom").modal('show');
@@ -27,11 +29,46 @@ $("#form_create_group").submit(function (event) {
         }
     });
 });
+genPagingAndFillColor()
+
+function genPagingAndFillColor() {
+    genPagzing();
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
+}
+
+function genPagzing() {
+    $("#page").html(``)
+    let templatePageMid = ``;
+    let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataToTable(currentPage - 1)">Back</a>
+                </li>
+                `;
+    for (let i = 0; i < totalPages; i++) {
+        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
+                                        <a class="page-link" id="pageColor" onclick="loadDataToTable(${i})">${i + 1}</a>
+                                    </li>`
+    }
+    let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataToTable(Number(currentPage) + 1)">Next</a>
+                </li>
+                `;
+    let templateHtml = ``;
+    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+    if (totalPages == 1) {
+        templateHtml = ``;
+    }
+    $("#page").html(templateHtml);
+}
 
 function loadDataToTable(count) {
-    let tenSinhVien = $("#ten-hoc-ky").val().trim();
+    let tenSinhVien = $("#tenSinhVien").val().trim();
     let dotDangKyId = $("#dotDangKyId").val().trim();
     $("#listSV").html("");
+    currentPage = count;
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -48,6 +85,7 @@ function loadDataToTable(count) {
                 $("#page").html(``)
             } else {
                 $("#empty").html(``)
+                totalPages = responseData.data.totalPages
                 array.map(function (sinhVien) {
                     var tenDeTai = sinhVien.tenDeTai == null ? 'Chưa có' : sinhVien.tenDeTai;
                     var tenGvhd = sinhVien.tenGvhd == null ? 'Chưa có' : sinhVien.tenGvhd;
@@ -58,15 +96,14 @@ function loadDataToTable(count) {
                             <td> ${sinhVien.maSinhVien}</td>
                             <td> ${sinhVien.tenSinhVien}</td>
                             <td> ${sinhVien.maMonChuongTrinh == null ? 'Chưa có' : sinhVien.maMonChuongTrinh}</td>
-                            <td> ${sinhVien.maMonDuAn == null ? 'Chưa có' : sinhVien.maMonDuAn                           }</td>
+                            <td> ${sinhVien.maMonDuAn == null ? 'Chưa có' : sinhVien.maMonDuAn}</td>
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td>
-                  <a
-                      data-toggle="modal"
-                      onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
-                      class=" btn btn-success">
-                       <img src="/img/pencil-square.svg">   </a>
+                  <button onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
+                      class="btn_pencil_square">
+                       <img src="/img/pencil-square.svg">  
+                        </button>
                       </td>
                 ` : `
                 <td>
@@ -82,24 +119,10 @@ function loadDataToTable(count) {
                 });
                 $("#listSV").html(text);
                 $("#page").html(``)
-                let templateHtml = ``;
-                for (let i = 0; i < responseData.data.totalPages; i++) {
-                    templateHtml += `<li class="page-item" >
-                                        <a class="page-link" onclick="loadDataToTable(${i})">${i + 1}</a>
-                                    </li>`
-                }
-                if (responseData.data.totalPages == 1) {
-                    templateHtml = ``;
-                }
-                $("#page").html(templateHtml);
+                genPagingAndFillColor()
             }
         },
         error: function (responseData) {
         }
     });
 }
-
-$("#search").submit(function (event) {
-    event.preventDefault();
-    loadDataToTable(0);
-})

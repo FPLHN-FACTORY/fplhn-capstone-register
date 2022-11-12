@@ -6,7 +6,9 @@ import com.fpolydatn.core.daotao.excel.DtCanBoImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoExcelImport;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
 import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
@@ -28,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,41 +111,80 @@ public class DtCanBoServiceImpl implements DtCanBoService {
 
 
     @Override
-    public RestApiException DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
-        DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
-        List<CanBo> listCB = dtCanBoImportExcel.importData(file, coSoId);
-        Map<String, String> map = new HashMap<>();
-        addDataInMap(map);
+    public DtCanBoResponseMessage DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
+        DtCanBoResponseMessage dtCanBoResponseMessage = new DtCanBoResponseMessage();
+        List<CanBo> listCanBo = new ArrayList<>();
+        try {
+            DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
+            List<DtCanBoExcelImport> listCB = dtCanBoImportExcel.importData(file, coSoId);
+            dtCanBoResponseMessage.setStatus(true);
+            Map<String, String> map = new HashMap<>();
+            addDataInMap(map);
 
-        for (CanBo canbo : listCB) {
-            if (map.get(canbo.getEmailFe()) != null || map.get(canbo.getEmailFpt()) != null) {
-                throw new RestApiException(Message.CAN_BO_EXSIT);
-            }
+            listCB.parallelStream().forEach(canbo -> {
+                if (map.get(canbo.getEmailFE()) != null || map.get(canbo.getEmailFPT()) != null) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Cán bộ bạn muốn import đã tồn tại");
+                    return;
+                }
 
-            if (canbo.getEmailFpt().isEmpty() || canbo.getEmailFe().isEmpty() ||
-                    canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
-                    canbo.getTenCanBo().isEmpty() || canbo.getVaiTro().toString().isEmpty()) {
-                throw new RestApiException(Message.EMPTY);
-            }
+                if (canbo.getEmailFE().isEmpty() || canbo.getEmailFPT().isEmpty() ||
+                        canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
+                        canbo.getTenCanBo().isEmpty()) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Không được để trống");
+                    return;
+                }
 
-            if (!canbo.getEmailFpt().matches(Constants.REGEX_EMAIL_FPT)) {
-                throw new RestApiException(Message.EMAIL_MALFORMED);
-            }
+                if (!canbo.getEmailFPT().matches("\\w+@fpt.edu.vn")) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fpt không đúng định dạng");
+                    return;
+                }
 
-            if (!canbo.getEmailFe().matches(Constants.REGEX_EMAIL_FE)) {
-                throw new RestApiException(Message.EMAIL_MALFORMED);
-            }
+                if (!canbo.getEmailFE().matches("\\w+@fe.edu.vn")) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fe không đúng định dạng");
+                    return;
+                }
 
-            if (!canbo.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
-                throw new RestApiException(Message.NUMBER_FORMAT_EXCEPTION);
-            }
+                if (canbo.getEmailFE().length() > 30) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fe quá 30 ký tự");
+                    return;
+                }
 
-            if (canbo.getTenTaiKhoan().contains(" ")) {
-                throw new RestApiException(Message.NO_SPACES_ALLOW);
+                if (canbo.getEmailFPT().length() > 30) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fpt quá 30 ký tự");
+                    return;
+                }
+
+                if (!canbo.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Số điện thoại không đúng định dạng");
+                    return;
+                }
+                CanBo cb = new CanBo();
+                cb.setEmailFe(canbo.getEmailFE());
+                cb.setEmailFpt(canbo.getEmailFPT());
+                cb.setTenCanBo(canbo.getTenCanBo());
+                cb.setSoDienThoai(canbo.getSoDienThoai());
+                cb.setVaiTro(canbo.getVaiTro());
+                cb.setCoSoId(coSoId);
+                cb.setTenTaiKhoan(canbo.getTenTaiKhoan());
+                listCanBo.add(cb);
+            });
+            if (dtCanBoResponseMessage.getStatus() == true) {
+                dtCanBoRepository.saveAll(listCanBo);
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            dtCanBoResponseMessage.setStatus(false);
+            dtCanBoResponseMessage.setMessage("Lỗi hệ thống");
+            return dtCanBoResponseMessage;
         }
-        dtCanBoRepository.saveAll(listCB);
-        return new RestApiException(Message.SUCCESS);
+        return dtCanBoResponseMessage;
     }
 
     @Override

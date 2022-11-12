@@ -77,47 +77,36 @@ public class DtGiangVienHuongDanExport {
                 Row empDataRow = sheet.createRow(rowNum++);
 
                 Cell empSttCell = empDataRow.createCell(0);
-                empSttCell.setCellStyle(cellStyle);
                 empSttCell.setCellValue(giangVien.getSTT());
 
                 Cell tenCoSo = empDataRow.createCell(1);
-                tenCoSo.setCellStyle(cellStyle);
                 tenCoSo.setCellValue(giangVien.getTenCoSo());
 
                 Cell empTenSinhVienCell = empDataRow.createCell(2);
-                empTenSinhVienCell.setCellStyle(cellStyle);
                 empTenSinhVienCell.setCellValue(giangVien.getTenDotDangKy());
 
                 Cell empSoDienThoaiCell = empDataRow.createCell(3);
-                empSoDienThoaiCell.setCellStyle(cellStyle);
                 empSoDienThoaiCell.setCellValue(giangVien.getTenGvhd());
 
                 Cell empEmailCell = empDataRow.createCell(4);
-                empEmailCell.setCellStyle(cellStyle);
                 empEmailCell.setCellValue(giangVien.getTenTaiKhoan());
 
                 Cell empTrangThaiCell = empDataRow.createCell(5);
-                empTrangThaiCell.setCellStyle(cellStyle);
                 empTrangThaiCell.setCellValue(giangVien.getSoNhomHuongDanToiDa());
 
                 Cell khoaCell = empDataRow.createCell(6);
-                khoaCell.setCellStyle(cellStyle);
                 khoaCell.setCellValue(giangVien.getSoNhomDangHuongDan());
 
                 Cell svTenMonDatnCell = empDataRow.createCell(7);
-                svTenMonDatnCell.setCellStyle(cellStyle);
                 svTenMonDatnCell.setCellValue(giangVien.getSoNhomDangHuongDan() +"/"+ giangVien.getSoNhomHuongDanToiDa());
 
                 Cell empMaNhomCell = empDataRow.createCell(8);
-                empMaNhomCell.setCellStyle(cellStyle);
                 empMaNhomCell.setCellValue(giangVien.getSoDienThoai());
 
                 Cell empTenDeTaiCell = empDataRow.createCell(9);
-                empTenDeTaiCell.setCellStyle(cellStyle);
                 empTenDeTaiCell.setCellValue(giangVien.getEmailFpt());
 
                 Cell empSoThanhVienCell = empDataRow.createCell(10);
-                empSoThanhVienCell.setCellStyle(cellStyle);
                 empSoThanhVienCell.setCellValue(giangVien.getEmailFe());
 
             }
