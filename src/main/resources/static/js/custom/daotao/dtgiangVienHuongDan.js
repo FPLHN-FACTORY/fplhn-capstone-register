@@ -226,7 +226,7 @@ $("#form_giang_vien_update").submit(function (event) {
     }
 
     if (soDienThoai.length === 0) {
-        $("#errorSDT").text(" Số điện thoại không được để trống");
+        $("#errorSDTUpdate").text(" Số điện thoại không được để trống");
         index++;
     } else if (regexSDT.test(soDienThoai) == false) {
         $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
