@@ -241,14 +241,14 @@ $("#form_giang_vien_update").submit(function (event) {
     if (emailFpt.length === 0) {
         $("#errorEmailFptUpdate").text(" EmailFpt không được để trống");
         index++;
-    } else if (regexFPT.test(emailFpt) == false) {
+    }  else if (emailFpt.trim().includes(" ")) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
         index++;
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
         index++;
     } else {
-        $("#errorEmailFpt").text("");
+        $("#errorEmailFptUpdate").text("");
     }
 
     if (emailFe.length === 0) {
@@ -257,7 +257,7 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexFE.test(emailFe) == false) {
         $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
         index++;
-    } else if (emailFpt.trim().includes(" ")) {
+    } else if (emailFe.trim().includes(" ")) {
         $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
         index++;
     } else {
@@ -489,6 +489,7 @@ function loadTable(count) {
                 }
             } else {
                 totalPages = responseData.data.totalPages
+                $("#empty").html(``)
                 $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                     return `
                <tr>
