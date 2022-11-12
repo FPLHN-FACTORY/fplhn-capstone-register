@@ -6,6 +6,7 @@ import com.fpolydatn.core.daotao.excel.DtCanBoImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoExcelImport;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
 import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,20 +113,20 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     @Override
     public DtCanBoResponseMessage DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
         DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
-        List<CanBo> listCB = dtCanBoImportExcel.importData(file, coSoId);
+        List<DtCanBoExcelImport> listCB = dtCanBoImportExcel.importData(file, coSoId);
         DtCanBoResponseMessage dtCanBoResponseMessage = new DtCanBoResponseMessage();
         dtCanBoResponseMessage.setStatus(true);
         Map<String, String> map = new HashMap<>();
         addDataInMap(map);
-
+        List<CanBo> listCanBo = new ArrayList<>();
         listCB.parallelStream().forEach(canbo -> {
-            if (map.get(canbo.getEmailFe()) != null || map.get(canbo.getEmailFpt()) != null) {
+            if (map.get(canbo.getEmailFE()) != null || map.get(canbo.getEmailFPT()) != null) {
                 dtCanBoResponseMessage.setStatus(false);
                 dtCanBoResponseMessage.setMessage("Cán bộ này đã tồn tại");
                 return;
             }
 
-            if (canbo.getEmailFpt().isEmpty() || canbo.getEmailFe().isEmpty() ||
+            if (canbo.getEmailFE().isEmpty() || canbo.getEmailFPT().isEmpty() ||
                     canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
                     canbo.getTenCanBo().isEmpty()) {
                 dtCanBoResponseMessage.setStatus(false);
@@ -132,13 +134,13 @@ public class DtCanBoServiceImpl implements DtCanBoService {
                 return;
             }
 
-            if (!canbo.getEmailFpt().matches(Constants.REGEX_EMAIL_FPT)) {
+            if (!canbo.getEmailFPT().matches("\\w+@fpt.edu.vn")) {
                 dtCanBoResponseMessage.setStatus(false);
                 dtCanBoResponseMessage.setMessage("Email fpt không đúng định dạng");
                 return;
             }
 
-            if (!canbo.getEmailFe().matches(Constants.REGEX_EMAIL_FE)) {
+            if (!canbo.getEmailFE().matches("\\w+@fe.edu.vn")) {
                 dtCanBoResponseMessage.setStatus(false);
                 dtCanBoResponseMessage.setMessage("Email fe không đúng định dạng");
                 return;
@@ -149,9 +151,18 @@ public class DtCanBoServiceImpl implements DtCanBoService {
                 dtCanBoResponseMessage.setMessage("Số điện thoại không đúng định dạng");
                 return;
             }
+            CanBo cb = new CanBo();
+            cb.setEmailFe(canbo.getEmailFE());
+            cb.setEmailFpt(canbo.getEmailFPT());
+            cb.setTenCanBo(canbo.getTenCanBo());
+            cb.setSoDienThoai(canbo.getSoDienThoai());
+            cb.setVaiTro(canbo.getVaiTro());
+            cb.setCoSoId(coSoId);
+            cb.setTenTaiKhoan(canbo.getTenTaiKhoan());
+            listCanBo.add(cb);
         });
         if (dtCanBoResponseMessage.getStatus() == true) {
-            dtCanBoRepository.saveAll(listCB);
+            dtCanBoRepository.saveAll(listCanBo);
         }
         return dtCanBoResponseMessage;
     }

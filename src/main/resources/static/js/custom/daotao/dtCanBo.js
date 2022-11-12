@@ -260,10 +260,10 @@ function importCanBo() {
                 success: function (response) {
                     if (response.data.status == true) {
                         alert("Import file excel thành công");
-                        window.open(canBoView, '_self');
                     } else {
                         alert(response.data.message);
                     }
+                    window.open(canBoView, '_self');
                 },
                 error: function (e) {
                 }
