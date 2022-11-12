@@ -18,7 +18,8 @@ $(document).ready(function () {
 function clearData() {
     $("#tenGiangVien").val("");
 }
-function clearErrorUpdate(){
+
+function clearErrorUpdate() {
     $("#errorTenGiangVienUpdate").text("");
     $("#errorSoNhomHDUpdate").text("");
     $("#errorTenTaiKhoanUpdate").text("");
@@ -135,13 +136,13 @@ $("#form_create_giang_vien").submit(function (event) {
                     window.open(giangVienHuongDanView, '_self');
                     $("#modal_create").modal("hide");
                 } else {
-                    bootbox.alert({
-                        message: responseData.data.message,
-                        backdrop: true,
-                        callback: function () {
-                            loadTable(item);
-                        }
-                    });
+                    if (responseData.data.message == 'email fpt da ton tai') {
+                        $("#errorEmailFpt").text("Email Fpt đã tồn tại");
+                    } else if (responseData.data.message == 'email fe da ton tai') {
+                        $("#errorEmailFe").text("Email Fe đã tồn tại");
+                    } else if (responseData.data.message == 'ten tai khoan da ton tai') {
+                        $("#errorTenTaiKhoan").text("Tài khoản giảng viên bị trùng")
+                    }
                 }
             },
             error: function (e) {
@@ -282,13 +283,13 @@ $("#form_giang_vien_update").submit(function (event) {
                     window.open(giangVienHuongDanView, '_self');
                     $("#modal_create").modal("hide");
                 } else {
-                    bootbox.alert({
-                        message: responseData.data.message,
-                        backdrop: true,
-                        callback: function () {
-                            loadTable(item);
-                        }
-                    });
+                    if (responseData.data.message == 'email fpt da ton tai') {
+                        $("#errorEmailFptUpdate").text("Email Fpt đã tồn tại");
+                    } else if (responseData.data.message == 'email fe da ton tai') {
+                        $("#errorEmailFepdate").text("Email Fe đã tồn tại");
+                    } else if (responseData.data.message == 'ten tai khoan da ton tai') {
+                        $("#errorTenTaiKhoanUpdate").text("Tài khoản giảng viên bị trùng")
+                    }
                 }
 
             },
