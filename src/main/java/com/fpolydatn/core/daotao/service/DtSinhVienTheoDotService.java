@@ -5,6 +5,7 @@ import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
+import com.fpolydatn.entity.SinhVien;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -29,5 +30,5 @@ public interface DtSinhVienTheoDotService {
 
     DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId);
 
-    int loaiSinhVien(String id);
+    SinhVien loaiSinhVien(String id);
 }

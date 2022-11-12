@@ -309,7 +309,7 @@ function loaiSinhVienDetail(id, page) {
                     data: JSON.stringify(id),
                     dataType: 'json',
                     success: function (responseData) {
-                        if (responseData.data < 1) {
+                        if (responseData.data == null) {
                             bootbox.alert({
                                 message: 'Loại sing viên thất bại',
                                 backdrop: true,
