@@ -72,8 +72,15 @@
                                             </select>
                                         </div>
                                         <br>
-                                        <div class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center ">
-                                            <button type="button" th:attr="onclick=|loadDataToTable(0)|"  class="btn btn-primary ml-5">Tìm kiếm</button>
+                                        <div class="row justify-content-center pt-2">
+                                            <div class="col-sm-2 col-12 text-center mt-2">
+                                                <button type="button" th:attr="onclick=|loadDataToTable(0)|" class="btn btn-primary">Tìm kiếm</button>
+                                            </div>
+                                            <div class="col-sm-2 col-12 text-center mt-2">
+                                                <a href="#" class="btn btn-danger text-white" onclick="clearBoLoc();">
+                                                    Làm mới bộ lọc
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -96,7 +103,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Thêm học
                                                                     kỳ</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -114,7 +121,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button type="submit" class="btn btn-primary">Thêm mới
                                                                 </button>
@@ -183,7 +190,6 @@
             </div>
         </div>
     </div>
-    <!-- end:: Body -->
 </div>
 <!--  Start Modal Create Group-->
 <div class="modal fade "
@@ -196,7 +202,7 @@
             <form id="form_create_group">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabe">Thêm nhóm</h5>
-                    <button type="button" class="close" data-dismiss="modal"
+                    <button type="button" class="close" data-bs-dismiss="modal"
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -216,7 +222,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
+                            data-bs-dismiss="modal">Hủy
                     </button>
                     <button type="submit" class="btn btn-primary">Thêm mới
                     </button>
