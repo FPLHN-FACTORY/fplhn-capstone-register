@@ -7,6 +7,7 @@ import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
 import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
@@ -108,41 +109,51 @@ public class DtCanBoServiceImpl implements DtCanBoService {
 
 
     @Override
-    public RestApiException DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
+    public DtCanBoResponseMessage DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
         DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
         List<CanBo> listCB = dtCanBoImportExcel.importData(file, coSoId);
+        DtCanBoResponseMessage dtCanBoResponseMessage = new DtCanBoResponseMessage();
+        dtCanBoResponseMessage.setStatus(true);
         Map<String, String> map = new HashMap<>();
         addDataInMap(map);
 
-        for (CanBo canbo : listCB) {
+        listCB.parallelStream().forEach(canbo -> {
             if (map.get(canbo.getEmailFe()) != null || map.get(canbo.getEmailFpt()) != null) {
-                throw new RestApiException(Message.CAN_BO_EXSIT);
+                dtCanBoResponseMessage.setStatus(false);
+                dtCanBoResponseMessage.setMessage("Cán bộ này đã tồn tại");
+                return;
             }
 
             if (canbo.getEmailFpt().isEmpty() || canbo.getEmailFe().isEmpty() ||
                     canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
-                    canbo.getTenCanBo().isEmpty() || canbo.getVaiTro().toString().isEmpty()) {
-                throw new RestApiException(Message.EMPTY);
+                    canbo.getTenCanBo().isEmpty()) {
+                dtCanBoResponseMessage.setStatus(false);
+                dtCanBoResponseMessage.setMessage("Không được để trống");
+                return;
             }
 
             if (!canbo.getEmailFpt().matches(Constants.REGEX_EMAIL_FPT)) {
-                throw new RestApiException(Message.EMAIL_MALFORMED);
+                dtCanBoResponseMessage.setStatus(false);
+                dtCanBoResponseMessage.setMessage("Email fpt không đúng định dạng");
+                return;
             }
 
             if (!canbo.getEmailFe().matches(Constants.REGEX_EMAIL_FE)) {
-                throw new RestApiException(Message.EMAIL_MALFORMED);
+                dtCanBoResponseMessage.setStatus(false);
+                dtCanBoResponseMessage.setMessage("Email fe không đúng định dạng");
+                return;
             }
 
             if (!canbo.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
-                throw new RestApiException(Message.NUMBER_FORMAT_EXCEPTION);
+                dtCanBoResponseMessage.setStatus(false);
+                dtCanBoResponseMessage.setMessage("Số điện thoại không đúng định dạng");
+                return;
             }
-
-            if (canbo.getTenTaiKhoan().contains(" ")) {
-                throw new RestApiException(Message.NO_SPACES_ALLOW);
-            }
+        });
+        if (dtCanBoResponseMessage.getStatus() == true) {
+            dtCanBoRepository.saveAll(listCB);
         }
-        dtCanBoRepository.saveAll(listCB);
-        return new RestApiException(Message.SUCCESS);
+        return dtCanBoResponseMessage;
     }
 
     @Override
