@@ -37,7 +37,8 @@ public interface DtCanBoRepository extends CanBoRepository {
                             JOIN do_an_tot_nghiep.co_so cs
                             ON cb.co_so_id= cs.id  WHERE (:#{#req.tenCanBo} IS NULL
                             OR :#{#req.tenCanBo} LIKE ''
-                            OR ten_can_bo LIKE %:#{#req.tenCanBo}% )
+                            OR ten_can_bo LIKE %:#{#req.tenCanBo}%)
+                            AND cb.co_so_id = :#{#req.coSoID}
                             ORDER BY cb.last_modified_date DESC 
                     """,
             nativeQuery = true)

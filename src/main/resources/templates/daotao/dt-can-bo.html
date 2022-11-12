@@ -44,8 +44,13 @@
                                             <button
                                                     data-toggle="modal"
                                                     data-target="#modal_create"
-                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                    class="btn btn-success">
                                                 Thêm cán bộ
+                                            </button>
+                                            <button data-toggle="modal"
+                                                    data-target="#import"
+                                                    class="btn btn-success">
+                                                Import
                                             </button>
                                             <div class="modal fade "
                                                  id="modal_create"
@@ -139,12 +144,6 @@
                                         </div>
 
                                         <div class="col-6 d-inline">
-                                            <button data-toggle="modal"
-                                                    data-target="#import"
-                                                    class="btn btn-success">
-                                                Import
-                                            </button>
-
                                             <div class="modal fade "
                                                  id="import"
                                                  tabindex="-1"
@@ -152,8 +151,7 @@
                                                  aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
-                                                        <form enctype="multipart/form-data" method="post"
-                                                              th:action="@{/api/dao-tao/can-bo/import}"
+                                                        <form enctype="multipart/form-data"
                                                               id="form_import_excel">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Import Excel</h5>
@@ -197,8 +195,7 @@
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
                                                                         data-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Import
-                                                                    excel
+                                                                <button type="button" th:attr="onclick=|importCanBo()|" class="btn btn-primary">Import excel
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -227,7 +224,7 @@
                                                     <td th:text="${canbo.getEmailFE}"></td>
                                                     <td th:text="${canbo.getSoDienThoai}"></td>
                                                     <td th:text="${canbo.getTenCanBo} + ' - ' +  ${canbo.getTenTaiKhoan}"></td>
-                                                    <td th:switch="${canbo.getVaiTro}">
+                                                    <td th:switch="${canbo.getVaiTro()}">
                                                         <span th:case="'0'" th:text="'Đào Tạo'"></span>
                                                         <span th:case="'1'"
                                                               th:text="${canbo.getTenChuyenNganh} != null ?  'CNBM' + ' - ' +  ${canbo.getTenChuyenNganh} : 'CNBM' "> </span>
@@ -437,8 +434,8 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
-<script th:src="@{/js/custom/daotao/dtCanBo.js}" type="text/javascript"></script>
 <script th:src="@{/js/plugin/bootbox.min.js}"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script th:src="@{/js/custom/daotao/dtCanBo.js}" type="text/javascript"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
@@ -57,7 +57,7 @@
                                                 class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center ">
                                             <span for="" class="fillter-name col-4 text-right">Tên/Mã sinh viên</span>
                                             <input type="text" class="form-control col-10 "
-                                                   name="tenHocKy" id="ten-hoc-ky"
+                                                   name="tenSinhVien" id="tenSinhVien"
                                                    value="">
                                         </div>
                                         <br>
@@ -73,7 +73,7 @@
                                         </div>
                                         <br>
                                         <div class="form-group d-inline col-md-10 col-12 d-flex justify-content-around align-items-center ">
-                                            <button type="submit" class="btn btn-primary ml-5">Tìm kiếm</button>
+                                            <button type="button" th:attr="onclick=|loadDataToTable(0)|"  class="btn btn-primary ml-5">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </form>
@@ -164,16 +164,12 @@
                                                 </tbody>
                                             </table>
                                             <!-- Paging-->
+                                            <input hidden th:value="${page.totalPages}" id="totalPages">
+                                            <input hidden th:value="${page.currentPage}" id="currentPage">
                                             <nav id="pageing" th:if="${page.totalPages > 1}"
                                                  aria-label="Page navigation">
                                                 <ul class="pagination justify-content-end" id="page">
                                                     <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                        <li class="page-item">
-                                                            <a class="page-link" id="currentPage"
-                                                               th:href="@{/chu-nhiem/dot-dang-ky/sinh-vien?page={page.currentPage}(page.currentPage=${i}-1)}"
-                                                               th:text="${i}">
-                                                            </a>
-                                                        </li>
                                                     </div>
                                                 </ul>
                                             </nav>

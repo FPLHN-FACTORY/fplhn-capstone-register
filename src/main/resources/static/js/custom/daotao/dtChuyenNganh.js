@@ -15,7 +15,6 @@ function clearForm(){
     $("#chuyen_nganh_error").text("");
 }
 function create () {
-    event.preventDefault();
     let tenChuyenNganh = $("#tenChuyenNganhAdd").val();
     let CNBMId = $("#tenCNBMhAdd").val();
     let chuyenNganhRequest = {};
