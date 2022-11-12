@@ -112,57 +112,77 @@ public class DtCanBoServiceImpl implements DtCanBoService {
 
     @Override
     public DtCanBoResponseMessage DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
-        DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
-        List<DtCanBoExcelImport> listCB = dtCanBoImportExcel.importData(file, coSoId);
         DtCanBoResponseMessage dtCanBoResponseMessage = new DtCanBoResponseMessage();
-        dtCanBoResponseMessage.setStatus(true);
-        Map<String, String> map = new HashMap<>();
-        addDataInMap(map);
         List<CanBo> listCanBo = new ArrayList<>();
-        listCB.parallelStream().forEach(canbo -> {
-            if (map.get(canbo.getEmailFE()) != null || map.get(canbo.getEmailFPT()) != null) {
-                dtCanBoResponseMessage.setStatus(false);
-                dtCanBoResponseMessage.setMessage("Cán bộ này đã tồn tại");
-                return;
-            }
+        try {
+            DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
+            List<DtCanBoExcelImport> listCB = dtCanBoImportExcel.importData(file, coSoId);
+            dtCanBoResponseMessage.setStatus(true);
+            Map<String, String> map = new HashMap<>();
+            addDataInMap(map);
 
-            if (canbo.getEmailFE().isEmpty() || canbo.getEmailFPT().isEmpty() ||
-                    canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
-                    canbo.getTenCanBo().isEmpty()) {
-                dtCanBoResponseMessage.setStatus(false);
-                dtCanBoResponseMessage.setMessage("Không được để trống");
-                return;
-            }
+            listCB.parallelStream().forEach(canbo -> {
+                if (map.get(canbo.getEmailFE()) != null || map.get(canbo.getEmailFPT()) != null) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Cán bộ bạn muốn import đã tồn tại");
+                    return;
+                }
 
-            if (!canbo.getEmailFPT().matches("\\w+@fpt.edu.vn")) {
-                dtCanBoResponseMessage.setStatus(false);
-                dtCanBoResponseMessage.setMessage("Email fpt không đúng định dạng");
-                return;
-            }
+                if (canbo.getEmailFE().isEmpty() || canbo.getEmailFPT().isEmpty() ||
+                        canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
+                        canbo.getTenCanBo().isEmpty()) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Không được để trống");
+                    return;
+                }
 
-            if (!canbo.getEmailFE().matches("\\w+@fe.edu.vn")) {
-                dtCanBoResponseMessage.setStatus(false);
-                dtCanBoResponseMessage.setMessage("Email fe không đúng định dạng");
-                return;
-            }
+                if (!canbo.getEmailFPT().matches("\\w+@fpt.edu.vn")) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fpt không đúng định dạng");
+                    return;
+                }
 
-            if (!canbo.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
-                dtCanBoResponseMessage.setStatus(false);
-                dtCanBoResponseMessage.setMessage("Số điện thoại không đúng định dạng");
-                return;
+                if (!canbo.getEmailFE().matches("\\w+@fe.edu.vn")) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fe không đúng định dạng");
+                    return;
+                }
+
+                if (canbo.getEmailFE().length() > 30) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fe quá 30 ký tự");
+                    return;
+                }
+
+                if (canbo.getEmailFPT().length() > 30) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fpt quá 30 ký tự");
+                    return;
+                }
+
+                if (!canbo.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Số điện thoại không đúng định dạng");
+                    return;
+                }
+                CanBo cb = new CanBo();
+                cb.setEmailFe(canbo.getEmailFE());
+                cb.setEmailFpt(canbo.getEmailFPT());
+                cb.setTenCanBo(canbo.getTenCanBo());
+                cb.setSoDienThoai(canbo.getSoDienThoai());
+                cb.setVaiTro(canbo.getVaiTro());
+                cb.setCoSoId(coSoId);
+                cb.setTenTaiKhoan(canbo.getTenTaiKhoan());
+                listCanBo.add(cb);
+            });
+            if (dtCanBoResponseMessage.getStatus() == true) {
+                dtCanBoRepository.saveAll(listCanBo);
             }
-            CanBo cb = new CanBo();
-            cb.setEmailFe(canbo.getEmailFE());
-            cb.setEmailFpt(canbo.getEmailFPT());
-            cb.setTenCanBo(canbo.getTenCanBo());
-            cb.setSoDienThoai(canbo.getSoDienThoai());
-            cb.setVaiTro(canbo.getVaiTro());
-            cb.setCoSoId(coSoId);
-            cb.setTenTaiKhoan(canbo.getTenTaiKhoan());
-            listCanBo.add(cb);
-        });
-        if (dtCanBoResponseMessage.getStatus() == true) {
-            dtCanBoRepository.saveAll(listCanBo);
+        }catch (Exception e){
+            e.printStackTrace();
+            dtCanBoResponseMessage.setStatus(false);
+            dtCanBoResponseMessage.setMessage("Lỗi hệ thống");
+            return dtCanBoResponseMessage;
         }
         return dtCanBoResponseMessage;
     }

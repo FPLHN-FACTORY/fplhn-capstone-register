@@ -286,7 +286,7 @@ $("#form_giang_vien_update").submit(function (event) {
                     if (responseData.data.message == 'email fpt da ton tai') {
                         $("#errorEmailFptUpdate").text("Email Fpt đã tồn tại");
                     } else if (responseData.data.message == 'email fe da ton tai') {
-                        $("#errorEmailFepdate").text("Email Fe đã tồn tại");
+                        $("#errorEmailFeUpdate").text("Email Fe đã tồn tại");
                     } else if (responseData.data.message == 'ten tai khoan da ton tai') {
                         $("#errorTenTaiKhoanUpdate").text("Tài khoản giảng viên bị trùng")
                     }
