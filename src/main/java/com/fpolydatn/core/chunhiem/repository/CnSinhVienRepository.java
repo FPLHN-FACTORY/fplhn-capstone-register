@@ -105,9 +105,11 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
             LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
             LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
-            WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId}
+            WHERE a.co_so_id = :#{#req.coSoId} 
             AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)
+            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%  
+            OR a.ma_sinh_vien LIKE %:#{#req.tenSinhVien}%) 
+            AND f.id = :#{#req.idDotDangKy}
             AND g.id = :#{#req.idChuNhiem}
             AND a.trang_thai = 0
             ORDER BY ten_sinh_vien
@@ -175,4 +177,5 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             AND a.dot_dang_ky_id = :dotDangKyId AND a.co_so_id = :coSoId AND b.chu_nhiem_bo_mon = :idChuNhiem
             """, nativeQuery = true)
     List<SinhVien> getALlTruongNhomByIdChuNhiem(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId, @Param("idChuNhiem") String idChuNhiem);
+
 }

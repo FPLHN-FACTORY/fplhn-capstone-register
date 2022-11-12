@@ -23,6 +23,12 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
     String genMaNhomTuDong(@Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
+                SELECT c.ma_co_so FROM  co_so c 
+                WHERE  c.id = :coSoId
+            """, nativeQuery = true)
+    String getMaCoSo(@Param("coSoId") String coSoId);
+
+    @Query(value = """
             SELECT a.id FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
             WHERE a.created_date + 43200000 < :currentTime
             GROUP BY a.id HAVING COUNT(b.id) <= 3

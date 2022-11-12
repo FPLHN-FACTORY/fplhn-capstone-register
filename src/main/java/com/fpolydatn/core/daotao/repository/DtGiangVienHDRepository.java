@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author Vinhnv
  */
@@ -99,5 +101,44 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
             "      WHERE gvhd.id = :idGiangVien \n" +
             "      GROUP BY gvhd.id  ", nativeQuery = true)
     int getCountSoNhomDangHuongDan(@Param("idGiangVien") String idGiangVien);
+
+    @Query(value = """
+                SELECT ROW_NUMBER() OVER(ORDER BY gvhd.last_modified_date DESC ) AS stt,
+                gvhd.id,
+                cs.ten_co_so,
+                ddk.ten_dot_dang_ky,
+                gvhd.ten_gvhd ,
+                gvhd.so_nhom_huong_dan_toi_da,
+                COUNT(nd.id) AS so_nhom_dang_huong_dan,
+                gvhd.ten_tai_khoan, 
+                gvhd.so_dien_thoai,
+                gvhd.email_fpt,
+                gvhd.email_fe 
+                FROM giang_vien_huong_dan gvhd 
+                LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
+                LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
+                LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                
+                WHERE 
+                 cs.id = :#{#req.coSoId}
+                 AND
+                 ddk.id = :#{#req.dotDangKyId}
+                GROUP BY gvhd.id
+                ORDER BY gvhd.last_modified_date DESC 
+            """, countQuery = """
+                SELECT COUNT(gvhd.id)
+                FROM giang_vien_huong_dan gvhd 
+                LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
+                LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
+                LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                
+                WHERE
+                 cs.id = :#{#req.coSoId}
+                 AND
+                 ddk.id = :#{#req.dotDangKyId}
+                GROUP BY gvhd.id
+                ORDER BY gvhd.last_modified_date DESC 
+            """, nativeQuery = true)
+    List<DtGiangVienHDResponse> exportExcel(@Param("req") DtFindGiangVienHDRequest req);
+
+
 
 }

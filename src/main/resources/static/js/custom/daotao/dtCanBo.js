@@ -9,6 +9,7 @@ $(document).ready(function () {
     clear();
 });
 
+
 function clearData() {
     $("#keyword").val("");
 }
@@ -30,7 +31,7 @@ function clearUpdate() {
     $('#ten_tai_khoan_error_update').text("");
 }
 
-$("#form_create_can_bo").submit(function (event) {
+function save() {
     event.preventDefault();
     clear();
     let emailFe = $("#emailfe").val().trim();
@@ -119,7 +120,7 @@ $("#form_create_can_bo").submit(function (event) {
             }
         });
     }
-});
+};
 
 function openModalUpdateCanBo(canBoId) {
     clearUpdate();
@@ -146,7 +147,7 @@ function openModalUpdateCanBo(canBoId) {
     });
 }
 
-$("#form_hoc_ky_update").submit(function (event) {
+function update() {
     event.preventDefault();
     let emailFpt = $("#email_fpt_update").val().trim();
     let emailFe = $("#email_fe_update").val().trim();
@@ -238,72 +239,90 @@ $("#form_hoc_ky_update").submit(function (event) {
             }
         });
     }
-});
+};
 
-function openModalRemoveCanBo(canBoId) {
-    $("#modal_can_bo_remove").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: canBoApi + "/" + canBoId,
-        dataType: 'json',
-        success: function () {
-            $("#remove_can_bo").val(canBoId);
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-}
-
-$("#form_can_bo_delete").submit(function (event) {
-    event.preventDefault();
-    let canBoId = $("#remove_can_bo").val();
-    console.log(canBoId)
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: canBoApi + "/" + canBoId,
-        data: JSON.stringify(canBoId),
-        dataType: 'json',
-        success: function () {
-            window.open(canBoView, '_self');
-            $("#modal_update_hoc_ky").modal("hide");
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-});
-
-$("#form_import_excel").submit(function (event) {
-    event.preventDefault();
+function importCanBo() {
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
-    if (typeExcel.length <= 0) {
-        $("#import_excel_error").text("chọn file");
+    if (typeExcel.trim().length <= 0) {
+        $("#import_excel_error").text("Hãy chọn file excel cần import");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        var form = $('#form_import_excel')[0];
         $.ajax({
                 type: 'POST',
-                url: $(this).attr('action'),
+                url: canBoApi + '/import',
                 enctype: 'multipart/form-data',
-                data: new FormData(this),
                 processData: false,
+                data: new FormData(form),
                 contentType: false,
-                success: function (data) {
-                    window.open(canBoView, '_self');
+                cache: false,
+                success: function (response) {
+                    if (response.data.status == true) {
+                        alert("Import file excel thành công");
+                        window.open(canBoView, '_self');
+                    } else {
+                        alert(response.data.message);
+                        $("#inputGroupFile01").val("");
+                        $("#inputGroupFile01").clear()
+                    }
                 },
                 error: function (e) {
-                    window.open(canBoView, '_self');
-                    console.log("ERROR: " + e);
                 }
             }
         );
     } else {
-        $("#import_excel_error").text("chọn đúng file Excel ");
+        $("#import_excel_error").text("Hãy chọn đúng file excel");
     }
-});
+}
+
+function openModalRemoveCanBo(canBoId) {
+    bootbox.confirm({
+        title: "Xóa nhóm môn",
+        message: "Bạn muốn xóa cán bộ này?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: canBoApi + "/" + canBoId,
+                    dataType: 'json',
+                    success: function (responseData) {
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                window.open(canBoView, '_self');
+                            }
+                        });
+                    },
+                    error: function (responseData) {
+                        if (responseData.responseJSON.message === 'Can Bo not exist') {
+                            bootbox.alert({
+                                message: 'Cán Bộ Không Tồn Tại',
+                                backdrop: true,
+                                callback: function () {
+                                    window.open(nhomMonDatnView, '_self');
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+
 
 $("#modal_excel_mau").submit(function (event) {
     event.preventDefault();

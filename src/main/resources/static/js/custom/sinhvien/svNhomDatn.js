@@ -50,7 +50,7 @@ function confirmRoiNhom(soThanhVien) {
     if (soThanhVien == 1) {
         bootbox.confirm({
             title: "Rời nhóm",
-            message: "Nhóm sẽ bị xóa nếu bạn rời nhóm. \\n Bạn có muốn tiếp tục rời nhóm?",
+            message: "Nhóm sẽ bị xóa nếu bạn rời nhóm. Bạn có muốn tiếp tục rời nhóm?",
             buttons: {
                 cancel: {
                     className: 'btn-outline-secondary btn btn-light',

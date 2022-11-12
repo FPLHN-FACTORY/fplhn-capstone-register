@@ -18,7 +18,6 @@ import java.util.List;
  * @author huynq
  */
 public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository {
-    //    [UC-DT-MDa-CT-1] Phân công GVHD theo môn
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY gv.last_modified_date DESC) AS stt
             , gv.id, gv.ten_gvhd, ddk.ten_dot_dang_ky FROM do_an_tot_nghiep.phan_cong_huong_dan pc
@@ -62,9 +61,8 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
             , nativeQuery = true)
     List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(@Param("coSoId") String coSoId, @Param("maMonId") String maMonId, @Param("dotDangKyId") String doDangKy);
 
-    //    [UC-DT-GV-CT-1] Phân môn cho GVHD
     @Query(value = """
-            SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn, m.ma_mon FROM do_an_tot_nghiep.mon_datn m
+            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ten_mon_datn, m.ma_mon FROM do_an_tot_nghiep.mon_datn m
             JOIN do_an_tot_nghiep.phan_cong_huong_dan pc on m.id = pc.mon_datn_id
             WHERE pc.giang_vien_id = :giangVienId
               AND m.nhom_mon_datn_id IS NOT NULL
@@ -74,7 +72,7 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
                     OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
                     ORDER BY last_modified_date DESC 
             """, countQuery = """
-            SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
+            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
             JOIN do_an_tot_nghiep.phan_cong_huong_dan pc on m.id = pc.mon_datn_id
             WHERE pc.giang_vien_id = :giangVienId
               AND m.nhom_mon_datn_id IS NOT NULL 
