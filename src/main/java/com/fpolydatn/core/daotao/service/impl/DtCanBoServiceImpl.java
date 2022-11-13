@@ -16,6 +16,7 @@ import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
@@ -170,7 +171,13 @@ public class DtCanBoServiceImpl implements DtCanBoService {
                 cb.setEmailFpt(canbo.getEmailFPT());
                 cb.setTenCanBo(canbo.getTenCanBo());
                 cb.setSoDienThoai(canbo.getSoDienThoai());
-                cb.setVaiTro(canbo.getVaiTro());
+                if(canbo.getVaiTro().equals("DAO_TAO")) {
+                    cb.setVaiTro(VaiTro.DAO_TAO);
+                }else if(canbo.getVaiTro().equals("CHU_NHIEM_BO_MON")){
+                    cb.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
+                }else if(canbo.getVaiTro().equals("QUAN_TRI_VIEN")){
+                    cb.setVaiTro(VaiTro.QUAN_TRI_VIEN);
+                }
                 cb.setCoSoId(coSoId);
                 cb.setTenTaiKhoan(canbo.getTenTaiKhoan());
                 listCanBo.add(cb);

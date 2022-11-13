@@ -26,7 +26,7 @@ public class DtCanBoExcelImport {
 
     private String soDienThoai;
 
-    private VaiTro vaiTro;
+    private String vaiTro;
 
     private String coSoId;
 }

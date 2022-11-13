@@ -137,19 +137,21 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     truongNhom = sv;
                 }
             }
-            gvhd = cnGiangVienHuongDanReponsitory.findById(nhomDatnCheck.get().getGiangVienId());
-            String[] messageGV = new String[]{"CNBM đã xác nhận nhóm bạn hướng dẫn nhóm:",
-                    "Mã nhóm: " + nhomDatnCheck.get().getMaNhom(), "Số thành viên: " + soThanhvien,
-                    "Trưởng nhóm: " + truongNhom.getMaSinhVien() + " - " + truongNhom.getTenSinhVien(),
-                    "SĐT: " + truongNhom.getSoDienThoai()};
-            emailSender.sendEmail(new String[]{gvhd.get().getEmailFe()}, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
-                    "Xác nhận nhóm thành lập", messageGV);
+            if (nhomDatnCheck.get().getGiangVienId() != null) {
+                gvhd = cnGiangVienHuongDanReponsitory.findById(nhomDatnCheck.get().getGiangVienId());
+                String[] messageGV = new String[]{"CNBM đã xác nhận nhóm bạn hướng dẫn nhóm:",
+                        "Mã nhóm: " + nhomDatnCheck.get().getMaNhom(), "Số thành viên: " + soThanhvien,
+                        "Trưởng nhóm: " + truongNhom.getMaSinhVien() + " - " + truongNhom.getTenSinhVien(),
+                        "SĐT: " + truongNhom.getSoDienThoai()};
+                emailSender.sendEmail(new String[]{gvhd.get().getEmailFe()}, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
+                        "Xác nhận nhóm thành lập", messageGV);
+            }
         }
         String tenGvhd = "Chưa có";
         if (gvhd != null) {
             tenGvhd = gvhd.get().getTenGvhd() + " - " + gvhd.get().getTenTaiKhoan();
         }
-        String[] messageSV = new String[] {"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:",
+        String[] messageSV = new String[]{"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:",
                 "GVHD: " + tenGvhd,
                 "Tên đề tài: " + (nhomDatnCheck.get().getTenDeTai() == null ? "chưa có" : nhomDatnCheck.get().getTenDeTai())};
         emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
@@ -188,7 +190,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         for (int i = 0; i < soThanhvien; i++) {
             email[i] = listSinhVien.get(i).getEmail();
         }
-        String[] message = new String[] {"Chủ nhiệm đã xóa nhóm của bạn"};
+        String[] message = new String[]{"Chủ nhiệm đã xóa nhóm của bạn"};
         emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xóa nhóm",
                 "Nhóm đã bị xóa", message);
         return true;
@@ -352,8 +354,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang nhiều hơn 1 trưởng nhóm");
                         return;
                     }
-                    if(!sinhVien.getChucVu().isEmpty()){
-                        if(sinhVien.getGvhd().isEmpty()){
+                    if (!sinhVien.getChucVu().isEmpty()) {
+                        if (sinhVien.getGvhd().isEmpty()) {
                             response.setStatus(false);
                             response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang không có giảng viên hướng dẫn");
                             return;
@@ -373,7 +375,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     listNhomDatnEntity.add(nhomDatn);
                 }
             });
-            if(response.getStatus() == true) {
+            if (response.getStatus() == true) {
                 for (int i = 0; i < listSinhVienEntity.size(); i++) {
                     if (listSinhVienEntity.get(i).getNhomId() == null) {
                         listSinhVienEntity.get(i).setMonDatnId(null);
