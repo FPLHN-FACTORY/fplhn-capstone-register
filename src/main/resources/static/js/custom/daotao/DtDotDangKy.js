@@ -5,6 +5,10 @@ $(document).ready(function () {
     $("#dot_dang_ky_error").text("");
 });
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
 function openModalCreate() {
     $("#modal_create").modal('show');
 }

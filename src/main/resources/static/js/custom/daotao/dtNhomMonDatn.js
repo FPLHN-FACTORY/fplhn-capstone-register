@@ -5,6 +5,10 @@ $(document).ready(function () {
     $("#mon_datn_error").text("");
 });
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
 function openModalCreate() {
     $("#modal_create").modal('show');
 }

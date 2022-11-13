@@ -5,6 +5,10 @@ function clearform() {
     $("#dotDangKy").val('');
 }
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
 function viewTable(page) {
     let keyword = $("#keyword").val();
     let chuyenNganh = $("#chuyenNganh").val();
