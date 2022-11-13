@@ -176,8 +176,11 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 PhanCongHuongDan phanCongHuongDan = new PhanCongHuongDan();
                 MonDatn monDatn = dtMonDatnRepository.findByMaMon(array[i].trim());
                 phanCongHuongDan.setGiangVienId(giangVienHuongDan.getId());
-                phanCongHuongDan.setMonDatnId(monDatn.getId());
-                listPhanCong.add(phanCongHuongDan);
+                if (monDatn != null) {
+                    phanCongHuongDan.setMonDatnId(monDatn.getId());
+                    listPhanCong.add(phanCongHuongDan);
+                }
+
             }
         });
         dtPhanCongHuongDanRepository.saveAll(listPhanCong);
@@ -212,18 +215,18 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId ,String doDangKyId) {
+    public DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId, String doDangKyId) {
         DtGiangVienHDResponseMessage dtGiangVienHDResponseMessage = new DtGiangVienHDResponseMessage();
         List<DtGiagVienHDImportResquest> listGiangVien = new ArrayList<>();
         try {
+            dtGiangVienHDResponseMessage.setStatus(true);
             DtGiangVienFileImportExcel dtGiangVienHDImport = new DtGiangVienFileImportExcel();
             List<DtGiagVienHDImportResquest> listGVHD = dtGiangVienHDImport.importData(file);
-            dtGiangVienHDResponseMessage.setStatus(true);
             Map<String, String> map = new HashMap<>();
             addDataInMap(map);
 
             listGVHD.parallelStream().forEach(gv -> {
-                if (map.get(gv.getEmailFpt()) != null ) {
+                if (map.get(gv.getEmailFpt()) != null) {
                     dtGiangVienHDResponseMessage.setStatus(false);
                     dtGiangVienHDResponseMessage.setMessage("Giảng viên bạn muốn import đã tồn tại");
                     return;
@@ -231,7 +234,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
                 if (gv.getEmailFe().isEmpty() || gv.getEmailFpt().isEmpty() ||
                         gv.getSoDienThoai().isEmpty() || gv.getTenTaiKhoan().isEmpty() ||
-                        gv.getSoNhomHuongDanToiDa()== null || gv.getTenGvhd().isEmpty()) {
+                        gv.getSoNhomHuongDanToiDa() == null || gv.getTenGvhd().isEmpty()) {
                     dtGiangVienHDResponseMessage.setStatus(false);
                     dtGiangVienHDResponseMessage.setMessage("Không được để trống");
                     return;
@@ -276,12 +279,13 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 giangVien.setMonHoc(gv.getMonHoc());
                 giangVien.setCoSoId(coSoId);
                 giangVien.setDotDangKyId(doDangKyId);
+                System.out.println(giangVien.getTenTaiKhoan()+"aaaaaaaaaaaaaaaaaaaaaa");
                 listGiangVien.add(giangVien);
             });
             if (dtGiangVienHDResponseMessage.getStatus() == true) {
                 checkValidFile(listGiangVien);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             dtGiangVienHDResponseMessage.setStatus(false);
             dtGiangVienHDResponseMessage.setMessage("Lỗi File Import");
@@ -290,7 +294,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         return dtGiangVienHDResponseMessage;
     }
 
-    public void addDataInMap(Map<String, String> mapAll ) {
+    public void addDataInMap(Map<String, String> mapAll) {
         List<String> listEmailFPT = dtGiangVienHDRepository.findAllEmailFe();
         setDataInMap(mapAll, listEmailFPT);
 

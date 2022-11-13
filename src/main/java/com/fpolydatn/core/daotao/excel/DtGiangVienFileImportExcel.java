@@ -3,7 +3,6 @@ package com.fpolydatn.core.daotao.excel;
 import com.fpolydatn.core.daotao.model.request.DtGiagVienHDImportResquest;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -27,13 +26,14 @@ public class DtGiangVienFileImportExcel {
             if (row.getRowNum() == 0) {
                 continue;
             }
-            if (row.getCell(1).getCellType() != CellType.STRING
-                    || row.getCell(2).getCellType() != CellType.STRING
-                    || row.getCell(3).getCellType() != CellType.STRING
-                    || row.getCell(4).getCellType() != CellType.STRING
-                    || row.getCell(5).getCellType() != CellType.STRING
-                    || row.getCell(6).getCellType() != CellType.STRING
-                    || row.getCell(7).getCellType() != CellType.STRING
+            if (String.valueOf(getCellValue(row.getCell(0))).trim().length() == 0 &&
+                    String.valueOf(getCellValue(row.getCell(1))).trim().length() == 0 &&
+                    String.valueOf(getCellValue(row.getCell(2))).trim().length() == 0 &&
+                    String.valueOf(getCellValue(row.getCell(3))).trim().length() == 0 &&
+                    String.valueOf(getCellValue(row.getCell(4))).trim().length() == 0 &&
+                    String.valueOf(getCellValue(row.getCell(5))).trim().length() == 0 &&
+                    String.valueOf(getCellValue(row.getCell(6))).trim().length() == 0 &&
+                    String.valueOf(getCellValue(row.getCell(7))).trim().length() == 0
             ) {
                 continue;
             }
@@ -41,7 +41,7 @@ public class DtGiangVienFileImportExcel {
             giangVien.setTenGvhd(String.valueOf(getCellValue(row.getCell(1))).trim());
             giangVien.setTenTaiKhoan(String.valueOf(getCellValue(row.getCell(2))).trim());
             giangVien.setMonHoc(String.valueOf(getCellValue(row.getCell(3))).trim());
-            giangVien.setSoNhomHuongDanToiDa(Short.valueOf(getCellValue(row.getCell(4)).toString()));
+            giangVien.setSoNhomHuongDanToiDa((short) row.getCell(4).getNumericCellValue());
             giangVien.setSoDienThoai(String.valueOf(getCellValue(row.getCell(5))).trim());
             giangVien.setEmailFpt(String.valueOf(getCellValue(row.getCell(6))).trim());
             giangVien.setEmailFe(String.valueOf(getCellValue(row.getCell(7))).trim());
@@ -68,4 +68,5 @@ public class DtGiangVienFileImportExcel {
             return "";
         }
     }
+
 }
