@@ -291,6 +291,9 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 giangVien.setMonHoc(gv.getMonHoc());
                 giangVien.setCoSoId(coSoId);
                 giangVien.setDotDangKyId(doDangKyId);
+                map.put(gv.getTenTaiKhoan(),gv.getTenTaiKhoan());
+                map.put(gv.getEmailFpt(),gv.getTenTaiKhoan());
+                map.put(gv.getEmailFe(),gv.getTenTaiKhoan());
                 listGiangVien.add(giangVien);
             });
             if (dtGiangVienHDResponseMessage.getStatus() == true) {
