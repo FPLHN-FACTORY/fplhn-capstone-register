@@ -44,8 +44,14 @@ function createNhomMonDatn() {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                window.open(nhomMonDatnView, '_self');
                 $("#modal_create").modal("hide");
+                bootbox.alert({
+                    message: 'Thêm thành công',
+                    backdrop: true,
+                    callback: function () {
+                        window.open(nhomMonDatnView, '_self');
+                    }
+                });
             },
             error: function (e) {
                 if (e.responseJSON.message === 'Ma nhom mon da ton tai') {
@@ -106,8 +112,14 @@ function updateNhomMonDatn() {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                window.open(nhomMonDatnView, '_self');
                 $("#modal_update_mon_datn").modal("hide");
+                bootbox.alert({
+                    message: 'Cập nhật thành công',
+                    backdrop: true,
+                    callback: function () {
+                        window.open(nhomMonDatnView, '_self');
+                    }
+                });
             },
             error: function (e) {
                 if (e.responseJSON.message === 'Ma nhom mon da ton tai') {
