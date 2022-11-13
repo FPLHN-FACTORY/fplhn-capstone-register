@@ -14,7 +14,29 @@ function clearForm(){
     $("#chuyen_nganh_create_error").text("");
     $("#chuyen_nganh_error").text("");
 }
+function checkCnbm(cnbm){
+    if(cnbm != 0) {
+        $("#tenCNBMhAdd").show();
+        $("#create_chuyenNganh").show();
+        $("#tenCNBMhUpdate").show();
+        $("#CNBM_add_error").text("");
+    }else{
+        $("#create_chuyenNganh").hide();
+        $("#tenCNBMhAdd").hide();
+        $("#tenCNBMhUpdate").hide();
+        $("#CNBM_add_error").text("Không còn chủ nhiệm bộ môn");
+    }
+}
+function openModalCreateChuyenNganh(){
+    $("#modal_create_chuyen_nganh").modal('show');
+    $("#chuyen_nganh_add_error").text("");
+    $("#CNBM_add_error").text("");
+    let cnbm = $("#CNBM").val();
+    checkCnbm(cnbm);
+}
+
 function create () {
+    event.preventDefault();
     let tenChuyenNganh = $("#tenChuyenNganhAdd").val();
     let CNBMId = $("#tenCNBMhAdd").val();
     let chuyenNganhRequest = {};
@@ -22,12 +44,12 @@ function create () {
     chuyenNganhRequest["tenChuyenNganh"] = tenChuyenNganh;
     let index = 0;
     if (tenChuyenNganh.trim().length === 0) {
-            $("#chuyen_nganh_error").text("Tên chuyên ngành không được để trống");
+            $("#chuyen_nganh_add_error").text("Tên chuyên ngành không được để trống");
             index ++;
     }
 
     if (CNBMId == null) {
-        $("#chuyen_nganh_create_error").text("Không có chủ nhiệm bộ môn");
+        $("#CNBM_add_error").text("Không có chủ nhiệm bộ môn");
         index ++;
     }
 
@@ -39,7 +61,6 @@ function create () {
             data: JSON.stringify(chuyenNganhRequest),
             dataType: 'json',
             success: function () {
-                $("#modal_create").modal("hide");
                 bootbox.alert({
                     message: 'Thêm thành công',
                     backdrop: true,
@@ -50,11 +71,11 @@ function create () {
             },
             error: function (e) {
                 if(e.responseJSON.message == 'Chuyen nganh da ton tai'){
-                    $("#chuyen_nganh_error").text("Chuyên ngành đã tồn tại trong đợt");
-                    $("#chuyen_nganh_create_error").text("");
+                    $("#chuyen_nganh_add_error").text("Chuyên ngành đã tồn tại trong đợt");
+                    $("#CNBM_add_error").text("");
                 }else{
-                    $("#chuyen_nganh_create_error").text("Chủ nhiệm bộ môn đang tồn tại trong đợt");
-                    $("#chuyen_nganh_error").text("");
+                    $("#CNBM_add_error").text("Chủ nhiệm bộ môn đang tồn tại trong đợt");
+                    $("#chuyen_nganh_add_error").text("");
                 }
             }
         });
@@ -65,6 +86,7 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
     $("#modal_update_chuyen_nganh").modal('show');
     $("#chuyennganh_error").text("");
     $("#chuyennganhUpdate_error").text("");
+    console.log('a');
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -82,6 +104,7 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
 }
 
 function update() {
+    event.preventDefault();
     let tenChuyenNganh = $("#tenChuyenNganhUpdate").val();
     let chuyenNganhId = $("#id_chuyen_nganh_update").val();
     let tenCNBM = $("#tenCNBMhUpdate").val();
@@ -90,12 +113,12 @@ function update() {
     chuyenNganhrequest["chuNhiemBoMon"] = tenCNBM;
     let index = 0;
     if (tenChuyenNganh.trim().length === 0) {
-            $("#chuyennganhUpdate_error").text("Tên chuyên ngành không được để trống");
+            $("#chuyennganh_Update_error").text("Tên chuyên ngành không được để trống");
             index ++;
     }
 
     if (tenCNBM == null) {
-        $("#chuyennganh_error").text("Không có chủ nhiệm bộ môn");
+        $("#CNBM_update_error").text("Không có chủ nhiệm bộ môn");
         index ++;
     }
 
@@ -108,6 +131,7 @@ function update() {
             dataType: 'json',
             success: function () {
                 $("#modal_update_chuyen_nganh").modal("hide");
+                window.open(chuyenNganhView, '_self');
                 bootbox.alert({
                     message: 'Cập nhật thành công',
                     backdrop: true,
@@ -118,8 +142,8 @@ function update() {
             },
             error: function (e) {
                 if(e.responseJSON.message == 'Chuyen nganh da ton tai'){
-                    $("#chuyennganhUpdate_error").text("Chuyên ngành đã tồn tại trong đợt");
-                    $("#chuyennganh_error").text("");
+                    $("#chuyennganh_Update_error").text("Chuyên ngành đã tồn tại trong đợt");
+                    $("#chuyennganh_Update_error").text("");
                 }
             }
         });
@@ -156,6 +180,7 @@ function deleteChuyenNganh() {
         dataType: 'json',
         success: function () {
             $("#modal_chuyen_nganh_remove").modal("hide");
+            window.open(chuyenNganhView, '_self');
             bootbox.alert({
                 message: 'Xóa thành công',
                   backdrop: true,
