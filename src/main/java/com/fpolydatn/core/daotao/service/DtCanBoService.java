@@ -23,7 +23,9 @@ public interface DtCanBoService {
 
     PageableObject<DtCanBoResponse> search(final DtFindCanBoRequest canBoRequest);
 
-    boolean create(@Valid DtCreateCanBoRequest canBo);
+    CanBo create(@Valid DtCreateCanBoRequest canBo);
+
+    CanBo createcb(CanBo canBo);
 
     Boolean delete(String id);
 
