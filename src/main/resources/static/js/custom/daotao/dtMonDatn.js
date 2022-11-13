@@ -6,14 +6,16 @@ $(document).ready(function () {
 });
 
 function openModalCreate() {
+    $("#maMon").val("")
+    $("#tenMonDatn").val("")
     $("#ma_mon_datn_error").text("");
     $("#ten_mon_datn_error").text("");
     $("#modal_create").modal('show');
 }
 
 function create() {
-    let maMon = $("#maMon").val();
-    let tenMonDatn = $("#tenMonDatn").val();
+    let maMon = $("#maMon").val().trim();
+    let tenMonDatn = $("#tenMonDatn").val().trim();
     let chuyenNganhId = $("#chuyenNganh").val();
     let nhomMonId = $("#tenNhomMonDatn").val();
     let monDatnRequest = {};
