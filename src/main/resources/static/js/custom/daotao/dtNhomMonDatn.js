@@ -10,6 +10,11 @@ $(document).ready(function () {
 });
 
 function openModalCreate() {
+    $("#maNhomMon").val('');
+    $("#tenNhomMon").val('');
+    $("#ma_mon_datn_error").text('');
+    $("#ten_mon_datn_error").text('');
+    $("#chuyen_nganh_error").text('');
     $("#modal_create").modal('show');
 }
 
@@ -61,6 +66,8 @@ function createNhomMonDatn() {
 }
 
 function openModalUpdateNhomMonDatn(monDatnId) {
+    $("#errorMaMonUpdate").text('');
+    $("#errorTenMonUpdate").text('');
     $("#modal_update_mon_datn").modal('show');
     $.ajax({
         type: "GET",

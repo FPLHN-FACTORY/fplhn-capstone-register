@@ -30,6 +30,19 @@ function clearErrorUpdate() {
 }
 
 function openModalAddGVHD() {
+    $("#errorTenGiangVien").text('');
+    $("#errorSoNhomHD").text('');
+    $("#errorTenTaiKhoan").text('');
+    $("#errorSDT").text('');
+    $("#errorEmailFpt").text('');
+    $("#errorEmailFe").text('');
+    $("#tenGvhd").val('');
+    $("#soNhomHuongDanToiDa").val('');
+    $("#tenTaiKhoan").val('');
+    $("#soDienThoai").val('');
+    $("#emailFpt").val('');
+    $("#emailFe").val('');
+    $("#errorDotDangKy").text('');
     $("#modal_create").modal('show')
 }
 
@@ -53,7 +66,7 @@ function addGVHD () {
     let index = 0;
 
     if (tenGvhd.length === 0) {
-        $("#errorTenGiangVien").text(" Tên giang viên không được để trống");
+        $("#errorTenGiangVien").text(" Tên giảng viên không được để trống");
         index++;
     } else {
         $("#errorTenGiangVien").text("");

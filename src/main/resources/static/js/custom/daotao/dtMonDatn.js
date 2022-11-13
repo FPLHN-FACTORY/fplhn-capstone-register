@@ -10,14 +10,16 @@ $(document).ready(function () {
 });
 
 function openModalCreate() {
+    $("#maMon").val("");
+    $("#tenMonDatn").val("");
     $("#ma_mon_datn_error").text("");
     $("#ten_mon_datn_error").text("");
     $("#modal_create").modal('show');
 }
 
 function create() {
-    let maMon = $("#maMon").val();
-    let tenMonDatn = $("#tenMonDatn").val();
+    let maMon = $("#maMon").val().trim();
+    let tenMonDatn = $("#tenMonDatn").val().trim();
     let chuyenNganhId = $("#chuyenNganh").val();
     let nhomMonId = $("#tenNhomMonDatn").val();
     let monDatnRequest = {};
@@ -86,8 +88,8 @@ function openModalUpdateMonDatn(monDatnId) {
 }
 
 function update() {
-    let maMon = $("#ma_mon_datn_update").val();
-    let tenMonDatn = $("#ten_mon_datn_update").val();
+    let maMon = $("#ma_mon_datn_update").val().trim();
+    let tenMonDatn = $("#ten_mon_datn_update").val().trim();
     let monDatnId = $("#id_mon_datn_update").val();
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;

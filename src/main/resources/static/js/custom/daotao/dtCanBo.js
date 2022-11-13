@@ -5,11 +5,6 @@ const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
 const regexSoDienThoai = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/;
 
 $(document).ready(function () {
-    $("#hoc_ky_error").text("");
-    clear();
-});
-
-$(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 });
 
@@ -17,15 +12,17 @@ function clearData() {
     $("#keyword").val("");
 }
 
-function clear() {
-    $('#email_fe_error').text("");
-    $('#email_fpt_error').text("");
-    $('#so_dien_thoai_error').text("");
-    $('#ten_can_bo_error').text("");
-    $('#ten_tai_khoan_error').text("");
-}
-
 function openModalCreate() {
+    $("#emailfe").val('');
+    $("#emailfpt").val('');
+    $("#sodienthoai").val('');
+    $("#tenCanBo").val('');
+    $("#tentaikhoan").val('');
+    $('#email_fe_error').text('');
+    $('#email_fpt_error').text('');
+    $('#so_dien_thoai_error').text('');
+    $('#ten_can_bo_error').text('');
+    $('#ten_tai_khoan_error').text('');
     $("#modal_create").modal('show')
 }
 
@@ -41,7 +38,6 @@ function openModalTaiMau() {
     $("#modal_excel_mau").modal('show')
 }
 
-
 function clearUpdate() {
     $('#email_fe_error_update').text("");
     $('#email_fpt_error_update').text("");
@@ -51,7 +47,6 @@ function clearUpdate() {
 }
 
 function save() {
-    clear();
     let emailFe = $("#emailfe").val().trim();
     let emailFpt = $("#emailfpt").val().trim();
     let soDienThoai = $("#sodienthoai").val().trim();

@@ -10,10 +10,26 @@ $(document).ready(function () {
 });
 
 function openModalCreate() {
+    $("#hocKyAdd").val("");
+    $("#errorMessageAddHocKy").text("");
+    $("#errorMessageAddNgayKetThuc").text("");
+    $("#tenDotDangKyAdd").val('');
+    $("#ngayBatDauAdd").val('');
+    $("#ngayKetThucAdd").val('');
+    $("#hanSinhVienAdd").val('');
+    $("#hanGiangVienAdd").val('');
+    $("#hanChuNhiemBoMonAdd").val('');
+    $("#errorMessageAddTenDot").text("");
+    $("#errorMessageAddNgayBatDau").text("");
+    $("#errorMessageAddHanSinhVien").text("");
+    $("#errorMessageAddHanGiangVien").text("");
+    $("#errorMessageAddHanChuNhiemBoMon").text("");
     $("#modal_create").modal('show');
 }
 
 function openModalUpdateDotDangKy(dotDangKyId) {
+    $("#errorMessageTenDotDangKyUpdate").text('');
+    $("#errorMessageNgayBatDauUpdate").text("");
     $("#errorMessageNgayBatDauUpdate").text("");
     $("#errorMessageNgayKetThucUpdate").text("");
     $("#errorMessageHanSinhVienUpdate").text("");
@@ -82,6 +98,8 @@ function update() {
     } else if (tenDotDangKy.length > 100) {
         $("#errorMessageTenDotDangKyUpdate").text("Quá số ký cho phép");
         check += 1;
+    } else {
+        $("#errorMessageTenDotDangKyUpdate").text('');
     }
 
     if (ngayBatDauStr === "") {
@@ -190,20 +208,6 @@ function update() {
         });
     }
 };
-
-function clearDataAdd() {
-    $("#hocKyAdd").val("");
-    $("#errorMessageAddHocKy").text("");
-    $("#errorMessageAddNgayKetThuc").text("");
-    $("#tenDotDangKyAdd").val('');
-    $("#ngayBatDauAdd").val('');
-    $("#ngayKetThucAdd").val('');
-    $("#errorMessageAddTenDot").text("");
-    $("#errorMessageAddNgayBatDau").text("");
-    $("#errorMessageAddHanSinhVien").text("");
-    $("#errorMessageAddHanGiangVien").text("");
-    $("#errorMessageAddHanChuNhiemBoMon").text("");
-}
 
 function create() {
     let tenDotDangKy = $("#tenDotDangKyAdd").val().trim();

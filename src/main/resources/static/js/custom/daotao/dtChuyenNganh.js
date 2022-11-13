@@ -23,6 +23,7 @@ function openModalCreateChuyenNganh() {
     $("#modal_create_chuyen_nganh").modal('show');
     $("#chuyen_nganh_add_error").text("");
     $("#CNBM_add_error").text("");
+    $("#tenChuyenNganhAdd").val('');
     let cnbm = $("#CNBM").val();
     if (cnbm != 0) {
         $("#tenCNBMhAdd").show();
