@@ -5,13 +5,10 @@ import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.SinhVienRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -167,12 +164,10 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                     """, nativeQuery = true)
     List<DtSinhVienTheoDotResponse> exportExcel(@Param("req") FindDtSinhVienTheoDotRequest req);
 
-    @Transactional
-    @Modifying
     @Query(value = """
-            UPDATE do_an_tot_nghiep.sinh_vien s
-            SET s.trang_thai ='1'
-            WHERE s.id= :idSV
+            SELECT * FROM do_an_tot_nghiep.sinh_vien s 
+            where s.nhom_id= :nhomId
+            and s.id <> :idNhomTruong LIMIT 1
             """, nativeQuery = true)
-    int loaiSinhVien(@Param("idSV") String id);
+    SinhVien motSVTrongNhom(@Param("idNhomTruong") String idNhomTruong,@Param("nhomId") String nhomId);
 }

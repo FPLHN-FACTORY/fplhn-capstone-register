@@ -99,8 +99,8 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <a class="btn btn-primary text-white" onclick="loadDataNhomDatn(0)"
-                                               type="submit">Tìm
+                                            <a class="btn btn-primary text-white" type="button" th:attr="onclick=|loadDataNhomDatn(0)|"
+                                               >Tìm
                                                 kiếm</a>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
@@ -119,8 +119,7 @@
                                     <div class="row">
                                         <!--   export excel-->
                                         <div class="col-4 d-inline float-left">
-                                            <button  class="btn btn-success" data-target="#modal_excel"
-                                                    data-toggle="modal">
+                                            <button  class="btn btn-success" type="button" th:attr="onclick=|openModalExportExcel()|">
                                                 Export
                                             </button>
                                             <div aria-hidden="true"
@@ -135,7 +134,7 @@
                                                                 <h5 class="modal-title" id="exampleModalLabel">Export
                                                                     Excel</h5>
                                                                 <button aria-label="Close" class="close"
-                                                                        data-dismiss="modal"
+                                                                        data-bs-dismiss="modal"
                                                                         type="button">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -153,7 +152,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button class="btn btn-outline-secondary btn btn-light" data-dismiss="modal"
+                                                                <button class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal"
                                                                         type="button">Hủy
                                                                 </button>
                                                                 <button type="button" class="btn btn-primary" th:attr="onclick=|exportFileExcel()|">Download
@@ -171,12 +170,12 @@
                                         >
                                             <div aria-hidden="true"
                                                  aria-labelledby="exampleModalLabel"
-                                                 class="modal fade "
-                                                 id="modal_create"
+                                                 class="modal fade"
+                                                 id="modal_show_detail"
                                                  tabindex="-1">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
-                                                        <form id="form_create_hoc_ky">
+                                                        <form id="form_create_sinh_vien">
                                                             <div class="modal-body">
                                                                 <div class="form-group">
                                                                     <label class="col-form-label">Danh sách thành viên
@@ -193,7 +192,6 @@
                                                                         </thead>
                                                                         <!-- body-->
                                                                         <tbody id="show_Dssv">
-
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
@@ -208,7 +206,7 @@
                                     <div class="table-responsive mt-3">
                                         <div class="mt-3">
                                             <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
-                                                   id="custom-table">
+                                                   id="custom-table1">
                                                 <thead class="table-primary">
                                                 <th width="50px">STT</th>
                                                 <th>Mã nhóm</th>
@@ -233,15 +231,12 @@
                                                         <td th:text="${nhomDatn.getTrangThai()}==0?'Mới thành lập':(${nhomDatn.getTrangThai()}==1?'Đã liên hệ giảng viên':(${nhomDatn.getTrangThai()}==2?'Sẵn sàng phê duyệt':(${nhomDatn.getTrangThai()}==3?'Cần sửa':(${nhomDatn.getTrangThai()}==4?'Giảng viên đã chốt':'Chủ nhiệm bộ môn đã chốt'))))">
                                                         <td>
                                                             <button class="btn_eye"
-                                                                    data-target="#modal_create"
-                                                                    data-toggle="modal"
                                                                     th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
                                                                     title="Xem chi tiết nhóm"
                                                                     type="button"
                                                             >
                                                                 <img th:src="@{/img/eye-fill.svg}">
                                                             </button>
-                                                            <div class="modal fade"></div>
                                                         </td>
                                                     </tr>
                                                 </th:block>
