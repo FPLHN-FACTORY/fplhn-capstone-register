@@ -19,7 +19,6 @@ import java.util.List;
 @Component
 public class DtSinhVienTheoDotImport {
 
-
     public static List<DtCreateSinhVienTheoDotRequest> importData(MultipartFile reapExcelDataFile) throws IOException {
         List<DtCreateSinhVienTheoDotRequest> listSinhVien = new ArrayList<>();
         Workbook workbook = StreamingReader.builder()
@@ -42,6 +41,13 @@ public class DtSinhVienTheoDotImport {
             sinhVien.setChuyenNganh(String.valueOf(getCellValue(row.getCell(7))).trim());
             sinhVien.setDotDangKy(String.valueOf(getCellValue(row.getCell(8))).trim());
             sinhVien.setMonDATN(String.valueOf(getCellValue(row.getCell(9))).trim());
+            if (sinhVien.getTenSinhVien().isEmpty() && sinhVien.getMaSinhVien().isEmpty() &&
+                    sinhVien.getSoDienThoai().isEmpty() && sinhVien.getEmail().isEmpty() &&
+                    sinhVien.getKhoa().isEmpty() && sinhVien.getChuyenNganh().isEmpty() &&
+                    sinhVien.getDotDangKy().isEmpty() && sinhVien.getMaNhom().isEmpty() &&
+                    sinhVien.getMonDATN().isEmpty()) {
+                continue;
+            }
             listSinhVien.add(sinhVien);
 
         }
