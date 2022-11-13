@@ -2,6 +2,7 @@ package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.excel.DtGiangVienHuongDanExport;
+import com.fpolydatn.core.daotao.excel.DtGiangVienImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtGiagVienHDImportResquest;
@@ -16,12 +17,16 @@ import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,7 +50,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 /**
  * @author Vinhnv
@@ -229,13 +235,11 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         if (list == null) {
             throw new RestApiException(Message.FILE_EMPTY);
         }
-        Map<String, GiangVienHuongDan> getMapGV = dtGiangVienHDRepository.findAll().stream().
-                collect(Collectors.toMap(GiangVienHuongDan::getEmailFpt, gv -> gv));
         for (DtGiagVienHDImportResquest gvhd : list) {
             GiangVienHuongDan giangVien = new GiangVienHuongDan();
             giangVien.setTenGvhd(gvhd.getTenGvhd());
-            giangVien.setSoNhomHuongDanToiDa(gvhd.getSoNhomHuongDanToiDa());
             giangVien.setTenTaiKhoan(gvhd.getTenTaiKhoan());
+            giangVien.setSoNhomHuongDanToiDa(gvhd.getSoNhomHuongDanToiDa());
             giangVien.setSoDienThoai(gvhd.getSoDienThoai());
             giangVien.setEmailFpt(gvhd.getEmailFpt());
             giangVien.setEmailFe(gvhd.getEmailFe());
@@ -289,6 +293,24 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         dtGiangVienHuongDanExport.exportMauImport(response);
     }
 
+    @Override
+    public void importExcelGVHD(MultipartFile file, String idCoSo, String idDotDangKy) {
+        List<DtGiagVienHDImportResquest> importList =  new DtGiangVienImportExcel().mapReapExcelDatatoDB(file,idCoSo,idDotDangKy);
+        List<GiangVienHuongDan> list = new DtGiangVienImportExcel().checkListImport(importList);
+        dtGiangVienHDRepository.saveAll(list);
+    }
 
+    public void addDataInMap(HashMap<String, String> mapAll, String coSoId) {
+
+        // lấy id, GVHD theo đợt đăng ký của cơ sở
+        List<SimpleEntityProj> getAllMaMon = dtGiangVienHDRepository.getAllGiangVien(coSoId);
+        getAllPutMap(mapAll, getAllMaMon);
+    }
+
+    public void getAllPutMap(HashMap<String, String> mapSimple, List<SimpleEntityProj> getAllSimpleEntityProjs) {
+        for (SimpleEntityProj simpleEntityProj : getAllSimpleEntityProjs) {
+            mapSimple.put(simpleEntityProj.getName(), simpleEntityProj.getId());
+        }
+    }
 
 }

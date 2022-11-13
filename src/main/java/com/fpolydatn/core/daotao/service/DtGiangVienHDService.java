@@ -31,11 +31,13 @@ public interface DtGiangVienHDService {
 
     PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest req);
 
-    List<DtGiagVienHDImportResquest> importExcel(MultipartFile file, String idCoSo , String idDotDangKy ) throws IOException;
+    List<DtGiagVienHDImportResquest> importExcel(MultipartFile file, String idCoSo, String idDotDangKy) throws IOException;
 
     Object checkValidFile(List<DtGiagVienHDImportResquest> list);
 
     void DtGiangVienHDExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
 
     void DtGiangVienHDMauExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
+
+    void importExcelGVHD(MultipartFile file, String idCoSo, String idDotDangKy) throws IOException;
 }

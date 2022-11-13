@@ -49,7 +49,7 @@ public class DtGiangVienHuongDanExport {
 
     public void employeeDetailReport(HttpServletResponse response, List<DtGiangVienHDResponse> list) {
         try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Employee TechGeekNext Example");
+            Sheet sheet = workbook.createSheet("Sheet");
 
             CellStyle cellStyle = workbook.createCellStyle();
 
