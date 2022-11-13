@@ -40,13 +40,12 @@
                                 <div class="m-portlet__body">
                                     <div class="row">
                                         <div class="col-6 d-inline">
-                                            <a onclick="clearModal()"
-                                               data-toggle="modal"
-                                               data-target="#modal_create"
-                                               class="btn btn-success"
-                                               th:href="@{/dao-tao/mon-datn/}">
+                                            <button
+                                                    type="button"
+                                                    th:attr="onclick=|openModalCreate()|"
+                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
                                                 Tạo môn
-                                            </a>
+                                            </button>
                                             <div class="modal fade "
                                                  id="modal_create"
                                                  tabindex="-1"
@@ -58,7 +57,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Tạo
                                                                     môn </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -67,6 +66,7 @@
                                                                 <div class="form-group">
                                                                     <label class="col-form-label">Mã môn</label>
                                                                     <input
+                                                                            maxlength="10"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="maMon">
@@ -74,6 +74,7 @@
                                                                           id="ma_mon_datn_error"></span><br>
                                                                     <label class="col-form-label">Tên môn</label>
                                                                     <input
+                                                                            maxlength="100"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="tenMonDatn">
@@ -94,7 +95,6 @@
                                                                             datn:</label>
                                                                         <select id="tenNhomMonDatn"
                                                                                 class="form-control">
-                                                                            <option value="select" hidden>Chọn nhóm môn DATN</option>
                                                                             <option value="">Môn độc lập</option>
                                                                             <div th:each="tenNhomMon : ${tenNhomMon}">
                                                                                 <option th:value="${tenNhomMon.id}"
@@ -105,10 +105,12 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal">Hủy
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn btn-light"
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button th:attr="onclick=|create()|"
+                                                                <button type="button"
+                                                                        th:attr="onclick=|create()|"
                                                                         class="btn btn-primary">
                                                                     Thêm mới
                                                                 </button>
@@ -118,7 +120,8 @@
                                                 </div>
                                             </div>
                                             <button
-                                                    data-toggle="modal" data-target="#import_excel"
+                                                    th:attr="onclick=|openImport()|"
+                                                    type="button"
                                                     class="btn btn-success">
                                                 Import
                                             </button>
@@ -218,7 +221,7 @@
                     <h5 class="modal-title">Cập
                         nhật môn DATN</h5>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
+                            data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -229,6 +232,7 @@
                         <label
                                 class="col-form-label">Mã môn</label>
                         <input
+                                maxlength="10"
                                 type="text"
                                 class="form-control"
                                 id="ma_mon_datn_update"/>
@@ -237,6 +241,7 @@
                         <label
                                 class="col-form-label">Tên môn</label>
                         <input
+                                maxlength="100"
                                 type="text"
                                 class="form-control"
                                 id="ten_mon_datn_update"/>
@@ -247,9 +252,9 @@
 
                 <div class="modal-footer">
                     <button onclick="clearModal()" type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
+                            data-bs-dismiss="modal">Hủy
                     </button>
-                    <button th:attr="onclick=|update()|" class="btn btn-primary">
+                    <button type="button" th:attr="onclick=|update()|" class="btn btn-primary">
                         Cập nhật
                     </button>
                 </div>
@@ -267,18 +272,16 @@
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form style="margin:20px" id="form_import_excel" th:onsubmit="importExcel()"
-                  th:action="@{'/api/dao-tao/mon-datn/import'}" method="POST"
+            <form style="margin:20px" id="form_import_excel"
                   enctype="multipart/form-data">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Import excel</h5>
-                    <button type="button" class="close" data-dismiss="modal"
+                    <button type="button" class="close" data-bs-dismiss="modal"
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-
                     <h5 class="modal-title">Chọn file</h5>
                     <div class="input-group">
                         <div class="custom-file">
@@ -286,7 +289,7 @@
                             <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
                         </div>
                         <div class="input-group-append">
-                            <a th:href="@{/dao-tao/mon-datn/mau-import}" class="btn input-group-text" type="button">Tải
+                            <a th:href="@{/dao-tao/mon-datn/mau-import}" class="btn input-group-text" style="line-height: 27.5px;" type="button">Tải
                                 mẫu</a>
                         </div>
                     </div>
@@ -295,11 +298,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
+                            data-bs-dismiss="modal">Hủy
                     </button>
-                    <button type="submit" class="btn btn-primary"
-                            id="import" data-toggle="tooltip"
-                            data-placement="top" title="Import Excel">
+                    <button class="btn btn-primary"
+                            id="import" title="Import Excel"
+                            type="button" th:attr="onclick=|importExcel()|">
                         Import
                     </button>
                 </div>

@@ -6,6 +6,8 @@ $(document).ready(function () {
 });
 
 function openModalCreate() {
+    $("#ma_mon_datn_error").text("");
+    $("#ten_mon_datn_error").text("");
     $("#modal_create").modal('show');
 }
 
@@ -80,7 +82,6 @@ function openModalUpdateMonDatn(monDatnId) {
 }
 
 function update() {
-    event.preventDefault();
     let maMon = $("#ma_mon_datn_update").val();
     let tenMonDatn = $("#ten_mon_datn_update").val();
     let monDatnId = $("#id_mon_datn_update").val();
@@ -174,6 +175,10 @@ function openModalRemoveMonDatn(monDatnId) {
 function clearModal() {
     $("#ma_mon_datn_error").text("");
     $("#ten_mon_datn_error").text("");
+}
+
+function openImport() {
+    $("#import_excel").modal("show")
 }
 
 function importExcel () {

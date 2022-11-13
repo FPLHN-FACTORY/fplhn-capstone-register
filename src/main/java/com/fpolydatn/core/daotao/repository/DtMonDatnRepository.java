@@ -20,17 +20,12 @@ public interface DtMonDatnRepository extends MonDatnRepository {
             SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, cn.ten_chuyen_nganh,
              (SELECT CONCAT(b.ten_mon_datn, ' - ', b.ma_mon) FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
-                LEFT JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 LEFT JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
                 WHERE m.co_so_id = :#{#req.coSoId} AND nhom_mon_datn_id IS NOT NULL
                 ORDER BY m.last_modified_date DESC 
             """, countQuery = """
             SELECT COUNT(m.id)
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
-                LEFT JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
-                LEFT JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
-                FROM do_an_tot_nghiep.chuyen_nganh cn 
-                LEFT JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
                 LEFT JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
                 WHERE m.co_so_id = :#{#req.coSoId} AND nhom_mon_datn_id IS NOT NULL
                 ORDER BY m.last_modified_date DESC 
