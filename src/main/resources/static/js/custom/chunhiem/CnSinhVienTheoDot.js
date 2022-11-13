@@ -9,6 +9,11 @@ function openModalAddSinhVien(maSinhVien, count) {
     $("#currentPaging").val(count)
 }
 
+function clearBoLoc(){
+    $("#tenSinhVien").val("")
+    $("#dotDangKyId").val("")
+}
+
 $("#form_create_group").submit(function (event) {
     event.preventDefault();
     let maNhom = $("#maNhom").val().trim();
