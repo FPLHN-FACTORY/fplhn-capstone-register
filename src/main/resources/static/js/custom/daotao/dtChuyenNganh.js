@@ -149,7 +149,7 @@ function update() {
     }
 };
 
-function openModalRemoveChuyenNganh(chuyenNganhId) {
+function remove(chuyenNganhId) {
     $("#remove_chuyen_nganh").text("")
     bootbox.confirm({
         title: "Xóa",
