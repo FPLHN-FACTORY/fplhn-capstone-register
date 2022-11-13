@@ -158,20 +158,19 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             addDataInMap(map, coSoId);
             sinhVienList.parallelStream().forEach(sinhVien -> {
                 SinhVien sinhVienEntity = new SinhVien();
-                if (map.get(sinhVien.getMaSinhVien()) != null) {
-                    sinhVienEntity.setId(map.get(sinhVien.getMaSinhVien()));
-                } else if (!sinhVien.getMaSinhVien().matches("[a-zA-Z]{2}+\\d+")) {
-                    response.setStatus(false);
-                    response.setMessage("Mã sinh viên \"" + sinhVien.getMaSinhVien() + "\" không đúng định dạng");
-                    return;
-                }
-
                 if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
                         sinhVien.getSoDienThoai().isEmpty() || sinhVien.getEmail().isEmpty() ||
                         sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
                         sinhVien.getDotDangKy().isEmpty()) {
                     response.setStatus(false);
                     response.setMessage("Không để trống (Mã, tên, sđt, email, khóa, tên chuyên ngành, đợt đăng ký)");
+                    return;
+                }
+                if (map.get(sinhVien.getMaSinhVien()) != null) {
+                    sinhVienEntity.setId(map.get(sinhVien.getMaSinhVien()));
+                } else if (!sinhVien.getMaSinhVien().matches("[a-zA-Z]{2}+\\d+")) {
+                    response.setStatus(false);
+                    response.setMessage("Mã sinh viên \"" + sinhVien.getMaSinhVien() + "\" không đúng định dạng");
                     return;
                 }
 

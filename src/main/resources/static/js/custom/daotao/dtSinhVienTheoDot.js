@@ -286,6 +286,10 @@ function genPagingAndFillColor(totalPages, currentPage) {
     colorPage[currentPage].style.backgroundColor = '#0a8cf0';
     colorPage[currentPage].style.color = 'white';
 }
+function showExportMau(){
+    $("#modal_excel_mau").modal('show');
+
+}
 
 function loaiSinhVienDetail(id, page) {
     bootbox.confirm({
