@@ -117,10 +117,10 @@
                                         <label class="col-xl-3 col-lg-3 col-form-label">Nhận
                                             xét</label>
                                         <div class="col-lg-9 col-xl-6">
-                                                                <textarea
-                                                                        th:text="${nhomDatnThamGia[0].getNhanXet()}"
-                                                                        readonly="readonly" class="form-control">
-                                                                </textarea>
+                                            <textarea
+                                                    th:text="${nhomDatnThamGia[0].getNhanXet()}"
+                                                    readonly="readonly" class="form-control">
+                                            </textarea>
                                         </div>
                                     </div>
 
@@ -129,17 +129,15 @@
                                                 th:style="${checkMocThoiGian} == true
                                                             and ${nhomDatnThamGia[0].getTrangThai()} == 0
                                                             and ${checkTruongNhom} == true ? '' : 'display: none'"
-                                               >
+                                        >
                                             <button
                                                     type="button" class="btn btn-primary"
-                                                    data-toggle="modal"
-                                                    data-target="#modal_doi_ten_de_Tai">
+                                                    th:attr="onclick=|openModalDoiDeTai()|">
                                                 Đổi tên đề tài
                                             </button>
                                             <button
                                                     type="button" class="btn btn-primary"
-                                                    data-toggle="modal"
-                                                    data-target="#modal_chon_giang_vien">
+                                                    th:attr="onclick=|openModalChonGVHD()|">
                                                 Chọn GVHG
                                             </button>
                                         </div>
@@ -163,7 +161,7 @@
                                                 <th>Môn Theo Chương Trình</th>
                                                 <th>Chức Vụ</th>
                                                 <th
-                                                    th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
+                                                        th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
                                                                 (${checkTruongNhom} == false ? 'display:none' : 'display:block')"
                                                 >
                                                     Chức năng
@@ -198,12 +196,10 @@
                                             <div
                                                     th:style="${checkMocThoiGian} == false ? 'display:none' :
                                                                 (${soThanhVien} == 1 ? 'display: block' :
-                                                                (${checkTruongNhom} == true ? 'display:none' : 'display:block'))"
-                                                   >
+                                                                (${checkTruongNhom} == true ? 'display:none' : 'display:block'))">
                                                 <button
                                                         class="btn btn-danger text-white"
-                                                        th:attr="onclick=|confirmRoiNhom(${soThanhVien})|"
-                                                >
+                                                        th:attr="onclick=|confirmRoiNhom(${soThanhVien})|">
                                                     Rời nhóm
                                                 </button>
                                             </div>
@@ -231,15 +227,13 @@
                         ký
                         nhóm Dự án tốt nghiệp</h5>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
+                            data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="col-form-label">Chọn giảng viên
-                            hướng
-                            dẫn</label>
+                        <label class="col-form-label">Chọn giảng viên hướng dẫn</label>
                         <select class="form-control col-12"
                                 id="chonGiangVien">
                             <option th:each="giangVien : ${listGiangVien}"
@@ -250,11 +244,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
+                            data-bs-dismiss="modal">Hủy
                     </button>
                     <button type="button" class="btn btn-primary"
-                            th:attr="onclick=|chonGiangVienHuongDan()|"
-                    >Đồng ý
+                            th:attr="onclick=|chonGiangVienHuongDan()|">
+                        Đồng ý
                     </button>
                 </div>
             </form>
@@ -276,7 +270,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Đổi tên đề tài</h5>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
+                            data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -294,7 +288,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
+                            data-bs-dismiss="modal">Hủy
                     </button>
                     <button
                             type="button" class="btn btn-primary"
