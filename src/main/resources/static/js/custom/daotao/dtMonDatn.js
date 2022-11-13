@@ -6,6 +6,8 @@ $(document).ready(function () {
 });
 
 function openModalCreate() {
+    $("#ma_mon_datn_error").text("");
+    $("#ten_mon_datn_error").text("");
     $("#modal_create").modal('show');
 }
 
