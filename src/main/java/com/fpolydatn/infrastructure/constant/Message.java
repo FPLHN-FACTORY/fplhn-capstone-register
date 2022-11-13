@@ -74,7 +74,8 @@ public enum Message {
 
     GIANG_VIEN_DANG_DUOC_PHAN_CONG(PropertiesReader.getProperty(PropertyKeys.GIANG_VIEN_DANG_DUOC_PHAN_CONG)),
     NHOM_MON_DANG_TON_TAI_MON(PropertiesReader.getProperty(PropertyKeys.NHOM_MON_DANG_TON_TAI_MON)),
-    TEN_TAI_KHOAN_CAN_BO_EXIST(PropertiesReader.getProperty(PropertyKeys.TEN_TAI_KHOAN_CAN_BO_EXIST));
+    TEN_TAI_KHOAN_CAN_BO_EXIST(PropertiesReader.getProperty(PropertyKeys.TEN_TAI_KHOAN_CAN_BO_EXIST)),
+    CHU_NHIEM_NOT_EXISTS(PropertiesReader.getProperty(PropertyKeys.CHU_NHIEM_NOT_EXISTS));
 
     private String message;
 

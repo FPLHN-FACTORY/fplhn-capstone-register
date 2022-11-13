@@ -48,6 +48,9 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         if (!Objects.isNull(chuyenNganhCheck)) {
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
         }
+        if (Objects.isNull(chuNhiemBoMonCheck)) {
+            throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
+        }
         if (!Objects.isNull(chuNhiemBoMonCheck)) {
             throw new RestApiException(Message.CHU_NHIEM_ALREADY_EXIST);
         }
@@ -67,6 +70,9 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
                 chuyenNganh.getChuNhiemBoMon());
         if (!Objects.isNull(chuyenNganhCheck)) {
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
+        }
+        if (Objects.isNull(chuNhiemBoMonCheck)) {
+            throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
         }
         if (!Objects.isNull(chuNhiemBoMonCheck)) {
             throw new RestApiException(Message.CHU_NHIEM_ALREADY_EXIST);

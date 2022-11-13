@@ -30,6 +30,8 @@ function openModalCreate() {
 }
 
 function openModalImport() {
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile01").val('');
     $("#import").modal('show')
 }
 
