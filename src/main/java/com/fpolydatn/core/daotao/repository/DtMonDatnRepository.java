@@ -27,8 +27,6 @@ public interface DtMonDatnRepository extends MonDatnRepository {
             SELECT COUNT(m.id)
                 FROM do_an_tot_nghiep.chuyen_nganh cn 
                 LEFT JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
-                FROM do_an_tot_nghiep.chuyen_nganh cn  
-                LEFT JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
                 WHERE m.co_so_id = :#{#req.coSoId} AND nhom_mon_datn_id IS NOT NULL
                 ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
