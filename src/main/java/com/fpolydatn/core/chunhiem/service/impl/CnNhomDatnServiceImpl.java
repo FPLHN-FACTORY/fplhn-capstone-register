@@ -82,8 +82,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     List<CnCreateSinhVienTheoDotRequest> sinhVienList;
 
-    HashMap<String, String> map;
-
     HashMap<String, SinhVien> mapSinhVien;
 
     HashMap<String, SinhVien> mapTruongNhom;
@@ -139,19 +137,21 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     truongNhom = sv;
                 }
             }
-            gvhd = cnGiangVienHuongDanReponsitory.findById(nhomDatnCheck.get().getGiangVienId());
-            String[] messageGV = new String[]{"CNBM đã xác nhận nhóm bạn hướng dẫn nhóm:",
-                    "Mã nhóm: " + nhomDatnCheck.get().getMaNhom(), "Số thành viên: " + soThanhvien,
-                    "Trưởng nhóm: " + truongNhom.getMaSinhVien() + " - " + truongNhom.getTenSinhVien(),
-                    "SĐT: " + truongNhom.getSoDienThoai()};
-            emailSender.sendEmail(new String[]{gvhd.get().getEmailFe()}, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
-                    "Xác nhận nhóm thành lập", messageGV);
+            if (nhomDatnCheck.get().getGiangVienId() != null) {
+                gvhd = cnGiangVienHuongDanReponsitory.findById(nhomDatnCheck.get().getGiangVienId());
+                String[] messageGV = new String[]{"CNBM đã xác nhận nhóm bạn hướng dẫn nhóm:",
+                        "Mã nhóm: " + nhomDatnCheck.get().getMaNhom(), "Số thành viên: " + soThanhvien,
+                        "Trưởng nhóm: " + truongNhom.getMaSinhVien() + " - " + truongNhom.getTenSinhVien(),
+                        "SĐT: " + truongNhom.getSoDienThoai()};
+                emailSender.sendEmail(new String[]{gvhd.get().getEmailFe()}, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
+                        "Xác nhận nhóm thành lập", messageGV);
+            }
         }
         String tenGvhd = "Chưa có";
         if (gvhd != null) {
             tenGvhd = gvhd.get().getTenGvhd() + " - " + gvhd.get().getTenTaiKhoan();
         }
-        String[] messageSV = new String[] {"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:",
+        String[] messageSV = new String[]{"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:",
                 "GVHD: " + tenGvhd,
                 "Tên đề tài: " + (nhomDatnCheck.get().getTenDeTai() == null ? "chưa có" : nhomDatnCheck.get().getTenDeTai())};
         emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
@@ -190,7 +190,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         for (int i = 0; i < soThanhvien; i++) {
             email[i] = listSinhVien.get(i).getEmail();
         }
-        String[] message = new String[] {"Chủ nhiệm đã xóa nhóm của bạn"};
+        String[] message = new String[]{"Chủ nhiệm đã xóa nhóm của bạn"};
         emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xóa nhóm",
                 "Nhóm đã bị xóa", message);
         return true;
@@ -285,7 +285,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             List<NhomDatn> listNhomDatnEntity = new ArrayList<>();
             List<String> listMaNhomCreate = new ArrayList<>();
             Map<String, CnCreateSinhVienTheoDotRequest> mapTruongNhomCreate = new HashMap<>();
-//        map = new HashMap<>();
             mapSinhVien = new HashMap<>();
             mapNhomDatn = new HashMap<>();
             mapGiangVien = new HashMap<>();
@@ -355,8 +354,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang nhiều hơn 1 trưởng nhóm");
                         return;
                     }
-                    if(!sinhVien.getChucVu().isEmpty()){
-                        if(sinhVien.getGvhd().isEmpty()){
+                    if (!sinhVien.getChucVu().isEmpty()) {
+                        if (sinhVien.getGvhd().isEmpty()) {
                             response.setStatus(false);
                             response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang không có giảng viên hướng dẫn");
                             return;
@@ -376,7 +375,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     listNhomDatnEntity.add(nhomDatn);
                 }
             });
-            if(response.getStatus() == true) {
+            if (response.getStatus() == true) {
                 for (int i = 0; i < listSinhVienEntity.size(); i++) {
                     if (listSinhVienEntity.get(i).getNhomId() == null) {
                         listSinhVienEntity.get(i).setMonDatnId(null);
@@ -420,6 +419,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            response.setStatus(false);
+            response.setMessage("Lỗi hệ thống");
+            return response;
         }
         return response;
     }
@@ -458,25 +460,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             return true;
         }
         return false;
-    }
-
-    public void addDataInMap(HashMap<String, String> mapAll, String dotDangKyId, String coSoId) {
-
-        //lấy id, MaSv của tất cả sv theo cơ sở
-        List<SimpleEntityProj> getAllNhomDatn = cnNhomDatnRepository.getAllNhomDatn(dotDangKyId, coSoId);
-        getAllPutMap(mapAll, getAllNhomDatn);
-        // lấy id, MaNhom tất cả nhóm theo cơ sở
-//        List<SimpleEntityProj> getAllMaNhom = nhomDatnTheoDotRepository.getAllMaNhom(coSoId);
-//        getAllPutMap(mapAll, getAllMaNhom);
-//        // lấy id, tenChuyenNganh tất cả chuyên ngành theo cơ sở
-//        List<SimpleEntityProj> getAllTenCN = chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
-//        getAllPutMap(mapAll, getAllTenCN);
-//        // lấy id, tenDotDangKy tất cả đợt đăng ký theo cơ sở
-//        List<SimpleEntityProj> getAllTenDDK = dotDangKyRepository.findAllSimpleEntity(coSoId);
-//        getAllPutMap(mapAll, getAllTenDDK);
-//        // lấy id, monDatn tất cả đợt đăng ký theo cơ sở
-//        List<SimpleEntityProj> getAllMaMon = monDatnRepository.getAllMaMon(coSoId);
-//        getAllPutMap(mapAll, getAllMaMon);
     }
 
     public void addDataInMapSinhVien(HashMap<String, SinhVien> mapAll, String dotDangKyId, String coSoId, String idChuNhiem) {
