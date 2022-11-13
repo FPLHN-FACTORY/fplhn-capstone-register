@@ -78,7 +78,6 @@
             <div>
                 <div class="m-content">
                     <h3>Quản lý nhóm dự án tốt nghiệp </h3>
-                    <input th:value="${mocThoiGianGiangVien}" hidden id="hanGiangVien"></input>
                     <div class="mt-5">
                         <section class="fillter-area  mb-5">
                             <div class="m-portlet">
@@ -103,7 +102,7 @@
                                                     name="tenMon">
                                                 <option value="" hidden>Chọn Môn</option>
                                                 <option th:each="item : ${listMon}" th:value="${item.getId()}"
-                                                        th:text="${item.getName()}">123
+                                                        th:text="${item.getName()}">
                                                 </option>
                                             </select>
                                         </div>
@@ -111,12 +110,14 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button type="button" class="btn btn-primary" th:attr="onclick=|seachNhomdatn(0)|">
+                                            <button type="button" class="btn btn-primary"
+                                                    th:attr="onclick=|seachNhomdatn(0)|">
                                                 Tìm kiếm
                                             </button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button class="btn btn-danger text-white" th:attr="onclick=|clearDataGVHD()|">
+                                            <button class="btn btn-danger text-white"
+                                                    th:attr="onclick=|clearDataGVHD()|">
                                                 Làm mới bộ lọc
                                             </button>
                                         </div>
@@ -152,24 +153,28 @@
                                                     <td th:text="${nhomDatn.getMaMon()}"></td>
                                                     <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                     <td>
-                                                        <button th:attr="onclick=|showDetail('${nhomDatn.getId()}')|"
+                                                        <button type="button"
+                                                                th:attr="onclick=|showDetail('${nhomDatn.getId()}')|"
                                                                 class="btn_eye" data-toggle="tooltip"
                                                                 title="Xem chi tiết nhóm">
                                                             <img th:src="@{/img/eye-fill.svg}">
                                                         </button>
-                                                        <button th:style="${nhomDatn.getTrangThai()} == 1 ? 'display: block' : 'display: none'"
+                                                        <button type="button"
+                                                                th:style="${nhomDatn.getTrangThai()} == 1 ? 'display: block' : 'display: none'"
                                                                 th:attr="onclick=|xacDaNhanLienHe('${nhomDatn.getId()}', '${nhomDatn.getMaNhom()}')|"
                                                                 class="btn_check_circle" data-toggle="tooltip"
                                                                 title="Xác nhận nhóm đã liên hệ">
                                                             <img th:src="@{/img/check-circle.svg}">
                                                         </button>
-                                                        <button th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : (${nhomDatn.getTrangThai()} ==3 ? 'display: block' :  'display: none')"
+                                                        <button type="button"
+                                                                th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : (${nhomDatn.getTrangThai()} ==3 ? 'display: block' :  'display: none')"
                                                                 th:attr="onclick=|chotDeTaiNhomDatn('${nhomDatn.getId()}', '${nhomDatn.getMaNhom()}')|"
                                                                 class="btn_check" data-toggle="tooltip"
                                                                 title="Xác nhận đề tài">
                                                             <img th:src="@{/img/clipboard-check.svg}">
                                                         </button>
-                                                        <button th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : (${nhomDatn.getTrangThai()} ==3 ? 'display: block' : (${nhomDatn.getTrangThai()} ==4 ? 'display: block' : 'display: none'))"
+                                                        <button type="button"
+                                                                th:style="${nhomDatn.getTrangThai()} ==2 ? 'display: block' : (${nhomDatn.getTrangThai()} ==3 ? 'display: block' : (${nhomDatn.getTrangThai()} ==4 ? 'display: block' : 'display: none'))"
                                                                 th:attr="onclick=|updateTenDeTai('${nhomDatn.getId()}')|"
                                                                 class="btn_pencil_square" data-toggle="tooltip"
                                                                 title="sửa đề tài">
@@ -213,7 +218,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title">Danh Sách sinh Viên</h5>
                         <button type="button" class="close"
-                                data-dismiss="modal" aria-label="Close">
+                                data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -253,7 +258,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Cập nhật tên đề tài</h5>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
+                            data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -263,6 +268,7 @@
                     <div class="form-group">
                         <label class="col-form-label">Tên đề tài</label>
                         <input
+                                maxlength="100"
                                 type="text"
                                 class="form-control"
                                 id="ten_de_tai_update"/>
@@ -272,9 +278,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
+                            data-bs-dismiss="modal">Hủy
                     </button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" th:attr="onclick=|updateTenDeTaiSubmit()|">
                         Cập nhật
                     </button>
                 </div>
