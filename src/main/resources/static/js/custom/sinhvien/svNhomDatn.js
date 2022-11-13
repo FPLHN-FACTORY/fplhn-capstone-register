@@ -1,6 +1,14 @@
 const svNhomDatnApi = '/api/sinh-vien';
 const svNhomDatnView = '/sinh-vien';
 
+function openModalDoiDeTai(){
+    $("#modal_doi_ten_de_Tai").modal('show');
+}
+
+function openModalChonGVHD(){
+    $("#modal_chon_giang_vien").modal('show');
+}
+
 function doiTenDeTai() {
     $("#modal_doi_ten_de_Tai").modal('hide');
     let inputTenDeTai = $("#inputTenDeTai").val();
