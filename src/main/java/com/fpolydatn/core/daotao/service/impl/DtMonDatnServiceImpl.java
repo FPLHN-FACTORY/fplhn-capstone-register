@@ -128,17 +128,14 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         nhomMonDatnHashMap = new HashMap<>();
         monDatnImport = new DTMonDatnImport();
         boNhoDem(coSoId);
-
         DtMessMonDatnReponse mess = new DtMessMonDatnReponse();
         List<MonDatn> list = new ArrayList<>();
         if (!checkTypeFile(file)) {
             return new DtMessMonDatnReponse(false, "file không đúng định dạng XLSX");
         }
-
         List<DtCreateImportMonDatnRequest> importMonDatnRequests = null;
         try {
             importMonDatnRequests = monDatnImport.importExcelList(file);
-
             importMonDatnRequests.parallelStream().forEach(createMonDant -> {
                 if (createMonDant.getMaMon().trim().length() == 0) {
                     System.out.println(createMonDant.getMaMon());
@@ -155,14 +152,12 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được quá 10 ký tự"));
                     return;
-
                 }
                 if (createMonDant.getMaMon().indexOf(" ") > 0) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
                     return;
                 }
-
                 if (createMonDant.getTenMonDatn().trim().length() == 0) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
@@ -173,7 +168,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được quá 100 ký tự"));
                     return;
                 }
-
                 if (createMonDant.getChuyenNganhId().trim().length() == 0) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được để trống"));
@@ -189,7 +183,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được quá 36 ký tự"));
                     return;
                 }
-
                 if (createMonDant.getNhomMonDatnId().trim().length() != 0) {
                     if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
                         mess.setStatus(false);
@@ -207,7 +200,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                         return;
                     }
                 }
-
                 MonDatn monDatn = new MonDatn();
                 monDatn.setMaMon(createMonDant.getMaMon());
                 monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
@@ -222,7 +214,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 list.add(monDatn);
                 mess.setStatus(true);
             });
-
             if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
                 List<MonDatn> datnList = monDatnRepository.saveAll(list);
                 datnList.parallelStream().forEach(el -> {
@@ -236,7 +227,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         } catch (Exception e) {
             return new DtMessMonDatnReponse(false, "Lỗi hệ thống");
         }
-
         return mess;
     }
 
@@ -266,8 +256,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         for (MonDatn e : monDatnRepository.getListNhomMonDatn(coSoId)) {
             nhomMonDatnHashMap.put(e.getMaMon(), e);
         }
-
     }
-
 
 }
