@@ -91,7 +91,7 @@ function openModalUpdateChuyenNganh(chuyenNganhId, tenCNBM) {
         success: function (responseData) {
             $("#id_chuyen_nganh_update").val(responseData.data.id);
             $("#tenChuyenNganhUpdate").val(responseData.data.tenChuyenNganh);
-            $("#CNBMHienTai").val(responseData.data.id);
+            $("#CNBMHienTai").val(responseData.data.chuNhiemBoMon);
             $("#CNBMHienTai").text(tenCNBM);
         },
         error: function (e) {
