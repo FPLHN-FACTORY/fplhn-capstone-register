@@ -502,6 +502,7 @@ function openModalExport() {
 }
 
 function openModalImport() {
+    $("#import_excel_error").text("");
     $("#labelFile").text('Choose file');
     $("#inputGroupFile01").val('');
     $("#modal_import_excel").modal('show')

@@ -85,6 +85,10 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         if (Objects.isNull(canBoCheck)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
+        String check = dtCanBoRepository.getIdChuyenNganhByIdChuNhiem(id);
+        if(check != null){
+            throw new RestApiException(Message.CHU_NHIEM_NAY_DANG_CHU_NHIEM_1_CHUYEN_NGANH);
+        }
         dtCanBoRepository.delete(canBoCheck.get());
         return true;
     }
@@ -146,11 +150,6 @@ public class DtCanBoServiceImpl implements DtCanBoService {
             addDataInMap(map);
 
             listCB.parallelStream().forEach(canbo -> {
-                if (map.get(canbo.getEmailFE()) != null || map.get(canbo.getEmailFPT()) != null) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Cán bộ bạn muốn import đã tồn tại");
-                    return;
-                }
 
                 if (canbo.getEmailFE().isEmpty() || canbo.getEmailFPT().isEmpty() ||
                         canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
@@ -160,13 +159,31 @@ public class DtCanBoServiceImpl implements DtCanBoService {
                     return;
                 }
 
-                if (!canbo.getEmailFPT().matches("\\w+@fpt.edu.vn")) {
+                if (map.get(canbo.getEmailFE()) != null) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email Fe bị trùng");
+                    return;
+                }
+
+                if (map.get(canbo.getEmailFPT()) != null) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email Fpt bị trùng");
+                    return;
+                }
+
+                if (map.get(canbo.getTenTaiKhoan()) != null) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Tên tài khoản bị trùng");
+                    return;
+                }
+
+                if (!canbo.getEmailFPT().matches(Constants.REGEX_EMAIL_FPT)) {
                     dtCanBoResponseMessage.setStatus(false);
                     dtCanBoResponseMessage.setMessage("Email fpt không đúng định dạng");
                     return;
                 }
 
-                if (!canbo.getEmailFE().matches("\\w+@fe.edu.vn")) {
+                if (!canbo.getEmailFE().matches(Constants.REGEX_EMAIL_FE)) {
                     dtCanBoResponseMessage.setStatus(false);
                     dtCanBoResponseMessage.setMessage("Email fe không đúng định dạng");
                     return;
@@ -245,6 +262,8 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         List<String> listEmailFpt = dtCanBoRepository.findAllByEmailFPT();
         setDataInMap(mapAll, listEmailFpt);
 
+        List<String> listTenTaiKhoan = dtCanBoRepository.finAllTenTaiKhoan();
+        setDataInMap(mapAll, listTenTaiKhoan);
     }
 
     public void setDataInMap(Map<String, String> mapSimple, List<String> listStr) {

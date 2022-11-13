@@ -52,7 +52,7 @@ public class DtCanBoExportExcel {
         createCell(rowFakeDataOne, 0, "1",cellStyleRow);
         createCell(rowFakeDataOne, 1, "daotao@fe.edu.vn", cellStyleRow);
         createCell(rowFakeDataOne, 2, "daotao@fpt.edu.vn", cellStyleRow);
-        createCell(rowFakeDataOne, 3, "0123456789", cellStyleRow);
+        createCell(rowFakeDataOne, 3, "'0875864758", cellStyleRow);
         createCell(rowFakeDataOne, 4, "Đào tạo", cellStyleRow);
         createCell(rowFakeDataOne, 5, "daotao", cellStyleRow);
         createCell(rowFakeDataOne, 6, "DAO_TAO", cellStyleRow);
@@ -62,7 +62,7 @@ public class DtCanBoExportExcel {
         createCell(rowFakeDataTwo, 0, "2", cellStyleRow);
         createCell(rowFakeDataTwo, 1, "chunhiem@fe.edu.vn", cellStyleRow);
         createCell(rowFakeDataTwo, 2, "chunhiem@fpt.edu.vn", cellStyleRow);
-        createCell(rowFakeDataTwo, 3, "0987654321", cellStyleRow);
+        createCell(rowFakeDataTwo, 3, "'0987654321", cellStyleRow);
         createCell(rowFakeDataTwo, 4, "Chủ nhiệm", cellStyleRow);
         createCell(rowFakeDataTwo, 5, "chunhiem", cellStyleRow);
         createCell(rowFakeDataTwo, 6, "CHU_NHIEM_BO_MON", cellStyleRow);

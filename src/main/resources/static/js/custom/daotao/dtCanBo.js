@@ -30,6 +30,7 @@ function openModalCreate() {
 }
 
 function openModalImport() {
+    $("#import_excel_error").text("");
     $("#labelFile").text('Choose file');
     $("#inputGroupFile01").val('');
     $("#import").modal('show')
@@ -341,9 +342,17 @@ function openModalRemoveCanBo(canBoId) {
                         });
                     },
                     error: function (responseData) {
-                        if (responseData.responseJSON.message === 'Can Bo not exist') {
+                        if (responseData.responseJSON.message.trim() === 'Can Bo not exist') {
                             bootbox.alert({
                                 message: 'Cán Bộ Không Tồn Tại',
+                                backdrop: true,
+                                callback: function () {
+                                    window.open(nhomMonDatnView, '_self');
+                                }
+                            });
+                        } else if(responseData.responseJSON.message.trim() === 'Chu nhiem nay dang chu nhiem mot chuyen nganh'){
+                            bootbox.alert({
+                                message: 'Chủ nhiệm này đang chủ nhiệm một chuyên ngành',
                                 backdrop: true,
                                 callback: function () {
                                     window.open(nhomMonDatnView, '_self');
