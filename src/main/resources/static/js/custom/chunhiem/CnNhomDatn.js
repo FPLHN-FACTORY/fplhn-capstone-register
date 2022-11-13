@@ -498,6 +498,7 @@ function searchSinhVienNoGroup() {
 }
 
 function openModalExport() {
+    $("#type_excel_error").text("");
     $("#modal_excel").modal('show')
 }
 
@@ -529,7 +530,7 @@ function exportFile() {
 }
 
 function importExcel() {
-    $("#import_excel_error").text("");
+
     var form = $('#form_import_excel')[0];
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');

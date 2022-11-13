@@ -8,6 +8,7 @@ $(document).ready(function () {
 });
 
 function openModalAddSinhVien(maSinhVien, count) {
+    $("#idNhom_error").html('')
     $("#modal_create_nhom").modal('show');
     $("#addSinhVienTheoNhom").val(maSinhVien);
     $("#currentPaging").val(count)
