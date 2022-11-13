@@ -96,7 +96,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         if (!monDatnCheck.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
-        if (!Objects.isNull(monDatnInDb)) {
+        if (!Objects.isNull(monDatnInDb) && monDatnInDb.equals(command.getMaMon())) {
             throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
         }
         MonDatn monDatn = monDatnCheck.get();
@@ -109,7 +109,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     public Boolean add(@Valid final DtCreateMonDatnRequest command) {
         MonDatn monDatn = formUtils.convertToObject(MonDatn.class, command);
         MonDatn monDatnInDb = monDatnRepository.findByMaMon(monDatn.getMaMon());
-        if (!Objects.isNull(monDatnInDb)) {
+        if (!Objects.isNull(monDatnInDb) && monDatnInDb.equals(command.getMaMon())) {
             throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
         } else {
             MonDatn mon = monDatnRepository.save(monDatn);
