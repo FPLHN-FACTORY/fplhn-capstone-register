@@ -245,7 +245,7 @@ function importCanBo() {
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
-    if (typeExcel.length <= 0) {
+    if (typeExcel.trim().length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         var form = $('#form_import_excel')[0];
@@ -260,10 +260,12 @@ function importCanBo() {
                 success: function (response) {
                     if (response.data.status == true) {
                         alert("Import file excel thành công");
+                        window.open(canBoView, '_self');
                     } else {
                         alert(response.data.message);
+                        $("#inputGroupFile01").val("");
+                        $("#inputGroupFile01").clear()
                     }
-                    window.open(canBoView, '_self');
                 },
                 error: function (e) {
                 }
