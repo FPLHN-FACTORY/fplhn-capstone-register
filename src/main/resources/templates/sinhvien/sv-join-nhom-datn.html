@@ -10,7 +10,7 @@
     <link rel="stylesheet" th:href="@{/assets/demo/default/base/style.bundle.css}" type="text/css"/>
     <link href="https://ap.poly.edu.vn/images/favicon.ico" rel="shortcut icon"/>
     <link rel="stylesheet" th:href="@{/css/plugin/query-ui.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/assets/css/plugin/bootstrap.min.css}" type="text/css"/>
+    <link th:href="@{/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" th:href="@{/css/custom/button-icon.css}" type="text/css"/>
 </head>
 <!-- end::Head -->
@@ -83,7 +83,9 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                                            <button class="btn btn-primary" th:attr="onclick=|loadDataNhomDatn(0)|"
+                                                    type="button">Tìm kiếm
+                                            </button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a class="btn btn-danger text-white"
@@ -153,11 +155,11 @@
                                                             <img th:src="@{/img/eye-fill.svg}">
                                                         </button>
                                                         <button
+                                                                class="btn_box_arrow"
+                                                                th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|"
                                                                 th:style="${checkMocThoiGian} == false ? 'display: none' :
                                                                 (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')"
                                                                 title="Tham gia nhóm"
-                                                                class="btn_box_arrow"
-                                                                th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|"
                                                                 type="button">
                                                             <img th:src="@{/img/box-arrow.svg}">
                                                         </button>
@@ -197,12 +199,12 @@
     >
         <div aria-hidden="true"
              aria-labelledby="exampleModalLabel"
-             class="modal fade "
+             class="modal fade"
              id="modal_show_detail"
              tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <form id="form_create_hoc_ky">
+                    <form id="form_create_sinh_vien">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="col-form-label">Danh sách thành viên
@@ -218,8 +220,7 @@
                                     <th>Chức vụ</th>
                                     </thead>
                                     <!-- body-->
-                                    <tbody id="show_Dssv" class="table-light">
-
+                                    <tbody class="table-light" id="show_Dssv">
                                     </tbody>
                                 </table>
                             </div>
@@ -242,7 +243,7 @@
                         ký
                         nhóm Dự án tốt nghiệp</h5>
                     <button aria-label="Close" class="close"
-                            data-dismiss="modal" type="button">
+                            data-bs-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -291,7 +292,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-outline-secondary btn btn-light" data-dismiss="modal"
+                    <button class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal"
                             type="button">Hủy
                     </button>
                     <button class="btn btn-primary" th:attr="onclick=|createNhomDatn()|"
@@ -318,7 +319,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Tham gia nhóm</h5>
                     <button aria-label="Close" class="close"
-                            data-dismiss="modal" type="button">
+                            data-bs-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -338,7 +339,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-outline-secondary btn btn-light" data-dismiss="modal"
+                    <button class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal"
                             type="button">Hủy
                     </button>
                     <button

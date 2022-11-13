@@ -175,8 +175,7 @@ function openModalNhanXet(id, count) {
     });
 }
 
-$("#form_nhom_datn_nhan_xet").submit(function (event) {
-    event.preventDefault();
+function tuChoi() {
     let nhomDatnId = $("#id_nhan_xet_nhom_datn").val();
     let nhanXet = $("#nhan_xet").val()
     let currentPaging = $("#currentPaging").val();
@@ -198,10 +197,9 @@ $("#form_nhom_datn_nhan_xet").submit(function (event) {
             return;
         }
     });
-});
+}
 
-$("#form_nhom_datn_delete").submit(function (event) {
-    event.preventDefault();
+function remove() {
     let nhomDatnId = $("#remove_nhom_datn").val();
     let currentPaging = $("#currentPaging").val();
 
@@ -221,7 +219,7 @@ $("#form_nhom_datn_delete").submit(function (event) {
             return;
         }
     });
-});
+}
 
 document.querySelector("#checkbox_father").addEventListener("change", function (e) {
     e.preventDefault()
@@ -346,16 +344,15 @@ function xacNhanNhieuNhom(count) {
 
 function clearForm() {
     $("#matKhau").val("");
-    $("#maGiangVien").val("");
-    $("#maTruongNhom").val("");
+    $("#gvhd_create").val("");
+    $("#tags").val("");
 }
 
 function openModalCreate() {
     $("#modal_create").modal('show')
 }
 
-$("#form_create_nhom_datn").submit(function (event) {
-    event.preventDefault();
+function create() {
 
     let matKhau = $("#matKhau").val().trim();
     let monDatn = $("#mon_datn_create").val();
@@ -385,6 +382,7 @@ $("#form_create_nhom_datn").submit(function (event) {
             dataType: 'json',
             success: function () {
                 loadDataNhomDatn(0)
+                clearForm()
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
@@ -394,7 +392,7 @@ $("#form_create_nhom_datn").submit(function (event) {
             }
         });
     }
-});
+}
 
 function searchSinhVienNoGroup() {
     let text = $("#tags").val();

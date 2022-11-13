@@ -42,13 +42,6 @@ function openModalDanhSachSinhVien(id) {
     });
 }
 
-// mới
-$("#form_list_nhom_datn").submit(function (event) {
-    event.preventDefault();
-    loadDataNhomDatn(0);
-})
-
-
 function exportFileExcel() {
     let maNhom = $("#maNhom").val()
     let chuyenNganhId = $("#chuyenNganh").val()
@@ -64,6 +57,8 @@ function exportFileExcel() {
             url: "/api/dao-tao/nhom-datn/export?typeExcel=" + typeExcel + "&maNhom=" + maNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId,
             success: function () {
                 window.open("/api/dao-tao/nhom-datn/export?typeExcel=" + typeExcel + "&maNhom=" + maNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId, '_self');
+                $("#modal_excel").modal('hide')
+                $("#type_excel_error").val("");
             },
             error: function (e) {
                 console.log("ERROR : ", e);
@@ -144,14 +139,11 @@ function loadDataNhomDatn(count) {
                 <td>
                 <button type="button"
                         class="btn_eye"
-                        data-target="#modal_create"
-                        data-toggle="modal"
                         title="Xem chi tiết nhóm"
                         onclick="openModalDanhSachSinhVien('${item.id}')"
                 >
                     <img src="/img/eye-fill.svg">
                 </button>
-                <div class="modal fade"></div>
                 </td>
                 </tr>
                 `

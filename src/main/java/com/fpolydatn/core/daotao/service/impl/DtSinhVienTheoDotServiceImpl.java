@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author thepvph20110
@@ -146,88 +147,97 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Override
     public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
-        response.setStatus(true);
-        DtSinhVienTheoDotImport sinhVienTheoDotImport = new DtSinhVienTheoDotImport();
-        List<DtCreateSinhVienTheoDotRequest> sinhVienList = sinhVienTheoDotImport.importData(file);
-        List<SinhVien> listSinhVienEntity = new ArrayList<>();
-        map = new HashMap<>();
-        addDataInMap(map, coSoId);
-        sinhVienList.parallelStream().forEach(sinhVien -> {
-            SinhVien sinhVienEntity = new SinhVien();
-            if (map.get(sinhVien.getMaSinhVien()) != null) {
-                sinhVienEntity.setId(map.get(sinhVien.getMaSinhVien()));
-            } else if (!sinhVien.getMaSinhVien().matches("[a-zA-Z]{2}+\\d+")) {
-                response.setStatus(false);
-                response.setMessage("Mã sinh viên \"" + sinhVien.getMaSinhVien() + "\" không đúng định dạng");
-                return;
+
+
+        try {
+            response.setStatus(true);
+            DtSinhVienTheoDotImport sinhVienTheoDotImport = new DtSinhVienTheoDotImport();
+            List<DtCreateSinhVienTheoDotRequest> sinhVienList = sinhVienTheoDotImport.importData(file);
+            List<SinhVien> listSinhVienEntity = new ArrayList<>();
+            map = new HashMap<>();
+            addDataInMap(map, coSoId);
+            sinhVienList.parallelStream().forEach(sinhVien -> {
+                SinhVien sinhVienEntity = new SinhVien();
+                if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
+                        sinhVien.getSoDienThoai().isEmpty() || sinhVien.getEmail().isEmpty() ||
+                        sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
+                        sinhVien.getDotDangKy().isEmpty()) {
+                    response.setStatus(false);
+                    response.setMessage("Không để trống (Mã, tên, sđt, email, khóa, tên chuyên ngành, đợt đăng ký)");
+                    return;
+                }
+                if (map.get(sinhVien.getMaSinhVien()) != null) {
+                    sinhVienEntity.setId(map.get(sinhVien.getMaSinhVien()));
+                } else if (!sinhVien.getMaSinhVien().matches("[a-zA-Z]{2}+\\d+")) {
+                    response.setStatus(false);
+                    response.setMessage("Mã sinh viên \"" + sinhVien.getMaSinhVien() + "\" không đúng định dạng");
+                    return;
+                }
+
+                if (map.get(sinhVien.getMaNhom()) != null) {
+                    sinhVienEntity.setNhomId(map.get(sinhVien.getMaNhom()));
+                } else if (sinhVien.getMaNhom().isEmpty()) {
+                    sinhVienEntity.setNhomId(null);
+                } else if (!map.containsKey(sinhVien.getMaNhom())) {
+                    response.setStatus(false);
+                    response.setMessage("Mã nhóm \"" + sinhVien.getMaNhom() + "\" không tồn tại");
+                    return;
+                }
+
+                if (map.get(sinhVien.getChuyenNganh()) != null) {
+                    sinhVienEntity.setChuyenNganhId(map.get(sinhVien.getChuyenNganh()));
+                } else if (!map.containsKey(sinhVien.getChuyenNganh())) {
+                    response.setStatus(false);
+                    response.setMessage("Tên chuyên ngành \"" + sinhVien.getChuyenNganh() + "\" không tồn tại");
+                    return;
+                }
+
+                if (map.get(sinhVien.getDotDangKy()) != null) {
+                    sinhVienEntity.setDotDangKyId(map.get(sinhVien.getDotDangKy()));
+                } else if (!map.containsKey(sinhVien.getDotDangKy())) {
+                    response.setStatus(false);
+                    response.setMessage("Tên đợt đăng ký \"" + sinhVien.getDotDangKy() + "\" không tồn tại");
+                    return;
+                }
+
+                if (map.get(sinhVien.getMonDATN()) != null) {
+                    sinhVienEntity.setMonChuongTrinhId(map.get(sinhVien.getMonDATN()));
+                } else if (!map.containsKey(sinhVien.getMonDATN())) {
+                    response.setStatus(false);
+                    response.setMessage("Mã môn chương trình \"" + sinhVien.getMonDATN() + "\" không tồn tại");
+                    return;
+                }
+
+                if (!sinhVien.getSoDienThoai().matches("(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}")) {
+                    response.setStatus(false);
+                    response.setMessage("Số điện thoại \"" + sinhVien.getSoDienThoai() + "\" không đúng định dạng");
+                    return;
+                }
+
+                if (!sinhVien.getEmail().matches("\\w+@fpt.edu.vn")) {
+                    response.setStatus(false);
+                    response.setMessage("Email \"" + sinhVien.getEmail() + "\" không đúng định dạng");
+                    return;
+                }
+
+                sinhVienEntity.setTenSinhVien(sinhVien.getTenSinhVien());
+                sinhVienEntity.setMaSinhVien(sinhVien.getMaSinhVien());
+                sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
+                sinhVienEntity.setEmail(sinhVien.getEmail());
+                sinhVienEntity.setKhoa(sinhVien.getKhoa());
+                sinhVienEntity.setCoSoId(coSoId);
+
+                listSinhVienEntity.add(sinhVienEntity);
+            });
+            if(response.getStatus()== true){
+                sinhVienRepository.saveAll(listSinhVienEntity);
             }
-
-            if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
-                    sinhVien.getSoDienThoai().isEmpty() || sinhVien.getEmail().isEmpty() ||
-                    sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
-                    sinhVien.getDotDangKy().isEmpty()) {
-                response.setStatus(false);
-                response.setMessage("Không để trống (Mã, tên, sđt, email, khóa, tên chuyên ngành, đợt đăng ký)");
-                return;
-            }
-
-            if (map.get(sinhVien.getMaNhom()) != null) {
-                sinhVienEntity.setNhomId(map.get(sinhVien.getMaNhom()));
-            } else if (sinhVien.getMaNhom().isEmpty()) {
-                sinhVienEntity.setNhomId(null);
-            } else if (!map.containsKey(sinhVien.getMaNhom())) {
-                response.setStatus(false);
-                response.setMessage("Mã nhóm \"" + sinhVien.getMaNhom() + "\" không tồn tại");
-                return;
-            }
-
-            if (map.get(sinhVien.getChuyenNganh()) != null) {
-                sinhVienEntity.setChuyenNganhId(map.get(sinhVien.getChuyenNganh()));
-            } else if (!map.containsKey(sinhVien.getChuyenNganh())) {
-                response.setStatus(false);
-                response.setMessage("Tên chuyên ngành \"" + sinhVien.getChuyenNganh() + "\" không tồn tại");
-                return;
-            }
-
-            if (map.get(sinhVien.getDotDangKy()) != null) {
-                sinhVienEntity.setDotDangKyId(map.get(sinhVien.getDotDangKy()));
-            } else if (!map.containsKey(sinhVien.getDotDangKy())) {
-                response.setStatus(false);
-                response.setMessage("Tên đợt đăng ký \"" + sinhVien.getDotDangKy() + "\" không tồn tại");
-                return;
-            }
-
-            if (map.get(sinhVien.getMonDATN()) != null) {
-                sinhVienEntity.setMonChuongTrinhId(map.get(sinhVien.getMonDATN()));
-            } else if (!map.containsKey(sinhVien.getMonDATN())) {
-                response.setStatus(false);
-                response.setMessage("Mã môn chương trình \"" + sinhVien.getMonDATN() + "\" không tồn tại");
-                return;
-            }
-
-            if (!sinhVien.getSoDienThoai().matches("(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}")) {
-                response.setStatus(false);
-                response.setMessage("Số điện thoại \"" + sinhVien.getSoDienThoai() + "\" không đúng định dạng");
-                return;
-            }
-
-            if (!sinhVien.getEmail().matches("\\w+@fpt.edu.vn")) {
-                response.setStatus(false);
-                response.setMessage("Email \"" + sinhVien.getEmail() + "\" không đúng định dạng");
-                return;
-            }
-
-            sinhVienEntity.setTenSinhVien(sinhVien.getTenSinhVien());
-            sinhVienEntity.setMaSinhVien(sinhVien.getMaSinhVien());
-            sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
-            sinhVienEntity.setEmail(sinhVien.getEmail());
-            sinhVienEntity.setKhoa(sinhVien.getKhoa());
-            sinhVienEntity.setCoSoId(coSoId);
-
-            listSinhVienEntity.add(sinhVienEntity);
-        });
-
-        sinhVienRepository.saveAll(listSinhVienEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+            response.setStatus(false);
+            response.setMessage("Lỗi hệ thống");
+            return response;
+        }
 
         return response;
     }
@@ -368,11 +378,34 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public int loaiSinhVien(String id) {
-        try {
-            return sinhVienRepository.loaiSinhVien(id);
-        } catch (Exception e) {
-            return 0;
+    public SinhVien loaiSinhVien(String id) {
+        Map<String,NhomDatn> map = new HashMap<>();
+        Optional<SinhVien> sv = sinhVienRepository.findById(id);
+        SinhVien sinhVien =sv.get();
+        List<NhomDatn> nhomDatnList = nhomDatnTheoDotRepository.findAll();
+        NhomDatn chuyenTruongNhom;
+        for (NhomDatn nhomDatn: nhomDatnList ) {
+            map.put(nhomDatn.getTruongNhomId(),nhomDatn);
         }
+
+        if(sinhVien.getNhomId() == null){
+            sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+        }else {
+            if(map.get(sinhVien.getId())== null){
+                sinhVien.setNhomId(null);
+                sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+            }else {
+                //nếu là nhóm trưởng thif chuyển quyền cho sinh viên trong nhóm
+                SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(),sinhVien.getNhomId());
+                chuyenTruongNhom= map.get(sinhVien.getId());
+                chuyenTruongNhom.setTruongNhomId(motSVtrongNhom.getId());
+                nhomDatnTheoDotRepository.save(chuyenTruongNhom);
+                sinhVien.setNhomId(null);
+                sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+            }
+        }
+        SinhVien svKhongDuDK =sinhVienRepository.save(sinhVien);
+
+        return svKhongDuDK;
     }
 }
