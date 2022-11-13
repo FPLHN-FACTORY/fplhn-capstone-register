@@ -340,7 +340,7 @@ function openModalRemoveCanBo(canBoId) {
                                 message: 'Cán Bộ Không Tồn Tại',
                                 backdrop: true,
                                 callback: function () {
-                                    window.open(nhomMonDatnView, '_self');
+                                    window.open(canBoView, '_self');
                                 }
                             });
                         } else if(responseData.responseJSON.message.trim() === 'Chu nhiem nay dang chu nhiem mot chuyen nganh'){
@@ -348,7 +348,7 @@ function openModalRemoveCanBo(canBoId) {
                                 message: 'Chủ nhiệm này đang chủ nhiệm một chuyên ngành',
                                 backdrop: true,
                                 callback: function () {
-                                    window.open(nhomMonDatnView, '_self');
+                                    window.open(canBoView, '_self');
                                 }
                             });
                         }
