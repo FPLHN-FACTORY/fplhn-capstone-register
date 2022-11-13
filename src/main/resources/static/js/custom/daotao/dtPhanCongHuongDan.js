@@ -1,6 +1,10 @@
 const phanCongHuongDanApi = "/api/dao-tao/phan-cong-hong-dan";
 const phanCongHuongDanView = document.URL;
 
+function openPhanCong() {
+    $("#modal_create").modal("show")
+}
+
 function phanCong() {
     event.preventDefault();
     let monDatnId = $("#getMonDatnId").attr('value');
@@ -31,7 +35,6 @@ function phanCong() {
         dataType: 'json',
         success: function () {
             $("#modal_create").modal("hide");
-          $("#errLoi").text("");
           bootbox.alert({
                 message: 'Thêm thành công',
                 backdrop: true,
