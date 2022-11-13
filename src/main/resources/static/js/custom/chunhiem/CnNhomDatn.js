@@ -5,10 +5,6 @@ let checkListCbb = 0;
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
-function submitModal() {
-    $("#modal_confirm_success").modal('hide')
-}
-
 $("#form_list_nhom_datn").submit(function (event) {
     event.preventDefault();
     loadDataNhomDatn(0);
@@ -44,14 +40,21 @@ function chotDeTai(id, count) {
         url: CNNhomDatnApi + "/chot-de-tai/" + id + "?page=" + count,
         dataType: 'json',
         success: function () {
-            // ++flag;
-            // if (flag == checkListCbb) {
-            //     toastr.success('Chốt thành công');
-            // }
+            ++flag;
+            if (flag == checkListCbb) {
+                // toastr.success('Chốt thành công');
+                bootbox.alert('Chốt thành công')
+            }
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            alert(e.responseJSON.message);
+            bootbox.alert({
+                message: e.responseJSON.message + '',
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
     });
@@ -74,14 +77,21 @@ function xacNhanNhom(id, count) {
         url: CNNhomDatnApi + "/xac-nhan-nhom/" + id + "?page=" + count,
         dataType: 'json',
         success: function () {
-            // ++flag;
-            // if (flag == checkListCbb) {
-            //     toastr.success('Xác nhận thành công');
-            // }
+            ++flag;
+            if (flag == checkListCbb) {
+                // toastr.success('Xác nhận thành công');
+                bootbox.alert('Xác nhận thành công')
+            }
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            alert(e.responseJSON.message);
+            bootbox.alert({
+                message: e.responseJSON.message + '',
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
     });
@@ -133,23 +143,49 @@ $("#mon_datn_create").change(function (event) {
     });
 })
 
-function openModalRemoveNhomDatn(id, count) {
-    $("#modal_nhom_datn_remove").modal('show');
-    $("#currentPaging").val(count)
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: CNNhomDatnApi + "/" + id,
-        data: JSON.stringify(id),
-        dataType: 'json',
-        success: function () {
-            $("#remove_nhom_datn").val(id);
+function openModalRemoveNhomDatn(nhomDatnId, count) {
+    bootbox.confirm({
+        title: "Xóa nhóm dự án tốt nghiệp",
+        message: "Bạn muốn xóa nhóm này không?",
+        backdrop: true,
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function (e) {
-            $("#messageSuccess").text(e.responseJSON.message)
-            $("#modal_confirm_success").modal('show')
-            return;
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: CNNhomDatnApi + "/" + nhomDatnId,
+                    data: JSON.stringify(nhomDatnId),
+                    dataType: 'json',
+                    success: function () {
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                loadDataNhomDatn(0);
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        bootbox.alert({
+                            message: e.responseJSON.message,
+                            backdrop: true,
+                            callback: function () {
+                                loadDataNhomDatn(0);
+                            }
+                        });
+                        return;
+                    }
+                });
+            }
         }
     });
 }
@@ -168,8 +204,13 @@ function openModalNhanXet(id, count) {
             $("#id_nhan_xet_nhom_datn").val(id);
         },
         error: function (e) {
-            $("#messageSuccess").text(e.responseJSON.message)
-            $("#modal_confirm_success").modal('show')
+            bootbox.alert({
+                message: e.responseJSON.message,
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
     });
@@ -192,30 +233,13 @@ function tuChoi() {
         },
         error: function (e) {
             $("#modal_nhom_datn_nhan_xet").modal("hide");
-            $("#messageSuccess").text(e.responseJSON.message)
-            $("#modal_confirm_success").modal('show')
-            return;
-        }
-    });
-}
-
-function remove() {
-    let nhomDatnId = $("#remove_nhom_datn").val();
-    let currentPaging = $("#currentPaging").val();
-
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: CNNhomDatnApi + "/" + nhomDatnId,
-        data: JSON.stringify(nhomDatnId),
-        dataType: 'json',
-        success: function () {
-            loadDataNhomDatn(currentPaging)
-            $("#modal_nhom_datn_remove").modal("hide");
-        },
-        error: function (e) {
-            $("#messageSuccess").text(e.responseJSON.message)
-            $("#modal_confirm_success").modal('show')
+            bootbox.alert({
+                message: e.responseJSON.message,
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
     });
@@ -264,7 +288,13 @@ function chotNhieuDeTai(count) {
     }
 
     if (checkListCbb == 0) {
-        alert("Chọn nhóm muốn chốt đề tài")
+        bootbox.alert({
+            message: 'Chọn nhóm muốn chốt đề tài',
+            backdrop: true,
+            callback: function () {
+                loadDataNhomDatn(0);
+            }
+        });
     } else {
 
         for (let i = 0; i < list_checkbox_son.length; i++) {
@@ -274,25 +304,44 @@ function chotNhieuDeTai(count) {
         }
 
         if (countTrangThai != checkListCbb) {
-            alert("Trạng thái của nhóm không thỏa mãn để thực hiện chức năng chốt")
+            bootbox.alert({
+                message: 'Trạng thái của nhóm không thỏa mãn để thực hiện chức năng chốt',
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
-
-        bootbox.confirm("Bạn có chắc muốn chốt đề tài những nhóm được chọn không ?", function (item) {
-            if (item) {
-                for (var xx of list_checkbox_son) {
-                    if (xx.checked) {
-                        if (currentPage == -1) {
-                            chotDeTai(xx.value, count);
-                        } else {
-                            chotDeTai(xx.value, currentPage);
+        bootbox.confirm({
+            title: "Chốt đề tài nhiều nhómd",
+            message: "Bạn có chắc muốn chốt đề tài những nhóm được chọn không?",
+            backdrop: true,
+            buttons: {
+                cancel: {
+                    className: 'btn-outline-secondary btn btn-light',
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    for (var xx of list_checkbox_son) {
+                        if (xx.checked) {
+                            if (currentPage == -1) {
+                                chotDeTai(xx.value, count);
+                            } else {
+                                chotDeTai(xx.value, currentPage);
+                            }
                         }
                     }
+                    var checkboxFather = document.querySelector("#checkbox_father")
+                    checkboxFather.checked = false;
                 }
-                var checkboxFather = document.querySelector("#checkbox_father")
-                checkboxFather.checked = false;
             }
-        })
+        });
     }
 }
 
@@ -310,7 +359,13 @@ function xacNhanNhieuNhom(count) {
     }
 
     if (checkListCbb == 0) {
-        alert("Chọn nhóm muốn xác nhận")
+        bootbox.alert({
+            message: 'Chọn nhóm muốn xác nhận',
+            backdrop: true,
+            callback: function () {
+                loadDataNhomDatn(0);
+            }
+        });
     } else {
 
         for (let i = 0; i < list_checkbox_son.length; i++) {
@@ -320,25 +375,44 @@ function xacNhanNhieuNhom(count) {
         }
 
         if (countTrangThai != checkListCbb) {
-            alert("Trạng thái của nhóm không thỏa mãn để thực hiện chức năng xác nhận")
+            bootbox.alert({
+                message: 'Trạng thái của nhóm không thỏa mãn để thực hiện chức năng xác nhận',
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
-
-        bootbox.confirm("Bạn có chắc muốn xác nhận những nhóm được chọn không ?", function (item) {
-            if (item) {
-                for (var xx of list_checkbox_son) {
-                    if (xx.checked) {
-                        if (currentPage == -1) {
-                            xacNhanNhom(xx.value, count);
-                        } else {
-                            xacNhanNhom(xx.value, currentPage);
+        bootbox.confirm({
+            title: "Xác nhận nhiều nhómd",
+            message: "Bạn có chắc muốn xác nhận những nhóm được chọn không?",
+            backdrop: true,
+            buttons: {
+                cancel: {
+                    className: 'btn-outline-secondary btn btn-light',
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    for (var xx of list_checkbox_son) {
+                        if (xx.checked) {
+                            if (currentPage == -1) {
+                                xacNhanNhom(xx.value, count);
+                            } else {
+                                xacNhanNhom(xx.value, currentPage);
+                            }
                         }
                     }
+                    var checkboxFather = document.querySelector("#checkbox_father")
+                    checkboxFather.checked = false;
                 }
-                var checkboxFather = document.querySelector("#checkbox_father")
-                checkboxFather.checked = false;
             }
-        })
+        });
     }
 }
 
@@ -381,14 +455,25 @@ function create() {
             data: JSON.stringify(nhomDatnRequest),
             dataType: 'json',
             success: function () {
-                loadDataNhomDatn(0)
                 clearForm()
                 $("#modal_create").modal("hide");
+                bootbox.alert({
+                    message: 'Thêm thành công',
+                    backdrop: true,
+                    callback: function () {
+                        loadDataNhomDatn(0);
+                    }
+                });
             },
             error: function (e) {
                 $("#modal_create").modal("hide");
-                $("#messageSuccess").text(e.responseJSON.message)
-                $("#modal_confirm_success").modal('show')
+                bootbox.alert({
+                    message: e.responseJSON.message,
+                    backdrop: true,
+                    callback: function () {
+                        loadDataNhomDatn(0);
+                    }
+                });
             }
         });
     }
@@ -408,7 +493,6 @@ function searchSinhVienNoGroup() {
             });
         },
         error: function (e) {
-            console.log("ERROR : ", e);
         }
     });
 }
@@ -435,7 +519,6 @@ function exportFile() {
                 $("#modal_excel").modal('hide')
             },
             error: function (e) {
-                console.log("ERROR : ", e);
             }
         });
     }
@@ -459,17 +542,25 @@ function importExcel() {
                 cache: false,
                 success: function (response) {
                     if (response.data.status == true) {
-                        $("#messNotification").text("Import file excel thành công");
-                        loadDataNhomDatn(0);
+                        bootbox.alert({
+                            message: 'Import file excel thành công',
+                            backdrop: true,
+                            callback: function () {
+                                loadDataNhomDatn(0);
+                            }
+                        });
                     } else {
-                        $("#messNotification").text(response.data.message);
+                        bootbox.alert({
+                            message: response.data.message,
+                            backdrop: true,
+                            callback: function () {
+                                loadDataNhomDatn(0);
+                            }
+                        });
                     }
                     $('#modal_import_excel').modal("hide");
-                    $("#modal_notification").modal("show");
-                    loadDataNhomDatn(0)
                 },
                 error: function (e) {
-                    console.log("ERROR : ", e);
                 }
             }
         );
@@ -593,7 +684,6 @@ function loadDataNhomDatn(count) {
             }
         },
         error: function (e) {
-            console.log("ERROR : ", e);
         }
     });
 }

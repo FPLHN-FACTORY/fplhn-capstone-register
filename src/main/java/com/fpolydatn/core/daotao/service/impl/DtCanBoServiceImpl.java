@@ -61,16 +61,23 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     }
 
     @Override
-    public CanBo create(@Valid final DtCreateCanBoRequest canBoRequest) {
+    public boolean create(@Valid final DtCreateCanBoRequest canBoRequest) {
+        String idByEmailFpt = dtCanBoRepository.getIdByEmailFpt(canBoRequest.getEmailFpt().trim());
+        if (idByEmailFpt != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+        String idByEmailFe = dtCanBoRepository.getIdByEmailFe(canBoRequest.getEmailFe().trim());
+        if (idByEmailFe != null) {
+            throw new RestApiException(Message.EMAIL_FE_EXIST);
+        }
+        String idByTenTaiKhoan = dtCanBoRepository.getIdByTenTaiKhoan(canBoRequest.getTenTaiKhoan());
+        if (idByTenTaiKhoan != null) {
+            throw new RestApiException(Message.TEN_TAI_KHOAN_CAN_BO_EXIST);
+        }
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
-        return dtCanBoRepository.save(canBo);
+        dtCanBoRepository.save(canBo);
+        return true;
     }
-
-    @Override
-    public CanBo createcb(CanBo canBo) {
-        return dtCanBoRepository.save(canBo);
-    }
-
 
     @Override
     public Boolean delete(String id) {
@@ -100,6 +107,18 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         Optional<CoSo> coSo = dtCoSoRepository.findById(canBoRequest.getCoSoId());
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
+        }
+        String idByEmailFpt = dtCanBoRepository.getIdUpdateByEmailFpt(canBoRequest.getEmailFpt().trim(), canBo.get().getId());
+        if (idByEmailFpt != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+        String idByEmailFe = dtCanBoRepository.getIdUpdateByEmailFe(canBoRequest.getEmailFe().trim(), canBo.get().getId());
+        if (idByEmailFe != null) {
+            throw new RestApiException(Message.EMAIL_FE_EXIST);
+        }
+        String idByTenTaiKhoan = dtCanBoRepository.getIdUpdateByTenTaiKhoan(canBoRequest.getTenTaiKhoan(), canBo.get().getId());
+        if (idByTenTaiKhoan != null) {
+            throw new RestApiException(Message.TEN_TAI_KHOAN_CAN_BO_EXIST);
         }
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return dtCanBoRepository.save(updateCanBo);

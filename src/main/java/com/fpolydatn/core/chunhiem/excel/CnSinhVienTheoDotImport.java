@@ -3,6 +3,7 @@ package com.fpolydatn.core.chunhiem.excel;
 import com.fpolydatn.core.chunhiem.model.request.CnCreateSinhVienTheoDotRequest;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -28,7 +29,10 @@ public class CnSinhVienTheoDotImport {
         Sheet worksheet = workbook.getSheetAt(0);
         for (Row row :
                 worksheet) {
-            if (row.getRowNum()==0){
+            if (row.getRowNum() == 0) {
+                continue;
+            }
+            if (row.getCell(1).getCellType() != CellType.STRING) {
                 continue;
             }
             CnCreateSinhVienTheoDotRequest sinhVien = new CnCreateSinhVienTheoDotRequest();

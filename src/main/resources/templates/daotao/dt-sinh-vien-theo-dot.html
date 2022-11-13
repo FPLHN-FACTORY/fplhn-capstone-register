@@ -123,7 +123,7 @@
                                             <form id="form_mau_excel" method="post">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title"> Mẫu Import Excel</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
+                                                    <button type="button" class="close" data-bs-dismiss="modal"
                                                             aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -142,7 +142,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                            data-dismiss="modal">Hủy
+                                                            data-bs-dismiss="modal">Hủy
                                                     </button>
                                                     <button type="button" class="btn btn-primary"
                                                             th:attr="onclick=|mauImport()|">Download excel
@@ -182,7 +182,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Export
                                                                     Excel</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -201,7 +201,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button type="button"
                                                                         th:attr="onclick=|exportExcel()|"
@@ -225,7 +225,7 @@
                                                               id="form_import_excel">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Import Excel</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -250,9 +250,8 @@
                                                                             <button class="btn input-group-text"
                                                                                     type="button"
                                                                                     id="mauImport"
-                                                                                    data-dismiss="modal"
-                                                                                    data-toggle="modal"
-                                                                                    data-target="#modal_excel_mau"
+                                                                                    data-bs-dismiss="modal"
+                                                                                    th:attr="onclick=|showExportMau()|"
                                                                             >Tải Mẫu
                                                                             </button>
                                                                         </div>
@@ -263,7 +262,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button type="button"
                                                                         th:attr="onclick=|importExcel()|"
@@ -415,7 +414,7 @@
                         <h5 class="modal-title">
                             Loại sinh viên không đạt
                         </h5>
-                        <button type="button" class="close" data-dismiss="modal"
+                        <button type="button" class="close" data-bs-dismiss="modal"
                                 aria-label="Close">
                             <span aria-hidden="true">x</span>
                         </button>
@@ -436,7 +435,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                data-dismiss="modal">Hủy
+                                data-bs-dismiss="modal">Hủy
                         </button>
                         <button
                                 th:attr="onclick=|loaiSinhVien()|"
@@ -460,7 +459,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Chi tiết sinh viên</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

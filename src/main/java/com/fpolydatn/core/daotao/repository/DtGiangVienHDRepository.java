@@ -2,6 +2,7 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -93,13 +94,7 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
     @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id", nativeQuery = true)
     String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id);
 
-    @Query(value = "SELECT  COUNT(nd.id) AS so_nhom_dang_huong_dan" +
-            "      FROM giang_vien_huong_dan gvhd \n" +
-            "      LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id \n" +
-            "      LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id\n" +
-            "      LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                \n" +
-            "      WHERE gvhd.id = :idGiangVien \n" +
-            "      GROUP BY gvhd.id  ", nativeQuery = true)
+    @Query(value = "SELECT  COUNT(nd.id) AS so_nhom_dang_huong_dan" + "      FROM giang_vien_huong_dan gvhd \n" + "      LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id \n" + "      LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id\n" + "      LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                \n" + "      WHERE gvhd.id = :idGiangVien \n" + "      GROUP BY gvhd.id  ", nativeQuery = true)
     int getCountSoNhomDangHuongDan(@Param("idGiangVien") String idGiangVien);
 
     @Query(value = """
@@ -138,6 +133,11 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                 ORDER BY gvhd.last_modified_date DESC 
             """, nativeQuery = true)
     List<DtGiangVienHDResponse> exportExcel(@Param("req") DtFindGiangVienHDRequest req);
+
+    @Query(value = """
+            SELECT email_fpt FROM giang_vien_huong_dan""", nativeQuery = true)
+    List<String> findAllEmailFe();
+
 
 
 

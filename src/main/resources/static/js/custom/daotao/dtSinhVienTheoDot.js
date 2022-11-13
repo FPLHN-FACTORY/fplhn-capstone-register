@@ -286,6 +286,10 @@ function genPagingAndFillColor(totalPages, currentPage) {
     colorPage[currentPage].style.backgroundColor = '#0a8cf0';
     colorPage[currentPage].style.color = 'white';
 }
+function showExportMau(){
+    $("#modal_excel_mau").modal('show');
+
+}
 
 function loaiSinhVienDetail(id, page) {
     bootbox.confirm({
@@ -309,7 +313,7 @@ function loaiSinhVienDetail(id, page) {
                     data: JSON.stringify(id),
                     dataType: 'json',
                     success: function (responseData) {
-                        if (responseData.data < 1) {
+                        if (responseData.data == null) {
                             bootbox.alert({
                                 message: 'Loại sing viên thất bại',
                                 backdrop: true,

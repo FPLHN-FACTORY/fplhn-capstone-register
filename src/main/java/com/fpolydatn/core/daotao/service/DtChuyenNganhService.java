@@ -10,7 +10,6 @@ import com.fpolydatn.entity.ChuyenNganh;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author hungpv
@@ -29,5 +28,4 @@ public interface DtChuyenNganhService {
 
     PageableObject<DtChuyenNganhResponse> search(final DtFindChuyenNganhRequest req);
 
-//    Optional<ChuyenNganh> chuyenNganhCheckByName(DtFindChuyenNganhRequest req);
 }

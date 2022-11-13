@@ -45,11 +45,6 @@ function openModalDanhSachSinhVien(id) {
     });
 }
 
-$("#form_search").submit(function (event) {
-    event.preventDefault();
-    loadDataNhomDatn(0);
-})
-
 function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
     clearform();
     if (Number(matKhauTonTai) == 0) {

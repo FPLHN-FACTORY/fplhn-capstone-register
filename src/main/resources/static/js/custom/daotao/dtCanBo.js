@@ -20,8 +20,20 @@ function clear() {
     $('#so_dien_thoai_error').text("");
     $('#ten_can_bo_error').text("");
     $('#ten_tai_khoan_error').text("");
-
 }
+
+function openModalCreate() {
+    $("#modal_create").modal('show')
+}
+
+function openModalImport() {
+    $("#import").modal('show')
+}
+
+function openModalTaiMau() {
+    $("#modal_excel_mau").modal('show')
+}
+
 
 function clearUpdate() {
     $('#email_fe_error_update').text("");
@@ -32,7 +44,6 @@ function clearUpdate() {
 }
 
 function save() {
-    event.preventDefault();
     clear();
     let emailFe = $("#emailfe").val().trim();
     let emailFpt = $("#emailfpt").val().trim();
@@ -63,8 +74,6 @@ function save() {
     } else {
         $("#email_fe_error").text(" ");
     }
-
-
     if (emailFpt.length == 0) {
         $("#email_fpt_error").text("Email Fpt Không Được Để Trống");
         check = false;
@@ -116,11 +125,17 @@ function save() {
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message.trim() == 'email fpt da ton tai') {
+                    $("#email_fpt_error").text("Email fpt đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'email fe da ton tai') {
+                    $("#email_fe_error").text("Email fe đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'Ten tai khoan cua can bo da ton tai') {
+                    $("#ten_tai_khoan_error").text("Tên tài khoản đã tồn tại");
+                }
             }
         });
     }
-};
+}
 
 function openModalUpdateCanBo(canBoId) {
     clearUpdate();
@@ -148,7 +163,6 @@ function openModalUpdateCanBo(canBoId) {
 }
 
 function update() {
-    event.preventDefault();
     let emailFpt = $("#email_fpt_update").val().trim();
     let emailFe = $("#email_fe_update").val().trim();
     let soDienThoai = $("#so_dien_thoai_Update").val().trim();
@@ -235,7 +249,13 @@ function update() {
                 $("#modal_update_can_bo").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message.trim() == 'email fpt da ton tai') {
+                    $("#email_fpt_error").text("Email fpt đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'email fe da ton tai') {
+                    $("#email_fe_error").text("Email fe đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'Ten tai khoan cua can bo da ton tai') {
+                    $("#ten_tai_khoan_error").text("Tên tài khoản đã tồn tại");
+                }
             }
         });
     }
@@ -259,12 +279,21 @@ function importCanBo() {
                 cache: false,
                 success: function (response) {
                     if (response.data.status == true) {
-                        alert("Import file excel thành công");
-                        window.open(canBoView, '_self');
+                        bootbox.alert({
+                            message: "Import file excel thành công",
+                            backdrop: true,
+                            callback: function () {
+                                window.open(canBoView, '_self');
+                            }
+                        });
                     } else {
-                        alert(response.data.message);
-                        $("#inputGroupFile01").val("");
-                        $("#inputGroupFile01").clear()
+                        bootbox.alert({
+                            message: response.data.message,
+                            backdrop: true,
+                            callback: function () {
+                                window.open(canBoView, '_self');
+                            }
+                        });
                     }
                 },
                 error: function (e) {
@@ -280,6 +309,7 @@ function openModalRemoveCanBo(canBoId) {
     bootbox.confirm({
         title: "Xóa nhóm môn",
         message: "Bạn muốn xóa cán bộ này?",
+        backdrop: true,
         buttons: {
             cancel: {
                 className: 'btn-outline-secondary btn btn-light',
@@ -323,9 +353,7 @@ function openModalRemoveCanBo(canBoId) {
 }
 
 
-
-$("#modal_excel_mau").submit(function (event) {
-    event.preventDefault();
+function exportExcelMau() {
     let typeExcel = $("#type_mau_excel").val();
     if (typeExcel == '') {
         $("#mau_excel_error").text("chọn định dạng file download");
@@ -342,4 +370,4 @@ $("#modal_excel_mau").submit(function (event) {
             }
         });
     }
-});
+}

@@ -3,10 +3,12 @@ package com.fpolydatn.core.daotao.controller;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.core.daotao.excel.DtGiangVienFileImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,10 +83,11 @@ public class DtGiangVienRestController extends BaseController {
     }
 
     @PostMapping("/import")
-    public void importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseObject importEcel(@RequestParam("file") MultipartFile file) throws IOException {
         String idCoSo = session.getCoSoId();
         String idDotDangKy = commonHelper.getDotDangKyHienTai();
-        this.giangVienHDService.importExcel(file,idCoSo,idDotDangKy);
+        DtGiangVienHDResponseMessage responseMessage = giangVienHDService.DtGiangVienHDImport(file,idCoSo,idDotDangKy);
+        return new ResponseObject(responseMessage);
     }
 
     @GetMapping("/export")

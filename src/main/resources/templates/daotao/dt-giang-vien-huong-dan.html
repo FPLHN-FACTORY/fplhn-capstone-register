@@ -63,7 +63,9 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                            <button type="button"
+                                                    class="btn btn-primary"  th:attr="onclick=|loadTable(0)|"
+                                            >Tìm kiếm</button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a href="#"
@@ -91,9 +93,9 @@
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Export
+                                                            <h5 class="modal-title" id="exampleModalLabel1">Export
                                                                 Excel</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
                                                                     aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -112,9 +114,10 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                    data-dismiss="modal">Hủy
+                                                                    data-bs-dismiss="modal">Hủy
                                                             </button>
                                                             <button class="btn btn-primary"
+                                                                    type="button"
                                                                     th:attr="onclick=|exportFile()|">Download
                                                                 excel
                                                             </button>
@@ -131,9 +134,9 @@
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Export
+                                                            <h5 class="modal-title" id="exampleModalLabel2">Export
                                                                 Excel</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
                                                                     aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -152,7 +155,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                    data-dismiss="modal">Hủy
+                                                                    data-bs-dismiss="modal">Hủy
                                                             </button>
                                                             <button class="btn btn-primary"
                                                                     th:attr="onclick=|importFileMau()|">Download
@@ -163,7 +166,7 @@
                                                 </div>
                                             </div>
 
-                                            <!--                                            import excel-->
+                                            <!--import excel-->
                                             <div class="modal fade "
                                                  id="modal_import_excel"
                                                  tabindex="-1"
@@ -176,7 +179,7 @@
                                                                 <h5 class="modal-title">
                                                                     Import file excel
                                                                 </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">x</span>
                                                                 </button>
@@ -202,8 +205,8 @@
                                                                                     type="button"
                                                                                     id="mauImport"
                                                                                     data-dismiss="modal"
-                                                                                    data-toggle="modal"
-                                                                                    data-target="#modal_import_mau">
+                                                                                    th:attr="onclick=|openModalImportMau()|"
+                                                                                   >
                                                                                 Tải mẫu
                                                                             </button>
                                                                         </div>
@@ -215,7 +218,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button
                                                                         th:attr="onclick=|importExcel()|"
@@ -232,20 +235,23 @@
                                     <div class="row">
                                         <div class="col-6 d-inline">
                                             <br>
-                                            <button data-toggle="modal"
-                                                    data-target="#modal_create"
+                                            <button
+                                                    type="button"
+                                                    th:attr="onclick=|openModalAddGVHD()|"
                                                     class="btn btn-success"
                                             >
                                                 Thêm giảng viên
                                             </button>
-                                            <button class="btn btn-success"
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-success"
                                                     th:attr="onclick=|openModalExport()|"
                                             >
                                                 Export
                                             </button>
-                                            <button class="btn btn-success"
-                                                    data-toggle="modal"
-                                                    data-target="#modal_import_excel"
+                                            <button type="button"
+                                                    class="btn btn-success"
+                                                    th:attr="onclick=|openModalImport()|"
                                             >
                                                 Import
                                             </button>
@@ -258,9 +264,9 @@
                                                     <div class="modal-content">
                                                         <form id="form_create_giang_vien">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Thêm
+                                                                <h5 class="modal-title" id="exampleModalLabel3">Thêm
                                                                     giảng viên</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -323,9 +329,13 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Thêm mới
+                                                                <button
+                                                                        type="button"
+                                                                        class="btn btn-primary"
+                                                                        th:attr="onclick=|addGVHD()|"
+                                                                >Thêm mới
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -422,7 +432,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title">Cập nhật học kỳ</h5>
                                 <button type="button" class="close"
-                                        data-dismiss="modal" aria-label="Close">
+                                        data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -479,9 +489,12 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                        data-dismiss="modal">Hủy
+                                        data-bs-dismiss="modal">Hủy
                                 </button>
-                                <button type="submit" class="btn btn-primary">
+                                <button  type="button"
+                                         class="btn btn-primary"
+                                         th:attr="onclick=|updateGVHD()|"
+                                        >
                                     Cập nhật
                                 </button>
                             </div>
@@ -505,7 +518,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title">Xoá giảng viên</h5>
                                 <button type="button" class="close"
-                                        data-dismiss="modal" aria-label="Close">
+                                        data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -516,7 +529,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                        data-dismiss="modal">Hủy
+                                        data-bs-dismiss="modal">Hủy
                                 </button>
                                 <button type="submit" class="btn btn-primary">Xoá
                                 </button>
