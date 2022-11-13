@@ -5,6 +5,10 @@ $(document).ready(function () {
     $("#chuyen_nganh_error").text("");
 });
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
 function clearData() {
     $("#ten-chuyen-nganh-search").val("");
 }

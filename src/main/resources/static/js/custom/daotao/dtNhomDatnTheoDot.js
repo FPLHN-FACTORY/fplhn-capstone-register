@@ -3,6 +3,10 @@ let DTNhomDatnView = '/dao-tao/nhom-datn';
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
 function openModalExportExcel(){
     $("#modal_excel").modal('show')
 }

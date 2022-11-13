@@ -9,6 +9,9 @@ $(document).ready(function () {
     clear();
 });
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
 
 function clearData() {
     $("#keyword").val("");
@@ -213,7 +216,7 @@ function update() {
         $("#so_dien_thoai_error_update").text("Số Điện Thoại Không Được Để Trống");
         check = false;
     } else if (regexSoDienThoai.test(soDienThoai) == false) {
-        $("#so_dien_thoai_error_update").text("Số Điện Thoại Phải Định Dạng");
+        $("#so_dien_thoai_error_update").text("Số Điện Thoại Phải Đúng Định Dạng");
         check = false;
     } else {
         $("#so_dien_thoai_error_update").text("");
@@ -250,11 +253,11 @@ function update() {
             },
             error: function (e) {
                 if (e.responseJSON.message.trim() == 'email fpt da ton tai') {
-                    $("#email_fpt_error").text("Email fpt đã tồn tại");
+                    $("#email_fpt_error_update").text("Email fpt đã tồn tại");
                 } else if (e.responseJSON.message.trim() == 'email fe da ton tai') {
-                    $("#email_fe_error").text("Email fe đã tồn tại");
+                    $("#email_fe_error_update").text("Email fe đã tồn tại");
                 } else if (e.responseJSON.message.trim() == 'Ten tai khoan cua can bo da ton tai') {
-                    $("#ten_tai_khoan_error").text("Tên tài khoản đã tồn tại");
+                    $("#ten_tai_khoan_error_update").text("Tên tài khoản đã tồn tại");
                 }
             }
         });
