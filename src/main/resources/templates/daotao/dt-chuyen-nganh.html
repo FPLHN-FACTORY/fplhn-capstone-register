@@ -120,7 +120,7 @@
                                                                     class="btn_trash"
                                                                     data-toggle="tooltip"
                                                                     title="Xóa chuyên ngành"
-                                                                    th:attr="onclick=|openModalRemoveChuyenNganh('${chuyenNganh.getId()}')|">
+                                                                    th:attr="onclick=|delete('${chuyenNganh.getId()}')|">
                                                                 <img th:src="@{/img/trash.svg}">
                                                             </button>
                                                         </td>
@@ -215,41 +215,6 @@
     </div>
 </div>
 <!--   End Modal Update -->
-
-<!--  Start Modal Remove-->
-<div
-        class="modal fade"
-        id="modal_chuyen_nganh_remove"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_chuyen_nganh_delete" onsubmit="deleteChuyenNganh()">
-                <div class="modal-header">
-                    <h5 class="modal-title">Xoá chuyên ngành</h5>
-                    <button type="button" class="close"
-                            data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn xoá không ?</p>
-                    <span id="remove_chuyen_nganh" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button onclick="clearModal()" type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-bs-dismiss="modal">Hủy
-                    </button>
-                    <button type="button" th:attr="onclick=|deleteChuyenNganh()|" class="btn btn-primary">Xoá
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--   End Modal Remove -->
 
 <!--Start Modal Create-->
 <div
