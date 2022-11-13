@@ -55,7 +55,6 @@ public class DtNhomDatnTheoDotExport {
             //Set data
             int rowNum = 1;
             for (DtNhomDatnTheoDotResponse dtNhomDatn : listNhomDatn) {
-                System.out.println(listNhomDatn.size());
                 Row empDataRow = sheet.createRow(rowNum++);
 
                 Cell empSttCell = empDataRow.createCell(0);
