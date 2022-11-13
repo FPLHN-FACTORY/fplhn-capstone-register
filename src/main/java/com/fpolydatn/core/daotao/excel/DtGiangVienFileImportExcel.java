@@ -1,6 +1,6 @@
 package com.fpolydatn.core.daotao.excel;
 
-import com.fpolydatn.core.daotao.model.response.DtGiangVienHDImportExcel;
+import com.fpolydatn.core.daotao.model.request.DtGiagVienHDImportResquest;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -15,8 +15,8 @@ import java.util.List;
 
 public class DtGiangVienFileImportExcel {
 
-    public  List<DtGiangVienHDImportExcel> importData(MultipartFile reapExcelDataFile) throws IOException {
-        List<DtGiangVienHDImportExcel> listGVHD = new ArrayList<>();
+    public  List<DtGiagVienHDImportResquest> importData(MultipartFile reapExcelDataFile) throws IOException {
+        List<DtGiagVienHDImportResquest> listGVHD = new ArrayList<>();
         Workbook workbook = StreamingReader.builder()
                 .bufferSize(4096)
                 .rowCacheSize(50)
@@ -37,7 +37,7 @@ public class DtGiangVienFileImportExcel {
             ) {
                 continue;
             }
-            DtGiangVienHDImportExcel giangVien = new DtGiangVienHDImportExcel();
+            DtGiagVienHDImportResquest giangVien = new DtGiagVienHDImportResquest();
             giangVien.setTenGvhd(String.valueOf(getCellValue(row.getCell(1))).trim());
             giangVien.setTenTaiKhoan(String.valueOf(getCellValue(row.getCell(2))).trim());
             giangVien.setMonHoc(String.valueOf(getCellValue(row.getCell(3))).trim());

@@ -7,27 +7,19 @@ import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtGiagVienHDImportResquest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
-import com.fpolydatn.core.daotao.model.response.DtGiangVienHDImportExcel;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
 import com.fpolydatn.core.daotao.repository.DtGiangVienHDRepository;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtPhanCongHuongDanRepository;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
-import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
-import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
-import com.github.pjfanning.xlsx.StreamingReader;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,7 +38,6 @@ import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -158,7 +149,6 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public List<GiangVienHuongDan> checkValidFile(List<DtGiagVienHDImportResquest> list) {
         List<GiangVienHuongDan> listGVHD = new ArrayList<>();
-        List<GiangVienHuongDan> listGVHDUpdate = new ArrayList<>();
         Map<String, GiangVienHuongDan> mapGiangVien = new HashMap<>();
         if (list == null) {
             throw new RestApiException(Message.FILE_EMPTY);
@@ -224,10 +214,10 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId ,String doDangKyId) {
         DtGiangVienHDResponseMessage dtGiangVienHDResponseMessage = new DtGiangVienHDResponseMessage();
-        List<GiangVienHuongDan> listGiangVien = new ArrayList<>();
+        List<DtGiagVienHDImportResquest> listGiangVien = new ArrayList<>();
         try {
             DtGiangVienFileImportExcel dtGiangVienHDImport = new DtGiangVienFileImportExcel();
-            List<DtGiangVienHDImportExcel> listGVHD = dtGiangVienHDImport.importData(file);
+            List<DtGiagVienHDImportResquest> listGVHD = dtGiangVienHDImport.importData(file);
             dtGiangVienHDResponseMessage.setStatus(true);
             Map<String, String> map = new HashMap<>();
             addDataInMap(map);
@@ -276,24 +266,25 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                     dtGiangVienHDResponseMessage.setMessage("Số điện thoại không đúng định dạng");
                     return;
                 }
-                GiangVienHuongDan giangVien = new GiangVienHuongDan();
+                DtGiagVienHDImportResquest giangVien = new DtGiagVienHDImportResquest();
                 giangVien.setEmailFe(gv.getEmailFe());
                 giangVien.setEmailFpt(gv.getEmailFpt());
                 giangVien.setTenTaiKhoan(gv.getTenTaiKhoan());
                 giangVien.setSoDienThoai(gv.getSoDienThoai());
                 giangVien.setSoNhomHuongDanToiDa(gv.getSoNhomHuongDanToiDa());
                 giangVien.setTenGvhd(gv.getTenGvhd());
+                giangVien.setMonHoc(gv.getMonHoc());
                 giangVien.setCoSoId(coSoId);
                 giangVien.setDotDangKyId(doDangKyId);
                 listGiangVien.add(giangVien);
             });
             if (dtGiangVienHDResponseMessage.getStatus() == true) {
-                dtGiangVienHDRepository.saveAll(listGiangVien);
+                checkValidFile(listGiangVien);
             }
         }catch (Exception e){
             e.printStackTrace();
             dtGiangVienHDResponseMessage.setStatus(false);
-            dtGiangVienHDResponseMessage.setMessage("Lỗi hệ thống");
+            dtGiangVienHDResponseMessage.setMessage("Lỗi File Import");
             return dtGiangVienHDResponseMessage;
         }
         return dtGiangVienHDResponseMessage;

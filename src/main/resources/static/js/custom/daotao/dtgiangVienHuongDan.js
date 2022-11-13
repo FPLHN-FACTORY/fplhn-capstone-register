@@ -385,33 +385,33 @@ function exportFile() {
 }
 
 function importExcel() {
-    var form = $('#form_import_excel')[0];
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
-    if (typeExcel.length <= 0) {
+    if (typeExcel.trim().length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        var form = $('#form_import_excel')[0];
         $.ajax({
                 type: 'POST',
-                url: '/api/dao-tao/giang-vien-huong-dan/import',
+                url: giangVienHuongDanApi + '/import',
                 enctype: 'multipart/form-data',
                 processData: false,
                 data: new FormData(form),
                 contentType: false,
                 cache: false,
                 success: function (response) {
-                   if (response.data.status == true) {
-                       alert("Import file excel thành công");
-                       window.open(giangVienHuongDanView, '_self');
-                   } else {
-                       alert(response.data.message);
-                       $("#inputGroupFile01").val("");
-                       $("#inputGroupFile01").clear()
-                   }
-               },
-               error: function (e) {
-               }
+                    if (response.data.status == true) {
+                        alert("Import file excel thành công");
+                        window.open(giangVienHuongDanView, '_self');
+                    } else {
+                        alert(response.data.message);
+                        $("#inputGroupFile01").val("");
+                        $("#inputGroupFile01").clear()
+                    }
+                },
+                error: function (e) {
+                }
             }
         );
     } else {
