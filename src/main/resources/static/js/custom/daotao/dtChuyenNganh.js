@@ -38,7 +38,6 @@ function openModalCreateChuyenNganh(){
 }
 
 function create() {
-    event.preventDefault();
     let tenChuyenNganh = $("#tenChuyenNganhAdd").val();
     let CNBMId = $("#tenCNBMhAdd").val();
     let chuyenNganhRequest = {};
@@ -108,7 +107,6 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
 }
 
 function update() {
-    event.preventDefault();
     let tenChuyenNganh = $("#tenChuyenNganhUpdate").val();
     console.log (tenChuyenNganh);
     let chuyenNganhId = $("#id_chuyen_nganh_update").val();
