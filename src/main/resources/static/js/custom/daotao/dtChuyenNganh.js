@@ -19,12 +19,14 @@ function checkCnbm(cnbm){
         $("#tenCNBMhAdd").show();
         $("#create_chuyenNganh").show();
         $("#tenCNBMhUpdate").show();
-        $("#CNBM_add_error").text("");
+        $("#update_chuyenNganh").show();
     }else{
         $("#create_chuyenNganh").hide();
         $("#tenCNBMhAdd").hide();
         $("#tenCNBMhUpdate").hide();
+        $("#update_chuyenNganh").hide();
         $("#CNBM_add_error").text("Không còn chủ nhiệm bộ môn");
+        $("#CNBM_update_error").text("Không còn chủ nhiệm bộ môn");
     }
 }
 function openModalCreateChuyenNganh(){
@@ -35,7 +37,7 @@ function openModalCreateChuyenNganh(){
     checkCnbm(cnbm);
 }
 
-function create () {
+function create() {
     event.preventDefault();
     let tenChuyenNganh = $("#tenChuyenNganhAdd").val();
     let CNBMId = $("#tenCNBMhAdd").val();
@@ -61,6 +63,7 @@ function create () {
             data: JSON.stringify(chuyenNganhRequest),
             dataType: 'json',
             success: function () {
+                $("#modal_create_chuyen_nganh").modal("hide");
                 bootbox.alert({
                     message: 'Thêm thành công',
                     backdrop: true,
@@ -84,9 +87,10 @@ function create () {
 
 function openModalUpdateChuyenNganh(chuyenNganhId) {
     $("#modal_update_chuyen_nganh").modal('show');
-    $("#chuyennganh_error").text("");
-    $("#chuyennganhUpdate_error").text("");
-    console.log('a');
+    $("#chuyennganh_Update_error").text("");
+    $("#CNBM_update_error").text("");
+    let cnbm = $("#chuNhiemBoMon").val();
+    checkCnbm(cnbm);
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -106,6 +110,7 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
 function update() {
     event.preventDefault();
     let tenChuyenNganh = $("#tenChuyenNganhUpdate").val();
+    console.log (tenChuyenNganh);
     let chuyenNganhId = $("#id_chuyen_nganh_update").val();
     let tenCNBM = $("#tenCNBMhUpdate").val();
     let chuyenNganhrequest = {};
@@ -117,11 +122,6 @@ function update() {
             index ++;
     }
 
-    if (tenCNBM == null) {
-        $("#CNBM_update_error").text("Không có chủ nhiệm bộ môn");
-        index ++;
-    }
-
     if(index == 0) {
         $.ajax({
             type: "PUT",
@@ -131,7 +131,6 @@ function update() {
             dataType: 'json',
             success: function () {
                 $("#modal_update_chuyen_nganh").modal("hide");
-                window.open(chuyenNganhView, '_self');
                 bootbox.alert({
                     message: 'Cập nhật thành công',
                     backdrop: true,
@@ -152,52 +151,45 @@ function update() {
 
 function openModalRemoveChuyenNganh(chuyenNganhId) {
     $("#remove_chuyen_nganh").text("")
-    $("#modal_chuyen_nganh_remove").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: chuyenNganhApi + "/" + chuyenNganhId,
-        data: JSON.stringify(chuyenNganhId),
-        dataType: 'json',
-        success: function () {
-            $("#remove_chuyen_nganh").val(chuyenNganhId);
+    bootbox.confirm({
+        title: "Xóa",
+        message: "Bạn chắc chắn xóa không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: chuyenNganhApi + "/" + chuyenNganhId,
+                    data: JSON.stringify(chuyenNganhId),
+                    dataType: 'json',
+                    success: function (responseData) {
+                            bootbox.alert({
+                                message: 'Xóa thành công',
+                                backdrop: true,
+                                callback: function (e) {
+                                    window.open(chuyenNganhView, '_self');
+                                }
+                            });
+                    },
+                    error: function (e) {
+                        if (e.responseJSON.message != null) {
+                            bootbox.alert({
+                                message: '<div style="color: red">Chuyên ngành đang tồn tại trong đợt đăng ký không thể xóa</div>',
+                                backdrop: true,
+                            });
+                        }
+                    }
+                });
+            }
         }
     });
 }
-
-function deleteChuyenNganh() {
-    event.preventDefault();
-    let chuyenNganhId = $("#remove_chuyen_nganh").val();
-
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: chuyenNganhApi + "/" + chuyenNganhId,
-        data: JSON.stringify(chuyenNganhId),
-        dataType: 'json',
-        success: function () {
-            $("#modal_chuyen_nganh_remove").modal("hide");
-            window.open(chuyenNganhView, '_self');
-            bootbox.alert({
-                message: 'Xóa thành công',
-                  backdrop: true,
-                  callback: function () {
-                    window.open(chuyenNganhView, '_self');
-                  }
-            });
-        },
-        error: function (e) {
-            $("#modal_chuyen_nganh_remove").modal("hide");
-            bootbox.alert({
-                message: '<div style="color:red;">Chuyên ngành có trong đợt đăng ký </div>',
-                  backdrop: true,
-                  callback: function () {
-                    window.open(chuyenNganhView, '_self');
-                  }
-            });
-        }
-    });
-};
