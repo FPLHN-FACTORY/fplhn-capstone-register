@@ -176,6 +176,10 @@ function clearModal() {
     $("#ten_mon_datn_error").text("");
 }
 
+function openImport() {
+    $("#import_excel").modal("show")
+}
+
 function importExcel () {
     event.preventDefault();
     const newFile = $("#inputGroupFile04").val();
