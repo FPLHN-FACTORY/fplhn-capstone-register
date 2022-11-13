@@ -70,15 +70,9 @@ function create() {
                 });
             },
             error: function (e) {
-                if(e.responseJSON.message == 'Chu nhiem khong ton tai'){
-                    $("#CNBM_update_error").text("Chủ nhiệm không tồn tại")
-                }
                 if (e.responseJSON.message == 'Chuyen nganh da ton tai') {
                     $("#chuyen_nganh_add_error").text("Chuyên ngành đã tồn tại trong đợt");
                     $("#CNBM_add_error").text("");
-                } else {
-                    $("#CNBM_add_error").text("Chủ nhiệm bộ môn đang tồn tại trong đợt");
-                    $("#chuyen_nganh_add_error").text("");
                 }
             }
         });
@@ -142,8 +136,6 @@ function update() {
             error: function (e) {
                 if (e.responseJSON.message == 'Chuyen nganh da ton tai') {
                     $("#chuyennganh_Update_error").text("Chuyên ngành đã tồn tại trong đợt");
-                }else if(e.responseJSON.message == 'Chu nhiem khong ton tai'){
-                    $("#CNBM_update_error").text("Chủ nhiệm không tồn tại")
                 }
             }
         });
