@@ -3,6 +3,10 @@ const sinhVienTheoDotDangKyView = '/chu-nhiem/dot-dang-ky/sinh-vien';
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
 function openModalAddSinhVien(maSinhVien, count) {
     $("#modal_create_nhom").modal('show');
     $("#addSinhVienTheoNhom").val(maSinhVien);
@@ -14,26 +18,35 @@ function clearBoLoc(){
     $("#dotDangKyId").val("")
 }
 
-$("#form_create_group").submit(function (event) {
-    event.preventDefault();
+function openModalThemSinhVienVaoNhom(){
+    $("#modal_create_nhom").modal('show')
+}
+
+function createSinhVienVaoNhom() {
     let maNhom = $("#maNhom").val().trim();
     let maSinhVien = $("#addSinhVienTheoNhom").val().trim();
-    let count = $("#currentPaging").val();
     $.ajax({
         type: "POST",
         contentType: "application/json",
         url: sinhVienApi + "/addSinhVien?id=" + maNhom + "&maSinhVien=" + maSinhVien,
         data: JSON.stringify(maSinhVien, maNhom),
         success: function (responseData) {
-            loadDataToTable(count)
             $("#modal_create_nhom").modal('hide');
-            alert("Thêm thành công")
+            bootbox.alert({
+                message: 'Thêm thành công',
+                backdrop: true,
+                callback: function () {
+                    loadDataToTable(currentPage)
+                }
+            });
         },
         error: function (e) {
-            $("#idNhom_error").html(e.responseJSON.message)
+            if(e.responseJSON.message.trim() == 'nhom khong ton tai'){
+                $("#idNhom_error").html('Nhóm không tồn tại')
+            }
         }
     });
-});
+}
 genPagingAndFillColor()
 
 function genPagingAndFillColor() {

@@ -31,11 +31,11 @@ public class DtCanBoImportExcel {
                 continue;
             }
             if (row.getCell(1).getCellType() != CellType.STRING
-                    || row.getCell(2).getCellType() != CellType.STRING
-                    || row.getCell(3).getCellType() != CellType.STRING
-                    || row.getCell(4).getCellType() != CellType.STRING
-                    || row.getCell(5).getCellType() != CellType.STRING
-                    || row.getCell(6).getCellType() != CellType.STRING
+                    && row.getCell(2).getCellType() != CellType.STRING
+                    && row.getCell(3).getCellType() != CellType.STRING
+                    && row.getCell(4).getCellType() != CellType.STRING
+                    && row.getCell(5).getCellType() != CellType.STRING
+                    && row.getCell(6).getCellType() != CellType.STRING
             ) {
                 continue;
             }

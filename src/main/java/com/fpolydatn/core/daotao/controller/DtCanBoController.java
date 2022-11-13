@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/dao-tao/can-bo")
-//@PreAuthorize("hasAuthority('dao-tao')")
 public final class DtCanBoController extends BaseController {
 
     @Autowired
