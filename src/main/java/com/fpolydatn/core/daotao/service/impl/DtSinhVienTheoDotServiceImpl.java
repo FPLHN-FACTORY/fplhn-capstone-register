@@ -148,11 +148,14 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
 
-
         try {
             response.setStatus(true);
             DtSinhVienTheoDotImport sinhVienTheoDotImport = new DtSinhVienTheoDotImport();
             List<DtCreateSinhVienTheoDotRequest> sinhVienList = sinhVienTheoDotImport.importData(file);
+            if(sinhVienList.size()<=0){
+                response.setStatus(false);
+                response.setMessage("Import file không thành công");
+            }
             List<SinhVien> listSinhVienEntity = new ArrayList<>();
             map = new HashMap<>();
             addDataInMap(map, coSoId);
@@ -393,15 +396,25 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         }else {
             if(map.get(sinhVien.getId())== null){
                 sinhVien.setNhomId(null);
+                sinhVien.setMonDatnId(null);
                 sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
             }else {
-                //nếu là nhóm trưởng thif chuyển quyền cho sinh viên trong nhóm
+                //nếu là nhóm trưởng thì chuyển quyền cho sinh viên trong nhóm
                 SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(),sinhVien.getNhomId());
                 chuyenTruongNhom= map.get(sinhVien.getId());
-                chuyenTruongNhom.setTruongNhomId(motSVtrongNhom.getId());
-                nhomDatnTheoDotRepository.save(chuyenTruongNhom);
-                sinhVien.setNhomId(null);
-                sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                if(motSVtrongNhom== null){
+                    nhomDatnTheoDotRepository.delete(chuyenTruongNhom);
+                    sinhVien.setNhomId(null);
+                    sinhVien.setMonDatnId(null);
+                    sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                }else {
+                    chuyenTruongNhom.setTruongNhomId(motSVtrongNhom.getId());
+                    nhomDatnTheoDotRepository.save(chuyenTruongNhom);
+                    sinhVien.setNhomId(null);
+                    sinhVien.setMonDatnId(null);
+                    sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                }
+
             }
         }
         SinhVien svKhongDuDK =sinhVienRepository.save(sinhVien);

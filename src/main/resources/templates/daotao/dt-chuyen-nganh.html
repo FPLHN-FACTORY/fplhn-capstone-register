@@ -112,7 +112,7 @@
                                                                 class="btn_pencil_square"
                                                                 data-toggle="tooltip"
                                                                 title="Sửa chuyên ngành"
-                                                                th:attr="onclick=|openModalUpdateChuyenNganh('${chuyenNganh.getId()}')|">
+                                                                th:attr="onclick=|openModalUpdateChuyenNganh('${chuyenNganh.getId()}', '${chuyenNganh.getTenCanBo()}')|">
                                                             <img th:src="@{/img/pencil-square.svg}">
                                                         </button>
                                                         <button
@@ -195,6 +195,7 @@
                             <input id="chuNhiemBoMon"
                                    th:value="${listCanBo.size()}" hidden/>
                             <select id="tenCNBMhUpdate" class="form-control">
+                                <option id="CNBMHienTai"></option>
                                 <option th:each="canBo : ${listCanBo}"
                                         th:value="${canBo.id}"
                                         th:text="${canBo.name}"></option>
