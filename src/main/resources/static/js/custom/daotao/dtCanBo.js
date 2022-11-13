@@ -30,13 +30,14 @@ function openModalCreate() {
 }
 
 function openModalImport() {
-    $("#import_excel_error").text("");
+    $("#import_excel_error").text('');
     $("#labelFile").text('Choose file');
     $("#inputGroupFile01").val('');
     $("#import").modal('show')
 }
 
 function openModalTaiMau() {
+    $("#mau_excel_error").text('');
     $("#modal_excel_mau").modal('show')
 }
 
@@ -200,7 +201,6 @@ function update() {
         $("#email_fe_error_update").text(" ");
     }
 
-
     if (emailFpt.length == 0) {
         $("#email_fpt_error_update").text("Email Fpt Không Được Để Trống");
         check = false;
@@ -214,7 +214,6 @@ function update() {
         $("#email_fpt_error_update").text(" ");
     }
 
-
     if (soDienThoai.length == 0) {
         $("#so_dien_thoai_error_update").text("Số Điện Thoại Không Được Để Trống");
         check = false;
@@ -224,7 +223,6 @@ function update() {
     } else {
         $("#so_dien_thoai_error_update").text("");
     }
-
 
     if (tenCanBo.length == 0) {
         $("#ten_can_bo_error_update").text("Tên Cán Bộ Không Được Để Trống");
@@ -370,7 +368,7 @@ function openModalRemoveCanBo(canBoId) {
 function exportExcelMau() {
     let typeExcel = $("#type_mau_excel").val();
     if (typeExcel == '') {
-        $("#mau_excel_error").text("chọn định dạng file download");
+        $("#mau_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",

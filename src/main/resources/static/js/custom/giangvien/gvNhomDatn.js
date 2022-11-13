@@ -53,6 +53,7 @@ function xacDaNhanLienHe(idNhom, maNhom) {
         message: "Bạn có muốn xác nhận đã liên hệ với nhóm " + maNhom + " ?",
         buttons: {
             cancel: {
+                className: 'btn-outline-secondary btn btn-light',
                 label: '<i class="fa fa-times"></i> Quay lại'
             }, confirm: {
                 label: '<i class="fa fa-check"></i> Xác nhận'
@@ -134,7 +135,6 @@ function seachNhomdatn(index) {
 }
 
 function updateTenDeTai(maNhom) {
-
     $("#modal_update_ten_de_tai").modal('show');
     $.ajax({
         type: "GET",
@@ -186,6 +186,7 @@ function chotDeTaiNhomDatn(idNhom, maNhom) {
     bootbox.confirm({
         title: "Xác nhận chốt đề tài", message: "Bạn có muốn xác nhận đề tài nhóm " + maNhom + " ?", buttons: {
             cancel: {
+                className: 'btn-outline-secondary btn btn-light',
                 label: '<i class="fa fa-times"></i> Quay lại'
             }, confirm: {
                 label: '<i class="fa fa-check"></i> Xác nhận'

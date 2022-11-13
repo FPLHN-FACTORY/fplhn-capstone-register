@@ -34,7 +34,6 @@ function openModalAddGVHD() {
 }
 
 function addGVHD () {
-    event.preventDefault();
     let tenGvhd = $("#tenGvhd").val().trim();
     let soNhomHuongDanToiDa = $("#soNhomHuongDanToiDa").val().trim();
     let tenTaiKhoan = $("#tenTaiKhoan").val().trim();
@@ -155,7 +154,6 @@ function addGVHD () {
         });
     }
 }
-
 
 function openModalUpdateGiangVien(giangVienId, item) {
     $("#modal_update_giang_vien").modal('show');
@@ -304,9 +302,6 @@ function updateGVHD () {
     }
 }
 
-
-
-
 function openModalRemoveGiangVien(giangVienId, item) {
     bootbox.confirm({
         title: "Xóa",
@@ -354,20 +349,26 @@ function openModalRemoveGiangVien(giangVienId, item) {
 }
 
 function openModalExport() {
+    $("#type_excel_error").text('');
     $("#modal_excel").modal('show')
 }
 
 function openModalImportMau() {
+    $("#labelFile").text('Choose file');
+    $("#mau_import_error").text('');
     $("#modal_import_excel").modal('hide')
     $("#modal_import_mau").modal('show')
 }
 function openModalImport() {
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile01").val('');
+    $("#import_excel_error").text('');
     $("#modal_import_excel").modal('show')
 }
 function exportFile() {
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
-        $("#type_excel_error").text("chọn định dạng file download");
+        $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -422,7 +423,7 @@ function importExcel() {
 function importFileMau() {
     let typeExcel = $("#type_mau_import").val();
     if (typeExcel == '') {
-        $("#mau_import_error").text("chọn định dạng file download");
+        $("#mau_import_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",

@@ -51,6 +51,7 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
         bootbox.confirm({
             title: "Tham gia nhóm", message: "Bạn muốn tham gia nhóm này?", buttons: {
                 cancel: {
+                    className: 'btn-outline-secondary btn btn-light',
                     label: '<i class="fa fa-times"></i> Quay lại'
                 }, confirm: {
                     label: '<i class="fa fa-check"></i> Xác nhận'

@@ -177,11 +177,13 @@ function openModalRemoveMonDatn(monDatnId) {
 }
 
 function openImport() {
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile04").val('');
+    $("#errImport").text('');
     $("#import_excel").modal("show")
 }
 
 function importExcel () {
-    event.preventDefault();
     const newFile = $("#inputGroupFile04").val();
 
     if(newFile.trim().length === 0) {

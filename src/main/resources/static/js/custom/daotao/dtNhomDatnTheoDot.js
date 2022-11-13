@@ -8,7 +8,8 @@ $(document).ready(function () {
 });
 
 function openModalExportExcel(){
-    $("#modal_excel").modal('show')
+    $("#type_excel_error").text('');
+    $("#modal_excel").modal('show');
 }
 
 function clearform() {
