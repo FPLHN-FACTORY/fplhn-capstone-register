@@ -194,7 +194,8 @@ function importExcel() {
 }
 
 function openModalLoaiSinhVien() {
-    $("#modal_loai_sinh_vien").modal('show');
+    $("#modal_loai_sinh_vien").modal('show');azcxzc
+    ádasd
 }
 
 function loaiSinhVien() {
