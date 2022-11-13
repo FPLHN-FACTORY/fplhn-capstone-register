@@ -138,7 +138,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             importMonDatnRequests = monDatnImport.importExcelList(file);
             importMonDatnRequests.parallelStream().forEach(createMonDant -> {
                 if (createMonDant.getMaMon().trim().length() == 0) {
-                    System.out.println(createMonDant.getMaMon());
                     mess.setStatus(false);
                     mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được để trống"));
                     return;
@@ -159,6 +158,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     return;
                 }
                 if (createMonDant.getTenMonDatn().trim().length() == 0) {
+                    System.out.println(createMonDant.getMaMon());
                     mess.setStatus(false);
                     mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
                     return;
@@ -212,9 +212,9 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 }
                 monDatnHashMap.put(monDatn.getMaMon(), monDatn);
                 list.add(monDatn);
-                mess.setStatus(true);
             });
             if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
+                mess.setStatus(true);
                 List<MonDatn> datnList = monDatnRepository.saveAll(list);
                 datnList.parallelStream().forEach(el -> {
                     if (el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
