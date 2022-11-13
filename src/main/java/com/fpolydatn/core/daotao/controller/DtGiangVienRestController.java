@@ -86,7 +86,7 @@ public class DtGiangVienRestController extends BaseController {
         String idCoSo = session.getCoSoId();
         String idDotDangKy = commonHelper.getDotDangKyHienTai();
 
-        this.giangVienHDService.test(file,idCoSo,idDotDangKy);
+        this.giangVienHDService.importExcelGVHD(file,idCoSo,idDotDangKy);
     }
 
     @GetMapping("/export")
