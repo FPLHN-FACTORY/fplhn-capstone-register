@@ -3,12 +3,17 @@ package com.fpolydatn.core.daotao.service;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
+import com.fpolydatn.core.daotao.model.request.DtGiagVienHDImportResquest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,8 +33,11 @@ public interface DtGiangVienHDService {
 
     PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest req);
 
-    List<GiangVienHuongDan> importExcel(MultipartFile file);
+    Object checkValidFile(List<DtGiagVienHDImportResquest> list);
 
-    Object checkValidFile(List<GiangVienHuongDan> list);
+    void DtGiangVienHDExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
 
+    void DtGiangVienHDMauExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
+
+     DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId, String dotDangKyId);
 }

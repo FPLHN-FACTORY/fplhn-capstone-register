@@ -1,23 +1,25 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtCanBoExportExcel;
+import com.fpolydatn.core.daotao.excel.DtCanBoImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoExcelImport;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
 import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.repository.DtCoSoRepository;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.CoSo;
+import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author nguyenvv4
@@ -59,16 +61,23 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     }
 
     @Override
-    public CanBo create(@Valid final DtCreateCanBoRequest canBoRequest) {
+    public boolean create(@Valid final DtCreateCanBoRequest canBoRequest) {
+        String idByEmailFpt = dtCanBoRepository.getIdByEmailFpt(canBoRequest.getEmailFpt().trim());
+        if (idByEmailFpt != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+        String idByEmailFe = dtCanBoRepository.getIdByEmailFe(canBoRequest.getEmailFe().trim());
+        if (idByEmailFe != null) {
+            throw new RestApiException(Message.EMAIL_FE_EXIST);
+        }
+        String idByTenTaiKhoan = dtCanBoRepository.getIdByTenTaiKhoan(canBoRequest.getTenTaiKhoan());
+        if (idByTenTaiKhoan != null) {
+            throw new RestApiException(Message.TEN_TAI_KHOAN_CAN_BO_EXIST);
+        }
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
-        return dtCanBoRepository.save(canBo);
+        dtCanBoRepository.save(canBo);
+        return true;
     }
-
-    @Override
-    public CanBo createcb(CanBo canBo) {
-        return dtCanBoRepository.save(canBo);
-    }
-
 
     @Override
     public Boolean delete(String id) {
@@ -99,53 +108,135 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
+        String idByEmailFpt = dtCanBoRepository.getIdUpdateByEmailFpt(canBoRequest.getEmailFpt().trim(), canBo.get().getId());
+        if (idByEmailFpt != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+        String idByEmailFe = dtCanBoRepository.getIdUpdateByEmailFe(canBoRequest.getEmailFe().trim(), canBo.get().getId());
+        if (idByEmailFe != null) {
+            throw new RestApiException(Message.EMAIL_FE_EXIST);
+        }
+        String idByTenTaiKhoan = dtCanBoRepository.getIdUpdateByTenTaiKhoan(canBoRequest.getTenTaiKhoan(), canBo.get().getId());
+        if (idByTenTaiKhoan != null) {
+            throw new RestApiException(Message.TEN_TAI_KHOAN_CAN_BO_EXIST);
+        }
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         return dtCanBoRepository.save(updateCanBo);
     }
 
     @Override
     public List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro) {
-        return dtCanBoRepository.findAllSimpleEntityByTenCanBo(id, vaiTro);
+        return dtCanBoRepository.findCanBoByVaiTro(id, vaiTro);
     }
 
 
     @Override
-    public List<CanBo> importData(MultipartFile reapExcelDataFile, String id) {
-        List<String> listEmailFe = dtCanBoRepository.findAllEmailFe();
-        List<CanBo> listCanBo;
+    public DtCanBoResponseMessage DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
+        DtCanBoResponseMessage dtCanBoResponseMessage = new DtCanBoResponseMessage();
+        List<CanBo> listCanBo = new ArrayList<>();
         try {
-            listCanBo = new ArrayList<>();
-            XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
-            XSSFSheet worksheet = workbook.getSheetAt(0);
+            DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
+            List<DtCanBoExcelImport> listCB = dtCanBoImportExcel.importData(file, coSoId);
+            dtCanBoResponseMessage.setStatus(true);
+            Map<String, String> map = new HashMap<>();
+            addDataInMap(map);
 
-            for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
-                CanBo canBo = new CanBo();
-                XSSFRow row = worksheet.getRow(i);
-                canBo.setEmailFe(row.getCell(0).getStringCellValue());
-                canBo.setEmailFpt(row.getCell(1).getStringCellValue());
-                canBo.setSoDienThoai(row.getCell(2).getStringCellValue());
-                canBo.setTenCanBo(row.getCell(3).getStringCellValue());
-                canBo.setTenTaiKhoan(row.getCell(4).getStringCellValue());
-                canBo.setVaiTro(VaiTro.valueOf(row.getCell(5).getStringCellValue()));
-                canBo.setCoSoId(id);
-                if (!validateDataExcel(listEmailFe, canBo.getEmailFe())) {
-                    throw new RestApiException(Message.HOC_KY_NOT_EXIST);
+            listCB.parallelStream().forEach(canbo -> {
+                if (map.get(canbo.getEmailFE()) != null || map.get(canbo.getEmailFPT()) != null) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Cán bộ bạn muốn import đã tồn tại");
+                    return;
                 }
-                listCanBo.add(canBo);
+
+                if (canbo.getEmailFE().isEmpty() || canbo.getEmailFPT().isEmpty() ||
+                        canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
+                        canbo.getTenCanBo().isEmpty()) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Không được để trống");
+                    return;
+                }
+
+                if (!canbo.getEmailFPT().matches("\\w+@fpt.edu.vn")) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fpt không đúng định dạng");
+                    return;
+                }
+
+                if (!canbo.getEmailFE().matches("\\w+@fe.edu.vn")) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fe không đúng định dạng");
+                    return;
+                }
+
+                if (canbo.getEmailFE().length() > 30) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fe quá 30 ký tự");
+                    return;
+                }
+
+                if (canbo.getEmailFPT().length() > 30) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Email fpt quá 30 ký tự");
+                    return;
+                }
+
+                if (!canbo.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
+                    dtCanBoResponseMessage.setStatus(false);
+                    dtCanBoResponseMessage.setMessage("Số điện thoại không đúng định dạng");
+                    return;
+                }
+                CanBo cb = new CanBo();
+                cb.setEmailFe(canbo.getEmailFE());
+                cb.setEmailFpt(canbo.getEmailFPT());
+                cb.setTenCanBo(canbo.getTenCanBo());
+                cb.setSoDienThoai(canbo.getSoDienThoai());
+                if(canbo.getVaiTro().equals("DAO_TAO")) {
+                    cb.setVaiTro(VaiTro.DAO_TAO);
+                }else if(canbo.getVaiTro().equals("CHU_NHIEM_BO_MON")){
+                    cb.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
+                }else if(canbo.getVaiTro().equals("QUAN_TRI_VIEN")){
+                    cb.setVaiTro(VaiTro.QUAN_TRI_VIEN);
+                }
+                cb.setCoSoId(coSoId);
+                cb.setTenTaiKhoan(canbo.getTenTaiKhoan());
+                listCanBo.add(cb);
+            });
+            if (dtCanBoResponseMessage.getStatus() == true) {
+                dtCanBoRepository.saveAll(listCanBo);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        }catch (Exception e){
+            e.printStackTrace();
+            dtCanBoResponseMessage.setStatus(false);
+            dtCanBoResponseMessage.setMessage("Lỗi hệ thống");
+            return dtCanBoResponseMessage;
         }
-        return listCanBo;
+        return dtCanBoResponseMessage;
     }
 
-    public boolean validateDataExcel(List<String> listEmail, String emailFE) {
-        for (String s : listEmail) {
-            if (s.equals(emailFE)) {
-                return false;
-            }
+    @Override
+    public void MauImportExcel(HttpServletResponse response, String typeExcel) throws IOException {
+        DtCanBoExportExcel dtCanBoExportExcel = new DtCanBoExportExcel();
+        response.setContentType("application/octet-stream");
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=MauImportExcel" + "." + typeExcel;
+        response.setHeader(headerKey, headerValue);
+        dtCanBoExportExcel.exportData(response);
+    }
+
+    public void addDataInMap(Map<String, String> mapAll) {
+        List<String> listEmailFE = dtCanBoRepository.findAllEmailFe();
+        setDataInMap(mapAll, listEmailFE);
+
+        List<String> listEmailFpt = dtCanBoRepository.findAllByEmailFPT();
+        setDataInMap(mapAll, listEmailFpt);
+
+    }
+
+    public void setDataInMap(Map<String, String> mapSimple, List<String> listStr) {
+        for (String s : listStr) {
+            mapSimple.put(s, s);
         }
-        return true;
     }
 
 }

@@ -17,6 +17,9 @@ public class CustomOAuth2User implements OAuth2User {
 
     private OAuth2User oauth2User;
 
+    private String role;
+    private String coSoId;
+
     public CustomOAuth2User(OAuth2User oauth2User) {
         this.oauth2User = oauth2User;
     }
@@ -29,11 +32,14 @@ public class CustomOAuth2User implements OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(ActorConstant.CHU_NHIEM));
-        authorities.add(new SimpleGrantedAuthority(ActorConstant.DAO_TAO));
-        authorities.add(new SimpleGrantedAuthority(ActorConstant.GIANG_VIEN));
-        authorities.add(new SimpleGrantedAuthority(ActorConstant.SINH_VIEN));
-        authorities.add(new SimpleGrantedAuthority(ActorConstant.ADMIN));
+
+        switch (role) {
+            case ActorConstant.CHU_NHIEM -> authorities.add(new SimpleGrantedAuthority(ActorConstant.CHU_NHIEM));
+            case ActorConstant.DAO_TAO -> authorities.add(new SimpleGrantedAuthority(ActorConstant.DAO_TAO));
+            case ActorConstant.GIANG_VIEN -> authorities.add(new SimpleGrantedAuthority(ActorConstant.GIANG_VIEN));
+            case ActorConstant.SINH_VIEN -> authorities.add(new SimpleGrantedAuthority(ActorConstant.SINH_VIEN));
+            //case ActorConstant.ADMIN -> authorities.add(new SimpleGrantedAuthority(ActorConstant.ADMIN));
+        }
         return authorities;
     }
 
@@ -46,4 +52,23 @@ public class CustomOAuth2User implements OAuth2User {
         return oauth2User.getAttribute("email");
     }
 
+    public String getAvatar() {
+        return oauth2User.getAttribute("picture");
+    }
+
+    public void setCoSoId(String coSoId) {
+        this.coSoId = coSoId;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return this.role;
+    }
+
+    public String getCoSoId() {
+        return this.coSoId;
+    }
 }

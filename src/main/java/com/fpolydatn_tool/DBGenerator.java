@@ -29,7 +29,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author phongtt35
@@ -69,21 +69,40 @@ public class DBGenerator implements CommandLineRunner {
         csHN.setTenCoSo("Hà Nội");
         csHN.setId(coSoRepository.save(csHN).getId());
 
-        HocKy su22 = new HocKy();
-        su22.setTenHocKy("Summer 2022");
-        su22.setNgayBatDau(1652115600000L);
-        su22.setNgayKetThuc(1652979600000L);
-        su22.setId(hocKyRepository.save(su22).getId());
+        HocKy fa22 = new HocKy();
+        fa22.setTenHocKy("Fall 2022");
+        fa22.setNgayBatDau(1668103963000L);
+        fa22.setNgayKetThuc(1671646363000L);
+        fa22.setId(hocKyRepository.save(fa22).getId());
 
         CanBo yenlh5 = new CanBo();
         yenlh5.setCoSoId(csHN.getId());
         yenlh5.setEmailFe("yenlh5@fe.edu.vn");
-        yenlh5.setEmailFpt("yenlh5@fpt.edu.vn");
+        yenlh5.setEmailFpt("yenlh@fpt.edu.vn");
         yenlh5.setSoDienThoai("0912345678");
         yenlh5.setTenCanBo("Lê Hải Yến");
         yenlh5.setTenTaiKhoan("yenlh5");
         yenlh5.setVaiTro(VaiTro.DAO_TAO);
         yenlh5.setId(canBoRepository.save(yenlh5).getId());
+        CanBo huongnt166 = new CanBo();
+        huongnt166.setCoSoId(csHN.getId());
+        huongnt166.setEmailFe("huongnt166@fe.edu.vn");
+        huongnt166.setEmailFpt("huongnt166@fpt.edu.vn");
+        huongnt166.setSoDienThoai("0912345678");
+        huongnt166.setTenCanBo("Nguyễn Thị Hương");
+        huongnt166.setTenTaiKhoan("huongnt166");
+        huongnt166.setVaiTro(VaiTro.DAO_TAO);
+        huongnt166.setId(canBoRepository.save(huongnt166).getId());
+        CanBo quyetnv19 = new CanBo();
+        quyetnv19.setCoSoId(csHN.getId());
+        quyetnv19.setEmailFe("quyetnv19@fe.edu.vn");
+        quyetnv19.setEmailFpt("quyetnv19@fpt.edu.vn");
+        quyetnv19.setSoDienThoai("0912345678");
+        quyetnv19.setTenCanBo("Nguyễn Văn Quyết");
+        quyetnv19.setTenTaiKhoan("quyetnv19");
+        quyetnv19.setVaiTro(VaiTro.DAO_TAO);
+        quyetnv19.setId(canBoRepository.save(quyetnv19).getId());
+
         CanBo daotao = new CanBo();
         daotao.setCoSoId(csHN.getId());
         daotao.setEmailFe("daotao.fcr@gmail.com");
@@ -124,7 +143,7 @@ public class DBGenerator implements CommandLineRunner {
 
         ChuyenNganh ptpm = new ChuyenNganh();
         ptpm.setCoSoId(csHN.getId());
-        ptpm.setChuNhiemBoMon(minhdq8.getId());
+        ptpm.setChuNhiemBoMon(cnbm.getId());
         ptpm.setTenChuyenNganh("Phát triển phần mềm");
         ptpm.setId(chuyenNganhRepository.save(ptpm).getId());
         ChuyenNganh cntt = new ChuyenNganh();
@@ -156,8 +175,10 @@ public class DBGenerator implements CommandLineRunner {
 
         DotDangKy dot1 = new DotDangKy();
         dot1.setCoSoId(csHN.getId());
-        dot1.setHocKyId(su22.getId());
-        dot1.setNgayBatDau(Calendar.getInstance().getTimeInMillis());
+        dot1.setHocKyId(fa22.getId());
+        Date now = new Date();
+        now.setSeconds(0);
+        dot1.setNgayBatDau(now.getTime());
         dot1.setHanSinhVien(dot1.getNgayBatDau() + 1296000000L);
         dot1.setHanGiangVien(dot1.getNgayBatDau() + 1900800000L);
         dot1.setHanChuNhiemBoMon(dot1.getNgayBatDau() + 2629800000L);
@@ -167,7 +188,7 @@ public class DBGenerator implements CommandLineRunner {
 
         GiangVienHuongDan tiennh21 = new GiangVienHuongDan();
         tiennh21.setEmailFe("tiennh21@fe.edu.vn");
-        tiennh21.setSoDienThoai("09123445678");
+        tiennh21.setSoDienThoai("0912344567");
         tiennh21.setTenTaiKhoan("tiennh21");
         tiennh21.setEmailFpt("tiennh21@fpt.edu.vn");
         tiennh21.setCoSoId(csHN.getId());
@@ -179,7 +200,7 @@ public class DBGenerator implements CommandLineRunner {
 
         GiangVienHuongDan dungna29 = new GiangVienHuongDan();
         dungna29.setEmailFe("dungna29@fe.edu.vn");
-        dungna29.setSoDienThoai("09123445678");
+        dungna29.setSoDienThoai("0912344567");
         dungna29.setTenTaiKhoan("dungna29");
         dungna29.setEmailFpt("dungna29@fpt.edu.vn");
         dungna29.setCoSoId(csHN.getId());
@@ -190,7 +211,7 @@ public class DBGenerator implements CommandLineRunner {
 
         GiangVienHuongDan gvhd = new GiangVienHuongDan();
         gvhd.setEmailFe("giangvien.fcr@gmail.com");
-        gvhd.setSoDienThoai("09123445678");
+        gvhd.setSoDienThoai("0912344567");
         gvhd.setTenTaiKhoan("giangvien");
         gvhd.setEmailFpt("giangvien.fcr@gmail.com");
         gvhd.setCoSoId(csHN.getId());
@@ -232,7 +253,6 @@ public class DBGenerator implements CommandLineRunner {
         NhomDatn nhom1 = new NhomDatn();
         nhom1.setMaNhom("HN0001");
         nhom1.setDotDangKyId(dot1.getId());
-        nhom1.setGiangVienId(tiennh21.getId());
         nhom1.setTruongNhomId(phongtt35.getId());
         nhom1.setCoSoId(csHN.getId());
         nhom1.setMatKhau("123456");
@@ -270,7 +290,7 @@ public class DBGenerator implements CommandLineRunner {
         hangnt169.setTenSinhVien("Nguyễn Thuý Hằng");
         hangnt169.setMaSinhVien("PH34567");
         hangnt169.setNhomId(nhom1.getId());
-        nguyenvv4.setMonDatnId(java.getId());
+        hangnt169.setMonDatnId(java.getId());
         hangnt169.setId(sinhVienRepository.save(hangnt169).getId());
 
         SinhVien khanhpg =  new SinhVien();
@@ -299,6 +319,106 @@ public class DBGenerator implements CommandLineRunner {
         sinhVien.setNhomId(null);
         sinhVien.setId(sinhVienRepository.save(sinhVien).getId());
 
+        CoSo csHCM = new CoSo();
+        csHCM.setMaCoSo("HCM");
+        csHCM.setTenCoSo("Hồ Chí Minh");
+        csHCM.setId(coSoRepository.save(csHCM).getId());
+        CanBo nhulh = new CanBo();
+        nhulh.setCoSoId(csHCM.getId());
+        nhulh.setEmailFe("nhulh@fe.edu.vn");
+        nhulh.setEmailFpt("nhulh@fpt.edu.vn");
+        nhulh.setSoDienThoai("0912345678");
+        nhulh.setTenCanBo("nhulh");
+        nhulh.setTenTaiKhoan("nhulh");
+        nhulh.setVaiTro(VaiTro.DAO_TAO);
+        nhulh.setId(canBoRepository.save(nhulh).getId());
+        CanBo nhuntq20 = new CanBo();
+        nhuntq20.setCoSoId(csHCM.getId());
+        nhuntq20.setEmailFe("nhuntq20@fe.edu.vn");
+        nhuntq20.setEmailFpt("nhuntq20@fpt.edu.vn");
+        nhuntq20.setSoDienThoai("0912345678");
+        nhuntq20.setTenCanBo("nhuntq20");
+        nhuntq20.setTenTaiKhoan("nhuntq20");
+        nhuntq20.setVaiTro(VaiTro.DAO_TAO);
+        nhuntq20.setId(canBoRepository.save(nhuntq20).getId());
+
+        CoSo csCT = new CoSo();
+        csCT.setMaCoSo("CT");
+        csCT.setTenCoSo("Cần Thơ");
+        csCT.setId(coSoRepository.save(csCT).getId());
+        CanBo nguyenpnx = new CanBo();
+        nguyenpnx.setCoSoId(csCT.getId());
+        nguyenpnx.setEmailFe("nguyenpnx@fe.edu.vn");
+        nguyenpnx.setEmailFpt("nguyenpnx@fpt.edu.vn");
+        nguyenpnx.setSoDienThoai("0912345678");
+        nguyenpnx.setTenCanBo("nguyenpnx");
+        nguyenpnx.setTenTaiKhoan("nguyenpnx");
+        nguyenpnx.setVaiTro(VaiTro.DAO_TAO);
+        nguyenpnx.setId(canBoRepository.save(nguyenpnx).getId());
+        CanBo hungtm26 = new CanBo();
+        hungtm26.setCoSoId(csCT.getId());
+        hungtm26.setEmailFe("hungtm26@fe.edu.vn");
+        hungtm26.setEmailFpt("hungtm26@fpt.edu.vn");
+        hungtm26.setSoDienThoai("0912345678");
+        hungtm26.setTenCanBo("hungtm26");
+        hungtm26.setTenTaiKhoan("hungtm26");
+        hungtm26.setVaiTro(VaiTro.DAO_TAO);
+        hungtm26.setId(canBoRepository.save(hungtm26).getId());
+        CanBo khoata17 = new CanBo();
+        khoata17.setCoSoId(csCT.getId());
+        khoata17.setEmailFe("khoata17@fe.edu.vn");
+        khoata17.setEmailFpt("khoata17@fpt.edu.vn");
+        khoata17.setSoDienThoai("0912345678");
+        khoata17.setTenCanBo("khoata17");
+        khoata17.setTenTaiKhoan("khoata17");
+        khoata17.setVaiTro(VaiTro.DAO_TAO);
+        khoata17.setId(canBoRepository.save(khoata17).getId());
+
+        CoSo csDN = new CoSo();
+        csDN.setMaCoSo("DN");
+        csDN.setTenCoSo("Đà Nẵng");
+        csDN.setId(coSoRepository.save(csDN).getId());
+        CanBo tronglt = new CanBo();
+        tronglt.setCoSoId(csDN.getId());
+        tronglt.setEmailFe("tronglt@fe.edu.vn");
+        tronglt.setEmailFpt("tronglt@fpt.edu.vn");
+        tronglt.setSoDienThoai("0912345678");
+        tronglt.setTenCanBo("tronglt");
+        tronglt.setTenTaiKhoan("tronglt");
+        tronglt.setVaiTro(VaiTro.DAO_TAO);
+        tronglt.setId(canBoRepository.save(tronglt).getId());
+        CanBo thaoltb6 = new CanBo();
+        thaoltb6.setCoSoId(csDN.getId());
+        thaoltb6.setEmailFe("HoaLT48@fe.edu.vn");
+        thaoltb6.setEmailFpt("HoaLT48@fpt.edu.vn");
+        thaoltb6.setSoDienThoai("0912345678");
+        thaoltb6.setTenCanBo("HoaLT48");
+        thaoltb6.setTenTaiKhoan("HoaLT48");
+        thaoltb6.setVaiTro(VaiTro.DAO_TAO);
+        thaoltb6.setId(canBoRepository.save(thaoltb6).getId());
+
+        CoSo csTN = new CoSo();
+        csTN.setMaCoSo("TN");
+        csTN.setTenCoSo("Tây Nguyên");
+        csTN.setId(coSoRepository.save(csTN).getId());
+        CanBo HoaLT48 = new CanBo();
+        HoaLT48.setCoSoId(csTN.getId());
+        HoaLT48.setEmailFe("HoaLT48@fe.edu.vn");
+        HoaLT48.setEmailFpt("HoaLT48@fpt.edu.vn");
+        HoaLT48.setSoDienThoai("0912345678");
+        HoaLT48.setTenCanBo("HoaLT48");
+        HoaLT48.setTenTaiKhoan("HoaLT48");
+        HoaLT48.setVaiTro(VaiTro.DAO_TAO);
+        HoaLT48.setId(canBoRepository.save(HoaLT48).getId());
+        CanBo LinhNTT66 = new CanBo();
+        LinhNTT66.setCoSoId(csTN.getId());
+        LinhNTT66.setEmailFe("LinhNTT66@fe.edu.vn");
+        LinhNTT66.setEmailFpt("LinhNTT66@fpt.edu.vn");
+        LinhNTT66.setSoDienThoai("0912345678");
+        LinhNTT66.setTenCanBo("LinhNTT66");
+        LinhNTT66.setTenTaiKhoan("LinhNTT66");
+        LinhNTT66.setVaiTro(VaiTro.DAO_TAO);
+        LinhNTT66.setId(canBoRepository.save(LinhNTT66).getId());
     }
 
     public static void main(String[] args) {

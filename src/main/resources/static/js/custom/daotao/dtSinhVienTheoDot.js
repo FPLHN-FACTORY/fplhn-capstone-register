@@ -19,44 +19,67 @@ function viewTable(page) {
             if (responseData.data.data.length > 0) {
                 $("#is_empty").html('')
                 $("#list").html(responseData.data.data.map(function (item) {
-                    return ` <tr>
+                    if (item.trangThai == 0) {
+                        return ` <tr>
                                 <td>${item.stt}</td>
                                 <td>${item.maSinhVien}</td>
                                 <td>${item.tenSinhVien}</td>
-                                <td>${item.soDienThoai}</td>
-                                <td>${item.email}</td>
                                 <td>${item.khoa}</td>
-                                <td>${item.tenMonDatn == null ? 'chưa có' : item.tenMonDatn}</td>
-                                <td>${item.maNhom == null ? 'chưa có' : item.maNhom}</td>
-                                <td>${item.tenDeTai == null ? 'chưa có' : item.tenDeTai}</td>
-                                <td>${item.tenGvhd == null ? 'chưa có' : item.tenGvhd}</td>
+                                <td>${item.monChuongTrinh == null ? 'Chưa có' : item.monChuongTrinh + ' - ' + item.maMonChuongTrinh}</td>
+                                <td>${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
+                                <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
+                                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd}</td>
                                 <td>${item.tenChuyenNganh}</td>
+                                <td>
+                                    <button class="btn_eye"
+                                            data-toggle="tooltip"
+                                            title="Xem chi tiết"
+                                            onclick="detail('${item.id}')">
+                                            <img src="/img/eye-fill.svg">
+                                    </button>
+                                     <button class="btn_pencil_square"
+                                         data-toggle="tooltip"
+                                         title="Loại sinh viên"
+                                         onclick="loaiSinhVienDetail('${item.id}','${page}')">                      
+                                           <img src="/img/person-off.svg">                                                               
+                                     </button>
+                                </td>
                         </tr>`
-                }));
-                var arr = new Array();
-                if (responseData.data.totalPages > 1) {
-                    for (let i = 1; i <= responseData.data.totalPages; i++) {
-                        arr.push(i)
+                    } else {
+                        return ` <tr class="text-danger">
+                                <td>${item.stt}</td>
+                                <td>${item.maSinhVien}</td>
+                                <td>${item.tenSinhVien}</td>
+                                <td>${item.khoa}</td>
+                                <td>${item.monChuongTrinh == null ? 'Chưa có' : item.monChuongTrinh + ' - ' + item.maMonChuongTrinh}</td>
+                                <td>${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
+                                <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
+                                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd}</td>
+                                <td>${item.tenChuyenNganh}</td>
+                                <td>
+                                    <button class="btn_eye"
+                                            data-toggle="tooltip"
+                                            title="Xem chi tiết"
+                                            onclick="detail('${item.id}')">
+                                            <img src="/img/eye-fill.svg">
+                                    </button>
+                                </td>
+                        </tr>`
                     }
-                    $("#list_page").html(arr.map(function (value) {
-                        return `
-                        <div>
-                            <li class="page-item">
-                                  <a class="page-link"
-                                    onclick="viewTable(${value - 1})"
-                                    >${value}
-                                  </a>
-                              </li>
-                        </div>
-                    `
-                    }));
+
+                }));
+                if (responseData.data.totalPages > 1) {
+                    genPagingAndFillColor(responseData.data.totalPages, responseData.data.currentPage)
                 } else {
-                    $("#list_page").html('')
+                    $("#list_page").html(function () {
+                        return ``
+                    })
                 }
-            } else (
-                $("#list").html(''),
-                    $("#is_empty").html('không có dữ liệu')
-            )
+            } else ($("#list").html(''), $("#list_page").html(function () {
+                return ``
+            }), $("#is_empty").html(function () {
+                return `<span>Không có dữ liệu</span>`
+            }))
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -64,31 +87,38 @@ function viewTable(page) {
     });
 }
 
-$("#form_type_excel").submit(function (event) {
-    event.preventDefault();
+function openModalExportExcel() {
+    $("#modal_excel").modal('show');
+}
+
+function exportExcel() {
+    let keyword = $("#keyword").val();
+    let chuyenNganh = $("#chuyenNganh").val();
+    let trangThai = $("#trangThai").val();
+    let dotDangKy = $("#dotDangKy").val();
     let typeExcel = $("#type_excel").val();
     if (typeExcel == '') {
-        $("#type_excel_error").text("chọn định dạng file download");
+        $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel,
+            url: "/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy,
 
             success: function () {
-                window.open("/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel, '_self');
+                window.open("/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy, '_self');
             },
             error: function (e) {
                 console.log("ERROR : ", e);
             }
         });
     }
-});
-$("#modal_excel_mau").submit(function (event) {
-    event.preventDefault();
+}
+
+function mauImport() {
     let typeExcel = $("#type_mau_excel").val();
     if (typeExcel == '') {
-        $("#mau_excel_error").text("chọn định dạng file download");
+        $("#mau_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -103,63 +133,206 @@ $("#modal_excel_mau").submit(function (event) {
             }
         });
     }
-});
-$("#form_import_excel").submit(function (event) {
-    event.preventDefault();
+};
+
+function openModalImportExcel() {
+    $("#import_excel").modal('show');
+}
+
+function importExcel() {
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length);
     if (typeExcel.length <= 0) {
-        $("#import_excel_error").text("chọn file");
+        $("#import_excel_error").text("Chọn file");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        var form = $('#form_import_excel')[0];
         $.ajax({
                 type: 'POST',
-                url: $(this).attr('action'),
+                url: '/api/dao-tao/sinh-vien/import',
                 enctype: 'multipart/form-data',
-                data: new FormData(this),
+                data: new FormData(form),
                 processData: false,
                 contentType: false,
-                success: function (data) {
-                    window.open('/dao-tao/sinh-vien', '_self');
+                success: function (response) {
+                    if (response.data.status == true) {
+                        bootbox.alert({
+                            message: 'Import file thành công',
+                            backdrop: true,
+                            callback: function () {
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        bootbox.alert({
+                            message: response.data.message + '',
+                            backdrop: true,
+                            callback: function () {
+                                location.reload();
+                            }
+                        });
+                    }
                 },
                 error: function (e) {
-                    alert(e.responseText);
-                    window.open('/dao-tao/sinh-vien', '_self');
-                    console.log("ERROR: " + e);
+                    bootbox.alert({
+                        message: e.responseJSON.message + '',
+                        backdrop: true,
+                        callback: function () {
+                            location.reload();
+                        }
+                    });
                 }
             }
         );
     } else {
-        $("#import_excel_error").text("chọn đúng file Excel ");
+        $("#import_excel_error").text("Chọn đúng file Excel ");
     }
-});
-
-function loaiSinhVien() {
-    var form = $('#form_loai_sinh_vien')[0];
-    $.ajax({
-            type: 'POST',
-            url: '/api/dao-tao/sinh-vien/loai-sinh-vien',
-            enctype: 'multipart/form-data',
-            processData: false,
-            data: new FormData(form),
-            contentType: false,
-            cache: false,
-            success: function (response) {
-                if (response.data.status == true){
-                    $("#messNotification").text("Loại sinh viên không đạt thành công");
-                } else {
-                    $("#messNotification").text(response.data.message);
-                }
-                $('#modal_loai_sinh_vien').modal("hide");
-                $("#modal_notification").modal("show");
-            },
-            error: function (e) {
-                console.log("ERROR : ", e);
-            }
-        }
-    );
 }
 
-function reload(){
+function openModalLoaiSinhVien() {
+    $("#modal_loai_sinh_vien").modal('show');
+}
+
+function loaiSinhVien() {
+    let typeExcel = $("#fileLoaiSv").val();
+    let indexDot = typeExcel.indexOf('.');
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length);
+    if (typeExcel.length <= 0) {
+        $("#errorImportFile").text("Chọn file");
+    } else if (typeFile == 'xlsx') {
+        var form = $('#form_loai_sinh_vien')[0];
+        $.ajax({
+                type: 'POST',
+                url: '/api/dao-tao/sinh-vien/loai-sinh-vien',
+                enctype: 'multipart/form-data',
+                processData: false,
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    $("#modal_loai_sinh_vien").modal('hide');
+                    bootbox.alert({
+                        message: response.data.message + '',
+                        backdrop: true,
+                        callback: function () {
+                            location.reload();
+                        }
+                    });
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                }
+            }
+        );
+    } else {
+        $("#errorImportFile").text("Chọn đúng file Excel ");
+    }
+}
+
+function reload() {
     window.open('/dao-tao/sinh-vien', '_self');
+}
+
+function detail(sinhVienId) {
+    $("#modal_detail").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/api/dao-tao/sinh-vien/search/" + sinhVienId,
+        dataType: 'json',
+        success: function (responseData) {
+            $("#maSV").val(responseData.data.maSinhVien);
+            $("#tenSV").val(responseData.data.tenSinhVien);
+            $("#sdt").val(responseData.data.soDienThoai);
+            $("#email").val(responseData.data.email);
+            $("#khoa").val(responseData.data.khoa);
+            $("#monDATN").val(responseData.data.tenMonDatn == null ? "Chưa có" : responseData.data.tenMonDatn + ' - ' + responseData.data.maMonDatn);
+            $("#tenCN").val(responseData.data.tenChuyenNganh == null ? "Chưa có" : responseData.data.tenChuyenNganh);
+            $("#maNhom").val(responseData.data.maNhom == null ? "Chưa có" : responseData.data.maNhom);
+            $("#tenDeTai").val(responseData.data.tenDeTai == null ? "Chưa có" : responseData.data.tenDeTai);
+            $("#GVDH").val(responseData.data.tenGvhd == null ? "Chưa có" : responseData.data.tenGvhd);
+            $("#DDK").val(responseData.data.tenDotDangKy);
+            $("#trangT").val(responseData.data.trangThai == 0 ? "Đủ điều kiện" : "Không đủ điều kiện");
+            $("#soTV").val(responseData.data.soThanhVien == null ? "Chưa tham gia nhóm" : responseData.data.soThanhVien + '/7');
+            $("#monCT").val(responseData.data.monChuongTrinh == null ? "Chưa có" : responseData.data.monChuongTrinh + ' - ' + responseData.data.maMonChuongTrinh);
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+function genPagingAndFillColor(totalPages, currentPage) {
+    let templatePageMid = ``;
+    let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(${currentPage - 1})">Back</a>
+                </li>
+                `;
+    for (let i = 0; i < totalPages; i++) {
+        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
+                                        <a class="page-link" id="pageColor" onclick="viewTable(${i})">${i + 1}</a>
+                                    </li>`
+    }
+    let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(${currentPage + 1})">Next</a>
+                </li>
+                `;
+    let templateHtml = ``;
+    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+    $("#list_page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+    let colorPage = document.querySelectorAll("#pageColor");
+    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+    colorPage[currentPage].style.color = 'white';
+}
+function showExportMau(){
+    $("#modal_excel_mau").modal('show');
+
+}
+
+function loaiSinhVienDetail(id, page) {
+    bootbox.confirm({
+        title: "Loại sinh viên",
+        message: "Bạn chắc chắn loại sinh viên không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: "/api/dao-tao/sinh-vien/loai-sv/" + id,
+                    data: JSON.stringify(id),
+                    dataType: 'json',
+                    success: function (responseData) {
+                        if (responseData.data == null) {
+                            bootbox.alert({
+                                message: 'Loại sing viên thất bại',
+                                backdrop: true,
+                            });
+                        } else {
+                            bootbox.alert({
+                                message: 'Loại sinh viên thành công',
+                                backdrop: true,
+                                callback: function () {
+                                    viewTable(page);
+                                }
+                            });
+                        }
+                    },
+                    error: function (e) {
+                        console.log("ERROR : ", e);
+                    }
+                });
+            }
+        }
+    });
 }

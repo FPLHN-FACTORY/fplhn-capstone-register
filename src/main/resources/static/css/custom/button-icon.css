@@ -1,0 +1,110 @@
+.btn_eye{
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    background: #1abb32;
+    float: left;
+}
+.btn_trash{
+    cursor: pointer;
+    background: #d31613;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_x_circle{
+    cursor: pointer;
+    background: #eae345;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_check_circle {
+    cursor: pointer;
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_pencil_square {
+    cursor: pointer;
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_check {
+    cursor: pointer;
+    background: #4bcbb5;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_clipboard_user {
+    cursor: pointer;
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 30px;
+    float: left;
+}
+.btn_person_off{
+    cursor: pointer;
+    background: #d31613;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_box_arrow {
+    cursor: pointer;
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 12px;
+    float: left;
+}
+.btn_change_role {
+    cursor: pointer;
+    background: #5867dd;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 7px;
+    width: 35px;
+    height: 35px;
+    line-height: 30px;
+    float: left;
+}

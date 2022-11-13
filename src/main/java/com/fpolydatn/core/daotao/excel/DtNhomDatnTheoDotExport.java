@@ -1,101 +1,100 @@
 package com.fpolydatn.core.daotao.excel;
 
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
-
-import java.io.IOException;
-import java.util.List;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
 public class DtNhomDatnTheoDotExport {
-    private XSSFWorkbook xssfWorkbook;
-    private XSSFSheet xssfSheet;
-    private List<DtNhomDatnTheoDotResponse> listNhomDatn;
+    public void exportData(HttpServletResponse response, List<DtNhomDatnTheoDotResponse> listNhomDatn) {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Nhóm DATN");
+            CellStyle cellStyle = workbook.createCellStyle();
+            //set border to table
+            cellStyle.setBorderTop(BorderStyle.MEDIUM);
+            cellStyle.setBorderRight(BorderStyle.MEDIUM);
+            cellStyle.setBorderBottom(BorderStyle.MEDIUM);
+            cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+            cellStyle.setAlignment(HorizontalAlignment.LEFT);
+            // Header
+            Row row = sheet.createRow(0);
+            Cell cell = row.createCell(0);
+            cell.setCellValue("STT");
+            cell.setCellStyle(cellStyle);
 
-    public DtNhomDatnTheoDotExport(List<DtNhomDatnTheoDotResponse> listNhomDatn) {
-        this.listNhomDatn = listNhomDatn;
-        xssfWorkbook = new XSSFWorkbook();
-    }
+            Cell cell1 = row.createCell(1);
+            cell1.setCellValue("Mã nhóm");
+            cell1.setCellStyle(cellStyle);
 
-    private void headerLine() {
-        xssfSheet = xssfWorkbook.createSheet("nhomDatn");
-        Row row = xssfSheet.createRow(0);
+            Cell cell2 = row.createCell(2);
+            cell2.setCellValue("Môn đăng ký");
+            cell2.setCellStyle(cellStyle);
 
-        CellStyle cellStyle = xssfWorkbook.createCellStyle();
-        XSSFFont font = xssfWorkbook.createFont();
-        font.setBold(true);
-        font.setFontHeight(12);
-        cellStyle.setFont(font);
-        createCell(row, 0, "STT", cellStyle);
-        createCell(row, 1, "Tên nhóm", cellStyle);
-        createCell(row, 2, "Tên đề tài", cellStyle);
-        createCell(row, 3, "Tên chuyên ngành", cellStyle);
-        createCell(row, 4, "Số thành viên", cellStyle);
-        createCell(row, 5, "Trưởng nhóm", cellStyle);
-        createCell(row, 6, "Tên GVHD", cellStyle);
-        createCell(row, 7, "Trạng thái", cellStyle);
-    }
+            Cell cell3 = row.createCell(3);
+            cell3.setCellValue("Tên đề tài");
+            cell3.setCellStyle(cellStyle);
 
-    private void createCell(Row row, int countColum, Object value, CellStyle cellStyle) {
-        xssfSheet.autoSizeColumn(countColum);
-        Cell cell = row.createCell(countColum);
-        if (value instanceof Integer) {
-            cell.setCellValue((Integer) value);
-        } else if (value instanceof Boolean) {
-            cell.setCellValue((Boolean) value);
-        } else if (value instanceof Long) {
-            cell.setCellValue((Long) value);
-        } else if (value instanceof Short) {
-            cell.setCellValue((Short) value);
-        } else {
-            cell.setCellValue((String) value);
+            Cell cell4 = row.createCell(4);
+            cell4.setCellValue("Tên chuyên nghành");
+            cell4.setCellStyle(cellStyle);
+
+            Cell cell5 = row.createCell(5);
+            cell5.setCellValue("Số thành viên");
+            cell5.setCellStyle(cellStyle);
+
+            Cell cell6 = row.createCell(6);
+            cell6.setCellValue("Tên GVHD");
+            cell6.setCellStyle(cellStyle);
+
+            Cell cell7 = row.createCell(7);
+            cell7.setCellValue("Trạng thái");
+
+            //Set data
+            int rowNum = 1;
+            for (DtNhomDatnTheoDotResponse dtNhomDatn : listNhomDatn) {
+                Row empDataRow = sheet.createRow(rowNum++);
+
+                Cell empSttCell = empDataRow.createCell(0);
+                empSttCell.setCellStyle(cellStyle);
+                empSttCell.setCellValue(dtNhomDatn.getStt());
+
+                Cell empMaNhomCell = empDataRow.createCell(1);
+                empMaNhomCell.setCellStyle(cellStyle);
+                empMaNhomCell.setCellValue(dtNhomDatn.getMaNhom());
+
+                Cell empMonDangKyCell = empDataRow.createCell(2);
+                empMonDangKyCell.setCellStyle(cellStyle);
+                empMonDangKyCell.setCellValue(dtNhomDatn.getTenMonDatn());
+
+                Cell empTenDeTaiCell = empDataRow.createCell(3);
+                empTenDeTaiCell.setCellStyle(cellStyle);
+                empTenDeTaiCell.setCellValue(dtNhomDatn.getTenDeTai() == null ? "Chưa có" : dtNhomDatn.getTenDeTai());
+
+                Cell empTenChuyenNganhCell = empDataRow.createCell(4);
+                empTenChuyenNganhCell.setCellStyle(cellStyle);
+                empTenChuyenNganhCell.setCellValue(dtNhomDatn.getTenChuyenNganh());
+
+                Cell empSoThanhVienCell = empDataRow.createCell(5);
+                empSoThanhVienCell.setCellStyle(cellStyle);
+                empSoThanhVienCell.setCellValue(dtNhomDatn.getCountSinhVien() + "/7");
+
+                Cell empTenGvhdCell = empDataRow.createCell(6);
+                empTenGvhdCell.setCellStyle(cellStyle);
+                empTenGvhdCell.setCellValue(dtNhomDatn.getTenGvhd() == null ? "Chưa có" : dtNhomDatn.getTenGvhd());
+
+                Cell empTrangThaiCell = empDataRow.createCell(7);
+                empTrangThaiCell.setCellStyle(cellStyle);
+                empTrangThaiCell.setCellValue(dtNhomDatn.getTrangThai() == 0 ? "Mới thành lập" : (dtNhomDatn.getTrangThai() == 1 ? "Đã liên hệ giảng viên" :
+                        (dtNhomDatn.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (dtNhomDatn.getTrangThai() == 3 ? "Cần sửa" : (dtNhomDatn.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))));
+            }
+            //write output to response
+            workbook.write(response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        cell.setCellStyle(cellStyle);
     }
-
-    private void writeDataLines() {
-        final long startTime = System.currentTimeMillis();
-
-        CellStyle style = xssfWorkbook.createCellStyle();
-        XSSFFont font = xssfWorkbook.createFont();
-        font.setFontHeight(12);
-        style.setFont(font);
-        listNhomDatn.stream().forEach(xx -> {
-            Row row = xssfSheet.createRow(xx.getStt());
-            int countColum = 0;
-            createCell(row, countColum++, xx.getStt(), style);
-            createCell(row, countColum++, xx.getTenNhom(), style);
-            createCell(row, countColum++, xx.getTenDeTai(), style);
-            createCell(row, countColum++, xx.getTenChuyenNganh(), style);
-            createCell(row, countColum++, xx.getCountSinhVien() + "/7", style);
-            createCell(row, countColum++, xx.getMaSinhVien() + "-" + xx.getTenSinhVien(), style);
-            createCell(row, countColum++, xx.getTenGvhd() + "-" + xx.getTenTaiKhoan(), style);
-            createCell(row, countColum++, xx.getTrangThai() == 0 ? "Mới thành lập" : (xx.getTrangThai() == 1 ? "Đã liên hệ giảng viên" : (xx.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (xx.getTrangThai() == 3 ? "Cần sửa" : (xx.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))), style);
-        });
-
-        final long endTime = System.currentTimeMillis();
-        System.out.println("Total execution time: " + (endTime - startTime));
-    }
-
-    public void exportData(HttpServletResponse response) throws IOException {
-        final long startTime = System.currentTimeMillis();
-        headerLine();
-        writeDataLines();
-        ServletOutputStream outputStream = response.getOutputStream();
-        xssfWorkbook.write(outputStream);
-        final long endTime = System.currentTimeMillis();
-        System.out.println("Total execution time end: " + (endTime - startTime));
-        xssfWorkbook.close();
-        outputStream.close();
-    }
-
 }
 

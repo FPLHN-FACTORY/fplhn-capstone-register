@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DtFindNhomMonDatnRequest extends PageableRequest {
-    private String tenNhomMon;
+
     private String coSoId;
+
 }

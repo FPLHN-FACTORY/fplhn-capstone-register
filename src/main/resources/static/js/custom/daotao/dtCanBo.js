@@ -6,7 +6,9 @@ const regexSoDienThoai = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/;
 
 $(document).ready(function () {
     $("#hoc_ky_error").text("");
+    clear();
 });
+
 
 function clearData() {
     $("#keyword").val("");
@@ -20,8 +22,28 @@ function clear() {
     $('#ten_tai_khoan_error').text("");
 }
 
-$("#form_create_can_bo").submit(function (event) {
-    event.preventDefault();
+function openModalCreate() {
+    $("#modal_create").modal('show')
+}
+
+function openModalImport() {
+    $("#import").modal('show')
+}
+
+function openModalTaiMau() {
+    $("#modal_excel_mau").modal('show')
+}
+
+
+function clearUpdate() {
+    $('#email_fe_error_update').text("");
+    $('#email_fpt_error_update').text("");
+    $('#so_dien_thoai_error_update').text("");
+    $('#ten_tai_khoan_error_update').text("");
+    $('#ten_tai_khoan_error_update').text("");
+}
+
+function save() {
     clear();
     let emailFe = $("#emailfe").val().trim();
     let emailFpt = $("#emailfpt").val().trim();
@@ -43,51 +65,53 @@ $("#form_create_can_bo").submit(function (event) {
     if (emailFe.length === 0) {
         $("#email_fe_error").text("Email Fe Không Được Để Trống");
         check = false;
+    } else if (regexFE.test(emailFe) == false) {
+        $("#email_fe_error").text("Email Fe Phải Đúng Định Dạng");
+        check = false;
+    } else if (emailFe.includes(" ")) {
+        $("#email_fe_error").text("Email Fe không được để dấu cách");
+        check = false;
     } else {
-        if (regexFE.test(emailFe) == false) {
-            $("#email_fe_error").text("Email Fe Phải Đúng Định Dạng");
-            check = false;
-        } else {
-            if (emailFe.includes(" ")) {
-                $("#email_fe_error").text("Email Fe không được để dấu cách");
-                check = false;
-            }
-        }
+        $("#email_fe_error").text(" ");
     }
     if (emailFpt.length == 0) {
         $("#email_fpt_error").text("Email Fpt Không Được Để Trống");
         check = false;
+    } else if (regexFPT.test(emailFpt) == false) {
+        $("#email_fpt_error").text("Email Fpt Phải Đúng Định Dạng");
+        check = false;
+    } else if (emailFpt.includes(" ")) {
+        $("#email_fpt_error").text("Email Fe không được để dấu cách");
+        check = false;
     } else {
-        if (regexFPT.test(emailFpt) == false) {
-            $("#email_fpt_error").text("Email Fpt Phải Đúng Định Dạng");
-            check = false;
-        } else {
-            if (emailFpt.includes(" ")) {
-                $("#email_fpt_error").text("Email Fe không được để dấu cách");
-                check = false;
-            }
-        }
+        $("#email_fpt_error").text(" ");
     }
+
     if (soDienThoai.length == 0) {
         $("#so_dien_thoai_error").text("Số Điện Thoại Không Được Để Trống");
         check = false;
+    } else if (regexSoDienThoai.test(soDienThoai) == false) {
+        $("#so_dien_thoai_error").text("Số Điện Thoại Phải Định Dạng");
+        check = false;
     } else {
-        if (regexSoDienThoai.test(soDienThoai) == false) {
-            $("#so_dien_thoai_error").text("Số Điện Thoại Phải Định Dạng");
-            check = false;
-        }
+        $("#so_dien_thoai_error").text("");
     }
 
     if (tenCanBo.length == 0) {
         $("#ten_can_bo_error").text("Tên Cán Bộ Không Được Để Trống");
         check = false;
+    } else {
+        $("#ten_can_bo_error").text(" ");
     }
+
     if (tenTaiKhoan.length == 0) {
         $("#ten_tai_khoan_error").text("Tên Tài Khoản Không Được Để Trống");
         check = false;
     } else if (tenTaiKhoan.includes(" ")) {
         $("#ten_tai_khoan_error").text("Tên Tài Khoản Không Được Được Chứa Khoảng Trắng");
         check = false;
+    } else {
+        $("#ten_tai_khoan_error").text(" ");
     }
     if (check == true) {
         $.ajax({
@@ -101,19 +125,20 @@ $("#form_create_can_bo").submit(function (event) {
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message.trim() == 'email fpt da ton tai') {
+                    $("#email_fpt_error").text("Email fpt đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'email fe da ton tai') {
+                    $("#email_fe_error").text("Email fe đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'Ten tai khoan cua can bo da ton tai') {
+                    $("#ten_tai_khoan_error").text("Tên tài khoản đã tồn tại");
+                }
             }
         });
     }
-});
+}
 
 function openModalUpdateCanBo(canBoId) {
-    $('#email_fe_error_update').text("");
-    $('#email_fpt_error_update').text("");
-    $('#so_dien_thoai_error_update').text("");
-    $('#ten_can_bo_error_update').text("");
-    $('#ten_tai_khoan_error_update').text("");
-
+    clearUpdate();
     $("#modal_update_can_bo").modal('show');
     $.ajax({
         type: "GET",
@@ -137,8 +162,7 @@ function openModalUpdateCanBo(canBoId) {
     });
 }
 
-$("#form_hoc_ky_update").submit(function (event) {
-    event.preventDefault();
+function update() {
     let emailFpt = $("#email_fpt_update").val().trim();
     let emailFe = $("#email_fe_update").val().trim();
     let soDienThoai = $("#so_dien_thoai_Update").val().trim();
@@ -160,52 +184,59 @@ $("#form_hoc_ky_update").submit(function (event) {
     if (emailFe.length === 0) {
         $("#email_fe_error_update").text("Email Fe Không Được Để Trống");
         check = false;
+    } else if (regexFE.test(emailFe) == false) {
+        $("#email_fe_error_update").text("Email Fe Phải Đúng Định Dạng");
+        check = false;
+    } else if (emailFe.includes(" ")) {
+        $("#email_fe_error_update").text("Email Fe không được để dấu cách");
+        check = false;
     } else {
-        if (regexFE.test(emailFe) == false) {
-            $("#email_fe_error_update").text("Email Fe Phải Đúng Định Dạng");
-            check = false;
-        } else {
-            if (emailFe.includes(" ")) {
-                $("#email_fe_error_update").text("Email Fe không được để dấu cách");
-                check = false;
-            }
-        }
+        $("#email_fe_error_update").text(" ");
     }
+
+
     if (emailFpt.length == 0) {
         $("#email_fpt_error_update").text("Email Fpt Không Được Để Trống");
         check = false;
+    } else if (regexFPT.test(emailFpt) == false) {
+        $("#email_fpt_error_update").text("Email Fpt Phải Đúng Định Dạng");
+        check = false;
+    } else if (emailFpt.includes(" ")) {
+        $("#email_fpt_error_update").text("Email Fpt không được để dấu cách");
+        check = false;
     } else {
-        if (regexFPT.test(emailFpt) == false) {
-            $("#email_fpt_error_update").text("Email Fpt Phải Đúng Định Dạng");
-            check = false;
-        } else {
-            if (emailFpt.includes(" ")) {
-                $("#email_fpt_error_update").text("Email Fpt không được để dấu cách");
-                check = false;
-            }
-        }
+        $("#email_fpt_error_update").text(" ");
     }
+
+
     if (soDienThoai.length == 0) {
         $("#so_dien_thoai_error_update").text("Số Điện Thoại Không Được Để Trống");
         check = false;
+    } else if (regexSoDienThoai.test(soDienThoai) == false) {
+        $("#so_dien_thoai_error_update").text("Số Điện Thoại Phải Định Dạng");
+        check = false;
     } else {
-        if (regexSoDienThoai.test(soDienThoai) == false) {
-            $("#so_dien_thoai_error_update").text("Số Điện Thoại Phải Định Dạng");
-            check = false;
-        }
+        $("#so_dien_thoai_error_update").text("");
     }
+
 
     if (tenCanBo.length == 0) {
         $("#ten_can_bo_error_update").text("Tên Cán Bộ Không Được Để Trống");
         check = false;
+    } else {
+        $("#ten_can_bo_error_update").text(" ");
     }
+
     if (tenTaiKhoan.length == 0) {
         $("#ten_tai_khoan_error_update").text("Tên Tài Khoản Không Được Để Trống");
         check = false;
     } else if (tenTaiKhoan.includes(" ")) {
         $("#ten_tai_khoan_error_update").text("Tên Tài Khoản Không Được Chứa Khoảng Trắng");
         check = false;
+    } else {
+        $("#ten_tai_khoan_error_update").text(" ");
     }
+
     if (check == true) {
         $.ajax({
             type: "PUT",
@@ -218,44 +249,125 @@ $("#form_hoc_ky_update").submit(function (event) {
                 $("#modal_update_can_bo").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message.trim() == 'email fpt da ton tai') {
+                    $("#email_fpt_error").text("Email fpt đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'email fe da ton tai') {
+                    $("#email_fe_error").text("Email fe đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'Ten tai khoan cua can bo da ton tai') {
+                    $("#ten_tai_khoan_error").text("Tên tài khoản đã tồn tại");
+                }
             }
         });
     }
-});
+};
+
+function importCanBo() {
+    let typeExcel = $("#inputGroupFile01").val();
+    let indexDot = typeExcel.indexOf('.');
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    if (typeExcel.trim().length <= 0) {
+        $("#import_excel_error").text("Hãy chọn file excel cần import");
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        var form = $('#form_import_excel')[0];
+        $.ajax({
+                type: 'POST',
+                url: canBoApi + '/import',
+                enctype: 'multipart/form-data',
+                processData: false,
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response.data.status == true) {
+                        bootbox.alert({
+                            message: "Import file excel thành công",
+                            backdrop: true,
+                            callback: function () {
+                                window.open(canBoView, '_self');
+                            }
+                        });
+                    } else {
+                        bootbox.alert({
+                            message: response.data.message,
+                            backdrop: true,
+                            callback: function () {
+                                window.open(canBoView, '_self');
+                            }
+                        });
+                    }
+                },
+                error: function (e) {
+                }
+            }
+        );
+    } else {
+        $("#import_excel_error").text("Hãy chọn đúng file excel");
+    }
+}
 
 function openModalRemoveCanBo(canBoId) {
-    $("#modal_can_bo_remove").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: canBoApi + "/" + canBoId,
-        dataType: 'json',
-        success: function () {
-            $("#remove_can_bo").val(canBoId);
+    bootbox.confirm({
+        title: "Xóa nhóm môn",
+        message: "Bạn muốn xóa cán bộ này?",
+        backdrop: true,
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: canBoApi + "/" + canBoId,
+                    dataType: 'json',
+                    success: function (responseData) {
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                window.open(canBoView, '_self');
+                            }
+                        });
+                    },
+                    error: function (responseData) {
+                        if (responseData.responseJSON.message === 'Can Bo not exist') {
+                            bootbox.alert({
+                                message: 'Cán Bộ Không Tồn Tại',
+                                backdrop: true,
+                                callback: function () {
+                                    window.open(nhomMonDatnView, '_self');
+                                }
+                            });
+                        }
+                    }
+                });
+            }
         }
     });
 }
 
-$("#form_can_bo_delete").submit(function (event) {
-    event.preventDefault();
-    let canBoId = $("#remove_can_bo").val();
-    console.log(canBoId)
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: canBoApi + "/" + canBoId,
-        data: JSON.stringify(canBoId),
-        dataType: 'json',
-        success: function () {
-            window.open(canBoView, '_self');
-            $("#modal_update_hoc_ky").modal("hide");
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-});
+
+function exportExcelMau() {
+    let typeExcel = $("#type_mau_excel").val();
+    if (typeExcel == '') {
+        $("#mau_excel_error").text("chọn định dạng file download");
+    } else {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/dao-tao/can-bo/export-mau?typeExcel=" + typeExcel,
+            success: function () {
+                window.open("/api/dao-tao/can-bo/export-mau?typeExcel=" + typeExcel, '_self');
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    }
+}

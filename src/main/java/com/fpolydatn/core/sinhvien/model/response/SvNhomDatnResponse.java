@@ -5,12 +5,14 @@ import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-@Projection(types = {ChuyenNganh.class, NhomDatn.class, SinhVien.class, GiangVienHuongDan.class, DotDangKy.class, HocKy.class})
+@Projection(types = {MonDatn.class, ChuyenNganh.class, NhomDatn.class, SinhVien.class, GiangVienHuongDan.class, DotDangKy.class, HocKy.class})
 public interface SvNhomDatnResponse extends IsIdentified {
 
     @Value("#{target.stt}")
     int getStt();
 
+    @Value("#{target.ma_nhom}")
+    String getMaNhom();
     @Value("#{target.ten_nhom}")
     String getTenNhom();
 
@@ -43,5 +45,11 @@ public interface SvNhomDatnResponse extends IsIdentified {
 
     @Value("#{target.nhan_xet}")
     String getNhanXet();
+
+    @Value("#{target.thoi_diem_roi_nhom_gan_nhat}")
+    Long getThoiDiemRoiNhomGanNhat();
+
+    @Value("#{target.ten_mon_datn}")
+    String getTenMonDatn();
 
 }

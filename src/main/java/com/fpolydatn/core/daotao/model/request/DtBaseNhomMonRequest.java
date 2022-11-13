@@ -25,4 +25,8 @@ public class DtBaseNhomMonRequest {
     @NotBlank
     private String coSoId;
 
+    @NotEmpty
+    @NotBlank
+    private String chuyenNganhId;
+
 }

@@ -1,16 +1,15 @@
 package com.fpolydatn.core.giangvien.controller;
 
+import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.giangvien.model.request.GvChotNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnRequest;
-import com.fpolydatn.core.giangvien.model.request.GvFindNhomDatnHuongDanRequest;
 import com.fpolydatn.core.giangvien.model.request.GvUpdateTenDeTaiRequest;
-import com.fpolydatn.core.giangvien.model.request.GvUpdateNhomDatnRequest;
 import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
+import com.fpolydatn.core.giangvien.service.GvSinhVienService;
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
-import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.entity.NhomDatn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,34 +19,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
 /**
  * @author thangdt
  */
 
 @RestController
 @RequestMapping(value = "/api/giang-vien/nhom-datn")
-public class GvNhomDatnRestController {
+public class GvNhomDatnRestController extends BaseController {
 
     @Autowired
     private GvNhomDatnService nhomDatnService;
 
     @Autowired
-    private SvSinhVienService sinhVienService;
+    private GvSinhVienService sinhVienService;
 
     @GetMapping()
     public ResponseObject detailToTalSinhVien(final SvFindSinhVienRequest request) {
         return new ResponseObject(sinhVienService.findByNhomId(request));
     }
 
-    @PutMapping()
-    public ResponseObject chotDuLieu(final GvUpdateNhomDatnRequest request) {
-        return new ResponseObject(nhomDatnService.updateTrangThaiNhom(request));
-    }
-
     @GetMapping("/search")
     public ResponseObject viewSeachNhomDatn(final GvFindNhomDatnRequest request) {
+        String idGiangVien = session.getUserId();
+        request.setGiangVienHDId(idGiangVien);
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
         return new ResponseObject(listNhomDatn);
     }
@@ -59,8 +53,7 @@ public class GvNhomDatnRestController {
     }
 
     @PutMapping("/update-ten-de-tai/{maNhom}")
-    public ResponseObject updateTenDeTaiNhomDatn(@PathVariable("maNhom") String maNhom,
-                                                 @RequestBody GvUpdateTenDeTaiRequest request) {
+    public ResponseObject updateTenDeTaiNhomDatn(@PathVariable("maNhom") String maNhom, @RequestBody GvUpdateTenDeTaiRequest request) {
         NhomDatn nhomDatnResponse = nhomDatnService.updateTenDeTai(request);
         return new ResponseObject(nhomDatnResponse);
     }
@@ -73,13 +66,8 @@ public class GvNhomDatnRestController {
 
     @PutMapping("/phe-duyet-de-tai-nhom")
     public ResponseObject pheDuyetDeTaiNhomDatn(final GvChotNhomDatnRequest request) {
-        NhomDatn nhomDatnResponse = nhomDatnService.pheDuyetDeTaiNhomDatn(request);
+        NhomDatn nhomDatnResponse = nhomDatnService.chotDeTaiNhomDatn(request);
         return new ResponseObject(nhomDatnResponse);
     }
 
-    @PutMapping("/tu-choi-de-tai-nhom-datn")
-    public ResponseObject tuChoiDeTaiNhomDatn(final GvChotNhomDatnRequest request) {
-        NhomDatn nhomDatnResponse = nhomDatnService.tuChoiDeTaiNhomDatn(request);
-        return new ResponseObject(nhomDatnResponse);
-    }
 }

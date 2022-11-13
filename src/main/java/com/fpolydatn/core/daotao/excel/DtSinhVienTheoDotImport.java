@@ -1,10 +1,11 @@
 package com.fpolydatn.core.daotao.excel;
 
 import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.github.pjfanning.xlsx.StreamingReader;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,32 +19,42 @@ import java.util.List;
 @Component
 public class DtSinhVienTheoDotImport {
 
-
     public static List<DtCreateSinhVienTheoDotRequest> importData(MultipartFile reapExcelDataFile) throws IOException {
         List<DtCreateSinhVienTheoDotRequest> listSinhVien = new ArrayList<>();
-        XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
-        XSSFSheet worksheet = workbook.getSheetAt(0);
-        for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
+        Workbook workbook = StreamingReader.builder()
+                .bufferSize(4096)
+                .rowCacheSize(50)
+                .open(reapExcelDataFile.getInputStream());
+        Sheet worksheet = workbook.getSheetAt(0);
+        for (Row row :
+                worksheet) {
+            if (row.getRowNum()==0){
+                continue;
+            }
             DtCreateSinhVienTheoDotRequest sinhVien = new DtCreateSinhVienTheoDotRequest();
-            XSSFRow row = worksheet.getRow(i);
-
-            sinhVien.setMaSinhVien(String.valueOf(getCellValue(row.getCell(1))));
-            sinhVien.setTenSinhVien(String.valueOf(getCellValue(row.getCell(2))));
-            sinhVien.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))));
-            sinhVien.setEmail(String.valueOf(getCellValue(row.getCell(4))));
-            sinhVien.setKhoa(String.valueOf(getCellValue(row.getCell(5))));
-            sinhVien.setMaNhom(String.valueOf(getCellValue(row.getCell(6))));
-            sinhVien.setChuyenNganh(String.valueOf(getCellValue(row.getCell(7))));
-            sinhVien.setDotDangKy(String.valueOf(getCellValue(row.getCell(8))));
-            sinhVien.setMonDATN(String.valueOf(getCellValue(row.getCell(9))));
-
-
+            sinhVien.setMaSinhVien(String.valueOf(getCellValue(row.getCell(1))).trim());
+            sinhVien.setTenSinhVien(String.valueOf(getCellValue(row.getCell(2))).trim());
+            sinhVien.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))).trim());
+            sinhVien.setEmail(String.valueOf(getCellValue(row.getCell(4))).trim());
+            sinhVien.setKhoa(String.valueOf(getCellValue(row.getCell(5))).trim());
+            sinhVien.setMaNhom(String.valueOf(getCellValue(row.getCell(6))).trim());
+            sinhVien.setChuyenNganh(String.valueOf(getCellValue(row.getCell(7))).trim());
+            sinhVien.setDotDangKy(String.valueOf(getCellValue(row.getCell(8))).trim());
+            sinhVien.setMonDATN(String.valueOf(getCellValue(row.getCell(9))).trim());
+            if (sinhVien.getTenSinhVien().isEmpty() && sinhVien.getMaSinhVien().isEmpty() &&
+                    sinhVien.getSoDienThoai().isEmpty() && sinhVien.getEmail().isEmpty() &&
+                    sinhVien.getKhoa().isEmpty() && sinhVien.getChuyenNganh().isEmpty() &&
+                    sinhVien.getDotDangKy().isEmpty() && sinhVien.getMaNhom().isEmpty() &&
+                    sinhVien.getMonDATN().isEmpty()) {
+                continue;
+            }
             listSinhVien.add(sinhVien);
+
         }
         return listSinhVien;
     }
 
-    private static Object getCellValue(XSSFCell cell) {
+    private static Object getCellValue(Cell cell) {
         try {
             switch (cell.getCellType()) {
                 case NUMERIC -> {
@@ -57,7 +68,7 @@ public class DtSinhVienTheoDotImport {
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
     }

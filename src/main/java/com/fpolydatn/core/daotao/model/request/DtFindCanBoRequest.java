@@ -11,8 +11,6 @@ import lombok.Setter;
 @Setter
 public class DtFindCanBoRequest extends PageableRequest {
 
-    private String tenCanBo;
-
     private String coSoID;
 
 }

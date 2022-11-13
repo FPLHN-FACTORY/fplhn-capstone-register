@@ -15,7 +15,6 @@ import java.util.List;
  * @author huynq
  */
 public interface DtPhanCongHuongDanService {
-    //    [UC-DT-MDa-CT-1] Phân công GVHD theo môn
     PageableObject<DtPhanCongHuongDanResponse> search(String id, final DtFindPhanCongHuongDanRequest req);
 
     DtPhanCongHuongDanMonDatnResponse getMon(String id);
@@ -24,14 +23,13 @@ public interface DtPhanCongHuongDanService {
 
     Boolean delete(String idMon, String idGV);
 
-    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId);
+    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId, String dotDangKy);
 
     List<PhanCongHuongDan> addAll(List<PhanCongHuongDan> list);
 
-    //    [UC-DT-GV-CT-1] Phân môn cho GVHD
     PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatn(String id, final DtFindPhanMonGiangVienHuongDanRequest req);
 
-    DtGiangVienHDResponse getGiangVienHuongDan(String id);
+    DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId, String doDangKyId);
 
     List<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatnList(String coSoId, String maMonId);
 

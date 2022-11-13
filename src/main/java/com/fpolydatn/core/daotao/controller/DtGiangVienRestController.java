@@ -3,11 +3,14 @@ package com.fpolydatn.core.daotao.controller;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.core.daotao.excel.DtGiangVienFileImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
@@ -32,6 +36,9 @@ public class DtGiangVienRestController extends BaseController {
 
     @Autowired
     private DtGiangVienHDService giangVienHDService;
+
+    @Autowired
+    private CommonHelper commonHelper;
 
     @PostMapping
     public ResponseObject add(@RequestBody DtCreateGiangVienHDRequest cmd) {
@@ -76,8 +83,23 @@ public class DtGiangVienRestController extends BaseController {
     }
 
     @PostMapping("/import")
-    public void importEcel(@RequestParam("file") MultipartFile file) throws IOException {
-        this.giangVienHDService.importExcel(file);
+    public ResponseObject importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+        String idCoSo = session.getCoSoId();
+        String idDotDangKy = commonHelper.getDotDangKyHienTai();
+        DtGiangVienHDResponseMessage responseMessage = giangVienHDService.DtGiangVienHDImport(file,idCoSo,idDotDangKy);
+        return new ResponseObject(responseMessage);
     }
 
+    @GetMapping("/export")
+    public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
+        request.setCoSoId(session.getCoSoId());
+        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        giangVienHDService.DtGiangVienHDExportExcel(response, typeExcel, request);
+    }
+
+    @GetMapping("/export/mau")
+    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
+        request.setCoSoId(session.getCoSoId());
+        giangVienHDService.DtGiangVienHDMauExportExcel(response, typeExcel, request);
+    }
 }

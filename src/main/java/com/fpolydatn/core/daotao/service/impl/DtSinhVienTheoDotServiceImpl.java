@@ -14,10 +14,9 @@ import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
+import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
-import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
-import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.github.pjfanning.xlsx.StreamingReader;
@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author thepvph20110
@@ -67,14 +68,13 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Autowired
     private CommonHelper commonHelper;
 
-    private List<DtSinhVienTheoDotResponse> list;
 
     private HashMap<String, String> map;
 
     @Override
     public PageableObject<DtSinhVienTheoDotResponse> searchStudent(final FindDtSinhVienTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        if (request.getIdDotDangKy() == null){
+        if (request.getIdDotDangKy() == null) {
             if (dotDangKyId != null) {
                 request.setIdDotDangKy(dotDangKyId);
             } else {
@@ -89,14 +89,12 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<DtSinhVienTheoDotResponse> res = sinhVienRepository.searchStudent(request, pageable);
-        list = res.stream().toList();
         return new PageableObject<>(res);
     }
 
     public boolean checkTypeFile(MultipartFile file) {
         String filename = file.getName();
         String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
-
         String excel = "xls";
         if (!extension.equals(excel)) {
             return false;
@@ -109,95 +107,142 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=QLSinhVienFpoly" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
-        DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(list);
-        dtSinhVienExport.exportData(response);
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (request.getIdDotDangKy() == null) {
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
+        } else if (request.getIdDotDangKy().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                request.setIdDotDangKy(dotDangKyId);
+            } else {
+                request.setIdDotDangKy("");
+            }
+        }
+        response.setHeader("Content-Disposition", headerValue);
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());
+        List<DtSinhVienTheoDotResponse> list = sinhVienRepository.exportExcel(request);
+        DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport();
+        dtSinhVienExport.employeeDetailReport(response, list);
     }
 
     @Override
-    public void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
+    public void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws Exception {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=MauImportExcel" + currentDateTime + "." + typeExcel;
+        String headerValue = "attachment; filename=MauQlSinhVien" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
         List<DtSinhVienTheoDotResponse> listSv = new ArrayList<>();
         DtSinhVienTheoDotExport dtSinhVienExport = new DtSinhVienTheoDotExport(listSv);
-        dtSinhVienExport.exportMauImport(response);
+        dtSinhVienExport.headerLineMau(response);
     }
 
     @Override
-    public RestApiException DtSinhVienImport(MultipartFile file, String coSoId) throws IOException {
+    public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException {
+        DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
 
-        DtSinhVienTheoDotImport sinhVienTheoDotImport = new DtSinhVienTheoDotImport();
-        List<DtCreateSinhVienTheoDotRequest> sinhVienList = sinhVienTheoDotImport.importData(file);
-        List<SinhVien> listSinhVienEntity = new ArrayList<>();
-        map = new HashMap<>();
-
-        addDataInMap(map, coSoId);
-
-        for (DtCreateSinhVienTheoDotRequest sinhVien : sinhVienList) {
-            SinhVien sinhVienEntity = new SinhVien();
-            if (map.get(sinhVien.getMaSinhVien()) != null) {
-                sinhVienEntity.setId(map.get(sinhVien.getMaSinhVien()));
-            } else if (!sinhVien.getMaSinhVien().matches("[a-zA-Z]{2}+\\d+")) {
-                throw new RestApiException(Message.MA_SV_MALFORMED);
+        try {
+            response.setStatus(true);
+            DtSinhVienTheoDotImport sinhVienTheoDotImport = new DtSinhVienTheoDotImport();
+            List<DtCreateSinhVienTheoDotRequest> sinhVienList = sinhVienTheoDotImport.importData(file);
+            if(sinhVienList.size()<=0){
+                response.setStatus(false);
+                response.setMessage("Import file không thành công");
             }
+            List<SinhVien> listSinhVienEntity = new ArrayList<>();
+            map = new HashMap<>();
+            addDataInMap(map, coSoId);
+            sinhVienList.parallelStream().forEach(sinhVien -> {
+                SinhVien sinhVienEntity = new SinhVien();
+                if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
+                        sinhVien.getSoDienThoai().isEmpty() || sinhVien.getEmail().isEmpty() ||
+                        sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
+                        sinhVien.getDotDangKy().isEmpty()) {
+                    response.setStatus(false);
+                    response.setMessage("Không để trống (Mã, tên, sđt, email, khóa, tên chuyên ngành, đợt đăng ký)");
+                    return;
+                }
+                if (map.get(sinhVien.getMaSinhVien()) != null) {
+                    sinhVienEntity.setId(map.get(sinhVien.getMaSinhVien()));
+                } else if (!sinhVien.getMaSinhVien().matches("[a-zA-Z]{2}+\\d+")) {
+                    response.setStatus(false);
+                    response.setMessage("Mã sinh viên \"" + sinhVien.getMaSinhVien() + "\" không đúng định dạng");
+                    return;
+                }
 
-            if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
-                    sinhVien.getSoDienThoai().isEmpty() || sinhVien.getEmail().isEmpty() ||
-                    sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
-                    sinhVien.getDotDangKy().isEmpty()) {
-                throw new RestApiException(Message.EMPTY);
+                if (map.get(sinhVien.getMaNhom()) != null) {
+                    sinhVienEntity.setNhomId(map.get(sinhVien.getMaNhom()));
+                } else if (sinhVien.getMaNhom().isEmpty()) {
+                    sinhVienEntity.setNhomId(null);
+                } else if (!map.containsKey(sinhVien.getMaNhom())) {
+                    response.setStatus(false);
+                    response.setMessage("Mã nhóm \"" + sinhVien.getMaNhom() + "\" không tồn tại");
+                    return;
+                }
+
+                if (map.get(sinhVien.getChuyenNganh()) != null) {
+                    sinhVienEntity.setChuyenNganhId(map.get(sinhVien.getChuyenNganh()));
+                } else if (!map.containsKey(sinhVien.getChuyenNganh())) {
+                    response.setStatus(false);
+                    response.setMessage("Tên chuyên ngành \"" + sinhVien.getChuyenNganh() + "\" không tồn tại");
+                    return;
+                }
+
+                if (map.get(sinhVien.getDotDangKy()) != null) {
+                    sinhVienEntity.setDotDangKyId(map.get(sinhVien.getDotDangKy()));
+                } else if (!map.containsKey(sinhVien.getDotDangKy())) {
+                    response.setStatus(false);
+                    response.setMessage("Tên đợt đăng ký \"" + sinhVien.getDotDangKy() + "\" không tồn tại");
+                    return;
+                }
+
+                if (map.get(sinhVien.getMonDATN()) != null) {
+                    sinhVienEntity.setMonChuongTrinhId(map.get(sinhVien.getMonDATN()));
+                } else if (!map.containsKey(sinhVien.getMonDATN())) {
+                    response.setStatus(false);
+                    response.setMessage("Mã môn chương trình \"" + sinhVien.getMonDATN() + "\" không tồn tại");
+                    return;
+                }
+
+                if (!sinhVien.getSoDienThoai().matches("(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}")) {
+                    response.setStatus(false);
+                    response.setMessage("Số điện thoại \"" + sinhVien.getSoDienThoai() + "\" không đúng định dạng");
+                    return;
+                }
+
+                if (!sinhVien.getEmail().matches("\\w+@fpt.edu.vn")) {
+                    response.setStatus(false);
+                    response.setMessage("Email \"" + sinhVien.getEmail() + "\" không đúng định dạng");
+                    return;
+                }
+
+                sinhVienEntity.setTenSinhVien(sinhVien.getTenSinhVien());
+                sinhVienEntity.setMaSinhVien(sinhVien.getMaSinhVien());
+                sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
+                sinhVienEntity.setEmail(sinhVien.getEmail());
+                sinhVienEntity.setKhoa(sinhVien.getKhoa());
+                sinhVienEntity.setCoSoId(coSoId);
+
+                listSinhVienEntity.add(sinhVienEntity);
+            });
+            if(response.getStatus()== true){
+                sinhVienRepository.saveAll(listSinhVienEntity);
             }
-
-            if (map.get(sinhVien.getMaNhom()) != null) {
-                sinhVienEntity.setNhomId(map.get(sinhVien.getMaNhom()));
-            }
-
-            if (map.get(sinhVien.getChuyenNganh()) != null) {
-                sinhVienEntity.setChuyenNganhId(map.get(sinhVien.getChuyenNganh()));
-            } else if (!map.containsKey(sinhVien.getChuyenNganh())) {
-                throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
-            }
-
-            if (map.get(sinhVien.getDotDangKy()) != null) {
-                sinhVienEntity.setDotDangKyId(map.get(sinhVien.getDotDangKy()));
-            } else if (!map.containsKey(sinhVien.getDotDangKy())) {
-                throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
-            }
-
-            if (map.get(sinhVien.getMonDATN()) != null) {
-                sinhVienEntity.setMonDatnId(map.get(sinhVien.getMonDATN()));
-            } else if (!map.containsKey(sinhVien.getMonDATN())) {
-                throw new RestApiException(Message.MON_DATN_NOT_EXIST);
-            }
-
-            if (!sinhVien.getSoDienThoai().matches("(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}")) {
-                throw new RestApiException(Message.NUMBER_FORMAT_EXCEPTION);
-            }
-
-            if (!sinhVien.getEmail().matches("\\w+@fpt.edu.vn")) {
-                throw new RestApiException(Message.EMAIL_MALFORMED);
-            }
-
-            sinhVienEntity.setTenSinhVien(sinhVien.getTenSinhVien());
-            sinhVienEntity.setMaSinhVien(sinhVien.getMaSinhVien());
-            sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
-            sinhVienEntity.setEmail(sinhVien.getEmail());
-            sinhVienEntity.setKhoa(sinhVien.getKhoa());
-            sinhVienEntity.setCoSoId(coSoId);
-
-            listSinhVienEntity.add(sinhVienEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+            response.setStatus(false);
+            response.setMessage("Lỗi hệ thống");
+            return response;
         }
-        sinhVienRepository.saveAll(listSinhVienEntity);
 
-        return new RestApiException(Message.SUCCESS);
+        return response;
     }
 
     public void addDataInMap(HashMap<String, String> mapAll, String coSoId) {
@@ -241,16 +286,23 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 for (Row row : sheet) {
                     for (Cell cell : row) {
                         CellType type = cell.getCellType();
+                        String val = cell.getStringCellValue();
                         if (type == CellType.STRING &&
-                                (cell.getStringCellValue().equals("Mã sinh viên") ||
-                                        cell.getStringCellValue().equals("MSV"))) {
+                                ("Mã sinh viên".equals(val) ||
+                                        "MSV".equals(val)) ||
+                                "MSSV".equals(val)) {
                             columnIndex = cell.getColumnIndex();
                             continue;
                         }
                         if (columnIndex != -1 &&
                                 cell.getColumnIndex() == columnIndex &&
                                 type == CellType.STRING) {
-                            listMsvLoai.add(cell.getStringCellValue());
+                            if (!val.matches("[a-zA-Z]{2}\\d+")) {
+                                response.setStatus(false);
+                                response.setMessage("Mã sinh viên " + val + " không đúng định dạng");
+                                return response;
+                            }
+                            listMsvLoai.add(val);
                         }
                     }
                 }
@@ -259,6 +311,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         List<SinhVien> listSvKhongDat = new ArrayList<>();
         Map<String, SinhVien> mapSinhVien = new HashMap<>();
         List<SinhVien> listSinhVien = sinhVienRepository.findAllSinhVienByDotDangKyId(request.getDotDangKyId(),
@@ -266,24 +319,106 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         listSinhVien.stream().forEach(sinhVien -> {
             mapSinhVien.put(sinhVien.getMaSinhVien(), sinhVien);
         });
-
+        List<NhomDatn> listNhomDatnDoiTruongNhom = new ArrayList<>();
+        List<NhomDatn> listNhomDatnDelete = new ArrayList<>();
+        List<NhomDatn> listNhomDatn = nhomDatnTheoDotRepository.findAllByDotDangKyId(request.getDotDangKyId(), request.getCoSoId());
+        Map<String, NhomDatn> mapNhomDatn = new HashMap<>();
+        listNhomDatn.stream().forEach(nhomDatn -> {
+            mapNhomDatn.put(nhomDatn.getTruongNhomId(), nhomDatn);
+        });
         listMsvLoai.parallelStream().forEach(msv -> {
             SinhVien sv = mapSinhVien.get(msv);
-            if (sv != null){
-                if (sv.getTrangThai() == TrangThaiSinhVien.DU_DIEU_KIEN){
-                    sv.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
-                    listSvKhongDat.add(sv);
-                }
-            } else {
+            if (sv == null) {
                 response.setStatus(false);
                 response.setMessage("Mã sinh viên " + msv + " không tồn tại");
                 return;
             }
+            if (sv.getTrangThai() == TrangThaiSinhVien.DU_DIEU_KIEN) {
+                sv.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                listSvKhongDat.add(sv);
+            }
+            if (sv.getNhomId() != null) {
+                NhomDatn nhomDatn = mapNhomDatn.get(sv.getId());
+                if (nhomDatn != null) {
+                    boolean check = true;
+                    for (SinhVien sinhVien : listSinhVien) {
+                        if (nhomDatn.getId().equals(sinhVien.getNhomId()) && !sinhVien.getId().equals(sv.getId())) {
+                            nhomDatn.setTruongNhomId(sinhVien.getId());
+                            check = false;
+                            break;
+                        }
+                    }
+                    if (check) {
+                        listNhomDatnDelete.add(nhomDatn);
+                    } else {
+                        listNhomDatnDoiTruongNhom.add(nhomDatn);
+                    }
+                }
+                sv.setNhomId(null);
+                sv.setMonDatnId(null);
+            }
         });
-        if (response.getStatus()){
+        if (listNhomDatnDelete.size() != 0) {
+            nhomDatnTheoDotRepository.deleteAll(listNhomDatnDelete);
+        }
+        if (listNhomDatnDoiTruongNhom.size() != 0) {
+            nhomDatnTheoDotRepository.saveAll(listNhomDatnDoiTruongNhom);
+        }
+        if (listSvKhongDat.size() == 0) {
+            response.setStatus(false);
+            response.setMessage("Lỗi. Loại không thành công");
+        }
+        if (response.getStatus()) {
             sinhVienRepository.saveAll(listSvKhongDat);
+            response.setMessage("Đã loại sinh viên không đủ điều kiện");
         }
         return response;
     }
 
+    @Override
+    public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId) {
+        return sinhVienRepository.searchStudentById(id, coSoId);
+    }
+
+    @Override
+    public SinhVien loaiSinhVien(String id) {
+        Map<String,NhomDatn> map = new HashMap<>();
+        Optional<SinhVien> sv = sinhVienRepository.findById(id);
+        SinhVien sinhVien =sv.get();
+        List<NhomDatn> nhomDatnList = nhomDatnTheoDotRepository.findAll();
+        NhomDatn chuyenTruongNhom;
+        for (NhomDatn nhomDatn: nhomDatnList ) {
+            map.put(nhomDatn.getTruongNhomId(),nhomDatn);
+        }
+
+        if(sinhVien.getNhomId() == null){
+            sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+        }else {
+            if(map.get(sinhVien.getId())== null){
+                sinhVien.setNhomId(null);
+                sinhVien.setMonDatnId(null);
+                sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+            }else {
+                //nếu là nhóm trưởng thì chuyển quyền cho sinh viên trong nhóm
+                SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(),sinhVien.getNhomId());
+                chuyenTruongNhom= map.get(sinhVien.getId());
+                if(motSVtrongNhom== null){
+                    nhomDatnTheoDotRepository.delete(chuyenTruongNhom);
+                    sinhVien.setNhomId(null);
+                    sinhVien.setMonDatnId(null);
+                    sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                }else {
+                    chuyenTruongNhom.setTruongNhomId(motSVtrongNhom.getId());
+                    nhomDatnTheoDotRepository.save(chuyenTruongNhom);
+                    sinhVien.setNhomId(null);
+                    sinhVien.setMonDatnId(null);
+                    sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                }
+
+            }
+        }
+        SinhVien svKhongDuDK =sinhVienRepository.save(sinhVien);
+
+        return svKhongDuDK;
+    }
 }

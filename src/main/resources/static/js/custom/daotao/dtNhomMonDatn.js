@@ -1,38 +1,46 @@
-const monDatnApi = '/api/dao-tao/nhom-mon-datn';
+const nhomMonDatnApi = '/api/dao-tao/nhom-mon-datn';
 const nhomMonDatnView = '/dao-tao/nhom-mon-datn';
 
 $(document).ready(function () {
     $("#mon_datn_error").text("");
 });
 
-$("#form_create_nhom_mon_datn").submit(function (event) {
-    event.preventDefault();
+function openModalCreate() {
+    $("#modal_create").modal('show');
+}
 
-    let maMon = $("#maMon").val();
-    let tenMonDatn = $("#tenMonDatn").val();
+function createNhomMonDatn() {
+    let maMon = $("#maNhomMon").val();
+    let tenMonDatn = $("#tenNhomMon").val();
     let chuyenNganhId = $("#chuyenNganh").val();
     let monDatnRequest = {};
-    monDatnRequest["maMon"] = maMon;
-    monDatnRequest["tenMonDatn"] = tenMonDatn;
+    monDatnRequest["maNhomMon"] = maMon;
+    monDatnRequest["tenNhomMon"] = tenMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
     let index = 0;
     if (maMon.trim().length === 0) {
-        $("#ma_nhom_mon_datn_error").text("Ma mon DATN khong duoc de trong");
+        $("#ma_mon_datn_error").text("Mã nhóm môn không được để trống");
         index++;
     } else {
-        $("#ma_nhom_mon_datn_error").text("");
+        $("#ma_mon_datn_error").text("");
     }
     if (tenMonDatn.trim().length === 0) {
-        $("#ten_nhom_mon_datn_error").text("Ten mon DATN khong duoc de trong");
+        $("#ten_mon_datn_error").text("Tên nhóm môn không được để trống");
         index++;
     } else {
-        $("#ten_nhom_mon_datn_error").text("");
+        $("#ten_mon_datn_error").text("");
+    }
+    if (chuyenNganhId === '') {
+        $("#chuyen_nganh_error").text("Mời chọn chuyên ngành");
+        index++;
+    } else {
+        $("#chuyen_nganh_error").text("");
     }
     if (index == 0) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: monDatnApi,
+            url: nhomMonDatnApi,
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
@@ -40,66 +48,52 @@ $("#form_create_nhom_mon_datn").submit(function (event) {
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
-                $("#ma_nhom_mon_datn_error").text(e.responseJSON.message);
+                if (e.responseJSON.message === 'Ma nhom mon da ton tai') {
+                    $("#ma_mon_datn_error").text('Mã nhóm đã tồn tại');
+                }
             }
         });
     }
-});
+}
 
-function openModalUpdateMonDatn(nhomMonDatnId) {
-    $("#modal_update_nhom_mon_datn").modal('show');
+function openModalUpdateNhomMonDatn(monDatnId) {
+    $("#modal_update_mon_datn").modal('show');
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: monDatnApi + "/" + nhomMonDatnId,
-        data: JSON.stringify(nhomMonDatnId),
+        url: nhomMonDatnApi + "/" + monDatnId,
+        data: JSON.stringify(monDatnId),
         dataType: 'json',
         success: function (responseData) {
             $("#id_nhom_mon_datn_update").val(responseData.data.id);
             $("#ma_nhom_mon_datn_update").val(responseData.data.maMon);
             $("#ten_nhom_mon_datn_update").val(responseData.data.tenMonDatn);
+            $("#chuyenNganhUpdate").val(responseData.data.chuyenNganhId)
         },
         error: function (e) {
             console.log("ERROR : ", e);
         }
     });
 }
-function openModalChiTietNhomMonDatn(nhomMonDatnId) {
-    $("#modal_show_nhom_mon_datn").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: monDatnApi + nhomMonDatnId,
-        data: JSON.stringify(nhomMonDatnId),
-        dataType: 'json',
-        success: function (responseData) {
-            $("#id_mon_datn_show").val(responseData.data.id);
-            $("#ma_mon_datn_show").val(responseData.data.maMon);
-            $("#ten_mon_datn_show").val(responseData.data.tenMonDatn);
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-            alert(e.responseJSON.message)
-        }
-    });
-}
-$("#form_mon_datn_update").submit(function (event) {
-    event.preventDefault();
-    let maNhomMon = $("#ma_mon_datn_update").val();
-    let tenNhomMonDatn = $("#ten_mon_datn_update").val();
-    let monDatnId = $("#id_mon_datn_update").val();
+
+function updateNhomMonDatn() {
+    let maNhomMon = $("#ma_nhom_mon_datn_update").val();
+    let tenNhomMonDatn = $("#ten_nhom_mon_datn_update").val();
+    let nhomMonDatnId = $("#id_nhom_mon_datn_update").val();
+    let chuyenNganhId = $("#chuyenNganhUpdate").val();
     let monDatnRequest = {};
     monDatnRequest["maNhomMon"] = maNhomMon;
-    monDatnRequest["tenNhomMonDatn"] = tenNhomMonDatn;
+    monDatnRequest["tenNhomMon"] = tenNhomMonDatn;
+    monDatnRequest["chuyenNganhId"] = chuyenNganhId;
     let index = 0;
-    if (maMon.trim().length === 0) {
-        $("#errorMaMonUpdate").text("Ma mon DATN khong duoc de trong");
+    if (maNhomMon.trim().length === 0) {
+        $("#errorMaMonUpdate").text("Mã nhóm môn không được để trống");
         index++;
     } else {
         $("#errorMaMonUpdate").text("");
     }
-    if (tenMonDatn.trim().length === 0) {
-        $("#errorTenMonUpdate").text("Ten mon DATN khong duoc de trong");
+    if (tenNhomMonDatn.trim().length === 0) {
+        $("#errorTenMonUpdate").text("Tên nhóm môn không được để trống");
         index++;
     } else {
         $("#errorTenMonUpdate").text("");
@@ -108,7 +102,7 @@ $("#form_mon_datn_update").submit(function (event) {
         $.ajax({
             type: "PUT",
             contentType: "application/json",
-            url: monDatnApi + "/" + monDatnId,
+            url: nhomMonDatnApi + "/" + nhomMonDatnId,
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
@@ -116,44 +110,85 @@ $("#form_mon_datn_update").submit(function (event) {
                 $("#modal_update_mon_datn").modal("hide");
             },
             error: function (e) {
-                $("#errorMaMonUpdate").text(e.responseJSON.message);
+                if (e.responseJSON.message === 'Ma nhom mon da ton tai') {
+                    $("#errorMaMonUpdate").text('Mã nhóm đã tồn tại');
+                }
             }
         });
     }
-});
+}
 
-function openModalRemoveMonDatn(monDatnId) {
-    $("#modal_mon_datn_remove").modal('show');
+function deleteNhomMonDatn(nhomMonDatnId) {
+    bootbox.confirm({
+        title: "Xóa nhóm môn",
+        message: "Bạn muốn xóa nhóm môn này?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: nhomMonDatnApi + "/" + nhomMonDatnId,
+                    dataType: 'json',
+                    success: function (responseData) {
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                window.open(nhomMonDatnView, '_self');
+                            }
+                        });
+                    },
+                    error: function (responseData) {
+                        if (responseData.responseJSON.message === 'Nhom mon dang ton tai mon') {
+                            bootbox.alert({
+                                message: 'Đang có môn trong nhóm môn này. Không thể xóa',
+                                backdrop: true,
+                                callback: function () {
+                                    window.open(nhomMonDatnView, '_self');
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function openModalChiTietNhomMonDatn(nhomMonDatnId) {
+    $("#modal_nhom_mon_chi_tiet").modal('show');
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: monDatnApi + "/" + monDatnId,
-        data: JSON.stringify(monDatnId),
+        url: nhomMonDatnApi + "/detail/" + nhomMonDatnId,
         dataType: 'json',
-        success: function () {
-            $("#remove_mon_datn").val(monDatnId);
+        success: function (responseData) {
+            $("#data").html()
+            if (responseData.data.length > 0) {
+                $("#table_detail").html(responseData.data.map(function (item) {
+                    return `
+               <tr>
+                   <td >${item.stt}</td>
+                   <td >${item.maMon}</td>
+                   <td >${item.tenMon}</td>
+               </tr>
+               `
+                }))
+            } else {
+                $("#data").html('<h3>Không có dữ liệu</h3>')
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
         }
     });
 }
-
-$("#form_mon_datn_delete").submit(function (event) {
-    event.preventDefault();
-    let monDatnId = $("#remove_mon_datn").val();
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: monDatnApi + "/" + monDatnId,
-        data: JSON.stringify(monDatnId),
-        dataType: 'json',
-        success: function () {
-            window.open(nhomMonDatnView, '_self');
-            $("#modal_mon_datn_remove").modal("hide");
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-});

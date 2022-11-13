@@ -5,11 +5,15 @@ import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
 import com.fpolydatn.entity.CanBo;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,9 +23,7 @@ public interface DtCanBoService {
 
     PageableObject<DtCanBoResponse> search(final DtFindCanBoRequest canBoRequest);
 
-    CanBo create(@Valid DtCreateCanBoRequest canBo);
-
-    public CanBo createcb(CanBo canBo);
+    boolean create(@Valid DtCreateCanBoRequest canBo);
 
     Boolean delete(String id);
 
@@ -31,6 +33,8 @@ public interface DtCanBoService {
 
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
 
-    List<CanBo> importData(MultipartFile reapExcelDataFile, String id);
+    DtCanBoResponseMessage DtCanBoImport(MultipartFile file, String coSoId) throws IOException;
+
+    void MauImportExcel(HttpServletResponse response, String typeExcel) throws IOException;
 
 }

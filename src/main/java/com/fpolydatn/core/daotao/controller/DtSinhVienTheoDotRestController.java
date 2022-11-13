@@ -12,7 +12,9 @@ import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,15 +49,16 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     }
 
     @GetMapping("/export-mau")
-    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException {
+    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtSinhVienTheoDotRequest request) throws Exception {
         request.setCoSoId(session.getCoSoId());
         sinhVienService.MauImportExcel(response, typeExcel, request);
     }
 
     @PostMapping("/import")
-    public void importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseObject importEcel(@RequestParam("file") MultipartFile file) throws IOException {
         String coSoId = session.getCoSoId();
-        sinhVienService.DtSinhVienImport(file, coSoId);
+        DtLoaiSinhVienResponse response = sinhVienService.DtSinhVienImport(file, coSoId);
+        return new ResponseObject(response);
     }
 
     @PostMapping("/loai-sinh-vien")
@@ -64,6 +67,17 @@ public class DtSinhVienTheoDotRestController extends BaseController {
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         DtLoaiSinhVienResponse response = sinhVienService.loaiSinhVienKhongDat(request);
         return new ResponseObject(response);
+    }
+
+    @GetMapping("/search/{id}")
+    public ResponseObject searchStudentById(@PathVariable("id") String id) {
+        String coSoId = session.getCoSoId();
+        return new ResponseObject(sinhVienService.searchStudentById(id, coSoId));
+    }
+
+    @PutMapping("/loai-sv/{id}")
+    public ResponseObject loaiSinhVien(@PathVariable("id") String id) {
+        return new ResponseObject(sinhVienService.loaiSinhVien(id));
     }
 
 }

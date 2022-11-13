@@ -5,7 +5,7 @@ import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
-import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.entity.SinhVien;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,10 +22,13 @@ public interface DtSinhVienTheoDotService {
 
     void DTSinhVienExport(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException;
 
-    void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws IOException;
+    void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws Exception;
 
-    RestApiException DtSinhVienImport(MultipartFile file, String coSoId) throws IOException;
+    DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException;
 
     DtLoaiSinhVienResponse loaiSinhVienKhongDat(DtLoaiSinhVienKhongDatRequest request);
 
+    DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId);
+
+    SinhVien loaiSinhVien(String id);
 }

@@ -1,7 +1,11 @@
 const phanCongHuongDanApi = "/api/dao-tao/phan-cong-hong-dan";
 const phanCongHuongDanView = document.URL;
 
-$("#form_add_phan_cong").submit(function (event) {
+function openPhanCong() {
+    $("#modal_create").modal("show")
+}
+
+function phanCong() {
     event.preventDefault();
     let giangVienHuongDanId = $("#getGiangVienHuongDanId").attr('value');
     let listPhanCong = [];
@@ -9,17 +13,17 @@ $("#form_add_phan_cong").submit(function (event) {
     let table = $("#table-add");
     let row = table.get(0).lastElementChild.children
     for (const a of row) {
-        if (a.children[2].children[0].checked === true) {
+        if (a.children[3].children[0].checked === true) {
             index = true;
             let phanCongRequest = {};
             phanCongRequest["giangVienId"] = giangVienHuongDanId;
-            phanCongRequest["monDatnId"] = a.children[1].getAttribute('value');
+            phanCongRequest["monDatnId"] = a.children[2].getAttribute('value');
             listPhanCong.push(phanCongRequest)
         }
     }
 
     if (index == false) {
-        alert("Không có dòng nào được chọn")
+        $("#errLoi").text("Bạn phải chọn một dòng");
         return;
     }
 
@@ -30,14 +34,20 @@ $("#form_add_phan_cong").submit(function (event) {
         data: JSON.stringify(listPhanCong),
         dataType: 'json',
         success: function () {
-            window.open(phanCongHuongDanView, '_self');
             $("#modal_create").modal("hide");
+            $("#errLoi").text("");
+            bootbox.alert({
+              message: 'Thêm thành công',
+              backdrop: true,
+              callback: function () {
+                  window.open(phanCongHuongDanView, '_self');
+              }
+            });
         },
         error: function (e) {
-            console.log("ERROR : ", e);
         }
     });
-});
+};
 
 let checkOut = 0;
 
@@ -56,42 +66,40 @@ function checkAll() {
 }
 
 function openModalRemovePhanCongHuongDan(giangVienHuongDanId, monDatnId) {
-    $("#modal_phan_cong_huong_dan_remove").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: phanCongHuongDanApi + "?idGiangVien=" + giangVienHuongDanId + "&idMon=" + monDatnId,
-        data: JSON.stringify(giangVienHuongDanId),
-        dataType: 'json',
-        success: function () {
-            $("#remove_phan_cong_huong_dan").val(monDatnId);
-            $("#getGiangVienHuongDanId").val(giangVienHuongDanId);
+    bootbox.confirm({
+        title: "Xóa",
+        message: "Bạn chắc chắn xóa không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: phanCongHuongDanApi + "?idGiangVien=" + giangVienHuongDanId + "&idMon=" + monDatnId,
+                    data: JSON.stringify(giangVienHuongDanId, monDatnId),
+                    dataType: 'json',
+                    success: function () {
+                        bootbox.alert({
+                              message: 'Xóa thành công',
+                              backdrop: true,
+                              callback: function () {
+                                  window.open(phanCongHuongDanView, '_self');
+                              }
+                          });
+                    },
+                    error: function (e) {
+                    }
+                });
+            }
         }
     });
+
 }
-
-
-$("#form_phan_cong_huong_dan_delete").submit(function (event) {
-    event.preventDefault();
-    let monDatnId = $("#remove_phan_cong_huong_dan").val();
-    let giangVienHuongDanId = $("#getGiangVienHuongDanId").val();
-
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: phanCongHuongDanApi + "?idGiangVien=" + giangVienHuongDanId + "&idMon=" + monDatnId,
-        data: JSON.stringify(giangVienHuongDanId, monDatnId),
-        dataType: 'json',
-        success: function () {
-            window.open(phanCongHuongDanView, '_self');
-            $("#modal_phan_cong_huong_dan_remove").modal("hide");
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-
-});

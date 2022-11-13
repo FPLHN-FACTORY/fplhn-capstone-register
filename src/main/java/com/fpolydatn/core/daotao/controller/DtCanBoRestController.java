@@ -4,6 +4,7 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author caodinh
@@ -45,10 +51,20 @@ public final class DtCanBoRestController extends BaseController {
         return new ResponseObject(canBoService.update(updateCanBoRequest));
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
         return new ResponseObject(canBoService.delete(id));
     }
 
+    @PostMapping("/import")
+    public ResponseObject importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+        String coSoId = session.getCoSoId();
+        DtCanBoResponseMessage response = canBoService.DtCanBoImport(file, coSoId);
+        return new ResponseObject(response);
+    }
+
+    @GetMapping("/export-mau")
+    public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel) throws IOException {
+        canBoService.MauImportExcel(response, typeExcel);
+    }
 }

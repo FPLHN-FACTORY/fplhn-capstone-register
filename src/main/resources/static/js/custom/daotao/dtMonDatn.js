@@ -5,25 +5,31 @@ $(document).ready(function () {
     $("#mon_datn_error").text("");
 });
 
-$("#form_create_mon_datn").submit(function (event) {
-    event.preventDefault();
+function openModalCreate() {
+    $("#ma_mon_datn_error").text("");
+    $("#ten_mon_datn_error").text("");
+    $("#modal_create").modal('show');
+}
 
+function create() {
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
+    let nhomMonId = $("#tenNhomMonDatn").val();
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
+    monDatnRequest["nhomMonDatnId"] = nhomMonId;
     let index = 0;
     if (maMon.trim().length === 0) {
-        $("#ma_mon_datn_error").text("Ma mon DATN khong duoc de trong");
+        $("#ma_mon_datn_error").text("Mã môn không được để trống");
         index++;
     } else {
         $("#ma_mon_datn_error").text("");
     }
     if (tenMonDatn.trim().length === 0) {
-        $("#ten_mon_datn_error").text("Ten mon DATN khong duoc de trong");
+        $("#ten_mon_datn_error").text("Tên môn không được để trống");
         index++;
     } else {
         $("#ten_mon_datn_error").text("");
@@ -36,17 +42,27 @@ $("#form_create_mon_datn").submit(function (event) {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                window.open(monDatnView, '_self');
                 $("#modal_create").modal("hide");
+                bootbox.alert({
+                    message: 'Thêm thành công',
+                    backdrop: true,
+                    callback: function () {
+                        window.open(monDatnView, '_self');
+                    }
+                });
             },
             error: function (e) {
-                $("#ma_mon_datn_error").text(e.responseJSON.message);
+                if (e.responseJSON.message != null) {
+                    $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
+                }
             }
         });
     }
-});
+};
 
 function openModalUpdateMonDatn(monDatnId) {
+    $("#errorMaMonUpdate").text("");
+    $("#errorTenMonUpdate").text("");
     $("#modal_update_mon_datn").modal('show');
     $.ajax({
         type: "GET",
@@ -65,8 +81,7 @@ function openModalUpdateMonDatn(monDatnId) {
     });
 }
 
-$("#form_mon_datn_update").submit(function (event) {
-    event.preventDefault();
+function update() {
     let maMon = $("#ma_mon_datn_update").val();
     let tenMonDatn = $("#ten_mon_datn_update").val();
     let monDatnId = $("#id_mon_datn_update").val();
@@ -75,13 +90,13 @@ $("#form_mon_datn_update").submit(function (event) {
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     let index = 0;
     if (maMon.trim().length === 0) {
-        $("#errorMaMonUpdate").text("Ma mon DATN khong duoc de trong");
+        $("#errorMaMonUpdate").text("Mã môn không được để trống");
         index++;
     } else {
         $("#errorMaMonUpdate").text("");
     }
     if (tenMonDatn.trim().length === 0) {
-        $("#errorTenMonUpdate").text("Ten mon DATN khong duoc de trong");
+        $("#errorTenMonUpdate").text("Tên môn không được để trống");
         index++;
     } else {
         $("#errorTenMonUpdate").text("");
@@ -94,64 +109,127 @@ $("#form_mon_datn_update").submit(function (event) {
             data: JSON.stringify(monDatnRequest),
             dataType: 'json',
             success: function () {
-                window.open(monDatnView, '_self');
                 $("#modal_update_mon_datn").modal("hide");
+                bootbox.alert({
+                    message: 'Update thành công',
+                    backdrop: true,
+                    callback: function () {
+                        window.open(monDatnView, '_self');
+                    }
+                });
             },
             error: function (e) {
-                $("#errorMaMonUpdate").text(e.responseJSON.message);
+                if (e.responseJSON.message != null) {
+                    $("#errorMaMonUpdate").text("Mã môn đã tồn tại");
+                }
             }
         });
     }
-});
+};
 
 function openModalRemoveMonDatn(monDatnId) {
-    $("#modal_mon_datn_remove").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: monDatnApi + "/" + monDatnId,
-        data: JSON.stringify(monDatnId),
-        dataType: 'json',
-        success: function () {
-            $("#remove_mon_datn").val(monDatnId);
+    $("#remove_mon_datn").text("");
+    bootbox.confirm({
+        title: "Xóa",
+        message: "Bạn chắc chắn xóa không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: monDatnApi + "/" + monDatnId,
+                    data: JSON.stringify(monDatnId),
+                    dataType: 'json',
+                    success: function (responseData) {
+                            bootbox.alert({
+                                message: 'Xóa thành công',
+                                backdrop: true,
+                                callback: function (e) {
+                                    window.open(monDatnView, '_self');
+                                }
+                            });
+                    },
+                    error: function (e) {
+                        if (e.responseJSON.message != null) {
+                            bootbox.alert({
+                                message: '<div style="color: red">Môn đang tồn tại trong đợt đăng ký không thể xóa</div>',
+                                backdrop: true,
+                            });
+                        }
+                    }
+                });
+            }
         }
     });
 }
 
-$("#form_mon_datn_delete").submit(function (event) {
-    event.preventDefault();
-    let monDatnId = $("#remove_mon_datn").val();
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: monDatnApi + "/" + monDatnId,
-        data: JSON.stringify(monDatnId),
-        dataType: 'json',
-        success: function () {
-            window.open(monDatnView, '_self');
-            $("#modal_mon_datn_remove").modal("hide");
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-});
+function openImport() {
+    $("#import_excel").modal("show")
+}
 
-function openModalImportMonDatn() {
-    $("#modal_mon_datn_import").modal('show');
+function importExcel () {
+    event.preventDefault();
+    const newFile = $("#inputGroupFile04").val();
+
+    if(newFile.trim().length === 0) {
+        $("#errImport").text("Bạn hãy chọn file");
+        return;
+    }
+
+    if($("#inputGroupFile04")[0].files[0].size > 104857600) {
+        $("#errImport").text("File quá hơn 104857600 byte");
+        return;
+    }
+
+    if(newFile.substring(newFile.lastIndexOf(".")+1, newFile.length) !== "xlsx") {
+        $("#errImport").text("Không đúng định dạng xlsx");
+        return;
+    }
+    var importDocoment = document.getElementById("form_import_excel")
     $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: monDatnApi,
-        data: JSON.stringify(),
-        dataType: 'json',
-        success: function () {
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
+            type: 'POST',
+            url: "/api/dao-tao/mon-datn/import",
+            enctype: $("#form_import_excel").attr('action'),
+            data: new FormData(importDocoment),
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $('#import_excel').modal("hide");
+                if (response.data.status == true) {
+                    bootbox.alert({
+                        title: "Thành công",
+                        message: "<strong>Import thành công</strong>",
+                        backdrop: true,
+                        callback: function () {
+                            reload();
+                        }
+                    });
+                } else {
+                    bootbox.alert({
+                        title: "Thất bại",
+                        message: '<strong>'+ response.data.message +'</strong>',
+                        backdrop: true,
+                        callback: function () {
+                            reload();
+                        }
+                    });
+                }
+            },
+            error: function (e) {
+            }
         }
-    });
+    );
+};
+
+function reload() {
+    window.open('/dao-tao/mon-datn', '_self');
 }

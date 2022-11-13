@@ -11,13 +11,13 @@ import lombok.Setter;
 @Getter
 public class FindDtSinhVienTheoDotRequest extends PageableRequest {
 
-    private String tenSinhVien;
+    private String tenSinhVien="";
 
-    private String idChuyenNganh;
+    private String idChuyenNganh="";
 
-    private String idTrangThaiNhom;
+    private String idTrangThaiNhom="";
 
-    private String idDotDangKy;
+    private String idDotDangKy="";
 
     private String coSoId;
 

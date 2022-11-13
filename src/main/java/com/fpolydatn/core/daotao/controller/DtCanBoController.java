@@ -5,20 +5,11 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
-import com.fpolydatn.entity.CanBo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * @author caodinh
@@ -26,7 +17,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/dao-tao/can-bo")
-//@PreAuthorize("hasAuthority('dao-tao')")
 public final class DtCanBoController extends BaseController {
 
     @Autowired
@@ -38,16 +28,6 @@ public final class DtCanBoController extends BaseController {
         PageableObject<DtCanBoResponse> listCanBo = canBoService.search(canBoRequest);
         model.addAttribute("page", listCanBo);
         return "daotao/dt-can-bo";
-    }
-
-    @PostMapping("/import")
-    public String ImportFlie(Model model, @RequestParam("file") MultipartFile reapExcelDataFile) throws IOException {
-        DtFindCanBoRequest dtFindCanBoRequest = new DtFindCanBoRequest();
-        List<CanBo> listCanBo = canBoService.importData(reapExcelDataFile, session.getCoSoId());
-        for (CanBo canBo : listCanBo) {
-            canBoService.createcb(canBo);
-        }
-        return viewHocKy(model, dtFindCanBoRequest);
     }
 
 }

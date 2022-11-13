@@ -43,6 +43,8 @@ public class SvNhomDatnController extends BaseController {
     @Autowired
     MocThoiGianCommon mocThoiGianCommon;
 
+
+
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
@@ -52,13 +54,15 @@ public class SvNhomDatnController extends BaseController {
                 dotDangKyHienTai,
                 idUSer);
         model.addAttribute("checkMocThoiGian", mocThoiGianCommon.checkMocThoiGianSinhVien());
-
+        System.out.println(mocThoiGianCommon.checkMocThoiGianSinhVien());
         if (nhomId == null || nhomId.trim().isEmpty()) {
-            req.setCoSoId(coSoId);
+            req.setCoSoId(coSoId );
             req.setDotDangKyId(dotDangKyHienTai);
-            PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req);
+            PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUSer);
+            Boolean checkThoiGianRoiNhom = svNhomDatnService.checkThoiGianRoiNhom(idUSer);
             model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer));
             model.addAttribute("page", listNhomDatn);
+            model.addAttribute("checkThoiGianRoiNhom", checkThoiGianRoiNhom);
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,

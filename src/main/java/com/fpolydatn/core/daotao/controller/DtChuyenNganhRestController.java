@@ -6,6 +6,7 @@ import com.fpolydatn.core.daotao.model.request.DtCreateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.ChuyenNganh;
+import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,14 +27,17 @@ public class DtChuyenNganhRestController extends BaseController {
     @Autowired
     private DtChuyenNganhService chuyenNganhService;
 
+    @Autowired
+    private CommonHelper commonHelper;
+
     @GetMapping("/{id}")
-    public ResponseObject detail(@PathVariable("id") String id){
+    public ResponseObject detail(@PathVariable("id") String id) {
         ChuyenNganh chuyenNganh = chuyenNganhService.findById(id);
         return new ResponseObject(chuyenNganh);
     }
 
     @PostMapping
-    public ResponseObject add(@RequestBody DtCreateChuyenNganhRequest request){
+    public ResponseObject add(@RequestBody DtCreateChuyenNganhRequest request) {
         String coSoId = session.getCoSoId();
         request.setCoSoId(coSoId);
         ChuyenNganh chuyenNganh = chuyenNganhService.add(request);
@@ -41,13 +45,17 @@ public class DtChuyenNganhRestController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseObject delete(@PathVariable("id") String id){
-        return new ResponseObject(chuyenNganhService.delete(id));
+    public ResponseObject delete(@PathVariable("id") String id) {
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        return new ResponseObject(chuyenNganhService.delete(id, coSoId, dotDangKyId));
     }
 
     @PutMapping("/{id}")
-    public ResponseObject update(@PathVariable("id") String id, @RequestBody DtUpdateChuyenNganhRequest request){
+    public ResponseObject update(@PathVariable("id") String id, @RequestBody DtUpdateChuyenNganhRequest request) {
         request.setId(id);
+        String coSoId = session.getCoSoId();
+        request.setCoSoId(coSoId);
         return new ResponseObject(chuyenNganhService.update(request));
     }
 }
