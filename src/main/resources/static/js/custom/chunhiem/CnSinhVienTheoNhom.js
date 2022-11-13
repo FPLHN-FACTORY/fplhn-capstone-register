@@ -9,6 +9,11 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
+
 function clearData() {
     $("#keyword").val("");
 }
@@ -24,88 +29,98 @@ function searchGvhd() {
         dataType: 'json',
         success: function (responseData) {
             let array = [];
-            for (var item of responseData.data){
+            for (var item of responseData.data) {
                 array.push(item.thongTinGvhd)
             }
-            console.log(array)
             $("#tags").autocomplete({
                 source: array
             });
         },
         error: function (e) {
-            console.log("ERROR : ", e);
         }
     });
 }
 
 loadData()
 
-$("#form_create_ma_nhom").submit(function (event) {
-    event.preventDefault();
+function openModalThemSinhVien() {
+    $("#modal_create").modal('show')
+}
+
+function themSinhVien() {
     let idNhom = $("#idNhom").val()
     let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien")
     var maSinhViens = '';
     for (let item of listMaSinhVien) {
-        maSinhViens += item.innerHTML+"-";
+        maSinhViens += item.innerHTML + "-";
     }
     $.ajax({
         type: "POST",
         contentType: "application/json",
         url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + maSinhViens,
         success: function (responseData) {
-            window.open(sinhVienTheoNhomView + "?id=" + idNhom , '_self');
+            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
         },
         error: function (e) {
             $("#idStudentError").html(e.responseJSON.message)
         }
     });
-});
-
-function openModalRemoveNhom(maSinhVien) {
-    $("#modal_sinh_vien_theo_nhom_remove").modal('show');
-    $("#remove_sinh_vien_theo_nhom").val(maSinhVien);
 }
 
-$("#form_remove_sinh_vien_theo_nhom").submit(function (event) {
-    event.preventDefault();
-    let maSinhVien = $("#remove_sinh_vien_theo_nhom").val().trim();
-    let idNhom = $("#idNhom").val();
-    let soThanhVien = $("#soThanhVien").val();
-    if (idOldCaptain == maSinhVien) {
-        $.ajax({
-            type: "PUT",
-            contentType: "application/json",
-            url: sinhVienApi + "/changeCaptainToOther?idCaptain=" + idOldCaptain + "&idGroup=" + idNhom,
-            success: function () {
-                window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+function openModalRemoveNhom(maSinhVien) {
+    bootbox.confirm({
+        title: "Kích sinh viên ra khỏi nhóm",
+        message: "Bạn muốn kích sinh viên này không?",
+        backdrop: true,
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
             },
-            error: function () {
-            }
-        })
-    }
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: sinhVienApi + "?maSinhVien=" + maSinhVien + "&idNhom=" + idNhom,
-        success: function () {
-            if (soThanhVien > 1) {
-                window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
-            } else {
-                window.open(CnNhomDatnView, '_self');
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
             }
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                let idNhom = $("#idNhom").val();
+                let soThanhVien = $("#soThanhVien").val();
+                if (idOldCaptain == maSinhVien) {
+                    $.ajax({
+                        type: "PUT",
+                        contentType: "application/json",
+                        url: sinhVienApi + "/changeCaptainToOther?idCaptain=" + idOldCaptain + "&idGroup=" + idNhom,
+                        success: function () {
+                            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+                        },
+                        error: function () {
+                        }
+                    })
+                }
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: sinhVienApi + "?maSinhVien=" + maSinhVien + "&idNhom=" + idNhom,
+                    success: function () {
+                        if (soThanhVien > 1) {
+                            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+                        } else {
+                            window.open(CnNhomDatnView, '_self');
+                        }
+                    },
+                    error: function (e) {
+                    }
+                });
+            }
         }
     });
-});
+}
 
 function openModalChangeGvhd() {
     $('#modal_change_gvhd').modal('show');
 }
 
-$('#form_change_gvhd').submit(function (event) {
-    event.preventDefault();
+function thayDoiGiangVien() {
     let idGroup = $("#idNhom").val();
     let giangVienId = $("#tags").val().split('_');
     $.ajax({
@@ -119,7 +134,7 @@ $('#form_change_gvhd').submit(function (event) {
             $("#change_gvhd").html(e.responseJSON.message)
         }
     });
-})
+}
 
 function openModalChangeCaptain() {
     $("#modal_change_captain").modal('show');
@@ -191,28 +206,42 @@ function openModalChangeCaptain() {
 }
 
 function changeCaptain(idCaptain) {
-
-    $("#modal_change_captain_confirm").modal('show')
-    $("#change_captain_confirm").val(idCaptain)
-}
-
-$("#form_change_captain_confirm").submit(function (event) {
-    event.preventDefault();
-    let idCaptain = $("#change_captain_confirm").val();
-    let idGroup = $("#idNhom").val();
-    $.ajax({
-        type: "PUT",
-        contentType: "application/json",
-        url: sinhVienApi + "/changeCaptain?idCaptain=" + idCaptain + "&idGroup=" + idGroup,
-        success: function () {
-            alert("Thay đổi trưởng nhóm thành công");
-            window.open(sinhVienTheoNhomView + "?id=" + idGroup, '_self');
+    bootbox.confirm({
+        title: "Đổi trưởng nhóm",
+        message: "Bạn có chắc muốn đổi trưởng nhóm không?",
+        backdrop: true,
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function () {
+        callback: function (result) {
+            if (result) {
+                let idGroup = $("#idNhom").val();
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: sinhVienApi + "/changeCaptain?idCaptain=" + idCaptain + "&idGroup=" + idGroup,
+                    success: function () {
+                        bootbox.alert({
+                            message: "Thay đổi trưởng nhóm thành công",
+                            backdrop: true,
+                            callback: function () {
+                                window.open(sinhVienTheoNhomView + "?id=" + idGroup, '_self');
+                            }
+                        });
+                    },
+                    error: function () {
+                    }
+                })
+            }
         }
-    })
-
-})
+    });
+}
 
 function loadData() {
     let idGroup = $("#idNhom").val();

@@ -41,14 +41,11 @@
                                     <div class="row">
                                         <div class="col-6 d-inline"
                                         >
-                                            <button
-                                                    data-toggle="modal"
-                                                    data-target="#modal_create"
+                                            <button type="button" th:attr="onclick=|openModalCreate()|"
                                                     class="btn btn-success">
                                                 Thêm cán bộ
                                             </button>
-                                            <button data-toggle="modal"
-                                                    data-target="#import"
+                                            <button type="button" th:attr="onclick=|openModalImport()|"
                                                     class="btn btn-success">
                                                 Import
                                             </button>
@@ -63,7 +60,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Thêm cán
                                                                     bộ</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -74,7 +71,7 @@
 
                                                                     <br>
                                                                     <label class="col-form-label">Email FE</label>
-                                                                    <input
+                                                                    <input maxlength="30"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="emailfe">
@@ -83,7 +80,7 @@
 
                                                                     <br>
                                                                     <label class="col-form-label">Email FPT</label>
-                                                                    <input
+                                                                    <input maxlength="30"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="emailfpt">
@@ -92,7 +89,7 @@
 
                                                                     <br>
                                                                     <label class="col-form-label">Số Điện Thoại</label>
-                                                                    <input
+                                                                    <input maxlength="20"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="sodienthoai">
@@ -101,7 +98,7 @@
 
                                                                     <br>
                                                                     <label class="col-form-label">Tên Cán Bộ</label>
-                                                                    <input
+                                                                    <input maxlength="100"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="tenCanBo">
@@ -110,7 +107,7 @@
 
                                                                     <br>
                                                                     <label class="col-form-label">Tên Tài Khoản</label>
-                                                                    <input
+                                                                    <input maxlength="20"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="tentaikhoan">
@@ -129,9 +126,9 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                            data-dismiss="modal">Hủy
+                                                                            data-bs-dismiss="modal">Hủy
                                                                     </button>
-                                                                    <button th:attr="onclick=|save()|"
+                                                                    <button type="button" th:attr="onclick=|save()|"
                                                                             class="btn btn-primary">Thêm
                                                                         mới
                                                                     </button>
@@ -155,7 +152,7 @@
                                                               id="form_import_excel">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Import Excel</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -179,10 +176,10 @@
                                                                         <div class="input-group-append">
                                                                             <button class="btn input-group-text"
                                                                                     type="button"
+                                                                                    th:attr="onclick=|openModalTaiMau()|"
                                                                                     id="mauImport"
-                                                                                    data-dismiss="modal"
-                                                                                    data-toggle="modal"
-                                                                                    data-target="#modal_excel_mau">Tải
+                                                                                    data-bs-dismiss="modal"
+                                                                                    >Tải
                                                                                 Mẫu
                                                                             </button>
                                                                         </div>
@@ -193,7 +190,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button type="button" th:attr="onclick=|importCanBo()|" class="btn btn-primary">Import excel
                                                                 </button>
@@ -210,15 +207,15 @@
                                         <table id="custom-table"
                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                             <thead class="table-primary">
-                                            <th width="50px">STT</th>
-                                            <th width="100px">Email FE</th>
-                                            <th width="100px">Số điện thoại</th>
-                                            <th width="100px">Tên cán bộ</th>
-                                            <th width="100px">Vai trò</th>
-                                            <th width="150px">Chức năng</th>
+                                            <th width="20px">STT</th>
+                                            <th width="75px">Email FE</th>
+                                            <th width="85px">Số điện thoại</th>
+                                            <th width="225px">Tên cán bộ</th>
+                                            <th width="200px">Vai trò</th>
+                                            <th width="80px">Chức năng</th>
                                             </thead>
                                             <tbody>
-                                            <th:block th:each="canbo,i : ${page.data}">
+                                            <th:block th:each="canbo : ${page.data}">
                                                 <tr class="table-light">
                                                     <td th:text="${canbo.getSTT()}"></td>
                                                     <td th:text="${canbo.getEmailFE}"></td>
@@ -305,7 +302,7 @@
                     <h5 class="modal-title">Cập
                         nhật cán bộ</h5>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
+                            data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -315,7 +312,7 @@
                     <div class="form-group">
                         <br>
                         <label class="col-form-label">Email FE</label>
-                        <input
+                        <input maxlength="30"
                                 type="text"
                                 class="form-control"
                                 id="email_fe_update">
@@ -324,7 +321,7 @@
 
                         <br>
                         <label class="col-form-label">Email FPT</label>
-                        <input
+                        <input maxlength="30"
                                 type="text"
                                 class="form-control"
                                 id="email_fpt_update">
@@ -333,7 +330,7 @@
 
                         <br>
                         <label class="col-form-label">Số Điện Thoại</label>
-                        <input
+                        <input maxlength="20"
                                 type="text"
                                 class="form-control"
                                 id="so_dien_thoai_Update">
@@ -342,7 +339,7 @@
 
                         <br>
                         <label class="col-form-label">Tên Cán Bộ</label>
-                        <input
+                        <input maxlength="100"
                                 type="text"
                                 class="form-control"
                                 id="ten_Can_Bo_Update">
@@ -351,7 +348,7 @@
 
                         <br>
                         <label class="col-form-label">Tên Tài Khoản</label>
-                        <input
+                        <input maxlength="20"
                                 type="text"
                                 class="form-control"
                                 id="ten_tai_khoan_Update">
@@ -368,9 +365,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
+                            data-bs-dismiss="modal">Hủy
                     </button>
-                    <button th:attr="onclick=|update()|"
+                    <button type="button" th:attr="onclick=|update()|"
                         class="btn btn-primary">
                         Cập nhật
                     </button>
@@ -395,7 +392,7 @@
                     <form id="form_mau_excel" method="post">
                         <div class="modal-header">
                             <h5 class="modal-title"> Mẫu Import Excel</h5>
-                            <button type="button" class="close" data-dismiss="modal"
+                            <button type="button" class="close" data-bs-dismiss="modal"
                                     aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -414,9 +411,9 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                    data-dismiss="modal">Hủy
+                                    data-bs-dismiss="modal">Hủy
                             </button>
-                            <button type="submit" class="btn btn-primary">Download excel
+                            <button type="button" th:attr="onclick=|exportExcelMau()|" class="btn btn-primary">Download excel
                             </button>
                         </div>
                     </form>

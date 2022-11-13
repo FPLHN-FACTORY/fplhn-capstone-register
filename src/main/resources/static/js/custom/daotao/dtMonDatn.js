@@ -172,11 +172,6 @@ function openModalRemoveMonDatn(monDatnId) {
     });
 }
 
-function clearModal() {
-    $("#ma_mon_datn_error").text("");
-    $("#ten_mon_datn_error").text("");
-}
-
 function openImport() {
     $("#import_excel").modal("show")
 }

@@ -81,6 +81,7 @@ public class PropertyKeys {
     public static final String NHOM_MON_DATN_NOT_EXIST = "nhom.mon.datn.not.exist";
 
     public static final String NHOM_MON_DANG_TON_TAI_MON = "nhom.mon.dang.ton.tai.mon";
+    public static final String TEN_TAI_KHOAN_CAN_BO_EXIST = "ten.tai.khoan.can.bo.exist";
 
     public static final String GIANG_VIEN_DANG_DUOC_PHAN_CONG = "giang.vien.huong.dang.duoc.phan.cong";
 

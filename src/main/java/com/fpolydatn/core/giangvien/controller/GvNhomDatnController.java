@@ -36,10 +36,8 @@ public class GvNhomDatnController extends BaseController {
         request.setGiangVienHDId(idGiangVien);
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
         List<SimpleEntityProj> listMon = monDatnService.findAllSimpleEntityByCoSoAndGvhd(idGiangVien, coSoId);
-        boolean mocThoiGianGiangVien = nhomDatnService.mocThoiGianGiangVienHuongDan();
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listMon", listMon);
-        model.addAttribute("mocThoiGianGiangVien", mocThoiGianGiangVien);
         return "/giangvien/gv-nhom-datn";
     }
 
