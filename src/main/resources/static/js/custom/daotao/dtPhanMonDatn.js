@@ -1,6 +1,10 @@
 const phanCongHuongDanApi = "/api/dao-tao/phan-cong-hong-dan";
 const phanCongHuongDanView = document.URL;
 
+function openPhanCong() {
+    $("#modal_create").modal("show")
+}
+
 function phanCong() {
     event.preventDefault();
     let giangVienHuongDanId = $("#getGiangVienHuongDanId").attr('value');
