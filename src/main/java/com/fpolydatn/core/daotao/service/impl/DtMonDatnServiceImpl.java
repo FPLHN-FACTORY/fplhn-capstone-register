@@ -1,6 +1,7 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DTMonDatnImport;
 import com.fpolydatn.core.daotao.model.request.DtCreateImportMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtCreateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
@@ -54,6 +55,8 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     private HashMap<String, ChuyenNganh> chuyenNganhHashMap;
 
     private HashMap<String, MonDatn> nhomMonDatnHashMap;
+
+    private DTMonDatnImport monDatnImport;
 
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
@@ -128,37 +131,38 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         monDatnHashMap = new HashMap<>();
         chuyenNganhHashMap = new HashMap<>();
         nhomMonDatnHashMap = new HashMap<>();
+        monDatnImport = new DTMonDatnImport();
         boNhoDem(coSoId);
 
         DtMessMonDatnReponse mess = new DtMessMonDatnReponse();
-
+        List<MonDatn> list = new ArrayList<>();
         if (!checkTypeFile(file)) {
             return new DtMessMonDatnReponse(false, "file không đúng định dạng XLSX");
         }
 
         List<DtCreateImportMonDatnRequest> importMonDatnRequests = null;
         try {
-            importMonDatnRequests = importExcelList(file);
+            importMonDatnRequests = monDatnImport.importExcelList(file);
 
-
-            List<MonDatn> list = new ArrayList<>();
-
-            importMonDatnRequests.forEach(createMonDant -> {
+            importMonDatnRequests.parallelStream().forEach(createMonDant -> {
+                if (createMonDant.getMaMon().trim().length() == 0) {
+                    System.out.println(createMonDant.getMaMon());
+                    mess.setStatus(false);
+                    mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được để trống"));
+                    return;
+                }
                 if (monDatnHashMap.containsKey(createMonDant.getMaMon())) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã đã tồn tại"));
                     return;
-                } else if (createMonDant.getMaMon().trim().length() == 0) {
-                    mess.setStatus(false);
-                    mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được để trống"));
-                    return;
-
-                } else if (createMonDant.getMaMon().trim().length() > 10) {
+                }
+                if (createMonDant.getMaMon().trim().length() > 10) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được quá 10 ký tự"));
                     return;
 
-                } else if (createMonDant.getMaMon().indexOf(" ") > 0) {
+                }
+                if (createMonDant.getMaMon().indexOf(" ") > 0) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
                     return;
@@ -168,7 +172,8 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
                     return;
-                } else if (createMonDant.getTenMonDatn().trim().length() > 100) {
+                }
+                if (createMonDant.getTenMonDatn().trim().length() > 100) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được quá 100 ký tự"));
                     return;
@@ -178,11 +183,13 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được để trống"));
                     return;
-                } else if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
+                }
+                if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Không tìm thấy tên chuyên ngành"));
                     return;
-                } else if (createMonDant.getChuyenNganhId().trim().length() > 36) {
+                }
+                if (createMonDant.getChuyenNganhId().trim().length() > 36) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được quá 36 ký tự"));
                     return;
@@ -193,11 +200,13 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                         mess.setStatus(false);
                         mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
                         return;
-                    } else if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
+                    }
+                    if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
                         mess.setStatus(false);
                         mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
                         return;
-                    } else if (createMonDant.getNhomMonDatnId().indexOf(" ") > 0) {
+                    }
+                    if (createMonDant.getNhomMonDatnId().indexOf(" ") > 0) {
                         mess.setStatus(false);
                         mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
                         return;
@@ -221,7 +230,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
             if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
                 List<MonDatn> datnList = monDatnRepository.saveAll(list);
-                datnList.forEach(el -> {
+                datnList.parallelStream().forEach(el -> {
                     if (el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
                         el.setNhomMonDatnId(el.getId());
                         monDatnRepository.save(el);
@@ -238,39 +247,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     private String formErrors(String vtr, String err) {
         return "Lỗi tại vị trí " + vtr + " . Lỗi -> " + err;
-    }
-
-    private List<DtCreateImportMonDatnRequest> importExcelList(MultipartFile file) throws IOException {
-        List<DtCreateImportMonDatnRequest> list = new ArrayList<>();
-
-        try {
-            XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-            XSSFSheet sheet = workbook.getSheetAt(0);
-            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
-                DtCreateImportMonDatnRequest createMonDatn = new DtCreateImportMonDatnRequest();
-                Row row = sheet.getRow(i);
-
-                if (String.valueOf(getCellValue(row.getCell(0))).trim().length() == 0 &&
-                        String.valueOf(getCellValue(row.getCell(1))).trim().length() == 0 &&
-                        String.valueOf(getCellValue(row.getCell(2))).trim().length() == 0 &&
-                        String.valueOf(getCellValue(row.getCell(3))).trim().length() == 0 &&
-                        String.valueOf(getCellValue(row.getCell(4))).trim().length() == 0
-                ) {
-
-                }
-
-                createMonDatn.setStt(row.getRowNum());
-                createMonDatn.setMaMon(String.valueOf(getCellValue(row.getCell(1))).trim());
-                createMonDatn.setTenMonDatn(String.valueOf(getCellValue(row.getCell(2))).trim());
-                createMonDatn.setChuyenNganhId(String.valueOf(getCellValue(row.getCell(3))).trim());
-                createMonDatn.setNhomMonDatnId(String.valueOf(getCellValue(row.getCell(4))).trim());
-
-                list.add(createMonDatn);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
     }
 
     private boolean checkTypeFile(MultipartFile file) {
@@ -298,23 +274,5 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     }
 
-    private static Object getCellValue(Cell cell) {
-        try {
-            switch (cell.getCellType()) {
-                case NUMERIC -> {
-                    return cell.getNumericCellValue();
-                }
-                case BOOLEAN -> {
-                    return cell.getBooleanCellValue();
-                }
-                default -> {
-                    return cell.getStringCellValue();
-                }
-
-            }
-        } catch (Exception e) {
-            return "";
-        }
-    }
 
 }
