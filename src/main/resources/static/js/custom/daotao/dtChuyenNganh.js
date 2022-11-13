@@ -15,28 +15,19 @@ function clearForm() {
     $("#chuyen_nganh_error").text("");
 }
 
-function checkCnbm(cnbm) {
-    if (cnbm != 0) {
-        $("#tenCNBMhAdd").show();
-        $("#create_chuyenNganh").show();
-        $("#tenCNBMhUpdate").show();
-        $("#update_chuyenNganh").show();
-    } else {
-        $("#create_chuyenNganh").hide();
-        $("#tenCNBMhAdd").hide();
-        $("#tenCNBMhUpdate").hide();
-        $("#update_chuyenNganh").hide();
-        $("#CNBM_add_error").text("Không còn chủ nhiệm bộ môn");
-        $("#CNBM_update_error").text("Không còn chủ nhiệm bộ môn");
-    }
-}
-
 function openModalCreateChuyenNganh() {
     $("#modal_create_chuyen_nganh").modal('show');
     $("#chuyen_nganh_add_error").text("");
     $("#CNBM_add_error").text("");
     let cnbm = $("#CNBM").val();
-    checkCnbm(cnbm);
+    if (cnbm != 0) {
+        $("#tenCNBMhAdd").show();
+        $("#create_chuyenNganh").show();
+    } else {
+        $("#create_chuyenNganh").hide();
+        $("#tenCNBMhAdd").hide();
+        $("#CNBM_add_error").text("Không còn chủ nhiệm bộ môn");
+    }
 }
 
 function create() {
@@ -86,12 +77,11 @@ function create() {
     }
 };
 
-function openModalUpdateChuyenNganh(chuyenNganhId) {
+function openModalUpdateChuyenNganh(chuyenNganhId, tenCNBM) {
     $("#modal_update_chuyen_nganh").modal('show');
     $("#chuyennganh_Update_error").text("");
     $("#CNBM_update_error").text("");
     let cnbm = $("#chuNhiemBoMon").val();
-    checkCnbm(cnbm);
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -101,6 +91,8 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
         success: function (responseData) {
             $("#id_chuyen_nganh_update").val(responseData.data.id);
             $("#tenChuyenNganhUpdate").val(responseData.data.tenChuyenNganh);
+            $("#CNBMHienTai").val(responseData.data.id);
+            $("#CNBMHienTai").text(tenCNBM);
         },
         error: function (e) {
             console.log("ERROR : ", e);
