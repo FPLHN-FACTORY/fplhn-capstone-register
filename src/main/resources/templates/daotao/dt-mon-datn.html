@@ -107,7 +107,8 @@
                                                                         class="btn btn-outline-secondary btn btn-light"
                                                                         data-bs-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button th:attr="onclick=|create()|"
+                                                                <button type="button"
+                                                                        th:attr="onclick=|create()|"
                                                                         class="btn btn-primary">
                                                                     Thêm mới
                                                                 </button>
@@ -249,7 +250,7 @@
                     <button onclick="clearModal()" type="button" class="btn btn-outline-secondary btn btn-light"
                             data-bs-dismiss="modal">Hủy
                     </button>
-                    <button th:attr="onclick=|update()|" class="btn btn-primary">
+                    <button type="button" th:attr="onclick=|update()|" class="btn btn-primary">
                         Cập nhật
                     </button>
                 </div>
