@@ -162,7 +162,7 @@ function updateTenDeTaiSubmit() {
         $("#errorMessageUpdate").text("Tên đề tài không được để trống");
     } else if (tenDeTai.trim().length < 6) {
         $("#errorMessageUpdate").text("Tên đề tài tối thiếu 6 ký tự");
-    }else if (tenDeTai.trim().length > 100) {
+    } else if (tenDeTai.trim().length > 100) {
         $("#errorMessageUpdate").text("Tên đề tài quá 100 ký tự");
     } else {
         $.ajax({
