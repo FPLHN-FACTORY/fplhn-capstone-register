@@ -16,10 +16,6 @@ import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.FormUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +25,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -146,7 +141,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
             importMonDatnRequests.parallelStream().forEach(createMonDant -> {
                 if (createMonDant.getMaMon().trim().length() == 0) {
-                    System.out.println(createMonDant.getMaMon());
                     mess.setStatus(false);
                     mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được để trống"));
                     return;
@@ -169,6 +163,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 }
 
                 if (createMonDant.getTenMonDatn().trim().length() == 0) {
+                    System.out.println(createMonDant.getMaMon());
                     mess.setStatus(false);
                     mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
                     return;
@@ -225,10 +220,10 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 }
                 monDatnHashMap.put(monDatn.getMaMon(), monDatn);
                 list.add(monDatn);
-                mess.setStatus(true);
             });
 
             if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
+                mess.setStatus(true);
                 List<MonDatn> datnList = monDatnRepository.saveAll(list);
                 datnList.parallelStream().forEach(el -> {
                     if (el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
