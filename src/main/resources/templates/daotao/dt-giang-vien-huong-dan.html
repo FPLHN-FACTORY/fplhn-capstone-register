@@ -63,7 +63,9 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                            <button type="button"
+                                                    class="btn btn-primary"  th:attr="onclick=|loadTable(0)|"
+                                            >Tìm kiếm</button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a href="#"
@@ -153,7 +155,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                    data-dismiss="modal">Hủy
+                                                                    data-bs-dismiss="modal">Hủy
                                                             </button>
                                                             <button class="btn btn-primary"
                                                                     th:attr="onclick=|importFileMau()|">Download
@@ -177,7 +179,7 @@
                                                                 <h5 class="modal-title">
                                                                     Import file excel
                                                                 </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">x</span>
                                                                 </button>
@@ -203,8 +205,8 @@
                                                                                     type="button"
                                                                                     id="mauImport"
                                                                                     data-dismiss="modal"
-                                                                                    data-toggle="modal"
-                                                                                    data-target="#modal_import_mau">
+                                                                                    th:attr="onclick=|openModalImportMau()|"
+                                                                                   >
                                                                                 Tải mẫu
                                                                             </button>
                                                                         </div>
@@ -216,7 +218,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button
                                                                         th:attr="onclick=|importExcel()|"
@@ -233,20 +235,23 @@
                                     <div class="row">
                                         <div class="col-6 d-inline">
                                             <br>
-                                            <button data-toggle="modal"
-                                                    data-target="#modal_create"
+                                            <button
+                                                    type="button"
+                                                    th:attr="onclick=|openModalAddGVHD()|"
                                                     class="btn btn-success"
                                             >
                                                 Thêm giảng viên
                                             </button>
-                                            <button class="btn btn-success"
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-success"
                                                     th:attr="onclick=|openModalExport()|"
                                             >
                                                 Export
                                             </button>
-                                            <button class="btn btn-success"
-                                                    data-toggle="modal"
-                                                    data-target="#modal_import_excel"
+                                            <button type="button"
+                                                    class="btn btn-success"
+                                                    th:attr="onclick=|openModalImport()|"
                                             >
                                                 Import
                                             </button>
@@ -261,7 +266,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel3">Thêm
                                                                     giảng viên</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -326,7 +331,11 @@
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
                                                                         data-bs-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Thêm mới
+                                                                <button
+                                                                        type="button"
+                                                                        class="btn btn-primary"
+                                                                        th:attr="onclick=|addGVHD()|"
+                                                                >Thêm mới
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -482,7 +491,10 @@
                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
                                         data-bs-dismiss="modal">Hủy
                                 </button>
-                                <button type="submit" class="btn btn-primary">
+                                <button  type="button"
+                                         class="btn btn-primary"
+                                         th:attr="onclick=|updateGVHD()|"
+                                        >
                                     Cập nhật
                                 </button>
                             </div>

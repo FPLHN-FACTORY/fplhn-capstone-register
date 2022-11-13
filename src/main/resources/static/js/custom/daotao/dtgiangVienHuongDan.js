@@ -29,7 +29,11 @@ function clearErrorUpdate() {
     $("#errorDotDangKyUpdate").text("");
 }
 
-$("#form_create_giang_vien").submit(function (event) {
+function openModalAddGVHD() {
+    $("#modal_create").modal('show')
+}
+
+function addGVHD () {
     event.preventDefault();
     let tenGvhd = $("#tenGvhd").val().trim();
     let soNhomHuongDanToiDa = $("#soNhomHuongDanToiDa").val().trim();
@@ -150,7 +154,8 @@ $("#form_create_giang_vien").submit(function (event) {
             }
         });
     }
-});
+}
+
 
 function openModalUpdateGiangVien(giangVienId, item) {
     $("#modal_update_giang_vien").modal('show');
@@ -179,8 +184,7 @@ function openModalUpdateGiangVien(giangVienId, item) {
     });
 }
 
-$("#form_giang_vien_update").submit(function (event) {
-    event.preventDefault();
+function updateGVHD () {
     let tenGvhd = $("#ten_giang_vien_update").val().trim();
     let soNhomHuongDanToiDa = $("#so_nhom_update").val().trim();
     let tenTaiKhoan = $("#ten_tai_khoan_update").val().trim();
@@ -298,14 +302,10 @@ $("#form_giang_vien_update").submit(function (event) {
             }
         });
     }
+}
 
-});
 
 
-$("#searchGvhd").submit(function (event) {
-    event.preventDefault();
-    loadTable(0);
-})
 
 function openModalRemoveGiangVien(giangVienId, item) {
     bootbox.confirm({
@@ -358,9 +358,12 @@ function openModalExport() {
 }
 
 function openModalImportMau() {
+    $("#modal_import_excel").modal('hide')
     $("#modal_import_mau").modal('show')
 }
-
+function openModalImport() {
+    $("#modal_import_excel").modal('show')
+}
 function exportFile() {
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
