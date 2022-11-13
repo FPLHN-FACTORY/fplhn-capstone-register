@@ -12,7 +12,6 @@ function openModalCreate() {
 }
 
 function create() {
-    event.preventDefault();
     let maMon = $("#maMon").val();
     let tenMonDatn = $("#tenMonDatn").val();
     let chuyenNganhId = $("#chuyenNganh").val();
@@ -83,7 +82,6 @@ function openModalUpdateMonDatn(monDatnId) {
 }
 
 function update() {
-    event.preventDefault();
     let maMon = $("#ma_mon_datn_update").val();
     let tenMonDatn = $("#ten_mon_datn_update").val();
     let monDatnId = $("#id_mon_datn_update").val();
