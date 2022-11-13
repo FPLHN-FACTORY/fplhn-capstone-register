@@ -29,7 +29,11 @@ function clearErrorUpdate() {
     $("#errorDotDangKyUpdate").text("");
 }
 
-$("#form_create_giang_vien").submit(function (event) {
+function openModalAddGVHD() {
+    $("#modal_create").modal('show')
+}
+
+function addGVHD () {
     event.preventDefault();
     let tenGvhd = $("#tenGvhd").val().trim();
     let soNhomHuongDanToiDa = $("#soNhomHuongDanToiDa").val().trim();
@@ -150,7 +154,8 @@ $("#form_create_giang_vien").submit(function (event) {
             }
         });
     }
-});
+}
+
 
 function openModalUpdateGiangVien(giangVienId, item) {
     $("#modal_update_giang_vien").modal('show');
@@ -179,8 +184,7 @@ function openModalUpdateGiangVien(giangVienId, item) {
     });
 }
 
-$("#form_giang_vien_update").submit(function (event) {
-    event.preventDefault();
+function updateGVHD () {
     let tenGvhd = $("#ten_giang_vien_update").val().trim();
     let soNhomHuongDanToiDa = $("#so_nhom_update").val().trim();
     let tenTaiKhoan = $("#ten_tai_khoan_update").val().trim();
@@ -227,7 +231,7 @@ $("#form_giang_vien_update").submit(function (event) {
     }
 
     if (soDienThoai.length === 0) {
-        $("#errorSDT").text(" Số điện thoại không được để trống");
+        $("#errorSDTUpdate").text(" Số điện thoại không được để trống");
         index++;
     } else if (regexSDT.test(soDienThoai) == false) {
         $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
@@ -242,14 +246,14 @@ $("#form_giang_vien_update").submit(function (event) {
     if (emailFpt.length === 0) {
         $("#errorEmailFptUpdate").text(" EmailFpt không được để trống");
         index++;
-    } else if (regexFPT.test(emailFpt) == false) {
+    }  else if (emailFpt.trim().includes(" ")) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
         index++;
     } else if (regexFPT.test(emailFpt) == false) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
         index++;
     } else {
-        $("#errorEmailFpt").text("");
+        $("#errorEmailFptUpdate").text("");
     }
 
     if (emailFe.length === 0) {
@@ -258,7 +262,7 @@ $("#form_giang_vien_update").submit(function (event) {
     } else if (regexFE.test(emailFe) == false) {
         $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
         index++;
-    } else if (emailFpt.trim().includes(" ")) {
+    } else if (emailFe.trim().includes(" ")) {
         $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
         index++;
     } else {
@@ -298,14 +302,10 @@ $("#form_giang_vien_update").submit(function (event) {
             }
         });
     }
+}
 
-});
 
 
-$("#searchGvhd").submit(function (event) {
-    event.preventDefault();
-    loadTable(0);
-})
 
 function openModalRemoveGiangVien(giangVienId, item) {
     bootbox.confirm({
@@ -358,9 +358,12 @@ function openModalExport() {
 }
 
 function openModalImportMau() {
+    $("#modal_import_excel").modal('hide')
     $("#modal_import_mau").modal('show')
 }
-
+function openModalImport() {
+    $("#modal_import_excel").modal('show')
+}
 function exportFile() {
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
@@ -382,28 +385,32 @@ function exportFile() {
 }
 
 function importExcel() {
-    var form = $('#form_import_excel')[0];
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
-    if (typeExcel.length <= 0) {
+    if (typeExcel.trim().length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        var form = $('#form_import_excel')[0];
         $.ajax({
                 type: 'POST',
-                url: '/api/dao-tao/giang-vien-huong-dan/import',
+                url: giangVienHuongDanApi + '/import',
                 enctype: 'multipart/form-data',
                 processData: false,
                 data: new FormData(form),
                 contentType: false,
                 cache: false,
-                success: function (data) {
-                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
+                success: function (response) {
+                    if (response.data.status == true) {
+                        alert("Import file excel thành công");
+                        window.open(giangVienHuongDanView, '_self');
+                    } else {
+                        alert(response.data.message);
+                        $("#inputGroupFile01").val("");
+                        $("#inputGroupFile01").clear()
+                    }
                 },
                 error: function (e) {
-                    alert(e.responseText);
-                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                    console.log("ERROR: " + e);
                 }
             }
         );
@@ -490,6 +497,7 @@ function loadTable(count) {
                 }
             } else {
                 totalPages = responseData.data.totalPages
+                $("#empty").html(``)
                 $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                     return `
                <tr>
