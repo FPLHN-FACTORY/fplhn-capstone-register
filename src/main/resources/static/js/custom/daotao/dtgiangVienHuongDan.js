@@ -400,14 +400,18 @@ function importExcel() {
                 data: new FormData(form),
                 contentType: false,
                 cache: false,
-                success: function (data) {
-                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                },
-                error: function (e) {
-                    alert(e.responseText);
-                    window.open('/dao-tao/giang-vien-huong-dan', '_self');
-                    console.log("ERROR: " + e);
-                }
+                success: function (response) {
+                   if (response.data.status == true) {
+                       alert("Import file excel thành công");
+                       window.open(giangVienHuongDanView, '_self');
+                   } else {
+                       alert(response.data.message);
+                       $("#inputGroupFile01").val("");
+                       $("#inputGroupFile01").clear()
+                   }
+               },
+               error: function (e) {
+               }
             }
         );
     } else {

@@ -1,32 +1,33 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtGiangVienFileImportExcel;
 import com.fpolydatn.core.daotao.excel.DtGiangVienHuongDanExport;
-import com.fpolydatn.core.daotao.excel.DtGiangVienImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtGiagVienHDImportResquest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
+import com.fpolydatn.core.daotao.model.response.DtGiangVienHDImportExcel;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
 import com.fpolydatn.core.daotao.repository.DtGiangVienHDRepository;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtPhanCongHuongDanRepository;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
+import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
+import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +39,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -156,78 +156,6 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public List<DtGiagVienHDImportResquest> importExcel(MultipartFile file, String idCoSo, String idDotDangKy) throws IOException {
-        List<DtGiagVienHDImportResquest> list = new ArrayList<>();
-        try {
-            Workbook workbook = StreamingReader.builder()
-                    .bufferSize(4096)
-                    .rowCacheSize(50)
-                    .open(file.getInputStream());
-            int rowNumber = 0;
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> iterator = sheet.iterator();
-
-            while (iterator.hasNext()) {
-                Row row = iterator.next();
-
-                if (rowNumber == 0) {
-                    rowNumber++;
-                    continue;
-                }
-                Iterator<Cell> cells = row.iterator();
-                int cid = 0;
-                DtGiagVienHDImportResquest gvhd = new DtGiagVienHDImportResquest();
-                while (cells.hasNext()) {
-                    Cell cell = cells.next();
-                    switch (cid) {
-                        case 1:
-                            gvhd.setCoSoId(idCoSo);
-                            gvhd.setDotDangKyId(idDotDangKy);
-                            String tenGV = cell.getStringCellValue().trim();
-                            gvhd.setTenGvhd(tenGV);
-                            break;
-                        case 2:
-                            String tenTaiKhoan = cell.getStringCellValue().trim();
-                            gvhd.setTenTaiKhoan(tenTaiKhoan);
-                            break;
-                        case 3:
-                            String monHoc = cell.getStringCellValue().trim();
-                            gvhd.setMonHoc(monHoc);
-                            break;
-                        case 4:
-                            double soNhom = cell.getNumericCellValue();
-                            gvhd.setSoNhomHuongDanToiDa((short) soNhom);
-                            break;
-                        case 5:
-                            String sdt = cell.getStringCellValue().trim();
-                            gvhd.setSoDienThoai(sdt);
-                            break;
-                        case 6:
-                            String emailFpt = cell.getStringCellValue().trim();
-                            gvhd.setEmailFpt(emailFpt);
-                            break;
-                        case 7:
-                            String emailFe = cell.getStringCellValue().trim();
-                            gvhd.setEmailFe(emailFe);
-                            break;
-                        default:
-                            break;
-                    }
-                    cid++;
-                }
-                list.add(gvhd);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ;
-        checkValidFile(list);
-        return list;
-    }
-
-
-    @Override
     public List<GiangVienHuongDan> checkValidFile(List<DtGiagVienHDImportResquest> list) {
         List<GiangVienHuongDan> listGVHD = new ArrayList<>();
         List<GiangVienHuongDan> listGVHDUpdate = new ArrayList<>();
@@ -294,22 +222,92 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public void importExcelGVHD(MultipartFile file, String idCoSo, String idDotDangKy) {
-        List<DtGiagVienHDImportResquest> importList =  new DtGiangVienImportExcel().mapReapExcelDatatoDB(file,idCoSo,idDotDangKy);
-        List<GiangVienHuongDan> list = new DtGiangVienImportExcel().checkListImport(importList);
-        dtGiangVienHDRepository.saveAll(list);
+    public DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId ,String doDangKyId) {
+        DtGiangVienHDResponseMessage dtGiangVienHDResponseMessage = new DtGiangVienHDResponseMessage();
+        List<GiangVienHuongDan> listGiangVien = new ArrayList<>();
+        try {
+            DtGiangVienFileImportExcel dtGiangVienHDImport = new DtGiangVienFileImportExcel();
+            List<DtGiangVienHDImportExcel> listGVHD = dtGiangVienHDImport.importData(file);
+            dtGiangVienHDResponseMessage.setStatus(true);
+            Map<String, String> map = new HashMap<>();
+            addDataInMap(map);
+
+            listGVHD.parallelStream().forEach(gv -> {
+                if (map.get(gv.getEmailFpt()) != null ) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Giảng viên bạn muốn import đã tồn tại");
+                    return;
+                }
+
+                if (gv.getEmailFe().isEmpty() || gv.getEmailFpt().isEmpty() ||
+                        gv.getSoDienThoai().isEmpty() || gv.getTenTaiKhoan().isEmpty() ||
+                        gv.getSoNhomHuongDanToiDa()== null || gv.getTenGvhd().isEmpty()) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Không được để trống");
+                    return;
+                }
+
+                if (!gv.getEmailFpt().matches("\\w+@fpt.edu.vn")) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email fpt không đúng định dạng");
+                    return;
+                }
+
+                if (!gv.getEmailFe().matches("\\w+@fe.edu.vn")) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email fe không đúng định dạng");
+                    return;
+                }
+
+                if (gv.getEmailFpt().length() > 30) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email fpt quá 30 ký tự");
+                    return;
+                }
+
+                if (gv.getEmailFe().length() > 30) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email fe quá 30 ký tự");
+                    return;
+                }
+
+                if (!gv.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Số điện thoại không đúng định dạng");
+                    return;
+                }
+                GiangVienHuongDan giangVien = new GiangVienHuongDan();
+                giangVien.setEmailFe(gv.getEmailFe());
+                giangVien.setEmailFpt(gv.getEmailFpt());
+                giangVien.setTenTaiKhoan(gv.getTenTaiKhoan());
+                giangVien.setSoDienThoai(gv.getSoDienThoai());
+                giangVien.setSoNhomHuongDanToiDa(gv.getSoNhomHuongDanToiDa());
+                giangVien.setTenGvhd(gv.getTenGvhd());
+                giangVien.setCoSoId(coSoId);
+                giangVien.setDotDangKyId(doDangKyId);
+                listGiangVien.add(giangVien);
+            });
+            if (dtGiangVienHDResponseMessage.getStatus() == true) {
+                dtGiangVienHDRepository.saveAll(listGiangVien);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            dtGiangVienHDResponseMessage.setStatus(false);
+            dtGiangVienHDResponseMessage.setMessage("Lỗi hệ thống");
+            return dtGiangVienHDResponseMessage;
+        }
+        return dtGiangVienHDResponseMessage;
     }
 
-    public void addDataInMap(HashMap<String, String> mapAll, String coSoId) {
+    public void addDataInMap(Map<String, String> mapAll ) {
+        List<String> listEmailFPT = dtGiangVienHDRepository.findAllEmailFe();
+        setDataInMap(mapAll, listEmailFPT);
 
-        // lấy id, GVHD theo đợt đăng ký của cơ sở
-        List<SimpleEntityProj> getAllMaMon = dtGiangVienHDRepository.getAllGiangVien(coSoId);
-        getAllPutMap(mapAll, getAllMaMon);
     }
 
-    public void getAllPutMap(HashMap<String, String> mapSimple, List<SimpleEntityProj> getAllSimpleEntityProjs) {
-        for (SimpleEntityProj simpleEntityProj : getAllSimpleEntityProjs) {
-            mapSimple.put(simpleEntityProj.getName(), simpleEntityProj.getId());
+    public void setDataInMap(Map<String, String> mapSimple, List<String> listStr) {
+        for (String s : listStr) {
+            mapSimple.put(s, s);
         }
     }
 
