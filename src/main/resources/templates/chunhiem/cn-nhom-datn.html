@@ -190,7 +190,7 @@
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="exampleModalLabel">Export
                                                                 Excel</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
                                                                     aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -209,7 +209,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                    data-dismiss="modal">Hủy
+                                                                    data-bs-dismiss="modal">Hủy
                                                             </button>
                                                             <button class="btn btn-primary"
                                                                     th:attr="onclick=|exportFile()|">Download
@@ -232,7 +232,7 @@
                                                                 <h5 class="modal-title">
                                                                     Import file excel
                                                                 </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close" data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">x</span>
                                                                 </button>
@@ -260,7 +260,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal">Hủy
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button
                                                                         th:attr="onclick=|importExcel()|"
@@ -286,7 +286,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Tạo nhóm</h5>
                                                                 <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        data-bs-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
@@ -342,9 +342,9 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-dismiss="modal" onclick="clearForm()">Hủy
+                                                                        data-bs-dismiss="modal" onclick="clearForm()">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Thêm mới
+                                                                <button type="button" th:attr="onclick=|create()|" class="btn btn-primary">Thêm mới
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -479,7 +479,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Xoá nhóm DATN</h5>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
+                            data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -490,9 +490,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
+                            data-bs-dismiss="modal">Hủy
                     </button>
-                    <button type="submit" class="btn btn-primary">Xoá
+                    <button type="button" th:attr="onclick=|remove()|" class="btn btn-primary">Xoá
                     </button>
                 </div>
             </form>
@@ -512,7 +512,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Nhận xét</h5>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
+                            data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -525,137 +525,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
+                            data-bs-dismiss="modal">Hủy
                     </button>
-                    <button type="submit" class="btn btn-primary">Gửi
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div
-        class="modal fade"
-        id="modal_chot_de_tai"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_chot_de_tai">
-                <div class="modal-header">
-                    <h5 class="modal-title">Chốt đề tài nhóm</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn chốt đề tài của nhóm không ?</p>
-                    <span id="id_nhom_datn_chot" style="color:red;"></span>
-                    <span id="currentPagingChot" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Chốt đề tài
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div
-        class="modal fade"
-        id="modal_chot_nhieu_de_tai"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_chot_nhieu_de_tai">
-                <div class="modal-header">
-                    <h5 class="modal-title">Chốt đề tài nhóm</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn chốt đề tài của những nhóm được chọn không ?</p>
-                    <span id="currentPagingChotNhieu" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Chốt đề tài
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div
-        class="modal fade"
-        id="modal_xac_nhan_nhieu_nhom"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_xac_nhan_nhieu_nhom">
-                <div class="modal-header">
-                    <h5 class="modal-title">Chốt đề tài nhóm</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn xác nhận những nhóm được chọn không ?</p>
-                    <span id="currentPagingXacNhanNhieu" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Xác nhận
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div
-        class="modal fade"
-        id="modal_xac_nhan_nhom"
-        tabindex="-1">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_xac_nhan_nhom">
-                <div class="modal-header">
-                    <h5 class="modal-title">Xác nhận nhóm</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có xác nhận nhóm không ?</p>
-                    <span id="id_nhom_datn_xac_nhan" style="color:red;"></span>
-                    <span id="currentPagingXacNhan" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn btn-light"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Xác nhận
+                    <button type="button" th:attr="onclick=|tuChoi()|" class="btn btn-primary">Gửi
                     </button>
                 </div>
             </form>
@@ -669,7 +541,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Thông báo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -679,7 +551,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" th:attr="onclick=|submitModal()|">OK</button>
-                <button type="button" class="btn btn-outline-secondary btn btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -689,7 +561,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Thông báo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -697,7 +569,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" th:attr="onclick=|reload()|">OK</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" th:attr="onclick=|reload()|">OK</button>
             </div>
         </div>
     </div>

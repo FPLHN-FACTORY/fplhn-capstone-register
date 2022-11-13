@@ -1,11 +1,9 @@
 package com.fpolydatn.core.daotao.excel;
 
-import com.fpolydatn.core.chunhiem.model.request.CnCreateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtCanBoExcelImport;
-import com.fpolydatn.entity.CanBo;
-import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -29,20 +27,25 @@ public class DtCanBoImportExcel {
         Sheet worksheet = workbook.getSheetAt(0);
         for (Row row :
                 worksheet) {
-            if (row.getRowNum()==0){
+            if (row.getRowNum() == 0) {
+                continue;
+            }
+            if (row.getCell(1).getCellType() != CellType.STRING
+                    || row.getCell(2).getCellType() != CellType.STRING
+                    || row.getCell(3).getCellType() != CellType.STRING
+                    || row.getCell(4).getCellType() != CellType.STRING
+                    || row.getCell(5).getCellType() != CellType.STRING
+                    || row.getCell(6).getCellType() != CellType.STRING
+            ) {
                 continue;
             }
             DtCanBoExcelImport canBo = new DtCanBoExcelImport();
-            canBo.setEmailFE(String.valueOf(getCellValue(row.getCell(1))));
-            canBo.setEmailFPT(String.valueOf(getCellValue(row.getCell(2))));
-            canBo.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))));
-            canBo.setTenCanBo(String.valueOf(getCellValue(row.getCell(4))));
-            canBo.setTenTaiKhoan(String.valueOf(getCellValue(row.getCell(5))));
-            if(String.valueOf(getCellValue(row.getCell(6))).equals("DAO_TAO")){
-                canBo.setVaiTro(VaiTro.DAO_TAO);
-            }else if(String.valueOf(getCellValue(row.getCell(6))).equals("CHU_NHIEM_BO_MON")){
-                canBo.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
-            }
+            canBo.setEmailFE(String.valueOf(getCellValue(row.getCell(1))).trim());
+            canBo.setEmailFPT(String.valueOf(getCellValue(row.getCell(2))).trim());
+            canBo.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))).trim());
+            canBo.setTenCanBo(String.valueOf(getCellValue(row.getCell(4))).trim());
+            canBo.setTenTaiKhoan(String.valueOf(getCellValue(row.getCell(5))).trim());
+            canBo.setVaiTro(String.valueOf(getCellValue(row.getCell(6))).trim());
             canBo.setCoSoId(id);
             listCanBo.add(canBo);
         }
