@@ -104,6 +104,16 @@ public class DBGenerator implements CommandLineRunner {
         quyetnv19.setVaiTro(VaiTro.DAO_TAO);
         quyetnv19.setId(canBoRepository.save(quyetnv19).getId());
 
+        CanBo cnbm = new CanBo();
+        cnbm.setCoSoId(csHN.getId());
+        cnbm.setEmailFe("chunhiem.fcr@gmail.com");
+        cnbm.setEmailFpt("chunhiem.fcr@gmail.com");
+        cnbm.setSoDienThoai("0912345678");
+        cnbm.setTenCanBo("Chủ nhiệm");
+        cnbm.setTenTaiKhoan("chunhiem");
+        cnbm.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
+        cnbm.setId(canBoRepository.save(cnbm).getId());
+
         CanBo daotao = new CanBo();
         daotao.setCoSoId(csHN.getId());
         daotao.setEmailFe("daotao.fcr@gmail.com");
@@ -184,11 +194,11 @@ public class DBGenerator implements CommandLineRunner {
         tronglt.setId(canBoRepository.save(tronglt).getId());
         CanBo thaoltb6 = new CanBo();
         thaoltb6.setCoSoId(csDN.getId());
-        thaoltb6.setEmailFe("HoaLT48@fe.edu.vn");
-        thaoltb6.setEmailFpt("HoaLT48@fpt.edu.vn");
+        thaoltb6.setEmailFe("thaoltb6@fe.edu.vn");
+        thaoltb6.setEmailFpt("thaoltb6@fpt.edu.vn");
         thaoltb6.setSoDienThoai("0912345678");
-        thaoltb6.setTenCanBo("HoaLT48");
-        thaoltb6.setTenTaiKhoan("HoaLT48");
+        thaoltb6.setTenCanBo("thaoltb6");
+        thaoltb6.setTenTaiKhoan("thaoltb6");
         thaoltb6.setVaiTro(VaiTro.DAO_TAO);
         thaoltb6.setId(canBoRepository.save(thaoltb6).getId());
 
@@ -235,15 +245,6 @@ public class DBGenerator implements CommandLineRunner {
         thienth3.setTenTaiKhoan("thienth3");
         thienth3.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
         thienth3.setId(canBoRepository.save(thienth3).getId());
-        CanBo cnbm = new CanBo();
-        cnbm.setCoSoId(csHN.getId());
-        cnbm.setEmailFe("chunhiem.fcr@gmail.com");
-        cnbm.setEmailFpt("chunhiem.fcr@gmail.com");
-        cnbm.setSoDienThoai("0912345678");
-        cnbm.setTenCanBo("Chủ nhiệm");
-        cnbm.setTenTaiKhoan("chunhiem");
-        cnbm.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
-        cnbm.setId(canBoRepository.save(cnbm).getId());
 
         ChuyenNganh ptpm = new ChuyenNganh();
         ptpm.setCoSoId(csHN.getId());
