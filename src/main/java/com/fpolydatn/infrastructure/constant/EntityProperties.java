@@ -3,7 +3,7 @@ package com.fpolydatn.infrastructure.constant;
 /**
  * @author phongtt35
  */
-public class EntityProperties {
+public final class EntityProperties {
 
     private EntityProperties(){}
 
