@@ -247,8 +247,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     }
 
     @Override
-    public List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
-        return cnSinhVienRepository.getStringListSinhVienNoGroup(req);
+    public List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem) {
+        return cnSinhVienRepository.getStringListSinhVienNoGroup(req, idChuNhiem);
     }
 
     @Override

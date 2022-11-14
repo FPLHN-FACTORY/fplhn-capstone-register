@@ -97,7 +97,7 @@ public class CnNhomDatnRestController extends BaseController {
     public ResponseObject getlistNhomDatnNoGroup(final CnFindSinhVienNoGroupRequest req) {
         req.setCoSoId(session.getCoSoId());
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
-        return new ResponseObject(nhomDatnService.getListSinhVienNoGroup(req));
+        return new ResponseObject(nhomDatnService.getListSinhVienNoGroup(req, session.getUserId()));
     }
 
     @GetMapping("/list-mon-datn")

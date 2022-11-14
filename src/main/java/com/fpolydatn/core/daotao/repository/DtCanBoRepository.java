@@ -40,8 +40,7 @@ public interface DtCanBoRepository extends CanBoRepository {
 
     @Query(value = """
             SELECT id, ten_can_bo AS 'name' FROM can_bo a            
-            WHERE co_so_id = :coSoId AND vai_tro = :vaiTro 
-            AND (SELECT b.chu_nhiem_bo_mon FROM chuyen_nganh b WHERE b.chu_nhiem_bo_mon = a.id) IS NULL
+            WHERE co_so_id = :coSoId AND vai_tro = :vaiTro
             """, nativeQuery = true)
     List<SimpleEntityProj> findCanBoByVaiTro(@Param("coSoId") String coSoId, @Param("vaiTro") int vaiTro);
 

@@ -34,7 +34,7 @@ public interface CnNhomDatnService {
 
     boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest);
 
-    List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req);
+    List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem);
 
     void CnSinhVienExport(HttpServletResponse response, String typeExcel, CnFindNhomDatnRequest request) throws IOException;
 

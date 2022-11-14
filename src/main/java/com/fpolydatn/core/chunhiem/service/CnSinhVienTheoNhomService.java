@@ -31,6 +31,6 @@ public interface CnSinhVienTheoNhomService {
 
     List<DotDangKy> getListDotDangKy();
 
-    List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest request);
+    List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest request, String idChuNhiem);
 
 }

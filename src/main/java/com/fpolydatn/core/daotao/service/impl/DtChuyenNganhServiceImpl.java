@@ -71,7 +71,6 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         if (!Objects.isNull(chuyenNganhCheck)) {
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
         }
-        System.out.println("-*--"+req.getChuNhiemBoMon());
         if (!chuNhiemBoMonCheck.isPresent()) {
             throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
         }
