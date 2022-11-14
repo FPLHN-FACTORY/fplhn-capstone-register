@@ -38,7 +38,7 @@ public class GvNhomDatnController extends BaseController {
         List<SimpleEntityProj> listMon = monDatnService.findAllSimpleEntityByCoSoAndGvhd(idGiangVien, coSoId);
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listMon", listMon);
-        return "/giangvien/gv-nhom-datn";
+        return "giangvien/gv-nhom-datn";
     }
 
 }
