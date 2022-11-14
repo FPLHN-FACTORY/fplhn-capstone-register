@@ -16,8 +16,6 @@ public abstract class DtBaseChuyenNganhRequest {
 
     private String coSoId;
 
-    @NotEmpty
-    @NotBlank
     private String chuNhiemBoMon;
 
     @NotEmpty

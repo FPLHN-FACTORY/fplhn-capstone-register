@@ -49,14 +49,15 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
         String chuyenNganhCheck = dtChuyenNganhRepository.checkChuyenNganhByName(chuyenNganh.getCoSoId(),
                 chuyenNganh.getTenChuyenNganh(), chuyenNganh.getId());
-        Optional<CanBo> chuNhiemBoMonCheck = dtCanBoRepository.findById(req.getChuNhiemBoMon());
         if (!Objects.isNull(chuyenNganhCheck)) {
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
         }
-        if (!chuNhiemBoMonCheck.isPresent()) {
-            throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
+        if (req.getChuNhiemBoMon() != null) {
+            Optional<CanBo> chuNhiemBoMonCheck = dtCanBoRepository.findById(req.getChuNhiemBoMon());
+            if (!chuNhiemBoMonCheck.isPresent()) {
+                throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
+            }
         }
-
         ChuyenNganh chuyenNganhUpdate = chuyenNganhById.get();
         chuyenNganhUpdate.setTenChuyenNganh(req.getTenChuyenNganh());
         chuyenNganhUpdate.setChuNhiemBoMon(req.getChuNhiemBoMon());
@@ -67,12 +68,14 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     public ChuyenNganh add(@Valid DtCreateChuyenNganhRequest req) {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
         ChuyenNganh chuyenNganhCheck = dtChuyenNganhRepository.findByTenChuyenNganh(chuyenNganh.getTenChuyenNganh(), req.getCoSoId());
-        Optional<CanBo> chuNhiemBoMonCheck = dtCanBoRepository.findById(req.getChuNhiemBoMon());
         if (!Objects.isNull(chuyenNganhCheck)) {
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
         }
-        if (!chuNhiemBoMonCheck.isPresent()) {
-            throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
+        if (req.getChuNhiemBoMon() != null) {
+            Optional<CanBo> chuNhiemBoMonCheck = dtCanBoRepository.findById(req.getChuNhiemBoMon());
+            if (!chuNhiemBoMonCheck.isPresent()) {
+                throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
+            }
         }
         return dtChuyenNganhRepository.save(chuyenNganh);
     }
