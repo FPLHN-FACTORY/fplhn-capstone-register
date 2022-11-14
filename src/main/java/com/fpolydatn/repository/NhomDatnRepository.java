@@ -30,8 +30,10 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
 
     @Query(value = """
             SELECT a.id FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
-            WHERE a.created_date + 43200000 < :currentTime
+            WHERE a.created_date + :period < :currentTime AND co_so_id = :coSoId
             GROUP BY a.id HAVING COUNT(b.id) <= 3
             """, nativeQuery = true)
-    List<String> listNhomKhongDuDieuKien(@Param("currentTime") Long currentTime);
+    List<String> listNhomKhongDuDieuKien(@Param("currentTime") Long currentTime,
+                                         @Param("coSoId") String coSoId,
+                                         @Param("period") Long period);
 }

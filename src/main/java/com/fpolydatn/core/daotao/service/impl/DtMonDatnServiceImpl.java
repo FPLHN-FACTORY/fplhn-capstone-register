@@ -136,7 +136,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         List<MonDatn> list = new ArrayList<>();
         List<ChuyenNganh> chuyenNganhs = new ArrayList<>();
         if (!checkTypeFile(file)) {
-            return new DtMessMonDatnReponse(false, "file không đúng định dạng XLSX");
+            return new DtMessMonDatnReponse(false, "File không đúng định dạng XLSX");
         }
         List<DtCreateImportMonDatnRequest> importMonDatnRequests = null;
         try {
@@ -186,17 +186,17 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 if (createMonDant.getNhomMonDatnId().trim().length() != 0) {
                     if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
                         mess.setStatus(false);
-                        mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
                         return;
                     }
                     if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
                         mess.setStatus(false);
-                        mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
                         return;
                     }
                     if (createMonDant.getNhomMonDatnId().indexOf(" ") > 0) {
                         mess.setStatus(false);
-                        mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
                         return;
                     }
                 }
