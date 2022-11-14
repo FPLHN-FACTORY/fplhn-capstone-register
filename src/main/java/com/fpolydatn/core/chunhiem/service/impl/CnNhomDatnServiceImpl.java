@@ -92,6 +92,20 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (request.getDotDangKyId() == null) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
+        } else if (request.getDotDangKyId().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
+        }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<CnNhomDatnResponse> res = cnNhomDatnRepository.findNhomDatn(request, pageable, idChuNhiem);
         list = cnNhomDatnRepository.findNhomDatnExport(request, idChuNhiem, TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());

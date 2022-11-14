@@ -29,7 +29,7 @@ public interface DtGiangVienHDService {
 
     GiangVienHuongDan findById(final String id);
 
-    long getSizeListHocKy(String tenGiangVien);
+    long getSizeListHocKy(String tenGiangVien, String coSoId);
 
     PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest req);
 

@@ -391,7 +391,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public SinhVien loaiSinhVien(String id) {
+    public SinhVien loaiSinhVien(String id, String coSoId) {
         Map<String, NhomDatn> map = new HashMap<>();
         Optional<SinhVien> sv = sinhVienRepository.findById(id);
         SinhVien sinhVien = sv.get();
@@ -410,7 +410,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
             } else {
                 //nếu là nhóm trưởng thì chuyển quyền cho sinh viên trong nhóm
-                SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(), sinhVien.getNhomId());
+                SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(), sinhVien.getNhomId(), coSoId);
                 chuyenTruongNhom = map.get(sinhVien.getId());
                 if (motSVtrongNhom == null) {
                     nhomDatnTheoDotRepository.delete(chuyenTruongNhom);

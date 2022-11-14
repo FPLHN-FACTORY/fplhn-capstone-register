@@ -30,5 +30,5 @@ public interface DtSinhVienTheoDotService {
 
     DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId);
 
-    SinhVien loaiSinhVien(String id);
+    SinhVien loaiSinhVien(String id, String coSoId);
 }

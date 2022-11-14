@@ -61,6 +61,7 @@ public class DtGiangVienRestController extends BaseController {
                                  @RequestBody DtUpdateGiangVienHDRequest cmd) {
         try {
             cmd.setId(id);
+            cmd.setCoSoId(session.getCoSoId());
             return new ResponseObject(giangVienHDService.update(cmd));
         } catch (Exception e) {
             return new ResponseObject(e);
@@ -78,6 +79,7 @@ public class DtGiangVienRestController extends BaseController {
 
     @GetMapping("/search")
     public ResponseObject search(final DtFindGiangVienHDRequest rep) {
+        rep.setCoSoId(session.getCoSoId());
         PageableObject<DtGiangVienHDResponse> listGiangVienHD = giangVienHDService.search(rep);
         return new ResponseObject(listGiangVienHD);
     }

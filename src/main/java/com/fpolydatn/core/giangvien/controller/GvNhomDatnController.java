@@ -34,6 +34,7 @@ public class GvNhomDatnController extends BaseController {
         String coSoId = session.getCoSoId();
         String idGiangVien = session.getUserId();
         request.setGiangVienHDId(idGiangVien);
+        request.setCoSoId(coSoId);
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
         List<SimpleEntityProj> listMon = monDatnService.findAllSimpleEntityByCoSoAndGvhd(idGiangVien, coSoId);
         model.addAttribute("page", listNhomDatn);
