@@ -299,7 +299,6 @@ function create() {
     } else {
         $("#errorMessageAddHanChuNhiemBoMon").text("");
     }
-    alert(ngayKetThuc.getTime());
 
     $.ajax({
         type: "GET",

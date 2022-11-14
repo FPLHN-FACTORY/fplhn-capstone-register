@@ -238,8 +238,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         List<SimpleEntityProj> getAllMaSV = sinhVienRepository.getAllMaSV(coSoId);
         getAllPutMap(mapAll, getAllMaSV);
         // lấy id, MaNhom tất cả nhóm theo cơ sở
-        List<SimpleEntityProj> getAllMaNhom = nhomDatnTheoDotRepository.getAllMaNhom(coSoId);
-        getAllPutMap(mapAll, getAllMaNhom);
+//        List<SimpleEntityProj> getAllMaNhom = nhomDatnTheoDotRepository.getAllMaNhom(coSoId);
+//        getAllPutMap(mapAll, getAllMaNhom);
         // lấy id, tenChuyenNganh tất cả chuyên ngành theo cơ sở
         List<SimpleEntityProj> getAllTenCN = chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
         getAllPutMap(mapAll, getAllTenCN);

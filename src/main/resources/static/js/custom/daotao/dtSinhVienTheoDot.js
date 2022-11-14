@@ -18,7 +18,7 @@ function viewTable(page) {
     let trangThai = $("#trangThai").val();
     let dotDangKy = $("#dotDangKy").val();
     currentPage = page
-    $("#valueInput").val(page+1)
+    $("#valueInput").val(page + 1)
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -126,7 +126,7 @@ function exportExcel() {
     }
 }
 
-function showExportMau(){
+function showExportMau() {
     $("#mau_excel_error").text('');
     $("#modal_excel_mau").modal('show');
 }
@@ -284,12 +284,12 @@ function detail(sinhVienId) {
     });
 }
 
-function changeInput(){
+function changeInput() {
     let value = document.querySelector("#valueInput").value
-    if(Number(value) <= 0){
+    if (Number(value) <= 0) {
         value = 1;
     }
-    if(Number(value) > totalPages){
+    if (Number(value) > totalPages) {
         value = totalPages;
     }
     viewTable(value - 1);
@@ -298,8 +298,11 @@ function changeInput(){
 genPagingAndFillColor()
 
 function genPagingAndFillColor() {
-    let templatePageMid = ``;
-    let templatePageBefore = `
+    if (totalPages == 0) {
+        $("#list_page").html('');
+    } else {
+        let templatePageMid = ``;
+        let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(${currentPage - 1})">Back</a>
                 </li>
@@ -307,17 +310,15 @@ function genPagingAndFillColor() {
         templatePageMid += `
                             <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
                              <input style="border: none; width: 55px" value="/   ${totalPages}" readonly>`
-    let templatePageAfter = `
+        let templatePageAfter = `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(${currentPage + 1})">Next</a>
                 </li>
                 `;
-    let templateHtml = ``;
-    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
-    $("#list_page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
-    let colorPage = document.querySelectorAll("#pageColor");
-    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
-    colorPage[currentPage].style.color = 'white';
+        let templateHtml = ``;
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        $("#list_page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+    }
 }
 
 function loaiSinhVienDetail(id, page) {

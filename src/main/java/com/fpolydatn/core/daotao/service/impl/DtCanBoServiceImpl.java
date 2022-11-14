@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author nguyenvv4
@@ -86,7 +88,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
         String check = dtCanBoRepository.getIdChuyenNganhByIdChuNhiem(id, coSoId);
-        if(check != null){
+        if (check != null) {
             throw new RestApiException(Message.CHU_NHIEM_NAY_DANG_CHU_NHIEM_1_CHUYEN_NGANH);
         }
         dtCanBoRepository.delete(canBoCheck.get());
@@ -137,7 +139,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     @Override
     public DtCanBoResponseMessage DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
         DtCanBoResponseMessage dtCanBoResponseMessage = new DtCanBoResponseMessage();
-        List<CanBo> listCanBo = new ArrayList<>();
+        ConcurrentMap<String, CanBo> listCanBo = new ConcurrentHashMap<>();
         try {
             dtCanBoResponseMessage.setStatus(true);
             DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
@@ -177,36 +179,6 @@ public class DtCanBoServiceImpl implements DtCanBoService {
                     return;
                 }
 
-                if (!canbo.getEmailFPT().matches(Constants.REGEX_EMAIL_FPT)) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Email fpt không đúng định dạng");
-                    return;
-                }
-
-                if (!canbo.getEmailFE().matches(Constants.REGEX_EMAIL_FE)) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Email fe không đúng định dạng");
-                    return;
-                }
-
-                if (canbo.getEmailFE().length() > 30) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Email fe quá 30 ký tự");
-                    return;
-                }
-
-                if (canbo.getEmailFPT().length() > 30) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Email fpt quá 30 ký tự");
-                    return;
-                }
-
-                if (!canbo.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Số điện thoại không đúng định dạng");
-                    return;
-                }
-
                 if (!canbo.getVaiTro().equals("DAO_TAO")
                         && !canbo.getVaiTro().equals("CHU_NHIEM_BO_MON")
                         && !canbo.getVaiTro().equals("QUAN_TRI_VIEN")
@@ -230,10 +202,10 @@ public class DtCanBoServiceImpl implements DtCanBoService {
                 }
                 cb.setCoSoId(coSoId);
                 cb.setTenTaiKhoan(canbo.getTenTaiKhoan());
-                listCanBo.add(cb);
+                listCanBo.put(cb.getTenTaiKhoan(), cb);
             });
             if (dtCanBoResponseMessage.getStatus() == true) {
-                dtCanBoRepository.saveAll(listCanBo);
+                dtCanBoRepository.saveAll(listCanBo.values());
             }
         } catch (Exception e) {
             e.printStackTrace();
