@@ -130,7 +130,9 @@ function thayDoiGiangVien() {
             window.open(sinhVienTheoNhomView + "?id=" + idGroup, '_self');
         },
         error: function (e) {
-            $("#change_gvhd").html(e.responseJSON.message)
+            if (e.responseJSON.message == 'Giang vien khong ton tai') {
+                $("#change_gvhd_error").text('Giảng viên không tồn tại')
+            }
         }
     });
 }
@@ -188,7 +190,7 @@ function openModalChangeCaptain() {
               <td>${sinhVien.tenSinhVien}</td>
               <td>
               <a onclick="changeCaptain('${sinhVien.id}')"
-              class="btn btn-success"
+              class="btn btn-success text-white"
               >
               Thay đổi
               </a>

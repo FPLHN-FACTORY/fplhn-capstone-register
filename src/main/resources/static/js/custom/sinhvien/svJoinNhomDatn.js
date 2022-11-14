@@ -260,8 +260,8 @@ function loadDataNhomDatn(count) {
                 <tr>
                 <td>${item.stt}</td>
                 <td>${item.maNhom}</td>
-                <td>${item.tenNhom}</td>
-                <td>${item.tenDeTai}</td>
+                <td>${item.tenNhom == null ? 'Chưa có' : item.tenNhom}</td>
+                <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
                 <td>${item.tenMonDatn}</td>
                 <td>${item.countSinhVien}/7</td>
                 <td>${item.maSinhVien + ' - ' + item.tenSinhVien}</td>
