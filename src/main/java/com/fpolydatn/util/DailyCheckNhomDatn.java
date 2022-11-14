@@ -32,14 +32,10 @@ public class DailyCheckNhomDatn {
     @Qualifier(SinhVienRepository.NAME)
     private SinhVienRepository sinhVienRepository;
 
-    @Autowired
-    private FpolyDatnSession session;
-
     @Scheduled(fixedDelay = 3600000)
     public void daiLyChecking() throws InterruptedException {
-        String coSoId = session.getCoSoId();
         List<String> listNhomKhongDuDieuKien = nhomDatnRepository.listNhomKhongDuDieuKien(convertDateToTimeStampSecond(),
-                coSoId, Constants.MUOI_HAI_TIENG);
+                Constants.MUOI_HAI_TIENG);
         if (listNhomKhongDuDieuKien != null) {
             List<SinhVien> listSinhVien = new ArrayList<>();
             for (String xx : listNhomKhongDuDieuKien) {
