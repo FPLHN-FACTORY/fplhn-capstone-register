@@ -306,7 +306,7 @@ function genPagingAndFillColor() {
                 `;
         templatePageMid += `
                             <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
-                             <input style="border: none; width: 50px" value="/   ${totalPages}" disabled>`
+                             <input style="border: none; width: 55px" value="/   ${totalPages}" readonly>`
     let templatePageAfter = `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(${currentPage + 1})">Next</a>

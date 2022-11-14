@@ -13,7 +13,7 @@ public final class EntityProperties {
     public static final byte LENGTH_CODE = 10;
     public static final byte LENGTH_PASSWORD = 30;
     public static final byte LENGTH_ACCOUNT = 20;
-    public static final byte LENGTH_EMAIL = 30;
+    public static final byte LENGTH_EMAIL = 50;
     public static final byte LENGTH_PHONE = 20;
 
 //    public static final String TYPE_ID = "org.hibernate.type.UUIDCharType";

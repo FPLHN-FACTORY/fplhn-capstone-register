@@ -154,7 +154,6 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         }
         Long ngayBatDauLong = ngayBatDau.getTime();
         Long ngayKetThucLong = ngayKetThuc.getTime();
-        System.out.println("aaaaaaaaaaaaaa " + ngayKetThucLong);
         Long hanSinhVienLong = hanSinhVien.getTime();
         Long hanGiangVienLong = hanGiangVien.getTime();
         Long hanChuNhiemBoMonLong = hanChuNhiemBoMon.getTime();
