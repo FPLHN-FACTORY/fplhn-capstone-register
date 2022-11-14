@@ -60,6 +60,17 @@
                                                    name="tenGiangVien" id="tenGiangVien" value="">
                                         </div>
                                     </div>
+                                    <div class ="row">
+                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <label class="fillter-name col-4 text-center">Đợt đăng ký</label>
+                                            <br>
+                                            <select  class="form-control col-8" id="search_dot_dang_ky">
+                                                <option th:each="item : ${listDotDangKy}"
+                                                        th:value="${item.id}"
+                                                        th:text="${item.getName()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">

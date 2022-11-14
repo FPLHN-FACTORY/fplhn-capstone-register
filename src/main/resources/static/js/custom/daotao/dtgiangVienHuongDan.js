@@ -17,6 +17,7 @@ $(document).ready(function () {
 
 function clearData() {
     $("#tenGiangVien").val("");
+    $("#search_dot_dang_ky").val("")
 }
 
 function clearErrorUpdate() {
@@ -490,11 +491,12 @@ function genPageZing() {
 
 function loadTable(count) {
     let tenGiangVien = $("#tenGiangVien").val();
+    let dotDangKyId = $("#search_dot_dang_ky").val();
     currentPage = count;
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&page=" + count,
+        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&page=" + count + "&dotDangKyId=" +dotDangKyId,
         dataType: 'json',
         success: function (responseData) {
             if (responseData.data.data.length == 0) {

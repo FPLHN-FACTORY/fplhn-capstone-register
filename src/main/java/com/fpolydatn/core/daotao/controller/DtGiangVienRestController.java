@@ -80,6 +80,7 @@ public class DtGiangVienRestController extends BaseController {
     @GetMapping("/search")
     public ResponseObject search(final DtFindGiangVienHDRequest rep) {
         rep.setCoSoId(session.getCoSoId());
+        rep.setDotDangKyId(rep.getDotDangKyId());
         PageableObject<DtGiangVienHDResponse> listGiangVienHD = giangVienHDService.search(rep);
         return new ResponseObject(listGiangVienHD);
     }
