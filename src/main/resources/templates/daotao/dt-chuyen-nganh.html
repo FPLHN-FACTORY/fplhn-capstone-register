@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý chuyên ngành | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
@@ -58,6 +58,7 @@
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Tên chuyên ngành</span>
                                             <input type="text" class="form-control col-8"
+                                                   maxlength="100"
                                                    name="tenChuyenNganh" id="ten-chuyen-nganh-search" value="">
                                         </div>
                                     </div>
@@ -112,7 +113,7 @@
                                                                 class="btn_pencil_square"
                                                                 data-toggle="tooltip"
                                                                 title="Sửa chuyên ngành"
-                                                                th:attr="onclick=|openModalUpdateChuyenNganh('${chuyenNganh.getId()}')|">
+                                                                th:attr="onclick=|openModalUpdateChuyenNganh('${chuyenNganh.getId()}', '${chuyenNganh.getTenCanBo()}')|">
                                                             <img th:src="@{/img/pencil-square.svg}">
                                                         </button>
                                                         <button
@@ -131,14 +132,29 @@
                                         <!-- Paging-->
                                         <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
                                             <ul class="pagination justify-content-end">
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                       th:style="${page.currentPage} == 0 ? 'pointer-events: none' : ''"
+                                                       th:href="@{/dao-tao/chuyen-nganh?page={page.currentPage}(page.currentPage=${page.currentPage}-1)}"
+                                                       th:text="Back">
+                                                    </a>
+                                                </li>
                                                 <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                     <li class="page-item">
                                                         <a class="page-link"
+                                                           th:style="${page.currentPage} == ${i} - 1 ? 'background-color : #0a8cf0; color : white' : ''"
                                                            th:href="@{/dao-tao/chuyen-nganh?page={page.currentPage}(page.currentPage=${i}-1)}"
                                                            th:text="${i}">
                                                         </a>
                                                     </li>
                                                 </div>
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                       th:style="${page.currentPage} == ${page.totalPages} - 1 ? 'pointer-events: none' : ''"
+                                                       th:href="@{/dao-tao/chuyen-nganh?page={page.currentPage}(page.currentPage=${page.currentPage}+1)}"
+                                                       th:text="Next">
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -195,6 +211,7 @@
                             <input id="chuNhiemBoMon"
                                    th:value="${listCanBo.size()}" hidden/>
                             <select id="tenCNBMhUpdate" class="form-control">
+                                <option id="CNBMHienTai"></option>
                                 <option th:each="canBo : ${listCanBo}"
                                         th:value="${canBo.id}"
                                         th:text="${canBo.name}"></option>

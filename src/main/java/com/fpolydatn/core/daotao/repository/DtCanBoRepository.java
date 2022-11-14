@@ -50,6 +50,10 @@ public interface DtCanBoRepository extends CanBoRepository {
     List<String> findAllEmailFe();
 
     @Query(value = """
+            SELECT ten_tai_khoan FROM can_bo""", nativeQuery = true)
+    List<String> finAllTenTaiKhoan();
+
+    @Query(value = """
             SELECT email_fpt FROM can_bo""", nativeQuery = true)
     List<String> findAllByEmailFPT();
 
@@ -71,4 +75,6 @@ public interface DtCanBoRepository extends CanBoRepository {
     @Query(value = "SELECT id FROM can_bo WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id", nativeQuery = true)
     String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id);
 
+    @Query(value = "SELECT id FROM chuyen_nganh where chu_nhiem_bo_mon = :idChuNhiem",nativeQuery = true)
+    String getIdChuyenNganhByIdChuNhiem(@Param("idChuNhiem") String idChuNhiem);
 }

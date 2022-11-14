@@ -135,10 +135,14 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
     List<DtGiangVienHDResponse> exportExcel(@Param("req") DtFindGiangVienHDRequest req);
 
     @Query(value = """
-            SELECT email_fpt FROM giang_vien_huong_dan""", nativeQuery = true)
+            SELECT email_fe FROM giang_vien_huong_dan""", nativeQuery = true)
     List<String> findAllEmailFe();
 
+    @Query(value = """
+            SELECT email_fpt FROM giang_vien_huong_dan""", nativeQuery = true)
+    List<String> findAllEmailFpt();
 
-
-
+    @Query(value = """
+            SELECT ten_tai_khoan FROM giang_vien_huong_dan""", nativeQuery = true)
+    List<String> findAllTenTaiKhoan();
 }

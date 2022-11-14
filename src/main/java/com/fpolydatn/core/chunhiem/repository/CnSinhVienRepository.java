@@ -143,7 +143,7 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             OR ma_sinh_vien LIKE %:#{#req.maSinhVien}%)
             OR (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
             OR ten_sinh_vien LIKE %:#{#req.tenSinhVien}%))
-            AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId} AND nhom_id IS NULL
+            AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId} AND nhom_id IS NULL AND trang_thai = 0
             AND (SELECT m.nhom_mon_datn_id FROM mon_datn m WHERE m.id = sinh_vien.mon_chuong_trinh_id) = :#{#req.nhomMonDatnId}
             """, nativeQuery = true)
     List<CnSinhVienSearchResponse> getListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req);

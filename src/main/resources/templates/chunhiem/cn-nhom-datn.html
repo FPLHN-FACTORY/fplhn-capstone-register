@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý nhóm DATN | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
@@ -136,7 +136,7 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button type="button" th:attr="onclick=|loadDatnNhomDatn(0)|" class="btn btn-primary">Tìm kiếm</button>
+                                            <button type="button" th:attr="onclick=|loadDataNhomDatn(0)|" class="btn btn-primary">Tìm kiếm</button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a href="#" class="btn btn-danger text-white" onclick="clearData();">
@@ -249,7 +249,7 @@
                                                                                    id="inputGroupFile01"
                                                                                    aria-describedby="inputGroupFileAddon01"
                                                                                    name="file">
-                                                                            <label class="custom-file-label"
+                                                                            <label class="custom-file-label" id="labelFile"
                                                                                    for="inputGroupFile01">Choose
                                                                                 file</label>
                                                                         </div>

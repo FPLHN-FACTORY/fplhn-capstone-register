@@ -73,7 +73,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                 s.id,
                 s.ma_sinh_vien AS 'name'
                  FROM do_an_tot_nghiep.sinh_vien s
-                 WHERE s.co_so_id = :coSoId
+                 WHERE s.co_so_id = :coSoId 
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaSV(@Param("coSoId") String coSoId);
 

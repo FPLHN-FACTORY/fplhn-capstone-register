@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý cán bộ | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
@@ -67,7 +67,31 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label class="col-form-label">Cán Bộ</label>
+                                                                    <br>
+                                                                    <label class="col-form-label">Tên Tài Khoản</label>
+                                                                    <input maxlength="20"
+                                                                           type="text"
+                                                                           class="form-control"
+                                                                           id="tentaikhoan">
+                                                                    <span class="text-danger"
+                                                                          id="ten_tai_khoan_error"></span>
+                                                                    <br>
+                                                                    <label class="col-form-label">Tên Cán Bộ</label>
+                                                                    <input maxlength="100"
+                                                                           type="text"
+                                                                           class="form-control"
+                                                                           id="tenCanBo">
+                                                                    <span class="text-danger"
+                                                                          id="ten_can_bo_error"></span>
+
+                                                                    <br>
+                                                                    <label class="col-form-label">Số Điện Thoại</label>
+                                                                    <input maxlength="20"
+                                                                           type="text"
+                                                                           class="form-control"
+                                                                           id="sodienthoai">
+                                                                    <span class="text-danger"
+                                                                          id="so_dien_thoai_error"></span>
 
                                                                     <br>
                                                                     <label class="col-form-label">Email FE</label>
@@ -86,33 +110,6 @@
                                                                             id="emailfpt">
                                                                     <span class="text-danger"
                                                                           id="email_fpt_error"></span>
-
-                                                                    <br>
-                                                                    <label class="col-form-label">Số Điện Thoại</label>
-                                                                    <input maxlength="20"
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="sodienthoai">
-                                                                    <span class="text-danger"
-                                                                          id="so_dien_thoai_error"></span>
-
-                                                                    <br>
-                                                                    <label class="col-form-label">Tên Cán Bộ</label>
-                                                                    <input maxlength="100"
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="tenCanBo">
-                                                                    <span class="text-danger"
-                                                                          id="ten_can_bo_error"></span>
-
-                                                                    <br>
-                                                                    <label class="col-form-label">Tên Tài Khoản</label>
-                                                                    <input maxlength="20"
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="tentaikhoan">
-                                                                    <span class="text-danger"
-                                                                          id="ten_tai_khoan_error"></span>
 
                                                                     <br>
                                                                     <label class="col-form-label">Vai Trò</label>
@@ -169,7 +166,7 @@
                                                                                    id="inputGroupFile01"
                                                                                    aria-describedby="inputGroupFileAddon01"
                                                                                    name="file">
-                                                                            <label class="custom-file-label"
+                                                                            <label class="custom-file-label" id="labelFile"
                                                                                    for="inputGroupFile01">Choose
                                                                                 file</label>
                                                                         </div>
@@ -179,8 +176,7 @@
                                                                                     th:attr="onclick=|openModalTaiMau()|"
                                                                                     id="mauImport"
                                                                                     data-bs-dismiss="modal"
-                                                                                    >Tải
-                                                                                Mẫu
+                                                                                    >Tải Mẫu
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -311,6 +307,32 @@
 
                     <div class="form-group">
                         <br>
+                        <label class="col-form-label">Tên Tài Khoản</label>
+                        <input maxlength="20"
+                               type="text"
+                               class="form-control"
+                               id="ten_tai_khoan_Update">
+                        <span class="text-danger"
+                              id="ten_tai_khoan_error_update"></span>
+                        <br>
+                        <label class="col-form-label">Tên Cán Bộ</label>
+                        <input maxlength="100"
+                               type="text"
+                               class="form-control"
+                               id="ten_Can_Bo_Update">
+                        <span class="text-danger"
+                              id="ten_can_bo_error_update"></span>
+
+                        <br>
+                        <label class="col-form-label">Số Điện Thoại</label>
+                        <input maxlength="20"
+                               type="text"
+                               class="form-control"
+                               id="so_dien_thoai_Update">
+                        <span class="text-danger"
+                              id="so_dien_thoai_error_update"></span>
+
+                        <br>
                         <label class="col-form-label">Email FE</label>
                         <input maxlength="30"
                                 type="text"
@@ -328,32 +350,6 @@
                         <span class="text-danger"
                               id="email_fpt_error_update"></span>
 
-                        <br>
-                        <label class="col-form-label">Số Điện Thoại</label>
-                        <input maxlength="20"
-                                type="text"
-                                class="form-control"
-                                id="so_dien_thoai_Update">
-                        <span class="text-danger"
-                              id="so_dien_thoai_error_update"></span>
-
-                        <br>
-                        <label class="col-form-label">Tên Cán Bộ</label>
-                        <input maxlength="100"
-                                type="text"
-                                class="form-control"
-                                id="ten_Can_Bo_Update">
-                        <span class="text-danger"
-                              id="ten_can_bo_error_update"></span>
-
-                        <br>
-                        <label class="col-form-label">Tên Tài Khoản</label>
-                        <input maxlength="20"
-                                type="text"
-                                class="form-control"
-                                id="ten_tai_khoan_Update">
-                        <span class="text-danger"
-                              id="ten_tai_khoan_error_update"></span>
                         <br>
                         <label class="col-form-label">Vai Trò</label>
                         <select id="vai_Tro_Update" class="form-control col-8">
@@ -401,7 +397,7 @@
                             <div class="form-group">
                                 <p class="col-form-label">Định dạng file excel </p>
                                 <select id="type_mau_excel" class="form-control col-5">
-                                    <option value="">chọn kiểu file excel</option>
+                                    <option value="">Chọn kiểu file excel</option>
                                     <option value="xls">.xls</option>
                                     <option value="xlsx">.xlsx</option>
                                 </select>

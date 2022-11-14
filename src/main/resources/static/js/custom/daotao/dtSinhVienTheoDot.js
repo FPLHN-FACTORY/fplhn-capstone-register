@@ -5,6 +5,10 @@ function clearform() {
     $("#dotDangKy").val('');
 }
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
 function viewTable(page) {
     let keyword = $("#keyword").val();
     let chuyenNganh = $("#chuyenNganh").val();
@@ -88,6 +92,7 @@ function viewTable(page) {
 }
 
 function openModalExportExcel() {
+    $("#type_excel_error").text('');
     $("#modal_excel").modal('show');
 }
 
@@ -115,6 +120,11 @@ function exportExcel() {
     }
 }
 
+function showExportMau(){
+    $("#mau_excel_error").text('');
+    $("#modal_excel_mau").modal('show');
+}
+
 function mauImport() {
     let typeExcel = $("#type_mau_excel").val();
     if (typeExcel == '') {
@@ -136,6 +146,9 @@ function mauImport() {
 };
 
 function openModalImportExcel() {
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile01").val('');
+    $("#import_excel_error").text('');
     $("#import_excel").modal('show');
 }
 
@@ -190,6 +203,9 @@ function importExcel() {
 }
 
 function openModalLoaiSinhVien() {
+    $("#labelFileLoaiSV").text('Choose file');
+    $("#fileLoaiSv").val('');
+    $("#errorImportFile").text('');
     $("#modal_loai_sinh_vien").modal('show');
 }
 
@@ -285,10 +301,6 @@ function genPagingAndFillColor(totalPages, currentPage) {
     let colorPage = document.querySelectorAll("#pageColor");
     colorPage[currentPage].style.backgroundColor = '#0a8cf0';
     colorPage[currentPage].style.color = 'white';
-}
-function showExportMau(){
-    $("#modal_excel_mau").modal('show');
-
 }
 
 function loaiSinhVienDetail(id, page) {

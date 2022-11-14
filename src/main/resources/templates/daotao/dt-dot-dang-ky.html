@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý đợt đăng ký | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
@@ -303,12 +303,13 @@
                     <label class="col-form-label">Tổng số sinh viên chưa có nhóm</label>
                     <div class="input-group mb-3">
                         <input type="text" readonly class="form-control" id="detailTongSoSinhVienChuaCoNhom">
-                        <button class="btn btn-success"
+                        <a class="btn btn-success"
+                           style="height: 42px;line-height: 25px"
                                 data-toggle="tooltip"
                                 title="Xem danh sách sinh viên chưa có nhóm"
                                 id="btnShowSinhVienChuaCoNhom">
                             <img th:src="@{/img/eye-fill.svg}">
-                        </button>
+                        </a>
                     </div>
                     <label class="col-form-label">Tổng số sinh viên có nhóm</label>
                     <div class="input-group mb-3">

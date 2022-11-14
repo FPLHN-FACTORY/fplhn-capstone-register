@@ -5,6 +5,10 @@ $(document).ready(function () {
     $("#chuyen_nganh_error").text("");
 });
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
 function clearData() {
     $("#ten-chuyen-nganh-search").val("");
 }
@@ -15,28 +19,20 @@ function clearForm() {
     $("#chuyen_nganh_error").text("");
 }
 
-function checkCnbm(cnbm) {
-    if (cnbm != 0) {
-        $("#tenCNBMhAdd").show();
-        $("#create_chuyenNganh").show();
-        $("#tenCNBMhUpdate").show();
-        $("#update_chuyenNganh").show();
-    } else {
-        $("#create_chuyenNganh").hide();
-        $("#tenCNBMhAdd").hide();
-        $("#tenCNBMhUpdate").hide();
-        $("#update_chuyenNganh").hide();
-        $("#CNBM_add_error").text("Không còn chủ nhiệm bộ môn");
-        $("#CNBM_update_error").text("Không còn chủ nhiệm bộ môn");
-    }
-}
-
 function openModalCreateChuyenNganh() {
     $("#modal_create_chuyen_nganh").modal('show');
     $("#chuyen_nganh_add_error").text("");
     $("#CNBM_add_error").text("");
+    $("#tenChuyenNganhAdd").val('');
     let cnbm = $("#CNBM").val();
-    checkCnbm(cnbm);
+    if (cnbm != 0) {
+        $("#tenCNBMhAdd").show();
+        $("#create_chuyenNganh").show();
+    } else {
+        $("#create_chuyenNganh").hide();
+        $("#tenCNBMhAdd").hide();
+        $("#CNBM_add_error").text("Không còn chủ nhiệm bộ môn");
+    }
 }
 
 function create() {
@@ -77,21 +73,17 @@ function create() {
                 if (e.responseJSON.message == 'Chuyen nganh da ton tai') {
                     $("#chuyen_nganh_add_error").text("Chuyên ngành đã tồn tại trong đợt");
                     $("#CNBM_add_error").text("");
-                } else {
-                    $("#CNBM_add_error").text("Chủ nhiệm bộ môn đang tồn tại trong đợt");
-                    $("#chuyen_nganh_add_error").text("");
                 }
             }
         });
     }
 };
 
-function openModalUpdateChuyenNganh(chuyenNganhId) {
+function openModalUpdateChuyenNganh(chuyenNganhId, tenCNBM) {
     $("#modal_update_chuyen_nganh").modal('show');
     $("#chuyennganh_Update_error").text("");
     $("#CNBM_update_error").text("");
     let cnbm = $("#chuNhiemBoMon").val();
-    checkCnbm(cnbm);
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -101,6 +93,8 @@ function openModalUpdateChuyenNganh(chuyenNganhId) {
         success: function (responseData) {
             $("#id_chuyen_nganh_update").val(responseData.data.id);
             $("#tenChuyenNganhUpdate").val(responseData.data.tenChuyenNganh);
+            $("#CNBMHienTai").val(responseData.data.chuNhiemBoMon);
+            $("#CNBMHienTai").text(tenCNBM);
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -142,7 +136,6 @@ function update() {
             error: function (e) {
                 if (e.responseJSON.message == 'Chuyen nganh da ton tai') {
                     $("#chuyennganh_Update_error").text("Chuyên ngành đã tồn tại trong đợt");
-                    $("#chuyennganh_Update_error").text("");
                 }
             }
         });

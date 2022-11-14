@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý GVHD | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
@@ -158,6 +158,7 @@
                                                                     data-bs-dismiss="modal">Hủy
                                                             </button>
                                                             <button class="btn btn-primary"
+                                                                    type="button"
                                                                     th:attr="onclick=|importFileMau()|">Download
                                                                 excel
                                                             </button>
@@ -197,6 +198,7 @@
                                                                                    aria-describedby="inputGroupFileAddon01"
                                                                                    name="file">
                                                                             <label class="custom-file-label"
+                                                                                   id="labelFile"
                                                                                    for="inputGroupFile01">Choose
                                                                                 file</label>
                                                                         </div>
@@ -505,39 +507,7 @@
             <!--   End Modal Update -->
 
             <!--  Start Modal Remove-->
-            <div
-                    class="modal fade"
-                    id="modal_giang_vien_remove"
-                    tabindex="-1"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-lg"
-                     role="document">
-                    <div class="modal-content">
-                        <form id="form_giang_vien_delete">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Xoá giảng viên</h5>
-                                <button type="button" class="close"
-                                        data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Bạn có muốn xoá không ?</p>
-                                <span id="remove_giang_vien" style="color:red;"></span>
-                                <span id="remove_giang_vien_item" style="color:red;"></span>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                        data-bs-dismiss="modal">Hủy
-                                </button>
-                                <button type="submit" class="btn btn-primary">Xoá
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>

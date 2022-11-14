@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý nhóm DATN | FCR FPT Polytechnic</title>
     <meta content="Static table examples" name="description">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <link rel="stylesheet" th:href="@{/assets/vendors/base/vendors.bundle.css}" type="text/css"/>
@@ -99,9 +99,9 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <a class="btn btn-primary text-white" type="button" th:attr="onclick=|loadDataNhomDatn(0)|"
+                                            <button class="btn btn-primary" type="button" th:attr="onclick=|loadDataNhomDatn(0)|"
                                                >Tìm
-                                                kiếm</a>
+                                                kiếm</button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a class="btn btn-danger text-white"
@@ -232,6 +232,7 @@
                                                         <td>
                                                             <button class="btn_eye"
                                                                     th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
+                                                                    data-toggle="tooltip"
                                                                     title="Xem chi tiết nhóm"
                                                                     type="button"
                                                             >

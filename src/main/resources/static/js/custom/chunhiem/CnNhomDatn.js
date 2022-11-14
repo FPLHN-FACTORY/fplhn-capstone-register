@@ -498,17 +498,22 @@ function searchSinhVienNoGroup() {
 }
 
 function openModalExport() {
+    $("#type_excel_error").text("");
     $("#modal_excel").modal('show')
 }
 
 function openModalImport() {
+    $("#import_excel_error").text("");
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile01").val('');
     $("#modal_import_excel").modal('show')
 }
 
 function exportFile() {
+    $("#type_excel_error").text("");
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
-        $("#type_excel_error").text("chọn định dạng file download");
+        $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -525,6 +530,7 @@ function exportFile() {
 }
 
 function importExcel() {
+
     var form = $('#form_import_excel')[0];
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');

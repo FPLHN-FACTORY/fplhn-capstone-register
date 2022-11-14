@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý sinh viên | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
@@ -97,8 +97,8 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <a type="submit" class="btn btn-primary text-white" onclick="viewTable(0)">Tìm
-                                                kiếm</a>
+                                            <button type="button" class="btn btn-primary" onclick="viewTable(0)">Tìm
+                                                kiếm</button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a href="#"
@@ -243,6 +243,7 @@
                                                                                    aria-describedby="inputGroupFileAddon01"
                                                                                    name="file">
                                                                             <label class="custom-file-label"
+                                                                                   id="labelFile"
                                                                                    for="inputGroupFile01">Choose
                                                                                 file</label>
                                                                         </div>
@@ -427,7 +428,7 @@
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="fileLoaiSv"
                                        aria-describedby="inputGroupFileAddon01" name="fileLoaiSv" required>
-                                <label class="custom-file-label" for="fileLoaiSv">Choose file</label>
+                                <label class="custom-file-label" id="labelFileLoaiSV" for="fileLoaiSv">Choose file</label>
                             </div>
                         </div>
                         <span class="text-danger"

@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý môn DATN | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
@@ -43,7 +43,7 @@
                                             <button
                                                     type="button"
                                                     th:attr="onclick=|openModalCreate()|"
-                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                    class="btn btn-success">
                                                 Tạo môn
                                             </button>
                                             <div class="modal fade "
@@ -112,7 +112,7 @@
                                                                 <button type="button"
                                                                         th:attr="onclick=|create()|"
                                                                         class="btn btn-primary">
-                                                                    Thêm mới
+                                                                    Tạo mới
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -180,14 +180,29 @@
                                             <!-- Paging-->
                                             <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
                                                 <ul class="pagination justify-content-end">
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           th:style="${page.currentPage} == 0 ? 'pointer-events: none' : ''"
+                                                           th:href="@{/dao-tao/mon-datn?page={page.currentPage}(page.currentPage=${page.currentPage}-1)}"
+                                                           th:text="Back">
+                                                        </a>
+                                                    </li>
                                                     <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
                                                         <li class="page-item">
                                                             <a class="page-link"
+                                                               th:style="${page.currentPage} == ${i} - 1 ? 'background-color : #0a8cf0; color : white' : ''"
                                                                th:href="@{/dao-tao/mon-datn?page={page.currentPage}(page.currentPage=${i}-1)}"
                                                                th:text="${i}">
                                                             </a>
                                                         </li>
                                                     </div>
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           th:style="${page.currentPage} == ${page.totalPages} - 1 ? 'pointer-events: none' : ''"
+                                                           th:href="@{/dao-tao/mon-datn?page={page.currentPage}(page.currentPage=${page.currentPage}+1)}"
+                                                           th:text="Next">
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </nav>
                                         </div>
@@ -286,7 +301,7 @@
                     <div class="input-group">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="inputGroupFile04" name="file">
-                            <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                            <label class="custom-file-label" id="labelFile" for="inputGroupFile04">Choose file</label>
                         </div>
                         <div class="input-group-append">
                             <a th:href="@{/dao-tao/mon-datn/mau-import}" class="btn input-group-text" style="line-height: 27.5px;" type="button">Tải

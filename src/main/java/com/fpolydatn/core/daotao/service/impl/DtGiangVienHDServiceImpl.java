@@ -226,17 +226,29 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             addDataInMap(map);
 
             listGVHD.parallelStream().forEach(gv -> {
-                if (map.get(gv.getEmailFpt()) != null) {
-                    dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Giảng viên bạn muốn import đã tồn tại");
-                    return;
-                }
-
                 if (gv.getEmailFe().isEmpty() || gv.getEmailFpt().isEmpty() ||
                         gv.getSoDienThoai().isEmpty() || gv.getTenTaiKhoan().isEmpty() ||
                         gv.getSoNhomHuongDanToiDa() == null || gv.getTenGvhd().isEmpty()) {
                     dtGiangVienHDResponseMessage.setStatus(false);
                     dtGiangVienHDResponseMessage.setMessage("Không được để trống");
+                    return;
+                }
+
+                if (map.get(gv.getEmailFpt()) != null) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email Fpt bị trùng");
+                    return;
+                }
+
+                if (map.get(gv.getEmailFe()) != null) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email Fe bị trùng");
+                    return;
+                }
+
+                if (map.get(gv.getTenTaiKhoan()) != null) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Tên tài khoản bị trùng");
                     return;
                 }
 
@@ -279,7 +291,9 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 giangVien.setMonHoc(gv.getMonHoc());
                 giangVien.setCoSoId(coSoId);
                 giangVien.setDotDangKyId(doDangKyId);
-                System.out.println(giangVien.getTenTaiKhoan()+"aaaaaaaaaaaaaaaaaaaaaa");
+                map.put(gv.getTenTaiKhoan(),gv.getTenTaiKhoan());
+                map.put(gv.getEmailFpt(),gv.getTenTaiKhoan());
+                map.put(gv.getEmailFe(),gv.getTenTaiKhoan());
                 listGiangVien.add(giangVien);
             });
             if (dtGiangVienHDResponseMessage.getStatus() == true) {
@@ -295,9 +309,14 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     public void addDataInMap(Map<String, String> mapAll) {
-        List<String> listEmailFPT = dtGiangVienHDRepository.findAllEmailFe();
+        List<String> listEmailFe = dtGiangVienHDRepository.findAllEmailFe();
+        setDataInMap(mapAll, listEmailFe);
+
+        List<String> listEmailFPT = dtGiangVienHDRepository.findAllEmailFpt();
         setDataInMap(mapAll, listEmailFPT);
 
+        List<String> listTenTaiKhoan = dtGiangVienHDRepository.findAllTenTaiKhoan();
+        setDataInMap(mapAll, listTenTaiKhoan);
     }
 
     public void setDataInMap(Map<String, String> mapSimple, List<String> listStr) {
