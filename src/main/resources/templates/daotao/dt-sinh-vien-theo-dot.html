@@ -198,46 +198,83 @@
                                                                             maxlength="10"
                                                                             type="text"
                                                                             class="form-control"
-                                                                            id="ma_sinh_vien">
+                                                                            id="ma_sinh_vien_create">
                                                                     <span class="text-danger"
-                                                                          id="ma_sinh_vien_error"></span><br>
+                                                                          id="ma_sinh_vien_create_error"></span><br>
                                                                     <label class="col-form-label">Họ tên</label>
                                                                     <input
                                                                             maxlength="100"
                                                                             type="text"
                                                                             class="form-control"
-                                                                            id="ten_sinh_vien">
+                                                                            id="ten_sinh_vien_create">
                                                                     <span class="text-danger"
-                                                                          id="ten_sinh_vien_error"></span><br>
+                                                                          id="ten_sinh_vien_create_error"></span><br>
+                                                                    <label class="col-form-label">SĐT</label>
+                                                                    <input
+                                                                            maxlength="100"
+                                                                            type="text"
+                                                                            class="form-control"
+                                                                            id="so_dien_thoai_create">
+                                                                    <span class="text-danger"
+                                                                          id="so_dien_thoai_create_error"></span><br>
                                                                     <label class="col-form-label">Khóa</label>
                                                                     <input
                                                                             maxlength="100"
                                                                             type="text"
                                                                             class="form-control"
-                                                                            id="khoa_hoc">
+                                                                            id="khoa_create">
                                                                     <span class="text-danger"
-                                                                          id="Khoa_hoc_error"></span><br>
+                                                                          id="khoa_create_error"></span><br>
+                                                                    <div>
+                                                                        <label class="col-form-label">Mã nhóm: </label>
+                                                                        <select id="maNhomCreate" class="form-control">
+                                                                            <option value="" hidden>Chọn mã nhóm</option>
+                                                                            <div th:each="nhomDatn : ${listNhomDatn}">
+                                                                                <option th:value="${nhomDatn.id}"
+                                                                                        th:text="${nhomDatn.maNhom}"></option>
+                                                                            </div>
+                                                                        </select><br>
+                                                                        <span class="text-danger"
+                                                                              id="ma_nhom_err_create"></span><br>
+                                                                    </div>
                                                                     <div>
                                                                         <label class="col-form-label">Chuyên
                                                                             ngành: </label>
-                                                                        <select id="chuyenNganh" class="form-control">
-                                                                            <div th:each="chuyenNganh : ${tenChuyenNganh}">
+                                                                        <select id="chuyenNganhCreate" class="form-control">
+                                                                            <option value="" hidden>Chọn chuyên ngành</option>
+                                                                            <div th:each="chuyenNganh : ${listChuyenNganh}">
                                                                                 <option th:value="${chuyenNganh.id}"
                                                                                         th:text="${chuyenNganh.name}"></option>
                                                                             </div>
                                                                         </select><br>
+                                                                        <span class="text-danger"
+                                                                              id="chuyen_nganh_create_error"></span><br>
                                                                     </div>
                                                                     <div>
-                                                                        <label class="col-form-label">Nhóm môn
-                                                                            datn:</label>
-                                                                        <select id="tenNhomMonDatn"
+                                                                        <label class="col-form-label">Đợt đăng ký:</label>
+                                                                        <select id="dotDangKyCreate"
                                                                                 class="form-control">
-                                                                            <option value="">Môn độc lập</option>
-                                                                            <div th:each="tenNhomMon : ${tenNhomMon}">
-                                                                                <option th:value="${tenNhomMon.id}"
-                                                                                        th:text="${tenNhomMon.tenMonDatn}"></option>
+                                                                            <option value="" hidden>Chọn đợt đăng ký</option>
+                                                                            <div th:each="dotDangKy : ${listDotDangKy}">
+                                                                                <option th:value="${dotDangKy.id}"
+                                                                                        th:text="${dotDangKy.name}"></option>
                                                                             </div>
                                                                         </select><br>
+                                                                        <span class="text-danger"
+                                                                              id="dot_dang_ky_create_error"></span><br>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label class="col-form-label">Môn chương trình:</label>
+                                                                        <select id="monChuongTrinhCreate"
+                                                                                class="form-control">
+                                                                            <option value="" hidden>Chọn môn chương trình</option>
+                                                                            <div th:each="monChuongTrinh : ${listMonChuongTrinh}">
+                                                                                <option th:value="${monChuongTrinh.id}"
+                                                                                        th:text="${monChuongTrinh.name}"></option>
+                                                                            </div>
+                                                                        </select><br>
+                                                                        <span class="text-danger"
+                                                                              id="mon_chuong_trinh_create_error"></span><br>
                                                                     </div>
                                                                 </div>
                                                             </div>

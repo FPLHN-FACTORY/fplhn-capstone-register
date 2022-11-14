@@ -464,3 +464,6 @@ function loaiSinhVienDetail(id, page) {
         }
     });
 }
+function openModalAddGVHD() {
+    $("#modal_create").modal("show")
+}

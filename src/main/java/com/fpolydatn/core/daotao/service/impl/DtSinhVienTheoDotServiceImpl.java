@@ -15,7 +15,6 @@ import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
-import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
@@ -465,4 +464,21 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         sinhVien.setKhoa(command.getKhoa());
         return sinhVienRepository.save(sinhVien);
     }
+
+    @Override
+    public DtLoaiSinhVienResponse addSinhVienTheoDot(DtCreateSinhVienTheoDotRequest dtCreateSinhVienTheoDotRequest) {
+        return new DtLoaiSinhVienResponse();
+    }
+
+    @Override
+    public List<SimpleEntityProj> getMaMonChuongTrinh(String coSoId) {
+        return monDatnRepository.getAllMaMon(coSoId);
+    }
+
+    @Override
+    public List<NhomDatn> getListNhomMon(String coSoId) {
+        return nhomDatnTheoDotRepository.findAllByDotDangKyId(commonHelper.getDotDangKyHienTai(), coSoId);
+    }
+
+
 }
