@@ -328,7 +328,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         return dtGiangVienHDResponseMessage;
     }
 
-    public void addDataInMap(Map<String, String> mapAll, String coSoId) {
+    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId) {
         List<String> listEmailFe = dtGiangVienHDRepository.findAllEmailFe(coSoId);
         setDataInMap(mapAll, listEmailFe);
 
@@ -339,7 +339,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         setDataInMap(mapAll, listTenTaiKhoan);
     }
 
-    public void setDataInMap(Map<String, String> mapSimple, List<String> listStr) {
+    public void setDataInMap(ConcurrentHashMap<String, String> mapSimple, List<String> listStr) {
         for (String s : listStr) {
             mapSimple.put(s, s);
         }
