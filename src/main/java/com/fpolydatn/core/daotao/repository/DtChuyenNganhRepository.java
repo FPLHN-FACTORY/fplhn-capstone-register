@@ -36,7 +36,10 @@ public interface DtChuyenNganhRepository extends ChuyenNganhRepository {
             """, nativeQuery = true)
     Page<DtChuyenNganhResponse> findByName(@Param("req") DtFindChuyenNganhRequest req, Pageable page);
 
-    ChuyenNganh findByTenChuyenNganh(String tenChuyenNganh);
+    @Query(value = """
+                SELECT * FROM chuyen_nganh WHERE ten_chuyen_nganh = :tenChuyenNganh AND co_so_id = :coSoId
+            """, nativeQuery = true)
+    ChuyenNganh findByTenChuyenNganh(@Param("tenChuyenNganh") String tenChuyenNganh, @Param("coSoId") String coSoId);
 
     @Query(value = """
                 SELECT cn.id FROM chuyen_nganh cn LEFT JOIN mon_datn m ON cn.id = m.chuyen_nganh_id

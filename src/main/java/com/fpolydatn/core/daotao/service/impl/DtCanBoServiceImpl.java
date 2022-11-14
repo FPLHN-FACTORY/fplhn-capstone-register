@@ -62,15 +62,15 @@ public class DtCanBoServiceImpl implements DtCanBoService {
 
     @Override
     public boolean create(@Valid final DtCreateCanBoRequest canBoRequest) {
-        String idByEmailFpt = dtCanBoRepository.getIdByEmailFpt(canBoRequest.getEmailFpt().trim());
+        String idByEmailFpt = dtCanBoRepository.getIdByEmailFpt(canBoRequest.getEmailFpt().trim(), canBoRequest.getCoSoId());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
-        String idByEmailFe = dtCanBoRepository.getIdByEmailFe(canBoRequest.getEmailFe().trim());
+        String idByEmailFe = dtCanBoRepository.getIdByEmailFe(canBoRequest.getEmailFe().trim(), canBoRequest.getCoSoId());
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenTaiKhoan = dtCanBoRepository.getIdByTenTaiKhoan(canBoRequest.getTenTaiKhoan());
+        String idByTenTaiKhoan = dtCanBoRepository.getIdByTenTaiKhoan(canBoRequest.getTenTaiKhoan(), canBoRequest.getCoSoId());
         if (idByTenTaiKhoan != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_CAN_BO_EXIST);
         }
@@ -80,12 +80,12 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     }
 
     @Override
-    public Boolean delete(String id) {
+    public Boolean delete(String id, String coSoId) {
         Optional<CanBo> canBoCheck = dtCanBoRepository.findById(id);
         if (Objects.isNull(canBoCheck)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
-        String check = dtCanBoRepository.getIdChuyenNganhByIdChuNhiem(id);
+        String check = dtCanBoRepository.getIdChuyenNganhByIdChuNhiem(id, coSoId);
         if(check != null){
             throw new RestApiException(Message.CHU_NHIEM_NAY_DANG_CHU_NHIEM_1_CHUYEN_NGANH);
         }
@@ -112,15 +112,15 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
-        String idByEmailFpt = dtCanBoRepository.getIdUpdateByEmailFpt(canBoRequest.getEmailFpt().trim(), canBo.get().getId());
+        String idByEmailFpt = dtCanBoRepository.getIdUpdateByEmailFpt(canBoRequest.getEmailFpt().trim(), canBo.get().getId(), canBoRequest.getCoSoId());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
-        String idByEmailFe = dtCanBoRepository.getIdUpdateByEmailFe(canBoRequest.getEmailFe().trim(), canBo.get().getId());
+        String idByEmailFe = dtCanBoRepository.getIdUpdateByEmailFe(canBoRequest.getEmailFe().trim(), canBo.get().getId(), canBoRequest.getCoSoId());
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenTaiKhoan = dtCanBoRepository.getIdUpdateByTenTaiKhoan(canBoRequest.getTenTaiKhoan(), canBo.get().getId());
+        String idByTenTaiKhoan = dtCanBoRepository.getIdUpdateByTenTaiKhoan(canBoRequest.getTenTaiKhoan(), canBo.get().getId(), canBoRequest.getCoSoId());
         if (idByTenTaiKhoan != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_CAN_BO_EXIST);
         }
@@ -147,7 +147,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
                 dtCanBoResponseMessage.setMessage("Import không đúng định dạng của file excel mẫu");
             }
             Map<String, String> map = new HashMap<>();
-            addDataInMap(map);
+            addDataInMap(map, coSoId);
 
             listCB.parallelStream().forEach(canbo -> {
 
@@ -255,14 +255,14 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         dtCanBoExportExcel.exportData(response);
     }
 
-    public void addDataInMap(Map<String, String> mapAll) {
-        List<String> listEmailFE = dtCanBoRepository.findAllEmailFe();
+    public void addDataInMap(Map<String, String> mapAll, String coSoId) {
+        List<String> listEmailFE = dtCanBoRepository.findAllEmailFe(coSoId);
         setDataInMap(mapAll, listEmailFE);
 
-        List<String> listEmailFpt = dtCanBoRepository.findAllByEmailFPT();
+        List<String> listEmailFpt = dtCanBoRepository.findAllByEmailFPT(coSoId);
         setDataInMap(mapAll, listEmailFpt);
 
-        List<String> listTenTaiKhoan = dtCanBoRepository.finAllTenTaiKhoan();
+        List<String> listTenTaiKhoan = dtCanBoRepository.finAllTenTaiKhoan(coSoId);
         setDataInMap(mapAll, listTenTaiKhoan);
     }
 

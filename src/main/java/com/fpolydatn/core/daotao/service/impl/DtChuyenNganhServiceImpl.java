@@ -66,7 +66,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     @Override
     public ChuyenNganh add(@Valid DtCreateChuyenNganhRequest req) {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
-        ChuyenNganh chuyenNganhCheck = dtChuyenNganhRepository.findByTenChuyenNganh(chuyenNganh.getTenChuyenNganh());
+        ChuyenNganh chuyenNganhCheck = dtChuyenNganhRepository.findByTenChuyenNganh(chuyenNganh.getTenChuyenNganh(), req.getCoSoId());
         Optional<CanBo> chuNhiemBoMonCheck = dtCanBoRepository.findById(req.getChuNhiemBoMon());
         if (!Objects.isNull(chuyenNganhCheck)) {
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
