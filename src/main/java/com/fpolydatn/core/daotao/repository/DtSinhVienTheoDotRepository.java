@@ -170,4 +170,17 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             and s.id <> :idNhomTruong LIMIT 1
             """, nativeQuery = true)
     SinhVien motSVTrongNhom(@Param("idNhomTruong") String idNhomTruong,@Param("nhomId") String nhomId);
+
+    @Query(value = """
+                SELECT id 
+                FROM sinh_vien
+                WHERE ma_sinh_vien = :maSinhVien 
+                AND id <> :id 
+                AND co_so_id = :coSoId 
+                AND dot_dang_ky_id = :dotDangKyId 
+            """, nativeQuery = true)
+    String findBySinhVienUpdate(@Param("maSinhVien") String maSinhVien,
+                                @Param("id") String id, @Param("coSoId") String coSoId,
+                                @Param("dotDangKyId") String dotDangKyId);
+
 }

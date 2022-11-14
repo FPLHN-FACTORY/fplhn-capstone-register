@@ -5,6 +5,7 @@ import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotExport;
 import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotImport;
 import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
+import com.fpolydatn.core.daotao.model.request.DtUpdateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
@@ -22,6 +23,7 @@ import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.FormUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -72,6 +74,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Autowired
     private CommonHelper commonHelper;
 
+    private FormUtils formUtils = new FormUtils();
 
     private HashMap<String, String> map;
 
@@ -439,11 +442,27 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Override
     public Boolean delete(String id, String coSoId, String dotDangKyId) {
         Optional<SinhVien> checkSV = sinhVienRepository.findById(id);
-//        List<SinhVien> checkIdSV= sinhVienRepository.findAllSinhVienByDotDangKyId(coSoId, dotDangKyId);
         if (Objects.isNull(checkSV)) {
             throw new RestApiException(Message.SINH_VIEN_NOT_EXISTS);
         }
         sinhVienRepository.delete(checkSV.get());
         return true;
+    }
+
+    @Override
+    public SinhVien update(DtUpdateSinhVienTheoDotRequest command) {
+        Optional<SinhVien> checkSinhVien = sinhVienRepository.findById(command.getId());
+        SinhVien sinhVienTr = formUtils.convertToObject(SinhVien.class, command);
+        String sinhVienInDb = sinhVienRepository.findBySinhVienUpdate(sinhVienTr.getMaSinhVien(),
+                        sinhVienTr.getId(), sinhVienTr.getCoSoId(), sinhVienTr.getDotDangKyId());
+        System.out.println(sinhVienInDb);
+        if (!Objects.isNull(sinhVienInDb) && sinhVienInDb.equals(command.getMaSinhVien())) {
+            throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
+        }
+        SinhVien sinhVien = checkSinhVien.get();
+        sinhVien.setMaSinhVien(command.getMaSinhVien());
+        sinhVien.setTenSinhVien(command.getTenSinhVien());
+        sinhVien.setKhoa(command.getKhoa());
+        return sinhVienRepository.save(sinhVien);
     }
 }

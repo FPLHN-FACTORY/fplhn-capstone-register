@@ -409,15 +409,16 @@
                                                                 type="button"
                                                                 class="btn_pencil_square"
                                                                 data-toggle="tooltip"
-                                                                title="Cập nhật thông tin sinh viên">
+                                                                title="Cập nhật thông tin sinh viên"
+                                                                th:attr="onclick=|openModalUpdateSinhVien('${sinhVien.getId()}')|">
                                                             <img th:src="@{/img/pencil-square.svg}">
                                                         </button>
                                                         <button
                                                                 type="button"
                                                                 class="btn_trash"
                                                                 data-toggle="tooltip"
-                                                                th:attr="onclick=|openModalRemoveSinhVien('${sinhVien.getId()}')|"
-                                                                title="Xóa sinh viên">
+                                                                title="Xóa sinh viên"
+                                                                th:attr="onclick=|openModalRemoveSinhVien('${sinhVien.getId()}')|"                              >
                                                             <img th:src="@{/img/trash.svg}">
                                                         </button>
                                                         <button class="btn_pencil_square"
@@ -509,8 +510,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="form_loai_sinh_vien"
-                      enctype="multipart/form-data"
-                >
+                      enctype="multipart/form-data">
                     <div class="modal-header">
                         <h5 class="modal-title">
                             Loại sinh viên không đạt

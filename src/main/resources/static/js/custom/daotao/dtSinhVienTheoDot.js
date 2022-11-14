@@ -99,7 +99,7 @@ function openModalUpdateSinhVien(idSinhVien) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/api/dao-tao/sinh-vien/" + idSinhVien,
+        url: "/api/dao-tao/sinh-vien/search/" + idSinhVien,
         data: JSON.stringify(idSinhVien),
         dataType: 'json',
         success: function (responseData) {
@@ -113,6 +113,60 @@ function openModalUpdateSinhVien(idSinhVien) {
         }
     });
 }
+
+function update() {
+    let maSinhVien = $("#ma_sinh_vien_update").val().trim();
+    let tenSinhVien = $("#ten_sinh_vien_update").val().trim();
+    let khoaHoc = $("#khoa_hoc_update").val().trim();
+    let idSinhVien = $("#id_sinh_vien_update").val();
+    let sinhVienRequest = {};
+    sinhVienRequest["maSinhVien"] = maSinhVien;
+    sinhVienRequest["tenSinhVien"] = tenSinhVien;
+    sinhVienRequest["khoa"] = khoaHoc;
+    let index = 0;
+    if (maSinhVien.trim().length === 0) {
+        $("#ma_sinh_vien_update_error").text("Mã sinh viên không được để trống");
+        index++;
+    } else {
+        $("#ma_sinh_vien_update_error").text("");
+    }
+    if (tenSinhVien.trim().length === 0) {
+        $("#ten_sinh_vien_update_error").text("Tên sinh viên không được để trống");
+        index++;
+    } else {
+        $("#ten_sinh_vien_update_error").text("");
+    }
+    if (khoaHoc.trim().length === 0) {
+        $("#khoa_hoc_update_error").text("Khóa học không được để trống");
+        index++;
+    } else {
+        $("#khoa_hoc_update_error").text("");
+    }
+    if (index == 0) {
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: "/api/dao-tao/sinh-vien/" + idSinhVien,
+            data: JSON.stringify(sinhVienRequest),
+            dataType: 'json',
+            success: function () {
+                $("#modal_update_sinh_vien").modal("hide");
+                bootbox.alert({
+                    message: 'Update thành công',
+                    backdrop: true,
+                    callback: function () {
+                        window.open("/dao-tao/sinh-vien", '_self');
+                    }
+                });
+            },
+            error: function (e) {
+                if (e.responseJSON.message != null) {
+                    $("#ma_sinh_vien_update_error").text("Sinh viên đã tồn tại");
+                }
+            }
+        });
+    }
+};
 
 function openModalRemoveSinhVien(idSinhVien) {
     bootbox.confirm({
