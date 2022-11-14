@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author hungpv
@@ -45,11 +47,11 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     private FormUtils formUtils = new FormUtils();
 
-    private HashMap<String, MonDatn> monDatnHashMap;
+    private ConcurrentHashMap<String, MonDatn> monDatnHashMap;
 
-    private HashMap<String, ChuyenNganh> chuyenNganhHashMap;
+    private ConcurrentHashMap<String, ChuyenNganh> chuyenNganhHashMap;
 
-    private HashMap<String, MonDatn> nhomMonDatnHashMap;
+    private ConcurrentHashMap<String, MonDatn> nhomMonDatnHashMap;
 
     private DTMonDatnImport monDatnImport;
 
@@ -127,14 +129,14 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     @Override
     public DtMessMonDatnReponse importExcel(MultipartFile file, String coSoId) {
-        monDatnHashMap = new HashMap<>();
-        chuyenNganhHashMap = new HashMap<>();
-        nhomMonDatnHashMap = new HashMap<>();
+        monDatnHashMap = new ConcurrentHashMap<>();
+        chuyenNganhHashMap = new ConcurrentHashMap<>();
+        nhomMonDatnHashMap = new ConcurrentHashMap<>();
         monDatnImport = new DTMonDatnImport();
         boNhoDem(coSoId);
         DtMessMonDatnReponse mess = new DtMessMonDatnReponse();
-        List<MonDatn> list = new ArrayList<>();
-        List<ChuyenNganh> chuyenNganhs = new ArrayList<>();
+        ConcurrentMap<String, MonDatn> list = new ConcurrentHashMap<>();
+        ConcurrentMap<String, ChuyenNganh> chuyenNganhs = new ConcurrentHashMap<>();
         if (!checkTypeFile(file)) {
             return new DtMessMonDatnReponse(false, "File không đúng định dạng XLSX");
         }
@@ -163,7 +165,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     return;
                 }
                 if (createMonDant.getTenMonDatn().trim().length() == 0) {
-                    System.out.println(createMonDant.getMaMon());
                     mess.setStatus(false);
                     mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
                     return;
@@ -206,7 +207,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     chuyenNganh.setTenChuyenNganh(createMonDant.getChuyenNganhId());
                     chuyenNganh.setCoSoId(coSoId);
                     chuyenNganhHashMap.put(createMonDant.getChuyenNganhId(), chuyenNganh);
-                    chuyenNganhs.add(chuyenNganh);
+                    chuyenNganhs.put(chuyenNganh.getTenChuyenNganh(), chuyenNganh);
                 }
 
                 MonDatn monDatn = new MonDatn();
@@ -221,22 +222,22 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     monDatn.setNhomMonDatnId(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getId());
                 }
                 monDatnHashMap.put(monDatn.getMaMon(), monDatn);
-                list.add(monDatn);
+                list.put(monDatn.getMaMon(), monDatn);
             });
             if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
 
-                List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.saveAll(chuyenNganhs);
+                List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.saveAll(chuyenNganhs.values());
                 chuyenNganhList.parallelStream().forEach(el -> {
                     chuyenNganhHashMap.put(el.getTenChuyenNganh(), el);
                 });
 
-                for (int i = 0; i < list.size(); i++) {
-                    MonDatn monDatn = list.get(i);
+                list.forEach( (k, v) -> {
+                    MonDatn monDatn = v;
                     monDatn.setChuyenNganhId(chuyenNganhHashMap.get(monDatn.getChuyenNganhId()).getId());
-                    list.set(i, monDatn);
-                }
+                    list.put(k, monDatn);
+                });
 
-                List<MonDatn> datnList = monDatnRepository.saveAll(list);
+                List<MonDatn> datnList = monDatnRepository.saveAll(list.values());
                 datnList.parallelStream().forEach(el -> {
                     if (el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
                         el.setNhomMonDatnId(el.getId());

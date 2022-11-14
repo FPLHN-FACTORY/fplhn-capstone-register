@@ -42,6 +42,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 
 /**
@@ -235,12 +237,12 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId, String doDangKyId) {
         DtGiangVienHDResponseMessage dtGiangVienHDResponseMessage = new DtGiangVienHDResponseMessage();
-        List<DtGiagVienHDImportResquest> listGiangVien = new ArrayList<>();
+        ConcurrentMap<String, DtGiagVienHDImportResquest> listGiangVien = new ConcurrentHashMap<>();
         try {
             dtGiangVienHDResponseMessage.setStatus(true);
             DtGiangVienFileImportExcel dtGiangVienHDImport = new DtGiangVienFileImportExcel();
             List<DtGiagVienHDImportResquest> listGVHD = dtGiangVienHDImport.importData(file);
-            Map<String, String> map = new HashMap<>();
+            ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
             addDataInMap(map, coSoId);
 
             listGVHD.parallelStream().forEach(gv -> {
@@ -312,10 +314,10 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 map.put(gv.getTenTaiKhoan(),gv.getTenTaiKhoan());
                 map.put(gv.getEmailFpt(),gv.getTenTaiKhoan());
                 map.put(gv.getEmailFe(),gv.getTenTaiKhoan());
-                listGiangVien.add(giangVien);
+                listGiangVien.put(giangVien.getEmailFpt(), giangVien);
             });
             if (dtGiangVienHDResponseMessage.getStatus() == true) {
-                checkValidFile(listGiangVien, coSoId);
+                checkValidFile(listGiangVien.values().stream().toList(), coSoId);
             }
         } catch (Exception e) {
             e.printStackTrace();
