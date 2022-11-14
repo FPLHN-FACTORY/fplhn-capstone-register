@@ -27,19 +27,19 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             "FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id " +
             "LEFT JOIN giang_vien_huong_dan c ON c.id = a.giang_vien_id " +
             "JOIN mon_datn f ON f.id = b.mon_datn_id " +
-            "LEFT JOIN dot_dang_ky d ON d.id = a.dot_dang_ky_id WHERE a.id = :nhomDatnId", nativeQuery = true)
-    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
+            "LEFT JOIN dot_dang_ky d ON d.id = a.dot_dang_ky_id WHERE a.id = :nhomDatnId AND a.co_so_id = :coSoId", nativeQuery = true)
+    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(@Param("nhomDatnId") String nhomDatnId, @Param("coSoId") String coSoId);
 
     @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, dot_dang_ky_id, giang_vien_id, ma_nhom, " +
             "mat_khau, mo_ta, nhan_xet, ten_de_tai, ten_nhom, trang_thai, truong_nhom_id FROM nhom_datn " +
-            "WHERE truong_nhom_id = :id", nativeQuery = true)
-    NhomDatn getNhomDatnByTruongNhomId(@Param("id") String id);
+            "WHERE truong_nhom_id = :id AND co_so_id = :coSoId", nativeQuery = true)
+    NhomDatn getNhomDatnByTruongNhomId(@Param("id") String id, @Param("coSoId") String coSoId);
 
     @Query(value = "SELECT truong_nhom_id FROM nhom_datn WHERE id = :nhomDatnId and co_so_id = :coSoId", nativeQuery = true)
     String getIdTruongNhom(@Param("nhomDatnId") String nhomDatnId, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT CONVERT(trang_thai , UNSIGNED) FROM nhom_datn WHERE id = :id", nativeQuery = true)
-    int getTrangThai(@Param("id") String id);
+    @Query(value = "SELECT CONVERT(trang_thai , UNSIGNED) FROM nhom_datn WHERE id = :id AND co_so_id = :coSoId", nativeQuery = true)
+    int getTrangThai(@Param("id") String id, @Param("coSoId") String coSoId);
 
     @Query(value = """
             SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ma_nhom, b.ten_nhom
@@ -96,8 +96,8 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
     @Query(value = "SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt," +
             " a.ma_sinh_vien, a.ten_sinh_vien, IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu" +
             " FROM sinh_vien a LEFT JOIN nhom_datn b ON a.nhom_id = b.id\n" +
-            " WHERE a.nhom_id = :id", nativeQuery = true)
-    List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(@Param("id") String id);
+            " WHERE a.nhom_id = :id AND a.co_so_id = :coSoId", nativeQuery = true)
+    List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(@Param("id") String id, @Param("coSoId") String coSoId);
 
     @Query(value = "SELECT mat_khau FROM nhom_datn WHERE id = :id", nativeQuery = true)
     String getMatKhauById(@Param("id") String id);
