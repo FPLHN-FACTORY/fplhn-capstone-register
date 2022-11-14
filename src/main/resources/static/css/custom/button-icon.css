@@ -108,3 +108,15 @@
     line-height: 30px;
     float: left;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-page{
+    width: 40px;
+    appearance: none;
+    text-align: center;
+    border: none;
+}
