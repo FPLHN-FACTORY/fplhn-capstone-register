@@ -29,7 +29,7 @@ public interface DtPhanCongHuongDanService {
 
     PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatn(String id, final DtFindPhanMonGiangVienHuongDanRequest req);
 
-    DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId, String doDangKyId);
+    DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId);
 
     List<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatnList(String coSoId, String maMonId);
 

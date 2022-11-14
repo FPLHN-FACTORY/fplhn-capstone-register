@@ -84,8 +84,8 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
-    public DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId, String doDangKyId) {
-        return phanCongHuongDanRepository.getGiangVienHD(id, coSoId, doDangKyId);
+    public DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId) {
+        return phanCongHuongDanRepository.getGiangVienHD(id, coSoId);
     }
 
     @Override

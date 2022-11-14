@@ -101,9 +101,8 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
                 JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
                 JOIN co_so cs ON gvhd.co_so_id = cs.id 
                 WHERE gvhd.id = :maGiangVienHuongDan 
-                AND gvhd.co_so_id = :coSoId 
-                AND gvhd.dot_dang_ky_id = :doDangKyId""", nativeQuery = true)
-    DtGiangVienHDResponse getGiangVienHD(@Param("maGiangVienHuongDan") String maGiangVienHuongDan, @Param("coSoId") String coSoId, @Param("doDangKyId") String doDangKyId);
+                AND gvhd.co_so_id = :coSoId """, nativeQuery = true)
+    DtGiangVienHDResponse getGiangVienHD(@Param("maGiangVienHuongDan") String maGiangVienHuongDan, @Param("coSoId") String coSoId);
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn, m.ma_mon FROM do_an_tot_nghiep.mon_datn m
