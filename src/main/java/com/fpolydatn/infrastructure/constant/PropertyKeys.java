@@ -86,5 +86,6 @@ public class PropertyKeys {
     public static final String GIANG_VIEN_DANG_DUOC_PHAN_CONG = "giang.vien.huong.dang.duoc.phan.cong";
     public static final String CHU_NHIEM_NOT_EXISTS = "chu.nhiem.not.exists";
     public static final String CHU_NHIEM_NAY_DANG_CHU_NHIEM_1_CHUYEN_NGANH = "chu.nhiem.nay.dang.chu.nhiem.mot.chuyen.nganh";
+    public static final String SINH_VIEN_NOT_EXISTS = "sinh.vien.not.exists";
 
 }

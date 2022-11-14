@@ -10,6 +10,7 @@ import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,6 +79,13 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     @PutMapping("/loai-sv/{id}")
     public ResponseObject loaiSinhVien(@PathVariable("id") String id) {
         return new ResponseObject(sinhVienService.loaiSinhVien(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseObject delete(@PathVariable("id") String id) {
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        return new ResponseObject(sinhVienService.delete(id, coSoId, dotDangKyId));
     }
 
 }

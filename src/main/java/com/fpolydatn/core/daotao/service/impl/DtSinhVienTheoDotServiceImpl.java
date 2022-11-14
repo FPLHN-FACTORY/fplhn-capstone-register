@@ -14,9 +14,12 @@ import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
+import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.apache.poi.ss.usermodel.Cell;
@@ -42,6 +45,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -430,5 +434,16 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         SinhVien svKhongDuDK = sinhVienRepository.save(sinhVien);
 
         return svKhongDuDK;
+    }
+
+    @Override
+    public Boolean delete(String id, String coSoId, String dotDangKyId) {
+        Optional<SinhVien> checkSV = sinhVienRepository.findById(id);
+//        List<SinhVien> checkIdSV= sinhVienRepository.findAllSinhVienByDotDangKyId(coSoId, dotDangKyId);
+        if (Objects.isNull(checkSV)) {
+            throw new RestApiException(Message.SINH_VIEN_NOT_EXISTS);
+        }
+        sinhVienRepository.delete(checkSV.get());
+        return true;
     }
 }

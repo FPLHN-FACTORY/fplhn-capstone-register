@@ -91,6 +91,68 @@ function viewTable(page) {
     });
 }
 
+function openModalUpdateSinhVien(idSinhVien) {
+    $("#ma_sinh_vien_update_error").text("");
+    $("#ten_sinh_vien_update_error").text("");
+    $("#khoa_hoc_update_error").text("");
+    $("#modal_update_sinh_vien").modal('show');
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/api/dao-tao/sinh-vien/" + idSinhVien,
+        data: JSON.stringify(idSinhVien),
+        dataType: 'json',
+        success: function (responseData) {
+            $("#id_sinh_vien_update").val(responseData.data.id);
+            $("#ma_sinh_vien_update").val(responseData.data.maSinhVien);
+            $("#ten_sinh_vien_update").val(responseData.data.tenSinhVien);
+            $("#khoa_hoc_update").val(responseData.data.khoa);
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
+function openModalRemoveSinhVien(idSinhVien) {
+    bootbox.confirm({
+        title: "Xóa",
+        message: "Bạn chắc chắn xóa không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: "/api/dao-tao/sinh-vien/" + idSinhVien,
+                    data: JSON.stringify(idSinhVien),
+                    dataType: 'json',
+                    success: function () {
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                window.open("/dao-tao/sinh-vien", '_self');
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        console.log("ERROR : ", e);
+                    }
+                });
+            }
+        }
+    });
+}
+
 function openModalExportExcel() {
     $("#type_excel_error").text('');
     $("#modal_excel").modal('show');
@@ -120,7 +182,7 @@ function exportExcel() {
     }
 }
 
-function showExportMau(){
+function showExportMau() {
     $("#mau_excel_error").text('');
     $("#modal_excel_mau").modal('show');
 }

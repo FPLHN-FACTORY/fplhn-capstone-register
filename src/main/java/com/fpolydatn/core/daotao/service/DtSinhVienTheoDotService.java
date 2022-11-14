@@ -31,4 +31,6 @@ public interface DtSinhVienTheoDotService {
     DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId);
 
     SinhVien loaiSinhVien(String id);
+
+    Boolean delete(final String id, String coSoId, String dotDangKyId);
 }

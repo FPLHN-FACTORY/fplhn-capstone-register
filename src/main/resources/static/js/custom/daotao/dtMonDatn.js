@@ -134,7 +134,6 @@ function update() {
 };
 
 function openModalRemoveMonDatn(monDatnId) {
-    $("#remove_mon_datn").text("");
     bootbox.confirm({
         title: "Xóa",
         message: "Bạn chắc chắn xóa không?",
