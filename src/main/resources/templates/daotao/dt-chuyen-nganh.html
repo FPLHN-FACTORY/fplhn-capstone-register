@@ -211,7 +211,7 @@
                             <input id="chuNhiemBoMon"
                                    th:value="${listCanBo.size()}" hidden/>
                             <select id="tenCNBMhUpdate" class="form-control">
-                                <option id="CNBMHienTai"></option>
+                                <option value="none">Chưa có</option>
                                 <option th:each="canBo : ${listCanBo}"
                                         th:value="${canBo.id}"
                                         th:text="${canBo.name}"></option>

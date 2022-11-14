@@ -88,13 +88,7 @@ function openModalUpdateChuyenNganh(chuyenNganhId, tenCNBM) {
         success: function (responseData) {
             $("#id_chuyen_nganh_update").val(responseData.data.id);
             $("#tenChuyenNganhUpdate").val(responseData.data.tenChuyenNganh);
-            if (responseData.data.chuNhiemBoMon == null) {
-                $("#CNBMHienTai").val('none');
-                $("#CNBMHienTai").text('Chưa có');
-            } else {
-                $("#CNBMHienTai").val(responseData.data.chuNhiemBoMon);
-                $("#CNBMHienTai").text(tenCNBM);
-            }
+            $("#tenCNBMhUpdate").val(responseData.data.chuNhiemBoMon == null ? 'none' : responseData.data.chuNhiemBoMon);
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -104,8 +98,8 @@ function openModalUpdateChuyenNganh(chuyenNganhId, tenCNBM) {
 
 function update() {
     let tenChuyenNganh = $("#tenChuyenNganhUpdate").val();
-    let chuyenNganhId = $("#id_chuyen_nganh_update").val() == 'none' ? null : $("#id_chuyen_nganh_update").val();
-    let tenCNBM = $("#tenCNBMhUpdate").val();
+    let chuyenNganhId = $("#id_chuyen_nganh_update").val();
+    let tenCNBM = $("#tenCNBMhUpdate").val() == 'none' ? null : $("#tenCNBMhUpdate").val();
     let chuyenNganhrequest = {};
     chuyenNganhrequest["tenChuyenNganh"] = tenChuyenNganh;
     chuyenNganhrequest["chuNhiemBoMon"] = tenCNBM;
@@ -133,6 +127,7 @@ function update() {
                 });
             },
             error: function (e) {
+                console.log(e)
                 if (e.responseJSON.message == 'Chuyen nganh da ton tai') {
                     $("#chuyennganh_Update_error").text("Chuyên ngành đã tồn tại trong đợt");
                 }
