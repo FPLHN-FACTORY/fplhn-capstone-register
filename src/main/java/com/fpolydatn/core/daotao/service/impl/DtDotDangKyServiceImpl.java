@@ -152,13 +152,9 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         } catch (ParseException e) {
             throw new RestApiException(Message.INVALID_DATE);
         }
-        ngayBatDau.setSeconds(0);
-        ngayKetThuc.setSeconds(0);
-        hanSinhVien.setSeconds(0);
-        hanGiangVien.setSeconds(0);
-        hanChuNhiemBoMon.setSeconds(0);
         Long ngayBatDauLong = ngayBatDau.getTime();
         Long ngayKetThucLong = ngayKetThuc.getTime();
+        System.out.println("aaaaaaaaaaaaaa " + ngayKetThucLong);
         Long hanSinhVienLong = hanSinhVien.getTime();
         Long hanGiangVienLong = hanGiangVien.getTime();
         Long hanChuNhiemBoMonLong = hanChuNhiemBoMon.getTime();
