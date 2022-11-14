@@ -134,6 +134,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         boNhoDem(coSoId);
         DtMessMonDatnReponse mess = new DtMessMonDatnReponse();
         List<MonDatn> list = new ArrayList<>();
+        List<ChuyenNganh> chuyenNganhs = new ArrayList<>();
         if (!checkTypeFile(file)) {
             return new DtMessMonDatnReponse(false, "file không đúng định dạng XLSX");
         }
@@ -177,11 +178,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được để trống"));
                     return;
                 }
-                if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
-                    mess.setStatus(false);
-                    mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Không tìm thấy tên chuyên ngành"));
-                    return;
-                }
                 if (createMonDant.getChuyenNganhId().trim().length() > 36) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được quá 36 ký tự"));
@@ -204,11 +200,21 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                         return;
                     }
                 }
+
+                if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
+                    ChuyenNganh chuyenNganh = new ChuyenNganh();
+                    chuyenNganh.setTenChuyenNganh(createMonDant.getChuyenNganhId());
+                    chuyenNganh.setCoSoId(coSoId);
+                    chuyenNganhHashMap.put(createMonDant.getChuyenNganhId(), chuyenNganh);
+                    chuyenNganhs.add(chuyenNganh);
+                }
+
                 MonDatn monDatn = new MonDatn();
                 monDatn.setMaMon(createMonDant.getMaMon());
                 monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
                 monDatn.setCoSoId(coSoId);
-                monDatn.setChuyenNganhId(chuyenNganhHashMap.get(createMonDant.getChuyenNganhId()).getId());
+                monDatn.setChuyenNganhId(createMonDant.getChuyenNganhId());
+
                 if (createMonDant.getNhomMonDatnId().trim().length() == 0) {
                     monDatn.setNhomMonDatnId(createMonDant.getMaMon());
                 } else {
@@ -218,7 +224,18 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 list.add(monDatn);
             });
             if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
-                mess.setStatus(true);
+
+                List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.saveAll(chuyenNganhs);
+                chuyenNganhList.parallelStream().forEach(el -> {
+                    chuyenNganhHashMap.put(el.getTenChuyenNganh(), el);
+                });
+
+                for (int i = 0; i < list.size(); i++) {
+                    MonDatn monDatn = list.get(i);
+                    monDatn.setChuyenNganhId(chuyenNganhHashMap.get(monDatn.getChuyenNganhId()).getId());
+                    list.set(i, monDatn);
+                }
+
                 List<MonDatn> datnList = monDatnRepository.saveAll(list);
                 datnList.parallelStream().forEach(el -> {
                     if (el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
@@ -226,6 +243,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                         monDatnRepository.save(el);
                     }
                 });
+                mess.setStatus(true);
             }
 
         } catch (Exception e) {
