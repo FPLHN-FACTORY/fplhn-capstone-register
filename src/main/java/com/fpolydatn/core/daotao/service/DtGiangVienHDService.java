@@ -33,7 +33,7 @@ public interface DtGiangVienHDService {
 
     PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest req);
 
-    Object checkValidFile(List<DtGiagVienHDImportResquest> list);
+    Object checkValidFile(List<DtGiagVienHDImportResquest> list, String coSoId);
 
     void DtGiangVienHDExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
 

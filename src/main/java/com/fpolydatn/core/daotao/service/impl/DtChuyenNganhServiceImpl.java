@@ -78,17 +78,20 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     }
 
     @Override
-    public Boolean delete(String id, String coSoId, String dotDangKyId) {
+    public Boolean delete(String id, String coSoId) {
         Optional<ChuyenNganh> chuyenNganhCheck = dtChuyenNganhRepository.findById(id);
-        List<ChuyenNganh> listChuyenNganh = dtChuyenNganhRepository.findChuyenNganhById(id, coSoId, dotDangKyId);
+        Integer countInSinhVien = dtChuyenNganhRepository.countChuyenNganhInSinhVien(id, coSoId);
+        Integer countInMonDatn = dtChuyenNganhRepository.countChuyeNganhInMonDatn(id, coSoId);
         if (!chuyenNganhCheck.isPresent()) {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
-        if (listChuyenNganh.size() != 0) {
+        if (countInSinhVien != 0) {
+            throw new RestApiException(Message.CHUYEN_NGANH_KHONG_DUOC_XOA);
+        }
+        if (countInMonDatn != 0) {
             throw new RestApiException(Message.CHUYEN_NGANH_KHONG_DUOC_XOA);
         }
         dtChuyenNganhRepository.delete(chuyenNganhCheck.get());
-
         return true;
     }
 

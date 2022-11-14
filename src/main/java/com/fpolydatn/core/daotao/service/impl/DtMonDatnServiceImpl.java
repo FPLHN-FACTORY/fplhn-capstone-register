@@ -56,18 +56,22 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
-        Page<DtMonDatnResponse> res = monDatnRepository.findByName(req, pageable);
+        Page<DtMonDatnResponse> res = monDatnRepository.getAllByCoSo(req, pageable);
         return new PageableObject(res);
     }
 
     @Override
-    public Boolean delete(final String id, String coSoId, String dotDangKyId) {
+    public Boolean delete(final String id, String coSoId) {
         Optional<MonDatn> monCheck = monDatnRepository.findById(id);
-        List<MonDatn> checkIdMon = monDatnRepository.findByIdMon(id, coSoId, dotDangKyId);
+        Integer countInPhanCongHuongDan = monDatnRepository.countInPhanCongHuongDan(id);
+        Integer countInSinhVien = monDatnRepository.countInSinhVien(id, coSoId);
         if (Objects.isNull(monCheck)) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
-        if (checkIdMon.size() != 0) {
+        if (countInPhanCongHuongDan != 0) {
+            throw new RestApiException(Message.KHONG_DUOC_XOA_MON);
+        }
+        if (countInSinhVien != 0) {
             throw new RestApiException(Message.KHONG_DUOC_XOA_MON);
         }
         monDatnRepository.delete(monCheck.get());
@@ -84,8 +88,8 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
-    public List<MonDatn> findByTenNhomMon() {
-        return monDatnRepository.findByTenNhomMon();
+    public List<MonDatn> findByTenNhomMon(String coSoid) {
+        return monDatnRepository.getNhomMonDatnByCoSo(coSoid);
     }
 
     @Override
@@ -108,7 +112,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     @Override
     public Boolean add(@Valid final DtCreateMonDatnRequest command) {
         MonDatn monDatn = formUtils.convertToObject(MonDatn.class, command);
-        MonDatn monDatnInDb = monDatnRepository.findByMaMon(monDatn.getMaMon());
+        MonDatn monDatnInDb = monDatnRepository.findByMaMon(monDatn.getMaMon(), command.getCoSoId());
         if (!Objects.isNull(monDatnInDb) && monDatnInDb.equals(command.getMaMon())) {
             throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
         } else {

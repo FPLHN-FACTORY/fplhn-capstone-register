@@ -165,7 +165,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public List<GiangVienHuongDan> checkValidFile(List<DtGiagVienHDImportResquest> list) {
+    public List<GiangVienHuongDan> checkValidFile(List<DtGiagVienHDImportResquest> list, String coSoId) {
         List<GiangVienHuongDan> listGVHD = new ArrayList<>();
         Map<String, GiangVienHuongDan> mapGiangVien = new HashMap<>();
         if (list == null) {
@@ -192,7 +192,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             array = gv.getMonHoc().split(",");
             for (int i = 0; i < array.length; i++) {
                 PhanCongHuongDan phanCongHuongDan = new PhanCongHuongDan();
-                MonDatn monDatn = dtMonDatnRepository.findByMaMon(array[i].trim());
+                MonDatn monDatn = dtMonDatnRepository.findByMaMon(array[i].trim(), coSoId);
                 phanCongHuongDan.setGiangVienId(giangVienHuongDan.getId());
                 if (monDatn != null) {
                     phanCongHuongDan.setMonDatnId(monDatn.getId());
@@ -315,7 +315,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 listGiangVien.add(giangVien);
             });
             if (dtGiangVienHDResponseMessage.getStatus() == true) {
-                checkValidFile(listGiangVien);
+                checkValidFile(listGiangVien, coSoId);
             }
         } catch (Exception e) {
             e.printStackTrace();

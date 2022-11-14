@@ -174,10 +174,10 @@ function remove(chuyenNganhId) {
                         });
                     },
                     error: function (e) {
-                        if (e.responseJSON.message != null) {
+                        if (e.responseJSON.message == 'Chuyen nganh khong duoc xoa') {
                             bootbox.alert({
-                                message: '<div style="color: red">Chuyên ngành đang tồn tại trong đợt đăng ký không thể xóa</div>',
-                                backdrop: true,
+                                message: 'Chuyên ngành đang có sinh viên, môn DATN. Không thể xóa!',
+                                backdrop: true
                             });
                         }
                     }
