@@ -40,10 +40,6 @@ public class SvNhomDatnRestController extends BaseController {
     private SvGiangVienHuongDanService svGiangVienHuongDanService;
 
     @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;
-
-    @Autowired
     private CommonHelper commonHelper;
 
     @GetMapping("/search-giang-vien")

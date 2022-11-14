@@ -155,8 +155,26 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         NhomDatn nhomDatn = new NhomDatn();
         nhomDatn.setGiangVienId(svNhomDatnRequest.getGiangVienId());
-        nhomDatn.setTenDeTai(svNhomDatnRequest.getTenDeTai());
-        nhomDatn.setTenNhom(svNhomDatnRequest.getTenNhom());
+        String tenDeTai = svNhomDatnRequest.getTenDeTai();
+        if (tenDeTai == null) {
+            nhomDatn.setTenDeTai(null);
+        } else {
+            if ("".equals(tenDeTai.trim())) {
+                nhomDatn.setTenDeTai(null);
+            } else {
+                nhomDatn.setTenDeTai(tenDeTai);
+            }
+        }
+        String tenNhom = svNhomDatnRequest.getTenNhom();
+        if (tenNhom == null) {
+            nhomDatn.setTenNhom(null);
+        } else {
+            if ("".equals(tenDeTai.trim())) {
+                nhomDatn.setTenNhom(null);
+            } else {
+                nhomDatn.setTenNhom(tenNhom);
+            }
+        }
         nhomDatn.setMoTa(svNhomDatnRequest.getMoTa());
         nhomDatn.setDotDangKyId(svNhomDatnRequest.getDotDangKyId());
         nhomDatn.setCoSoId(svNhomDatnRequest.getCoSoId());
@@ -199,7 +217,16 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if (nhomDatn.get().getTrangThai().ordinal() == 4 || nhomDatn.get().getTrangThai().ordinal() == 5) {
             throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
         }
-        nhomDatn.get().setTenDeTai(svUpdateTenDeTaiRequest.getTenDeTai());
+        String tenDeTai = svUpdateTenDeTaiRequest.getTenDeTai();
+        if (tenDeTai == null) {
+            nhomDatn.get().setTenDeTai(null);
+        } else {
+            if ("".equals(tenDeTai.trim())) {
+                nhomDatn.get().setTenDeTai(null);
+            } else {
+                nhomDatn.get().setTenDeTai(tenDeTai);
+            }
+        }
         svNhomDatnRepository.save(nhomDatn.get());
         return true;
     }

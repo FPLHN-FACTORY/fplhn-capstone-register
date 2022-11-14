@@ -150,16 +150,6 @@ function createNhomDatn() {
         check = false;
     }
 
-    if (tenNhom.length == 0) {
-        $("#ten_nhom_error").text("*Không để trống tên nhóm");
-        check = false;
-    }
-
-    if (tenDeTai.length == 0) {
-        $("#ten_de_tai_error").text("*Không để trống tên đề tài");
-        check = false;
-    }
-
     if (check) {
         let matKhau = "";
         if ($("#checkTrangThaiCreateNhom").is(':checked')) {
