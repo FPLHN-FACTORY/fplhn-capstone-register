@@ -37,18 +37,13 @@ function openModalCreateChuyenNganh() {
 
 function create() {
     let tenChuyenNganh = $("#tenChuyenNganhAdd").val();
-    let CNBMId = $("#tenCNBMhAdd").val();
+    let CNBMId = $("#tenCNBMhAdd").val() == 'none' ? null : $("#tenCNBMhAdd").val();
     let chuyenNganhRequest = {};
     chuyenNganhRequest["chuNhiemBoMon"] = CNBMId;
     chuyenNganhRequest["tenChuyenNganh"] = tenChuyenNganh;
     let index = 0;
     if (tenChuyenNganh.trim().length === 0) {
         $("#chuyen_nganh_add_error").text("Tên chuyên ngành không được để trống");
-        index++;
-    }
-
-    if (CNBMId == null) {
-        $("#CNBM_add_error").text("Không có chủ nhiệm bộ môn");
         index++;
     }
 
@@ -93,8 +88,13 @@ function openModalUpdateChuyenNganh(chuyenNganhId, tenCNBM) {
         success: function (responseData) {
             $("#id_chuyen_nganh_update").val(responseData.data.id);
             $("#tenChuyenNganhUpdate").val(responseData.data.tenChuyenNganh);
-            $("#CNBMHienTai").val(responseData.data.chuNhiemBoMon);
-            $("#CNBMHienTai").text(tenCNBM);
+            if (responseData.data.chuNhiemBoMon == null) {
+                $("#CNBMHienTai").val('none');
+                $("#CNBMHienTai").text('Chưa có');
+            } else {
+                $("#CNBMHienTai").val(responseData.data.chuNhiemBoMon);
+                $("#CNBMHienTai").text(tenCNBM);
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -104,8 +104,7 @@ function openModalUpdateChuyenNganh(chuyenNganhId, tenCNBM) {
 
 function update() {
     let tenChuyenNganh = $("#tenChuyenNganhUpdate").val();
-    console.log(tenChuyenNganh);
-    let chuyenNganhId = $("#id_chuyen_nganh_update").val();
+    let chuyenNganhId = $("#id_chuyen_nganh_update").val() == 'none' ? null : $("#id_chuyen_nganh_update").val();
     let tenCNBM = $("#tenCNBMhUpdate").val();
     let chuyenNganhrequest = {};
     chuyenNganhrequest["tenChuyenNganh"] = tenChuyenNganh;
