@@ -47,7 +47,7 @@ function openModalAddGVHD() {
     $("#modal_create").modal('show')
 }
 
-function addGVHD () {
+function addGVHD() {
     let tenGvhd = $("#tenGvhd").val().trim();
     let soNhomHuongDanToiDa = $("#soNhomHuongDanToiDa").val().trim();
     let tenTaiKhoan = $("#tenTaiKhoan").val().trim();
@@ -196,7 +196,7 @@ function openModalUpdateGiangVien(giangVienId, item) {
     });
 }
 
-function updateGVHD () {
+function updateGVHD() {
     let tenGvhd = $("#ten_giang_vien_update").val().trim();
     let soNhomHuongDanToiDa = $("#so_nhom_update").val().trim();
     let tenTaiKhoan = $("#ten_tai_khoan_update").val().trim();
@@ -258,7 +258,7 @@ function updateGVHD () {
     if (emailFpt.length === 0) {
         $("#errorEmailFptUpdate").text(" EmailFpt không được để trống");
         index++;
-    }  else if (emailFpt.trim().includes(" ")) {
+    } else if (emailFpt.trim().includes(" ")) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
         index++;
     } else if (regexFPT.test(emailFpt) == false) {
@@ -373,12 +373,14 @@ function openModalImportMau() {
     $("#modal_import_excel").modal('hide')
     $("#modal_import_mau").modal('show')
 }
+
 function openModalImport() {
     $("#labelFile").text('Choose file');
     $("#inputGroupFile01").val('');
     $("#import_excel_error").text('');
     $("#modal_import_excel").modal('show')
 }
+
 function exportFile() {
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
@@ -403,13 +405,17 @@ function importExcel() {
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    let dotDangKyId = $("#dot_dang_ky_import").val();
     if (typeExcel.trim().length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");
+    } else if (dotDangKyId == '') {
+        $("#import_excel_error").text("Hãy chọn đợt đăng ký để import giảng viên");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         var form = $('#form_import_excel')[0];
+        alert(dotDangKyId)
         $.ajax({
                 type: 'POST',
-                url: giangVienHuongDanApi + '/import',
+                url: giangVienHuongDanApi + '/import/' + dotDangKyId,
                 enctype: 'multipart/form-data',
                 processData: false,
                 data: new FormData(form),
@@ -453,7 +459,6 @@ function importFileMau() {
         });
     }
 }
-
 genPagingAndFillColor();
 
 function genPagingAndFillColor() {
@@ -522,8 +527,7 @@ function loadTable(count) {
                    <td >${item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa}</td>
                    <td >${item.soDienThoai}</td>
                    <td >${item.emailFe}</td>
-                   <td>
-                       <button
+                   <td><button
                            type="button"
                            class="btn_pencil_square"
                            data-toggle="tooltip"

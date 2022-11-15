@@ -78,18 +78,16 @@ public class DtGiangVienRestController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseObject search(final DtFindGiangVienHDRequest rep) {
-        rep.setCoSoId(session.getCoSoId());
-        rep.setDotDangKyId(rep.getDotDangKyId());
-        PageableObject<DtGiangVienHDResponse> listGiangVienHD = giangVienHDService.search(rep);
+    public ResponseObject search(final DtFindGiangVienHDRequest req) {
+        req.setCoSoId(session.getCoSoId());
+        PageableObject<DtGiangVienHDResponse> listGiangVienHD = giangVienHDService.search(req);
         return new ResponseObject(listGiangVienHD);
     }
 
-    @PostMapping("/import")
-    public ResponseObject importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping("/import/{dotDangKyId}")
+    public ResponseObject importEcel(@RequestParam("file") MultipartFile file, @PathVariable("dotDangKyId") String dotDangKyId) throws IOException {
         String idCoSo = session.getCoSoId();
-        String idDotDangKy = commonHelper.getDotDangKyHienTai();
-        DtGiangVienHDResponseMessage responseMessage = giangVienHDService.DtGiangVienHDImport(file,idCoSo,idDotDangKy);
+        DtGiangVienHDResponseMessage responseMessage = giangVienHDService.DtGiangVienHDImport(file,idCoSo,dotDangKyId.trim());
         return new ResponseObject(responseMessage);
     }
 
