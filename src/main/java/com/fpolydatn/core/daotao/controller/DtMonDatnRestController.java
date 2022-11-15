@@ -35,8 +35,7 @@ public class DtMonDatnRestController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        return new ResponseObject(monDatnService.delete(id, coSoId, dotDangKyId));
+        return new ResponseObject(monDatnService.delete(id, coSoId));
     }
 
     @GetMapping("/{id}")

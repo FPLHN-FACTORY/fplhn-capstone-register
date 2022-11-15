@@ -40,41 +40,40 @@ public interface DtCanBoRepository extends CanBoRepository {
 
     @Query(value = """
             SELECT id, ten_can_bo AS 'name' FROM can_bo a            
-            WHERE co_so_id = :coSoId AND vai_tro = :vaiTro 
-            AND (SELECT b.chu_nhiem_bo_mon FROM chuyen_nganh b WHERE b.chu_nhiem_bo_mon = a.id) IS NULL
+            WHERE co_so_id = :coSoId AND vai_tro = :vaiTro
             """, nativeQuery = true)
     List<SimpleEntityProj> findCanBoByVaiTro(@Param("coSoId") String coSoId, @Param("vaiTro") int vaiTro);
 
     @Query(value = """
-            SELECT email_fe FROM can_bo""", nativeQuery = true)
-    List<String> findAllEmailFe();
+            SELECT email_fe FROM can_bo WHERE co_so_id = :coSoId""", nativeQuery = true)
+    List<String> findAllEmailFe(@Param("coSoId") String coSoId);
 
     @Query(value = """
-            SELECT ten_tai_khoan FROM can_bo""", nativeQuery = true)
-    List<String> finAllTenTaiKhoan();
+            SELECT ten_tai_khoan FROM can_bo WHERE co_so_id = :coSoId""", nativeQuery = true)
+    List<String> finAllTenTaiKhoan(@Param("coSoId") String coSoId);
 
     @Query(value = """
-            SELECT email_fpt FROM can_bo""", nativeQuery = true)
-    List<String> findAllByEmailFPT();
+            SELECT email_fpt FROM can_bo WHERE co_so_id = :coSoId""", nativeQuery = true)
+    List<String> findAllByEmailFPT(@Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM can_bo WHERE email_fpt = :emailFpt", nativeQuery = true)
-    String getIdByEmailFpt(@Param("emailFpt") String emailFpt);
+    @Query(value = "SELECT id FROM can_bo WHERE email_fpt = :emailFpt AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdByEmailFpt(@Param("emailFpt") String emailFpt, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM can_bo WHERE email_fpt = :emailFpt AND id <> :id", nativeQuery = true)
-    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id);
+    @Query(value = "SELECT id FROM can_bo WHERE email_fpt = :emailFpt AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM can_bo WHERE email_fe = :emailFe", nativeQuery = true)
-    String getIdByEmailFe(@Param("emailFe") String emailFe);
+    @Query(value = "SELECT id FROM can_bo WHERE email_fe = :emailFe AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdByEmailFe(@Param("emailFe") String emailFe, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM can_bo WHERE email_fe = :emailFe AND id <> :id", nativeQuery = true)
-    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe, @Param("id") String id);
+    @Query(value = "SELECT id FROM can_bo WHERE email_fe = :emailFe AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe, @Param("id") String id, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM can_bo WHERE ten_tai_khoan = :tenTaiKhoan", nativeQuery = true)
-    String getIdByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan);
+    @Query(value = "SELECT id FROM can_bo WHERE ten_tai_khoan = :tenTaiKhoan AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM can_bo WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id", nativeQuery = true)
-    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id);
+    @Query(value = "SELECT id FROM can_bo WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM chuyen_nganh where chu_nhiem_bo_mon = :idChuNhiem",nativeQuery = true)
-    String getIdChuyenNganhByIdChuNhiem(@Param("idChuNhiem") String idChuNhiem);
+    @Query(value = "SELECT id FROM chuyen_nganh where chu_nhiem_bo_mon = :idChuNhiem AND co_so_id = :coSoId",nativeQuery = true)
+    String getIdChuyenNganhByIdChuNhiem(@Param("idChuNhiem") String idChuNhiem, @Param("coSoId") String coSoId);
 }

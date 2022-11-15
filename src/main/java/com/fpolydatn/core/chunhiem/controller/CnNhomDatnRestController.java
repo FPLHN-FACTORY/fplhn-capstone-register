@@ -52,11 +52,7 @@ public class CnNhomDatnRestController extends BaseController {
     @GetMapping("/search")
     public ResponseObject viewNhomDatn(final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
-        if (dotDangKyId != null) {
-            req.setDotDangKyId(dotDangKyId);
-        }
         PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req, session.getUserId());
         return new ResponseObject(listNhomDatn);
     }
@@ -97,7 +93,7 @@ public class CnNhomDatnRestController extends BaseController {
     public ResponseObject getlistNhomDatnNoGroup(final CnFindSinhVienNoGroupRequest req) {
         req.setCoSoId(session.getCoSoId());
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
-        return new ResponseObject(nhomDatnService.getListSinhVienNoGroup(req));
+        return new ResponseObject(nhomDatnService.getListSinhVienNoGroup(req, session.getUserId()));
     }
 
     @GetMapping("/list-mon-datn")

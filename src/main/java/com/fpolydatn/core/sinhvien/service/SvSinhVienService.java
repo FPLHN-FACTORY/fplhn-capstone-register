@@ -7,7 +7,7 @@ public interface SvSinhVienService {
 
     String getNhomIdById(String coSoId, String dotDangKyId, String id);
 
-    Integer getSoThanhVienByNhomId(String nhomId);
+    Integer getSoThanhVienByNhomId(String nhomId, String coSoId);
 
     String getMonDatnIdBySinhVienId(String id);
 

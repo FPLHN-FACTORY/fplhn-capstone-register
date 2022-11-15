@@ -39,6 +39,7 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable("id") String id,
                                  @RequestBody DtUpdateNhomMonDatnRequest dtUpdateNhomMonRequest) {
+        dtUpdateNhomMonRequest.setCoSoId(session.getCoSoId());
         dtUpdateNhomMonRequest.setId(id);
         return new ResponseObject(dtNhomMonDatnService.update(dtUpdateNhomMonRequest));
     }

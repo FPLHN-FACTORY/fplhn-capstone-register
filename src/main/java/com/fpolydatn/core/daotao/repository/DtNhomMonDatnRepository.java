@@ -48,7 +48,8 @@ public interface DtNhomMonDatnRepository extends MonDatnRepository {
                 SELECT id 
                 FROM mon_datn
                 WHERE ma_mon = :maMon 
+                AND co_so_id = :coSoId
             """, nativeQuery = true)
-    String findByMaNhomMon(@Param("maMon") String maMon);
+    String findByMaNhomMon(@Param("maMon") String maMon, @Param("coSoId") String coSoId);
 
 }

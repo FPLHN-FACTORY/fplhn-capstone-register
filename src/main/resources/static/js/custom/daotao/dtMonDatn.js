@@ -166,7 +166,7 @@ function openModalRemoveMonDatn(monDatnId) {
                     error: function (e) {
                         if (e.responseJSON.message != null) {
                             bootbox.alert({
-                                message: '<div style="color: red">Môn đang tồn tại trong đợt đăng ký không thể xóa</div>',
+                                message: '<div style="color: red">Môn đang có phân công, sinh viên. Không thể xóa</div>',
                                 backdrop: true,
                             });
                         }

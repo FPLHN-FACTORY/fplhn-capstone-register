@@ -58,7 +58,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
         if (Objects.isNull(nhomMonDatnFind)) {
             throw new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST);
         }
-        String idCheck = dtNhomMonDatnRepository.findByMaNhomMon(command.getMaNhomMon());
+        String idCheck = dtNhomMonDatnRepository.findByMaNhomMon(command.getMaNhomMon(), command.getCoSoId());
         if (Objects.nonNull(idCheck) && !idCheck.equals(command.getId())) {
             throw new RestApiException(Message.MA_NHOM_MON_DATN_ALREADY_EXIST);
         }
@@ -76,7 +76,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
 
     @Override
     public Boolean add(DtCreateNhomMonDatnRequest command) {
-        if (!Objects.isNull(dtNhomMonDatnRepository.findByMaNhomMon(command.getMaNhomMon()))) {
+        if (!Objects.isNull(dtNhomMonDatnRepository.findByMaNhomMon(command.getMaNhomMon(), command.getCoSoId()))) {
             throw new RestApiException(Message.MA_NHOM_MON_DATN_ALREADY_EXIST);
         }
         Optional<ChuyenNganh> chuyenNganh = dtChuyenNganhRepository.findById(command.getChuyenNganhId());

@@ -81,7 +81,7 @@ public class DtSinhVienTheoDotRestController extends BaseController {
 
     @PutMapping("/loai-sv/{id}")
     public ResponseObject loaiSinhVien(@PathVariable("id") String id) {
-        return new ResponseObject(sinhVienService.loaiSinhVien(id));
+        return new ResponseObject(sinhVienService.loaiSinhVien(id, session.getCoSoId()));
     }
 
     @DeleteMapping("/{id}")

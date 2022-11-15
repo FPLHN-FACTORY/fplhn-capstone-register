@@ -47,8 +47,7 @@ public class DtChuyenNganhRestController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        return new ResponseObject(chuyenNganhService.delete(id, coSoId, dotDangKyId));
+        return new ResponseObject(chuyenNganhService.delete(id, coSoId));
     }
 
     @PutMapping("/{id}")

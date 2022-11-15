@@ -106,7 +106,7 @@
                                                 <tr class="table-light">
                                                     <td th:text="${chuyenNganh.getStt()}"></td>
                                                     <td th:text="${chuyenNganh.getTenChuyenNganh()}"></td>
-                                                    <td th:text="${chuyenNganh.getTenCanBo()} + ' - ' + ${chuyenNganh.getTenTaiKhoan()}"></td>
+                                                    <td th:text="${chuyenNganh.getTenCanBo()} == null ? 'Chưa có' : ${chuyenNganh.getTenCanBo()} + ' - ' + ${chuyenNganh.getTenTaiKhoan()}"></td>
                                                     <td>
                                                         <button
                                                                 type="button"
@@ -211,7 +211,7 @@
                             <input id="chuNhiemBoMon"
                                    th:value="${listCanBo.size()}" hidden/>
                             <select id="tenCNBMhUpdate" class="form-control">
-                                <option id="CNBMHienTai"></option>
+                                <option value="none">Chưa có</option>
                                 <option th:each="canBo : ${listCanBo}"
                                         th:value="${canBo.id}"
                                         th:text="${canBo.name}"></option>
@@ -264,8 +264,8 @@
                     <div class="form-group">
                         <div>
                             <label class="col-form-label">Chủ nhiệm bộ môn: </label>
-                            <input id="CNBM" th:value=${listCanBo.size()} hidden/>
                             <select id="tenCNBMhAdd" class="form-control">
+                                <option value="none">Chưa có CNBM</option>
                                 <option th:each="canBo : ${listCanBo}"
                                         th:value="${canBo.id}"
                                         th:text="${canBo.name}"></option>

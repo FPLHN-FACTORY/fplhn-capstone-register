@@ -18,13 +18,13 @@ import java.util.List;
  */
 
 public interface SvNhomDatnService {
-    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id);
+    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id, String coSoId);
 
     Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser);
 
     PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request, String idUser);
 
-    List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(String id);
+    List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(String id, String coSoId);
 
     boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req);
 
@@ -36,7 +36,7 @@ public interface SvNhomDatnService {
 
     Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi);
 
-    Boolean chonGvhd(String idUser, String idGiangVien);
+    Boolean chonGvhd(String idUser, String idGiangVien, String coSoId);
 
     Boolean checkThoiGianRoiNhom(String idUser);
 

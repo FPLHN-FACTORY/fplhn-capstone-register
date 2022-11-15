@@ -1,14 +1,13 @@
 package com.fpolydatn.core.daotao.model.request;
 
-import com.fpolydatn.infrastructure.constant.Constants;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 
 /**
  * @author Vinhnv
@@ -31,17 +30,17 @@ public abstract class DtBaseGiangVienHDRequest {
 
     @NotEmpty
     @NotBlank
-    @Pattern(regexp = Constants.REGEX_PHONE_NUMBER)
+    @Length(max = 20)
     private String soDienThoai;
 
     @NotEmpty
     @NotBlank
-    @Pattern(regexp = Constants.REGEX_EMAIL_FPT)
+    @Length(max = 50)
     private String emailFpt;
 
     @NotEmpty
     @NotBlank
-    @Pattern(regexp = Constants.REGEX_EMAIL_FE)
+    @Length(max = 50)
     private String emailFe;
 
     @NotEmpty

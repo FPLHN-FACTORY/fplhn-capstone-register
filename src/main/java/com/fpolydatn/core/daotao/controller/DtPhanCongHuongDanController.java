@@ -34,9 +34,10 @@ public final class DtPhanCongHuongDanController extends BaseController {
             , final DtFindPhanCongHuongDanRequest req
             , @PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
+        req.setCoSoId(coSoId);
         PageableObject<DtPhanCongHuongDanResponse> listPhanCong = phanCongHuongDanService.search(id, req);
         DtPhanCongHuongDanMonDatnResponse monDatnResponse = phanCongHuongDanService.getMon(id);
-        List<DtPhanCongHuongDanResponse> phanCongHuongDanGiaoViens = phanCongHuongDanService.getPhanCongGiaoVien(coSoId, id, commonHelper.getDotDangKyHienTai());
+        List<DtPhanCongHuongDanResponse> phanCongHuongDanGiaoViens = phanCongHuongDanService.getPhanCongGiaoVien(coSoId, id);
 
         model.addAttribute("page", listPhanCong);
         model.addAttribute("monDatn", monDatnResponse);

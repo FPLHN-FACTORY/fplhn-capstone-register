@@ -492,33 +492,11 @@
                                         <div id="list_page">
                                             <nav th:if="${page.totalPages > 1}" aria-label="Page navigation ">
                                                 <ul class="pagination justify-content-end">
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                           th:style="${page.currentPage} == 0 ? 'pointer-events: none' : ''"
-                                                           th:attr="onclick=|viewTable('${page.currentPage}'-1)|"
-                                                           th:text="Back">
-                                                        </a>
-                                                    </li>
-                                                    <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                        <li class="page-item">
-                                                            <a class="page-link"
-                                                               th:style="${page.currentPage} == ${i} - 1 ? 'background-color : #0a8cf0; color : white' : ''"
-                                                               th:attr="onclick=|viewTable('${i}'-1)|"
-                                                               th:text="${i}">
-                                                            </a>
-                                                        </li>
-                                                    </div>
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                           th:style="${page.currentPage} == ${page.totalPages} - 1 ? 'pointer-events: none' : ''"
-                                                           th:attr="onclick=|viewTable('${page.currentPage}'+1)|"
-                                                           th:text="Next">
-                                                        </a>
-                                                    </li>
                                                 </ul>
                                             </nav>
                                         </div>
-
+                                        <input hidden th:value="${page.totalPages}" id="totalPages">
+                                        <input hidden th:value="${page.currentPage}" id="currentPage">
                                         <div id="is_empty" class="text-center">
                                             <div th:if="${page.data.isEmpty()}">
                                                 <span>Không có dữ liệu</span>
@@ -694,34 +672,96 @@
                     <span id="id_sinh_vien_update" style="color:red;"></span>
 
                     <div class="form-group">
-                        <label
-                                class="col-form-label">Mã sinh viên</label>
-                        <input
-                                maxlength="10"
-                                type="text"
-                                class="form-control"
-                                id="ma_sinh_vien_update"/>
-                        <span class="text-danger"
-                              id="ma_sinh_vien_update_error"></span><br>
-                        <label
-                                class="col-form-label">Họ tên</label>
-                        <input
-                                maxlength="100"
-                                type="text"
-                                class="form-control"
-                                id="ten_sinh_vien_update"/>
-                        <span class="text-danger"
-                              id="ten_sinh_vien_update_error"></span><br>
-                        <label
-                                class="col-form-label">Khóa</label>
-                        <input
-                                maxlength="100"
-                                type="text"
-                                class="form-control"
-                                id="khoa_hoc_update"/>
-                        <span class="text-danger"
-                              id="khoa_hoc_update_error"></span><br>
-                    </div>
+<!--                        <label-->
+<!--                                class="col-form-label">Mã sinh viên</label>-->
+<!--                        <input-->
+<!--                                maxlength="10"-->
+<!--                                type="text"-->
+<!--                                class="form-control"-->
+<!--                                id="ma_sinh_vien_update"/>-->
+<!--                        <span class="text-danger"-->
+<!--                              id="ma_sinh_vien_update_error"></span><br>-->
+<!--                        <label-->
+<!--                                class="col-form-label">Họ tên</label>-->
+<!--                        <input-->
+<!--                                maxlength="100"-->
+<!--                                type="text"-->
+<!--                                class="form-control"-->
+<!--                                id="ten_sinh_vien_update"/>-->
+<!--                        <span class="text-danger"-->
+<!--                              id="ten_sinh_vien_update_error"></span><br>-->
+<!--                        <label-->
+<!--                                class="col-form-label">Khóa</label>-->
+<!--                        <input-->
+<!--                                maxlength="100"-->
+<!--                                type="text"-->
+<!--                                class="form-control"-->
+<!--                                id="khoa_hoc_update"/>-->
+<!--                        <span class="text-danger"-->
+<!--                              id="khoa_hoc_update_error"></span><br>-->
+<!--                    </div>-->
+                        <div style="width: 48%;margin-right: 2%; float:left">
+                            <label class="col-form-label">Mã sinh viên</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="maSV">
+                            </div>
+                            <label class="col-form-label">Tên sinh viên</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="tenSV">
+                            </div>
+                            <label class="col-form-label">Số điện thoại</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="sdt">
+                            </div>
+                            <label class="col-form-label">Email</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="email">
+                            </div>
+                            <label class="col-form-label">Khóa</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="khoa">
+                            </div>
+                            <label class="col-form-label">Môn chương trình</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="monDATN">
+                            </div>
+                            <label class="col-form-label">Tên chuyên ngành</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="tenCN">
+                            </div>
+                        </div>
+                        <div style="width: 50%; float:left">
+                            <label class="col-form-label">Mã nhóm</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="maNhom">
+                            </div>
+                            <label class="col-form-label">Tên đề tài</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="tenDeTai">
+                            </div>
+                            <label class="col-form-label">Tên GVHD</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="GVDH">
+                            </div>
+                            <label class="col-form-label">Đợt đăng ký</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="DDK">
+                            </div>
+                            <label class="col-form-label">Trạng thái</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="trangT">
+                            </div>
+                            <div id="labelDetailTiLe">
+                                <label class="col-form-label">Số thành viên</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" readonly class="form-control" id="soTV">
+                                </div>
+                            </div>
+                            <label class="col-form-label">Môn chương trình</label>
+                            <div class="input-group mb-3">
+                                <input type="text" readonly class="form-control" id="monCT">
+                            </div>
+                        </div>
                 </div>
 
                 <div class="modal-footer">

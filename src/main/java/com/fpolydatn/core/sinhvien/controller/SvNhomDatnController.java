@@ -60,15 +60,15 @@ public class SvNhomDatnController extends BaseController {
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUSer);
             Boolean checkThoiGianRoiNhom = svNhomDatnService.checkThoiGianRoiNhom(idUSer);
-            model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer));
+            model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer, coSoId));
             model.addAttribute("page", listNhomDatn);
             model.addAttribute("checkThoiGianRoiNhom", checkThoiGianRoiNhom);
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,
                     coSoId, idUSer);
-            List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getDetailNhomDatnById(nhomId);
-            Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId);
+            List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getDetailNhomDatnById(nhomId, coSoId);
+            Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId, coSoId);
             String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(idUSer);
             List<SvGiangVienHuongDanResponse> listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
             model.addAttribute("soThanhVien", soThanhVien);
