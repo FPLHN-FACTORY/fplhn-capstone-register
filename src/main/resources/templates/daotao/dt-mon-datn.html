@@ -95,6 +95,7 @@
                                                                             datn:</label>
                                                                         <select id="tenNhomMonDatn"
                                                                                 class="form-control">
+                                                                            <option value="" hidden>Chọn nhóm môn</option>
                                                                             <option value="">Môn độc lập</option>
                                                                             <div th:each="tenNhomMon : ${tenNhomMon}">
                                                                                 <option th:value="${tenNhomMon.id}"
@@ -263,6 +264,28 @@
                                 id="ten_mon_datn_update"/>
                         <span class="text-danger"
                               id="errorTenMonUpdate"></span><br>
+                        <div>
+                            <label class="col-form-label">Chuyên
+                                ngành: </label>
+                            <select id="chuyen_nganh_update" class="form-control">
+                                <div th:each="chuyenNganh : ${tenChuyenNganh}">
+                                    <option th:value="${chuyenNganh.id}"
+                                            th:text="${chuyenNganh.name}"></option>
+                                </div>
+                            </select><br>
+                        </div>
+                        <div>
+                            <label class="col-form-label">Nhóm môn
+                                datn:</label>
+                            <select id="ten_nhom_mon_datn_update"
+                                    class="form-control">
+                                <option value="">Môn độc lập</option>
+                                <div th:each="tenNhomMon : ${tenNhomMon}">
+                                    <option th:value="${tenNhomMon.id}"
+                                            th:text="${tenNhomMon.tenMonDatn}"></option>
+                                </div>
+                            </select><br>
+                        </div>
                     </div>
                 </div>
 

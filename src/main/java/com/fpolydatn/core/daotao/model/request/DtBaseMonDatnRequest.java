@@ -24,4 +24,6 @@ public abstract class DtBaseMonDatnRequest {
     @Length(max = 100)
     private String tenMonDatn;
 
+    private String nhomMonDatnId;
+
 }

@@ -80,6 +80,8 @@ function openModalUpdateMonDatn(monDatnId) {
             $("#id_mon_datn_update").val(responseData.data.id);
             $("#ma_mon_datn_update").val(responseData.data.maMon);
             $("#ten_mon_datn_update").val(responseData.data.tenMonDatn);
+            $("#chuyen_nganh_update").val(responseData.data.chuyenNganhId);
+            $("#ten_nhom_mon_datn_update").val(responseData.data.nhomMonDatnId);
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -91,9 +93,13 @@ function update() {
     let maMon = $("#ma_mon_datn_update").val().trim();
     let tenMonDatn = $("#ten_mon_datn_update").val().trim();
     let monDatnId = $("#id_mon_datn_update").val();
+    let chuyenNganh = $("#chuyen_nganh_update").val();
+    let nhomMon = $("#ten_nhom_mon_datn_update").val();
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
+    monDatnRequest["chuyenNganhId"] = chuyenNganh;
+    monDatnRequest["nhomMonDatnId"] = nhomMon;
     let index = 0;
     if (maMon.trim().length === 0) {
         $("#errorMaMonUpdate").text("Mã môn không được để trống");
