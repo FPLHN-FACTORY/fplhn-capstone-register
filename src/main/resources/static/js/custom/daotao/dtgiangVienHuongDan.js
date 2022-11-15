@@ -438,6 +438,16 @@ function importFileMau() {
         });
     }
 }
+function changeInput() {
+    let value = document.querySelector("#valueInput").value
+    if (Number(value) <= 0) {
+        value = 1;
+    }
+    if (Number(value) > totalPages) {
+        value = totalPages;
+    }
+    loadTable(value - 1);
+}
 
 genPagingAndFillColor();
 
@@ -467,11 +477,9 @@ function genPageZing() {
                             </li>
                             </ul>
                             `;
-        for (let i = 0; i < totalPages; i++) {
-            templatePageMid += `<li class="page-item" >
-                                         <a id="pageColor" class="page-link" onclick="loadTable(${i})">${i + 1}</a>
-                                     </li>`
-        }
+        templatePageMid += `
+                            <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
+                             <input style="border: none; width: 55px" value="/   ${totalPages}" readonly>`
         templateHtml = templatePageBefore + templatePageMid + templatePageAfter
         if (totalPages == 1) {
             templateHtml = ``;
