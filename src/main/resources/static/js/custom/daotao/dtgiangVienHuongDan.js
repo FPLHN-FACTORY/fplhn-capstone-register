@@ -1,8 +1,6 @@
 const giangVienHuongDanApi = '/api/dao-tao/giang-vien-huong-dan';
 const giangVienHuongDanView = '/dao-tao/giang-vien-huong-dan';
-const regexFE = new RegExp('[a-z0-9]+@fe.edu.vn');
-const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
-const regexSDT = new RegExp('(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}');
+const regexSDT = new RegExp('\\d+');
 const regexSoNhom = new RegExp('[0-9]+');
 
 let totalPages = $("#totalPages").val()
@@ -101,9 +99,6 @@ function addGVHD() {
     } else if (regexSDT.test(soDienThoai) == false) {
         $("#errorSDT").text(" Số điện thoại không đúng định dạng");
         index++;
-    } else if (soDienThoai.length != 10) {
-        $("#errorSDT").text(" Số điện thoại không đúng định dạng");
-        index++;
     } else {
         $("#errorSDT").text("");
     }
@@ -112,10 +107,7 @@ function addGVHD() {
         $("#errorEmailFpt").text(" EmailFpt không được để trống");
         index++;
     } else if (emailFpt.trim().includes(" ")) {
-        $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
-        index++;
-    } else if (regexFPT.test(emailFpt) == false) {
-        $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
+        $("#errorEmailFpt").text("Email không chưa khoảng trắng");
         index++;
     } else {
         $("#errorEmailFpt").text("");
@@ -124,11 +116,8 @@ function addGVHD() {
     if (emailFe.length === 0) {
         $("#errorEmailFe").text(" EmailFe không được để trống");
         index++;
-    } else if (regexFE.test(emailFe) == false) {
-        $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
-        index++;
     } else if (emailFpt.trim().includes(" ")) {
-        $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
+        $("#errorEmailFe").text("Email không chứa khoảng trắng");
         index++;
     } else {
         $("#errorEmailFe").text("");
@@ -216,7 +205,7 @@ function updateGVHD() {
     giangVienRequest["dotDangKyId"] = dotDangKyId;
     let index = 0;
     if (tenGvhd.length === 0) {
-        $("#errorTenGiangVienUpdate").text(" Tên giang viên không được để trống");
+        $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được để trống");
         index++;
     } else {
         $("#errorTenGiangVienUpdate").text("");
@@ -248,9 +237,6 @@ function updateGVHD() {
     } else if (regexSDT.test(soDienThoai) == false) {
         $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
         index++;
-    } else if (soDienThoai.length != 10) {
-        $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
-        index++;
     } else {
         $("#errorSDTUpdate").text("");
     }
@@ -259,10 +245,7 @@ function updateGVHD() {
         $("#errorEmailFptUpdate").text(" EmailFpt không được để trống");
         index++;
     } else if (emailFpt.trim().includes(" ")) {
-        $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
-        index++;
-    } else if (regexFPT.test(emailFpt) == false) {
-        $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
+        $("#errorEmailFptUpdate").text("Email không chứa khoảng trắng");
         index++;
     } else {
         $("#errorEmailFptUpdate").text("");
@@ -271,11 +254,8 @@ function updateGVHD() {
     if (emailFe.length === 0) {
         $("#errorEmailFeUpdate").text(" EmailFe không được để trống");
         index++;
-    } else if (regexFE.test(emailFe) == false) {
-        $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
-        index++;
     } else if (emailFe.trim().includes(" ")) {
-        $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
+        $("#errorEmailFeUpdate").text("Email Fe không đúng định dạng");
         index++;
     } else {
         $("#errorEmailFeUpdate").text("");
