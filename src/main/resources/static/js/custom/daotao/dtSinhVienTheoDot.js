@@ -285,7 +285,7 @@ function detail(sinhVienId) {
 }
 
 function changeInput() {
-    let value = document.querySelector("#valueInput").value
+    let value = document.querySelector("#valueInput").value;
     if (Number(value) <= 0) {
         value = 1;
     }
@@ -298,7 +298,7 @@ function changeInput() {
 genPagingAndFillColor()
 
 function genPagingAndFillColor() {
-    if (totalPages == 0) {
+    if (totalPages == 1) {
         $("#list_page").html('');
     } else {
         let templatePageMid = ``;

@@ -108,7 +108,14 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         MonDatn monDatn = monDatnCheck.get();
         monDatn.setMaMon(command.getMaMon());
         monDatn.setTenMonDatn(command.getTenMonDatn());
-        return monDatnRepository.save(monDatn);
+        monDatn.setNhomMonDatnId(command.getNhomMonDatnId());
+        monDatn.setChuyenNganhId(command.getChuyenNganhId());
+        MonDatn mon = monDatnRepository.save(monDatn);
+        if (mon.getNhomMonDatnId().trim().length() == 0) {
+            mon.setNhomMonDatnId(mon.getId());
+            monDatnRepository.save(mon);
+        }
+        return mon;
     }
 
     @Override
