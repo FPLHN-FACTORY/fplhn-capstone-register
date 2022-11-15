@@ -60,7 +60,8 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Thêm cán
                                                                     bộ</h5>
-                                                                <button type="button" class="close" data-bs-dismiss="modal"
+                                                                <button type="button" class="close"
+                                                                        data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -96,18 +97,18 @@
                                                                     <br>
                                                                     <label class="col-form-label">Email FE</label>
                                                                     <input maxlength="50"
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="emailfe">
+                                                                           type="text"
+                                                                           class="form-control"
+                                                                           id="emailfe">
                                                                     <span class="text-danger"
                                                                           id="email_fe_error"></span>
 
                                                                     <br>
                                                                     <label class="col-form-label">Email FPT</label>
                                                                     <input maxlength="50"
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="emailfpt">
+                                                                           type="text"
+                                                                           class="form-control"
+                                                                           id="emailfpt">
                                                                     <span class="text-danger"
                                                                           id="email_fpt_error"></span>
 
@@ -122,7 +123,8 @@
 
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-outline-secondary btn btn-light"
+                                                                    <button type="button"
+                                                                            class="btn btn-outline-secondary btn btn-light"
                                                                             data-bs-dismiss="modal">Hủy
                                                                     </button>
                                                                     <button type="button" th:attr="onclick=|save()|"
@@ -149,7 +151,8 @@
                                                               id="form_import_excel">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Import Excel</h5>
-                                                                <button type="button" class="close" data-bs-dismiss="modal"
+                                                                <button type="button" class="close"
+                                                                        data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -166,7 +169,8 @@
                                                                                    id="inputGroupFile01"
                                                                                    aria-describedby="inputGroupFileAddon01"
                                                                                    name="file">
-                                                                            <label class="custom-file-label" id="labelFile"
+                                                                            <label class="custom-file-label"
+                                                                                   id="labelFile"
                                                                                    for="inputGroupFile01">Choose
                                                                                 file</label>
                                                                         </div>
@@ -176,7 +180,7 @@
                                                                                     th:attr="onclick=|openModalTaiMau()|"
                                                                                     id="mauImport"
                                                                                     data-bs-dismiss="modal"
-                                                                                    >Tải Mẫu
+                                                                            >Tải Mẫu
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -185,10 +189,12 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-outline-secondary btn btn-light"
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn btn-light"
                                                                         data-bs-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="button" th:attr="onclick=|importCanBo()|" class="btn btn-primary">Import excel
+                                                                <button type="button" th:attr="onclick=|importCanBo()|"
+                                                                        class="btn btn-primary">Import excel
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -241,30 +247,31 @@
                                             </tbody>
                                         </table>
                                         <!-- Paging-->
+                                        <span id="totalPage" th:text="${page.totalPages}" hidden></span>
+                                        <span id="currentPage" th:text="${page.currentPage}" hidden></span>
                                         <nav th:if="${page.totalPages > 1}" aria-label="Page navigation ">
                                             <ul class="pagination justify-content-end">
                                                 <li class="page-item">
-                                                    <a class="page-link"
-                                                       th:style="${page.currentPage} == 0 ? 'pointer-events: none' : ''"
-                                                       th:href="@{/dao-tao/can-bo?page={page.currentPage}(page.currentPage=${page.currentPage}-1)}"
-                                                       th:text="Back">
-                                                    </a>
+                                                    <button class="page-link"
+                                                            th:attr="onclick=|buttonChangePage(1)|">
+                                                        Back
+                                                    </button>
                                                 </li>
-                                                <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                           th:style="${page.currentPage} == ${i} - 1 ? 'background-color : #0a8cf0; color : white' : ''"
-                                                           th:href="@{/dao-tao/can-bo?page={page.currentPage}(page.currentPage=${i}-1)}"
-                                                           th:text="${i}">
-                                                        </a>
-                                                    </li>
-                                                </div>
+                                                <input type="number"
+                                                       autocomplete="false"
+                                                       id="inputPage"
+                                                       th:value="${page.currentPage} + 1"
+                                                       min="1" th:max="${page.totalPages}"
+                                                       th:attr="onchange=|changePage()|"
+                                                       class="input-page">
+                                                <input class="total-page"
+                                                       th:value="'/   ' + ${page.totalPages}"
+                                                       readonly>
                                                 <li class="page-item">
-                                                    <a class="page-link"
-                                                       th:style="${page.currentPage} == ${page.totalPages} - 1 ? 'pointer-events: none' : ''"
-                                                       th:href="@{/dao-tao/can-bo?page={page.currentPage}(page.currentPage=${page.currentPage}+1)}"
-                                                       th:text="Next">
-                                                    </a>
+                                                    <button class="page-link"
+                                                            th:attr="onclick=|buttonChangePage(0)|">
+                                                        Next
+                                                    </button>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -281,7 +288,7 @@
         </div>
     </div>
 </div>
-    <!-- end:: Body -->
+<!-- end:: Body -->
 
 <!--  Start Modal Update-->
 <div
@@ -335,18 +342,18 @@
                         <br>
                         <label class="col-form-label">Email FE</label>
                         <input maxlength="50"
-                                type="text"
-                                class="form-control"
-                                id="email_fe_update">
+                               type="text"
+                               class="form-control"
+                               id="email_fe_update">
                         <span class="text-danger"
                               id="email_fe_error_update"></span>
 
                         <br>
                         <label class="col-form-label">Email FPT</label>
                         <input maxlength="50"
-                                type="text"
-                                class="form-control"
-                                id="email_fpt_update">
+                               type="text"
+                               class="form-control"
+                               id="email_fpt_update">
                         <span class="text-danger"
                               id="email_fpt_error_update"></span>
 
@@ -364,7 +371,7 @@
                             data-bs-dismiss="modal">Hủy
                     </button>
                     <button type="button" th:attr="onclick=|update()|"
-                        class="btn btn-primary">
+                            class="btn btn-primary">
                         Cập nhật
                     </button>
                 </div>
@@ -409,7 +416,8 @@
                             <button type="button" class="btn btn-outline-secondary btn btn-light"
                                     data-bs-dismiss="modal">Hủy
                             </button>
-                            <button type="button" th:attr="onclick=|exportExcelMau()|" class="btn btn-primary">Download excel
+                            <button type="button" th:attr="onclick=|exportExcelMau()|" class="btn btn-primary">Download
+                                excel
                             </button>
                         </div>
                     </form>

@@ -459,7 +459,7 @@ function genPagingAndFillColor() {
 }
 
 function genPageZing() {
-    if (totalPages == 0) {
+    if (totalPages == 1) {
         $("#page").html(``)
     } else {
         $("#page").html(``)

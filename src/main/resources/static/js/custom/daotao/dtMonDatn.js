@@ -241,3 +241,34 @@ function importExcel () {
 function reload() {
     window.open('/dao-tao/mon-datn', '_self');
 }
+
+const totalPage = Number($("#totalPage").text());
+const currentPage = Number($("#currentPage").text());
+
+function changePage() {
+    let input = parseInt($("#inputPage").val());
+    if (input <= 0) {
+        input = 1;
+    }
+    if (input > totalPage) {
+        input = totalPage;
+    }
+    window.open(monDatnView + '?page=' + (input - 1), '_self');
+}
+
+function buttonChangePage(type) {
+    if (type == 1) {
+        if (currentPage == 0) {
+            window.open(monDatnView + '?page=' + (totalPage - 1), '_self');
+        } else {
+            window.open(monDatnView + '?page=' + (currentPage - 1), '_self');
+        }
+    }
+    if (type == 0) {
+        if (currentPage == (totalPage - 1)) {
+            window.open(monDatnView + '?page=0', '_self');
+        } else {
+            window.open(monDatnView + '?page=' + (currentPage + 1), '_self');
+        }
+    }
+}
