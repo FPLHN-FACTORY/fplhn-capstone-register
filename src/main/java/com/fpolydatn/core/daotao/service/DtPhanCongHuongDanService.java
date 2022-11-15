@@ -23,13 +23,13 @@ public interface DtPhanCongHuongDanService {
 
     Boolean delete(String idMon, String idGV);
 
-    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId, String dotDangKy);
+    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId);
 
     List<PhanCongHuongDan> addAll(List<PhanCongHuongDan> list);
 
     PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatn(String id, final DtFindPhanMonGiangVienHuongDanRequest req);
 
-    DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId, String doDangKyId);
+    DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId);
 
     List<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatnList(String coSoId, String maMonId);
 

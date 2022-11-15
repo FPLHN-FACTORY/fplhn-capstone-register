@@ -155,12 +155,6 @@ function update() {
         $("#errorMessageHanChuNhiemBoMonUpdate").text("");
     }
 
-    ngayBatDau.setSeconds(0);
-    ngayKetThuc.setSeconds(0);
-    hanSinhVien.setSeconds(0);
-    hanGiangVien.setSeconds(0);
-    hanChuNhiemBoMon.setSeconds(0);
-
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -305,12 +299,6 @@ function create() {
     } else {
         $("#errorMessageAddHanChuNhiemBoMon").text("");
     }
-
-    ngayBatDau.setSeconds(0);
-    ngayKetThuc.setSeconds(0);
-    hanSinhVien.setSeconds(0);
-    hanGiangVien.setSeconds(0);
-    hanChuNhiemBoMon.setSeconds(0);
 
     $.ajax({
         type: "GET",

@@ -4,19 +4,20 @@ const regexFE = new RegExp('[a-z0-9]+@fe.edu.vn');
 const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
 const regexSDT = new RegExp('(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}');
 const regexSoNhom = new RegExp('[0-9]+');
-$(document).ready(function () {
-    $('[data-toggle = "tooltip"]').tooltip();
-})
+
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
 $(document).ready(function () {
     $("#giang_vien_error").text("");
 });
-
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+})
 
 function clearData() {
     $("#tenGiangVien").val("");
+    $("#search_dot_dang_ky").val("")
 }
 
 function clearErrorUpdate() {
@@ -46,7 +47,7 @@ function openModalAddGVHD() {
     $("#modal_create").modal('show')
 }
 
-function addGVHD () {
+function addGVHD() {
     let tenGvhd = $("#tenGvhd").val().trim();
     let soNhomHuongDanToiDa = $("#soNhomHuongDanToiDa").val().trim();
     let tenTaiKhoan = $("#tenTaiKhoan").val().trim();
@@ -195,7 +196,7 @@ function openModalUpdateGiangVien(giangVienId, item) {
     });
 }
 
-function updateGVHD () {
+function updateGVHD() {
     let tenGvhd = $("#ten_giang_vien_update").val().trim();
     let soNhomHuongDanToiDa = $("#so_nhom_update").val().trim();
     let tenTaiKhoan = $("#ten_tai_khoan_update").val().trim();
@@ -257,7 +258,7 @@ function updateGVHD () {
     if (emailFpt.length === 0) {
         $("#errorEmailFptUpdate").text(" EmailFpt không được để trống");
         index++;
-    }  else if (emailFpt.trim().includes(" ")) {
+    } else if (emailFpt.trim().includes(" ")) {
         $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
         index++;
     } else if (regexFPT.test(emailFpt) == false) {
@@ -372,12 +373,14 @@ function openModalImportMau() {
     $("#modal_import_excel").modal('hide')
     $("#modal_import_mau").modal('show')
 }
+
 function openModalImport() {
     $("#labelFile").text('Choose file');
     $("#inputGroupFile01").val('');
     $("#import_excel_error").text('');
     $("#modal_import_excel").modal('show')
 }
+
 function exportFile() {
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
@@ -402,13 +405,16 @@ function importExcel() {
     let typeExcel = $("#inputGroupFile01").val();
     let indexDot = typeExcel.indexOf('.');
     let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    let dotDangKyId = $("#dot_dang_ky_import").val();
     if (typeExcel.trim().length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");
+    } else if (dotDangKyId == '') {
+        $("#import_excel_error").text("Hãy chọn đợt đăng ký để import giảng viên");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         var form = $('#form_import_excel')[0];
         $.ajax({
                 type: 'POST',
-                url: giangVienHuongDanApi + '/import',
+                url: giangVienHuongDanApi + '/import/' + dotDangKyId,
                 enctype: 'multipart/form-data',
                 processData: false,
                 data: new FormData(form),
@@ -463,40 +469,48 @@ function genPagingAndFillColor() {
 }
 
 function genPageZing() {
-    $("#page").html(``)
-    let templateHtml = ``;
-    let templatePageMid = ``;
-    let templatePageBefore = `
+    if (totalPages == 0) {
+        $("#page").html(``)
+    } else {
+        $("#page").html(``)
+        let templateHtml = ``;
+        let templatePageMid = ``;
+        let templatePageBefore = `
+                            <ul class="pagination justify-content-end">
                            <li style="color: #0a8cf0" class="page-item">
                                 <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
                            </li>
                            `;
-    let templatePageAfter = `
+        let templatePageAfter = `
                             <li style="color: #0a8cf0" class="page-item">
                                  <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
                             </li>
+                            </ul>
                             `;
-    for (let i = 0; i < totalPages; i++) {
-        templatePageMid += `<li class="page-item" >
+        for (let i = 0; i < totalPages; i++) {
+            templatePageMid += `<li class="page-item" >
                                          <a id="pageColor" class="page-link" onclick="loadTable(${i})">${i + 1}</a>
                                      </li>`
+        }
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter
+        if (totalPages == 1) {
+            templateHtml = ``;
+        }
+        $("#page").html(templateHtml);
     }
-    templateHtml = templatePageBefore + templatePageMid + templatePageAfter
-    if (totalPages == 1) {
-        templateHtml = ``;
-    }
-    $("#page").html(templateHtml);
 }
 
 function loadTable(count) {
     let tenGiangVien = $("#tenGiangVien").val();
+    let dotDangKyId = $("#search_dot_dang_ky").val()
     currentPage = count;
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&page=" + count,
+        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
+            totalPages = responseData.data.totalPages
             if (responseData.data.data.length == 0) {
                 $("#searchListGvhd").html(``)
                 $("#page").html(``)
@@ -510,7 +524,7 @@ function loadTable(count) {
                     return;
                 }
             } else {
-                totalPages = responseData.data.totalPages
+
                 $("#empty").html(``)
                 $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                     return `
@@ -525,7 +539,7 @@ function loadTable(count) {
                            type="button"
                            class="btn_pencil_square"
                            data-toggle="tooltip"
-                           title="Sửa "
+                           title="Sửa"
                            onclick="openModalUpdateGiangVien('${item.id}','${count}')">
                            <img src="/img/pencil-square.svg">
                         </button>
@@ -534,7 +548,7 @@ function loadTable(count) {
                             type="button"
                             class="btn_trash"
                             data-toggle="tooltip"
-                            title="Xóa "
+                            title="Xóa"
                             onclick="openModalRemoveGiangVien('${item.id}','${count}')">
                             <img src="/img/trash.svg">
                         </button>

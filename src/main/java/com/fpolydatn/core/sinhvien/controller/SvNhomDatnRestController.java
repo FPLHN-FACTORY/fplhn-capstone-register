@@ -40,10 +40,6 @@ public class SvNhomDatnRestController extends BaseController {
     private SvGiangVienHuongDanService svGiangVienHuongDanService;
 
     @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;
-
-    @Autowired
     private CommonHelper commonHelper;
 
     @GetMapping("/search-giang-vien")
@@ -64,13 +60,14 @@ public class SvNhomDatnRestController extends BaseController {
 
     @GetMapping("")
     public ResponseObject showDanhSachSinhVien(@RequestParam("id") String id) {
-        List<SvShowSinhVienTheoNhomResponse> listDanhSachSinhVien = svNhomDatnService.showDanhSachSinhVien(id);
+        List<SvShowSinhVienTheoNhomResponse> listDanhSachSinhVien = svNhomDatnService.showDanhSachSinhVien(id, session.getCoSoId());
         return new ResponseObject(listDanhSachSinhVien);
     }
 
     @PostMapping("/add")
     public ResponseObject addSinhVien(@RequestBody SvAddSinhVienRequest req) {
         req.setIdUser(session.getUserId());
+        req.setCoSoId(session.getCoSoId());
         return new ResponseObject(svNhomDatnService.addSinhVienTheoNhom(req));
     }
 
@@ -100,7 +97,7 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PutMapping("/chon-giang-vien")
     public ResponseObject chonGvhd(@RequestParam String idGiangVien){
-        return new ResponseObject(svNhomDatnService.chonGvhd(session.getUserId(), idGiangVien));
+        return new ResponseObject(svNhomDatnService.chonGvhd(session.getUserId(), idGiangVien, session.getCoSoId()));
     }
 
 }

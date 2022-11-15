@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author hungpv
@@ -45,29 +47,33 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     private FormUtils formUtils = new FormUtils();
 
-    private HashMap<String, MonDatn> monDatnHashMap;
+    private ConcurrentHashMap<String, MonDatn> monDatnHashMap;
 
-    private HashMap<String, ChuyenNganh> chuyenNganhHashMap;
+    private ConcurrentHashMap<String, ChuyenNganh> chuyenNganhHashMap;
 
-    private HashMap<String, MonDatn> nhomMonDatnHashMap;
+    private ConcurrentHashMap<String, MonDatn> nhomMonDatnHashMap;
 
     private DTMonDatnImport monDatnImport;
 
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
-        Page<DtMonDatnResponse> res = monDatnRepository.findByName(req, pageable);
+        Page<DtMonDatnResponse> res = monDatnRepository.getAllByCoSo(req, pageable);
         return new PageableObject(res);
     }
 
     @Override
-    public Boolean delete(final String id, String coSoId, String dotDangKyId) {
+    public Boolean delete(final String id, String coSoId) {
         Optional<MonDatn> monCheck = monDatnRepository.findById(id);
-        List<MonDatn> checkIdMon = monDatnRepository.findByIdMon(id, coSoId, dotDangKyId);
+        Integer countInPhanCongHuongDan = monDatnRepository.countInPhanCongHuongDan(id);
+        Integer countInSinhVien = monDatnRepository.countInSinhVien(id, coSoId);
         if (Objects.isNull(monCheck)) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
-        if (checkIdMon.size() != 0) {
+        if (countInPhanCongHuongDan != 0) {
+            throw new RestApiException(Message.KHONG_DUOC_XOA_MON);
+        }
+        if (countInSinhVien != 0) {
             throw new RestApiException(Message.KHONG_DUOC_XOA_MON);
         }
         monDatnRepository.delete(monCheck.get());
@@ -84,8 +90,8 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
-    public List<MonDatn> findByTenNhomMon() {
-        return monDatnRepository.findByTenNhomMon();
+    public List<MonDatn> findByTenNhomMon(String coSoid) {
+        return monDatnRepository.getNhomMonDatnByCoSo(coSoid);
     }
 
     @Override
@@ -108,7 +114,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     @Override
     public Boolean add(@Valid final DtCreateMonDatnRequest command) {
         MonDatn monDatn = formUtils.convertToObject(MonDatn.class, command);
-        MonDatn monDatnInDb = monDatnRepository.findByMaMon(monDatn.getMaMon());
+        MonDatn monDatnInDb = monDatnRepository.findByMaMon(monDatn.getMaMon(), command.getCoSoId());
         if (!Objects.isNull(monDatnInDb) && monDatnInDb.equals(command.getMaMon())) {
             throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
         } else {
@@ -123,15 +129,16 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     @Override
     public DtMessMonDatnReponse importExcel(MultipartFile file, String coSoId) {
-        monDatnHashMap = new HashMap<>();
-        chuyenNganhHashMap = new HashMap<>();
-        nhomMonDatnHashMap = new HashMap<>();
+        monDatnHashMap = new ConcurrentHashMap<>();
+        chuyenNganhHashMap = new ConcurrentHashMap<>();
+        nhomMonDatnHashMap = new ConcurrentHashMap<>();
         monDatnImport = new DTMonDatnImport();
         boNhoDem(coSoId);
         DtMessMonDatnReponse mess = new DtMessMonDatnReponse();
-        List<MonDatn> list = new ArrayList<>();
+        ConcurrentMap<String, MonDatn> list = new ConcurrentHashMap<>();
+        ConcurrentMap<String, ChuyenNganh> chuyenNganhs = new ConcurrentHashMap<>();
         if (!checkTypeFile(file)) {
-            return new DtMessMonDatnReponse(false, "file không đúng định dạng XLSX");
+            return new DtMessMonDatnReponse(false, "File không đúng định dạng XLSX");
         }
         List<DtCreateImportMonDatnRequest> importMonDatnRequests = null;
         try {
@@ -158,7 +165,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     return;
                 }
                 if (createMonDant.getTenMonDatn().trim().length() == 0) {
-                    System.out.println(createMonDant.getMaMon());
                     mess.setStatus(false);
                     mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
                     return;
@@ -173,11 +179,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được để trống"));
                     return;
                 }
-                if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
-                    mess.setStatus(false);
-                    mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Không tìm thấy tên chuyên ngành"));
-                    return;
-                }
                 if (createMonDant.getChuyenNganhId().trim().length() > 36) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được quá 36 ký tự"));
@@ -186,42 +187,64 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 if (createMonDant.getNhomMonDatnId().trim().length() != 0) {
                     if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
                         mess.setStatus(false);
-                        mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
                         return;
                     }
                     if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
                         mess.setStatus(false);
-                        mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
                         return;
                     }
                     if (createMonDant.getNhomMonDatnId().indexOf(" ") > 0) {
                         mess.setStatus(false);
-                        mess.setMessage(formErrors("F" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
                         return;
                     }
                 }
+
+                if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
+                    ChuyenNganh chuyenNganh = new ChuyenNganh();
+                    chuyenNganh.setTenChuyenNganh(createMonDant.getChuyenNganhId());
+                    chuyenNganh.setCoSoId(coSoId);
+                    chuyenNganhHashMap.put(createMonDant.getChuyenNganhId(), chuyenNganh);
+                    chuyenNganhs.put(chuyenNganh.getTenChuyenNganh(), chuyenNganh);
+                }
+
                 MonDatn monDatn = new MonDatn();
                 monDatn.setMaMon(createMonDant.getMaMon());
                 monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
                 monDatn.setCoSoId(coSoId);
-                monDatn.setChuyenNganhId(chuyenNganhHashMap.get(createMonDant.getChuyenNganhId()).getId());
+                monDatn.setChuyenNganhId(createMonDant.getChuyenNganhId());
+
                 if (createMonDant.getNhomMonDatnId().trim().length() == 0) {
                     monDatn.setNhomMonDatnId(createMonDant.getMaMon());
                 } else {
                     monDatn.setNhomMonDatnId(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getId());
                 }
                 monDatnHashMap.put(monDatn.getMaMon(), monDatn);
-                list.add(monDatn);
+                list.put(monDatn.getMaMon(), monDatn);
             });
             if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
-                mess.setStatus(true);
-                List<MonDatn> datnList = monDatnRepository.saveAll(list);
+
+                List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.saveAll(chuyenNganhs.values());
+                chuyenNganhList.parallelStream().forEach(el -> {
+                    chuyenNganhHashMap.put(el.getTenChuyenNganh(), el);
+                });
+
+                list.forEach( (k, v) -> {
+                    MonDatn monDatn = v;
+                    monDatn.setChuyenNganhId(chuyenNganhHashMap.get(monDatn.getChuyenNganhId()).getId());
+                    list.put(k, monDatn);
+                });
+
+                List<MonDatn> datnList = monDatnRepository.saveAll(list.values());
                 datnList.parallelStream().forEach(el -> {
                     if (el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
                         el.setNhomMonDatnId(el.getId());
                         monDatnRepository.save(el);
                     }
                 });
+                mess.setStatus(true);
             }
 
         } catch (Exception e) {

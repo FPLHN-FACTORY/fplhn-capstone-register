@@ -5,8 +5,11 @@ package com.fpolydatn.util;
  */
 
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.Constants;
+import com.fpolydatn.infrastructure.session.FpolyDatnSession;
 import com.fpolydatn.repository.NhomDatnRepository;
 import com.fpolydatn.repository.SinhVienRepository;
+import org.apache.commons.math3.analysis.function.Constant;
 import org.apache.commons.math3.analysis.function.Sinh;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,7 +34,8 @@ public class DailyCheckNhomDatn {
 
     @Scheduled(fixedDelay = 3600000)
     public void daiLyChecking() throws InterruptedException {
-        List<String> listNhomKhongDuDieuKien = nhomDatnRepository.listNhomKhongDuDieuKien(convertDateToTimeStampSecond());
+        List<String> listNhomKhongDuDieuKien = nhomDatnRepository.listNhomKhongDuDieuKien(convertDateToTimeStampSecond(),
+                Constants.MUOI_HAI_TIENG);
         if (listNhomKhongDuDieuKien != null) {
             List<SinhVien> listSinhVien = new ArrayList<>();
             for (String xx : listNhomKhongDuDieuKien) {

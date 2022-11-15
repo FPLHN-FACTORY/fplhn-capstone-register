@@ -354,33 +354,11 @@
                                         <div id="list_page">
                                             <nav th:if="${page.totalPages > 1}" aria-label="Page navigation ">
                                                 <ul class="pagination justify-content-end">
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                           th:style="${page.currentPage} == 0 ? 'pointer-events: none' : ''"
-                                                           th:attr="onclick=|viewTable('${page.currentPage}'-1)|"
-                                                           th:text="Back">
-                                                        </a>
-                                                    </li>
-                                                    <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                        <li class="page-item">
-                                                            <a class="page-link"
-                                                               th:style="${page.currentPage} == ${i} - 1 ? 'background-color : #0a8cf0; color : white' : ''"
-                                                               th:attr="onclick=|viewTable('${i}'-1)|"
-                                                               th:text="${i}">
-                                                            </a>
-                                                        </li>
-                                                    </div>
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                           th:style="${page.currentPage} == ${page.totalPages} - 1 ? 'pointer-events: none' : ''"
-                                                           th:attr="onclick=|viewTable('${page.currentPage}'+1)|"
-                                                           th:text="Next">
-                                                        </a>
-                                                    </li>
                                                 </ul>
                                             </nav>
                                         </div>
-
+                                        <input hidden th:value="${page.totalPages}" id="totalPages">
+                                        <input hidden th:value="${page.currentPage}" id="currentPage">
                                         <div id="is_empty" class="text-center">
                                             <div th:if="${page.data.isEmpty()}">
                                                 <span>Không có dữ liệu</span>

@@ -64,7 +64,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
 
-        DotDangKy result = checkDateDotDangKy(request, null);
+        DotDangKy result = checkDateDotDangKy(request, null, createDotDangKyRequest.getCoSoId());
         DotDangKy dotDangKy = new DotDangKy();
         dotDangKy.setTenDotDangKy(createDotDangKyRequest.getTenDotDangKy());
         dotDangKy.setNgayBatDau(result.getNgayBatDau());
@@ -91,7 +91,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         request.setHanGiangVien(dtUpdateDotDangKyRequest.getHanGiangVien());
         request.setHanChuNhiemBoMon(dtUpdateDotDangKyRequest.getHanChuNhiemBoMon());
 
-        DotDangKy result = checkDateDotDangKy(request, dtUpdateDotDangKyRequest.getId());
+        DotDangKy result = checkDateDotDangKy(request, dtUpdateDotDangKyRequest.getId(), dtUpdateDotDangKyRequest.getCoSoId());
         DotDangKy dotDangKy = dotDangKyCheck.get();
         dotDangKy.setTenDotDangKy(dtUpdateDotDangKyRequest.getTenDotDangKy());
         dotDangKy.setNgayBatDau(result.getNgayBatDau());
@@ -136,7 +136,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     }
 
     @Override
-    public DotDangKy checkDateDotDangKy(DtBaseDotDangKyRequest request, String id) {
+    public DotDangKy checkDateDotDangKy(DtBaseDotDangKyRequest request, String id, String coSoId) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
         Date ngayBatDau = null;
         Date ngayKetThuc = null;
@@ -152,11 +152,6 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         } catch (ParseException e) {
             throw new RestApiException(Message.INVALID_DATE);
         }
-        ngayBatDau.setSeconds(0);
-        ngayKetThuc.setSeconds(0);
-        hanSinhVien.setSeconds(0);
-        hanGiangVien.setSeconds(0);
-        hanChuNhiemBoMon.setSeconds(0);
         Long ngayBatDauLong = ngayBatDau.getTime();
         Long ngayKetThucLong = ngayKetThuc.getTime();
         Long hanSinhVienLong = hanSinhVien.getTime();
@@ -165,7 +160,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         if (ngayKetThucLong < ngayBatDauLong) {
             throw new RestApiException((Message.INVALID_NGAY_KET_THUC));
         }
-        List<DotDangKy> listDotDangKy = dtDotDangKyRepository.findAll();
+        List<DotDangKy> listDotDangKy = dtDotDangKyRepository.getAllByCoSo(coSoId);
         for (DotDangKy dotDangKy : listDotDangKy) {
             if (id != null) {
                 if (dotDangKy.getId().equals(id)) {

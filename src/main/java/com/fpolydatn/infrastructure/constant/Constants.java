@@ -1,6 +1,6 @@
 package com.fpolydatn.infrastructure.constant;
 
-public class Constants {
+public final class Constants {
 
     private Constants() {
     }
@@ -23,4 +23,9 @@ public class Constants {
 
     public static final String REGEX_DATE ="^(0[1-9]|1[012])/(0[1-9]|[12][0-9]|[3][01])/\\\\d{4}$";
 
+    public static final int SO_THANH_VIEN_TOI_DA = 7;
+
+    public static final int SO_NHOM_HUONG_DAN_TOI_DA = 7;
+
+    public static final long MUOI_HAI_TIENG = 43200000L;
 }

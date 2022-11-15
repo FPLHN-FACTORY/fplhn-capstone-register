@@ -36,6 +36,7 @@ public class DtGiangVienController extends BaseController {
     @GetMapping("")
     public String viewGiangVienHD(Model model, final DtFindGiangVienHDRequest rep) {
         String coSoid = session.getCoSoId();
+        rep.setCoSoId(coSoid);
         PageableObject<DtGiangVienHDResponse> listGiangVien = giangVienHDService.search(rep);
         List<SimpleEntityProj> listDotDangKy = dangKyService.findAllSimpleEntity(coSoid);
         model.addAttribute("listDotDangKy", listDotDangKy);

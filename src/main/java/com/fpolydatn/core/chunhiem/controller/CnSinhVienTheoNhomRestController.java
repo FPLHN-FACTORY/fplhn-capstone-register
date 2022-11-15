@@ -68,10 +68,10 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     }
 
     @GetMapping("/listNhomDatnNoGroup")
-    public ResponseObject getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
+    public ResponseObject getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem) {
         req.setCoSoId(session.getCoSoId());
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
-        return new ResponseObject(sinhVienTheoNhomService.getListSinhVienNoGroup(req));
+        return new ResponseObject(sinhVienTheoNhomService.getListSinhVienNoGroup(req, idChuNhiem));
     }
 
     @GetMapping("/listGvhd")

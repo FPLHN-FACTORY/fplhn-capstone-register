@@ -37,18 +37,13 @@ function openModalCreateChuyenNganh() {
 
 function create() {
     let tenChuyenNganh = $("#tenChuyenNganhAdd").val();
-    let CNBMId = $("#tenCNBMhAdd").val();
+    let CNBMId = $("#tenCNBMhAdd").val() == 'none' ? null : $("#tenCNBMhAdd").val();
     let chuyenNganhRequest = {};
     chuyenNganhRequest["chuNhiemBoMon"] = CNBMId;
     chuyenNganhRequest["tenChuyenNganh"] = tenChuyenNganh;
     let index = 0;
     if (tenChuyenNganh.trim().length === 0) {
         $("#chuyen_nganh_add_error").text("Tên chuyên ngành không được để trống");
-        index++;
-    }
-
-    if (CNBMId == null) {
-        $("#CNBM_add_error").text("Không có chủ nhiệm bộ môn");
         index++;
     }
 
@@ -93,8 +88,7 @@ function openModalUpdateChuyenNganh(chuyenNganhId, tenCNBM) {
         success: function (responseData) {
             $("#id_chuyen_nganh_update").val(responseData.data.id);
             $("#tenChuyenNganhUpdate").val(responseData.data.tenChuyenNganh);
-            $("#CNBMHienTai").val(responseData.data.chuNhiemBoMon);
-            $("#CNBMHienTai").text(tenCNBM);
+            $("#tenCNBMhUpdate").val(responseData.data.chuNhiemBoMon == null ? 'none' : responseData.data.chuNhiemBoMon);
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -104,9 +98,8 @@ function openModalUpdateChuyenNganh(chuyenNganhId, tenCNBM) {
 
 function update() {
     let tenChuyenNganh = $("#tenChuyenNganhUpdate").val();
-    console.log(tenChuyenNganh);
     let chuyenNganhId = $("#id_chuyen_nganh_update").val();
-    let tenCNBM = $("#tenCNBMhUpdate").val();
+    let tenCNBM = $("#tenCNBMhUpdate").val() == 'none' ? null : $("#tenCNBMhUpdate").val();
     let chuyenNganhrequest = {};
     chuyenNganhrequest["tenChuyenNganh"] = tenChuyenNganh;
     chuyenNganhrequest["chuNhiemBoMon"] = tenCNBM;
@@ -134,6 +127,7 @@ function update() {
                 });
             },
             error: function (e) {
+                console.log(e)
                 if (e.responseJSON.message == 'Chuyen nganh da ton tai') {
                     $("#chuyennganh_Update_error").text("Chuyên ngành đã tồn tại trong đợt");
                 }
@@ -174,10 +168,10 @@ function remove(chuyenNganhId) {
                         });
                     },
                     error: function (e) {
-                        if (e.responseJSON.message != null) {
+                        if (e.responseJSON.message == 'Chuyen nganh khong duoc xoa') {
                             bootbox.alert({
-                                message: '<div style="color: red">Chuyên ngành đang tồn tại trong đợt đăng ký không thể xóa</div>',
-                                backdrop: true,
+                                message: 'Chuyên ngành đang có sinh viên, môn DATN. Không thể xóa!',
+                                backdrop: true
                             });
                         }
                     }

@@ -19,5 +19,4 @@ public class DtCreateDotDangKyRequest extends DtBaseDotDangKyRequest {
     @NotBlank
     private String hocKyId;
 
-    private String coSoId;
 }

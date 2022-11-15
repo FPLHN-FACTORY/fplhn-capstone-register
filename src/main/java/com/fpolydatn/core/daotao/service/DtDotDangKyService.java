@@ -35,6 +35,6 @@ public interface DtDotDangKyService {
 
     DtDetailDotDangKyResponse detail(String id, String coSoId);
 
-    DotDangKy checkDateDotDangKy(DtBaseDotDangKyRequest request, String id);
+    DotDangKy checkDateDotDangKy(DtBaseDotDangKyRequest request, String id, String coSoId);
 
 }

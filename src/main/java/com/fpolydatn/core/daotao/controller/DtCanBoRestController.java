@@ -53,7 +53,7 @@ public final class DtCanBoRestController extends BaseController {
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
-        return new ResponseObject(canBoService.delete(id));
+        return new ResponseObject(canBoService.delete(id, session.getCoSoId()));
     }
 
     @PostMapping("/import")
