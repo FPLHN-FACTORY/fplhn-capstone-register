@@ -328,7 +328,7 @@ function openModalRemoveGiangVien(giangVienId, item) {
                                 message: 'Xóa thành công',
                                 backdrop: true,
                                 callback: function () {
-                                    loadTable(item);
+                                    window.open(giangVienHuongDanView, '_self');
                                 }
                             });
                         }
