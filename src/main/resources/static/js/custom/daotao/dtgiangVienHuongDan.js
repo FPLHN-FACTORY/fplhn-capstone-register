@@ -412,7 +412,6 @@ function importExcel() {
         $("#import_excel_error").text("Hãy chọn đợt đăng ký để import giảng viên");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         var form = $('#form_import_excel')[0];
-        alert(dotDangKyId)
         $.ajax({
                 type: 'POST',
                 url: giangVienHuongDanApi + '/import/' + dotDangKyId,
@@ -470,31 +469,35 @@ function genPagingAndFillColor() {
 }
 
 function genPageZing() {
-    $("#page").html(``)
-    let templateHtml = ``;
-    let templatePageMid = ``;
-    let templatePageBefore = `
+    if (totalPages == 0) {
+        $("#page").html(``)
+    } else {
+        $("#page").html(``)
+        let templateHtml = ``;
+        let templatePageMid = ``;
+        let templatePageBefore = `
                             <ul class="pagination justify-content-end">
                            <li style="color: #0a8cf0" class="page-item">
                                 <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
                            </li>
                            `;
-    let templatePageAfter = `
+        let templatePageAfter = `
                             <li style="color: #0a8cf0" class="page-item">
                                  <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
                             </li>
                             </ul>
                             `;
-    for (let i = 0; i < totalPages; i++) {
-        templatePageMid += `<li class="page-item" >
+        for (let i = 0; i < totalPages; i++) {
+            templatePageMid += `<li class="page-item" >
                                          <a id="pageColor" class="page-link" onclick="loadTable(${i})">${i + 1}</a>
                                      </li>`
+        }
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter
+        if (totalPages == 1) {
+            templateHtml = ``;
+        }
+        $("#page").html(templateHtml);
     }
-    templateHtml = templatePageBefore + templatePageMid + templatePageAfter
-    if (totalPages == 1) {
-        templateHtml = ``;
-    }
-    $("#page").html(templateHtml);
 }
 
 function loadTable(count) {
