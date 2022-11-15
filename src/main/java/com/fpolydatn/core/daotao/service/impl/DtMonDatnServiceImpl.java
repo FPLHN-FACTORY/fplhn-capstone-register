@@ -144,6 +144,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         DtMessMonDatnReponse mess = new DtMessMonDatnReponse();
         ConcurrentMap<String, MonDatn> list = new ConcurrentHashMap<>();
         ConcurrentMap<String, ChuyenNganh> chuyenNganhs = new ConcurrentHashMap<>();
+        ConcurrentMap<String, MonDatn> nhomMons = new ConcurrentHashMap<>();
         if (!checkTypeFile(file)) {
             return new DtMessMonDatnReponse(false, "File không đúng định dạng XLSX");
         }
@@ -197,11 +198,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                         mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
                         return;
                     }
-                    if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId()) && !createMonDant.getMaMon().equals(createMonDant.getNhomMonDatnId())) {
-                        mess.setStatus(false);
-                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Không tìm thấy mã nhóm môn"));
-                        return;
-                    }
                     if (createMonDant.getNhomMonDatnId().indexOf(" ") > 0) {
                         mess.setStatus(false);
                         mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
@@ -217,37 +213,53 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     chuyenNganhs.put(chuyenNganh.getTenChuyenNganh(), chuyenNganh);
                 }
 
+                if(!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())
+                        && createMonDant.getNhomMonDatnId().trim().length() != 0) {
+                    MonDatn nhomMon = new MonDatn();
+                    nhomMon.setMaMon(createMonDant.getNhomMonDatnId());
+                    nhomMon.setCoSoId(coSoId);
+                    nhomMon.setChuyenNganhId(createMonDant.getChuyenNganhId());
+                    nhomMon.setTenMonDatn(createMonDant.getNhomMonDatnId());
+                    nhomMon.setNhomMonDatnId(null);
+                    nhomMonDatnHashMap.put(nhomMon.getMaMon(), nhomMon);
+                    nhomMons.put(nhomMon.getMaMon(), nhomMon);
+                }
+
                 MonDatn monDatn = new MonDatn();
                 monDatn.setMaMon(createMonDant.getMaMon());
                 monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
                 monDatn.setCoSoId(coSoId);
                 monDatn.setChuyenNganhId(createMonDant.getChuyenNganhId());
-
-                if (createMonDant.getNhomMonDatnId().trim().length() == 0) {
-                    monDatn.setNhomMonDatnId(createMonDant.getMaMon());
-                } else {
-                    monDatn.setNhomMonDatnId(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getId());
-                }
+                monDatn.setNhomMonDatnId(createMonDant.getNhomMonDatnId());
                 monDatnHashMap.put(monDatn.getMaMon(), monDatn);
                 list.put(monDatn.getMaMon(), monDatn);
             });
-            if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
 
+            if(chuyenNganhs.values().size() != 0) {
                 List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.saveAll(chuyenNganhs.values());
                 chuyenNganhList.parallelStream().forEach(el -> {
                     chuyenNganhHashMap.put(el.getTenChuyenNganh(), el);
                 });
+            }
 
-                list.forEach( (k, v) -> {
-                    MonDatn monDatn = v;
-                    monDatn.setChuyenNganhId(chuyenNganhHashMap.get(monDatn.getChuyenNganhId()).getId());
-                    list.put(k, monDatn);
+            if(nhomMons.values().size() != 0) {
+                List<MonDatn> nhoMonDatnList = monDatnRepository.saveAll(nhomMons.values());
+                nhoMonDatnList.parallelStream().forEach(el -> {
+                    el.setChuyenNganhId(chuyenNganhHashMap.get(el.getChuyenNganhId()).getId());
+                    nhomMonDatnHashMap.put(el.getMaMon(), el);
+                    monDatnRepository.save(el);
                 });
+            }
+            if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
 
                 List<MonDatn> datnList = monDatnRepository.saveAll(list.values());
                 datnList.parallelStream().forEach(el -> {
-                    if (el.getMaMon().equalsIgnoreCase(el.getNhomMonDatnId())) {
+                    el.setChuyenNganhId(chuyenNganhHashMap.get(el.getChuyenNganhId()).getId());
+                    if(el.getNhomMonDatnId().trim().length() == 0) {
                         el.setNhomMonDatnId(el.getId());
+                        monDatnRepository.save(el);
+                    } else {
+                        el.setNhomMonDatnId(nhomMonDatnHashMap.get(el.getNhomMonDatnId()).getId());
                         monDatnRepository.save(el);
                     }
                 });
