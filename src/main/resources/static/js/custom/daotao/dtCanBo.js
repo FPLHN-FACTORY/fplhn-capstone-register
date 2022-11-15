@@ -6,7 +6,7 @@ const regexSoDienThoai = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/;
 
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
-    $("#targerLink").text(canBoView);
+    $("#targetLink").text(canBoView);
 });
 
 function clearData() {

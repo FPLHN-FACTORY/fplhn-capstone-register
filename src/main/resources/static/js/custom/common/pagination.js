@@ -1,6 +1,6 @@
 const totalPage = Number($("#totalPage").text());
 const currentPage = Number($("#currentPage").text());
-const targetLink = $("#targerLink").text();
+const targetLink = $("#targetLink").text();
 
 function changePage() {
     if ( $("#inputPage").val().length != 0) {

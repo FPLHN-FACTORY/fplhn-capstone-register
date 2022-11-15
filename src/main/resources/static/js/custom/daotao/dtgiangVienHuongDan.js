@@ -3,8 +3,8 @@ const giangVienHuongDanView = '/dao-tao/giang-vien-huong-dan';
 const regexSDT = new RegExp('\\d+');
 const regexSoNhom = new RegExp('[0-9]+');
 
-let totalPages = $("#totalPages").val()
-let currentPage = $("#currentPage").val()
+let totalPages = $("#totalPages").val();
+let currentPage = $("#currentPage").val();
 
 $(document).ready(function () {
     $("#giang_vien_error").text("");
@@ -14,8 +14,8 @@ $(document).ready(function () {
 })
 
 function clearData() {
-    $("#tenGiangVien").val("");
-    $("#search_dot_dang_ky").val("")
+    $("#tenGiangVien").val("");;
+    $("#search_dot_dang_ky").val("");
 }
 
 function clearErrorUpdate() {
@@ -137,7 +137,6 @@ function addGVHD() {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                console.log(responseData)
                 if (responseData.data.message == null) {
                     window.open(giangVienHuongDanView, '_self');
                     $("#modal_create").modal("hide");
@@ -438,59 +437,55 @@ function importFileMau() {
         });
     }
 }
+
 function changeInput() {
-    let value = document.querySelector("#valueInput").value
-    if (Number(value) <= 0) {
-        value = 1;
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadTable(value - 1);
     }
-    if (Number(value) > totalPages) {
-        value = totalPages;
-    }
-    loadTable(value - 1);
 }
 
-genPagingAndFillColor();
+genPaging();
 
-function genPagingAndFillColor() {
-    genPageZing()
-    let colorPage = document.querySelectorAll("#pageColor");
-    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
-    colorPage[currentPage].style.color = 'white';
-}
-
-function genPageZing() {
+function genPaging() {
     if (totalPages == 1) {
-        $("#page").html(``)
+        $("#page").html('');
     } else {
-        $("#page").html(``)
-        let templateHtml = ``;
         let templatePageMid = ``;
         let templatePageBefore = `
-                            <ul class="pagination justify-content-end">
-                           <li style="color: #0a8cf0" class="page-item">
-                                <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
-                           </li>
-                           `;
-        let templatePageAfter = `
-                            <li style="color: #0a8cf0" class="page-item">
-                                 <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
-                            </li>
-                            </ul>
-                            `;
-        templatePageMid += `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="loadTable(${currentPage - 1})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+        templatePageMid = `
                             <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
-                             <input style="border: none; width: 55px" value="/   ${totalPages}" readonly>`
-        templateHtml = templatePageBefore + templatePageMid + templatePageAfter
-        if (totalPages == 1) {
-            templateHtml = ``;
-        }
-        $("#page").html(templateHtml);
+                             <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
+        let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="loadTable(${currentPage + 1})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+        let templateHtml = ``;
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        $("#page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
     }
 }
 
 function loadTable(count) {
+    if (count == -1) {
+        count = totalPages - 1;
+    }
+    if (count == totalPages) {
+        count = 0;
+    }
     let tenGiangVien = $("#tenGiangVien").val();
-    let dotDangKyId = $("#search_dot_dang_ky").val()
+    let dotDangKyId = $("#search_dot_dang_ky").val();
     currentPage = count;
     $.ajax({
         type: "GET",
@@ -498,21 +493,12 @@ function loadTable(count) {
         url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
-            totalPages = responseData.data.totalPages
+            totalPages = responseData.data.totalPages;
             if (responseData.data.data.length == 0) {
-                $("#searchListGvhd").html(``)
-                $("#page").html(``)
-                $("#empty").html(`<h3>Không có dữ liệu</h3>`)
-                if (responseData.data.totalPages == 1) {
-                    loadTable(0);
-                    return;
-                }
-                if (count == responseData.data.totalPages && count != 0) {
-                    loadTable(count - 1);
-                    return;
-                }
+                $("#searchListGvhd").html(``);
+                $("#page").html(``);
+                $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {
-
                 $("#empty").html(``)
                 $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                     return `
@@ -549,8 +535,8 @@ function loadTable(count) {
                    </td>
                </tr>
                `
-                }))
-                genPagingAndFillColor()
+                }));
+                genPaging();
             }
         },
         error: function (e) {

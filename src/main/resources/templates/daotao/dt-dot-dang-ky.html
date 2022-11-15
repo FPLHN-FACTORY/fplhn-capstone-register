@@ -163,16 +163,16 @@
                                     </div>
                                     <!--Start View Table-->
                                     <div class="table-responsive mt-3">
-                                        <table id="custom-table"
+                                        <table style="text-align: center" id="custom-table"
                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                             <thead class="table-primary">
-                                            <th>STT</th>
+                                            <th width="50px">STT</th>
                                             <th>Tên học kỳ</th>
                                             <th>Tên đợt</th>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                             <th>Trạng thái</th>
-                                            <th>Chức năng</th>
+                                            <th width="90px">Chức năng</th>
                                             </thead>
                                             <tbody>
                                             <th:block th:each="dotDangKy, i: ${page.data}">
@@ -206,7 +206,7 @@
                                             </tbody>
                                         </table>
                                         <!-- Paging-->
-                                        <span id="targerLink" hidden></span>
+                                        <span id="targetLink" hidden></span>
                                         <span id="totalPage" th:text="${page.totalPages}" hidden></span>
                                         <span id="currentPage" th:text="${page.currentPage}" hidden></span>
                                         <nav th:if="${page.totalPages > 1}" aria-label="Page navigation ">

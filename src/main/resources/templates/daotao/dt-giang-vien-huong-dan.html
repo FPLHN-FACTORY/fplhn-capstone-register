@@ -63,6 +63,7 @@
                                             <label class="fillter-name col-4 text-center">Đợt đăng ký</label>
                                             <br>
                                             <select class="form-control col-6" id="search_dot_dang_ky">
+                                                <option value="">Chọn đợt đăng ký</option>
                                                 <option th:each="item : ${listDotDangKy}"
                                                         th:value="${item.getId()}"
                                                         th:text="${item.getName()}"></option>
@@ -79,7 +80,7 @@
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a href="#"
-                                               class="btn btn-danger text-white" onclick="clearData();">
+                                               class="btn btn-danger text-white" th:attr="onclick=|clearData()|">
                                                 Làm mới bộ lọc
                                             </a>
                                         </div>
@@ -377,6 +378,7 @@
                                     <div class="table-responsive mt-3">
                                         <div>
                                             <table id="custom-table"
+                                                   style="text-align: center"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead class="table-primary">
                                                 <th width="50px">STT</th>
@@ -425,15 +427,9 @@
                                                 </tbody>
                                             </table>
                                             <!-- Paging-->
-
                                             <input hidden th:value="${page.totalPages}" id="totalPages">
                                             <input hidden th:value="${page.currentPage}" id="currentPage">
                                             <div id="page">
-                                                <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
-                                                    <ul class="pagination justify-content-end">
-
-                                                    </ul>
-                                                </nav>
                                             </div>
                                         </div>
                                         <div id="empty">
