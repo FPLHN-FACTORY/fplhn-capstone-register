@@ -196,10 +196,12 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         sinhVien.get().setNhomId(nhomDatn.getId());
         sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());
         svSinhVienRepository.save(sinhVien.get());
-        String[] email = new String[]{sinhVien.get().getEmail()};
-        String[] message = new String[]{"Mật khẩu nhóm DATN của bạn là: " + nhomDatn.getMatKhau()};
-        emailSender.sendEmail(email, "[FCR] Thông báo mật khẩu nhóm",
-                "Tạo nhóm thành công", message);
+        if (nhomDatn.getMatKhau() != null) {
+            String[] email = new String[]{sinhVien.get().getEmail()};
+            String[] message = new String[]{"Mật khẩu nhóm DATN của bạn là: " + nhomDatn.getMatKhau()};
+            emailSender.sendEmail(email, "[FCR] Thông báo mật khẩu nhóm",
+                    "Tạo nhóm thành công", message);
+        }
         return nhomDatn;
     }
 

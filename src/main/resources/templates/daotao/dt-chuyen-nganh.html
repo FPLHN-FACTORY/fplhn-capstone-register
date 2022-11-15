@@ -264,7 +264,6 @@
                     <div class="form-group">
                         <div>
                             <label class="col-form-label">Chủ nhiệm bộ môn: </label>
-                            <input id="CNBM" th:value=${listCanBo.size()} hidden/>
                             <select id="tenCNBMhAdd" class="form-control">
                                 <option value="none">Chưa có CNBM</option>
                                 <option th:each="canBo : ${listCanBo}"

@@ -24,15 +24,6 @@ function openModalCreateChuyenNganh() {
     $("#chuyen_nganh_add_error").text("");
     $("#CNBM_add_error").text("");
     $("#tenChuyenNganhAdd").val('');
-    let cnbm = $("#CNBM").val();
-    if (cnbm != 0) {
-        $("#tenCNBMhAdd").show();
-        $("#create_chuyenNganh").show();
-    } else {
-        $("#create_chuyenNganh").hide();
-        $("#tenCNBMhAdd").hide();
-        $("#CNBM_add_error").text("Không còn chủ nhiệm bộ môn");
-    }
 }
 
 function create() {
