@@ -7,6 +7,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
+    $("#targerLink").text(chuyenNganhView);
 });
 
 function clearData() {
