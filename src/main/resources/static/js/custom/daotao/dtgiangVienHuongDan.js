@@ -4,16 +4,16 @@ const regexFE = new RegExp('[a-z0-9]+@fe.edu.vn');
 const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
 const regexSDT = new RegExp('(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}');
 const regexSoNhom = new RegExp('[0-9]+');
-$(document).ready(function () {
-    $('[data-toggle = "tooltip"]').tooltip();
-})
+
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
 $(document).ready(function () {
     $("#giang_vien_error").text("");
 });
-
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+})
 
 function clearData() {
     $("#tenGiangVien").val("");
@@ -459,6 +459,7 @@ function importFileMau() {
         });
     }
 }
+
 genPagingAndFillColor();
 
 function genPagingAndFillColor() {
@@ -473,6 +474,7 @@ function genPageZing() {
     let templateHtml = ``;
     let templatePageMid = ``;
     let templatePageBefore = `
+                            <ul class="pagination justify-content-end">
                            <li style="color: #0a8cf0" class="page-item">
                                 <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
                            </li>
@@ -481,6 +483,7 @@ function genPageZing() {
                             <li style="color: #0a8cf0" class="page-item">
                                  <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
                             </li>
+                            </ul>
                             `;
     for (let i = 0; i < totalPages; i++) {
         templatePageMid += `<li class="page-item" >
@@ -496,14 +499,15 @@ function genPageZing() {
 
 function loadTable(count) {
     let tenGiangVien = $("#tenGiangVien").val();
-    let dotDangKyId = $("#search_dot_dang_ky").val();
+    let dotDangKyId = $("#search_dot_dang_ky").val()
     currentPage = count;
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&page=" + count + "&dotDangKyId=" +dotDangKyId,
+        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
+            totalPages = responseData.data.totalPages
             if (responseData.data.data.length == 0) {
                 $("#searchListGvhd").html(``)
                 $("#page").html(``)
@@ -517,7 +521,7 @@ function loadTable(count) {
                     return;
                 }
             } else {
-                totalPages = responseData.data.totalPages
+
                 $("#empty").html(``)
                 $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                     return `
@@ -527,11 +531,12 @@ function loadTable(count) {
                    <td >${item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa}</td>
                    <td >${item.soDienThoai}</td>
                    <td >${item.emailFe}</td>
-                   <td><button
+                   <td>
+                       <button
                            type="button"
                            class="btn_pencil_square"
                            data-toggle="tooltip"
-                           title="Sửa "
+                           title="Sửa"
                            onclick="openModalUpdateGiangVien('${item.id}','${count}')">
                            <img src="/img/pencil-square.svg">
                         </button>
@@ -540,7 +545,7 @@ function loadTable(count) {
                             type="button"
                             class="btn_trash"
                             data-toggle="tooltip"
-                            title="Xóa "
+                            title="Xóa"
                             onclick="openModalRemoveGiangVien('${item.id}','${count}')">
                             <img src="/img/trash.svg">
                         </button>
