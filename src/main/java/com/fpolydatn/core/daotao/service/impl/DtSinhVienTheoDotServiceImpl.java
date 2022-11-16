@@ -210,7 +210,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
                 sinhVienEntity.setTenSinhVien(sinhVien.getTenSinhVien());
                 sinhVienEntity.setMaSinhVien(sinhVien.getMaSinhVien());
-                sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
+                if (sinhVien.getSoDienThoai() == null) {
+                    sinhVienEntity.setSoDienThoai("");
+                } else {
+                    sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
+                }
                 sinhVienEntity.setEmail(sinhVien.getEmail());
                 sinhVienEntity.setKhoa(sinhVien.getKhoa());
                 sinhVienEntity.setCoSoId(coSoId);
@@ -363,7 +367,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             try {
                 sinhVienRepository.saveAll(listSvKhongDat.values());
                 response.setMessage("Đã loại sinh viên không đủ điều kiện");
-            } catch (Exception e){
+            } catch (Exception e) {
                 response.setStatus(false);
                 response.setMessage("Lỗi hệ thống");
                 return response;
