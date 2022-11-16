@@ -3,6 +3,8 @@ package com.fpolydatn.core.daotao.controller;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienRequest;
+import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateSinhVienTheoDotRequest;
@@ -98,6 +100,13 @@ public class DtSinhVienTheoDotRestController extends BaseController {
         String coSoId = session.getCoSoId();
         updateSinhVienTheoDotRequest.setCoSoId(coSoId);
         return new ResponseObject(sinhVienService.update(updateSinhVienTheoDotRequest));
+    }
+
+    @PostMapping()
+    public ResponseObject update(@RequestBody DtCreateSinhVienRequest createSinhVienRequest) {
+        String coSoId = session.getCoSoId();
+        createSinhVienRequest.setCoSoId(coSoId);
+        return new ResponseObject(sinhVienService.create(createSinhVienRequest));
     }
 
 }

@@ -3,6 +3,7 @@ package com.fpolydatn.core.daotao.service.impl;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotExport;
 import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotImport;
+import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienRequest;
 import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateSinhVienTheoDotRequest;
@@ -24,6 +25,7 @@ import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import com.zaxxer.hikari.util.ConcurrentBag;
 import com.fpolydatn.util.FormUtils;
+import org.apache.commons.math3.analysis.function.Sinh;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -438,18 +440,92 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
     @Override
     public SinhVien update(DtUpdateSinhVienTheoDotRequest command) {
+
         Optional<SinhVien> checkSinhVien = sinhVienRepository.findById(command.getId());
-        SinhVien sinhVienTr = formUtils.convertToObject(SinhVien.class, command);
-        String sinhVienInDb = sinhVienRepository.findBySinhVienUpdate(sinhVienTr.getMaSinhVien(),
-                sinhVienTr.getId(), sinhVienTr.getCoSoId(), sinhVienTr.getDotDangKyId());
-        System.out.println(sinhVienInDb);
-        if (!Objects.isNull(sinhVienInDb) && sinhVienInDb.equals(command.getMaSinhVien())) {
-            throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
+
+        String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSVUpdate(command.getMaSinhVien(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+        if (idSinhVienCheckMaSV != null) {
+            throw new RestApiException(Message.SINH_VIEN_ALREADY_EXIST);
         }
+
+        String idSinhVienCheckEmail = sinhVienRepository.findSinhVienByEmailUpdate(command.getEmail(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+        if (idSinhVienCheckEmail != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+
+        if (!command.getMaNhom().trim().equals("")) {
+            String idNhomDatnCheck = sinhVienRepository.findNhomDatnByMaNhomUpdate(command.getMaNhom(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+            if (idNhomDatnCheck == null) {
+                throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+            }
+        }
+
+        if (!command.getMaNhom().trim().equals("")) {
+            Short sLThanhVien = sinhVienRepository.countSoThanhVienUpdate(command.getMaNhom(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+            if (sLThanhVien >= 7) {
+                throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
+            }
+        }
+
         SinhVien sinhVien = checkSinhVien.get();
         sinhVien.setMaSinhVien(command.getMaSinhVien());
         sinhVien.setTenSinhVien(command.getTenSinhVien());
+        sinhVien.setEmail(command.getEmail());
+        sinhVien.setSoDienThoai(command.getSdt());
         sinhVien.setKhoa(command.getKhoa());
+        sinhVien.setDotDangKyId(command.getDotDangKyId());
+        if ("".equals(command.getMaNhom().trim())) {
+            sinhVien.setNhomId(null);
+        }
+        sinhVien.setMonChuongTrinhId(command.getMonChuongTrinh());
+        sinhVien.setChuyenNganhId(command.getChuyenNganhId());
+        if (command.getTrangThai() == 0) {
+            sinhVien.setTrangThai(TrangThaiSinhVien.DU_DIEU_KIEN);
+        } else {
+            sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+        }
+        return sinhVienRepository.save(sinhVien);
+    }
+
+    @Override
+    public SinhVien create(DtCreateSinhVienRequest command) {
+        SinhVien sinhVien = new SinhVien();
+
+        String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSV(command.getMaSinhVien(), command.getCoSoId(), command.getDotDangKyId());
+        if (idSinhVienCheckMaSV != null) {
+            throw new RestApiException(Message.SINH_VIEN_ALREADY_EXIST);
+        }
+
+        String idSinhVienCheckEmail = sinhVienRepository.findSinhVienByEmail(command.getEmail(), command.getCoSoId(), command.getDotDangKyId());
+        if (idSinhVienCheckEmail != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+
+        if (!command.getMaNhom().trim().equals("")) {
+            String idNhomDatnCheck = sinhVienRepository.findNhomDatnByMaNhom(command.getMaNhom(), command.getCoSoId(), command.getDotDangKyId());
+            if (idNhomDatnCheck == null) {
+                throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+            }
+        }
+
+        if (!command.getMaNhom().trim().equals("")) {
+            Short sLThanhVien = sinhVienRepository.countSoThanhVien(command.getMaNhom(), command.getCoSoId(), command.getDotDangKyId());
+            if (sLThanhVien >= 7) {
+                throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
+            }
+        }
+
+        if ("".equals(command.getMaNhom().trim())) {
+            sinhVien.setNhomId(null);
+        }
+        if (command.getTrangThai() == 0) {
+            sinhVien.setTrangThai(TrangThaiSinhVien.DU_DIEU_KIEN);
+        } else {
+            sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+        }
+        sinhVien = formUtils.convertToObject(SinhVien.class, command);
+        sinhVien.setSoDienThoai(command.getSdt());
+        sinhVien.setMonChuongTrinhId(command.getMonChuongTrinh());
         return sinhVienRepository.save(sinhVien);
     }
 

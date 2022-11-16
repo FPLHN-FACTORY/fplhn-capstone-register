@@ -25,15 +25,18 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             s.so_dien_thoai,
             s.email,
             s.khoa,
+            c.id as 'chuyen_nganh_id',
             c.ten_chuyen_nganh,
             m.ma_mon,
             m.ten_mon_datn,
             n.ma_nhom,
             n.ten_de_tai,
             g.ten_gvhd ,
+            d.id as 'id_dot_dang_ky',
             d.ten_dot_dang_ky ,
             s.trang_thai,
             n.so_thanh_vien,
+            mct.id as 'id_mom_chuong_trinh',
             mct.ten_mon_datn AS 'ten_mon_chuong_trinh',
             mct.ma_mon AS 'ma_mom_chuong_trinh'
             FROM do_an_tot_nghiep.sinh_vien s
@@ -88,15 +91,18 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                         s.so_dien_thoai,
                         s.email,
                         s.khoa,
+                        c.id as 'chuyen_nganh_id',
                         c.ten_chuyen_nganh,
                         m.ma_mon,
                         m.ten_mon_datn,
                         n.ma_nhom,
                         n.ten_de_tai,
                         g.ten_gvhd ,
+                        d.id as 'id_dot_dang_ky',
                         d.ten_dot_dang_ky ,
                         s.trang_thai,
                         n.so_thanh_vien,
+                        mct.id as 'id_mom_chuong_trinh',
                         mct.ten_mon_datn AS 'ten_mon_chuong_trinh',
                         mct.ma_mon AS 'ma_mom_chuong_trinh'
                         FROM do_an_tot_nghiep.sinh_vien s
@@ -170,7 +176,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             and s.id <> :idNhomTruong LIMIT 1
             AND s.co_so_id = :coSoId
             """, nativeQuery = true)
-    SinhVien motSVTrongNhom(@Param("idNhomTruong") String idNhomTruong,@Param("nhomId") String nhomId, @Param("coSoId") String coSoId);
+    SinhVien motSVTrongNhom(@Param("idNhomTruong") String idNhomTruong, @Param("nhomId") String nhomId, @Param("coSoId") String coSoId);
 
     @Query(value = """
                 SELECT id 
@@ -183,5 +189,98 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
     String findBySinhVienUpdate(@Param("maSinhVien") String maSinhVien,
                                 @Param("id") String id, @Param("coSoId") String coSoId,
                                 @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+                SELECT id 
+                FROM sinh_vien
+                WHERE ma_sinh_vien = :maSinhVien 
+                AND id <> :id
+                AND co_so_id = :coSoId 
+                AND dot_dang_ky_id = :dotDangKyId 
+            """, nativeQuery = true)
+    String findSinhVienByMaSVUpdate(@Param("maSinhVien") String maSinhVien,
+                              @Param("id") String id,
+                              @Param("coSoId") String coSoId,
+                              @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+                SELECT id 
+                FROM sinh_vien
+                WHERE email = :email 
+                AND id <> :id
+                AND co_so_id = :coSoId 
+                AND dot_dang_ky_id = :dotDangKyId 
+            """, nativeQuery = true)
+    String findSinhVienByEmailUpdate(@Param("email") String email,
+                                     @Param("id") String id,
+                                     @Param("coSoId") String coSoId,
+                                     @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+                SELECT id 
+                FROM sinh_vien
+                WHERE ma_sinh_vien = :maSinhVien 
+                AND co_so_id = :coSoId 
+                AND dot_dang_ky_id = :dotDangKyId 
+            """, nativeQuery = true)
+    String findSinhVienByMaSV(@Param("maSinhVien") String maSinhVien, @Param("coSoId") String coSoId,
+                              @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+                SELECT id 
+                FROM sinh_vien
+                WHERE email = :email 
+                AND co_so_id = :coSoId 
+                AND dot_dang_ky_id = :dotDangKyId 
+            """, nativeQuery = true)
+    String findSinhVienByEmail(@Param("email") String email, @Param("coSoId") String coSoId,
+                               @Param("dotDangKyId") String dotDangKyId);
+
+
+    @Query(value = """
+                SELECT id 
+                FROM nhom_datn
+                WHERE ma_nhom = :maNhom 
+                AND co_so_id = :coSoId 
+                AND dot_dang_ky_id = :dotDangKyId 
+            """, nativeQuery = true)
+    String findNhomDatnByMaNhom(@Param("maNhom") String maNhom, @Param("coSoId") String coSoId,
+                                @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+                SELECT a.id 
+                FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
+                WHERE a.ma_nhom = :maNhom
+                AND b.id <> :id 
+                AND a.co_so_id = :coSoId 
+                AND a.dot_dang_ky_id = :dotDangKyId 
+            """, nativeQuery = true)
+    String findNhomDatnByMaNhomUpdate(@Param("maNhom") String maNhom,
+                                      @Param("id") String id,
+                                      @Param("coSoId") String coSoId,
+                                      @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+                SELECT COUNT(b.id) 
+                FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
+                WHERE a.ma_nhom = :maNhom
+                AND a.co_so_id = :coSoId 
+                AND a.dot_dang_ky_id = :dotDangKyId 
+            """, nativeQuery = true)
+    Short countSoThanhVien(@Param("maNhom") String maNhom, @Param("coSoId") String coSoId,
+                                @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+                SELECT COUNT(b.id) 
+                FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
+                WHERE a.ma_nhom = :maNhom
+                AND b.id <> :id 
+                AND a.co_so_id = :coSoId 
+                AND a.dot_dang_ky_id = :dotDangKyId 
+            """, nativeQuery = true)
+    Short countSoThanhVienUpdate(@Param("maNhom") String maNhom,
+                                 @Param("id") String id,
+                                 @Param("coSoId") String coSoId,
+                                 @Param("dotDangKyId") String dotDangKyId);
 
 }

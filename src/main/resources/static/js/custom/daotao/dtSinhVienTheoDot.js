@@ -29,8 +29,7 @@ function viewTable(page) {
                 totalPages = responseData.data.totalPages
                 $("#is_empty").html('')
                 $("#list").html(responseData.data.data.map(function (item) {
-                    if (item.trangThai == 0) {
-                        return ` <tr>
+                    return ` <tr style="${item.trangThai == 1 ? 'color : red' : ''}">
                                 <td>${item.stt}</td>
                                 <td>${item.maSinhVien}</td>
                                 <td>${item.tenSinhVien}</td>
@@ -59,7 +58,7 @@ function viewTable(page) {
                                             onclick="openModalRemoveSinhVien('${item.id}')">
                                             <img src="/img/trash.svg">
                                     </button>
-                                     <button class="btn_pencil_square"
+                                     <button class="btn_pencil_square" style="${item.trangThai == 0 ? 'display : block' : 'display : none'}"
                                          data-toggle="tooltip"
                                          title="Loại sinh viên"
                                          onclick="loaiSinhVienDetail('${item.id}','${page}')">                      
@@ -67,29 +66,8 @@ function viewTable(page) {
                                      </button>
                                 </td>
                         </tr>`
-                    } else {
-                        return ` <tr class="text-danger">
-                                <td>${item.stt}</td>
-                                <td>${item.maSinhVien}</td>
-                                <td>${item.tenSinhVien}</td>
-                                <td>${item.khoa}</td>
-                                <td>${item.monChuongTrinh == null ? 'Chưa có' : item.monChuongTrinh + ' - ' + item.maMonChuongTrinh}</td>
-                                <td>${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
-                                <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
-                                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd}</td>
-                                <td>${item.tenChuyenNganh}</td>
-                                <td>
-                                    <button class="btn_eye"
-                                            data-toggle="tooltip"
-                                            title="Xem chi tiết"
-                                            onclick="detail('${item.id}')">
-                                            <img src="/img/eye-fill.svg">
-                                    </button>
-                                </td>
-                        </tr>`
-                    }
-
                 }));
+                $('[data-toggle = "tooltip"]').tooltip();
                 if (responseData.data.totalPages > 1) {
                     genPagingAndFillColor()
                 } else {
@@ -109,10 +87,156 @@ function viewTable(page) {
     });
 }
 
+function openModalThemSinhVien(){
+    $("#modal_create").modal('show')
+    clearData()
+}
+
+function create(){
+    let maSinhVien = $("#ma_sinh_vien_create").val().trim();
+    let tenSinhVien = $("#ten_sinh_vien_create").val().trim();
+    let sdt = $("#sdt_create").val().trim();
+    let email = $("#email_create").val().trim();
+    let khoa = $("#khoa_hoc_create").val().trim();
+    let monChuongTrinh = $("#mon_chuong_trinh_create").val();
+    let tenChuyenNganh = $("#ten_chuyen_nganh_create").val();
+    let maNhom = $("#ma_nhom_create").val().trim();
+    let dotDangKyId = $("#dot_dang_ky_create").val();
+    let trangThai = $("#trang_thai_create").val();
+    let sinhVienRequest = {};
+    sinhVienRequest["maSinhVien"] = maSinhVien;
+    sinhVienRequest["tenSinhVien"] = tenSinhVien;
+    sinhVienRequest["sdt"] = sdt;
+    sinhVienRequest["email"] = email;
+    sinhVienRequest["khoa"] = khoa;
+    sinhVienRequest["monChuongTrinh"] = monChuongTrinh;
+    sinhVienRequest["chuyenNganhId"] = tenChuyenNganh;
+    sinhVienRequest["maNhom"] = maNhom;
+    sinhVienRequest["dotDangKyId"] = dotDangKyId;
+    sinhVienRequest["trangThai"] = trangThai;
+    let index = 0;
+    if (maSinhVien.trim().length === 0) {
+        $("#ma_sinh_vien_create_error").text("Mã sinh viên không được để trống");
+        index++;
+    } else {
+        $("#ma_sinh_vien_create_error").text('');
+    }
+    if (tenSinhVien.trim().length === 0) {
+        $("#ten_sinh_vien_create_error").text("Tên sinh viên không được để trống");
+        index++;
+    } else {
+        $("#ten_sinh_vien_create_error").text('');
+    }
+    if (email.trim().length === 0) {
+        $("#email_create_error").text("Email không được để trống");
+        index++;
+    } else {
+        $("#email_create_error").text('');
+    }
+    if (monChuongTrinh.trim().length === 0) {
+        $("#mon_chuong_trinh_create_error").text("Mời chọn môn chương trình");
+        index++;
+    } else {
+        $("#mon_chuong_trinh_create_error").text('');
+    }
+    if (tenChuyenNganh.trim().length === 0) {
+        $("#ten_chuyen_nganh_create_error").text("Mời chọn chuyên ngành");
+        index++;
+    } else {
+        $("#ten_chuyen_nganh_create_error").text('');
+    }
+    if (dotDangKyId.trim().length === 0) {
+        $("#dot_dang_ky_create_error").text("Mời chọn đợt đăng ký");
+        index++;
+    } else {
+        $("#dot_dang_ky_create_error").text('');
+    }
+    if(index == 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/api/dao-tao/sinh-vien",
+            data: JSON.stringify(sinhVienRequest),
+            dataType: 'json',
+            success: function () {
+                $("#modal_create").modal("hide");
+
+                bootbox.alert({
+                    message: 'Thêm sinh viên thành công',
+                    backdrop: true,
+                    callback: function () {
+                        viewTable(currentPage);
+                    }
+                });
+            },
+            error: function (e) {
+                let message = e.responseJSON.message.trim();
+                if(message == 'Sinh vien da ton tai'){
+                    bootbox.alert({
+                        message: 'Mã sinh viên không được trùng',
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
+                }else if(message == 'email fpt da ton tai'){
+                    bootbox.alert({
+                        message: 'Email fpt đã tồn tại',
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
+                }else if(message == 'Nhom du an tot nghiep not exist'){
+                    bootbox.alert({
+                        message: 'Nhóm không tồn tại',
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
+                }else if(message == 'Nhom da du thanh vien'){
+                    bootbox.alert({
+                        message: 'Nhóm đã đủ thành viên',
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function clearData() {
+
+    $("#ma_sinh_vien_create").val('');
+    $("#ten_sinh_vien_create").val('');
+    $("#sdt_create").val('');
+    $("#email_create").val('');
+    $("#khoa_hoc_create").val('');
+    $("#mon_chuong_trinh_create").val('');
+    $("#ten_chuyen_nganh_create").val('');
+    $("#ma_nhom_create").val('');
+    $("#dot_dang_ky_create").val('');
+
+    $("#ma_sinh_vien_create_error").text('');
+    $("#ten_sinh_vien_create_error").text('');
+    $("#email_create_error").text('');
+    $("#mon_chuong_trinh_create_error").text('');
+    $("#ten_chuyen_nganh_create_error").text('');
+    $("#dot_dang_ky_create_error").text('');
+
+    $("#ma_sinh_vien_update_error").text('');
+    $("#ten_sinh_vien_update_error").text('');
+    $("#sdt_update_error").text('');
+    $("#email_update_error").text('');
+    $("#khoa_hoc_update_error").text('');
+    $("#mon_chuong_trinh_update_error").text('');
+    $("#ten_chuyen_nganh_update_error").text('');
+    $("#ma_nhom_update_error").text('');
+    $("#dot_dang_ky_update_error").text('');
+}
+
 function openModalUpdateSinhVien(idSinhVien) {
-    $("#ma_sinh_vien_update_error").text("");
-    $("#ten_sinh_vien_update_error").text("");
-    $("#khoa_hoc_update_error").text("");
+    clearData();
     $("#modal_update_sinh_vien").modal('show');
     $.ajax({
         type: "GET",
@@ -124,7 +248,14 @@ function openModalUpdateSinhVien(idSinhVien) {
             $("#id_sinh_vien_update").val(responseData.data.id);
             $("#ma_sinh_vien_update").val(responseData.data.maSinhVien);
             $("#ten_sinh_vien_update").val(responseData.data.tenSinhVien);
+            $("#sdt_update").val(responseData.data.soDienThoai);
+            $("#email_update").val(responseData.data.email);
             $("#khoa_hoc_update").val(responseData.data.khoa);
+            $("#mon_chuong_trinh_update").val(responseData.data.idMonChuongTrinh);
+            $("#ten_chuyen_nganh_update").val(responseData.data.chuyenNganhId);
+            $("#ma_nhom_update").val(responseData.data.maNhom);
+            $("#dot_dang_ky_update").val(responseData.data.idDotDangKy);
+            $("#trang_thai_update").val(responseData.data.trangThai);
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -133,32 +264,70 @@ function openModalUpdateSinhVien(idSinhVien) {
 }
 
 function update() {
+    let idSinhVien = $("#id_sinh_vien_update").val();
     let maSinhVien = $("#ma_sinh_vien_update").val().trim();
     let tenSinhVien = $("#ten_sinh_vien_update").val().trim();
-    let khoaHoc = $("#khoa_hoc_update").val().trim();
-    let idSinhVien = $("#id_sinh_vien_update").val();
+    let sdt = $("#sdt_update").val().trim();
+    let email = $("#email_update").val().trim();
+    let khoa = $("#khoa_hoc_update").val().trim();
+    let monChuongTrinh = $("#mon_chuong_trinh_update").val();
+    let tenChuyenNganh = $("#ten_chuyen_nganh_update").val();
+    let maNhom = $("#ma_nhom_update").val().trim();
+    let dotDangKyId = $("#dot_dang_ky_update").val();
+    let trangThai = $("#trang_thai_update").val();
     let sinhVienRequest = {};
     sinhVienRequest["maSinhVien"] = maSinhVien;
     sinhVienRequest["tenSinhVien"] = tenSinhVien;
-    sinhVienRequest["khoa"] = khoaHoc;
+    sinhVienRequest["sdt"] = sdt;
+    sinhVienRequest["email"] = email;
+    sinhVienRequest["khoa"] = khoa;
+    sinhVienRequest["monChuongTrinh"] = monChuongTrinh;
+    sinhVienRequest["chuyenNganhId"] = tenChuyenNganh;
+    sinhVienRequest["maNhom"] = maNhom;
+    sinhVienRequest["dotDangKyId"] = dotDangKyId;
+    sinhVienRequest["trangThai"] = trangThai;
     let index = 0;
     if (maSinhVien.trim().length === 0) {
         $("#ma_sinh_vien_update_error").text("Mã sinh viên không được để trống");
         index++;
     } else {
-        $("#ma_sinh_vien_update_error").text("");
+        $("#ma_sinh_vien_update_error").text('');
     }
     if (tenSinhVien.trim().length === 0) {
         $("#ten_sinh_vien_update_error").text("Tên sinh viên không được để trống");
         index++;
     } else {
-        $("#ten_sinh_vien_update_error").text("");
+        $("#ten_sinh_vien_update_error").text('');
     }
-    if (khoaHoc.trim().length === 0) {
-        $("#khoa_hoc_update_error").text("Khóa học không được để trống");
+    if (email.trim().length === 0) {
+        $("#email_update_error").text("Email không được để trống");
         index++;
     } else {
-        $("#khoa_hoc_update_error").text("");
+        $("#email_update_error").text('');
+    }
+    if (email.trim().length === 0) {
+        $("#email_update_error").text("Email không được để trống");
+        index++;
+    } else {
+        $("#email_update_error").text('');
+    }
+    if (monChuongTrinh.trim().length === 0) {
+        $("#mon_chuong_trinh_update_error").text("Mời chọn môn chương trình");
+        index++;
+    } else {
+        $("#mon_chuong_trinh_update_error").text('');
+    }
+    if (tenChuyenNganh.trim().length === 0) {
+        $("#mon_chuong_trinh_update_error").text("Mời chọn chuyên ngành");
+        index++;
+    } else {
+        $("#mon_chuong_trinh_update_error").text('');
+    }
+    if (dotDangKyId.trim().length === 0) {
+        $("#dot_dang_ky_update_error").text("Mời chọn đợt đăng ký");
+        index++;
+    } else {
+        $("#dot_dang_ky_update_error").text('');
     }
     if (index == 0) {
         $.ajax({
@@ -170,7 +339,7 @@ function update() {
             success: function () {
                 $("#modal_update_sinh_vien").modal("hide");
                 bootbox.alert({
-                    message: 'Update thành công',
+                    message: 'Cập nhật thành công',
                     backdrop: true,
                     callback: function () {
                         viewTable(currentPage);
@@ -178,8 +347,35 @@ function update() {
                 });
             },
             error: function (e) {
-                if (e.responseJSON.message != null) {
-                    $("#ma_sinh_vien_update_error").text("Sinh viên đã tồn tại");
+                let message = e.responseJSON.message.trim();
+                if(message == 'Sinh vien da ton tai'){
+                    bootbox.alert({
+                        message: 'Mã sinh viên không được trùng',
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
+                }else if(message == 'email fpt da ton tai'){
+                    bootbox.alert({
+                        message: 'Email fpt đã tồn tại',
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
+                }else if(message == 'Nhom du an tot nghiep not exist'){
+                    bootbox.alert({
+                        message: 'Nhóm không tồn tại',
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
+                }else if(message == 'Nhom da du thanh vien'){
+                    bootbox.alert({
+                        message: 'Nhóm đã đủ thành viên',
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
                 }
             }
         });
@@ -208,11 +404,11 @@ function openModalRemoveSinhVien(idSinhVien) {
                     data: JSON.stringify(idSinhVien),
                     dataType: 'json',
                     success: function () {
+                        viewTable(currentPage)
                         bootbox.alert({
                             message: 'Xóa thành công',
                             backdrop: true,
                             callback: function () {
-                                viewTable(currentPage)
                             }
                         });
                     },
@@ -393,9 +589,9 @@ function detail(sinhVienId) {
         success: function (responseData) {
             $("#maSV").val(responseData.data.maSinhVien);
             $("#tenSV").val(responseData.data.tenSinhVien);
-            $("#sdt").val(responseData.data.soDienThoai);
+            $("#sdt").val(responseData.data.soDienThoai == '' ? "Chưa có" : responseData.data.soDienThoai);
             $("#email").val(responseData.data.email);
-            $("#khoa").val(responseData.data.khoa);
+            $("#khoa").val(responseData.data.khoa == '' ? "Chưa có" : responseData.data.soDienThoai);
             $("#monDATN").val(responseData.data.tenMonDatn == null ? "Chưa có" : responseData.data.tenMonDatn + ' - ' + responseData.data.maMonDatn);
             $("#tenCN").val(responseData.data.tenChuyenNganh == null ? "Chưa có" : responseData.data.tenChuyenNganh);
             $("#maNhom").val(responseData.data.maNhom == null ? "Chưa có" : responseData.data.maNhom);
@@ -493,7 +689,4 @@ function loaiSinhVienDetail(id, page) {
             }
         }
     });
-}
-function openModalAddGVHD() {
-    $("#modal_create").modal("show")
 }

@@ -26,6 +26,34 @@ public class DtBaseSinhVienTheoDotRequest {
 
     @NotEmpty
     @NotBlank
+    private String sdt;
+
+    @NotEmpty
+    @NotBlank
+    private String email;
+
+    @NotEmpty
+    @NotBlank
     @Length(max = 10)
     private String khoa;
+
+    @NotEmpty
+    @NotBlank
+    private String monChuongTrinh;
+
+    @NotEmpty
+    @NotBlank
+    private String chuyenNganhId;
+
+    @NotEmpty
+    @NotBlank
+    private String maNhom;
+
+    @NotEmpty
+    @NotBlank
+    private String dotDangKyId;
+
+    @NotEmpty
+    @NotBlank
+    private int trangThai;
 }

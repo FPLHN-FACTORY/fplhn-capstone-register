@@ -1,6 +1,7 @@
 package com.fpolydatn.core.daotao.service;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienRequest;
 import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateSinhVienTheoDotRequest;
@@ -47,4 +48,6 @@ public interface DtSinhVienTheoDotService {
     List<NhomDatn> getListNhomMon(String coSoId);
 
     SinhVien update(@Valid final DtUpdateSinhVienTheoDotRequest command);
+
+    SinhVien create(@Valid final DtCreateSinhVienRequest command);
 }
