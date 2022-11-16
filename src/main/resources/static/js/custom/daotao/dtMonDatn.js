@@ -82,7 +82,11 @@ function openModalUpdateMonDatn(monDatnId) {
             $("#ma_mon_datn_update").val(responseData.data.maMon);
             $("#ten_mon_datn_update").val(responseData.data.tenMonDatn);
             $("#chuyen_nganh_update").val(responseData.data.chuyenNganhId);
-            $("#ten_nhom_mon_datn_update").val(responseData.data.nhomMonDatnId);
+            if (responseData.data.nhomMonDatnId == monDatnId) {
+                $("#ten_nhom_mon_datn_update").val('');
+            } else {
+                $("#ten_nhom_mon_datn_update").val(responseData.data.nhomMonDatnId);
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
