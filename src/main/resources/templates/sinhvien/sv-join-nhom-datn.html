@@ -123,10 +123,9 @@
                                                id="custom-table">
                                             <thead class="table-primary">
                                             <th width="50px">STT</th>
-                                            <th>Mã nhóm</th>
                                             <th>Tên nhóm</th>
-                                            <th>Tên đề tài</th>
-                                            <th>Tên môn datn</th>
+                                            <th>Đề tài</th>
+                                            <th>Môn</th>
                                             <th>Số người</th>
                                             <th>Trưởng nhóm</th>
                                             <th>GVHD</th>
@@ -139,12 +138,12 @@
                                             <th:block th:each="nhomDatn : ${page.data}">
                                                 <tr class="table-light">
                                                     <td th:text="${nhomDatn.getStt()}"></td>
-                                                    <td th:text="${nhomDatn.maNhom}"></td>
+<!--                                                    <td th:text="${nhomDatn.maNhom}"></td>-->
                                                     <td th:text="${nhomDatn.tenNhom} == null ? 'Chưa có' : ${nhomDatn.tenNhom}"></td>
                                                     <td th:text="${nhomDatn.tenDeTai} == null ? 'Chưa có' : ${nhomDatn.tenDeTai}"></td>
                                                     <td th:text="${nhomDatn.tenMonDatn}"></td>
                                                     <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
-                                                    <td th:text="${nhomDatn.maSinhVien} + ' - ' + ${nhomDatn.getTenSinhVien()}"></td>
+                                                    <td th:text="${nhomDatn.getTenSinhVien()}"></td>
                                                     <td th:text="${nhomDatn.tenGvhd} == null ? 'Chưa có': (${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()})"></td>
                                                     <td th:text="${nhomDatn.getMatKhauTonTai} == '0' ? 'Công khai' : 'Nhóm kín'"></td>
                                                     <td>

@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -53,21 +54,24 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     }
 
     @Override
-    public Boolean update(DtUpdateNhomMonDatnRequest command) {
+    public Boolean update(@Valid DtUpdateNhomMonDatnRequest command) {
         Optional<MonDatn> nhomMonDatnFind = dtNhomMonDatnRepository.findById(command.getId());
         if (Objects.isNull(nhomMonDatnFind)) {
             throw new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST);
         }
-        String idCheck = dtNhomMonDatnRepository.findByMaNhomMon(command.getMaNhomMon(), command.getCoSoId());
-        if (Objects.nonNull(idCheck) && !idCheck.equals(command.getId())) {
-            throw new RestApiException(Message.MA_NHOM_MON_DATN_ALREADY_EXIST);
+        String maNhomMon = command.getMaNhomMon().trim().toUpperCase();
+        MonDatn monDatnCheck = dtNhomMonDatnRepository.findByMaNhomMon(maNhomMon, command.getCoSoId());
+        if (monDatnCheck != null) {
+            if (!monDatnCheck.getId().equals(command.getId())) {
+                throw new RestApiException(Message.MA_NHOM_MON_DATN_ALREADY_EXIST);
+            }
         }
         Optional<ChuyenNganh> chuyenNganh = dtChuyenNganhRepository.findById(command.getChuyenNganhId());
         if (!chuyenNganh.isPresent()) {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
         Optional<MonDatn> nhomMonDatn = dtNhomMonDatnRepository.findById(command.getId());
-        nhomMonDatn.get().setMaMon(command.getMaNhomMon());
+        nhomMonDatn.get().setMaMon(maNhomMon);
         nhomMonDatn.get().setChuyenNganhId(command.getChuyenNganhId());
         nhomMonDatn.get().setTenMonDatn(command.getTenNhomMon());
         dtNhomMonDatnRepository.save(nhomMonDatn.get());
@@ -75,8 +79,10 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     }
 
     @Override
-    public Boolean add(DtCreateNhomMonDatnRequest command) {
-        if (!Objects.isNull(dtNhomMonDatnRepository.findByMaNhomMon(command.getMaNhomMon(), command.getCoSoId()))) {
+    public Boolean add(@Valid DtCreateNhomMonDatnRequest command) {
+        String maNhomMon = command.getMaNhomMon().toUpperCase().trim();
+        MonDatn monDatnCheck = dtNhomMonDatnRepository.findByMaNhomMon(maNhomMon, command.getCoSoId());
+        if (monDatnCheck != null) {
             throw new RestApiException(Message.MA_NHOM_MON_DATN_ALREADY_EXIST);
         }
         Optional<ChuyenNganh> chuyenNganh = dtChuyenNganhRepository.findById(command.getChuyenNganhId());
@@ -84,7 +90,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
         MonDatn nhoMonDatn = new MonDatn();
-        nhoMonDatn.setMaMon(command.getMaNhomMon());
+        nhoMonDatn.setMaMon(maNhomMon);
         nhoMonDatn.setTenMonDatn(command.getTenNhomMon());
         nhoMonDatn.setChuyenNganhId(command.getChuyenNganhId());
         nhoMonDatn.setCoSoId(command.getCoSoId());

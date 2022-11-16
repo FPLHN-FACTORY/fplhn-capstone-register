@@ -27,13 +27,19 @@ public class NhomDatnHelper {
         String coSoId = session.getCoSoId();
         String text = nhomDatnRepository.getMaCoSo(coSoId);
         String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+        String maNhomGanNhat = nhomDatnRepository.getNhomTaoGanNhat(dotDangKyHienTai, coSoId);
         Integer count = 0;
         try {
-            count = Integer.parseInt(nhomDatnRepository.genMaNhomTuDong(dotDangKyHienTai, coSoId));
+            if (maNhomGanNhat != null) {
+                String maxStr = maNhomGanNhat.substring(maNhomGanNhat.indexOf("_") + 1);
+                count = Integer.valueOf(maxStr) + 1;
+            } else {
+                count = 1;
+            }
         } catch (Exception e) {
             return null;
         }
-        count++;
-        return text + "_" + count;
+        String maNhomMoi = text + "_" + count;
+        return maNhomMoi;
     }
 }
