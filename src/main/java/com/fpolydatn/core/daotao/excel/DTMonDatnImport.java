@@ -42,7 +42,7 @@ public class DTMonDatnImport {
             }
 
             createMonDatn.setStt(row.getRowNum());
-            createMonDatn.setMaMon(String.valueOf(getCellValue(row.getCell(1))).trim());
+            createMonDatn.setMaMon(String.valueOf(getCellValue(row.getCell(1))).trim().toUpperCase());
             createMonDatn.setTenMonDatn(String.valueOf(getCellValue(row.getCell(2))).trim());
             createMonDatn.setChuyenNganhId(String.valueOf(getCellValue(row.getCell(3))).trim());
             createMonDatn.setNhomMonDatnId(String.valueOf(getCellValue(row.getCell(4))).trim());

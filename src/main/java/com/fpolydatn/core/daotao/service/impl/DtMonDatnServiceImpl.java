@@ -25,8 +25,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -90,48 +88,80 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
-    public List<MonDatn> findByTenNhomMon(String coSoid) {
-        return monDatnRepository.getNhomMonDatnByCoSo(coSoid);
+    public List<MonDatn> getNhomMonByChuyeNganh(String coSoid, String chuyenNganhId) {
+        return monDatnRepository.getNhomMonDatnByCoSo(coSoid, chuyenNganhId);
     }
 
     @Override
     public MonDatn update(@Valid final DtUpdateMonDatnRequest command) {
-        Optional<MonDatn> monDatnCheck = monDatnRepository.findById(command.getId());
-        MonDatn monDatnTr = formUtils.convertToObject(MonDatn.class, command);
-        String monDatnInDb = monDatnRepository.findByMaMonUpdate(monDatnTr.getMaMon(), monDatnTr.getId(), monDatnTr.getCoSoId());
-        if (!monDatnCheck.isPresent()) {
+        Optional<MonDatn> monDatn = monDatnRepository.findById(command.getId());
+        if (!monDatn.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
-        if (!Objects.isNull(monDatnInDb) && monDatnInDb.equals(command.getMaMon())) {
-            throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
+        String maMonReq = command.getMaMon().toUpperCase();
+        MonDatn monDatnCheck = monDatnRepository.findByMaMon(maMonReq, command.getCoSoId());
+        if (monDatnCheck != null) {
+            if (!monDatnCheck.getId().equals(command.getId())) {
+                throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
+            }
         }
-        MonDatn monDatn = monDatnCheck.get();
-        monDatn.setMaMon(command.getMaMon());
-        monDatn.setTenMonDatn(command.getTenMonDatn());
-        monDatn.setNhomMonDatnId(command.getNhomMonDatnId());
-        monDatn.setChuyenNganhId(command.getChuyenNganhId());
-        MonDatn mon = monDatnRepository.save(monDatn);
-        if (mon.getNhomMonDatnId().trim().length() == 0) {
-            mon.setNhomMonDatnId(mon.getId());
-            monDatnRepository.save(mon);
+        Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(command.getChuyenNganhId());
+        if (!chuyenNganh.isPresent()) {
+            throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
-        return mon;
+        monDatn.get().setCoSoId(command.getCoSoId());
+        monDatn.get().setMaMon(maMonReq);
+        monDatn.get().setTenMonDatn(command.getTenMonDatn());
+        String nhomMonId = "";
+        try {
+            nhomMonId = command.getNhomMonDatnId().trim();
+        } catch (Exception e) {
+            return null;
+        }
+        if (nhomMonId.length() == 0) {
+            monDatn.get().setNhomMonDatnId(monDatn.get().getId());
+        } else {
+            monDatn.get().setNhomMonDatnId(command.getNhomMonDatnId());
+        }
+        monDatn.get().setChuyenNganhId(command.getChuyenNganhId());
+        monDatnRepository.save(monDatn.get());
+        return monDatn.get();
     }
 
     @Override
     public Boolean add(@Valid final DtCreateMonDatnRequest command) {
-        MonDatn monDatn = formUtils.convertToObject(MonDatn.class, command);
-        MonDatn monDatnInDb = monDatnRepository.findByMaMon(monDatn.getMaMon(), command.getCoSoId());
-        if (!Objects.isNull(monDatnInDb) && monDatnInDb.equals(command.getMaMon())) {
-            throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
-        } else {
-            MonDatn mon = monDatnRepository.save(monDatn);
-            if (mon.getNhomMonDatnId().trim().length() == 0) {
-                mon.setNhomMonDatnId(mon.getId());
-                monDatnRepository.save(mon);
-            }
-            return true;
+        String maMon = "";
+        try {
+            maMon = command.getMaMon().toUpperCase();
+        } catch (Exception e) {
+            return false;
         }
+        MonDatn monDatnCheck = monDatnRepository.findByMaMon(maMon, command.getCoSoId());
+        if (monDatnCheck != null) {
+            throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
+        }
+        Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(command.getChuyenNganhId());
+        if (!chuyenNganh.isPresent()) {
+            throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
+        }
+        String nhomMonId = "";
+        try {
+            nhomMonId = command.getNhomMonDatnId().trim();
+        } catch (Exception e) {
+            return false;
+        }
+        MonDatn monDatn = new MonDatn();
+        monDatn.setCoSoId(command.getCoSoId());
+        monDatn.setChuyenNganhId(command.getChuyenNganhId());
+        monDatn.setMaMon(maMon);
+        monDatn.setTenMonDatn(command.getTenMonDatn());
+        monDatn.setNhomMonDatnId(command.getNhomMonDatnId());
+        monDatnRepository.save(monDatn);
+        if ("".equals(nhomMonId)) {
+            monDatn.setNhomMonDatnId(monDatn.getId());
+            monDatnRepository.save(monDatn);
+        }
+        return true;
     }
 
     @Override
@@ -213,7 +243,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     chuyenNganhs.put(chuyenNganh.getTenChuyenNganh(), chuyenNganh);
                 }
 
-                if(!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())
+                if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())
                         && createMonDant.getNhomMonDatnId().trim().length() != 0) {
                     MonDatn nhomMon = new MonDatn();
                     nhomMon.setMaMon(createMonDant.getNhomMonDatnId());
@@ -235,14 +265,14 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 list.put(monDatn.getMaMon(), monDatn);
             });
 
-            if(chuyenNganhs.values().size() != 0) {
+            if (chuyenNganhs.values().size() != 0) {
                 List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.saveAll(chuyenNganhs.values());
                 chuyenNganhList.parallelStream().forEach(el -> {
                     chuyenNganhHashMap.put(el.getTenChuyenNganh(), el);
                 });
             }
 
-            if(nhomMons.values().size() != 0) {
+            if (nhomMons.values().size() != 0) {
                 List<MonDatn> nhoMonDatnList = monDatnRepository.saveAll(nhomMons.values());
                 nhoMonDatnList.parallelStream().forEach(el -> {
                     el.setChuyenNganhId(chuyenNganhHashMap.get(el.getChuyenNganhId()).getId());
@@ -255,7 +285,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 List<MonDatn> datnList = monDatnRepository.saveAll(list.values());
                 datnList.parallelStream().forEach(el -> {
                     el.setChuyenNganhId(chuyenNganhHashMap.get(el.getChuyenNganhId()).getId());
-                    if(el.getNhomMonDatnId().trim().length() == 0) {
+                    if (el.getNhomMonDatnId().trim().length() == 0) {
                         el.setNhomMonDatnId(el.getId());
                         monDatnRepository.save(el);
                     } else {

@@ -59,7 +59,7 @@ function create() {
                 });
             },
             error: function (e) {
-                if (e.responseJSON.message != null) {
+                if (e.responseJSON.message == 'Ma mon da ton tai') {
                     $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
                 }
             }
@@ -82,9 +82,11 @@ function openModalUpdateMonDatn(monDatnId) {
             $("#ma_mon_datn_update").val(responseData.data.maMon);
             $("#ten_mon_datn_update").val(responseData.data.tenMonDatn);
             $("#chuyen_nganh_update").val(responseData.data.chuyenNganhId);
+            // getNhomMon(responseData.data.chuyenNganhId, 2);
             if (responseData.data.nhomMonDatnId == monDatnId) {
-                $("#ten_nhom_mon_datn_update").val('');
+                getNhomMon(responseData.data.chuyenNganhId, 2, 1);
             } else {
+                getNhomMon(responseData.data.chuyenNganhId, 2, responseData.data.nhomMonDatnId);
                 $("#ten_nhom_mon_datn_update").val(responseData.data.nhomMonDatnId);
             }
         },
@@ -229,7 +231,7 @@ function importExcel () {
                         message: "<strong>Import thành công</strong>",
                         backdrop: true,
                         callback: function () {
-                            reload();
+                            window.open(monDatnView, '_self');
                         }
                     });
                 } else {
@@ -238,7 +240,7 @@ function importExcel () {
                         message: '<strong>'+ response.data.message +'</strong>',
                         backdrop: true,
                         callback: function () {
-                            reload();
+                            window.open(monDatnView, '_self');
                         }
                     });
                 }
@@ -248,3 +250,36 @@ function importExcel () {
         }
     );
 };
+
+function getNhomMon(chuyenNganhId, type, nhomMonHienTai) {
+    $.ajax({
+        type: "GET",
+        url: monDatnApi + "/get-nhom-mon?chuyenNganhId=" + chuyenNganhId,
+        success: function (data) {
+            var text = `<option value="" selected>Môn độc lập</option>`;
+            data.data.map(function (item) {
+                if (nhomMonHienTai == item.id && nhomMonHienTai != null) {
+                    text += `<option value="${item.id}" selected>${item.tenMonDatn}</option>`
+                } else {
+                    text += `<option value="${item.id}" >${item.tenMonDatn}</option>`
+                }
+            })
+            if (type == 1) {
+                $('#tenNhomMonDatn').html(text);
+            }
+            if (type == 2) {
+                $('#ten_nhom_mon_datn_update').html(text);
+            }
+        }
+    })
+}
+
+$('#chuyenNganh').change(function () {
+    var chuyenNganhId = $(this).val();
+    getNhomMon(chuyenNganhId, 1, null);
+})
+
+$('#chuyen_nganh_update').change(function () {
+    var chuyenNganhId = $(this).val();
+    getNhomMon(chuyenNganhId, 2, null);
+})

@@ -250,7 +250,11 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         NhomDatn nhomDatn = new NhomDatn();
         nhomDatn.setTruongNhomId(idTruongNhom);
         nhomDatn.setGiangVienId(idGiangVien);
-        nhomDatn.setMaNhom(nhomDatnHelper.genMaNhomTuDong());
+        String maNhom = nhomDatnHelper.genMaNhomTuDong();
+        if (maNhom == null) {
+            throw new RestApiException(Message.TAO_NHOM_THAT_BAI);
+        }
+        nhomDatn.setMaNhom(maNhom);
         nhomDatn.setMatKhau(cnCreateNhomDatnRequest.getMatKhau());
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
         nhomDatn.setCoSoId(cnCreateNhomDatnRequest.getCoSoId());
@@ -398,6 +402,11 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 Map<String, NhomDatn> listNhomDatnCreate = new HashMap<>();
 
                 String maNhom = nhomDatnHelper.genMaNhomTuDong();
+                if (maNhom == null) {
+                    response.setStatus(false);
+                    response.setMessage("Tạo nhóm thất bại");
+                    return response;
+                }
                 String array[] = maNhom.split("_");
                 Long count = Long.parseLong(array[1]);
                 for (int i = 0; i < listMaNhomCreate.size(); i++) {

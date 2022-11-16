@@ -166,10 +166,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 SinhVien sinhVienEntity = new SinhVien();
                 if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
                         sinhVien.getEmail().isEmpty() ||
-                        sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
+                        sinhVien.getChuyenNganh().isEmpty() ||
                         sinhVien.getDotDangKy().isEmpty()) {
                     response.setStatus(false);
-                    response.setMessage("Không để trống (Mã, tên, email, khóa, tên chuyên ngành, đợt đăng ký)");
+                    response.setMessage("Không để trống (Mã, tên, email, tên chuyên ngành, đợt đăng ký)");
                     return;
                 }
                 if (map.containsKey(sinhVien.getMaSinhVien())) {

@@ -43,7 +43,7 @@ public class DtSinhVienTheoDotImport {
             sinhVien.setMonDATN(String.valueOf(getCellValue(row.getCell(8))).trim());
             if (sinhVien.getTenSinhVien().isEmpty() && sinhVien.getMaSinhVien().isEmpty() &&
                     sinhVien.getEmail().isEmpty() &&
-                    sinhVien.getKhoa().isEmpty() && sinhVien.getChuyenNganh().isEmpty() &&
+                    sinhVien.getChuyenNganh().isEmpty() &&
                     sinhVien.getDotDangKy().isEmpty() &&
                     sinhVien.getMonDATN().isEmpty()) {
                 continue;

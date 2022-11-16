@@ -71,9 +71,9 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 m.nhom_mon_datn_id, 
                 m.ten_mon_datn
                 FROM mon_datn m 
-                WHERE nhom_mon_datn_id IS NULL AND co_so_id = :coSoId
+                WHERE nhom_mon_datn_id IS NULL AND co_so_id = :coSoId AND chuyen_nganh_id = :chuyeNganhId
             """, nativeQuery = true)
-    List<MonDatn> getNhomMonDatnByCoSo(@Param("coSoId") String coSoId);
+    List<MonDatn> getNhomMonDatnByCoSo(@Param("coSoId") String coSoId, @Param("chuyeNganhId") String chuyeNganhId);
 
     @Query(value = """
                 SELECT COUNT(giang_vien_id)
