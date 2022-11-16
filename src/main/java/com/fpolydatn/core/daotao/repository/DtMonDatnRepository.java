@@ -115,6 +115,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 m.ten_mon_datn
                 FROM mon_datn m 
                 WHERE m.co_so_id = :coSoId 
+                AND m.nhom_mon_datn_id IS NOT NULL 
             """, nativeQuery = true)
     List<MonDatn> getListMonDatnByIdCoSo(@Param("coSoId") String coSoId);
 }

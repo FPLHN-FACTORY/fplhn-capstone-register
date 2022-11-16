@@ -49,6 +49,8 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     private ConcurrentHashMap<String, ChuyenNganh> chuyenNganhHashMap;
 
+    private ConcurrentHashMap<String, ChuyenNganh> chuyenNganhById;
+
     private ConcurrentHashMap<String, MonDatn> nhomMonDatnHashMap;
 
     private DTMonDatnImport monDatnImport;
@@ -169,6 +171,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         monDatnHashMap = new ConcurrentHashMap<>();
         chuyenNganhHashMap = new ConcurrentHashMap<>();
         nhomMonDatnHashMap = new ConcurrentHashMap<>();
+        chuyenNganhById = new ConcurrentHashMap<>();
         monDatnImport = new DTMonDatnImport();
         boNhoDem(coSoId);
         DtMessMonDatnReponse mess = new DtMessMonDatnReponse();
@@ -189,27 +192,34 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 }
                 if (monDatnHashMap.containsKey(createMonDant.getMaMon())) {
                     mess.setStatus(false);
-                    mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã đã tồn tại"));
+                    mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã " + createMonDant.getMaMon() + " đã tồn tại"));
                     return;
                 }
+
+                if (nhomMonDatnHashMap.containsKey(createMonDant.getMaMon())) {
+                    mess.setStatus(false);
+                    mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã " + createMonDant.getMaMon() + " bị trùng với mã nhóm môn"));
+                    return;
+                }
+
                 if (createMonDant.getMaMon().trim().length() > 10) {
                     mess.setStatus(false);
-                    mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được quá 10 ký tự"));
+                    mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã " + createMonDant.getMaMon() + " không được quá 10 ký tự"));
                     return;
                 }
                 if (createMonDant.getMaMon().indexOf(" ") > 0) {
                     mess.setStatus(false);
-                    mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
+                    mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Không được có khoảng trắng"));
                     return;
                 }
                 if (createMonDant.getTenMonDatn().trim().length() == 0) {
                     mess.setStatus(false);
-                    mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được để trống"));
+                    mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn " + createMonDant.getTenMonDatn() + " không được để trống"));
                     return;
                 }
                 if (createMonDant.getTenMonDatn().trim().length() > 100) {
                     mess.setStatus(false);
-                    mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn không được quá 100 ký tự"));
+                    mess.setMessage(formErrors("C" + (createMonDant.getStt() + 1), "Tên môn " + createMonDant.getTenMonDatn() + " không được quá 100 ký tự"));
                     return;
                 }
                 if (createMonDant.getChuyenNganhId().trim().length() == 0) {
@@ -219,28 +229,43 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 }
                 if (createMonDant.getChuyenNganhId().trim().length() > 36) {
                     mess.setStatus(false);
-                    mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được quá 36 ký tự"));
+                    mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành " + createMonDant.getChuyenNganhId() + " không được quá 36 ký tự"));
                     return;
                 }
                 if (createMonDant.getNhomMonDatnId().trim().length() != 0) {
                     if (createMonDant.getNhomMonDatnId().trim().length() > 10) {
                         mess.setStatus(false);
-                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Mã nhóm không được quá 10 ký tự"));
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Mã nhóm " + createMonDant.getNhomMonDatnId() + " không được quá 10 ký tự"));
+                        return;
+                    }
+                    if (monDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())) {
+                        mess.setStatus(false);
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Mã nhóm " + createMonDant.getNhomMonDatnId() + " bị trùng với mã môn"));
                         return;
                     }
                     if (createMonDant.getNhomMonDatnId().indexOf(" ") > 0) {
                         mess.setStatus(false);
-                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Không được để khoảng trắng"));
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Không được có khoảng trắng"));
                         return;
                     }
                 }
 
-                if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId())) {
+                if (!chuyenNganhHashMap.containsKey(createMonDant.getChuyenNganhId().toUpperCase())) {
                     ChuyenNganh chuyenNganh = new ChuyenNganh();
                     chuyenNganh.setTenChuyenNganh(createMonDant.getChuyenNganhId());
                     chuyenNganh.setCoSoId(coSoId);
                     chuyenNganhHashMap.put(createMonDant.getChuyenNganhId(), chuyenNganh);
                     chuyenNganhs.put(chuyenNganh.getTenChuyenNganh(), chuyenNganh);
+                }
+
+                if (nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())
+                        && createMonDant.getNhomMonDatnId().trim().length() != 0) {
+                    System.out.println(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getChuyenNganhId());
+                    if (!nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getChuyenNganhId().equalsIgnoreCase(createMonDant.getChuyenNganhId())) {
+                        mess.setStatus(false);
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Nhóm môn " + createMonDant.getNhomMonDatnId() + " không trùng chuyên ngành"));
+                        return;
+                    }
                 }
 
                 if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())
@@ -259,28 +284,29 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 monDatn.setMaMon(createMonDant.getMaMon());
                 monDatn.setTenMonDatn(createMonDant.getTenMonDatn());
                 monDatn.setCoSoId(coSoId);
-                monDatn.setChuyenNganhId(createMonDant.getChuyenNganhId());
+                monDatn.setChuyenNganhId(createMonDant.getChuyenNganhId().toUpperCase());
                 monDatn.setNhomMonDatnId(createMonDant.getNhomMonDatnId());
                 monDatnHashMap.put(monDatn.getMaMon(), monDatn);
                 list.put(monDatn.getMaMon(), monDatn);
             });
-
-            if (chuyenNganhs.values().size() != 0) {
-                List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.saveAll(chuyenNganhs.values());
-                chuyenNganhList.parallelStream().forEach(el -> {
-                    chuyenNganhHashMap.put(el.getTenChuyenNganh(), el);
-                });
-            }
-
-            if (nhomMons.values().size() != 0) {
-                List<MonDatn> nhoMonDatnList = monDatnRepository.saveAll(nhomMons.values());
-                nhoMonDatnList.parallelStream().forEach(el -> {
-                    el.setChuyenNganhId(chuyenNganhHashMap.get(el.getChuyenNganhId()).getId());
-                    nhomMonDatnHashMap.put(el.getMaMon(), el);
-                    monDatnRepository.save(el);
-                });
-            }
             if (list.size() != 0 && list.size() == importMonDatnRequests.size()) {
+
+                if (chuyenNganhs.values().size() != 0) {
+                    List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.saveAll(chuyenNganhs.values());
+                    chuyenNganhList.parallelStream().forEach(el -> {
+                        chuyenNganhHashMap.put(el.getTenChuyenNganh().toUpperCase(), el);
+                    });
+                }
+
+                if (nhomMons.values().size() != 0) {
+                    List<MonDatn> nhoMonDatnList = monDatnRepository.saveAll(nhomMons.values());
+                    nhoMonDatnList.parallelStream().forEach(el -> {
+                        el.setChuyenNganhId(chuyenNganhHashMap.get(el.getChuyenNganhId()).getId());
+                        nhomMonDatnHashMap.put(el.getMaMon(), el);
+                        monDatnRepository.save(el);
+                    });
+                }
+
 
                 List<MonDatn> datnList = monDatnRepository.saveAll(list.values());
                 datnList.parallelStream().forEach(el -> {
@@ -297,6 +323,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             return new DtMessMonDatnReponse(false, "Lỗi hệ thống");
         }
         return mess;
@@ -322,10 +349,13 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             monDatnHashMap.put(x.getMaMon(), x);
         }
         for (ChuyenNganh x : chuyenNganhRepository.getAllByIdCoSo(coSoId)) {
-            chuyenNganhHashMap.put(x.getTenChuyenNganh(), x);
+            chuyenNganhHashMap.put(x.getTenChuyenNganh().toUpperCase(), x);
         }
-
+        for (ChuyenNganh x : chuyenNganhRepository.getAllByIdCoSo(coSoId)) {
+            chuyenNganhById.put(x.getId(), x);
+        }
         for (MonDatn e : monDatnRepository.getListNhomMonDatn(coSoId)) {
+            e.setChuyenNganhId(chuyenNganhById.get(e.getChuyenNganhId()).getTenChuyenNganh());
             nhomMonDatnHashMap.put(e.getMaMon(), e);
         }
     }

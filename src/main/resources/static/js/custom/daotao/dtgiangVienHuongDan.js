@@ -89,7 +89,10 @@ function addGVHD() {
     if (tenTaiKhoan.length === 0) {
         $("#errorTenTaiKhoan").text(" Tên tài khoản không được để trống");
         index++;
-    } else {
+    } else if(tenTaiKhoan.indexOf(" ") > -1) {
+         $("#errorTenTaiKhoan").text(" Tên tài khoản không có khoảng trắng");
+         index++;
+     } else {
         $("#errorTenTaiKhoan").text("");
     }
 
@@ -222,6 +225,9 @@ function updateGVHD() {
 
     if (tenTaiKhoan.length === 0) {
         $("#errorTenTaiKhoanUpdate").text(" Tên tài khoản không được để trống");
+        index++;
+    } else if(tenTaiKhoan.indexOf(" ") > -1) {
+        $("#errorTenTaiKhoanUpdate").text(" Tên tài khoản không có khoảng trắng");
         index++;
     } else {
         $("#errorTenTaiKhoanUpdate").text("");
