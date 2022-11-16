@@ -123,13 +123,13 @@
                                                id="custom-table">
                                             <thead class="table-primary">
                                             <th width="50px">STT</th>
+                                            <th>Mã nhóm</th>
                                             <th>Tên nhóm</th>
                                             <th>Đề tài</th>
                                             <th>Môn</th>
                                             <th>Số người</th>
                                             <th>Trưởng nhóm</th>
                                             <th>GVHD</th>
-                                            <th>Trạng thái</th>
                                             <th width="100px">
                                                 Hành động
                                             </th>
@@ -138,14 +138,13 @@
                                             <th:block th:each="nhomDatn : ${page.data}">
                                                 <tr class="table-light">
                                                     <td th:text="${nhomDatn.getStt()}"></td>
-<!--                                                    <td th:text="${nhomDatn.maNhom}"></td>-->
+                                                    <td th:text="${nhomDatn.maNhom}"></td>
                                                     <td th:text="${nhomDatn.tenNhom} == null ? 'Chưa có' : ${nhomDatn.tenNhom}"></td>
                                                     <td th:text="${nhomDatn.tenDeTai} == null ? 'Chưa có' : ${nhomDatn.tenDeTai}"></td>
                                                     <td th:text="${nhomDatn.tenMonDatn}"></td>
                                                     <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
                                                     <td th:text="${nhomDatn.getTenSinhVien()}"></td>
                                                     <td th:text="${nhomDatn.tenGvhd} == null ? 'Chưa có': (${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()})"></td>
-                                                    <td th:text="${nhomDatn.getMatKhauTonTai} == '0' ? 'Công khai' : 'Nhóm kín'"></td>
                                                     <td>
                                                         <button class="btn_eye"
                                                                 th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
@@ -205,8 +204,9 @@
                     <form id="form_create_sinh_vien">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label class="col-form-label">Danh sách thành viên
-                                    nhóm</label>
+                                <label class="col-form-label">
+                                    <h4 id="labelNhomDetail"></h4>
+                                </label>
                                 <hr>
                                 <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
                                        id="custom-detail-table">
@@ -221,6 +221,7 @@
                                     <tbody class="table-light" id="show_Dssv">
                                     </tbody>
                                 </table>
+                                <div id="moTa" class="form-group"></div>
                             </div>
                         </div>
                     </form>

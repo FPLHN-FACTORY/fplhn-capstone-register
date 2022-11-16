@@ -27,6 +27,7 @@ import com.fpolydatn.util.FormUtils;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
 import com.fpolydatn.util.PropertiesReader;
+import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -134,6 +135,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
+    @Synchronized
     public NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest, String idUser) {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
@@ -310,6 +312,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
+    @Synchronized
     public Boolean chonGvhd(String idUser, String idGiangVien, String coSoId) {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);

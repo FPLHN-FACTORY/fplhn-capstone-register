@@ -54,13 +54,6 @@ public interface DtMonDatnRepository extends MonDatnRepository {
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaMon(@Param("coSoId") String coSoId);
 
-    @Query(value = """
-                SELECT id 
-                FROM mon_datn
-                WHERE ma_mon = :maMon AND id <> :id AND co_so_id = :coSoId
-            """, nativeQuery = true)
-    String findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id, @Param("coSoId") String coSoId);
-
     @Query(value = """ 
                 SELECT m.id, 
                 m.created_date, 

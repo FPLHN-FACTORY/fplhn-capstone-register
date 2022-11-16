@@ -43,8 +43,8 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
             SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ma_nhom, b.ten_nhom
-            ,b.ten_de_tai, i.ten_mon_datn , f.ten_chuyen_nganh, COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien,
-            e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date, 
+            ,b.ten_de_tai, i.ten_mon_datn , f.ten_chuyen_nganh, COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ten_sinh_vien,
+            e.ten_gvhd, e.ten_tai_khoan, b.last_modified_date, 
             IF(b.mat_khau IS NULL, 0, 1) AS mat_khau_ton_tai, b.nhan_xet, c.thoi_diem_roi_nhom_gan_nhat
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
             LEFT JOIN sinh_vien d ON d.nhom_id = b.id            
@@ -94,12 +94,9 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
     Page<SvNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") SvFindNhomDatnRequest req, @Param("idNhomMon") String idNhomMon);
 
     @Query(value = "SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt," +
-            " a.ma_sinh_vien, a.ten_sinh_vien, IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu" +
+            " a.ma_sinh_vien, a.ten_sinh_vien, b.ma_nhom, b.ten_nhom, b.mo_ta, IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu" +
             " FROM sinh_vien a LEFT JOIN nhom_datn b ON a.nhom_id = b.id\n" +
             " WHERE a.nhom_id = :id AND a.co_so_id = :coSoId", nativeQuery = true)
     List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(@Param("id") String id, @Param("coSoId") String coSoId);
-
-    @Query(value = "SELECT mat_khau FROM nhom_datn WHERE id = :id", nativeQuery = true)
-    String getMatKhauById(@Param("id") String id);
 
 }

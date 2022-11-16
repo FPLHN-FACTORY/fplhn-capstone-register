@@ -31,8 +31,8 @@ public class NhomDatnHelper {
         Integer count = 0;
         try {
             if (maNhomGanNhat != null) {
-                String maxStr = maNhomGanNhat.substring(maNhomGanNhat.indexOf("_") + 1);
-                count = Integer.valueOf(maxStr) + 1;
+                String[] splitStr = maNhomGanNhat.split("_");
+                count = Integer.valueOf(splitStr[1]) + 1;
             } else {
                 count = 1;
             }

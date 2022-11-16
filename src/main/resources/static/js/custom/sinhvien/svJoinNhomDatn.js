@@ -26,6 +26,24 @@ function openModalDanhSachSinhVien(id) {
         url: SVNhomDatnApi + "?id=" + id,
         dataType: 'json',
         success: function (responseData) {
+            var labelNhomDetail = responseData.data[0].maNhom;
+            if (responseData.data[0].tenNhom != null) {
+                labelNhomDetail += " - " + responseData.data[0].tenNhom;
+            }
+            $("#labelNhomDetail").text(labelNhomDetail);
+            if (responseData.data[0].moTa != null) {
+                var text = `<hr><h5 class="form-group row">
+                                    Mô tả
+                                </h5>
+                                <div class="form-group row">
+                                    <textarea rows="6"
+                                        readonly="readonly" class="form-control">${responseData.data[0].moTa}</textarea>
+                                </div>`;
+                $("#moTa").attr('display', 'block');
+                $("#moTa").html(text);
+            } else {
+                $("#moTa").attr('display', 'none');
+            }
             var text = "";
             responseData.data.map(function (item) {
                 text += `
