@@ -3,6 +3,7 @@ const nhomMonDatnView = '/dao-tao/nhom-mon-datn';
 
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
+    $("#targetLink").text(nhomMonDatnView);
 });
 
 function openModalCreate() {

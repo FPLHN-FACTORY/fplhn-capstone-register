@@ -5,6 +5,8 @@ public final class Constants {
     private Constants() {
     }
 
+    public static final String VERSION = "v1.2.1";
+
     public static final String ENCODING_UTF8 = "UTF-8";
 
     public class FileProperties {

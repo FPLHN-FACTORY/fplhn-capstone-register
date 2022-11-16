@@ -12,11 +12,9 @@ $(document).ready(function () {
 });
 
 function fillter() {
-
     $("#idMon").on('change', function () {
         seachNhomdatn(0);
     });
-
 }
 
 function showDetail(maNhom) {
@@ -81,7 +79,6 @@ function xacDaNhanLienHe(idNhom, maNhom) {
 
 
 }
-
 
 function seachNhomdatn(index) {
     if (index == undefined) {

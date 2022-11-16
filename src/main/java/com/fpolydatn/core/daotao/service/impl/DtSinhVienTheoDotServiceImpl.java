@@ -174,11 +174,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             sinhVienList.parallelStream().forEach(sinhVien -> {
                 SinhVien sinhVienEntity = new SinhVien();
                 if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
-                        sinhVien.getSoDienThoai().isEmpty() || sinhVien.getEmail().isEmpty() ||
-                        sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
+                        sinhVien.getEmail().isEmpty() ||
+                        sinhVien.getChuyenNganh().isEmpty() ||
                         sinhVien.getDotDangKy().isEmpty()) {
                     response.setStatus(false);
-                    response.setMessage("Không để trống (Mã, tên, sđt, email, khóa, tên chuyên ngành, đợt đăng ký)");
+                    response.setMessage("Không để trống (Mã, tên, email, tên chuyên ngành, đợt đăng ký)");
                     return;
                 }
                 if (map.containsKey(sinhVien.getMaSinhVien())) {
@@ -219,7 +219,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
                 sinhVienEntity.setTenSinhVien(sinhVien.getTenSinhVien());
                 sinhVienEntity.setMaSinhVien(sinhVien.getMaSinhVien());
-                sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
+                if (sinhVien.getSoDienThoai() == null) {
+                    sinhVienEntity.setSoDienThoai("");
+                } else {
+                    sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
+                }
                 sinhVienEntity.setEmail(sinhVien.getEmail());
                 sinhVienEntity.setKhoa(sinhVien.getKhoa());
                 sinhVienEntity.setCoSoId(coSoId);

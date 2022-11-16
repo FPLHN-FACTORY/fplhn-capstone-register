@@ -13,12 +13,18 @@ $(document).ready(function () {
 });
 
 function viewTable(page) {
+    if (page == -1) {
+        page = totalPages - 1;
+    }
+    if (page == totalPages) {
+        page = 0;
+    }
     let keyword = $("#keyword").val();
     let chuyenNganh = $("#chuyenNganh").val();
     let trangThai = $("#trangThai").val();
     let dotDangKy = $("#dotDangKy").val();
-    currentPage = page
-    $("#valueInput").val(page + 1)
+    currentPage = page;
+    $("#valueInput").val(page + 1);
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -26,7 +32,7 @@ function viewTable(page) {
         dataType: 'json',
         success: function (responseData) {
             if (responseData.data.data.length > 0) {
-                totalPages = responseData.data.totalPages
+                totalPages = responseData.data.totalPages;
                 $("#is_empty").html('')
                 $("#list").html(responseData.data.data.map(function (item) {
                     return ` <tr style="${item.trangThai == 1 ? 'color : red' : ''}">
@@ -69,7 +75,7 @@ function viewTable(page) {
                 }));
                 $('[data-toggle = "tooltip"]').tooltip();
                 if (responseData.data.totalPages > 1) {
-                    genPagingAndFillColor()
+                    genPaging();
                 } else {
                     $("#list_page").html(function () {
                         return ``
@@ -499,6 +505,7 @@ function importExcel() {
                 contentType: false,
                 success: function (response) {
                     if (response.data.status == true) {
+                        $("#import_excel").modal('hide');
                         bootbox.alert({
                             message: 'Import file thành công',
                             backdrop: true,
@@ -609,34 +616,36 @@ function detail(sinhVienId) {
 }
 
 function changeInput() {
-    let value = document.querySelector("#valueInput").value
-    if (Number(value) <= 0) {
-        value = 1;
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        viewTable(value - 1);
     }
-    if (Number(value) > totalPages) {
-        value = totalPages;
-    }
-    viewTable(value - 1);
 }
 
-genPagingAndFillColor()
+genPaging();
 
-function genPagingAndFillColor() {
-    if (totalPages == 0) {
+function genPaging() {
+    if (totalPages <= 1) {
         $("#list_page").html('');
     } else {
         let templatePageMid = ``;
         let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(${currentPage - 1})">Back</a>
+                     <a style="border: none" class="page-link" onclick="viewTable(${currentPage - 1})"><img src="/img/back.svg"></a>
                 </li>
                 `;
-        templatePageMid += `
+        templatePageMid = `
                             <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
-                             <input style="border: none; width: 55px" value="/   ${totalPages}" readonly>`
+                             <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
         let templatePageAfter = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="viewTable(${currentPage + 1})">Next</a>
+                     <a style="border: none" class="page-link" onclick="viewTable(${currentPage + 1})"><img src="/img/next.svg"></a>
                 </li>
                 `;
         let templateHtml = ``;

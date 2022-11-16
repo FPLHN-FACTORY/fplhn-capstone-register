@@ -190,42 +190,52 @@ function createNhomDatn() {
     }
 }
 
-genPagingAndFillColor()
-
-function genPagingAndFillColor() {
-    genPagzing();
-    let colorPage = document.querySelectorAll("#pageColor");
-    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
-    colorPage[currentPage].style.color = 'white';
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadDataNhomDatn(value - 1);
+    }
 }
 
+genPagzing();
+
 function genPagzing() {
-    $("#page").html(``)
-    let templatePageMid = ``;
-    let templatePageBefore = `
+    if (totalPages <= 1) {
+        $("#page").html('');
+    } else {
+        let templatePageMid = ``;
+        let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage - 1)">Back</a>
+                     <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage - 1})"><img src="/img/back.svg"></a>
                 </li>
                 `;
-    for (let i = 0; i < totalPages; i++) {
-        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
-                                        <a class="page-link" id="pageColor" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
-                                    </li>`
-    }
-    let templatePageAfter = `
+        templatePageMid = `
+                            <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
+                             <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
+        let templatePageAfter = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(Number(currentPage) + 1)">Next</a>
+                     <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage + 1})"><img src="/img/next.svg"></a>
                 </li>
                 `;
-    let templateHtml = ``;
-    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
-    if (totalPages == 1) {
-        templateHtml = ``;
+        let templateHtml = ``;
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        $("#page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
     }
-    $("#page").html(templateHtml);
 }
 
 function loadDataNhomDatn(count) {
+    if (count == -1) {
+        count = totalPages - 1;
+    }
+    if (count == totalPages) {
+        count = 0;
+    }
     let tenDeTai = $("#tenDeTai").val().trim();
     let soLuong = $("#soLuong").val().trim();
     let giangVien = $("#giangVien").val().trim();
@@ -237,8 +247,8 @@ function loadDataNhomDatn(count) {
         url: SVNhomDatnApi + "/search" + "?tenDeTai=" + tenDeTai + "&truongNhom=" + truongNhom + "&soLuong=" + soLuong + "&giangVien=" + giangVien + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
-            let array = responseData.data.data
-            totalPages = responseData.data.totalPages
+            let array = responseData.data.data;
+            totalPages = responseData.data.totalPages;
             if (array.length == 0) {
                 $("#listNhomDatn").html(``)
                 $("#page").html(``)
@@ -278,7 +288,7 @@ function loadDataNhomDatn(count) {
                 </tr>
                 `
                 }))
-                genPagingAndFillColor()
+                genPagzing();
             }
         },
         error: function (e) {

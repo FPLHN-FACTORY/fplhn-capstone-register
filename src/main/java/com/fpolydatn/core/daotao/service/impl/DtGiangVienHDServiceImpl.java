@@ -247,7 +247,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
             listGVHD.parallelStream().forEach(gv -> {
                 if (gv.getEmailFe().isEmpty() || gv.getEmailFpt().isEmpty() ||
-                        gv.getSoDienThoai().isEmpty() || gv.getTenTaiKhoan().isEmpty() ||
+                        gv.getTenTaiKhoan().isEmpty() ||
                         gv.getSoNhomHuongDanToiDa() == null || gv.getTenGvhd().isEmpty()) {
                     dtGiangVienHDResponseMessage.setStatus(false);
                     dtGiangVienHDResponseMessage.setMessage("Không được để trống");
@@ -272,40 +272,44 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                     return;
                 }
 
-                if (!gv.getEmailFpt().matches("\\w+@fpt.edu.vn")) {
+//                if (!gv.getEmailFpt().matches("\\w+@fpt.edu.vn")) {
+//                    dtGiangVienHDResponseMessage.setStatus(false);
+//                    dtGiangVienHDResponseMessage.setMessage("Email fpt không đúng định dạng");
+//                    return;
+//                }
+//
+//                if (!gv.getEmailFe().matches("\\w+@fe.edu.vn")) {
+//                    dtGiangVienHDResponseMessage.setStatus(false);
+//                    dtGiangVienHDResponseMessage.setMessage("Email fe không đúng định dạng");
+//                    return;
+//                }
+
+                if (gv.getEmailFpt().length() > 50) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fpt không đúng định dạng");
+                    dtGiangVienHDResponseMessage.setMessage("Email fpt quá 50 ký tự");
                     return;
                 }
 
-                if (!gv.getEmailFe().matches("\\w+@fe.edu.vn")) {
+                if (gv.getEmailFe().length() > 50) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fe không đúng định dạng");
+                    dtGiangVienHDResponseMessage.setMessage("Email fe quá 50 ký tự");
                     return;
                 }
 
-                if (gv.getEmailFpt().length() > 30) {
-                    dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fpt quá 30 ký tự");
-                    return;
-                }
-
-                if (gv.getEmailFe().length() > 30) {
-                    dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fe quá 30 ký tự");
-                    return;
-                }
-
-                if (!gv.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
-                    dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Số điện thoại không đúng định dạng");
-                    return;
-                }
+//                if (!gv.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
+//                    dtGiangVienHDResponseMessage.setStatus(false);
+//                    dtGiangVienHDResponseMessage.setMessage("Số điện thoại không đúng định dạng");
+//                    return;
+//                }
                 DtGiagVienHDImportResquest giangVien = new DtGiagVienHDImportResquest();
                 giangVien.setEmailFe(gv.getEmailFe());
                 giangVien.setEmailFpt(gv.getEmailFpt());
                 giangVien.setTenTaiKhoan(gv.getTenTaiKhoan());
-                giangVien.setSoDienThoai(gv.getSoDienThoai());
+                if (gv.getSoDienThoai() == null) {
+                    giangVien.setSoDienThoai("");
+                } else {
+                    giangVien.setSoDienThoai(gv.getSoDienThoai());
+                }
                 giangVien.setSoNhomHuongDanToiDa(gv.getSoNhomHuongDanToiDa());
                 giangVien.setTenGvhd(gv.getTenGvhd());
                 giangVien.setMonHoc(gv.getMonHoc());

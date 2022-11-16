@@ -26,6 +26,7 @@ import com.fpolydatn.util.EmailSender;
 import com.fpolydatn.util.FormUtils;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
+import com.fpolydatn.util.PropertiesReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -191,7 +192,11 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         nhomDatn.setTruongNhomId(idUser);
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
-        nhomDatn.setMaNhom(nhomDatnHelper.genMaNhomTuDong());
+        String maNhom = nhomDatnHelper.genMaNhomTuDong();
+        if (maNhom == null) {
+            throw new RestApiException(Message.TAO_NHOM_THAT_BAI);
+        }
+        nhomDatn.setMaNhom(maNhom);
         nhomDatn = svNhomDatnRepository.save(nhomDatn);
         sinhVien.get().setNhomId(nhomDatn.getId());
         sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());

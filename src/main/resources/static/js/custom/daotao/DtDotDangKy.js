@@ -7,6 +7,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
+    $("#targetLink").text(dotDangKyView);
 });
 
 function openModalCreate() {

@@ -6,6 +6,7 @@ const regexSoDienThoai = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/;
 
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
+    $("#targetLink").text(canBoView);
 });
 
 function clearData() {
@@ -343,7 +344,7 @@ function openModalRemoveCanBo(canBoId) {
                                     window.open(canBoView, '_self');
                                 }
                             });
-                        } else if(responseData.responseJSON.message.trim() === 'Chu nhiem nay dang chu nhiem mot chuyen nganh'){
+                        } else if (responseData.responseJSON.message.trim() === 'Chu nhiem nay dang chu nhiem mot chuyen nganh') {
                             bootbox.alert({
                                 message: 'Chủ nhiệm này đang chủ nhiệm một chuyên ngành',
                                 backdrop: true,
@@ -358,7 +359,6 @@ function openModalRemoveCanBo(canBoId) {
         }
     });
 }
-
 
 function exportExcelMau() {
     let typeExcel = $("#type_mau_excel").val();
