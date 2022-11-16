@@ -95,7 +95,7 @@ function viewTable(page) {
 
 function openModalThemSinhVien(){
     $("#modal_create").modal('show')
-    clearData()
+    clearData();
 }
 
 function create(){
@@ -106,7 +106,6 @@ function create(){
     let khoa = $("#khoa_hoc_create").val().trim();
     let monChuongTrinh = $("#mon_chuong_trinh_create").val();
     let tenChuyenNganh = $("#ten_chuyen_nganh_create").val();
-    let maNhom = $("#ma_nhom_create").val().trim();
     let dotDangKyId = $("#dot_dang_ky_create").val();
     let trangThai = $("#trang_thai_create").val();
     let sinhVienRequest = {};
@@ -117,7 +116,6 @@ function create(){
     sinhVienRequest["khoa"] = khoa;
     sinhVienRequest["monChuongTrinh"] = monChuongTrinh;
     sinhVienRequest["chuyenNganhId"] = tenChuyenNganh;
-    sinhVienRequest["maNhom"] = maNhom;
     sinhVienRequest["dotDangKyId"] = dotDangKyId;
     sinhVienRequest["trangThai"] = trangThai;
     let index = 0;
@@ -220,7 +218,6 @@ function clearData() {
     $("#khoa_hoc_create").val('');
     $("#mon_chuong_trinh_create").val('');
     $("#ten_chuyen_nganh_create").val('');
-    $("#ma_nhom_create").val('');
     $("#dot_dang_ky_create").val('');
 
     $("#ma_sinh_vien_create_error").text('');
@@ -237,7 +234,6 @@ function clearData() {
     $("#khoa_hoc_update_error").text('');
     $("#mon_chuong_trinh_update_error").text('');
     $("#ten_chuyen_nganh_update_error").text('');
-    $("#ma_nhom_update_error").text('');
     $("#dot_dang_ky_update_error").text('');
 }
 
@@ -259,7 +255,6 @@ function openModalUpdateSinhVien(idSinhVien) {
             $("#khoa_hoc_update").val(responseData.data.khoa);
             $("#mon_chuong_trinh_update").val(responseData.data.idMonChuongTrinh);
             $("#ten_chuyen_nganh_update").val(responseData.data.chuyenNganhId);
-            $("#ma_nhom_update").val(responseData.data.maNhom);
             $("#dot_dang_ky_update").val(responseData.data.idDotDangKy);
             $("#trang_thai_update").val(responseData.data.trangThai);
         },
@@ -278,7 +273,6 @@ function update() {
     let khoa = $("#khoa_hoc_update").val().trim();
     let monChuongTrinh = $("#mon_chuong_trinh_update").val();
     let tenChuyenNganh = $("#ten_chuyen_nganh_update").val();
-    let maNhom = $("#ma_nhom_update").val().trim();
     let dotDangKyId = $("#dot_dang_ky_update").val();
     let trangThai = $("#trang_thai_update").val();
     let sinhVienRequest = {};
@@ -289,7 +283,6 @@ function update() {
     sinhVienRequest["khoa"] = khoa;
     sinhVienRequest["monChuongTrinh"] = monChuongTrinh;
     sinhVienRequest["chuyenNganhId"] = tenChuyenNganh;
-    sinhVienRequest["maNhom"] = maNhom;
     sinhVienRequest["dotDangKyId"] = dotDangKyId;
     sinhVienRequest["trangThai"] = trangThai;
     let index = 0;

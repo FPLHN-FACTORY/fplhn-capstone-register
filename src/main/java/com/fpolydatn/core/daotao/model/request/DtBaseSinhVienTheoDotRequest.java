@@ -47,10 +47,6 @@ public class DtBaseSinhVienTheoDotRequest {
 
     @NotEmpty
     @NotBlank
-    private String maNhom;
-
-    @NotEmpty
-    @NotBlank
     private String dotDangKyId;
 
     @NotEmpty

@@ -232,7 +232,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 map.put(sinhVien.getEmail(), sinhVien.getEmail());
                 listSinhVienEntity.put(sinhVienEntity.getMaSinhVien(), sinhVienEntity);
             });
-            if (response.getStatus() == true) {
+            if (response.getStatus()) {
                 sinhVienRepository.saveAll(listSinhVienEntity.values());
             }
         } catch (Exception e) {
@@ -457,20 +457,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
 
-        if (!command.getMaNhom().trim().equals("")) {
-            String idNhomDatnCheck = sinhVienRepository.findNhomDatnByMaNhomUpdate(command.getMaNhom(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
-            if (idNhomDatnCheck == null) {
-                throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
-            }
-        }
-
-        if (!command.getMaNhom().trim().equals("")) {
-            Short sLThanhVien = sinhVienRepository.countSoThanhVienUpdate(command.getMaNhom(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
-            if (sLThanhVien >= 7) {
-                throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
-            }
-        }
-
         SinhVien sinhVien = checkSinhVien.get();
         sinhVien.setMaSinhVien(command.getMaSinhVien());
         sinhVien.setTenSinhVien(command.getTenSinhVien());
@@ -478,9 +464,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         sinhVien.setSoDienThoai(command.getSdt());
         sinhVien.setKhoa(command.getKhoa());
         sinhVien.setDotDangKyId(command.getDotDangKyId());
-        if ("".equals(command.getMaNhom().trim())) {
-            sinhVien.setNhomId(null);
-        }
         sinhVien.setMonChuongTrinhId(command.getMonChuongTrinh());
         sinhVien.setChuyenNganhId(command.getChuyenNganhId());
         if (command.getTrangThai() == 0) {
@@ -503,24 +486,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         String idSinhVienCheckEmail = sinhVienRepository.findSinhVienByEmail(command.getEmail(), command.getCoSoId(), command.getDotDangKyId());
         if (idSinhVienCheckEmail != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
-        }
-
-        if (!command.getMaNhom().trim().equals("")) {
-            String idNhomDatnCheck = sinhVienRepository.findNhomDatnByMaNhom(command.getMaNhom(), command.getCoSoId(), command.getDotDangKyId());
-            if (idNhomDatnCheck == null) {
-                throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
-            }
-        }
-
-        if (!command.getMaNhom().trim().equals("")) {
-            Short sLThanhVien = sinhVienRepository.countSoThanhVien(command.getMaNhom(), command.getCoSoId(), command.getDotDangKyId());
-            if (sLThanhVien >= 7) {
-                throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
-            }
-        }
-
-        if ("".equals(command.getMaNhom().trim())) {
-            sinhVien.setNhomId(null);
         }
         if (command.getTrangThai() == 0) {
             sinhVien.setTrangThai(TrangThaiSinhVien.DU_DIEU_KIEN);
