@@ -181,6 +181,7 @@ function importExcel() {
                 contentType: false,
                 success: function (response) {
                     if (response.data.status == true) {
+                        $("#import_excel").modal('hide');
                         bootbox.alert({
                             message: 'Import file thành công',
                             backdrop: true,
@@ -306,7 +307,7 @@ function changeInput() {
 genPaging();
 
 function genPaging() {
-    if (totalPages == 1) {
+    if (totalPages <= 1) {
         $("#list_page").html('');
     } else {
         let templatePageMid = ``;

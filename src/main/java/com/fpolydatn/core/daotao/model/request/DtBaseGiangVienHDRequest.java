@@ -28,8 +28,6 @@ public abstract class DtBaseGiangVienHDRequest {
     @NotBlank
     private String tenTaiKhoan;
 
-    @NotEmpty
-    @NotBlank
     @Length(max = 20)
     private String soDienThoai;
 

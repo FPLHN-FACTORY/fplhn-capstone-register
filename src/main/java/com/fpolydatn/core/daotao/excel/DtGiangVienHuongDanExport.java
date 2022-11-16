@@ -22,7 +22,7 @@ public class DtGiangVienHuongDanExport {
     public void exportMauImport(HttpServletResponse response) throws IOException {
         final long startTime = System.currentTimeMillis();
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Employee TechGeekNext Example");
+        Sheet sheet = workbook.createSheet("Danh sách giảng viên");
 
         CellStyle cellStyle = workbook.createCellStyle();
 
@@ -49,7 +49,7 @@ public class DtGiangVienHuongDanExport {
 
     public void employeeDetailReport(HttpServletResponse response, List<DtGiangVienHDResponse> list) {
         try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Sheet");
+            Sheet sheet = workbook.createSheet("Danh sách sinh viên");
 
             CellStyle cellStyle = workbook.createCellStyle();
 

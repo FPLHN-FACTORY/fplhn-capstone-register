@@ -82,7 +82,7 @@ public class DtSinhVienTheoDotExport {
 
 
     public void headerLineMau(HttpServletResponse response) throws Exception {
-        xssfSheet = xssfWorkbook.createSheet("sheet");
+        xssfSheet = xssfWorkbook.createSheet("Danh sách sinh viên");
         Row row = xssfSheet.createRow(0);
 
         CellStyle cellStyle = xssfWorkbook.createCellStyle();
@@ -109,7 +109,7 @@ public class DtSinhVienTheoDotExport {
 
     public void employeeDetailReport(HttpServletResponse response, List<DtSinhVienTheoDotResponse> listDtSinhVien) {
         try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Employee TechGeekNext Example");
+            Sheet sheet = workbook.createSheet("Danh sách sinh viên");
 
             CellStyle cellStyle = workbook.createCellStyle();
 

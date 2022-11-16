@@ -93,15 +93,12 @@ function addGVHD() {
         $("#errorTenTaiKhoan").text("");
     }
 
-    if (soDienThoai.length === 0) {
-        $("#errorSDT").text(" Số điện thoại không được để trống");
-        index++;
-    } else if (regexSDT.test(soDienThoai) == false) {
-        $("#errorSDT").text(" Số điện thoại không đúng định dạng");
-        index++;
-    } else {
-        $("#errorSDT").text("");
-    }
+    // if (soDienThoai.length === 0) {
+    //     $("#errorSDT").text(" Số điện thoại không được để trống");
+    //     index++;
+    // } else {
+    //     $("#errorSDT").text("");
+    // }
 
     if (emailFpt.length === 0) {
         $("#errorEmailFpt").text(" EmailFpt không được để trống");
@@ -230,15 +227,12 @@ function updateGVHD() {
         $("#errorTenTaiKhoanUpdate").text("");
     }
 
-    if (soDienThoai.length === 0) {
-        $("#errorSDTUpdate").text(" Số điện thoại không được để trống");
-        index++;
-    } else if (regexSDT.test(soDienThoai) == false) {
-        $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
-        index++;
-    } else {
-        $("#errorSDTUpdate").text("");
-    }
+    // if (soDienThoai.length === 0) {
+    //     $("#errorSDTUpdate").text(" Số điện thoại không được để trống");
+    //     index++;
+    // } else {
+    //     $("#errorSDTUpdate").text("");
+    // }
 
     if (emailFpt.length === 0) {
         $("#errorEmailFptUpdate").text(" EmailFpt không được để trống");
@@ -254,7 +248,7 @@ function updateGVHD() {
         $("#errorEmailFeUpdate").text(" EmailFe không được để trống");
         index++;
     } else if (emailFe.trim().includes(" ")) {
-        $("#errorEmailFeUpdate").text("Email Fe không đúng định dạng");
+        $("#errorEmailFeUpdate").text("Email Fe không có khoảng trắng");
         index++;
     } else {
         $("#errorEmailFeUpdate").text("");
@@ -357,7 +351,7 @@ function openModalImport() {
     $("#labelFile").text('Choose file');
     $("#inputGroupFile01").val('');
     $("#import_excel_error").text('');
-    $("#modal_import_excel").modal('show')
+    $("#modal_import_excel").modal('show');
 }
 
 function exportFile() {
@@ -401,12 +395,21 @@ function importExcel() {
                 cache: false,
                 success: function (response) {
                     if (response.data.status == true) {
-                        alert("Import file excel thành công");
-                        window.open(giangVienHuongDanView, '_self');
+                        $("#modal_import_excel").modal('hide');
+                        bootbox.alert({
+                            message: "Import file excel thành công",
+                            backdrop: true,
+                            callback: function () {
+                                window.open(giangVienHuongDanView, '_self');
+                            }
+                        });
                     } else {
-                        alert(response.data.message);
-                        $("#inputGroupFile01").val("");
-                        $("#inputGroupFile01").clear()
+                        bootbox.alert({
+                            message: response.data.message + '',
+                            backdrop: true,
+                        });
+                        $("#labelFile").text('Choose file');
+                        $("#inputGroupFile01").val('');
                     }
                 },
                 error: function (e) {
@@ -454,7 +457,7 @@ function changeInput() {
 genPaging();
 
 function genPaging() {
-    if (totalPages == 1) {
+    if (totalPages <= 1) {
         $("#page").html('');
     } else {
         let templatePageMid = ``;

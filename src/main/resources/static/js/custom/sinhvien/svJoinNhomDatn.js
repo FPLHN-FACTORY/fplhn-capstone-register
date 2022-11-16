@@ -206,7 +206,7 @@ function changeInput() {
 genPagzing();
 
 function genPagzing() {
-    if (totalPages == 1) {
+    if (totalPages <= 1) {
         $("#page").html('');
     } else {
         let templatePageMid = ``;

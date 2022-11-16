@@ -165,11 +165,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             sinhVienList.parallelStream().forEach(sinhVien -> {
                 SinhVien sinhVienEntity = new SinhVien();
                 if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
-                        sinhVien.getSoDienThoai().isEmpty() || sinhVien.getEmail().isEmpty() ||
+                        sinhVien.getEmail().isEmpty() ||
                         sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
                         sinhVien.getDotDangKy().isEmpty()) {
                     response.setStatus(false);
-                    response.setMessage("Không để trống (Mã, tên, sđt, email, khóa, tên chuyên ngành, đợt đăng ký)");
+                    response.setMessage("Không để trống (Mã, tên, email, khóa, tên chuyên ngành, đợt đăng ký)");
                     return;
                 }
                 if (map.containsKey(sinhVien.getMaSinhVien())) {
