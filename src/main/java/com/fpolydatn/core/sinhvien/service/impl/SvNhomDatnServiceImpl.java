@@ -303,7 +303,13 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         nhomDatn.get().setTruongNhomId(truongNhomMoi.get().getId());
         String[] email = new String[]{truongNhomMoi.get().getEmail()};
-        String[] message = new String[]{"Bạn đã trở thành trưởng nhóm", "Mật khẩu nhóm DATN của bạn là: " + nhomDatn.get().getMatKhau()};
+        String[] message = null;
+        if  (nhomDatn.get().getMatKhau() == null) {
+            message = new String[]{"Bạn đã trở thành trưởng nhóm " + nhomDatn.get().getMaNhom()};
+        } else {
+            message = new String[]{"Bạn đã trở thành trưởng nhóm" + nhomDatn.get().getMaNhom(),
+                    "Mật khẩu nhóm DATN của bạn là: " + nhomDatn.get().getMatKhau()};
+        }
         emailSender.sendEmail(email, "[FCR] Thông báo mật khẩu nhóm",
                 "Chuyển quyền trưởng nhóm",
                 message);
