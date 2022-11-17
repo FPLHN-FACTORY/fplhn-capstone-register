@@ -136,7 +136,9 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button type="button" th:attr="onclick=|loadDataNhomDatn(0)|" class="btn btn-primary">Tìm kiếm</button>
+                                            <button type="button" th:attr="onclick=|loadDataNhomDatn(0)|"
+                                                    class="btn btn-primary">Tìm kiếm
+                                            </button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a href="#" class="btn btn-danger text-white" onclick="clearData();">
@@ -208,7 +210,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline-secondary btn btn-light"
+                                                            <button type="button"
+                                                                    class="btn btn-outline-secondary btn btn-light"
                                                                     data-bs-dismiss="modal">Hủy
                                                             </button>
                                                             <button class="btn btn-primary"
@@ -232,7 +235,8 @@
                                                                 <h5 class="modal-title">
                                                                     Import file excel
                                                                 </h5>
-                                                                <button type="button" class="close" data-bs-dismiss="modal"
+                                                                <button type="button" class="close"
+                                                                        data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">x</span>
                                                                 </button>
@@ -249,7 +253,8 @@
                                                                                    id="inputGroupFile01"
                                                                                    aria-describedby="inputGroupFileAddon01"
                                                                                    name="file">
-                                                                            <label class="custom-file-label" id="labelFile"
+                                                                            <label class="custom-file-label"
+                                                                                   id="labelFile"
                                                                                    for="inputGroupFile01">Choose
                                                                                 file</label>
                                                                         </div>
@@ -259,7 +264,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-outline-secondary btn btn-light"
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn btn-light"
                                                                         data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button
@@ -293,24 +299,17 @@
                                                             <div class="modal-body">
                                                                 <div class="form-group">
                                                                     <label class="col-form-label"><span
-                                                                            style="color: red">(*)</span> Nhóm môn dự án
-                                                                        tốt nghiệp</label><br>
-                                                                    <select class="form-control" data-toggle="tooltip"
-                                                                            id="nhom_mon_datn_create"
-                                                                            title="Chọn nhóm môn để lọc ra môn tương đương">
-                                                                        <option value="" hidden>Chọn nhóm môn</option>
-                                                                        <option th:each="item : ${listNhomMonDatn}"
-                                                                                th:value="${item.getId()}"
-                                                                                th:text="${item.getTenMonDatn()}"></option>
-                                                                    </select>
-                                                                    <span class="text-danger"
-                                                                          id="nhom_mon_error"></span><br>
-                                                                    <label class="col-form-label"><span
                                                                             style="color: red">(*)</span> Môn dự án tốt
                                                                         nghiệp</label><br>
                                                                     <select class="form-control" data-toggle="tooltip"
                                                                             id="mon_datn_create"
                                                                             title="Chọn môn để lọc ra giảng viên hướng dẫn">
+                                                                        <option value="" hidden>Chọn môn dự án tốt
+                                                                            nghiệp
+                                                                        </option>
+                                                                        <option th:each="item : ${listMonDatn}"
+                                                                                th:value="${item.getId()}"
+                                                                                th:text="${item.getMaMonDatn() + ' - ' + item.getTenMonDatn}"></option>
                                                                     </select>
                                                                     <span class="text-danger"
                                                                           id="mon_datn_error"></span><br>
@@ -341,10 +340,13 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-outline-secondary btn btn-light"
-                                                                        data-bs-dismiss="modal" onclick="clearForm()">Hủy
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn btn-light"
+                                                                        data-bs-dismiss="modal" onclick="clearForm()">
+                                                                    Hủy
                                                                 </button>
-                                                                <button type="button" th:attr="onclick=|create()|" class="btn btn-primary">Thêm mới
+                                                                <button type="button" th:attr="onclick=|create()|"
+                                                                        class="btn btn-primary">Thêm mới
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -359,7 +361,7 @@
                                                    style="text-align: center"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead class="table-primary">
-                                                <th><input data-toggle="tooltip"
+                                                <th width="20px"><input data-toggle="tooltip"
                                                            title="Chọn tất cả" type="checkbox" id="checkbox_father">
                                                 </th>
                                                 <th width="50px">STT</th>

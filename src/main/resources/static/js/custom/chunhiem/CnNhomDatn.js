@@ -97,29 +97,6 @@ function xacNhanNhom(id, count) {
     });
 }
 
-$('#nhom_mon_datn_create').change(function (event) {
-    event.preventDefault();
-    let nhomMonId = $('#nhom_mon_datn_create').val();
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: CNNhomDatnApi + "/list-mon-datn" + "?nhomMonId=" + nhomMonId,
-        data: JSON.stringify(nhomMonId),
-        dataType: 'json',
-        success: function (responseData) {
-            let array = responseData.data
-            var text = "<option value='' hidden selected>Chọn môn dự án tốt nghiệp</option>"
-            array.map(function (item) {
-                text += `<option value="${item.id}" >${item.tenMonDatn}</option>`
-            })
-            $('#mon_datn_create').html(text)
-        },
-        error: function (e) {
-        }
-    });
-})
-
 $("#mon_datn_create").change(function (event) {
     event.preventDefault();
     let idMon = $("#mon_datn_create").val();
