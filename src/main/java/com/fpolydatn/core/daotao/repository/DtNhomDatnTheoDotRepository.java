@@ -35,7 +35,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND b.co_so_id = :#{#req.coSoId}
             GROUP BY b.id
-            ORDER BY b.last_modified_date DESC 
+            ORDER BY b.created_date DESC 
             """, countQuery = """
             SELECT count(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
@@ -52,7 +52,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND b.co_so_id = :#{#req.coSoId}
-            ORDER BY b.last_modified_date DESC 
+            ORDER BY b.created_date DESC 
             """, nativeQuery = true)
     Page<DtNhomDatnTheoDotResponse> findAllNhomDatn(Pageable page, @Param("req") final FindDtNhomDatnTheoDotRequest req);
 
