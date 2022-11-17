@@ -305,10 +305,9 @@
                                             <th width="50px">STT</th>
                                             <th>MSSV</th>
                                             <th>Họ tên</th>
-                                            <th>Khóa</th>
                                             <th>Môn chương trình</th>
                                             <th>Mã nhóm</th>
-                                            <th>Tên Đề tài</th>
+                                            <th>Đề tài</th>
                                             <th>GVHD</th>
                                             <th>Chuyên Ngành</th>
                                             <th width="160px">Chức năng</th>
@@ -319,11 +318,10 @@
                                                     <td th:text="${sinhVien.getStt}"/>
                                                     <td th:text="${sinhVien.maSinhVien}"/>
                                                     <td th:text="${sinhVien.tenSinhVien}"/>
-                                                    <td th:text="${sinhVien.khoa}"/>
-                                                    <td th:text="${sinhVien.getMonChuongTrinh}==null? 'Chưa có ': ${sinhVien.getMonChuongTrinh}+' - '+${sinhVien.getMaMonChuongTrinh}"/>
-                                                    <td th:text="${sinhVien.maNhom} ==null? 'Chưa có ': ${sinhVien.maNhom}"/>
-                                                    <td th:text="${sinhVien.tenDeTai}==null? 'Chưa có ':${sinhVien.tenDeTai}"/>
-                                                    <td th:text="${sinhVien.tenGvhd}==null? 'Chưa có ':${sinhVien.tenGvhd}"/>
+                                                    <td th:text="${sinhVien.getMaMonChuongTrinh} == null ? '-': ${sinhVien.getMaMonChuongTrinh}"/>
+                                                    <td th:text="${sinhVien.maNhom} ==null? '-': ${sinhVien.maNhom}"/>
+                                                    <td th:text="${sinhVien.tenDeTai}==null? '-':${sinhVien.tenDeTai}"/>
+                                                    <td th:text="${sinhVien.tenGvhd}==null? '-':${sinhVien.tenGvhd}"/>
                                                     <td th:text="${sinhVien.tenChuyenNganh}"/>
                                                     <td>
                                                         <button class="btn_eye"
@@ -350,7 +348,8 @@
                                                         </button>
                                                         <button class="btn_pencil_square"
                                                                 data-toggle="tooltip"
-                                                                title="Loại sinh viên" th:style="${sinhVien.trangThai} == 0 ? 'display : block' : 'display : none'"
+                                                                title="Loại sinh viên"
+                                                                th:style="${sinhVien.trangThai} == 0 ? 'display : block' : 'display : none'"
                                                                 th:attr="onclick=|loaiSinhVienDetail('${sinhVien.getId()}','${page.currentPage}')|">
                                                             <img th:src="@{/img/person-off.svg}">
                                                         </button>
@@ -537,86 +536,71 @@
                     <div class="form-group">
                         <div style="width: 48%;margin-right: 2%; float:left">
                             <span style="color: red">(*) </span><label class="col-form-label">Mã sinh viên</label>
-                            <div class="input-group mb-3">
-                                <input type="text" maxlength="10" class="form-control" id="ma_sinh_vien_create">
-                            </div>
-                            <span class="text-danger"
-                                  id="ma_sinh_vien_create_error"></span><br>
+
+                            <input type="text" maxlength="10" class="form-control" id="ma_sinh_vien_create">
+                            <small class="text-danger"
+                                   id="ma_sinh_vien_create_error"></small><br>
                             <span style="color: red">(*) </span><label class="col-form-label">Tên sinh viên</label>
-                            <div class="input-group mb-3">
-                                <input type="text" maxlength="100" class="form-control" id="ten_sinh_vien_create">
-                            </div>
-                            <span class="text-danger"
-                                  id="ten_sinh_vien_create_error"></span><br>
+
+                            <input type="text" maxlength="100" class="form-control" id="ten_sinh_vien_create">
+                            <small class="text-danger"
+                                   id="ten_sinh_vien_create_error"></small><br>
                             <label class="col-form-label">Số điện thoại</label>
-                            <div class="input-group mb-3">
-                                <input type="text" maxlength="20" class="form-control" id="sdt_create">
-                            </div>
-                            <span class="text-danger"
-                                  id="sdt_create_error"></span><br>
+                            <input type="text" maxlength="20" class="form-control" id="sdt_create">
+                            <small class="text-danger"
+                                   id="sdt_create_error"></small><br>
                             <span style="color: red">(*) </span><label class="col-form-label">Email</label>
-                            <div class="input-group mb-3">
-                                <input type="text" maxlength="50" class="form-control" id="email_create">
-                            </div>
-                            <span class="text-danger"
-                                  id="email_create_error"></span><br>
+                            <input type="text" maxlength="50" class="form-control" id="email_create">
+                            <small class="text-danger"
+                                   id="email_create_error"></small><br>
                             <label class="col-form-label">Khóa</label>
-                            <div class="input-group mb-3">
-                                <input type="text" maxlength="10" class="form-control" id="khoa_hoc_create">
-                            </div>
-                            <span class="text-danger"
-                                  id="khoa_hoc_create_error"></span><br>
+                            <input type="text" maxlength="10" class="form-control" id="khoa_hoc_create">
+                            <small class="text-danger"
+                                   id="khoa_hoc_create_error"></small><br>
                         </div>
                         <div style="width: 50%; float:left">
                             <span style="color: red">(*) </span><label class="col-form-label">Môn chương trình</label>
-                            <div class="input-group mb-3">
-                                <select type="text" readonly class="form-control" id="mon_chuong_trinh_create">
-                                    <option value="">Chọn môn chương trình</option>
-                                    <option th:each="mon : ${listMonChuongTrinh}"
-                                            th:value="${mon.getId}"
-                                            th:text="${mon.getName}">
-                                    </option>
-                                </select>
-                            </div>
-                            <span class="text-danger"
-                                  id="mon_chuong_trinh_create_error"></span><br>
+                            <select type="text" readonly class="form-control" id="mon_chuong_trinh_create">
+                                <option value="">Chọn môn chương trình</option>
+                                <option th:each="mon : ${listMonChuongTrinh}"
+                                        th:value="${mon.getId}"
+                                        th:text="${mon.getName}">
+                                </option>
+                            </select>
+                            <small class="text-danger"
+                                   id="mon_chuong_trinh_create_error"></small><br>
                             <span style="color: red">(*) </span><label class="col-form-label">Chuyên ngành</label>
-                            <div class="input-group mb-3">
-                                <select type="text" class="form-control" id="ten_chuyen_nganh_create">
-                                    <option value="">Chọn chuyên ngành</option>
-                                    <option th:each="chuyenNganh : ${listChuyenNganh}"
-                                            th:value="${chuyenNganh.getId}"
-                                            th:text="${chuyenNganh.getName}">
-                                    </option>
-                                </select>
-                            </div>
-                            <span class="text-danger"
-                                  id="ten_chuyen_nganh_create_error"></span><br>
+                            <select type="text" class="form-control" id="ten_chuyen_nganh_create">
+                                <option value="">Chọn chuyên ngành</option>
+                                <option th:each="chuyenNganh : ${listChuyenNganh}"
+                                        th:value="${chuyenNganh.getId}"
+                                        th:text="${chuyenNganh.getName}">
+                                </option>
+                            </select>
+                            <small class="text-danger"
+                                   id="ten_chuyen_nganh_create_error"></small><br>
                             <span style="color: red">(*) </span><label class="col-form-label">Đợt đăng ký</label>
-                            <div class="input-group mb-3">
-                                <select type="text" class="form-control" id="dot_dang_ky_create">
-                                    <option value="">Chọn đợt đăng ký</option>
-                                    <option th:each="dotDangKy : ${listDotDangKy}"
-                                            th:value="${dotDangKy.getId}"
-                                            th:text="${dotDangKy.getName}">
-                                    </option>
-                                </select>
-                            </div>
-                            <span class="text-danger"
-                                  id="dot_dang_ky_create_error"></span><br>
+                            <select type="text" class="form-control" id="dot_dang_ky_create">
+                                <option value="">Chọn đợt đăng ký</option>
+                                <option th:each="dotDangKy : ${listDotDangKy}"
+                                        th:value="${dotDangKy.getId}"
+                                        th:text="${dotDangKy.getName}">
+                                </option>
+                            </select>
+                            <small class="text-danger"
+                                   id="dot_dang_ky_create_error"></small><br>
                             <span style="color: red">(*) </span><label class="col-form-label">Trạng thái</label>
-                            <div class="input-group mb-3">
-                                <select type="text" class="form-control" id="trang_thai_create">
-                                    <option value="0">Đủ điều kiện</option>
-                                    <option value="1">Không đủ điều kiện</option>
-                                </select>
-                            </div>
-                            <span class="text-danger"
-                                  id="trang_thai_create_error"></span><br>
+                            <select type="text" class="form-control" id="trang_thai_create">
+                                <option value="0">Đủ điều kiện</option>
+                                <option value="1">Không đủ điều kiện</option>
+                            </select>
+                            <small class="text-danger"
+                                   id="trang_thai_create_error"></small><br>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <br style="clear: left">
+                <div class="modal-footer" >
                     <button type="button"
                             class="btn btn-outline-secondary btn btn-light"
                             data-bs-dismiss="modal">Hủy
@@ -631,6 +615,7 @@
         </div>
     </div>
 </div>
+<!-- End Modal Create-->
 <!--  Start Modal Update-->
 <div
         class="modal fade"
@@ -656,39 +641,28 @@
                     <div class="form-group">
                         <div style="width: 48%;margin-right: 2%; float:left">
                             <span style="color: red">(*) </span><label class="col-form-label">Mã sinh viên</label>
-                            <div class="input-group mb-3">
                                 <input type="text" maxlength="10" class="form-control" id="ma_sinh_vien_update">
-                            </div>
-                            <span class="text-danger"
-                                  id="ma_sinh_vien_update_error"></span></br>
+                            <small class="text-danger"
+                                  id="ma_sinh_vien_update_error"></small></br>
                             <span style="color: red">(*) </span><label class="col-form-label">Tên sinh viên</label>
-                            <div class="input-group mb-3">
                                 <input type="text" maxlength="100" class="form-control" id="ten_sinh_vien_update">
-                            </div>
-                            <span class="text-danger"
-                                  id="ten_sinh_vien_update_error"></span></br>
+                            <small class="text-danger"
+                                  id="ten_sinh_vien_update_error"></small></br>
                             <label class="col-form-label">Số điện thoại</label>
-                            <div class="input-group mb-3">
                                 <input type="text" maxlength="20" class="form-control" id="sdt_update">
-                            </div>
-                            <span class="text-danger"
-                                  id="sdt_update_error"></span></br>
+                            <small class="text-danger"
+                                  id="sdt_update_error"></small></br>
                             <span style="color: red">(*) </span><label class="col-form-label">Email</label>
-                            <div class="input-group mb-3">
                                 <input type="text" maxlength="50" class="form-control" id="email_update">
-                            </div>
-                            <span class="text-danger"
-                                  id="email_update_error"></span></br>
+                            <small class="text-danger"
+                                  id="email_update_error"></small></br>
                             <label class="col-form-label">Khóa</label>
-                            <div class="input-group mb-3">
                                 <input type="text" maxlength="10" class="form-control" id="khoa_hoc_update">
-                            </div>
-                            <span class="text-danger"
-                                  id="khoa_hoc_update_error"></span></br>
+                            <small class="text-danger"
+                                  id="khoa_hoc_update_error"></small></br>
                         </div>
                         <div style="width: 50%; float:left">
                             <span style="color: red">(*) </span><label class="col-form-label">Môn chương trình</label>
-                            <div class="input-group mb-3">
                                 <select type="text" readonly class="form-control" id="mon_chuong_trinh_update">
                                     <option value="">Chọn môn chương trình</option>
                                     <option th:each="mon : ${listMonChuongTrinh}"
@@ -696,11 +670,9 @@
                                             th:text="${mon.getName}">
                                     </option>
                                 </select>
-                            </div>
-                            <span class="text-danger"
-                                  id="mon_chuong_trinh_update_error"></span></br>
+                            <small class="text-danger"
+                                  id="mon_chuong_trinh_update_error"></small></br>
                             <span style="color: red">(*) </span><label class="col-form-label">Chuyên ngành</label>
-                            <div class="input-group mb-3">
                                 <select type="text" class="form-control" id="ten_chuyen_nganh_update">
                                     <option value="">Chọn chuyên ngành</option>
                                     <option th:each="chuyenNganh : ${listChuyenNganh}"
@@ -708,11 +680,9 @@
                                             th:text="${chuyenNganh.getName}">
                                     </option>
                                 </select>
-                            </div>
-                            <span class="text-danger"
-                                  id="ten_chuyen_nganh_update_error"></span></br>
+                            <small class="text-danger"
+                                  id="ten_chuyen_nganh_update_error"></small></br>
                             <span style="color: red">(*) </span><label class="col-form-label">Đợt đăng ký</label>
-                            <div class="input-group mb-3">
                                 <select type="text" class="form-control" id="dot_dang_ky_update">
                                     <option value="">Chọn đợt đăng ký</option>
                                     <option th:each="dotDangKy : ${listDotDangKy}"
@@ -720,22 +690,19 @@
                                             th:text="${dotDangKy.getName}">
                                     </option>
                                 </select>
-                            </div>
-                            <span class="text-danger"
-                                  id="dot_dang_ky_update_error"></span></br>
+                            <small class="text-danger"
+                                  id="dot_dang_ky_update_error"></small></br>
                             <span style="color: red">(*) </span><label class="col-form-label">Trạng thái</label>
-                            <div class="input-group mb-3">
                                 <select type="text" class="form-control" id="trang_thai_update">
-                                <option value="0">Đủ điều kiện</option>
-                                <option value="1">Không đủ điều kiện</option>
+                                    <option value="0">Đủ điều kiện</option>
+                                    <option value="1">Không đủ điều kiện</option>
                                 </select>
-                            </div>
-                            <span class="text-danger"
-                                  id="trang_thai_update_error"></span></br>
+                            <small class="text-danger"
+                                  id="trang_thai_update_error"></small></br>
                         </div>
                     </div>
-
-                    <div class="modal-footer">
+                    <br style="clear: left">
+                    <div class="modal-footer" style="margin-top: 10px">
                         <button type="button" class="btn btn-outline-secondary btn btn-light"
                                 data-bs-dismiss="modal">Hủy
                         </button>

@@ -24,7 +24,6 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             s.ten_sinh_vien,
             s.so_dien_thoai,
             s.email,
-            s.khoa,
             c.id as 'chuyen_nganh_id',
             c.ten_chuyen_nganh,
             m.ma_mon,
@@ -37,7 +36,6 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             s.trang_thai,
             n.so_thanh_vien,
             mct.id as 'id_mom_chuong_trinh',
-            mct.ten_mon_datn AS 'ten_mon_chuong_trinh',
             mct.ma_mon AS 'ma_mom_chuong_trinh'
             FROM do_an_tot_nghiep.sinh_vien s
             LEFT JOIN (select nda.*,COUNT(sv.ma_sinh_vien) AS so_thanh_vien from do_an_tot_nghiep.nhom_datn nda

@@ -393,7 +393,7 @@ function detail(dotDangKyid) {
             if (responseData.data.tongSinhVienChuaCoNhom == 0) {
                 $("#btnShowSinhVienChuaCoNhom").attr('style', "display: none");
             } else {
-                $("#btnShowSinhVienChuaCoNhom").attr('style', "display: block");
+                $("#btnShowSinhVienChuaCoNhom").attr('style', "display: block; line-height: 27px");
                 $("#btnShowSinhVienChuaCoNhom").attr('href', "/dao-tao/sinh-vien?idTrangThaiNhom=b&idDotDangKy=" + dotDangKyid);
             }
         },
