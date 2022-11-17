@@ -249,7 +249,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         NhomDatn nhomDatn = new NhomDatn();
         nhomDatn.setTruongNhomId(idTruongNhom);
-        nhomDatn.setGiangVienId(idGiangVien);
+        if("".equals(cnCreateNhomDatnRequest.getIdGiangVien().trim())){
+            nhomDatn.setGiangVienId(null);
+        }
         String maNhom = nhomDatnHelper.genMaNhomTuDong();
         if (maNhom == null) {
             throw new RestApiException(Message.TAO_NHOM_THAT_BAI);

@@ -1,3 +1,5 @@
+const apiDtSinhVien = '/api/dao-tao/sinh-vien';
+
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
@@ -92,12 +94,12 @@ function viewTable(page) {
     });
 }
 
-function openModalThemSinhVien(){
+function openModalThemSinhVien() {
     $("#modal_create").modal('show')
     clearData();
 }
 
-function create(){
+function create() {
     let maSinhVien = $("#ma_sinh_vien_create").val().trim();
     let tenSinhVien = $("#ten_sinh_vien_create").val().trim();
     let sdt = $("#sdt_create").val().trim();
@@ -136,25 +138,25 @@ function create(){
     } else {
         $("#email_create_error").text('');
     }
-    if (monChuongTrinh.trim().length === 0) {
+    if (monChuongTrinh == '') {
         $("#mon_chuong_trinh_create_error").text("Mời chọn môn chương trình");
         index++;
     } else {
         $("#mon_chuong_trinh_create_error").text('');
     }
-    if (tenChuyenNganh.trim().length === 0) {
+    if (tenChuyenNganh == '') {
         $("#ten_chuyen_nganh_create_error").text("Mời chọn chuyên ngành");
         index++;
     } else {
         $("#ten_chuyen_nganh_create_error").text('');
     }
-    if (dotDangKyId.trim().length === 0) {
+    if (dotDangKyId == '') {
         $("#dot_dang_ky_create_error").text("Mời chọn đợt đăng ký");
         index++;
     } else {
         $("#dot_dang_ky_create_error").text('');
     }
-    if(index == 0) {
+    if (index == 0) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -174,28 +176,28 @@ function create(){
             },
             error: function (e) {
                 let message = e.responseJSON.message.trim();
-                if(message == 'Sinh vien da ton tai'){
+                if (message == 'Sinh vien da ton tai') {
                     bootbox.alert({
                         message: 'Mã sinh viên không được trùng',
                         backdrop: true,
                         callback: function () {
                         }
                     });
-                }else if(message == 'email fpt da ton tai'){
+                } else if (message == 'email fpt da ton tai') {
                     bootbox.alert({
                         message: 'Email fpt đã tồn tại',
                         backdrop: true,
                         callback: function () {
                         }
                     });
-                }else if(message == 'Nhom du an tot nghiep not exist'){
+                } else if (message == 'Nhom du an tot nghiep not exist') {
                     bootbox.alert({
                         message: 'Nhóm không tồn tại',
                         backdrop: true,
                         callback: function () {
                         }
                     });
-                }else if(message == 'Nhom da du thanh vien'){
+                } else if (message == 'Nhom da du thanh vien') {
                     bootbox.alert({
                         message: 'Nhóm đã đủ thành viên',
                         backdrop: true,
@@ -254,6 +256,7 @@ function openModalUpdateSinhVien(idSinhVien) {
             $("#khoa_hoc_update").val(responseData.data.khoa);
             $("#mon_chuong_trinh_update").val(responseData.data.idMonChuongTrinh);
             $("#ten_chuyen_nganh_update").val(responseData.data.chuyenNganhId);
+            changeDataCbbMonDatn(responseData.data.chuyenNganhId, responseData.data.idMonChuongTrinh, 2);
             $("#dot_dang_ky_update").val(responseData.data.idDotDangKy);
             $("#trang_thai_update").val(responseData.data.trangThai);
         },
@@ -309,19 +312,19 @@ function update() {
     } else {
         $("#email_update_error").text('');
     }
-    if (monChuongTrinh.trim().length === 0) {
+    if (monChuongTrinh == '') {
         $("#mon_chuong_trinh_update_error").text("Mời chọn môn chương trình");
         index++;
     } else {
         $("#mon_chuong_trinh_update_error").text('');
     }
-    if (tenChuyenNganh.trim().length === 0) {
-        $("#mon_chuong_trinh_update_error").text("Mời chọn chuyên ngành");
+    if (tenChuyenNganh == '') {
+        $("#ten_chuyen_nganh_update_error").text("Mời chọn chuyên ngành");
         index++;
     } else {
-        $("#mon_chuong_trinh_update_error").text('');
+        $("#ten_chuyen_nganh_update_error").text('');
     }
-    if (dotDangKyId.trim().length === 0) {
+    if (dotDangKyId == '') {
         $("#dot_dang_ky_update_error").text("Mời chọn đợt đăng ký");
         index++;
     } else {
@@ -346,28 +349,28 @@ function update() {
             },
             error: function (e) {
                 let message = e.responseJSON.message.trim();
-                if(message == 'Sinh vien da ton tai'){
+                if (message == 'Sinh vien da ton tai') {
                     bootbox.alert({
                         message: 'Mã sinh viên không được trùng',
                         backdrop: true,
                         callback: function () {
                         }
                     });
-                }else if(message == 'email fpt da ton tai'){
+                } else if (message == 'email fpt da ton tai') {
                     bootbox.alert({
                         message: 'Email fpt đã tồn tại',
                         backdrop: true,
                         callback: function () {
                         }
                     });
-                }else if(message == 'Nhom du an tot nghiep not exist'){
+                } else if (message == 'Nhom du an tot nghiep not exist') {
                     bootbox.alert({
                         message: 'Nhóm không tồn tại',
                         backdrop: true,
                         callback: function () {
                         }
                     });
-                }else if(message == 'Nhom da du thanh vien'){
+                } else if (message == 'Nhom da du thanh vien') {
                     bootbox.alert({
                         message: 'Nhóm đã đủ thành viên',
                         backdrop: true,
@@ -415,6 +418,54 @@ function openModalRemoveSinhVien(idSinhVien) {
                     }
                 });
             }
+        }
+    });
+}
+
+$("#ten_chuyen_nganh_create").change(function (event) {
+    event.preventDefault();
+    let chuyenNganhId = $("#ten_chuyen_nganh_create").val();
+    changeDataCbbMonDatn(chuyenNganhId, null, 1);
+})
+
+$("#ten_chuyen_nganh_update").change(function (event) {
+    event.preventDefault();
+    let chuyenNganhId = $("#ten_chuyen_nganh_update").val();
+    changeDataCbbMonDatn(chuyenNganhId, null, 2);
+})
+
+function changeDataCbbMonDatn(chuyenNganhId, idMonDatn, type) {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: apiDtSinhVien + '/search-mondatn/' + chuyenNganhId,
+        dataType: 'json',
+        success: function (responseData) {
+            let array = responseData.data
+            var text = ``;
+            if (idMonDatn == null) {
+                text = "<option value='' hidden selected>Chọn môn chương trình</option>"
+                array.map(function (item) {
+                    text += `<option value="${item.id}" >${item.maMonDatn}</option>`
+                })
+            } else {
+                var text_selected = ``;
+                array.map(function (item) {
+                    if (item.id == idMonDatn) {
+                        text_selected = `"<option value="${item.id}" selected>${item.maMonDatn}</option>"`;
+                    } else {
+                        text += `<option value="${item.id}" >${item.maMonDatn}</option>`
+                    }
+                })
+                text += text_selected;
+            }
+            if (type == 1) {
+                $('#mon_chuong_trinh_create').html(text)
+            } else {
+                $('#mon_chuong_trinh_update').html(text)
+            }
+        },
+        error: function (e) {
         }
     });
 }
@@ -599,7 +650,7 @@ function detail(sinhVienId) {
             $("#DDK").val(responseData.data.tenDotDangKy);
             $("#trangT").val(responseData.data.trangThai == 0 ? "Đủ điều kiện" : "Không đủ điều kiện");
             $("#soTV").val(responseData.data.soThanhVien == null ? "Chưa tham gia nhóm" : responseData.data.soThanhVien + '/7');
-            $("#monCT").val(responseData.data.monChuongTrinh == null ? "Chưa có" : responseData.data.monChuongTrinh + ' - ' + responseData.data.maMonChuongTrinh);
+            $("#monCT").val(responseData.data.idMonChuongTrinh == null ? "Chưa có" : responseData.data.monChuongTrinh + ' - ' + responseData.data.maMonChuongTrinh);
         },
         error: function (e) {
             console.log("ERROR : ", e);

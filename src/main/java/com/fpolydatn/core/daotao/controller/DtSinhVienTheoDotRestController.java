@@ -4,9 +4,7 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienRequest;
-import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
-import com.fpolydatn.core.daotao.model.request.DtUpdateMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
@@ -109,4 +107,9 @@ public class DtSinhVienTheoDotRestController extends BaseController {
         return new ResponseObject(sinhVienService.create(createSinhVienRequest));
     }
 
+    @GetMapping("/search-mondatn/{chuyenNganhId}")
+    public ResponseObject getAllMonDatnByChuyenNganhId(@PathVariable("chuyenNganhId") String chuyenNganhId) {
+        String coSoId = session.getCoSoId();
+        return new ResponseObject(sinhVienService.getAllMonDatnByChuyenNganhId(chuyenNganhId, coSoId));
+    }
 }

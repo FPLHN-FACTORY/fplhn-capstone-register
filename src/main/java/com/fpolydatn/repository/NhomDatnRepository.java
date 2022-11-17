@@ -30,7 +30,7 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
     String getMaCoSo(@Param("coSoId") String coSoId);
 
     @Query(value = """
-            SELECT a.id FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
+            SELECT a.id FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id
             WHERE a.created_date + :period < :currentTime
             GROUP BY a.id HAVING COUNT(b.id) <= 3
             """, nativeQuery = true)

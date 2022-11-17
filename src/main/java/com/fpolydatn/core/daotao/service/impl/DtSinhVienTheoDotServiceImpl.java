@@ -9,6 +9,7 @@ import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
+import com.fpolydatn.core.daotao.model.response.DtMonDatnSearchResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
@@ -496,6 +497,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         sinhVien.setSoDienThoai(command.getSdt());
         sinhVien.setMonChuongTrinhId(command.getMonChuongTrinh());
         return sinhVienRepository.save(sinhVien);
+    }
+
+    @Override
+    public List<DtMonDatnSearchResponse> getAllMonDatnByChuyenNganhId(String chuyenNganhId, String coSoId) {
+        return sinhVienRepository.getAllMonDatnByChuyenNganhId(chuyenNganhId, coSoId);
     }
 
     @Override

@@ -159,7 +159,7 @@ public class DtSinhVienTheoDotExport {
             cell7.setCellStyle(cellStyle);
 
             Cell cell8 = row.createCell(8);
-            cell8.setCellValue("ID nhóm");
+            cell8.setCellValue("Mã nhóm");
             cell8.setCellStyle(cellStyle);
 
             Cell cell9 = row.createCell(9);
