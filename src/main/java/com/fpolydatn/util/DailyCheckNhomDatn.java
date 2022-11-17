@@ -3,6 +3,7 @@ package com.fpolydatn.util;
 /**
  * @author thangncph26123
  */
+
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.repository.NhomDatnRepository;
@@ -28,6 +29,9 @@ public class DailyCheckNhomDatn {
     @Qualifier(SinhVienRepository.NAME)
     private SinhVienRepository sinhVienRepository;
 
+    @Autowired
+    private EmailSender emailSender;
+
     @Scheduled(fixedDelay = 3600000)
     public void daiLyChecking() throws InterruptedException {
         List<String> listNhomKhongDuDieuKien = nhomDatnRepository.listNhomKhongDuDieuKien(convertDateToTimeStampSecond(),
@@ -41,6 +45,17 @@ public class DailyCheckNhomDatn {
                     sinhVien.setNhomId(null);
                     listSinhVien.add(sinhVien);
                 });
+            }
+            Integer soSinhVien = listSinhVien.size();
+            if (soSinhVien > 0) {
+                String[] arrEmail = new String[soSinhVien];
+                for (int i = 0; i < soSinhVien; i++) {
+                    arrEmail[i] = listSinhVien.get(i).getEmail();
+                }
+                emailSender.sendEmail(arrEmail, "[FCR] Thông báo xóa nhóm không đủ điều kiện",
+                        "Nhóm của bạn đã bị xóa",
+                        new String[]{"Lý do: Nhóm của bạn không đủ số lượng tối thiểu 4 " +
+                                "thành viên sau 12 tiếng kể từ khi được thành lập"});
             }
             sinhVienRepository.saveAll(listSinhVien);
             nhomDatnRepository.deleteAllById(listNhomKhongDuDieuKien);
