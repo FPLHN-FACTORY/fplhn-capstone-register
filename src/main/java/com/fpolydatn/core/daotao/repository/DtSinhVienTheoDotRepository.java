@@ -24,6 +24,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             s.ten_sinh_vien,
             s.so_dien_thoai,
             s.email,
+            s.khoa,
             c.id as 'chuyen_nganh_id',
             c.ten_chuyen_nganh,
             m.ma_mon,
