@@ -39,11 +39,10 @@ function viewTable(page) {
                                 <td>${item.stt}</td>
                                 <td>${item.maSinhVien}</td>
                                 <td>${item.tenSinhVien}</td>
-                                <td>${item.khoa}</td>
-                                <td>${item.monChuongTrinh == null ? 'Chưa có' : item.monChuongTrinh + ' - ' + item.maMonChuongTrinh}</td>
-                                <td>${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
-                                <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
-                                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd}</td>
+                                <td>${item.monChuongTrinh == null ? '-' : item.maMonChuongTrinh}</td>
+                                <td>${item.maNhom == null ? '-' : item.maNhom}</td>
+                                <td>${item.tenDeTai == null ? '-' : item.tenDeTai}</td>
+                                <td>${item.tenGvhd == null ? '-' : item.tenGvhd}</td>
                                 <td>${item.tenChuyenNganh}</td>
                                 <td>
                                     <button class="btn_eye"
@@ -591,7 +590,7 @@ function detail(sinhVienId) {
             $("#tenSV").val(responseData.data.tenSinhVien);
             $("#sdt").val(responseData.data.soDienThoai == '' ? "Chưa có" : responseData.data.soDienThoai);
             $("#email").val(responseData.data.email);
-            $("#khoa").val(responseData.data.khoa == '' ? "Chưa có" : responseData.data.soDienThoai);
+            $("#khoa").val(responseData.data.khoa == '' ? "Chưa có" : responseData.data.khoa);
             $("#monDATN").val(responseData.data.tenMonDatn == null ? "Chưa có" : responseData.data.tenMonDatn + ' - ' + responseData.data.maMonDatn);
             $("#tenCN").val(responseData.data.tenChuyenNganh == null ? "Chưa có" : responseData.data.tenChuyenNganh);
             $("#maNhom").val(responseData.data.maNhom == null ? "Chưa có" : responseData.data.maNhom);
