@@ -95,6 +95,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
+    @Synchronized
     public boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req) {
         boolean check = mocThoiGianCommon.checkMocThoiGianSinhVien();
         if (!check) {
@@ -140,7 +141,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
         if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null) {
-            if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+            if (Calendar.getInstance().getTimeInMillis() - Constants.MUOI_HAI_TIENG < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
                 throw new RestApiException(Message.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG);
             }
         }
@@ -211,6 +212,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
+    @Synchronized
     public Boolean updateTenDeTai(SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
@@ -245,6 +247,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
+    @Synchronized
     public Boolean roiNhom(String idUser) {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
@@ -259,7 +262,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             throw new RestApiException(Message.SINH_VIEN_KHONG_CO_NHOM);
         }
         Integer soThanhVien = svSinhVienRepository.getSoLuongThanhVienById(nhomDatn.get().getId(), sinhVien.get().getCoSoId());
-        if (soThanhVien != 1) {
+        if (soThanhVien > 1) {
             if (idUser.equals(nhomDatn.get().getTruongNhomId())) {
                 throw new RestApiException(Message.ROI_NHOM_KHI_LA_TRUONG_NHOM);
             }
@@ -274,6 +277,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
+    @Synchronized
     public Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi) {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
@@ -341,7 +345,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     public Boolean checkThoiGianRoiNhom(String idUser) {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
         if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null) {
-            if (Calendar.getInstance().getTimeInMillis() - 43200000L < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+            if (Calendar.getInstance().getTimeInMillis() - Constants.MUOI_HAI_TIENG < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
                 return false;
             }
         }
