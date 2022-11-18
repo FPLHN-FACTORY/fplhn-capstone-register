@@ -382,8 +382,8 @@ function exportFile() {
 
 function importExcel() {
     let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    let fileName = typeExcel.split(".");
+    let typeFile = fileName[fileName.length - 1];
     let dotDangKyId = $("#dot_dang_ky_import").val();
     if (typeExcel.trim().length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");

@@ -533,8 +533,8 @@ function openModalImportExcel() {
 
 function importExcel() {
     let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length);
+    let fileName = typeExcel.split(".");
+    let typeFile = fileName[fileName.length - 1];
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("Chọn file");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
@@ -591,11 +591,10 @@ function openModalLoaiSinhVien() {
 
 function loaiSinhVien() {
     let typeExcel = $("#fileLoaiSv").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length);
+    let fileName = typeExcel.split(".");
     if (typeExcel.length <= 0) {
         $("#errorImportFile").text("Chọn file");
-    } else if (typeFile == 'xlsx') {
+    } else if (fileName[fileName.length - 1] == 'xlsx') {
         var form = $('#form_loai_sinh_vien')[0];
         $.ajax({
                 type: 'POST',

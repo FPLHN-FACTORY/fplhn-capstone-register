@@ -510,8 +510,8 @@ function importExcel() {
 
     var form = $('#form_import_excel')[0];
     let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    let fileName = typeExcel.split(".");
+    let typeFile = fileName[fileName.length - 1];
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
