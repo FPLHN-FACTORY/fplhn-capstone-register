@@ -3,6 +3,7 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.DtFindNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtDetailNhomMonResponse;
 import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
+import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.repository.MonDatnRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,10 +46,11 @@ public interface DtNhomMonDatnRepository extends MonDatnRepository {
     List<DtDetailNhomMonResponse> findMonById(@Param("nhomMonID") String id, @Param("coSoId") String coSoId);
 
     @Query(value = """
-                SELECT id 
+                SELECT * 
                 FROM mon_datn
                 WHERE ma_mon = :maMon 
+                AND co_so_id = :coSoId
             """, nativeQuery = true)
-    String findByMaNhomMon(@Param("maMon") String maMon);
+    MonDatn findByMaNhomMon(@Param("maMon") String maMon, @Param("coSoId") String coSoId);
 
 }

@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý nhóm DATN | FCR FPT Polytechnic</title>
     <meta content="Static table examples" name="description">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <link rel="stylesheet" th:href="@{/assets/vendors/base/vendors.bundle.css}" type="text/css"/>
@@ -99,9 +99,9 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <a class="btn btn-primary text-white" type="button" th:attr="onclick=|loadDataNhomDatn(0)|"
+                                            <button class="btn btn-primary" type="button" th:attr="onclick=|loadDataNhomDatn(0)|"
                                                >Tìm
-                                                kiếm</a>
+                                                kiếm</button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a class="btn btn-danger text-white"
@@ -205,18 +205,19 @@
                                     <!--                                        Table body-->
                                     <div class="table-responsive mt-3">
                                         <div class="mt-3">
-                                            <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+                                            <table style="text-align: center"
+                                                   class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
                                                    id="custom-table1">
                                                 <thead class="table-primary">
-                                                <th width="50px">STT</th>
-                                                <th>Mã nhóm</th>
+                                                <th width="40px">STT</th>
+                                                <th width="70px">Mã nhóm</th>
                                                 <th>Môn đăng ký</th>
                                                 <th>Tên đề tài</th>
                                                 <th>Chuyên nghành</th>
-                                                <th>Số thành viên</th>
+                                                <th width="95px">Số thành viên</th>
                                                 <th>GVHD</th>
                                                 <th>Trạng thái</th>
-                                                <th>Danh sách thành viên</th>
+                                                <th width="50px">Hành động</th>
                                                 </thead>
                                                 <tbody id="listNhomDatn">
                                                 <th:block th:each="nhomDatn : ${page.data}">
@@ -232,6 +233,7 @@
                                                         <td>
                                                             <button class="btn_eye"
                                                                     th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
+                                                                    data-toggle="tooltip"
                                                                     title="Xem chi tiết nhóm"
                                                                     type="button"
                                                             >

@@ -55,4 +55,7 @@ public interface SvDetailNhomDatnResponse extends IsIdentified {
     @Value("#{target.nhan_xet}")
     String getNhanXet();
 
+    @Value("#{target.mat_khau}")
+    String getMatKhau();
+
 }

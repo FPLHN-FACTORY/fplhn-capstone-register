@@ -25,7 +25,7 @@ public interface DtCanBoService {
 
     boolean create(@Valid DtCreateCanBoRequest canBo);
 
-    Boolean delete(String id);
+    Boolean delete(String id, String coSoId);
 
     CanBo findById(String id);
 

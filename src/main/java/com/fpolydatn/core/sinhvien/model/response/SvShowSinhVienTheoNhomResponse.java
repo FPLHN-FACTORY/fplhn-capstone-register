@@ -24,4 +24,14 @@ public interface SvShowSinhVienTheoNhomResponse {
 
     @Value("#{target.chuc_vu}")
     Integer getChucVu();
+
+    @Value("#{target.mo_ta}")
+    String getMoTa();
+
+    @Value("#{target.ma_nhom}")
+    String getMaNhom();
+
+    @Value("#{target.ten_nhom}")
+    String getTenNhom();
+
 }

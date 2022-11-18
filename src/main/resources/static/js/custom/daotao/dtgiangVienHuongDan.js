@@ -1,22 +1,21 @@
 const giangVienHuongDanApi = '/api/dao-tao/giang-vien-huong-dan';
 const giangVienHuongDanView = '/dao-tao/giang-vien-huong-dan';
-const regexFE = new RegExp('[a-z0-9]+@fe.edu.vn');
-const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
-const regexSDT = new RegExp('(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}');
+const regexSDT = new RegExp('\\d+');
 const regexSoNhom = new RegExp('[0-9]+');
-$(document).ready(function () {
-    $('[data-toggle = "tooltip"]').tooltip();
-})
-let totalPages = $("#totalPages").val()
-let currentPage = $("#currentPage").val()
+
+let totalPages = $("#totalPages").val();
+let currentPage = $("#currentPage").val();
 
 $(document).ready(function () {
     $("#giang_vien_error").text("");
 });
-
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+})
 
 function clearData() {
-    $("#tenGiangVien").val("");
+    $("#tenGiangVien").val("");;
+    $("#search_dot_dang_ky").val("");
 }
 
 function clearErrorUpdate() {
@@ -30,11 +29,23 @@ function clearErrorUpdate() {
 }
 
 function openModalAddGVHD() {
+    $("#errorTenGiangVien").text('');
+    $("#errorSoNhomHD").text('');
+    $("#errorTenTaiKhoan").text('');
+    $("#errorSDT").text('');
+    $("#errorEmailFpt").text('');
+    $("#errorEmailFe").text('');
+    $("#tenGvhd").val('');
+    $("#soNhomHuongDanToiDa").val('');
+    $("#tenTaiKhoan").val('');
+    $("#soDienThoai").val('');
+    $("#emailFpt").val('');
+    $("#emailFe").val('');
+    $("#errorDotDangKy").text('');
     $("#modal_create").modal('show')
 }
 
-function addGVHD () {
-    event.preventDefault();
+function addGVHD() {
     let tenGvhd = $("#tenGvhd").val().trim();
     let soNhomHuongDanToiDa = $("#soNhomHuongDanToiDa").val().trim();
     let tenTaiKhoan = $("#tenTaiKhoan").val().trim();
@@ -54,7 +65,7 @@ function addGVHD () {
     let index = 0;
 
     if (tenGvhd.length === 0) {
-        $("#errorTenGiangVien").text(" Tên giang viên không được để trống");
+        $("#errorTenGiangVien").text(" Tên giảng viên không được để trống");
         index++;
     } else {
         $("#errorTenGiangVien").text("");
@@ -78,31 +89,25 @@ function addGVHD () {
     if (tenTaiKhoan.length === 0) {
         $("#errorTenTaiKhoan").text(" Tên tài khoản không được để trống");
         index++;
-    } else {
+    } else if(tenTaiKhoan.indexOf(" ") > -1) {
+         $("#errorTenTaiKhoan").text(" Tên tài khoản không có khoảng trắng");
+         index++;
+     } else {
         $("#errorTenTaiKhoan").text("");
     }
 
-    if (soDienThoai.length === 0) {
-        $("#errorSDT").text(" Số điện thoại không được để trống");
-        index++;
-    } else if (regexSDT.test(soDienThoai) == false) {
-        $("#errorSDT").text(" Số điện thoại không đúng định dạng");
-        index++;
-    } else if (soDienThoai.length != 10) {
-        $("#errorSDT").text(" Số điện thoại không đúng định dạng");
-        index++;
-    } else {
-        $("#errorSDT").text("");
-    }
+    // if (soDienThoai.length === 0) {
+    //     $("#errorSDT").text(" Số điện thoại không được để trống");
+    //     index++;
+    // } else {
+    //     $("#errorSDT").text("");
+    // }
 
     if (emailFpt.length === 0) {
         $("#errorEmailFpt").text(" EmailFpt không được để trống");
         index++;
     } else if (emailFpt.trim().includes(" ")) {
-        $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
-        index++;
-    } else if (regexFPT.test(emailFpt) == false) {
-        $("#errorEmailFpt").text("Email Fpt Phải Đúng Định Dạng");
+        $("#errorEmailFpt").text("Email không chưa khoảng trắng");
         index++;
     } else {
         $("#errorEmailFpt").text("");
@@ -111,11 +116,8 @@ function addGVHD () {
     if (emailFe.length === 0) {
         $("#errorEmailFe").text(" EmailFe không được để trống");
         index++;
-    } else if (regexFE.test(emailFe) == false) {
-        $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
-        index++;
     } else if (emailFpt.trim().includes(" ")) {
-        $("#errorEmailFe").text("Email Fe Phải Đúng Định Dạng");
+        $("#errorEmailFe").text("Email không chứa khoảng trắng");
         index++;
     } else {
         $("#errorEmailFe").text("");
@@ -135,7 +137,6 @@ function addGVHD () {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                console.log(responseData)
                 if (responseData.data.message == null) {
                     window.open(giangVienHuongDanView, '_self');
                     $("#modal_create").modal("hide");
@@ -155,7 +156,6 @@ function addGVHD () {
         });
     }
 }
-
 
 function openModalUpdateGiangVien(giangVienId, item) {
     $("#modal_update_giang_vien").modal('show');
@@ -184,7 +184,7 @@ function openModalUpdateGiangVien(giangVienId, item) {
     });
 }
 
-function updateGVHD () {
+function updateGVHD() {
     let tenGvhd = $("#ten_giang_vien_update").val().trim();
     let soNhomHuongDanToiDa = $("#so_nhom_update").val().trim();
     let tenTaiKhoan = $("#ten_tai_khoan_update").val().trim();
@@ -204,7 +204,7 @@ function updateGVHD () {
     giangVienRequest["dotDangKyId"] = dotDangKyId;
     let index = 0;
     if (tenGvhd.length === 0) {
-        $("#errorTenGiangVienUpdate").text(" Tên giang viên không được để trống");
+        $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được để trống");
         index++;
     } else {
         $("#errorTenGiangVienUpdate").text("");
@@ -226,31 +226,25 @@ function updateGVHD () {
     if (tenTaiKhoan.length === 0) {
         $("#errorTenTaiKhoanUpdate").text(" Tên tài khoản không được để trống");
         index++;
+    } else if(tenTaiKhoan.indexOf(" ") > -1) {
+        $("#errorTenTaiKhoanUpdate").text(" Tên tài khoản không có khoảng trắng");
+        index++;
     } else {
         $("#errorTenTaiKhoanUpdate").text("");
     }
 
-    if (soDienThoai.length === 0) {
-        $("#errorSDTUpdate").text(" Số điện thoại không được để trống");
-        index++;
-    } else if (regexSDT.test(soDienThoai) == false) {
-        $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
-        index++;
-    } else if (soDienThoai.length != 10) {
-        $("#errorSDTUpdate").text(" Số điện thoại không đúng định dạng");
-        index++;
-    } else {
-        $("#errorSDTUpdate").text("");
-    }
+    // if (soDienThoai.length === 0) {
+    //     $("#errorSDTUpdate").text(" Số điện thoại không được để trống");
+    //     index++;
+    // } else {
+    //     $("#errorSDTUpdate").text("");
+    // }
 
     if (emailFpt.length === 0) {
         $("#errorEmailFptUpdate").text(" EmailFpt không được để trống");
         index++;
-    }  else if (emailFpt.trim().includes(" ")) {
-        $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
-        index++;
-    } else if (regexFPT.test(emailFpt) == false) {
-        $("#errorEmailFptUpdate").text("Email Fpt Phải Đúng Định Dạng");
+    } else if (emailFpt.trim().includes(" ")) {
+        $("#errorEmailFptUpdate").text("Email không chứa khoảng trắng");
         index++;
     } else {
         $("#errorEmailFptUpdate").text("");
@@ -259,11 +253,8 @@ function updateGVHD () {
     if (emailFe.length === 0) {
         $("#errorEmailFeUpdate").text(" EmailFe không được để trống");
         index++;
-    } else if (regexFE.test(emailFe) == false) {
-        $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
-        index++;
     } else if (emailFe.trim().includes(" ")) {
-        $("#errorEmailFeUpdate").text("Email Fe Phải Đúng Định Dạng");
+        $("#errorEmailFeUpdate").text("Email Fe không có khoảng trắng");
         index++;
     } else {
         $("#errorEmailFeUpdate").text("");
@@ -304,9 +295,6 @@ function updateGVHD () {
     }
 }
 
-
-
-
 function openModalRemoveGiangVien(giangVienId, item) {
     bootbox.confirm({
         title: "Xóa",
@@ -339,7 +327,7 @@ function openModalRemoveGiangVien(giangVienId, item) {
                                 message: 'Xóa thành công',
                                 backdrop: true,
                                 callback: function () {
-                                    loadTable(item);
+                                    window.open(giangVienHuongDanView, '_self');
                                 }
                             });
                         }
@@ -354,20 +342,28 @@ function openModalRemoveGiangVien(giangVienId, item) {
 }
 
 function openModalExport() {
+    $("#type_excel_error").text('');
     $("#modal_excel").modal('show')
 }
 
 function openModalImportMau() {
+    $("#labelFile").text('Choose file');
+    $("#mau_import_error").text('');
     $("#modal_import_excel").modal('hide')
     $("#modal_import_mau").modal('show')
 }
+
 function openModalImport() {
-    $("#modal_import_excel").modal('show')
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile01").val('');
+    $("#import_excel_error").text('');
+    $("#modal_import_excel").modal('show');
 }
+
 function exportFile() {
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
-        $("#type_excel_error").text("chọn định dạng file download");
+        $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -386,15 +382,18 @@ function exportFile() {
 
 function importExcel() {
     let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    let fileName = typeExcel.split(".");
+    let typeFile = fileName[fileName.length - 1];
+    let dotDangKyId = $("#dot_dang_ky_import").val();
     if (typeExcel.trim().length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");
+    } else if (dotDangKyId == '') {
+        $("#import_excel_error").text("Hãy chọn đợt đăng ký để import giảng viên");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         var form = $('#form_import_excel')[0];
         $.ajax({
                 type: 'POST',
-                url: giangVienHuongDanApi + '/import',
+                url: giangVienHuongDanApi + '/import/' + dotDangKyId,
                 enctype: 'multipart/form-data',
                 processData: false,
                 data: new FormData(form),
@@ -402,12 +401,21 @@ function importExcel() {
                 cache: false,
                 success: function (response) {
                     if (response.data.status == true) {
-                        alert("Import file excel thành công");
-                        window.open(giangVienHuongDanView, '_self');
+                        $("#modal_import_excel").modal('hide');
+                        bootbox.alert({
+                            message: "Import file excel thành công",
+                            backdrop: true,
+                            callback: function () {
+                                window.open(giangVienHuongDanView, '_self');
+                            }
+                        });
                     } else {
-                        alert(response.data.message);
-                        $("#inputGroupFile01").val("");
-                        $("#inputGroupFile01").clear()
+                        bootbox.alert({
+                            message: response.data.message + '',
+                            backdrop: true,
+                        });
+                        $("#labelFile").text('Choose file');
+                        $("#inputGroupFile01").val('');
                     }
                 },
                 error: function (e) {
@@ -422,7 +430,7 @@ function importExcel() {
 function importFileMau() {
     let typeExcel = $("#type_mau_import").val();
     if (typeExcel == '') {
-        $("#mau_import_error").text("chọn định dạng file download");
+        $("#mau_import_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -439,64 +447,67 @@ function importFileMau() {
     }
 }
 
-genPagingAndFillColor();
-
-function genPagingAndFillColor() {
-    genPageZing()
-    let colorPage = document.querySelectorAll("#pageColor");
-    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
-    colorPage[currentPage].style.color = 'white';
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadTable(value - 1);
+    }
 }
 
-function genPageZing() {
-    $("#page").html(``)
-    let templateHtml = ``;
-    let templatePageMid = ``;
-    let templatePageBefore = `
-                           <li style="color: #0a8cf0" class="page-item">
-                                <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(currentPage - 1)">Back</a>
-                           </li>
-                           `;
-    let templatePageAfter = `
-                            <li style="color: #0a8cf0" class="page-item">
-                                 <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadTable(Number(currentPage) + 1)">Next</a>
-                            </li>
-                            `;
-    for (let i = 0; i < totalPages; i++) {
-        templatePageMid += `<li class="page-item" >
-                                         <a id="pageColor" class="page-link" onclick="loadTable(${i})">${i + 1}</a>
-                                     </li>`
+genPaging();
+
+function genPaging() {
+    if (totalPages <= 1) {
+        $("#page").html('');
+    } else {
+        let templatePageMid = ``;
+        let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="loadTable(${currentPage - 1})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+        templatePageMid = `
+                            <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
+                             <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
+        let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="loadTable(${currentPage + 1})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+        let templateHtml = ``;
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        $("#page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
     }
-    templateHtml = templatePageBefore + templatePageMid + templatePageAfter
-    if (totalPages == 1) {
-        templateHtml = ``;
-    }
-    $("#page").html(templateHtml);
 }
 
 function loadTable(count) {
+    if (count == -1) {
+        count = totalPages - 1;
+    }
+    if (count == totalPages) {
+        count = 0;
+    }
     let tenGiangVien = $("#tenGiangVien").val();
+    let dotDangKyId = $("#search_dot_dang_ky").val();
     currentPage = count;
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&page=" + count,
+        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
+            totalPages = responseData.data.totalPages;
             if (responseData.data.data.length == 0) {
-                $("#searchListGvhd").html(``)
-                $("#page").html(``)
-                $("#empty").html(`<h3>Không có dữ liệu</h3>`)
-                if (responseData.data.totalPages == 1) {
-                    loadTable(0);
-                    return;
-                }
-                if (count == responseData.data.totalPages && count != 0) {
-                    loadTable(count - 1);
-                    return;
-                }
+                $("#searchListGvhd").html(``);
+                $("#page").html(``);
+                $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {
-                totalPages = responseData.data.totalPages
                 $("#empty").html(``)
                 $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                     return `
@@ -511,7 +522,7 @@ function loadTable(count) {
                            type="button"
                            class="btn_pencil_square"
                            data-toggle="tooltip"
-                           title="Sửa "
+                           title="Sửa"
                            onclick="openModalUpdateGiangVien('${item.id}','${count}')">
                            <img src="/img/pencil-square.svg">
                         </button>
@@ -520,7 +531,7 @@ function loadTable(count) {
                             type="button"
                             class="btn_trash"
                             data-toggle="tooltip"
-                            title="Xóa "
+                            title="Xóa"
                             onclick="openModalRemoveGiangVien('${item.id}','${count}')">
                             <img src="/img/trash.svg">
                         </button>
@@ -533,8 +544,8 @@ function loadTable(count) {
                    </td>
                </tr>
                `
-                }))
-                genPagingAndFillColor()
+                }));
+                genPaging();
             }
         },
         error: function (e) {

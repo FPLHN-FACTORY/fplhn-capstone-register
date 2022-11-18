@@ -35,8 +35,7 @@ public class DtMonDatnRestController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        return new ResponseObject(monDatnService.delete(id, coSoId, dotDangKyId));
+        return new ResponseObject(monDatnService.delete(id, coSoId));
     }
 
     @GetMapping("/{id}")
@@ -63,6 +62,11 @@ public class DtMonDatnRestController extends BaseController {
     public ResponseObject importExcel(@RequestParam("file") MultipartFile file) {
         DtMessMonDatnReponse check = this.monDatnService.importExcel(file, session.getCoSoId());
         return new ResponseObject(check);
+    }
+
+    @GetMapping("/get-nhom-mon")
+    public ResponseObject getNhomMon(@RequestParam("chuyenNganhId") String chuyenNganhId) {
+        return new ResponseObject(monDatnService.getNhomMonByChuyeNganh(session.getCoSoId(), chuyenNganhId));
     }
 
 }

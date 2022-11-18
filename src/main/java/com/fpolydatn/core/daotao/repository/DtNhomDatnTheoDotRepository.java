@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
     @Query(value = """
-            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ma_nhom, i.ten_mon_datn
+            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.created_date DESC) AS stt, b.ma_nhom, i.ten_mon_datn
             ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien, 
             e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
@@ -35,7 +35,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND b.co_so_id = :#{#req.coSoId}
             GROUP BY b.id
-            ORDER BY b.last_modified_date DESC 
+            ORDER BY b.created_date DESC 
             """, countQuery = """
             SELECT count(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
@@ -52,7 +52,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND b.co_so_id = :#{#req.coSoId}
-            ORDER BY b.last_modified_date DESC 
+            ORDER BY b.created_date DESC 
             """, nativeQuery = true)
     Page<DtNhomDatnTheoDotResponse> findAllNhomDatn(Pageable page, @Param("req") final FindDtNhomDatnTheoDotRequest req);
 
@@ -70,7 +70,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
     List<DtSinhVienResponse> showDanhSachSinhVien(@Param("req") final FindSinhVienRequest req);
 
     @Query(value = """
-            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ma_nhom, i.ten_mon_datn
+            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.created_date DESC) AS stt, b.ma_nhom, i.ten_mon_datn
             ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien, 
             e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
@@ -89,7 +89,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND b.co_so_id = :#{#req.coSoId}
             GROUP BY b.id
-            ORDER BY b.last_modified_date DESC 
+            ORDER BY b.created_date DESC 
             """, countQuery = """
             SELECT count(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
@@ -111,7 +111,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
             AND b.co_so_id = :#{#req.coSoId}
             GROUP BY b.id 
-            ORDER BY b.last_modified_date DESC 
+            ORDER BY b.created_date DESC 
             """, nativeQuery = true)
     List<DtNhomDatnTheoDotResponse> findAllNhomDatnToExcel(@Param("req") final FindDtNhomDatnTheoDotRequest req);
 

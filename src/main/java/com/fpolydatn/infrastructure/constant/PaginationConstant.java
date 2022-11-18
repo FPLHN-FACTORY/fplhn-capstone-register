@@ -3,7 +3,7 @@ package com.fpolydatn.infrastructure.constant;
 /**
  * @author phongtt35
  */
-public class PaginationConstant {
+public final class PaginationConstant {
 
     private PaginationConstant() {}
 

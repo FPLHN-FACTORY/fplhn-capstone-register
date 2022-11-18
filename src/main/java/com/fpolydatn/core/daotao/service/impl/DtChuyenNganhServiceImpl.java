@@ -1,7 +1,9 @@
 package com.fpolydatn.core.daotao.service.impl;
 
+import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
+import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,11 @@ import java.util.List;
 public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     @Autowired
     private DtChuyenNganhRepository dtChuyenNganhRepository;
+
     private FormUtils formUtils = new FormUtils();
+
+    @Autowired
+    private DtCanBoRepository dtCanBoRepository;
 
     @Override
     public List<SimpleEntityProj> findAllSimpleEntityByCoSo(String id) {
@@ -43,50 +49,52 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
         String chuyenNganhCheck = dtChuyenNganhRepository.checkChuyenNganhByName(chuyenNganh.getCoSoId(),
                 chuyenNganh.getTenChuyenNganh(), chuyenNganh.getId());
-        String chuNhiemBoMonCheck = dtChuyenNganhRepository.checkChuyenNganhByChuNhiem(chuyenNganh.getCoSoId(),
-                chuyenNganh.getChuNhiemBoMon(), chuyenNganh.getId());
         if (!Objects.isNull(chuyenNganhCheck)) {
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
         }
-        if (!Objects.isNull(chuNhiemBoMonCheck)) {
-            throw new RestApiException(Message.CHU_NHIEM_ALREADY_EXIST);
+        if (req.getChuNhiemBoMon() != null) {
+            Optional<CanBo> chuNhiemBoMonCheck = dtCanBoRepository.findById(req.getChuNhiemBoMon());
+            if (!chuNhiemBoMonCheck.isPresent()) {
+                throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
+            }
         }
-
         ChuyenNganh chuyenNganhUpdate = chuyenNganhById.get();
         chuyenNganhUpdate.setTenChuyenNganh(req.getTenChuyenNganh());
         chuyenNganhUpdate.setChuNhiemBoMon(req.getChuNhiemBoMon());
-
         return dtChuyenNganhRepository.save(chuyenNganhUpdate);
     }
 
     @Override
     public ChuyenNganh add(@Valid DtCreateChuyenNganhRequest req) {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
-        ChuyenNganh chuyenNganhCheck = dtChuyenNganhRepository.findByTenChuyenNganh(chuyenNganh.getTenChuyenNganh());
-        String chuNhiemBoMonCheck = dtChuyenNganhRepository.checkChuyenNganhByCNBM(chuyenNganh.getCoSoId(),
-                chuyenNganh.getChuNhiemBoMon());
+        ChuyenNganh chuyenNganhCheck = dtChuyenNganhRepository.findByTenChuyenNganh(chuyenNganh.getTenChuyenNganh(), req.getCoSoId());
         if (!Objects.isNull(chuyenNganhCheck)) {
             throw new RestApiException(Message.CHUYEN_NGANH_ALREADY_EXIST);
         }
-        if (!Objects.isNull(chuNhiemBoMonCheck)) {
-            throw new RestApiException(Message.CHU_NHIEM_ALREADY_EXIST);
+        if (req.getChuNhiemBoMon() != null) {
+            Optional<CanBo> chuNhiemBoMonCheck = dtCanBoRepository.findById(req.getChuNhiemBoMon());
+            if (!chuNhiemBoMonCheck.isPresent()) {
+                throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
+            }
         }
-
         return dtChuyenNganhRepository.save(chuyenNganh);
     }
 
     @Override
-    public Boolean delete(String id, String coSoId, String dotDangKyId) {
+    public Boolean delete(String id, String coSoId) {
         Optional<ChuyenNganh> chuyenNganhCheck = dtChuyenNganhRepository.findById(id);
-        List<ChuyenNganh> listChuyenNganh = dtChuyenNganhRepository.findChuyenNganhById(id, coSoId, dotDangKyId);
+        Integer countInSinhVien = dtChuyenNganhRepository.countChuyenNganhInSinhVien(id, coSoId);
+        Integer countInMonDatn = dtChuyenNganhRepository.countChuyeNganhInMonDatn(id, coSoId);
         if (!chuyenNganhCheck.isPresent()) {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
-        if (listChuyenNganh.size() != 0) {
+        if (countInSinhVien != 0) {
+            throw new RestApiException(Message.CHUYEN_NGANH_KHONG_DUOC_XOA);
+        }
+        if (countInMonDatn != 0) {
             throw new RestApiException(Message.CHUYEN_NGANH_KHONG_DUOC_XOA);
         }
         dtChuyenNganhRepository.delete(chuyenNganhCheck.get());
-
         return true;
     }
 

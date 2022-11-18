@@ -3,14 +3,14 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Xem chi tiết nhóm DATN | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
-    <link href="http://harvesthq.github.io/chosen/chosen.css" rel="stylesheet"/>
+    <link href="https://harvesthq.github.io/chosen/chosen.css" rel="stylesheet"/>
     <link th:href="@{/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
     <style>
@@ -18,9 +18,6 @@
             z-index: 2147483647;
         }
     </style>
-    <script src="../../static/js/custom/chunhiem/CnSinhVienTheoNhom.js"></script>
-    <script src="../../static/js/custom/chunhiem/CnNhomDatn.js"></script>
-    <script src="../../static/js/custom/chunhiem/CnSinhVienTheoDot.js"></script>
 </head>
 <!-- end::Head -->
 
@@ -54,32 +51,23 @@
                                     <div class="row">
                                         <div class="d-inline"
                                         >
-                                            <buttonn type="button" th:attr="onclick=|openModalThemSinhVien()|"
-                                                    class=" btn btn-success">
+                                            <button type="button" th:attr="onclick=|openModalThemSinhVien()|"
+                                                     class=" btn btn-success">
                                                 Thêm thành viên
-                                            </buttonn>
+                                            </button>
                                             <!--                                            them giao vien huong dan -->
-
-                                            <a>
                                                 <button type="button" th:attr="onclick=|openModalChangeGvhd()|"
                                                         class=" btn btn-success">
-                                                    Thay đổi giảng viên hướng dẫn
+                                                    Thay đổi GVHD
                                                 </button>
-                                            </a>
                                             <!--                                            thay đổi trưởng nhóm-->
-                                            <a>
                                                 <button type="button" th:attr="onclick=|openModalChangeCaptain()|"
                                                         id="changeCaptain"
                                                         class=" btn btn-success">
                                                     Thay đổi trưởng nhóm
                                                 </button>
-                                            </a>
-
-                                            <a href="/chu-nhiem/nhom-datn">
-                                                <button
-                                                        class="btn btn-success">
-                                                    Trở lại
-                                                </button>
+                                            <a href="/chu-nhiem/nhom-datn" class="btn btn-success">
+                                                Trở lại
                                             </a>
 
                                             <div class="modal fade "
@@ -94,12 +82,14 @@
                                                                 <h5 class="modal-title" id="exampleModalLabel">Thêm
                                                                     thành viên
                                                                 </h5>
-                                                                <button type="button" class="close" data-bs-dismiss="modal"
+                                                                <button type="button" class="close"
+                                                                        data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                                 <input hidden th:value="${idNhom}" id="idNhom">
-                                                                <input hidden th:value="${soThanhVien}" id="soThanhVien">
+                                                                <input hidden th:value="${soThanhVien}"
+                                                                       id="soThanhVien">
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
@@ -116,10 +106,13 @@
                                                                 </div>
                                                                 <span id="idStudentError" style="color:red;"></span>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-outline-secondary btn btn-light"
+                                                                    <button type="button"
+                                                                            class="btn btn-outline-secondary btn btn-light"
                                                                             data-bs-dismiss="modal">Hủy
                                                                     </button>
-                                                                    <button type="button" th:attr="onclick=|themSinhVien()|" class="btn btn-primary">Thêm
+                                                                    <button type="button"
+                                                                            th:attr="onclick=|themSinhVien()|"
+                                                                            class="btn btn-primary">Thêm
                                                                         thành viên
                                                                     </button>
                                                                 </div>
@@ -133,16 +126,17 @@
                                     <div class="table-responsive mt-3">
                                         <div th:unless="${page.data.isEmpty()}">
                                             <table id="custom-table"
+                                                   style="text-align: center"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead class="table-primary">
-                                                <th width="50px">STT</th>
-                                                <th >Mã số sinh viên</th>
-                                                <th>Họ tên</th>
+                                                <th width="30px">STT</th>
+                                                <th width="80px">MSSV</th>
+                                                <th width="200px">Họ tên</th>
                                                 <th>Môn chương trình</th>
                                                 <th>Môn đăng ký</th>
-                                                <th width="70px">Tên nhóm</th>
-                                                <th width="200px">Giáo viên hướng dẫn</th>
-                                                <th>Chức năng</th>
+                                                <th width="120px">Tên nhóm</th>
+                                                <th width="200px">GVHD</th>
+                                                <th width="80px">Chức năng</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
@@ -170,19 +164,6 @@
                                                 </th:block>
                                                 </tbody>
                                             </table>
-                                            <!-- Paging-->
-                                            <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
-                                                <ul class="pagination justify-content-end">
-                                                    <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                        <li class="page-item">
-                                                            <a class="page-link"
-                                                               th:href="@{/chu-nhiem/sinh-vien?page={page.currentPage}(page.currentPage=${i}-1)}"
-                                                               th:text="${i}">
-                                                            </a>
-                                                        </li>
-                                                    </div>
-                                                </ul>
-                                            </nav>
                                         </div>
                                         <div th:if="${page.data.isEmpty()}">
                                             <h3>Không có dữ liệu</h3>
@@ -224,7 +205,7 @@
                                    class="form-control"
                                    id="tags" oninput="searchGvhd()">
                         </div>
-                        <span style="color: red" id="change_gvhd"></span>
+                        <span style="color: red" id="change_gvhd_error"></span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary btn btn-light"

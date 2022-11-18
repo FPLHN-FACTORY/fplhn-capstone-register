@@ -5,6 +5,10 @@ function openPhanCong() {
     $("#modal_create").modal("show")
 }
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+});
+
 function phanCong() {
     event.preventDefault();
     let giangVienHuongDanId = $("#getGiangVienHuongDanId").attr('value');

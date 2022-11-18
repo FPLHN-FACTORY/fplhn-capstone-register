@@ -97,29 +97,6 @@ function xacNhanNhom(id, count) {
     });
 }
 
-$('#nhom_mon_datn_create').change(function (event) {
-    event.preventDefault();
-    let nhomMonId = $('#nhom_mon_datn_create').val();
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: CNNhomDatnApi + "/list-mon-datn" + "?nhomMonId=" + nhomMonId,
-        data: JSON.stringify(nhomMonId),
-        dataType: 'json',
-        success: function (responseData) {
-            let array = responseData.data
-            var text = "<option value='' hidden selected>Chọn môn dự án tốt nghiệp</option>"
-            array.map(function (item) {
-                text += `<option value="${item.id}" >${item.tenMonDatn}</option>`
-            })
-            $('#mon_datn_create').html(text)
-        },
-        error: function (e) {
-        }
-    });
-})
-
 $("#mon_datn_create").change(function (event) {
     event.preventDefault();
     let idMon = $("#mon_datn_create").val();
@@ -498,17 +475,22 @@ function searchSinhVienNoGroup() {
 }
 
 function openModalExport() {
+    $("#type_excel_error").text("");
     $("#modal_excel").modal('show')
 }
 
 function openModalImport() {
+    $("#import_excel_error").text("");
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile01").val('');
     $("#modal_import_excel").modal('show')
 }
 
 function exportFile() {
+    $("#type_excel_error").text("");
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
-        $("#type_excel_error").text("chọn định dạng file download");
+        $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -525,10 +507,11 @@ function exportFile() {
 }
 
 function importExcel() {
+
     var form = $('#form_import_excel')[0];
     let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    let fileName = typeExcel.split(".");
+    let typeFile = fileName[fileName.length - 1];
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {

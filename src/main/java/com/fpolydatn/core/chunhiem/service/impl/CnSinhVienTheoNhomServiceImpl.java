@@ -145,13 +145,13 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     }
 
     @Override
-    public List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
+    public List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem) {
         String idNhom = req.getIdNhom();
         Optional<NhomDatn> nhomDatn = cnNhomDatnRepository.findById(idNhom);
         Optional<SinhVien> truongNhom = cnSinhVienTheoNhomRepository.findById(nhomDatn.get().getTruongNhomId());
         Optional<MonDatn> nhomMonDatn = cnMonDatnRepository.findById(truongNhom.get().getMonDatnId());
         req.setNhomMonDatnId(nhomMonDatn.get().getNhomMonDatnId());
-        return cnSinhVienTheoNhomRepository.getListSinhVienNoGroup(req);
+        return cnSinhVienTheoNhomRepository.getListSinhVienNoGroup(req, idChuNhiem);
     }
 
 }

@@ -92,6 +92,20 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (request.getDotDangKyId() == null) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
+        } else if (request.getDotDangKyId().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
+        }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<CnNhomDatnResponse> res = cnNhomDatnRepository.findNhomDatn(request, pageable, idChuNhiem);
         list = cnNhomDatnRepository.findNhomDatnExport(request, idChuNhiem, TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
@@ -235,8 +249,14 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         NhomDatn nhomDatn = new NhomDatn();
         nhomDatn.setTruongNhomId(idTruongNhom);
-        nhomDatn.setGiangVienId(idGiangVien);
-        nhomDatn.setMaNhom(nhomDatnHelper.genMaNhomTuDong());
+        if("".equals(cnCreateNhomDatnRequest.getIdGiangVien().trim())){
+            nhomDatn.setGiangVienId(null);
+        }
+        String maNhom = nhomDatnHelper.genMaNhomTuDong();
+        if (maNhom == null) {
+            throw new RestApiException(Message.TAO_NHOM_THAT_BAI);
+        }
+        nhomDatn.setMaNhom(maNhom);
         nhomDatn.setMatKhau(cnCreateNhomDatnRequest.getMatKhau());
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
         nhomDatn.setCoSoId(cnCreateNhomDatnRequest.getCoSoId());
@@ -247,8 +267,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     }
 
     @Override
-    public List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req) {
-        return cnSinhVienRepository.getStringListSinhVienNoGroup(req);
+    public List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem) {
+        return cnSinhVienRepository.getStringListSinhVienNoGroup(req, idChuNhiem);
     }
 
     @Override
@@ -384,6 +404,11 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 Map<String, NhomDatn> listNhomDatnCreate = new HashMap<>();
 
                 String maNhom = nhomDatnHelper.genMaNhomTuDong();
+                if (maNhom == null) {
+                    response.setStatus(false);
+                    response.setMessage("Tạo nhóm thất bại");
+                    return response;
+                }
                 String array[] = maNhom.split("_");
                 Long count = Long.parseLong(array[1]);
                 for (int i = 0; i < listMaNhomCreate.size(); i++) {

@@ -27,8 +27,8 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
     }
 
     @Override
-    public Integer getSoThanhVienByNhomId(String nhomId) {
-        return svSinhVienRepository.getSoLuongThanhVienById(nhomId);
+    public Integer getSoThanhVienByNhomId(String nhomId, String coSoId, String dotDangKyId) {
+        return svSinhVienRepository.getSoLuongThanhVienById(nhomId, coSoId, dotDangKyId);
     }
 
     @Override
@@ -36,11 +36,5 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(id);
         return sinhVien.get().getMonDatnId();
     }
-
-    @Override
-    public String getMonChuongTrinhIdById(String id) {
-        return svSinhVienRepository.getMonChuongTrinhIdById(id);
-    }
-
 
 }

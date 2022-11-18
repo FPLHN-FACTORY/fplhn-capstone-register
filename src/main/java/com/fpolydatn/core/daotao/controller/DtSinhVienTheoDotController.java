@@ -7,6 +7,7 @@ import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.core.daotao.service.DtSvChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
+import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,10 +38,14 @@ public class DtSinhVienTheoDotController extends BaseController {
         req.setCoSoId(session.getCoSoId());
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(req.getCoSoId());
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(req.getCoSoId());
+        List<SimpleEntityProj> listMonChuongTrinh = sinhVienService.getMaMonChuongTrinh(req.getCoSoId());
+        List<NhomDatn> listNhomDatn = sinhVienService.getListNhomMon(req.getCoSoId());
         PageableObject<DtSinhVienTheoDotResponse> listSinhVien = sinhVienService.searchStudent(req);
         model.addAttribute("page", listSinhVien);
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("listDotDangKy", listDotDangKy);
+        model.addAttribute("listMonChuongTrinh", listMonChuongTrinh);
+        model.addAttribute("listNhomDatn", listNhomDatn);
         return "daotao/dt-sinh-vien-theo-dot";
     }
 

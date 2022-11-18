@@ -31,7 +31,6 @@ public class DtGiangVienFileImportExcel {
                     String.valueOf(getCellValue(row.getCell(2))).trim().length() == 0 &&
                     String.valueOf(getCellValue(row.getCell(3))).trim().length() == 0 &&
                     String.valueOf(getCellValue(row.getCell(4))).trim().length() == 0 &&
-                    String.valueOf(getCellValue(row.getCell(5))).trim().length() == 0 &&
                     String.valueOf(getCellValue(row.getCell(6))).trim().length() == 0 &&
                     String.valueOf(getCellValue(row.getCell(7))).trim().length() == 0
             ) {

@@ -2,10 +2,16 @@ const nhomMonDatnApi = '/api/dao-tao/nhom-mon-datn';
 const nhomMonDatnView = '/dao-tao/nhom-mon-datn';
 
 $(document).ready(function () {
-    $("#mon_datn_error").text("");
+    $('[data-toggle = "tooltip"]').tooltip();
+    $("#targetLink").text(nhomMonDatnView);
 });
 
 function openModalCreate() {
+    $("#maNhomMon").val('');
+    $("#tenNhomMon").val('');
+    $("#ma_mon_datn_error").text('');
+    $("#ten_mon_datn_error").text('');
+    $("#chuyen_nganh_error").text('');
     $("#modal_create").modal('show');
 }
 
@@ -63,6 +69,8 @@ function createNhomMonDatn() {
 }
 
 function openModalUpdateNhomMonDatn(monDatnId) {
+    $("#errorMaMonUpdate").text('');
+    $("#errorTenMonUpdate").text('');
     $("#modal_update_mon_datn").modal('show');
     $.ajax({
         type: "GET",
@@ -184,7 +192,8 @@ function openModalChiTietNhomMonDatn(nhomMonDatnId) {
         url: nhomMonDatnApi + "/detail/" + nhomMonDatnId,
         dataType: 'json',
         success: function (responseData) {
-            $("#data").html()
+            $("#data").html('');
+            $("#table_detail").html('');
             if (responseData.data.length > 0) {
                 $("#table_detail").html(responseData.data.map(function (item) {
                     return `
@@ -196,7 +205,7 @@ function openModalChiTietNhomMonDatn(nhomMonDatnId) {
                `
                 }))
             } else {
-                $("#data").html('<h3>Không có dữ liệu</h3>')
+                $("#data").html('<h3>Chưa có môn nào trong nhóm này</h3>');
             }
         },
         error: function (e) {

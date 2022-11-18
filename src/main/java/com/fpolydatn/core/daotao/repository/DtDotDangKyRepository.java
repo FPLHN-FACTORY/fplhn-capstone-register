@@ -43,7 +43,7 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
 
     @Query(value = """
             SELECT * FROM do_an_tot_nghiep.dot_dang_ky ddk
-            WHERE ddk.ten_dot_dang_ky = :tenDotDangKy   ;
+            WHERE ddk.ten_dot_dang_ky = :tenDotDangKy
             """, nativeQuery = true)
     DotDangKy findName(@Param("tenDotDangKy") String tenDotDangKy);
 

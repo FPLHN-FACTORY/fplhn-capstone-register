@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Xem chi tiết nhóm DATN | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
@@ -65,7 +65,7 @@
                                             nhóm</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <input type="text"
-                                                   th:value="${nhomDatnThamGia[0].tenNhom}"
+                                                   th:value="${nhomDatnThamGia[0].tenNhom} == null ? 'Chưa có' : ${nhomDatnThamGia[0].tenNhom}"
                                                    readonly="readonly" class="form-control">
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                             tài</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <input type="text"
-                                                   th:value="${nhomDatnThamGia[0].tenDeTai}"
+                                                   th:value="${nhomDatnThamGia[0].tenDeTai} == null ? 'Chưa có' : ${nhomDatnThamGia[0].tenDeTai}"
                                                    readonly="readonly" class="form-control">
                                         </div>
                                     </div>
@@ -110,6 +110,16 @@
                                         <div class="col-lg-9 col-xl-6">
                                             <input type="text"
                                                    th:value="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatnThamGia[0].getTrangThai())}"
+                                                   readonly="readonly" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">
+                                            Mật khẩu
+                                        </label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   th:value="${nhomDatnThamGia[0].getMatKhau()} == null ? 'Công khai' : ${nhomDatnThamGia[0].getMatKhau()}"
                                                    readonly="readonly" class="form-control">
                                         </div>
                                     </div>
@@ -153,6 +163,7 @@
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <table id="custom-table"
+                                                   style="text-align: center"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead>
                                                 <th width="50px">STT</th>

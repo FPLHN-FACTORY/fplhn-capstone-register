@@ -13,4 +13,6 @@ public final class SvFindSinhVienRequest {
 
     private String maNhom;
 
+    private String coSoId;
+
 }

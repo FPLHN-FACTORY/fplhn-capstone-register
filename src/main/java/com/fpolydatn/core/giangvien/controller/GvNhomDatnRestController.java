@@ -35,12 +35,14 @@ public class GvNhomDatnRestController extends BaseController {
 
     @GetMapping()
     public ResponseObject detailToTalSinhVien(final SvFindSinhVienRequest request) {
+        request.setCoSoId(session.getCoSoId());
         return new ResponseObject(sinhVienService.findByNhomId(request));
     }
 
     @GetMapping("/search")
     public ResponseObject viewSeachNhomDatn(final GvFindNhomDatnRequest request) {
         String idGiangVien = session.getUserId();
+        request.setCoSoId(session.getCoSoId());
         request.setGiangVienHDId(idGiangVien);
         PageableObject<GvNhomDatnResponse> listNhomDatn = nhomDatnService.fillAllNhomDatn(request);
         return new ResponseObject(listNhomDatn);

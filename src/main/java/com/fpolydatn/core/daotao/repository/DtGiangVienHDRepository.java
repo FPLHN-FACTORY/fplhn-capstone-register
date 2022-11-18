@@ -38,14 +38,8 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                     ( :#{#req.tenGiangVien} IS NULL 
                         OR :#{#req.tenGiangVien} LIKE '' 
                         OR ten_gvhd LIKE %:#{#req.tenGiangVien}% ) 
-                 AND
-                     ( :#{#req.coSoId} IS NULL 
-                        OR :#{#req.coSoId} LIKE '' 
-                        OR cs.id   LIKE %:#{#req.coSoId}% ) 
-                 AND
-                     ( :#{#req.dotDangKyId} IS NULL 
-                        OR :#{#req.dotDangKyId} LIKE '' 
-                        OR ddk.id   LIKE %:#{#req.dotDangKyId}% )
+                 AND cs.id = :#{#req.coSoId}
+                 AND ddk.id = :#{#req.dotDangKyId}
                 GROUP BY gvhd.id
                 ORDER BY gvhd.last_modified_date DESC 
             """, countQuery = """
@@ -55,46 +49,47 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                 LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
                 LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                
                 WHERE 
-                    ( :#{#req.tenGiangVien} IS NULL 
+                     ( :#{#req.tenGiangVien} IS NULL 
                         OR :#{#req.tenGiangVien} LIKE '' 
                         OR ten_gvhd LIKE %:#{#req.tenGiangVien}% ) 
-                 AND
-                     ( :#{#req.coSoId} IS NULL 
-                        OR :#{#req.coSoId} LIKE '' 
-                        OR cs.id   LIKE %:#{#req.coSoId}% ) 
-                 AND
-                     ( :#{#req.dotDangKyId} IS NULL 
-                        OR :#{#req.dotDangKyId} LIKE '' 
-                        OR ddk.id   LIKE %:#{#req.dotDangKyId}% )
+                 AND cs.id = :#{#req.coSoId}
+                 AND ddk.id = :#{#req.dotDangKyId}
                 GROUP BY gvhd.id
                 ORDER BY gvhd.last_modified_date DESC 
             """, nativeQuery = true)
     Page<DtGiangVienHDResponse> findByName(@Param("req") DtFindGiangVienHDRequest req, Pageable page);
 
     @Query(value = """
-            SELECT COUNT(1) FROM giang_vien_huong_dan gvhd WHERE gvhd.ten_gvhd LIKE %:tenGiangVien%
+            SELECT COUNT(1) FROM giang_vien_huong_dan gvhd WHERE gvhd.ten_gvhd LIKE %:tenGiangVien% AND co_so_id = :coSoId
             """, nativeQuery = true)
-    Long countByName(@Param("tenGiangVien") String tenGiangVien);
+    Long countByName(@Param("tenGiangVien") String tenGiangVien, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt", nativeQuery = true)
-    String getIdByEmailFpt(@Param("emailFpt") String emailFpt);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdByEmailFpt(@Param("emailFpt") String emailFpt, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND id <> :id", nativeQuery = true)
-    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe", nativeQuery = true)
-    String getIdByEmailFe(@Param("emailFe") String emailFe);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdByEmailFe(@Param("emailFe") String emailFe, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe AND id <> :id", nativeQuery = true)
-    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe, @Param("id") String id);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe, @Param("id") String id, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan ", nativeQuery = true)
-    String getIdByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND co_so_id = :coSoId ", nativeQuery = true)
+    String getIdByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id", nativeQuery = true)
-    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
+    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT  COUNT(nd.id) AS so_nhom_dang_huong_dan" + "      FROM giang_vien_huong_dan gvhd \n" + "      LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id \n" + "      LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id\n" + "      LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                \n" + "      WHERE gvhd.id = :idGiangVien \n" + "      GROUP BY gvhd.id  ", nativeQuery = true)
+    @Query(value = """
+                  SELECT  COUNT(nd.id) AS so_nhom_dang_huong_dan
+                  FROM giang_vien_huong_dan gvhd 
+                  LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id
+                  LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
+                  LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id             
+                  WHERE gvhd.id = :idGiangVien GROUP BY gvhd.id 
+            """, nativeQuery = true)
     int getCountSoNhomDangHuongDan(@Param("idGiangVien") String idGiangVien);
 
     @Query(value = """
@@ -135,10 +130,14 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
     List<DtGiangVienHDResponse> exportExcel(@Param("req") DtFindGiangVienHDRequest req);
 
     @Query(value = """
-            SELECT email_fpt FROM giang_vien_huong_dan""", nativeQuery = true)
-    List<String> findAllEmailFe();
+            SELECT email_fe FROM giang_vien_huong_dan WHERE co_so_id = :coSoId""", nativeQuery = true)
+    List<String> findAllEmailFe(@Param("coSoId") String coSoId);
 
+    @Query(value = """
+            SELECT email_fpt FROM giang_vien_huong_dan WHERE co_so_id = :coSoId""", nativeQuery = true)
+    List<String> findAllEmailFpt(@Param("coSoId") String coSoId);
 
-
-
+    @Query(value = """
+            SELECT ten_tai_khoan FROM giang_vien_huong_dan WHERE co_so_id = :coSoId""", nativeQuery = true)
+    List<String> findAllTenTaiKhoan(@Param("coSoId") String coSoId);
 }

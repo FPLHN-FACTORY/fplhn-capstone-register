@@ -29,11 +29,11 @@ public interface DtGiangVienHDService {
 
     GiangVienHuongDan findById(final String id);
 
-    long getSizeListHocKy(String tenGiangVien);
+    long getSizeListHocKy(String tenGiangVien, String coSoId);
 
     PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest req);
 
-    Object checkValidFile(List<DtGiagVienHDImportResquest> list);
+    Object checkValidFile(List<DtGiagVienHDImportResquest> list, String coSoId);
 
     void DtGiangVienHDExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
 

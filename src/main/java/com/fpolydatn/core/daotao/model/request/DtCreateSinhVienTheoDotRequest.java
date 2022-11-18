@@ -20,8 +20,6 @@ public class DtCreateSinhVienTheoDotRequest {
 
     private String khoa;
 
-    private String maNhom;
-
     private String chuyenNganh;
 
     private String dotDangKy;
