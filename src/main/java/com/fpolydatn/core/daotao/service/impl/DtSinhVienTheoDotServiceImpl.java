@@ -314,6 +314,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        if (mapMsvLoai.size() == 0) {
+            response.setStatus(false);
+            response.setMessage("Không có sinh viên nào được đọc");
+            return response;
+        }
         ConcurrentMap<String, SinhVien> listSvKhongDat = new ConcurrentHashMap<>();
         Map<String, SinhVien> mapSinhVien = new HashMap<>();
         List<SinhVien> listSinhVien = sinhVienRepository.findAllSinhVienByDotDangKyId(request.getDotDangKyId(),
