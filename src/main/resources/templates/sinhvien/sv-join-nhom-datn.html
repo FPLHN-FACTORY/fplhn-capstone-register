@@ -250,31 +250,34 @@
                     <div class="form-group">
                         <span class="text-danger">(*)</span>
                         <label class="col-form-label">Môn DATN</label>
-                        <select class="form-control col-8" id="monDatnCreateNhom">
+                        <select class="form-control"
+                                id="monDatnCreateNhom">
                             <option hidden value="">Chọn môn DATN</option>
                             <option th:each="i : ${listDataMonDatn}"
                                     th:text="${i.getTenMon()}"
                                     th:value="${i.getId()}">
                             </option>
                         </select>
-                        <p class="text-danger" id="mon_datn_error"></p>
+                        <small class="text-danger" id="mon_datn_error"></small>
+                        <br>
                         <label class="col-form-label">Chọn giảng viên
                             hướng
                             dẫn</label>
-                        <select class="form-control col-8"
+                        <select class="form-control"
                                 id="giangVienCreateNhom">
                             <option hidden>Không chọn</option>
                         </select>
-                        <span class="text-danger">(*)</span>
+                        <br>
                         <label class="col-form-label">Tên nhóm:</label>
                         <input class="form-control" id="tenNhomCreateNhom"
                                type="text">
-                        <p class="text-danger" id="ten_nhom_error"></p>
-                        <span class="text-danger">(*)</span>
+                        <small class="text-danger" id="ten_nhom_error"></small>
+                        <br>
                         <label class="col-form-label">Tên đề tài</label>
                         <input class="form-control" id="tenDeTaiCreateNhom"
                                type="text">
-                        <p class="text-danger" id="ten_de_tai_error"></p>
+                        <small class="text-danger" id="ten_de_tai_error"></small>
+                        <br>
                         <label class="col-form-label">Trạng thái
                             nhóm</label>
                         <div class="form-check">
@@ -287,7 +290,7 @@
                         </div>
                         <label class="col-form-label">Mô tả:</label>
                         <textarea class="form-control" cols="30" id="moTaCreateNhom" name=""
-                                  rows="10"></textarea>
+                                  rows="4"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

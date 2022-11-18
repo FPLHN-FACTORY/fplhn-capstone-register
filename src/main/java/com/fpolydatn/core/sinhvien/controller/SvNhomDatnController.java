@@ -54,7 +54,6 @@ public class SvNhomDatnController extends BaseController {
                 dotDangKyHienTai,
                 idUSer);
         model.addAttribute("checkMocThoiGian", mocThoiGianCommon.checkMocThoiGianSinhVien());
-        System.out.println(mocThoiGianCommon.checkMocThoiGianSinhVien());
         if (nhomId == null || nhomId.trim().isEmpty()) {
             req.setCoSoId(coSoId );
             req.setDotDangKyId(dotDangKyHienTai);
@@ -68,7 +67,7 @@ public class SvNhomDatnController extends BaseController {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(nhomId,
                     coSoId, idUSer);
             List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getDetailNhomDatnById(nhomId, coSoId);
-            Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId, coSoId);
+            Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId, coSoId, dotDangKyHienTai);
             String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(idUSer);
             List<SvGiangVienHuongDanResponse> listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
             model.addAttribute("soThanhVien", soThanhVien);

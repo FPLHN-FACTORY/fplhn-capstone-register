@@ -117,11 +117,12 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null // Có dấu vết rời nhóm
                 && // Chưa rời nhóm đủ 12 tiếng
                 Calendar.getInstance().getTimeInMillis() - Constants.MUOI_HAI_TIENG
-                    < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+                        < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
             throw new RestApiException(Message.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG);
         }
 
-        int soLuongThanhVien = svSinhVienRepository.getSoLuongThanhVienById(req.getIdNhom(), req.getCoSoId());
+        int soLuongThanhVien = svSinhVienRepository.getSoLuongThanhVienById(req.getIdNhom(),
+                req.getCoSoId(), req.getDotDangKyId());
         if (soLuongThanhVien == Constants.SO_THANH_VIEN_TOI_DA) {
             throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
         }
@@ -248,7 +249,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     @Synchronized
-    public Boolean roiNhom(String idUser) {
+    public Boolean roiNhom(String idUser, String coSoId, String dotDangKyId) {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
@@ -261,16 +262,17 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if (!nhomDatn.isPresent()) {
             throw new RestApiException(Message.SINH_VIEN_KHONG_CO_NHOM);
         }
-        Integer soThanhVien = svSinhVienRepository.getSoLuongThanhVienById(nhomDatn.get().getId(), sinhVien.get().getCoSoId());
-        if (soThanhVien > 1) {
-            if (idUser.equals(nhomDatn.get().getTruongNhomId())) {
+        if (idUser.equals(nhomDatn.get().getTruongNhomId())) {
+            Integer soThanhVien = svSinhVienRepository.getSoLuongThanhVienById(nhomDatn.get().getId(),
+                    coSoId, dotDangKyId);
+            if (soThanhVien > 1) {
                 throw new RestApiException(Message.ROI_NHOM_KHI_LA_TRUONG_NHOM);
+            } else {
+                svNhomDatnRepository.delete(nhomDatn.get());
             }
-        } else {
-            svNhomDatnRepository.delete(nhomDatn.get());
         }
         sinhVien.get().setNhomId(null);
-        sinhVien.get().setThoiDiemRoiNhomGanNhat(thoiGianRoiNhom.getTime());
+        sinhVien.get().setThoiDiemRoiNhomGanNhat(Calendar.getInstance().getTimeInMillis());
         sinhVien.get().setMonDatnId(null);
         svSinhVienRepository.save(sinhVien.get());
         return true;
@@ -306,7 +308,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         nhomDatn.get().setTruongNhomId(truongNhomMoi.get().getId());
         String[] email = new String[]{truongNhomMoi.get().getEmail()};
         String[] message = null;
-        if  (nhomDatn.get().getMatKhau() == null) {
+        if (nhomDatn.get().getMatKhau() == null) {
             message = new String[]{"Bạn đã trở thành trưởng nhóm " + nhomDatn.get().getMaNhom()};
         } else {
             message = new String[]{"Bạn đã trở thành trưởng nhóm" + nhomDatn.get().getMaNhom(),

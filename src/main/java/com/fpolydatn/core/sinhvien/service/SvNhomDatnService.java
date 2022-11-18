@@ -32,7 +32,7 @@ public interface SvNhomDatnService {
 
     Boolean updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest);
 
-    Boolean roiNhom(String idUser);
+    Boolean roiNhom(String idUser, String coSoId, String dotDangKyId);
 
     Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi);
 
