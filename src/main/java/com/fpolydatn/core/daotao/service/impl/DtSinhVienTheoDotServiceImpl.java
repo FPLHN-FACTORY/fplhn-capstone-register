@@ -184,7 +184,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 }
                 if (map.containsKey(sinhVien.getMaSinhVien())) {
                     response.setStatus(false);
-                    response.setMessage("Mã sinh viên không được trùng");
+                    response.setMessage("Mã sinh viên " + sinhVien.getMaSinhVien() +" không được trùng");
                     return;
                 }
 
@@ -214,7 +214,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
                 if (map.containsKey(sinhVien.getEmail())) {
                     response.setStatus(false);
-                    response.setMessage("Email không được trùng");
+                    response.setMessage("Email " + sinhVien.getEmail() +" không được trùng");
                     return;
                 }
 

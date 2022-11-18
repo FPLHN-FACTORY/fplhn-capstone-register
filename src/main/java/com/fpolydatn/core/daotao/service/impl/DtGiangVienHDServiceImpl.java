@@ -250,25 +250,25 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                         gv.getTenTaiKhoan().isEmpty() ||
                         gv.getSoNhomHuongDanToiDa() == null || gv.getTenGvhd().isEmpty()) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Không được để trống");
+                    dtGiangVienHDResponseMessage.setMessage("Tên, emailFE, emailFpt, Tên tài khoản, Số nhóm hướng dẫn không được để trống");
                     return;
                 }
 
                 if (map.get(gv.getEmailFpt()) != null) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email Fpt bị trùng");
+                    dtGiangVienHDResponseMessage.setMessage("Email Fpt "+ gv.getEmailFpt() +" bị trùng");
                     return;
                 }
 
                 if (map.get(gv.getEmailFe()) != null) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email Fe bị trùng");
+                    dtGiangVienHDResponseMessage.setMessage("Email Fe "+ gv.getEmailFe() +" bị trùng");
                     return;
                 }
 
                 if (map.get(gv.getTenTaiKhoan()) != null) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Tên tài khoản bị trùng");
+                    dtGiangVienHDResponseMessage.setMessage("Tên tài khoản " + gv.getTenTaiKhoan() +" bị trùng");
                     return;
                 }
 
@@ -286,13 +286,13 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
                 if (gv.getEmailFpt().length() > 50) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fpt quá 50 ký tự");
+                    dtGiangVienHDResponseMessage.setMessage("Email fpt " + gv.getEmailFpt() +" quá 50 ký tự");
                     return;
                 }
 
                 if (gv.getEmailFe().length() > 50) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fe quá 50 ký tự");
+                    dtGiangVienHDResponseMessage.setMessage("Email fe "+ gv.getEmailFe() +" quá 50 ký tự");
                     return;
                 }
 
