@@ -2,14 +2,12 @@ package com.fpolydatn.core.daotao.service;
 
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienRequest;
-import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnSearchResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
-import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -33,17 +31,15 @@ public interface DtSinhVienTheoDotService {
 
     void MauImportExcel(HttpServletResponse response, String typeExcel, FindDtSinhVienTheoDotRequest request) throws Exception;
 
-    DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException;
+    DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId, String dotDangKyId) throws IOException;
 
-    DtLoaiSinhVienResponse loaiSinhVienKhongDat(DtLoaiSinhVienKhongDatRequest request);
+    DtLoaiSinhVienResponse importSinhVienKhongDuDieukien(DtLoaiSinhVienKhongDatRequest request);
 
-    DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId);
+    DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId, String dotDangKyId);
 
-    SinhVien loaiSinhVien(String id, String coSoId);
+    SinhVien loaiSinhVien(String id, String coSoId, String dotDangKyId);
 
     Boolean delete(final String id, String coSoId, String dotDangKyId);
-
-    DtLoaiSinhVienResponse addSinhVienTheoDot(DtCreateSinhVienTheoDotRequest dtCreateSinhVienTheoDotRequest);
 
     List<SimpleEntityProj> getMaMonChuongTrinh(String coSoId);
 

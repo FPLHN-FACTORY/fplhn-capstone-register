@@ -1,14 +1,11 @@
 package com.fpolydatn.core.sinhvien.service.impl;
 
-import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
-import com.fpolydatn.core.sinhvien.model.response.SvSinhVienTheoNhomResponse;
 import com.fpolydatn.core.sinhvien.repository.SvSinhVienRepository;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.entity.SinhVien;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

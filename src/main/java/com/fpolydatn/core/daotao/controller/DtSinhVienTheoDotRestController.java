@@ -61,7 +61,8 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     @PostMapping("/import")
     public ResponseObject importEcel(@RequestParam("file") MultipartFile file) throws IOException {
         String coSoId = session.getCoSoId();
-        DtLoaiSinhVienResponse response = sinhVienService.DtSinhVienImport(file, coSoId);
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        DtLoaiSinhVienResponse response = sinhVienService.DtSinhVienImport(file, coSoId, dotDangKyId);
         return new ResponseObject(response);
     }
 
@@ -69,19 +70,22 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     public ResponseObject loaiSinhVienKhongDat(@ModelAttribute DtLoaiSinhVienKhongDatRequest request) {
         request.setCoSoId(session.getCoSoId());
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
-        DtLoaiSinhVienResponse response = sinhVienService.loaiSinhVienKhongDat(request);
+        DtLoaiSinhVienResponse response = sinhVienService.importSinhVienKhongDuDieukien(request);
         return new ResponseObject(response);
     }
 
     @GetMapping("/search/{id}")
     public ResponseObject searchStudentById(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        return new ResponseObject(sinhVienService.searchStudentById(id, coSoId));
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        return new ResponseObject(sinhVienService.searchStudentById(id, coSoId, dotDangKyId));
     }
 
     @PutMapping("/loai-sv/{id}")
     public ResponseObject loaiSinhVien(@PathVariable("id") String id) {
-        return new ResponseObject(sinhVienService.loaiSinhVien(id, session.getCoSoId()));
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        return new ResponseObject(sinhVienService.loaiSinhVien(id, coSoId, dotDangKyId));
     }
 
     @DeleteMapping("/{id}")

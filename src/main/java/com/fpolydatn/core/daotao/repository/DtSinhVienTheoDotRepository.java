@@ -3,7 +3,6 @@ package com.fpolydatn.core.daotao.repository;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnSearchResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
-import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.SinhVienRepository;
@@ -76,9 +75,9 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                     s.id,
                     s.ma_sinh_vien AS 'name'
                     FROM do_an_tot_nghiep.sinh_vien s
-                    WHERE s.co_so_id = :coSoId 
+                    WHERE s.co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
-    List<SimpleEntityProj> getAllMaSV(@Param("coSoId") String coSoId);
+    List<SimpleEntityProj> getAllMaSV(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = "SELECT * FROM sinh_vien WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId", nativeQuery = true)
     List<SinhVien> findAllSinhVienByDotDangKyId(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
@@ -112,10 +111,11 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id
             LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
             LEFT JOIN do_an_tot_nghiep.mon_datn mct ON mct.id = s.mon_chuong_trinh_id
-            WHERE s.id = :id and s.co_so_id = :coSoId
+            WHERE s.id = :id AND s.co_so_id = :coSoId AND s.dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
-    DtSinhVienTheoDotResponse searchStudentById(@Param("id") String id, @Param("coSoId") String coSoId);
-
+    DtSinhVienTheoDotResponse searchStudentById(@Param("id") String id,
+                                                @Param("coSoId") String coSoId,
+                                                @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY s.last_modified_date DESC) AS stt,
@@ -168,23 +168,15 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
 
     @Query(value = """
             SELECT * FROM do_an_tot_nghiep.sinh_vien s 
-            where s.nhom_id= :nhomId
-            and s.id <> :idNhomTruong LIMIT 1
+            WHERE s.nhom_id= :nhomId
+            AND s.id <> :idNhomTruong LIMIT 1
             AND s.co_so_id = :coSoId
+            AND s.dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
-    SinhVien motSVTrongNhom(@Param("idNhomTruong") String idNhomTruong, @Param("nhomId") String nhomId, @Param("coSoId") String coSoId);
-
-    @Query(value = """
-                SELECT id 
-                FROM sinh_vien
-                WHERE ma_sinh_vien = :maSinhVien 
-                AND id <> :id 
-                AND co_so_id = :coSoId 
-                AND dot_dang_ky_id = :dotDangKyId 
-            """, nativeQuery = true)
-    String findBySinhVienUpdate(@Param("maSinhVien") String maSinhVien,
-                                @Param("id") String id, @Param("coSoId") String coSoId,
-                                @Param("dotDangKyId") String dotDangKyId);
+    SinhVien motSVTrongNhom(@Param("idNhomTruong") String idNhomTruong,
+                            @Param("nhomId") String nhomId,
+                            @Param("coSoId") String coSoId,
+                            @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
                 SELECT id 
@@ -232,57 +224,10 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
     String findSinhVienByEmail(@Param("email") String email, @Param("coSoId") String coSoId,
                                @Param("dotDangKyId") String dotDangKyId);
 
-
-    @Query(value = """
-                SELECT id 
-                FROM nhom_datn
-                WHERE ma_nhom = :maNhom 
-                AND co_so_id = :coSoId 
-                AND dot_dang_ky_id = :dotDangKyId 
-            """, nativeQuery = true)
-    String findNhomDatnByMaNhom(@Param("maNhom") String maNhom, @Param("coSoId") String coSoId,
-                                @Param("dotDangKyId") String dotDangKyId);
-
-    @Query(value = """
-                SELECT a.id 
-                FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
-                WHERE a.ma_nhom = :maNhom
-                AND b.id <> :id 
-                AND a.co_so_id = :coSoId 
-                AND a.dot_dang_ky_id = :dotDangKyId 
-            """, nativeQuery = true)
-    String findNhomDatnByMaNhomUpdate(@Param("maNhom") String maNhom,
-                                      @Param("id") String id,
-                                      @Param("coSoId") String coSoId,
-                                      @Param("dotDangKyId") String dotDangKyId);
-
-    @Query(value = """
-                SELECT COUNT(b.id) 
-                FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
-                WHERE a.ma_nhom = :maNhom
-                AND a.co_so_id = :coSoId 
-                AND a.dot_dang_ky_id = :dotDangKyId 
-            """, nativeQuery = true)
-    Short countSoThanhVien(@Param("maNhom") String maNhom, @Param("coSoId") String coSoId,
-                           @Param("dotDangKyId") String dotDangKyId);
-
-    @Query(value = """
-                SELECT COUNT(b.id) 
-                FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
-                WHERE a.ma_nhom = :maNhom
-                AND b.id <> :id 
-                AND a.co_so_id = :coSoId 
-                AND a.dot_dang_ky_id = :dotDangKyId 
-            """, nativeQuery = true)
-    Short countSoThanhVienUpdate(@Param("maNhom") String maNhom,
-                                 @Param("id") String id,
-                                 @Param("coSoId") String coSoId,
-                                 @Param("dotDangKyId") String dotDangKyId);
-
     @Query(value = """
             SELECT id, ma_mon, ten_mon_datn FROM mon_datn 
             WHERE chuyen_nganh_id = :chuyenNganhId 
-            AND co_so_id = :coSoId
+            AND co_so_id = :coSoId AND nhom_mon_datn_id IS NOT NULL
             """, nativeQuery = true)
     List<DtMonDatnSearchResponse> getAllMonDatnByChuyenNganhId(@Param("chuyenNganhId") String chuyenNganhId,
                                                                @Param("coSoId") String coSoId);

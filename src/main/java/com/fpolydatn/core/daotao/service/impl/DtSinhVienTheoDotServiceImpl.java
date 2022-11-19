@@ -24,9 +24,7 @@ import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
-import com.zaxxer.hikari.util.ConcurrentBag;
 import com.fpolydatn.util.FormUtils;
-import org.apache.commons.math3.analysis.function.Sinh;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -158,7 +156,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException {
+    public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId, String dotDangKyId) throws IOException {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
 
         try {
@@ -171,7 +169,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             }
             ConcurrentMap<String, SinhVien> listSinhVienEntity = new ConcurrentHashMap<>();
             map = new ConcurrentHashMap<>();
-            addDataInMap(map, coSoId);
+            addDataInMap(map, coSoId, dotDangKyId);
             sinhVienList.parallelStream().forEach(sinhVien -> {
                 SinhVien sinhVienEntity = new SinhVien();
                 if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
@@ -184,7 +182,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 }
                 if (map.containsKey(sinhVien.getMaSinhVien())) {
                     response.setStatus(false);
-                    response.setMessage("Mã sinh viên " + sinhVien.getMaSinhVien() +" không được trùng");
+                    response.setMessage("Mã sinh viên " + sinhVien.getMaSinhVien() + " không được trùng");
                     return;
                 }
 
@@ -214,7 +212,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
                 if (map.containsKey(sinhVien.getEmail())) {
                     response.setStatus(false);
-                    response.setMessage("Email " + sinhVien.getEmail() +" không được trùng");
+                    response.setMessage("Email " + sinhVien.getEmail() + " không được trùng");
                     return;
                 }
 
@@ -246,10 +244,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         return response;
     }
 
-    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId) {
+    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId, String dotDangKyId) {
 
         //lấy id, MaSv của tất cả sv theo cơ sở
-        List<SimpleEntityProj> getAllMaSV = sinhVienRepository.getAllMaSV(coSoId);
+        List<SimpleEntityProj> getAllMaSV = sinhVienRepository.getAllMaSV(coSoId, dotDangKyId);
         getAllPutMap(mapAll, getAllMaSV);
         // lấy id, MaNhom tất cả nhóm theo cơ sở
 //        List<SimpleEntityProj> getAllMaNhom = nhomDatnTheoDotRepository.getAllMaNhom(coSoId);
@@ -272,7 +270,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public DtLoaiSinhVienResponse loaiSinhVienKhongDat(DtLoaiSinhVienKhongDatRequest request) {
+    public DtLoaiSinhVienResponse importSinhVienKhongDuDieukien(DtLoaiSinhVienKhongDatRequest request) {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
         response.setStatus(true);
         ConcurrentMap<String, String> mapMsvLoai = new ConcurrentHashMap<>();
@@ -392,14 +390,17 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId) {
-        return sinhVienRepository.searchStudentById(id, coSoId);
+    public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId, String dotDangKyId) {
+        return sinhVienRepository.searchStudentById(id, coSoId, dotDangKyId);
     }
 
     @Override
-    public SinhVien loaiSinhVien(String id, String coSoId) {
+    public SinhVien loaiSinhVien(String id, String coSoId, String dotDangKyId) {
         Map<String, NhomDatn> map = new HashMap<>();
         Optional<SinhVien> sv = sinhVienRepository.findById(id);
+        if (!sv.isPresent()) {
+            throw new RestApiException(Message.SINH_VIEN_NOT_EXISTS);
+        }
         SinhVien sinhVien = sv.get();
         List<NhomDatn> nhomDatnList = nhomDatnTheoDotRepository.findAll();
         NhomDatn chuyenTruongNhom;
@@ -416,7 +417,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
             } else {
                 //nếu là nhóm trưởng thì chuyển quyền cho sinh viên trong nhóm
-                SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(), sinhVien.getNhomId(), coSoId);
+                SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(),
+                        sinhVien.getNhomId(), coSoId, dotDangKyId);
                 chuyenTruongNhom = map.get(sinhVien.getId());
                 if (motSVtrongNhom == null) {
                     nhomDatnTheoDotRepository.delete(chuyenTruongNhom);
@@ -453,12 +455,14 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
         Optional<SinhVien> checkSinhVien = sinhVienRepository.findById(command.getId());
 
-        String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSVUpdate(command.getMaSinhVien(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+        String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSVUpdate(command.getMaSinhVien(),
+                command.getId(), command.getCoSoId(), command.getDotDangKyId());
         if (idSinhVienCheckMaSV != null) {
             throw new RestApiException(Message.SINH_VIEN_ALREADY_EXIST);
         }
 
-        String idSinhVienCheckEmail = sinhVienRepository.findSinhVienByEmailUpdate(command.getEmail(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+        String idSinhVienCheckEmail = sinhVienRepository.findSinhVienByEmailUpdate(command.getEmail(),
+                command.getId(), command.getCoSoId(), command.getDotDangKyId());
         if (idSinhVienCheckEmail != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
@@ -484,12 +488,14 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     public SinhVien create(DtCreateSinhVienRequest command) {
         SinhVien sinhVien = new SinhVien();
 
-        String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSV(command.getMaSinhVien(), command.getCoSoId(), command.getDotDangKyId());
+        String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSV(command.getMaSinhVien(),
+                command.getCoSoId(), command.getDotDangKyId());
         if (idSinhVienCheckMaSV != null) {
             throw new RestApiException(Message.SINH_VIEN_ALREADY_EXIST);
         }
 
-        String idSinhVienCheckEmail = sinhVienRepository.findSinhVienByEmail(command.getEmail(), command.getCoSoId(), command.getDotDangKyId());
+        String idSinhVienCheckEmail = sinhVienRepository.findSinhVienByEmail(command.getEmail(),
+                command.getCoSoId(), command.getDotDangKyId());
         if (idSinhVienCheckEmail != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
@@ -507,11 +513,6 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Override
     public List<DtMonDatnSearchResponse> getAllMonDatnByChuyenNganhId(String chuyenNganhId, String coSoId) {
         return sinhVienRepository.getAllMonDatnByChuyenNganhId(chuyenNganhId, coSoId);
-    }
-
-    @Override
-    public DtLoaiSinhVienResponse addSinhVienTheoDot(DtCreateSinhVienTheoDotRequest dtCreateSinhVienTheoDotRequest) {
-        return new DtLoaiSinhVienResponse();
     }
 
     @Override

@@ -60,7 +60,10 @@ public class SvNhomDatnRestController extends BaseController {
 
     @GetMapping("")
     public ResponseObject showDanhSachSinhVien(@RequestParam("id") String id) {
-        List<SvShowSinhVienTheoNhomResponse> listDanhSachSinhVien = svNhomDatnService.showDanhSachSinhVien(id, session.getCoSoId());
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        List<SvShowSinhVienTheoNhomResponse> listDanhSachSinhVien = svNhomDatnService.showDanhSachSinhVien(id,
+                coSoId, dotDangKyId);
         return new ResponseObject(listDanhSachSinhVien);
     }
 
@@ -101,7 +104,10 @@ public class SvNhomDatnRestController extends BaseController {
 
     @PutMapping("/chon-giang-vien")
     public ResponseObject chonGvhd(@RequestParam String idGiangVien) {
-        return new ResponseObject(svNhomDatnService.chonGvhd(session.getUserId(), idGiangVien, session.getCoSoId()));
+        String userId = session.getUserId();
+        String coSoId = session.getCoSoId();
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        return new ResponseObject(svNhomDatnService.chonGvhd(userId, idGiangVien, coSoId, dotDangKyId));
     }
 
 }

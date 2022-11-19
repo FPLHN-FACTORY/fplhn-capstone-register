@@ -157,17 +157,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         "Mã nhóm: " + nhomDatnCheck.get().getMaNhom(), "Số thành viên: " + soThanhvien,
                         "Trưởng nhóm: " + truongNhom.getMaSinhVien() + " - " + truongNhom.getTenSinhVien(),
                         "SĐT: " + truongNhom.getSoDienThoai()};
-                emailSender.sendEmail(new String[]{gvhd.get().getEmailFe()}, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
+                emailSender.sendEmail(new String[]{gvhd.get().getEmailFe()},
+                        "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
                         "Xác nhận nhóm thành lập", messageGV);
             }
         }
-        String tenGvhd = "Chưa có";
-        if (gvhd != null) {
-            tenGvhd = gvhd.get().getTenGvhd() + " - " + gvhd.get().getTenTaiKhoan();
+        String[] messageSV = null;
+        if (!gvhd.isPresent()) {
+            messageSV = new String[]{"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:", "GVHD: Chưa có",
+                    "Tên đề tài: " + (nhomDatnCheck.get().getTenDeTai() == null ? "chưa có" : nhomDatnCheck.get().getTenDeTai())};
+        } else {
+            messageSV = new String[]{"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:",
+                    "GVHD: " + gvhd.get().getTenGvhd() + " - " + gvhd.get().getTenTaiKhoan(),
+                    "SĐT: " + gvhd.get().getSoDienThoai(),
+                    "Email: " + gvhd.get().getEmailFe(),
+                    "Tên đề tài: " + (nhomDatnCheck.get().getTenDeTai() == null ? "chưa có" : nhomDatnCheck.get().getTenDeTai())};
         }
-        String[] messageSV = new String[]{"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:",
-                "GVHD: " + tenGvhd,
-                "Tên đề tài: " + (nhomDatnCheck.get().getTenDeTai() == null ? "chưa có" : nhomDatnCheck.get().getTenDeTai())};
         emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
                 "Xác nhận nhóm thành lập", messageSV);
         return true;
@@ -249,7 +254,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         NhomDatn nhomDatn = new NhomDatn();
         nhomDatn.setTruongNhomId(idTruongNhom);
-        if("".equals(cnCreateNhomDatnRequest.getIdGiangVien().trim())){
+        if ("".equals(cnCreateNhomDatnRequest.getIdGiangVien().trim())) {
             nhomDatn.setGiangVienId(null);
         }
         String maNhom = nhomDatnHelper.genMaNhomTuDong();
