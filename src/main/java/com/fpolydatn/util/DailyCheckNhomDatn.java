@@ -40,11 +40,11 @@ public class DailyCheckNhomDatn {
             List<SinhVien> listSinhVien = new ArrayList<>();
             for (String xx : listNhomKhongDuDieuKien) {
                 List<SinhVien> listSinhVienByNhomId = sinhVienRepository.getListSinhVienByNhomId(xx);
-                listSinhVienByNhomId.parallelStream().forEach(sinhVien -> {
-                    sinhVien.setMonDatnId(null);
-                    sinhVien.setNhomId(null);
-                    listSinhVien.add(sinhVien);
-                });
+                for (SinhVien yy : listSinhVienByNhomId){
+                    yy.setMonDatnId(null);
+                    yy.setNhomId(null);
+                    listSinhVien.add(yy);
+                }
             }
             Integer soSinhVien = listSinhVien.size();
             if (soSinhVien > 0) {
