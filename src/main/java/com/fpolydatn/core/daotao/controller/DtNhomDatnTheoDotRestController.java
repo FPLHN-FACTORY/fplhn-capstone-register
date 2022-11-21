@@ -36,7 +36,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseObject viewHocKy(final FindDtNhomDatnTheoDotRequest req) {
+    public ResponseObject viewNhomDatn(final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);

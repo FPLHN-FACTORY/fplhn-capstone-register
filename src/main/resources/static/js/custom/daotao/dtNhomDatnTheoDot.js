@@ -30,14 +30,23 @@ function openModalDanhSachSinhVien(id) {
             console.log(responseData.data)
             var text = "";
             responseData.data.map(function (item) {
-                text += `
-                <tr>
-                <td>${item.stt}</td>
-                <td>${item.maSinhVien}</td>
-                <td>${item.tenSinhVien}</td>
-                <td>${item.chucVu == 1 ? 'Trưởng nhóm' : 'Thành viên'}</td>
-                </tr>
+                if(item.chucVu == 1){
+                    text += `
+                    <tr style="color: red">
+                    <td><b>${item.stt}</b></td>
+                    <td><b>${item.maSinhVien}</b></td>
+                    <td><b>${item.tenSinhVien}</b></td>
+                    </tr>
                 `
+                }else {
+                    text += `
+                        <tr>
+                        <td>${item.stt}</td>
+                        <td>${item.maSinhVien}</td>
+                        <td>${item.tenSinhVien}</td>
+                        </tr>
+                `
+                }
             })
             $("#show_Dssv").html(text)
         },
