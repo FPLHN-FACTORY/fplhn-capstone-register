@@ -67,14 +67,16 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
     clearform();
     if (Number(matKhauTonTai) == 0) {
         bootbox.confirm({
-            title: "Tham gia nhóm", message: "Bạn muốn tham gia nhóm này?", buttons: {
+            title: "Tham gia nhóm", message: "Bạn muốn tham gia nhóm này?",
+            buttons: {
                 cancel: {
                     className: 'btn-outline-secondary btn btn-light',
                     label: '<i class="fa fa-times"></i> Quay lại'
                 }, confirm: {
                     label: '<i class="fa fa-check"></i> Xác nhận'
                 }
-            }, callback: function (result) {
+            },
+            callback: function (result) {
                 if (result) {
                     let addSinhVienRequest = {};
                     addSinhVienRequest["idNhom"] = idNhom;

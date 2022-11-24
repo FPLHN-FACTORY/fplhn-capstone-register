@@ -69,13 +69,13 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     private EmailSender emailSender;
 
     @Override
-    public List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id, String coSoId) {
-        return svNhomDatnRepository.getDetailNhomDatnById(id, coSoId);
+    public List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id, String coSoId, String dotDangKyId) {
+        return svNhomDatnRepository.getDetailNhomDatnById(id, coSoId, dotDangKyId);
     }
 
     @Override
-    public Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser) {
-        String idTruongNhom = svNhomDatnRepository.getIdTruongNhom(idNhomDatn, idCoSo);
+    public Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser, String dotDangKyId) {
+        String idTruongNhom = svNhomDatnRepository.getIdTruongNhom(idNhomDatn, idCoSo, dotDangKyId);
         return idUser.equals(idTruongNhom);
     }
 
@@ -89,8 +89,8 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     }
 
     @Override
-    public List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(String id, String coSoId) {
-        List<SvShowSinhVienTheoNhomResponse> res = svNhomDatnRepository.showDanhSachSinhVien(id, coSoId);
+    public List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(String id, String coSoId, String dotDangKyId) {
+        List<SvShowSinhVienTheoNhomResponse> res = svNhomDatnRepository.getAllSinhVienByNhomDatnId(id, coSoId, dotDangKyId);
         return res;
     }
 
@@ -323,7 +323,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     @Synchronized
-    public Boolean chonGvhd(String idUser, String idGiangVien, String coSoId) {
+    public Boolean chonGvhd(String idUser, String idGiangVien, String coSoId, String dotDangKyId) {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
@@ -331,7 +331,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if (!giangVienHuongDan.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
         }
-        NhomDatn nhomDatn = svNhomDatnRepository.getNhomDatnByTruongNhomId(idUser, coSoId);
+        NhomDatn nhomDatn = svNhomDatnRepository.getNhomDatnByTruongNhomId(idUser, coSoId, dotDangKyId);
         if (nhomDatn == null) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }

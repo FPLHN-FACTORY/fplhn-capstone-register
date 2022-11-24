@@ -23,8 +23,10 @@ public class SvMonDatnServiceImpl implements SvMonDatnService {
     private SvSinhVienRepository svSinhVienRepository;
 
     @Override
-    public List<SvMonDatnResponse> getAllMonDatnByIdUser(String id, String coSoId) {
-        return svMonDatnRepository.getMonDatnTuongDuong(svMonDatnRepository.getNhomMonDatnIdByMonChuongTrinhId(svSinhVienRepository.getMonChuongTrinhIdById(id, coSoId), coSoId), coSoId);
+    public List<SvMonDatnResponse> getAllMonDatnByIdUser(String id, String coSoId, String dotDangKyId) {
+        String monChuongTrinhId = svSinhVienRepository.getMonChuongTrinhIdById(id, coSoId, dotDangKyId);
+        String nhomMonDatnId = svMonDatnRepository.getNhomMonDatnIdById(monChuongTrinhId, coSoId);
+        return svMonDatnRepository.getMonDatnByNhomMonId(nhomMonDatnId, coSoId);
     }
 
 }

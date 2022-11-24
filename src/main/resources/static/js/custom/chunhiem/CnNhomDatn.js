@@ -26,9 +26,19 @@ function clearData() {
 function CNChotDuLieu(id, count) {
     flag = 0;
     checkListCbb = 1;
-    bootbox.confirm("Bạn có chắc muốn chốt đề tài không ?", function (item) {
-        if (item) {
-            chotDeTai(id, count)
+    bootbox.confirm({message: "Bạn có chắc muốn chốt đề tài không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            }, confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function(item) {
+            if (item) {
+                chotDeTai(id, count)
+            }
         }
     })
 }
@@ -63,9 +73,19 @@ function chotDeTai(id, count) {
 function CNXacNhanNhom(id, count) {
     flag = 0;
     checkListCbb = 1;
-    bootbox.confirm("Bạn có chắc muốn xác nhận không ?", function (item) {
-        if (item) {
-            xacNhanNhom(id, count)
+    bootbox.confirm({message: "Bạn có chắc muốn xác nhận không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            }, confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (item) {
+            if (item) {
+                xacNhanNhom(id, count)
+            }
         }
     })
 }
@@ -291,7 +311,7 @@ function chotNhieuDeTai(count) {
             return;
         }
         bootbox.confirm({
-            title: "Chốt đề tài nhiều nhómd",
+            title: "Chốt đề tài nhiều nhóm",
             message: "Bạn có chắc muốn chốt đề tài những nhóm được chọn không?",
             backdrop: true,
             buttons: {
@@ -362,7 +382,7 @@ function xacNhanNhieuNhom(count) {
             return;
         }
         bootbox.confirm({
-            title: "Xác nhận nhiều nhómd",
+            title: "Xác nhận nhiều nhóm",
             message: "Bạn có chắc muốn xác nhận những nhóm được chọn không?",
             backdrop: true,
             buttons: {
