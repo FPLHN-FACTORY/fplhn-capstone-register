@@ -30,7 +30,7 @@ function openModalDanhSachSinhVien(id) {
             console.log(responseData.data)
             var text = "";
             responseData.data.map(function (item) {
-                if(item.chucVu == 1){
+                if (item.chucVu == 1) {
                     text += `
                     <tr style="color: red">
                     <td><b>${item.stt}</b></td>
@@ -38,7 +38,7 @@ function openModalDanhSachSinhVien(id) {
                     <td><b>${item.tenSinhVien}</b></td>
                     </tr>
                 `
-                }else {
+                } else {
                     text += `
                         <tr>
                         <td>${item.stt}</td>
@@ -97,27 +97,27 @@ function changeInput() {
 genPagzing();
 
 function genPagzing() {
-    if (totalPages <= 1) {
-        $("#page").html('');
-    } else {
-        let templatePageMid = ``;
-        let templatePageBefore = `
+    $("#page").html(``);
+    let templatePageMid = ``;
+    let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage - 1})"><img src="/img/back.svg"></a>
                 </li>
                 `;
-        templatePageMid = `
+    templatePageMid = `
                             <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
                              <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
-        let templatePageAfter = `
+    let templatePageAfter = `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage + 1})"><img src="/img/next.svg"></a>
                 </li>
                 `;
-        let templateHtml = ``;
-        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
-        $("#page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+    let templateHtml = ``;
+    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+    if (totalPages == 1) {
+        templateHtml = ``;
     }
+    $("#page").html(templateHtml);
 }
 
 function loadDataNhomDatn(count) {
