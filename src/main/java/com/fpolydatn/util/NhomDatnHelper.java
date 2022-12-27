@@ -27,8 +27,19 @@ public class NhomDatnHelper {
         String coSoId = session.getCoSoId();
         String text = nhomDatnRepository.getMaCoSo(coSoId);
         String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
-        int count = Integer.parseInt(nhomDatnRepository.genMaNhomTuDong(dotDangKyHienTai));
-        count++;
-        return text + "_" + count;
+        String maNhomGanNhat = nhomDatnRepository.getNhomTaoGanNhat(dotDangKyHienTai, coSoId);
+        Integer count = 0;
+        try {
+            if (maNhomGanNhat != null) {
+                String[] splitStr = maNhomGanNhat.split("_");
+                count = Integer.valueOf(splitStr[1]) + 1;
+            } else {
+                count = 1;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        String maNhomMoi = text + "_" + count;
+        return maNhomMoi;
     }
 }

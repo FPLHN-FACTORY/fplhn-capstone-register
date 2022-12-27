@@ -82,7 +82,7 @@ public class DtSinhVienTheoDotExport {
 
 
     public void headerLineMau(HttpServletResponse response) throws Exception {
-        xssfSheet = xssfWorkbook.createSheet("sheet");
+        xssfSheet = xssfWorkbook.createSheet("Danh sách sinh viên");
         Row row = xssfSheet.createRow(0);
 
         CellStyle cellStyle = xssfWorkbook.createCellStyle();
@@ -97,10 +97,9 @@ public class DtSinhVienTheoDotExport {
         createCell(row, 3, "Số điện thoại", cellStyle);
         createCell(row, 4, "Email", cellStyle);
         createCell(row, 5, "Khóa", cellStyle);
-        createCell(row, 6, "Mã nhóm", cellStyle);
-        createCell(row, 7, "Tên chuyên ngành", cellStyle);
-        createCell(row, 8, "Đợt đăng ký", cellStyle);
-        createCell(row, 9, "Mã môn chương trình", cellStyle);
+        createCell(row, 6, "Tên chuyên ngành", cellStyle);
+        createCell(row, 7, "Đợt đăng ký", cellStyle);
+        createCell(row, 8, "Mã môn chương trình", cellStyle);
         writeDataLines();
         ServletOutputStream outputStream = response.getOutputStream();
         xssfWorkbook.write(outputStream);
@@ -110,7 +109,7 @@ public class DtSinhVienTheoDotExport {
 
     public void employeeDetailReport(HttpServletResponse response, List<DtSinhVienTheoDotResponse> listDtSinhVien) {
         try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Employee TechGeekNext Example");
+            Sheet sheet = workbook.createSheet("Danh sách sinh viên");
 
             CellStyle cellStyle = workbook.createCellStyle();
 
@@ -160,7 +159,7 @@ public class DtSinhVienTheoDotExport {
             cell7.setCellStyle(cellStyle);
 
             Cell cell8 = row.createCell(8);
-            cell8.setCellValue("ID nhóm");
+            cell8.setCellValue("Mã nhóm");
             cell8.setCellStyle(cellStyle);
 
             Cell cell9 = row.createCell(9);

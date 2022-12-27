@@ -34,6 +34,7 @@ public final class DtDotDangKyRestController extends BaseController {
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable String id, @RequestBody DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest) {
         dtUpdateDotDangKyRequest.setId(id);
+        dtUpdateDotDangKyRequest.setCoSoId(session.getCoSoId());
         return new ResponseObject(dotDangKyService.update(dtUpdateDotDangKyRequest));
     }
 

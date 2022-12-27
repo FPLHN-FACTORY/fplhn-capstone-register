@@ -39,4 +39,7 @@ public abstract class DtBaseDotDangKyRequest {
     @NotEmpty
     @NotBlank
     private String hanChuNhiemBoMon;
+
+    private String coSoId;
+
 }

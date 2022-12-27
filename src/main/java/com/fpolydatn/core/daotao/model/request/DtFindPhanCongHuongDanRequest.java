@@ -12,4 +12,5 @@ import lombok.Setter;
 public final class DtFindPhanCongHuongDanRequest extends PageableRequest {
 
     private String tenGV;
+    private String coSoId;
 }

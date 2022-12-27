@@ -25,7 +25,7 @@ public class ChuyenNganh extends MultiTenantEntity implements Serializable {
     @Nationalized
     private String tenChuyenNganh;
 
-    @Column(length = EntityProperties.LENGTH_ID, nullable = false)
+    @Column(length = EntityProperties.LENGTH_ID)
     private String chuNhiemBoMon;
 
 }

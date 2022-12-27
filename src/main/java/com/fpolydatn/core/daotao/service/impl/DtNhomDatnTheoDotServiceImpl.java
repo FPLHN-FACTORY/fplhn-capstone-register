@@ -3,7 +3,6 @@ package com.fpolydatn.core.daotao.service.impl;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.excel.DtNhomDatnTheoDotExport;
 import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
-import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
@@ -34,8 +33,18 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     @Override
     public PageableObject<DtNhomDatnTheoDotResponse> findAllNhomDatn(FindDtNhomDatnTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        if (dotDangKyId != null) {
-            request.setDotDangKyId(dotDangKyId);
+        if (request.getDotDangKyId() == null) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
+        } else if (request.getDotDangKyId().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
         }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<DtNhomDatnTheoDotResponse> res = dtNhomDatnTheoDotRepository.findAllNhomDatn(pageable, request);
@@ -44,8 +53,8 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     }
 
     @Override
-    public List<DtSinhVienResponse> showDanhSachSinhVien(final FindSinhVienRequest request) {
-        List<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(request);
+    public List<DtSinhVienResponse> showDanhSachSinhVien(String idNhom, String coSoId, String dotDangKyId) {
+        List<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(idNhom, coSoId, dotDangKyId);
         return res;
     }
 

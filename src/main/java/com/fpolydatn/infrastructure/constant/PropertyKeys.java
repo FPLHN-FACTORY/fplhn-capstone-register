@@ -11,7 +11,7 @@ public class PropertyKeys {
     public static final String CHUYEN_NGANH_NOT_EXIST = "chuyen.nganh.not.exist";
     public static final String CO_SO_NOT_EXIST = "co.so.not.exist";
     public static final String CAN_BO_NOT_EXIST = "can.bo.not.exist";
-    public static final String CAN_BO_EXSIT = "can.bo.exist" ;
+    public static final String CAN_BO_EXSIT = "can.bo.exist";
     public static final String NO_SPACES_ALLOW = "no.space.allow";
     public static final String DOT_DANG_KY_NOT_EXIST = "dot.dang.ky.not.exist";
     public static final String HOC_KY_NOT_EXIST = "hoc.ky.not.exist";
@@ -62,7 +62,7 @@ public class PropertyKeys {
 
     public static final String MON_KHONG_TUONG_DUONG = "mon.khong.tuong.duong";
 
-    public static final String GIANG_VIEN_KHONG_DAY_MON_NAY ="giang.vien.khong.day.mon.nay" ;
+    public static final String GIANG_VIEN_KHONG_DAY_MON_NAY = "giang.vien.khong.day.mon.nay";
 
     public static final String MOC_THOI_GIAN_GVHD = "moc.thoi.gian.gvhd";
 
@@ -81,5 +81,16 @@ public class PropertyKeys {
     public static final String NHOM_MON_DATN_NOT_EXIST = "nhom.mon.datn.not.exist";
 
     public static final String NHOM_MON_DANG_TON_TAI_MON = "nhom.mon.dang.ton.tai.mon";
+    public static final String TEN_TAI_KHOAN_CAN_BO_EXIST = "ten.tai.khoan.can.bo.exist";
+
+    public static final String GIANG_VIEN_DANG_DUOC_PHAN_CONG = "giang.vien.huong.dang.duoc.phan.cong";
+
+    public static final String CHU_NHIEM_NOT_EXISTS = "chu.nhiem.not.exists";
+
+    public static final String CHU_NHIEM_NAY_DANG_CHU_NHIEM_1_CHUYEN_NGANH = "chu.nhiem.nay.dang.chu.nhiem.mot.chuyen.nganh";
+    public static final String SINH_VIEN_NOT_EXISTS = "sinh.vien.not.exists";
+    public static final String SINH_VIEN_ALREADY_EXIST = "sinh.vien.mon.already.exist";
+
+    public static final String TAO_NHOM_THAT_BAI = "tao.nhom.that.bai";
 
 }

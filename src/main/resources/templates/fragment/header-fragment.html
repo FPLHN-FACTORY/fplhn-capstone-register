@@ -55,10 +55,10 @@
                 <div class="btn-group">
                     <button type="button" class="dropdown" data-bs-toggle="dropdown"
                             aria-expanded="false" style="height: 50px; border: none;background-color: transparent;">
-                        <!--                        <img th:src="@{/img/avatar.jpg}" style="width: 100%;  border-radius: 50%;">-->
                         <span style="color: #959cb6;font-size: 0.9rem;">Xin chào</span>
                         <span th:text="${session.currentUser.name}"
                               style="color: #6c7293;font-size: 1rem;font-weight: 500;"></span>
+                        <img th:src="${session.avatar}" style="width: 32px; margin-left: 5px;  border-radius: 50%;">
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" th:href="@{/doLogout}">

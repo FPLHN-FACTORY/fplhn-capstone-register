@@ -5,11 +5,32 @@ $(document).ready(function () {
     $("#dot_dang_ky_error").text("");
 });
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+    $("#targetLink").text(dotDangKyView);
+});
+
 function openModalCreate() {
+    $("#hocKyAdd").val("");
+    $("#errorMessageAddHocKy").text("");
+    $("#errorMessageAddNgayKetThuc").text("");
+    $("#tenDotDangKyAdd").val('');
+    $("#ngayBatDauAdd").val('');
+    $("#ngayKetThucAdd").val('');
+    $("#hanSinhVienAdd").val('');
+    $("#hanGiangVienAdd").val('');
+    $("#hanChuNhiemBoMonAdd").val('');
+    $("#errorMessageAddTenDot").text("");
+    $("#errorMessageAddNgayBatDau").text("");
+    $("#errorMessageAddHanSinhVien").text("");
+    $("#errorMessageAddHanGiangVien").text("");
+    $("#errorMessageAddHanChuNhiemBoMon").text("");
     $("#modal_create").modal('show');
 }
 
 function openModalUpdateDotDangKy(dotDangKyId) {
+    $("#errorMessageTenDotDangKyUpdate").text('');
+    $("#errorMessageNgayBatDauUpdate").text("");
     $("#errorMessageNgayBatDauUpdate").text("");
     $("#errorMessageNgayKetThucUpdate").text("");
     $("#errorMessageHanSinhVienUpdate").text("");
@@ -78,6 +99,8 @@ function update() {
     } else if (tenDotDangKy.length > 100) {
         $("#errorMessageTenDotDangKyUpdate").text("Quá số ký cho phép");
         check += 1;
+    } else {
+        $("#errorMessageTenDotDangKyUpdate").text('');
     }
 
     if (ngayBatDauStr === "") {
@@ -133,12 +156,6 @@ function update() {
         $("#errorMessageHanChuNhiemBoMonUpdate").text("");
     }
 
-    ngayBatDau.setSeconds(0);
-    ngayKetThuc.setSeconds(0);
-    hanSinhVien.setSeconds(0);
-    hanGiangVien.setSeconds(0);
-    hanChuNhiemBoMon.setSeconds(0);
-
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -186,20 +203,6 @@ function update() {
         });
     }
 };
-
-function clearDataAdd() {
-    $("#hocKyAdd").val("");
-    $("#errorMessageAddHocKy").text("");
-    $("#errorMessageAddNgayKetThuc").text("");
-    $("#tenDotDangKyAdd").val('');
-    $("#ngayBatDauAdd").val('');
-    $("#ngayKetThucAdd").val('');
-    $("#errorMessageAddTenDot").text("");
-    $("#errorMessageAddNgayBatDau").text("");
-    $("#errorMessageAddHanSinhVien").text("");
-    $("#errorMessageAddHanGiangVien").text("");
-    $("#errorMessageAddHanChuNhiemBoMon").text("");
-}
 
 function create() {
     let tenDotDangKy = $("#tenDotDangKyAdd").val().trim();
@@ -298,12 +301,6 @@ function create() {
         $("#errorMessageAddHanChuNhiemBoMon").text("");
     }
 
-    ngayBatDau.setSeconds(0);
-    ngayKetThuc.setSeconds(0);
-    hanSinhVien.setSeconds(0);
-    hanGiangVien.setSeconds(0);
-    hanChuNhiemBoMon.setSeconds(0);
-
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -396,7 +393,7 @@ function detail(dotDangKyid) {
             if (responseData.data.tongSinhVienChuaCoNhom == 0) {
                 $("#btnShowSinhVienChuaCoNhom").attr('style', "display: none");
             } else {
-                $("#btnShowSinhVienChuaCoNhom").attr('style', "display: block");
+                $("#btnShowSinhVienChuaCoNhom").attr('style', "display: block; line-height: 27px");
                 $("#btnShowSinhVienChuaCoNhom").attr('href', "/dao-tao/sinh-vien?idTrangThaiNhom=b&idDotDangKy=" + dotDangKyid);
             }
         },

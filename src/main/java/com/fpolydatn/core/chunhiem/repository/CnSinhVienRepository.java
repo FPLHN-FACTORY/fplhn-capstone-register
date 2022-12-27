@@ -105,9 +105,11 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
             LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
             LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
-            WHERE f.id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId}
+            WHERE a.co_so_id = :#{#req.coSoId} 
             AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%)
+            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%  
+            OR a.ma_sinh_vien LIKE %:#{#req.tenSinhVien}%) 
+            AND f.id = :#{#req.idDotDangKy}
             AND g.id = :#{#req.idChuNhiem}
             AND a.trang_thai = 0
             ORDER BY ten_sinh_vien
@@ -136,25 +138,27 @@ public interface CnSinhVienRepository extends SinhVienRepository {
     List<SinhVien> getAllSinhVien(@Param("idNhom") String idNhom, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT CONCAT(ma_sinh_vien, '_' , ten_sinh_vien) as thong_tin, ma_sinh_vien FROM sinh_vien
+            SELECT CONCAT(a.ma_sinh_vien, '_' , a.ten_sinh_vien) as thong_tin, a.ma_sinh_vien FROM sinh_vien a JOIN chuyen_nganh b ON a.chuyen_nganh_id = b.id
             WHERE ((:#{#req.maSinhVien} IS NULL OR :#{#req.maSinhVien} LIKE ''
-            OR ma_sinh_vien LIKE %:#{#req.maSinhVien}%)
+            OR a.ma_sinh_vien LIKE %:#{#req.maSinhVien}%)
             OR (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-            OR ten_sinh_vien LIKE %:#{#req.tenSinhVien}%))
-            AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId} AND nhom_id IS NULL
-            AND (SELECT m.nhom_mon_datn_id FROM mon_datn m WHERE m.id = sinh_vien.mon_chuong_trinh_id) = :#{#req.nhomMonDatnId}
+            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%))
+            AND a.co_so_id = :#{#req.coSoId} AND a.dot_dang_ky_id = :#{#req.dotDangKyId} AND a.nhom_id IS NULL AND a.trang_thai = 0
+            AND (SELECT m.nhom_mon_datn_id FROM mon_datn m WHERE m.id = a.mon_chuong_trinh_id) = :#{#req.nhomMonDatnId}
+            AND b.chu_nhiem_bo_mon = :idChuNhiem
             """, nativeQuery = true)
-    List<CnSinhVienSearchResponse> getListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req);
+    List<CnSinhVienSearchResponse> getListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = """
-            SELECT CONCAT(ma_sinh_vien, '_' , ten_sinh_vien) as thong_tin FROM sinh_vien
+            SELECT CONCAT(a.ma_sinh_vien, '_' , a.ten_sinh_vien) as thong_tin FROM sinh_vien a JOIN chuyen_nganh b ON a.chuyen_nganh_id = b.id
             WHERE ((:#{#req.maSinhVien} IS NULL OR :#{#req.maSinhVien} LIKE ''
-            OR ma_sinh_vien LIKE %:#{#req.maSinhVien}%)
+            OR a.ma_sinh_vien LIKE %:#{#req.maSinhVien}%)
             OR (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-            OR ten_sinh_vien LIKE %:#{#req.tenSinhVien}%))
-            AND co_so_id = :#{#req.coSoId} AND dot_dang_ky_id = :#{#req.dotDangKyId} AND nhom_id IS NULL
+            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%))
+            AND a.co_so_id = :#{#req.coSoId} AND a.dot_dang_ky_id = :#{#req.dotDangKyId} AND a.nhom_id IS NULL
+            AND b.chu_nhiem_bo_mon = :idChuNhiem
             """, nativeQuery = true)
-    List<String> getStringListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req);
+    List<String> getStringListSinhVienNoGroup(@Param("req") CnFindSinhVienNoGroupRequest req, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = """
             SELECT a.id FROM sinh_vien a WHERE (SELECT b.nhom_mon_datn_id FROM mon_datn b WHERE b.id = :monDatnId)

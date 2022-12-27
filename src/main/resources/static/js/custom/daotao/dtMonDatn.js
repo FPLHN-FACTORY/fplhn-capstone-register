@@ -5,13 +5,22 @@ $(document).ready(function () {
     $("#mon_datn_error").text("");
 });
 
+$(document).ready(function () {
+    $('[data-toggle = "tooltip"]').tooltip();
+    $("#targetLink").text(monDatnView);
+});
+
 function openModalCreate() {
+    $("#maMon").val("");
+    $("#tenMonDatn").val("");
+    $("#ma_mon_datn_error").text("");
+    $("#ten_mon_datn_error").text("");
     $("#modal_create").modal('show');
 }
 
 function create() {
-    let maMon = $("#maMon").val();
-    let tenMonDatn = $("#tenMonDatn").val();
+    let maMon = $("#maMon").val().trim();
+    let tenMonDatn = $("#tenMonDatn").val().trim();
     let chuyenNganhId = $("#chuyenNganh").val();
     let nhomMonId = $("#tenNhomMonDatn").val();
     let monDatnRequest = {};
@@ -50,7 +59,7 @@ function create() {
                 });
             },
             error: function (e) {
-                if (e.responseJSON.message != null) {
+                if (e.responseJSON.message == 'Ma mon da ton tai') {
                     $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
                 }
             }
@@ -72,6 +81,14 @@ function openModalUpdateMonDatn(monDatnId) {
             $("#id_mon_datn_update").val(responseData.data.id);
             $("#ma_mon_datn_update").val(responseData.data.maMon);
             $("#ten_mon_datn_update").val(responseData.data.tenMonDatn);
+            $("#chuyen_nganh_update").val(responseData.data.chuyenNganhId);
+            // getNhomMon(responseData.data.chuyenNganhId, 2);
+            if (responseData.data.nhomMonDatnId == monDatnId) {
+                getNhomMon(responseData.data.chuyenNganhId, 2, 1);
+            } else {
+                getNhomMon(responseData.data.chuyenNganhId, 2, responseData.data.nhomMonDatnId);
+                $("#ten_nhom_mon_datn_update").val(responseData.data.nhomMonDatnId);
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -80,13 +97,16 @@ function openModalUpdateMonDatn(monDatnId) {
 }
 
 function update() {
-    event.preventDefault();
-    let maMon = $("#ma_mon_datn_update").val();
-    let tenMonDatn = $("#ten_mon_datn_update").val();
+    let maMon = $("#ma_mon_datn_update").val().trim();
+    let tenMonDatn = $("#ten_mon_datn_update").val().trim();
     let monDatnId = $("#id_mon_datn_update").val();
+    let chuyenNganh = $("#chuyen_nganh_update").val();
+    let nhomMon = $("#ten_nhom_mon_datn_update").val();
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
+    monDatnRequest["chuyenNganhId"] = chuyenNganh;
+    monDatnRequest["nhomMonDatnId"] = nhomMon;
     let index = 0;
     if (maMon.trim().length === 0) {
         $("#errorMaMonUpdate").text("Mã môn không được để trống");
@@ -127,7 +147,6 @@ function update() {
 };
 
 function openModalRemoveMonDatn(monDatnId) {
-    $("#remove_mon_datn").text("");
     bootbox.confirm({
         title: "Xóa",
         message: "Bạn chắc chắn xóa không?",
@@ -160,7 +179,7 @@ function openModalRemoveMonDatn(monDatnId) {
                     error: function (e) {
                         if (e.responseJSON.message != null) {
                             bootbox.alert({
-                                message: '<div style="color: red">Môn đang tồn tại trong đợt đăng ký không thể xóa</div>',
+                                message: '<div style="color: red">Môn đang có phân công, sinh viên. Không thể xóa</div>',
                                 backdrop: true,
                             });
                         }
@@ -171,13 +190,14 @@ function openModalRemoveMonDatn(monDatnId) {
     });
 }
 
-function clearModal() {
-    $("#ma_mon_datn_error").text("");
-    $("#ten_mon_datn_error").text("");
+function openImport() {
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile04").val('');
+    $("#errImport").text('');
+    $("#import_excel").modal("show")
 }
 
 function importExcel () {
-    event.preventDefault();
     const newFile = $("#inputGroupFile04").val();
 
     if(newFile.trim().length === 0) {
@@ -210,7 +230,7 @@ function importExcel () {
                         message: "<strong>Import thành công</strong>",
                         backdrop: true,
                         callback: function () {
-                            reload();
+                            window.open(monDatnView, '_self');
                         }
                     });
                 } else {
@@ -219,7 +239,7 @@ function importExcel () {
                         message: '<strong>'+ response.data.message +'</strong>',
                         backdrop: true,
                         callback: function () {
-                            reload();
+                            window.open(monDatnView, '_self');
                         }
                     });
                 }
@@ -230,6 +250,35 @@ function importExcel () {
     );
 };
 
-function reload() {
-    window.open('/dao-tao/mon-datn', '_self');
+function getNhomMon(chuyenNganhId, type, nhomMonHienTai) {
+    $.ajax({
+        type: "GET",
+        url: monDatnApi + "/get-nhom-mon?chuyenNganhId=" + chuyenNganhId,
+        success: function (data) {
+            var text = `<option value="" selected>Môn độc lập</option>`;
+            data.data.map(function (item) {
+                if (nhomMonHienTai == item.id && nhomMonHienTai != null) {
+                    text += `<option value="${item.id}" selected>${item.tenMonDatn}</option>`
+                } else {
+                    text += `<option value="${item.id}" >${item.tenMonDatn}</option>`
+                }
+            })
+            if (type == 1) {
+                $('#tenNhomMonDatn').html(text);
+            }
+            if (type == 2) {
+                $('#ten_nhom_mon_datn_update').html(text);
+            }
+        }
+    })
 }
+
+$('#chuyenNganh').change(function () {
+    var chuyenNganhId = $(this).val();
+    getNhomMon(chuyenNganhId, 1, null);
+})
+
+$('#chuyen_nganh_update').change(function () {
+    var chuyenNganhId = $(this).val();
+    getNhomMon(chuyenNganhId, 2, null);
+})

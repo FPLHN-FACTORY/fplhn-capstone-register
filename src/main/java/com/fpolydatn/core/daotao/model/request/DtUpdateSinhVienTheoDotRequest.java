@@ -1,12 +1,14 @@
 package com.fpolydatn.core.daotao.model.request;
 
-import com.fpolydatn.core.common.base.PageableRequest;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
+/**
+ * @author hungpv
+ */
 @Getter
-public class FindSinhVienRequest extends PageableRequest {
+@Setter
+public class DtUpdateSinhVienTheoDotRequest extends DtBaseSinhVienTheoDotRequest{
 
     private String id;
 

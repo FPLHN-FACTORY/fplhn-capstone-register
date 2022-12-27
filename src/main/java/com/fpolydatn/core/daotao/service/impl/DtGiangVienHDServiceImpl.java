@@ -1,12 +1,14 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtGiangVienFileImportExcel;
 import com.fpolydatn.core.daotao.excel.DtGiangVienHuongDanExport;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtGiagVienHDImportResquest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
 import com.fpolydatn.core.daotao.repository.DtGiangVienHDRepository;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtPhanCongHuongDanRepository;
@@ -14,15 +16,11 @@ import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
+import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
-import com.github.pjfanning.xlsx.StreamingReader;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,11 +39,12 @@ import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 
 /**
  * @author Vinhnv
@@ -65,19 +64,22 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     private HashMap<String, String> map;
 
+    @Autowired
+    private CommonHelper commonHelper;
+
     private FormUtils formUtils = new FormUtils();
 
     @Override
     public GiangVienHuongDan create(@Valid DtCreateGiangVienHDRequest command) {
-        String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim());
+        String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim(), command.getCoSoId());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
-        String idByEmailFe = dtGiangVienHDRepository.getIdByEmailFe(command.getEmailFe());
+        String idByEmailFe = dtGiangVienHDRepository.getIdByEmailFe(command.getEmailFe(), command.getCoSoId());
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan());
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan(), command.getCoSoId());
         if (idByTenGiangVien != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
@@ -106,15 +108,15 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
 
-        String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId());
+        String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId(), command.getCoSoId());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
-        String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId());
+        String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId(), command.getCoSoId());
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId());
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId(), command.getCoSoId());
         if (idByTenGiangVien != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
@@ -139,105 +141,43 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public long getSizeListHocKy(String tenGiangVien) {
-        return dtGiangVienHDRepository.countByName(tenGiangVien);
+    public long getSizeListHocKy(String tenGiangVien, String coSoId) {
+        return dtGiangVienHDRepository.countByName(tenGiangVien, coSoId);
     }
 
     @Override
     public PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest request) {
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (request.getDotDangKyId() == null) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
+        } else if (request.getDotDangKyId().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
+        }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<DtGiangVienHDResponse> res = dtGiangVienHDRepository.findByName(request, pageable);
         return new PageableObject<>(res);
     }
 
     @Override
-    public List<DtGiagVienHDImportResquest> importExcel(MultipartFile file, String idCoSo, String idDotDangKy) throws IOException {
-        List<DtGiagVienHDImportResquest> list = new ArrayList<>();
-        try {
-            Workbook workbook = StreamingReader.builder()
-                    .bufferSize(4096)
-                    .rowCacheSize(50)
-                    .open(file.getInputStream());
-            int rowNumber = 0;
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> iterator = sheet.iterator();
-
-            while (iterator.hasNext()) {
-                Row row = iterator.next();
-
-                if (rowNumber == 0) {
-                    rowNumber++;
-                    continue;
-                }
-                Iterator<Cell> cells = row.iterator();
-                map = new HashMap<>();
-                addDataInMap(map, idCoSo);
-                int cid = 0;
-                DtGiagVienHDImportResquest gvhd = new DtGiagVienHDImportResquest();
-                while (cells.hasNext()) {
-                    Cell cell = cells.next();
-                    switch (cid) {
-                        case 1:
-                            gvhd.setCoSoId(idCoSo);
-                            gvhd.setDotDangKyId(idDotDangKy);
-                            String tenGV = cell.getStringCellValue().trim();
-                            gvhd.setTenGvhd(tenGV);
-                            break;
-                        case 2:
-                            String tenTaiKhoan = cell.getStringCellValue().trim();
-                            gvhd.setTenTaiKhoan(tenTaiKhoan);
-                            break;
-                        case 3:
-                            String monHoc = cell.getStringCellValue().trim();
-                            gvhd.setMonHoc(monHoc);
-                            break;
-                        case 4:
-                            double soNhom = cell.getNumericCellValue();
-                            gvhd.setSoNhomHuongDanToiDa((short) soNhom);
-                            break;
-                        case 5:
-                            String sdt = cell.getStringCellValue().trim();
-                            gvhd.setSoDienThoai(sdt);
-                            break;
-                        case 6:
-                            String emailFpt = cell.getStringCellValue().trim();
-                            gvhd.setEmailFpt(emailFpt);
-                            break;
-                        case 7:
-                            String emailFe = cell.getStringCellValue().trim();
-                            gvhd.setEmailFe(emailFe);
-                            break;
-                        default:
-                            break;
-                    }
-                    cid++;
-                }
-                list.add(gvhd);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ;
-        checkValidFile(list);
-        return list;
-    }
-
-
-    @Override
-    public List<GiangVienHuongDan> checkValidFile(List<DtGiagVienHDImportResquest> list) {
+    public List<GiangVienHuongDan> checkValidFile(List<DtGiagVienHDImportResquest> list, String coSoId) {
         List<GiangVienHuongDan> listGVHD = new ArrayList<>();
         Map<String, GiangVienHuongDan> mapGiangVien = new HashMap<>();
         if (list == null) {
             throw new RestApiException(Message.FILE_EMPTY);
         }
-        Map<String, GiangVienHuongDan> getMapGV = dtGiangVienHDRepository.findAll().stream().
-                collect(Collectors.toMap(GiangVienHuongDan::getEmailFpt, gv -> gv));
         for (DtGiagVienHDImportResquest gvhd : list) {
             GiangVienHuongDan giangVien = new GiangVienHuongDan();
             giangVien.setTenGvhd(gvhd.getTenGvhd());
-            giangVien.setSoNhomHuongDanToiDa(gvhd.getSoNhomHuongDanToiDa());
             giangVien.setTenTaiKhoan(gvhd.getTenTaiKhoan());
+            giangVien.setSoNhomHuongDanToiDa(gvhd.getSoNhomHuongDanToiDa());
             giangVien.setSoDienThoai(gvhd.getSoDienThoai());
             giangVien.setEmailFpt(gvhd.getEmailFpt());
             giangVien.setEmailFe(gvhd.getEmailFe());
@@ -254,10 +194,13 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             array = gv.getMonHoc().split(",");
             for (int i = 0; i < array.length; i++) {
                 PhanCongHuongDan phanCongHuongDan = new PhanCongHuongDan();
-                MonDatn monDatn = dtMonDatnRepository.findByMaMon(array[i].trim());
+                MonDatn monDatn = dtMonDatnRepository.findByMaMon(array[i].trim(), coSoId);
                 phanCongHuongDan.setGiangVienId(giangVienHuongDan.getId());
-                phanCongHuongDan.setMonDatnId(monDatn.getId());
-                listPhanCong.add(phanCongHuongDan);
+                if (monDatn != null) {
+                    phanCongHuongDan.setMonDatnId(monDatn.getId());
+                    listPhanCong.add(phanCongHuongDan);
+                }
+
             }
         });
         dtPhanCongHuongDanRepository.saveAll(listPhanCong);
@@ -287,20 +230,122 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=GiangVienHuongDan" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
-        List<DtGiangVienHDResponse> listMau = new ArrayList<>();
         DtGiangVienHuongDanExport dtGiangVienHuongDanExport = new DtGiangVienHuongDanExport();
         dtGiangVienHuongDanExport.exportMauImport(response);
     }
 
-    public void addDataInMap(HashMap<String, String> mapAll, String coSoId) {
-        // lấy id, monDatn tất cả đợt đăng ký theo cơ sở
-        List<SimpleEntityProj> getAllMaMon = dtMonDatnRepository.getAllMaMon(coSoId);
-        getAllPutMap(mapAll, getAllMaMon);
+    @Override
+    public DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId, String doDangKyId) {
+        DtGiangVienHDResponseMessage dtGiangVienHDResponseMessage = new DtGiangVienHDResponseMessage();
+        ConcurrentMap<String, DtGiagVienHDImportResquest> listGiangVien = new ConcurrentHashMap<>();
+        try {
+            dtGiangVienHDResponseMessage.setStatus(true);
+            DtGiangVienFileImportExcel dtGiangVienHDImport = new DtGiangVienFileImportExcel();
+            List<DtGiagVienHDImportResquest> listGVHD = dtGiangVienHDImport.importData(file);
+            ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
+            addDataInMap(map, coSoId);
+
+            listGVHD.parallelStream().forEach(gv -> {
+                if (gv.getEmailFe().isEmpty() || gv.getEmailFpt().isEmpty() ||
+                        gv.getTenTaiKhoan().isEmpty() ||
+                        gv.getSoNhomHuongDanToiDa() == null || gv.getTenGvhd().isEmpty()) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Tên, emailFE, emailFpt, Tên tài khoản, Số nhóm hướng dẫn không được để trống");
+                    return;
+                }
+
+                if (map.get(gv.getEmailFpt()) != null) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email Fpt "+ gv.getEmailFpt() +" bị trùng");
+                    return;
+                }
+
+                if (map.get(gv.getEmailFe()) != null) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email Fe "+ gv.getEmailFe() +" bị trùng");
+                    return;
+                }
+
+                if (map.get(gv.getTenTaiKhoan()) != null) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Tên tài khoản " + gv.getTenTaiKhoan() +" bị trùng");
+                    return;
+                }
+
+//                if (!gv.getEmailFpt().matches("\\w+@fpt.edu.vn")) {
+//                    dtGiangVienHDResponseMessage.setStatus(false);
+//                    dtGiangVienHDResponseMessage.setMessage("Email fpt không đúng định dạng");
+//                    return;
+//                }
+//
+//                if (!gv.getEmailFe().matches("\\w+@fe.edu.vn")) {
+//                    dtGiangVienHDResponseMessage.setStatus(false);
+//                    dtGiangVienHDResponseMessage.setMessage("Email fe không đúng định dạng");
+//                    return;
+//                }
+
+                if (gv.getEmailFpt().length() > 50) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email fpt " + gv.getEmailFpt() +" quá 50 ký tự");
+                    return;
+                }
+
+                if (gv.getEmailFe().length() > 50) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Email fe "+ gv.getEmailFe() +" quá 50 ký tự");
+                    return;
+                }
+
+//                if (!gv.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
+//                    dtGiangVienHDResponseMessage.setStatus(false);
+//                    dtGiangVienHDResponseMessage.setMessage("Số điện thoại không đúng định dạng");
+//                    return;
+//                }
+                DtGiagVienHDImportResquest giangVien = new DtGiagVienHDImportResquest();
+                giangVien.setEmailFe(gv.getEmailFe());
+                giangVien.setEmailFpt(gv.getEmailFpt());
+                giangVien.setTenTaiKhoan(gv.getTenTaiKhoan());
+                if (gv.getSoDienThoai() == null) {
+                    giangVien.setSoDienThoai("");
+                } else {
+                    giangVien.setSoDienThoai(gv.getSoDienThoai());
+                }
+                giangVien.setSoNhomHuongDanToiDa(gv.getSoNhomHuongDanToiDa());
+                giangVien.setTenGvhd(gv.getTenGvhd());
+                giangVien.setMonHoc(gv.getMonHoc());
+                giangVien.setCoSoId(coSoId);
+                giangVien.setDotDangKyId(doDangKyId);
+                map.put(gv.getTenTaiKhoan(),gv.getTenTaiKhoan());
+                map.put(gv.getEmailFpt(),gv.getTenTaiKhoan());
+                map.put(gv.getEmailFe(),gv.getTenTaiKhoan());
+                listGiangVien.put(giangVien.getEmailFpt(), giangVien);
+            });
+            if (dtGiangVienHDResponseMessage.getStatus() == true) {
+                checkValidFile(listGiangVien.values().stream().toList(), coSoId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            dtGiangVienHDResponseMessage.setStatus(false);
+            dtGiangVienHDResponseMessage.setMessage("Lỗi File Import");
+            return dtGiangVienHDResponseMessage;
+        }
+        return dtGiangVienHDResponseMessage;
     }
 
-    public void getAllPutMap(HashMap<String, String> mapSimple, List<SimpleEntityProj> getAllSimpleEntityProjs) {
-        for (SimpleEntityProj simpleEntityProj : getAllSimpleEntityProjs) {
-            mapSimple.put(simpleEntityProj.getName(), simpleEntityProj.getId());
+    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId) {
+        List<String> listEmailFe = dtGiangVienHDRepository.findAllEmailFe(coSoId);
+        setDataInMap(mapAll, listEmailFe);
+
+        List<String> listEmailFPT = dtGiangVienHDRepository.findAllEmailFpt(coSoId);
+        setDataInMap(mapAll, listEmailFPT);
+
+        List<String> listTenTaiKhoan = dtGiangVienHDRepository.findAllTenTaiKhoan(coSoId);
+        setDataInMap(mapAll, listTenTaiKhoan);
+    }
+
+    public void setDataInMap(ConcurrentHashMap<String, String> mapSimple, List<String> listStr) {
+        for (String s : listStr) {
+            mapSimple.put(s, s);
         }
     }
 

@@ -19,11 +19,11 @@ import java.util.List;
 public interface DtMonDatnService {
     PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req);
 
-    Boolean delete(final String id, String coSoId, String dotDangKyId);
+    Boolean delete(final String id, String coSoId);
 
     MonDatn findById(String id);
 
-    List<MonDatn> findByTenNhomMon();
+    List<MonDatn> getNhomMonByChuyeNganh(String coSoId, String chuyenNganhId);
 
     MonDatn update(@Valid final DtUpdateMonDatnRequest command);
 

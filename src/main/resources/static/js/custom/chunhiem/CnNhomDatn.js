@@ -5,10 +5,6 @@ let checkListCbb = 0;
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
-function submitModal() {
-    $("#modal_confirm_success").modal('hide')
-}
-
 $("#form_list_nhom_datn").submit(function (event) {
     event.preventDefault();
     loadDataNhomDatn(0);
@@ -30,9 +26,20 @@ function clearData() {
 function CNChotDuLieu(id, count) {
     flag = 0;
     checkListCbb = 1;
-    bootbox.confirm("Bạn có chắc muốn chốt đề tài không ?", function (item) {
-        if (item) {
-            chotDeTai(id, count)
+    bootbox.confirm({
+        message: "Bạn có chắc muốn chốt đề tài không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            }, confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (item) {
+            if (item) {
+                chotDeTai(id, count)
+            }
         }
     })
 }
@@ -44,14 +51,21 @@ function chotDeTai(id, count) {
         url: CNNhomDatnApi + "/chot-de-tai/" + id + "?page=" + count,
         dataType: 'json',
         success: function () {
-            // ++flag;
-            // if (flag == checkListCbb) {
-            //     toastr.success('Chốt thành công');
-            // }
+            ++flag;
+            if (flag == checkListCbb) {
+                // toastr.success('Chốt thành công');
+                bootbox.alert('Chốt thành công')
+            }
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            alert(e.responseJSON.message);
+            bootbox.alert({
+                message: e.responseJSON.message + '',
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
     });
@@ -60,9 +74,20 @@ function chotDeTai(id, count) {
 function CNXacNhanNhom(id, count) {
     flag = 0;
     checkListCbb = 1;
-    bootbox.confirm("Bạn có chắc muốn xác nhận không ?", function (item) {
-        if (item) {
-            xacNhanNhom(id, count)
+    bootbox.confirm({
+        message: "Bạn có chắc muốn xác nhận không?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            }, confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (item) {
+            if (item) {
+                xacNhanNhom(id, count)
+            }
         }
     })
 }
@@ -74,41 +99,25 @@ function xacNhanNhom(id, count) {
         url: CNNhomDatnApi + "/xac-nhan-nhom/" + id + "?page=" + count,
         dataType: 'json',
         success: function () {
-            // ++flag;
-            // if (flag == checkListCbb) {
-            //     toastr.success('Xác nhận thành công');
-            // }
+            ++flag;
+            if (flag == checkListCbb) {
+                // toastr.success('Xác nhận thành công');
+                bootbox.alert('Xác nhận thành công')
+            }
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            alert(e.responseJSON.message);
+            bootbox.alert({
+                message: e.responseJSON.message + '',
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
     });
 }
-
-$('#nhom_mon_datn_create').change(function (event) {
-    event.preventDefault();
-    let nhomMonId = $('#nhom_mon_datn_create').val();
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: CNNhomDatnApi + "/list-mon-datn" + "?nhomMonId=" + nhomMonId,
-        data: JSON.stringify(nhomMonId),
-        dataType: 'json',
-        success: function (responseData) {
-            let array = responseData.data
-            var text = "<option value='' hidden selected>Chọn môn dự án tốt nghiệp</option>"
-            array.map(function (item) {
-                text += `<option value="${item.id}" >${item.tenMonDatn}</option>`
-            })
-            $('#mon_datn_create').html(text)
-        },
-        error: function (e) {
-        }
-    });
-})
 
 $("#mon_datn_create").change(function (event) {
     event.preventDefault();
@@ -133,23 +142,49 @@ $("#mon_datn_create").change(function (event) {
     });
 })
 
-function openModalRemoveNhomDatn(id, count) {
-    $("#modal_nhom_datn_remove").modal('show');
-    $("#currentPaging").val(count)
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: CNNhomDatnApi + "/" + id,
-        data: JSON.stringify(id),
-        dataType: 'json',
-        success: function () {
-            $("#remove_nhom_datn").val(id);
+function openModalRemoveNhomDatn(nhomDatnId, count) {
+    bootbox.confirm({
+        title: "Xóa nhóm dự án tốt nghiệp",
+        message: "Bạn muốn xóa nhóm này không?",
+        backdrop: true,
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function (e) {
-            $("#messageSuccess").text(e.responseJSON.message)
-            $("#modal_confirm_success").modal('show')
-            return;
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: CNNhomDatnApi + "/" + nhomDatnId,
+                    data: JSON.stringify(nhomDatnId),
+                    dataType: 'json',
+                    success: function () {
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                loadDataNhomDatn(0);
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        bootbox.alert({
+                            message: e.responseJSON.message,
+                            backdrop: true,
+                            callback: function () {
+                                loadDataNhomDatn(0);
+                            }
+                        });
+                        return;
+                    }
+                });
+            }
         }
     });
 }
@@ -168,15 +203,19 @@ function openModalNhanXet(id, count) {
             $("#id_nhan_xet_nhom_datn").val(id);
         },
         error: function (e) {
-            $("#messageSuccess").text(e.responseJSON.message)
-            $("#modal_confirm_success").modal('show')
+            bootbox.alert({
+                message: e.responseJSON.message,
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
     });
 }
 
-$("#form_nhom_datn_nhan_xet").submit(function (event) {
-    event.preventDefault();
+function tuChoi() {
     let nhomDatnId = $("#id_nhan_xet_nhom_datn").val();
     let nhanXet = $("#nhan_xet").val()
     let currentPaging = $("#currentPaging").val();
@@ -193,35 +232,17 @@ $("#form_nhom_datn_nhan_xet").submit(function (event) {
         },
         error: function (e) {
             $("#modal_nhom_datn_nhan_xet").modal("hide");
-            $("#messageSuccess").text(e.responseJSON.message)
-            $("#modal_confirm_success").modal('show')
+            bootbox.alert({
+                message: e.responseJSON.message,
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
     });
-});
-
-$("#form_nhom_datn_delete").submit(function (event) {
-    event.preventDefault();
-    let nhomDatnId = $("#remove_nhom_datn").val();
-    let currentPaging = $("#currentPaging").val();
-
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: CNNhomDatnApi + "/" + nhomDatnId,
-        data: JSON.stringify(nhomDatnId),
-        dataType: 'json',
-        success: function () {
-            loadDataNhomDatn(currentPaging)
-            $("#modal_nhom_datn_remove").modal("hide");
-        },
-        error: function (e) {
-            $("#messageSuccess").text(e.responseJSON.message)
-            $("#modal_confirm_success").modal('show')
-            return;
-        }
-    });
-});
+}
 
 document.querySelector("#checkbox_father").addEventListener("change", function (e) {
     e.preventDefault()
@@ -266,7 +287,13 @@ function chotNhieuDeTai(count) {
     }
 
     if (checkListCbb == 0) {
-        alert("Chọn nhóm muốn chốt đề tài")
+        bootbox.alert({
+            message: 'Chọn nhóm muốn chốt đề tài',
+            backdrop: true,
+            callback: function () {
+                loadDataNhomDatn(0);
+            }
+        });
     } else {
 
         for (let i = 0; i < list_checkbox_son.length; i++) {
@@ -276,25 +303,44 @@ function chotNhieuDeTai(count) {
         }
 
         if (countTrangThai != checkListCbb) {
-            alert("Trạng thái của nhóm không thỏa mãn để thực hiện chức năng chốt")
+            bootbox.alert({
+                message: 'Trạng thái của nhóm không thỏa mãn để thực hiện chức năng chốt',
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
-
-        bootbox.confirm("Bạn có chắc muốn chốt đề tài những nhóm được chọn không ?", function (item) {
-            if (item) {
-                for (var xx of list_checkbox_son) {
-                    if (xx.checked) {
-                        if (currentPage == -1) {
-                            chotDeTai(xx.value, count);
-                        } else {
-                            chotDeTai(xx.value, currentPage);
+        bootbox.confirm({
+            title: "Chốt đề tài nhiều nhóm",
+            message: "Bạn có chắc muốn chốt đề tài những nhóm được chọn không?",
+            backdrop: true,
+            buttons: {
+                cancel: {
+                    className: 'btn-outline-secondary btn btn-light',
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    for (var xx of list_checkbox_son) {
+                        if (xx.checked) {
+                            if (currentPage == -1) {
+                                chotDeTai(xx.value, count);
+                            } else {
+                                chotDeTai(xx.value, currentPage);
+                            }
                         }
                     }
+                    var checkboxFather = document.querySelector("#checkbox_father")
+                    checkboxFather.checked = false;
                 }
-                var checkboxFather = document.querySelector("#checkbox_father")
-                checkboxFather.checked = false;
             }
-        })
+        });
     }
 }
 
@@ -312,7 +358,13 @@ function xacNhanNhieuNhom(count) {
     }
 
     if (checkListCbb == 0) {
-        alert("Chọn nhóm muốn xác nhận")
+        bootbox.alert({
+            message: 'Chọn nhóm muốn xác nhận',
+            backdrop: true,
+            callback: function () {
+                loadDataNhomDatn(0);
+            }
+        });
     } else {
 
         for (let i = 0; i < list_checkbox_son.length; i++) {
@@ -322,40 +374,58 @@ function xacNhanNhieuNhom(count) {
         }
 
         if (countTrangThai != checkListCbb) {
-            alert("Trạng thái của nhóm không thỏa mãn để thực hiện chức năng xác nhận")
+            bootbox.alert({
+                message: 'Trạng thái của nhóm không thỏa mãn để thực hiện chức năng xác nhận',
+                backdrop: true,
+                callback: function () {
+                    loadDataNhomDatn(0);
+                }
+            });
             return;
         }
-
-        bootbox.confirm("Bạn có chắc muốn xác nhận những nhóm được chọn không ?", function (item) {
-            if (item) {
-                for (var xx of list_checkbox_son) {
-                    if (xx.checked) {
-                        if (currentPage == -1) {
-                            xacNhanNhom(xx.value, count);
-                        } else {
-                            xacNhanNhom(xx.value, currentPage);
+        bootbox.confirm({
+            title: "Xác nhận nhiều nhóm",
+            message: "Bạn có chắc muốn xác nhận những nhóm được chọn không?",
+            backdrop: true,
+            buttons: {
+                cancel: {
+                    className: 'btn-outline-secondary btn btn-light',
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    for (var xx of list_checkbox_son) {
+                        if (xx.checked) {
+                            if (currentPage == -1) {
+                                xacNhanNhom(xx.value, count);
+                            } else {
+                                xacNhanNhom(xx.value, currentPage);
+                            }
                         }
                     }
+                    var checkboxFather = document.querySelector("#checkbox_father")
+                    checkboxFather.checked = false;
                 }
-                var checkboxFather = document.querySelector("#checkbox_father")
-                checkboxFather.checked = false;
             }
-        })
+        });
     }
 }
 
 function clearForm() {
     $("#matKhau").val("");
-    $("#maGiangVien").val("");
-    $("#maTruongNhom").val("");
+    $("#gvhd_create").val("");
+    $("#tags").val("");
 }
 
 function openModalCreate() {
     $("#modal_create").modal('show')
 }
 
-$("#form_create_nhom_datn").submit(function (event) {
-    event.preventDefault();
+function create() {
 
     let matKhau = $("#matKhau").val().trim();
     let monDatn = $("#mon_datn_create").val();
@@ -384,17 +454,29 @@ $("#form_create_nhom_datn").submit(function (event) {
             data: JSON.stringify(nhomDatnRequest),
             dataType: 'json',
             success: function () {
-                loadDataNhomDatn(0)
+                clearForm()
                 $("#modal_create").modal("hide");
+                bootbox.alert({
+                    message: 'Thêm thành công',
+                    backdrop: true,
+                    callback: function () {
+                        loadDataNhomDatn(0);
+                    }
+                });
             },
             error: function (e) {
                 $("#modal_create").modal("hide");
-                $("#messageSuccess").text(e.responseJSON.message)
-                $("#modal_confirm_success").modal('show')
+                bootbox.alert({
+                    message: e.responseJSON.message,
+                    backdrop: true,
+                    callback: function () {
+                        loadDataNhomDatn(0);
+                    }
+                });
             }
         });
     }
-});
+}
 
 function searchSinhVienNoGroup() {
     let text = $("#tags").val();
@@ -410,23 +492,27 @@ function searchSinhVienNoGroup() {
             });
         },
         error: function (e) {
-            console.log("ERROR : ", e);
         }
     });
 }
 
 function openModalExport() {
+    $("#type_excel_error").text("");
     $("#modal_excel").modal('show')
 }
 
 function openModalImport() {
+    $("#import_excel_error").text("");
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile01").val('');
     $("#modal_import_excel").modal('show')
 }
 
 function exportFile() {
+    $("#type_excel_error").text("");
     let typeExcel = $("#type_excel").val()
     if (typeExcel == '') {
-        $("#type_excel_error").text("chọn định dạng file download");
+        $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -437,17 +523,17 @@ function exportFile() {
                 $("#modal_excel").modal('hide')
             },
             error: function (e) {
-                console.log("ERROR : ", e);
             }
         });
     }
 }
 
 function importExcel() {
+
     var form = $('#form_import_excel')[0];
     let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    let fileName = typeExcel.split(".");
+    let typeFile = fileName[fileName.length - 1];
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("Hãy chọn file excel cần import");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
@@ -461,17 +547,25 @@ function importExcel() {
                 cache: false,
                 success: function (response) {
                     if (response.data.status == true) {
-                        $("#messNotification").text("Import file excel thành công");
-                        loadDataNhomDatn(0);
+                        bootbox.alert({
+                            message: 'Import file excel thành công',
+                            backdrop: true,
+                            callback: function () {
+                                loadDataNhomDatn(0);
+                            }
+                        });
                     } else {
-                        $("#messNotification").text(response.data.message);
+                        bootbox.alert({
+                            message: response.data.message,
+                            backdrop: true,
+                            callback: function () {
+                                loadDataNhomDatn(0);
+                            }
+                        });
                     }
                     $('#modal_import_excel').modal("hide");
-                    $("#modal_notification").modal("show");
-                    loadDataNhomDatn(0)
                 },
                 error: function (e) {
-                    console.log("ERROR : ", e);
                 }
             }
         );
@@ -484,13 +578,28 @@ function reload() {
     window.open('/chu-nhiem/nhom-datn', '_self');
 }
 
-genPagingAndFillColor()
+// genPagingAndFillColor()
+//
+// function genPagingAndFillColor() {
+//     genPagzing();
+//     let colorPage = document.querySelectorAll("#pageColor");
+//     colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+//     colorPage[currentPage].style.color = 'white';
+// }
 
-function genPagingAndFillColor() {
-    genPagzing();
-    let colorPage = document.querySelectorAll("#pageColor");
-    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
-    colorPage[currentPage].style.color = 'white';
+genPagzing()
+
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadDataNhomDatn(value - 1);
+    }
 }
 
 function genPagzing() {
@@ -498,18 +607,16 @@ function genPagzing() {
     let templatePageMid = ``;
     let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage - 1)">Back</a>
+                     <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage - 1})"><img src="/img/back.svg"></a>
                 </li>
                 `;
-    for (let i = 0; i < totalPages; i++) {
-        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
-                                        <a class="page-link" id="pageColor" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
-                                    </li>`
-    }
+    templatePageMid = `
+                            <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
+                             <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
     let templatePageAfter = `
-                <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(Number(currentPage) + 1)">Next</a>
-                </li>
+                              <li style="color: #0a8cf0" class="page-item">
+                                   <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage + 1})"><img src="/img/next.svg"></a>
+                              </li><li style="color: #0a8cf0" class="page-item">
                 `;
     let templateHtml = ``;
     templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
@@ -591,11 +698,10 @@ function loadDataNhomDatn(count) {
                 `
                 }))
                 $('[data-toggle = "tooltip"]').tooltip()
-                genPagingAndFillColor()
+                genPagzing()
             }
         },
         error: function (e) {
-            console.log("ERROR : ", e);
         }
     });
 }

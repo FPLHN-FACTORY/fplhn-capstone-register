@@ -18,29 +18,32 @@ import java.util.List;
 public interface DtMonDatnRepository extends MonDatnRepository {
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, cn.ten_chuyen_nganh,
-             (SELECT CONCAT(b.ten_mon_datn, ' - ', b.ma_mon) FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon, cb.ten_tai_khoan 
-                FROM do_an_tot_nghiep.chuyen_nganh cn 
-                JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
-                JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
-                WHERE m.co_so_id = :#{#req.coSoId} AND
-                    ( :#{#req.tenMonDatn} IS NULL 
-                        OR :#{#req.tenMonDatn} LIKE '' 
-                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) AND nhom_mon_datn_id IS NOT NULL
+             (SELECT CONCAT(b.ten_mon_datn, ' - ', b.ma_mon) FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon
+                FROM  mon_datn m
+                LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id 
+                WHERE m.co_so_id = :#{#req.coSoId} AND nhom_mon_datn_id IS NOT NULL
                 ORDER BY m.last_modified_date DESC 
             """, countQuery = """
             SELECT COUNT(m.id)
-                FROM do_an_tot_nghiep.chuyen_nganh cn 
-                JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id 
-                JOIN mon_datn m ON m.chuyen_nganh_id = cn.id 
-                WHERE m.co_so_id = :#{#req.coSoId} AND
-                    ( :#{#req.tenMonDatn} IS NULL 
-                        OR :#{#req.tenMonDatn} LIKE '' 
-                        OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) AND nhom_mon_datn_id IS NOT NULL
+                FROM  mon_datn m
+                LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id 
+                WHERE m.co_so_id = :#{#req.coSoId} AND nhom_mon_datn_id IS NOT NULL
                 ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
-    Page<DtMonDatnResponse> findByName(@Param("req") DtFindMonDatnRequest req, Pageable page);
+    Page<DtMonDatnResponse> getAllByCoSo(@Param("req") DtFindMonDatnRequest req, Pageable page);
 
-    MonDatn findByMaMon(String maMon);
+    @Query(value = """
+            SELECT m.id, 
+                m.created_date, 
+                m.last_modified_date, 
+                m.co_so_id, 
+                m.chuyen_nganh_id, 
+                m.ma_mon, 
+                m.nhom_mon_datn_id, 
+                m.ten_mon_datn
+                FROM mon_datn m WHERE m.ma_mon = :maMon AND m.co_so_id = :coSoId
+            """, nativeQuery = true)
+    MonDatn findByMaMon(@Param("maMon") String maMon, @Param("coSoId") String coSoId);
 
     @Query(value = """
                 SELECT 
@@ -50,13 +53,6 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                  WHERE m.co_so_id = :coSoId
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaMon(@Param("coSoId") String coSoId);
-
-    @Query(value = """
-                SELECT id 
-                FROM mon_datn
-                WHERE ma_mon = :maMon AND id <> :id AND co_so_id = :coSoId
-            """, nativeQuery = true)
-    String findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id, @Param("coSoId") String coSoId);
 
     @Query(value = """ 
                 SELECT m.id, 
@@ -68,27 +64,23 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 m.nhom_mon_datn_id, 
                 m.ten_mon_datn
                 FROM mon_datn m 
-                WHERE nhom_mon_datn_id IS NULL
+                WHERE nhom_mon_datn_id IS NULL AND co_so_id = :coSoId AND chuyen_nganh_id = :chuyeNganhId
             """, nativeQuery = true)
-    List<MonDatn> findByTenNhomMon();
+    List<MonDatn> getNhomMonDatnByCoSo(@Param("coSoId") String coSoId, @Param("chuyeNganhId") String chuyeNganhId);
 
     @Query(value = """
-                SELECT m.id,
-                m.created_date, 
-                m.last_modified_date, 
-                m.co_so_id, 
-                m.chuyen_nganh_id, 
-                m.ma_mon, 
-                m.nhom_mon_datn_id, 
-                m.ten_mon_datn
-                FROM mon_datn m 
-                LEFT JOIN sinh_vien s ON m.id = s.mon_datn_id 
-                RIGHT JOIN phan_cong_huong_dan p ON m.id = p.mon_datn_id  
-                WHERE m.id = :id 
-                AND m.co_so_id = :coSoId 
-                AND s.dot_dang_ky_id = :dotDangKyId                                                        
+                SELECT COUNT(giang_vien_id)
+                FROM phan_cong_huong_dan
+                WHERE mon_datn_id = :id                                                       
             """, nativeQuery = true)
-    List<MonDatn> findByIdMon(@Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
+    Integer countInPhanCongHuongDan(@Param("id") String id);
+
+    @Query(value = """
+                SELECT COUNT(id)
+                FROM sinh_vien
+                WHERE mon_datn_id = :id AND co_so_id = :coSoId                                                
+            """, nativeQuery = true)
+    Integer countInSinhVien(@Param("id") String id, @Param("coSoId") String coSoId);
 
     @Query(value = """
             SELECT m.id, 
@@ -116,6 +108,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 m.ten_mon_datn
                 FROM mon_datn m 
                 WHERE m.co_so_id = :coSoId 
+                AND m.nhom_mon_datn_id IS NOT NULL 
             """, nativeQuery = true)
     List<MonDatn> getListMonDatnByIdCoSo(@Param("coSoId") String coSoId);
 }

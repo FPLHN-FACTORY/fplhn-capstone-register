@@ -3,25 +3,21 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Xem chi tiết nhóm DATN | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
-    <link href="http://harvesthq.github.io/chosen/chosen.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <link th:href="@{/assets/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link href="https://harvesthq.github.io/chosen/chosen.css" rel="stylesheet"/>
+    <link th:href="@{/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
     <style>
         .ui-autocomplete {
             z-index: 2147483647;
         }
     </style>
-    <script src="../../static/js/custom/chunhiem/CnSinhVienTheoNhom.js"></script>
-    <script src="../../static/js/custom/chunhiem/CnNhomDatn.js"></script>
-    <script src="../../static/js/custom/chunhiem/CnSinhVienTheoDot.js"></script>
 </head>
 <!-- end::Head -->
 
@@ -55,39 +51,23 @@
                                     <div class="row">
                                         <div class="d-inline"
                                         >
-                                            <button
-                                                    data-toggle="modal"
-                                                    data-target="#modal_create"
-                                                    class=" btn btn-success">
+                                            <button type="button" th:attr="onclick=|openModalThemSinhVien()|"
+                                                     class=" btn btn-success">
                                                 Thêm thành viên
                                             </button>
                                             <!--                                            them giao vien huong dan -->
-
-                                            <a>
-                                                <button
-                                                        data-toggle="modal"
-                                                        onclick="openModalChangeGvhd()"
+                                                <button type="button" th:attr="onclick=|openModalChangeGvhd()|"
                                                         class=" btn btn-success">
-                                                    Thay đổi giảng viên hướng dẫn
+                                                    Thay đổi GVHD
                                                 </button>
-                                            </a>
                                             <!--                                            thay đổi trưởng nhóm-->
-                                            <a>
-                                                <button
+                                                <button type="button" th:attr="onclick=|openModalChangeCaptain()|"
                                                         id="changeCaptain"
-                                                        data-toggle="modal"
-                                                        onclick="openModalChangeCaptain()"
                                                         class=" btn btn-success">
                                                     Thay đổi trưởng nhóm
                                                 </button>
-                                            </a>
-
-                                            <a href="/chu-nhiem/nhom-datn">
-                                                <button
-                                                        class="btn btn-success">
-
-                                                    Trở lại
-                                                </button>
+                                            <a href="/chu-nhiem/nhom-datn" class="btn btn-success">
+                                                Trở lại
                                             </a>
 
                                             <div class="modal fade "
@@ -102,12 +82,14 @@
                                                                 <h5 class="modal-title" id="exampleModalLabel">Thêm
                                                                     thành viên
                                                                 </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close"
+                                                                        data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                                 <input hidden th:value="${idNhom}" id="idNhom">
-                                                                <input hidden th:value="${soThanhVien}" id="soThanhVien">
+                                                                <input hidden th:value="${soThanhVien}"
+                                                                       id="soThanhVien">
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
@@ -124,10 +106,13 @@
                                                                 </div>
                                                                 <span id="idStudentError" style="color:red;"></span>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Hủy
+                                                                    <button type="button"
+                                                                            class="btn btn-outline-secondary btn btn-light"
+                                                                            data-bs-dismiss="modal">Hủy
                                                                     </button>
-                                                                    <button type="submit" class="btn btn-primary">Thêm
+                                                                    <button type="button"
+                                                                            th:attr="onclick=|themSinhVien()|"
+                                                                            class="btn btn-primary">Thêm
                                                                         thành viên
                                                                     </button>
                                                                 </div>
@@ -141,20 +126,21 @@
                                     <div class="table-responsive mt-3">
                                         <div th:unless="${page.data.isEmpty()}">
                                             <table id="custom-table"
+                                                   style="text-align: center"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
-                                                <thead>
-                                                <th width="50px">STT</th>
-                                                <th >Mã số sinh viên</th>
-                                                <th>Họ tên</th>
+                                                <thead class="table-primary">
+                                                <th width="30px">STT</th>
+                                                <th width="80px">MSSV</th>
+                                                <th width="200px">Họ tên</th>
                                                 <th>Môn chương trình</th>
                                                 <th>Môn đăng ký</th>
-                                                <th width="70px">Tên nhóm</th>
-                                                <th width="200px">Giáo viên hướng dẫn</th>
-                                                <th>Chức năng</th>
+                                                <th width="120px">Tên nhóm</th>
+                                                <th width="200px">GVHD</th>
+                                                <th width="80px">Chức năng</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
-                                                    <tr>
+                                                    <tr class="table-light">
                                                         <td th:text="${sinhVienResponse.getStt()}"></td>
                                                         <td th:text="${sinhVienResponse.maSinhVien}"></td>
                                                         <td th:text="${sinhVienResponse.tenSinhVien}"></td>
@@ -167,30 +153,17 @@
                                                         </td>
                                                         <td>
                                                             <button
-                                                                    type="button"
-                                                                    class="btn btn-danger"
-                                                                    data-toggle="modal"
+                                                                    type="button" data-toggle="tooltip"
+                                                                    title="Kích thành viên"
+                                                                    class="btn_person_off"
                                                                     th:attr="onclick=|openModalRemoveNhom('${sinhVienResponse.maSinhVien}')|">
-                                                                <img th:src="@{/img/trash.svg}">
+                                                                <img th:src="@{/img/person-off.svg}">
                                                             </button>
                                                         </td>
                                                     </tr>
                                                 </th:block>
                                                 </tbody>
                                             </table>
-                                            <!-- Paging-->
-                                            <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
-                                                <ul class="pagination justify-content-end">
-                                                    <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                        <li class="page-item">
-                                                            <a class="page-link"
-                                                               th:href="@{/chu-nhiem/sinh-vien?page={page.currentPage}(page.currentPage=${i}-1)}"
-                                                               th:text="${i}">
-                                                            </a>
-                                                        </li>
-                                                    </div>
-                                                </ul>
-                                            </nav>
                                         </div>
                                         <div th:if="${page.data.isEmpty()}">
                                             <h3>Không có dữ liệu</h3>
@@ -206,60 +179,6 @@
     </div>
     <!-- end:: Body -->
 </div>
-<!--  Start Modal Update-->
-<div
-        class="modal fade"
-        tabindex="-1"
-        id="modal_update_hoc_ky"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_hoc_ky_update">
-                <div class="modal-header">
-                    <h5 class="modal-title">Cập
-                        nhật học kỳ</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label
-                                class="col-form-label">ID Học Kỳ</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="id_hoc_ky_update"/>
-                    </div>
-                    <div class="form-group">
-                        <label
-                                class="col-form-label">Tên Học
-                            Kỳ</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="ten_hoc_ky_update"/>
-                        <small class="text-danger"
-                               id="errorMessageUpdate"></small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Cập
-                        nhật
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--   End Modal Update -->
-
 <!--  Start Modal change gvhd-->
 <div
         class="modal fade"
@@ -274,7 +193,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Thay đổi giảng viên hướng dẫn</h5>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
+                            data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -286,13 +205,13 @@
                                    class="form-control"
                                    id="tags" oninput="searchGvhd()">
                         </div>
-                        <span style="color: red" id="change_gvhd"></span>
+                        <span style="color: red" id="change_gvhd_error"></span>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">Hủy
+                        <button type="button" class="btn btn-outline-secondary btn btn-light"
+                                data-bs-dismiss="modal">Hủy
                         </button>
-                        <button type="submit" class="btn btn-primary">Thay đổi
+                        <button type="button" th:attr="onclick=|thayDoiGiangVien()|" class="btn btn-primary">Thay đổi
                         </button>
                     </div>
                 </div>
@@ -300,11 +219,6 @@
         </div>
     </div>
 </div>
-
-<!--  End Modal change gvhd-->
-
-
-<!--  Start Modal change Captain-->
 <div
         class="modal fade"
         id="modal_change_captain"
@@ -319,7 +233,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Thay đổi trưởng nhóm</h5>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
+                            data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -333,80 +247,6 @@
         </div>
     </div>
 </div>
-
-<!--  End Modal change captain-->
-
-<!--  Start modal change captain confirm-->
-<div
-        class="modal fade"
-        id="modal_change_captain_confirm"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <form id="form_change_captain_confirm">
-                <div class="modal-header">
-                    <h5 class="modal-title">Thay đổi trưởng nhóm</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn thay đổi trưởng nhóm không?</p>
-                    <span id="change_captain_confirm" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Không
-                    </button>
-                    <button type="submit" class="btn btn-primary">Có
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--   End Modal change captain confirm -->
-
-
-<!--  Start Modal Remove-->
-<div
-        class="modal fade"
-        id="modal_sinh_vien_theo_nhom_remove"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-lg"
-         role="document">
-        <div class="modal-content">
-            <input hidden th:value="${idCapTain}" id="idCaptain">
-            <form id="form_remove_sinh_vien_theo_nhom">
-                <div class="modal-header">
-                    <h5 class="modal-title">Kick sinh viên khỏi nhóm</h5>
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn kick không?</p>
-                    <span id="remove_sinh_vien_theo_nhom" style="color:red;"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Hủy
-                    </button>
-                    <button type="submit" class="btn btn-primary">Kick
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--   End Modal Remove -->
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -416,7 +256,9 @@
         crossorigin="anonymous"></script>
 <script th:src="@{/js/plugin/search.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script th:src="@{/js/plugin/bootbox.min.js}"></script>
+<script th:src="@{/js/plugin/bootbox.locales.min.js}"></script>
 <script th:src="@{/js/custom/chunhiem/CnSinhVienTheoNhom.js}" type="text/javascript"></script>
-<script th:src="@{/js/plugin/bootstrap.bundle.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
 </body>
 </html>

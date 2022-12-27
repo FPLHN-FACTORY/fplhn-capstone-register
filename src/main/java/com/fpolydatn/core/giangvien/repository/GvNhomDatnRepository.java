@@ -24,10 +24,11 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
                          LEFT JOIN giang_vien_huong_dan gvhd ON gvhd.id = nd.giang_vien_id
                          LEFT JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
                          LEFT JOIN hoc_ky hk ON hk.id = ddk.hoc_ky_id
-            WHERE   gvhd.id LIKE :#{#request.giangVienHDId}
-                  AND ( :#{#request.monId} IS NULL\s
-                          OR :#{#request.monId} LIKE ''\s
-                          OR mdatn.id LIKE %:#{#request.monId}% )\s
+                 WHERE   gvhd.id LIKE :#{#request.giangVienHDId}
+                 AND nd.co_so_id = :#{#request.coSoId}
+                  AND ( :#{#request.monId} IS NULL
+                          OR :#{#request.monId} LIKE ''
+                          OR mdatn.id LIKE %:#{#request.monId}% )
                   AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
                   AND nd.trang_thai BETWEEN 1 AND 5
             GROUP BY nd.id
@@ -44,9 +45,10 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
                          LEFT JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
                          LEFT JOIN hoc_ky hk ON hk.id = ddk.hoc_ky_id
             WHERE   gvhd.id LIKE :#{#request.giangVienHDId}
-                  AND ( :#{#request.monId} IS NULL\s
-                          OR :#{#request.monId} LIKE ''\s
-                          OR mdatn.id LIKE %:#{#request.monId}% )\s
+                    AND nd.co_so_id = :#{#request.coSoId}
+                  AND ( :#{#request.monId} IS NULL
+                          OR :#{#request.monId} LIKE ''
+                          OR mdatn.id LIKE %:#{#request.monId}% )
                    AND UNIX_TIMESTAMP(localtime()) * 1000 BETWEEN ddk.ngay_bat_dau AND ddk.ngay_ket_thuc 
                   AND nd.trang_thai BETWEEN 1 AND 5
             GROUP BY nd.id

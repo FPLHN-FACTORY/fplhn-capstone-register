@@ -4,6 +4,7 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,13 +53,14 @@ public final class DtCanBoRestController extends BaseController {
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
-        return new ResponseObject(canBoService.delete(id));
+        return new ResponseObject(canBoService.delete(id, session.getCoSoId()));
     }
 
     @PostMapping("/import")
-    public void importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseObject importEcel(@RequestParam("file") MultipartFile file) throws IOException {
         String coSoId = session.getCoSoId();
-        canBoService.DtCanBoImport(file, coSoId);
+        DtCanBoResponseMessage response = canBoService.DtCanBoImport(file, coSoId);
+        return new ResponseObject(response);
     }
 
     @GetMapping("/export-mau")

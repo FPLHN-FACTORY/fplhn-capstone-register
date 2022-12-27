@@ -3,10 +3,12 @@ package com.fpolydatn.core.daotao.controller;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.core.daotao.excel.DtGiangVienFileImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,7 @@ public class DtGiangVienRestController extends BaseController {
                                  @RequestBody DtUpdateGiangVienHDRequest cmd) {
         try {
             cmd.setId(id);
+            cmd.setCoSoId(session.getCoSoId());
             return new ResponseObject(giangVienHDService.update(cmd));
         } catch (Exception e) {
             return new ResponseObject(e);
@@ -75,16 +78,17 @@ public class DtGiangVienRestController extends BaseController {
     }
 
     @GetMapping("/search")
-    public ResponseObject search(final DtFindGiangVienHDRequest rep) {
-        PageableObject<DtGiangVienHDResponse> listGiangVienHD = giangVienHDService.search(rep);
+    public ResponseObject search(final DtFindGiangVienHDRequest req) {
+        req.setCoSoId(session.getCoSoId());
+        PageableObject<DtGiangVienHDResponse> listGiangVienHD = giangVienHDService.search(req);
         return new ResponseObject(listGiangVienHD);
     }
 
-    @PostMapping("/import")
-    public void importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping("/import/{dotDangKyId}")
+    public ResponseObject importEcel(@RequestParam("file") MultipartFile file, @PathVariable("dotDangKyId") String dotDangKyId) throws IOException {
         String idCoSo = session.getCoSoId();
-        String idDotDangKy = commonHelper.getDotDangKyHienTai();
-        this.giangVienHDService.importExcel(file,idCoSo,idDotDangKy);
+        DtGiangVienHDResponseMessage responseMessage = giangVienHDService.DtGiangVienHDImport(file,idCoSo,dotDangKyId.trim());
+        return new ResponseObject(responseMessage);
     }
 
     @GetMapping("/export")

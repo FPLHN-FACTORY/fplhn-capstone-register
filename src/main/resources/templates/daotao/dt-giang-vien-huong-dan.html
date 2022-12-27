@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Project Register System</title>
+    <title>Quản lý GVHD | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <link th:href="@{/assets/vendors/base/vendors.bundle.css}" rel="stylesheet" type="text/css"/>
@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
-
+    <link th:href="@{/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
 </head>
 <!-- end::Head -->
 
@@ -56,18 +56,31 @@
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Tên giảng viên</span>
-                                            <input type="text" class="form-control col-8"
+                                            <input type="text" class="form-control col-6"
                                                    name="tenGiangVien" id="tenGiangVien" value="">
+                                        </div>
+                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <label class="fillter-name col-4 text-center">Đợt đăng ký</label>
+                                            <br>
+                                            <select class="form-control col-6" id="search_dot_dang_ky">
+                                                <option value="">Chọn đợt đăng ký</option>
+                                                <option th:each="item : ${listDotDangKy}"
+                                                        th:value="${item.getId()}"
+                                                        th:text="${item.getName()}"></option>
+                                            </select>
                                         </div>
                                     </div>
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-2 col-12 text-center mt-2">
-                                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                            <button type="button"
+                                                    class="btn btn-primary" th:attr="onclick=|loadTable(0)|"
+                                            >Tìm kiếm
+                                            </button>
                                         </div>
                                         <div class="col-sm-2 col-12 text-center mt-2">
                                             <a href="#"
-                                               class="btn btn-danger text-white" onclick="clearData();">
+                                               class="btn btn-danger text-white" th:attr="onclick=|clearData()|">
                                                 Làm mới bộ lọc
                                             </a>
                                         </div>
@@ -91,9 +104,9 @@
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Export
+                                                            <h5 class="modal-title" id="exampleModalLabel1">Export
                                                                 Excel</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
                                                                     aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -111,10 +124,12 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Hủy
+                                                            <button type="button"
+                                                                    class="btn btn-outline-secondary btn btn-light"
+                                                                    data-bs-dismiss="modal">Hủy
                                                             </button>
                                                             <button class="btn btn-primary"
+                                                                    type="button"
                                                                     th:attr="onclick=|exportFile()|">Download
                                                                 excel
                                                             </button>
@@ -131,9 +146,9 @@
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Export
+                                                            <h5 class="modal-title" id="exampleModalLabel2">Export
                                                                 Excel</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
                                                                     aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -151,10 +166,12 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Hủy
+                                                            <button type="button"
+                                                                    class="btn btn-outline-secondary btn btn-light"
+                                                                    data-bs-dismiss="modal">Hủy
                                                             </button>
                                                             <button class="btn btn-primary"
+                                                                    type="button"
                                                                     th:attr="onclick=|importFileMau()|">Download
                                                                 excel
                                                             </button>
@@ -163,7 +180,7 @@
                                                 </div>
                                             </div>
 
-                                            <!--                                            import excel-->
+                                            <!--import excel-->
                                             <div class="modal fade "
                                                  id="modal_import_excel"
                                                  tabindex="-1"
@@ -176,7 +193,8 @@
                                                                 <h5 class="modal-title">
                                                                     Import file excel
                                                                 </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close"
+                                                                        data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">x</span>
                                                                 </button>
@@ -194,6 +212,7 @@
                                                                                    aria-describedby="inputGroupFileAddon01"
                                                                                    name="file">
                                                                             <label class="custom-file-label"
+                                                                                   id="labelFile"
                                                                                    for="inputGroupFile01">Choose
                                                                                 file</label>
                                                                         </div>
@@ -202,20 +221,29 @@
                                                                                     type="button"
                                                                                     id="mauImport"
                                                                                     data-dismiss="modal"
-                                                                                    data-toggle="modal"
-                                                                                    data-target="#modal_import_mau">
+                                                                                    th:attr="onclick=|openModalImportMau()|"
+                                                                            >
                                                                                 Tải mẫu
                                                                             </button>
                                                                         </div>
                                                                     </div>
+                                                                    <br>
+                                                                    <label class="col-form-label">Đợt đăng ký</label>
+                                                                    <select class="form-control" id="dot_dang_ky_import">
+                                                                        <option value="">Chọn đợt đăng ký</option>
+                                                                        <option th:each="item : ${listDotDangKy}"
+                                                                                th:value="${item.getId()}"
+                                                                                th:text="${item.getName()}"></option>
+                                                                    </select>
                                                                     <span class="text-danger"
                                                                           id="import_excel_error"></span>
                                                                 </div>
 
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Hủy
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn btn-light"
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button
                                                                         th:attr="onclick=|importExcel()|"
@@ -232,20 +260,23 @@
                                     <div class="row">
                                         <div class="col-6 d-inline">
                                             <br>
-                                            <button data-toggle="modal"
-                                                    data-target="#modal_create"
+                                            <button
+                                                    type="button"
+                                                    th:attr="onclick=|openModalAddGVHD()|"
                                                     class="btn btn-success"
-                                                    >
+                                            >
                                                 Thêm giảng viên
                                             </button>
-                                            <button class="btn btn-success"
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-success"
                                                     th:attr="onclick=|openModalExport()|"
                                             >
                                                 Export
                                             </button>
-                                            <button class="btn btn-success"
-                                                    data-toggle="modal"
-                                                    data-target="#modal_import_excel"
+                                            <button type="button"
+                                                    class="btn btn-success"
+                                                    th:attr="onclick=|openModalImport()|"
                                             >
                                                 Import
                                             </button>
@@ -258,9 +289,10 @@
                                                     <div class="modal-content">
                                                         <form id="form_create_giang_vien">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Thêm
+                                                                <h5 class="modal-title" id="exampleModalLabel3">Thêm
                                                                     giảng viên</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                <button type="button" class="close"
+                                                                        data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -269,8 +301,8 @@
                                                                 <div class="form-group">
                                                                     <label class="col-form-label">Đợt đăng ký</label>
                                                                     <br>
-                                                                    <select class="form-control col-8" id="dotDangKyId">
-                                                                        <option value="Chọn đợt đăng kí" hidden>Chọn đợt
+                                                                    <select class="form-control" id="dotDangKyId">
+                                                                        <option value="Chọn đợt đăng ký" hidden>Chọn đợt
                                                                             đăng kí
                                                                         </option>
                                                                         <option th:each="item : ${listDotDangKy}"
@@ -296,6 +328,7 @@
                                                                     <span class="text-danger" id="errorSoNhomHD"></span><br>
                                                                     <label class="col-form-label">Tên tài khoản</label>
                                                                     <input
+                                                                            maxlength="20"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="tenTaiKhoan">
@@ -303,12 +336,14 @@
                                                                           id="errorTenTaiKhoan"></span><br>
                                                                     <label class="col-form-label">Số điện thoại</label>
                                                                     <input
+                                                                            maxlength="50"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="soDienThoai">
                                                                     <span class="text-danger" id="errorSDT"></span><br>
                                                                     <label class="col-form-label">Email Fpt</label>
                                                                     <input
+                                                                            maxlength="50"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="emailFpt">
@@ -322,10 +357,15 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Hủy
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn btn-light"
+                                                                        data-bs-dismiss="modal">Hủy
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Thêm mới
+                                                                <button
+                                                                        type="button"
+                                                                        class="btn btn-primary"
+                                                                        th:attr="onclick=|addGVHD()|"
+                                                                >Thêm mới
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -336,10 +376,11 @@
                                     </div>
 
                                     <div class="table-responsive mt-3">
-                                        <div th:unless="${page.data.isEmpty()}">
+                                        <div>
                                             <table id="custom-table"
+                                                   style="text-align: center"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
-                                                <thead>
+                                                <thead class="table-primary">
                                                 <th width="50px">STT</th>
                                                 <th>Giảng viên</th>
                                                 <th>Số nhóm</th>
@@ -349,7 +390,7 @@
                                                 </thead>
                                                 <tbody id="searchListGvhd">
                                                 <th:block th:each="giangVienHD,i : ${page.data}">
-                                                    <tr>
+                                                    <tr class="table-light">
                                                         <td th:text="${giangVienHD.getSTT()}"></td>
                                                         <td th:text="${giangVienHD.getTenGvhd() +' - ' +giangVienHD.getTenTaiKhoan()}"></td>
                                                         <td th:text="${giangVienHD.getSoNhomDangHuongDan() + '/' + giangVienHD.getSoNhomHuongDanToiDa()}"></td>
@@ -388,11 +429,8 @@
                                             <!-- Paging-->
                                             <input hidden th:value="${page.totalPages}" id="totalPages">
                                             <input hidden th:value="${page.currentPage}" id="currentPage">
-                                            <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
-                                                <ul class="pagination justify-content-end" id="page">
-
-                                                </ul>
-                                            </nav>
+                                            <div id="page">
+                                            </div>
                                         </div>
                                         <div id="empty">
                                             <div th:if="${page.data.isEmpty()}">
@@ -401,139 +439,117 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- end:: Body -->
             </div>
-            <!--  Start Modal Update-->
-            <div
-                    class="modal fade"
-                    tabindex="-1"
-                    id="modal_update_giang_vien"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-lg"
-                     role="document">
-                    <div class="modal-content">
-                        <form id="form_giang_vien_update">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Cập nhật học kỳ</h5>
-                                <button type="button" class="close"
-                                        data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <span id="giangVienId" style="color:red;"></span>
-                                <span id="update_giang_vien_item" value="" style="color:red;"></span>
 
-                                <div class="form-group">
-                                    <label class="col-form-label">Đợt đăng ký</label> <br>
-                                    <select class="form-control col-8" id="dot_dang_ky_update">
-                                        <option value="" hidden>Chọn đợt đăng kí</option>
-                                        <option th:each="item : ${listDotDangKy}" th:value="${item.id}"
-                                                th:text="${item.getName()}"></option>
-                                    </select>
-                                    <small class="text-danger" id="errorDotDangKyUpdate"></small><br>
-                                    <br>
-                                    <label class="col-form-label">Tên giảng viên</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="ten_giang_vien_update">
-                                    <small class="text-danger" id="errorTenGiangVienUpdate"></small><br>
-                                    <label class="col-form-label">Số nhóm hướng dẫn</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="so_nhom_update">
-                                    <small class="text-danger" id="errorSoNhomHDUpdate"></small><br>
-                                    <label class="col-form-label">Tên tài khoản</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="ten_tai_khoan_update">
-                                    <small class="text-danger" id="errorTenTaiKhoanUpdate"></small><br>
-                                    <label class="col-form-label">Số điện thoại</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="so_dien_thoai_update">
-                                    <small class="text-danger" id="errorSDTUpdate"></small><br>
-                                    <label class="col-form-label">Email Fpt</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="emailFpt_update">
-                                    <small class="text-danger" id="errorEmailFptUpdate"></small><br>
-                                    <label class="col-form-label">Email Fe</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="emailFe_update">
-                                    <small class="text-danger" id="errorEmailFeUpdate"></small>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">Hủy
-                                </button>
-                                <button type="submit" class="btn btn-primary">
-                                    Cập nhật
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
             <!--   End Modal Update -->
 
             <!--  Start Modal Remove-->
-            <div
-                    class="modal fade"
-                    id="modal_giang_vien_remove"
-                    tabindex="-1"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-lg"
-                     role="document">
-                    <div class="modal-content">
-                        <form id="form_giang_vien_delete">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Xoá giảng viên</h5>
-                                <button type="button" class="close"
-                                        data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Bạn có muốn xoá không ?</p>
-                                <span id="remove_giang_vien" style="color:red;"></span>
-                                <span id="remove_giang_vien_item" style="color:red;"></span>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">Hủy
-                                </button>
-                                <button type="submit" class="btn btn-primary">Xoá
-                                </button>
-                            </div>
-                        </form>
+
+        </div>
+    </div>
+</div>
+<!--  Start Modal Update-->
+<div
+        class="modal fade"
+        tabindex="-1"
+        id="modal_update_giang_vien"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_giang_vien_update">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cập nhật giảng viên</h5>
+                    <button type="button" class="close"
+                            data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span id="giangVienId" style="color:red;"></span>
+                    <span id="update_giang_vien_item" value="" style="color:red;"></span>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Đợt đăng ký</label> <br>
+                        <select class="form-control" id="dot_dang_ky_update">
+                            <option value="" hidden>Chọn đợt đăng kí</option>
+                            <option th:each="item : ${listDotDangKy}" th:value="${item.id}"
+                                    th:text="${item.getName()}"></option>
+                        </select>
+                        <small class="text-danger" id="errorDotDangKyUpdate"></small><br>
+                        <br>
+                        <label class="col-form-label">Tên giảng viên</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="ten_giang_vien_update">
+                        <small class="text-danger" id="errorTenGiangVienUpdate"></small><br>
+                        <label class="col-form-label">Số nhóm hướng dẫn</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="so_nhom_update">
+                        <small class="text-danger" id="errorSoNhomHDUpdate"></small><br>
+                        <label class="col-form-label">Tên tài khoản</label>
+                        <input
+                                maxlength="20"
+                                type="text"
+                                class="form-control"
+                                id="ten_tai_khoan_update">
+                        <small class="text-danger" id="errorTenTaiKhoanUpdate"></small><br>
+                        <label class="col-form-label">Số điện thoại</label>
+                        <input
+                                maxlength="50"
+                                type="text"
+                                class="form-control"
+                                id="so_dien_thoai_update">
+                        <small class="text-danger" id="errorSDTUpdate"></small><br>
+                        <label class="col-form-label">Email Fpt</label>
+                        <input
+                                maxlength="50"
+                                type="text"
+                                class="form-control"
+                                id="emailFpt_update">
+                        <small class="text-danger" id="errorEmailFptUpdate"></small><br>
+                        <label class="col-form-label">Email Fe</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="emailFe_update">
+                        <small class="text-danger" id="errorEmailFeUpdate"></small>
                     </div>
                 </div>
-            </div>
-            <!--   End Modal Remove -->
-            <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
-            <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
-            <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-            <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-                    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                    crossorigin="anonymous"></script>
-            <script th:src="@{/js/plugin/bootbox.min.js}"></script>
-            <script th:src="@{/js/custom/daotao/dtgiangVienHuongDan.js}" type="text/javascript"></script>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn btn-light"
+                            data-bs-dismiss="modal">Hủy
+                    </button>
+                    <button type="button"
+                            class="btn btn-primary"
+                            th:attr="onclick=|updateGVHD()|"
+                    >
+                        Cập nhật
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--   End Modal Remove -->
+<script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
+<script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script th:src="@{/js/plugin/bootbox.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/js/custom/daotao/dtgiangVienHuongDan.js}" type="text/javascript"></script>
 </body>
 </html>

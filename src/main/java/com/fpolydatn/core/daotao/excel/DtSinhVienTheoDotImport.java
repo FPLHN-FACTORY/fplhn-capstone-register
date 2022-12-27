@@ -19,7 +19,6 @@ import java.util.List;
 @Component
 public class DtSinhVienTheoDotImport {
 
-
     public static List<DtCreateSinhVienTheoDotRequest> importData(MultipartFile reapExcelDataFile) throws IOException {
         List<DtCreateSinhVienTheoDotRequest> listSinhVien = new ArrayList<>();
         Workbook workbook = StreamingReader.builder()
@@ -38,10 +37,17 @@ public class DtSinhVienTheoDotImport {
             sinhVien.setSoDienThoai(String.valueOf(getCellValue(row.getCell(3))).trim());
             sinhVien.setEmail(String.valueOf(getCellValue(row.getCell(4))).trim());
             sinhVien.setKhoa(String.valueOf(getCellValue(row.getCell(5))).trim());
-            sinhVien.setMaNhom(String.valueOf(getCellValue(row.getCell(6))).trim());
-            sinhVien.setChuyenNganh(String.valueOf(getCellValue(row.getCell(7))).trim());
-            sinhVien.setDotDangKy(String.valueOf(getCellValue(row.getCell(8))).trim());
-            sinhVien.setMonDATN(String.valueOf(getCellValue(row.getCell(9))).trim());
+//            sinhVien.setMaNhom(String.valueOf(getCellValue(row.getCell(6))).trim());
+            sinhVien.setChuyenNganh(String.valueOf(getCellValue(row.getCell(6))).trim());
+            sinhVien.setDotDangKy(String.valueOf(getCellValue(row.getCell(7))).trim());
+            sinhVien.setMonDATN(String.valueOf(getCellValue(row.getCell(8))).trim());
+            if (sinhVien.getTenSinhVien().isEmpty() && sinhVien.getMaSinhVien().isEmpty() &&
+                    sinhVien.getEmail().isEmpty() &&
+                    sinhVien.getChuyenNganh().isEmpty() &&
+                    sinhVien.getDotDangKy().isEmpty() &&
+                    sinhVien.getMonDATN().isEmpty()) {
+                continue;
+            }
             listSinhVien.add(sinhVien);
 
         }

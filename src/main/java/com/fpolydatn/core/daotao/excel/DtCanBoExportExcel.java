@@ -31,7 +31,7 @@ public class DtCanBoExportExcel {
         CellStyle cellStyle = workbook.createCellStyle();
         XSSFFont font = workbook.createFont();
         font.setBold(true);
-        font.setFontHeight(16);
+        font.setFontHeight(14);
         cellStyle.setFont(font);
 
         createCell(row, 0, "STT", cellStyle);
@@ -41,6 +41,31 @@ public class DtCanBoExportExcel {
         createCell(row, 4, "TEN CAN BO", cellStyle);
         createCell(row, 5, "TEN TAI KHOAN", cellStyle);
         createCell(row, 6, "VAI TRO", cellStyle);
+
+        CellStyle cellStyleRow = workbook.createCellStyle();
+        XSSFFont fontRow = workbook.createFont();
+        fontRow.setFontHeight(10);
+        cellStyle.setFont(fontRow);
+
+        Row rowFakeDataOne = sheet.createRow(1);
+
+        createCell(rowFakeDataOne, 0, "1",cellStyleRow);
+        createCell(rowFakeDataOne, 1, "nguyenvanxuan@fe.edu.vn", cellStyleRow);
+        createCell(rowFakeDataOne, 2, "nguyenvanxuan@fpt.edu.vn", cellStyleRow);
+        createCell(rowFakeDataOne, 3, "0875864758", cellStyleRow);
+        createCell(rowFakeDataOne, 4, "Nguyễn Văn Xuân", cellStyleRow);
+        createCell(rowFakeDataOne, 5, "xuannv", cellStyleRow);
+        createCell(rowFakeDataOne, 6, "DAO_TAO", cellStyleRow);
+
+        Row rowFakeDataTwo = sheet.createRow(2);
+
+        createCell(rowFakeDataTwo, 0, "2", cellStyleRow);
+        createCell(rowFakeDataTwo, 1, "trantrungquan@fe.edu.vn", cellStyleRow);
+        createCell(rowFakeDataTwo, 2, "trantrungquan@fpt.edu.vn", cellStyleRow);
+        createCell(rowFakeDataTwo, 3, "0987654321", cellStyleRow);
+        createCell(rowFakeDataTwo, 4, "Trần Trung Quân", cellStyleRow);
+        createCell(rowFakeDataTwo, 5, "quantt", cellStyleRow);
+        createCell(rowFakeDataTwo, 6, "CHU_NHIEM_BO_MON", cellStyleRow);
 
     }
 

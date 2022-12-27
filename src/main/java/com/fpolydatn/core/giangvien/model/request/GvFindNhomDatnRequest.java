@@ -14,5 +14,6 @@ public final class GvFindNhomDatnRequest extends PageableRequest {
 
     private String giangVienHDId;
     private String monId;
+    private String coSoId;
 
 }

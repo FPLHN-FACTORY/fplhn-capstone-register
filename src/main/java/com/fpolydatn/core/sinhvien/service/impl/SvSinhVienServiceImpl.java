@@ -1,14 +1,11 @@
 package com.fpolydatn.core.sinhvien.service.impl;
 
-import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
-import com.fpolydatn.core.sinhvien.model.response.SvSinhVienTheoNhomResponse;
 import com.fpolydatn.core.sinhvien.repository.SvSinhVienRepository;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.entity.SinhVien;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,8 +24,8 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
     }
 
     @Override
-    public Integer getSoThanhVienByNhomId(String nhomId) {
-        return svSinhVienRepository.getSoLuongThanhVienById(nhomId);
+    public Integer getSoThanhVienByNhomId(String nhomId, String coSoId, String dotDangKyId) {
+        return svSinhVienRepository.getSoLuongThanhVienById(nhomId, coSoId, dotDangKyId);
     }
 
     @Override
@@ -36,11 +33,5 @@ public class SvSinhVienServiceImpl implements SvSinhVienService {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(id);
         return sinhVien.get().getMonDatnId();
     }
-
-    @Override
-    public String getMonChuongTrinhIdById(String id) {
-        return svSinhVienRepository.getMonChuongTrinhIdById(id);
-    }
-
 
 }

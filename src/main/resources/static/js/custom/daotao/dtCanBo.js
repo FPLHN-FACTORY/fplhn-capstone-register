@@ -5,21 +5,38 @@ const regexFPT = new RegExp('[a-z0-9]+@fpt.edu.vn');
 const regexSoDienThoai = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/;
 
 $(document).ready(function () {
-    $("#hoc_ky_error").text("");
-    clear();
+    $('[data-toggle = "tooltip"]').tooltip();
+    $("#targetLink").text(canBoView);
 });
 
 function clearData() {
     $("#keyword").val("");
 }
 
-function clear() {
-    $('#email_fe_error').text("");
-    $('#email_fpt_error').text("");
-    $('#so_dien_thoai_error').text("");
-    $('#ten_can_bo_error').text("");
-    $('#ten_tai_khoan_error').text("");
+function openModalCreate() {
+    $("#emailfe").val('');
+    $("#emailfpt").val('');
+    $("#sodienthoai").val('');
+    $("#tenCanBo").val('');
+    $("#tentaikhoan").val('');
+    $('#email_fe_error').text('');
+    $('#email_fpt_error').text('');
+    $('#so_dien_thoai_error').text('');
+    $('#ten_can_bo_error').text('');
+    $('#ten_tai_khoan_error').text('');
+    $("#modal_create").modal('show')
+}
 
+function openModalImport() {
+    $("#import_excel_error").text('');
+    $("#labelFile").text('Choose file');
+    $("#inputGroupFile01").val('');
+    $("#import").modal('show')
+}
+
+function openModalTaiMau() {
+    $("#mau_excel_error").text('');
+    $("#modal_excel_mau").modal('show')
 }
 
 function clearUpdate() {
@@ -31,8 +48,6 @@ function clearUpdate() {
 }
 
 function save() {
-    event.preventDefault();
-    clear();
     let emailFe = $("#emailfe").val().trim();
     let emailFpt = $("#emailfpt").val().trim();
     let soDienThoai = $("#sodienthoai").val().trim();
@@ -62,8 +77,6 @@ function save() {
     } else {
         $("#email_fe_error").text(" ");
     }
-
-
     if (emailFpt.length == 0) {
         $("#email_fpt_error").text("Email Fpt Không Được Để Trống");
         check = false;
@@ -115,11 +128,17 @@ function save() {
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message.trim() == 'email fpt da ton tai') {
+                    $("#email_fpt_error").text("Email fpt đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'email fe da ton tai') {
+                    $("#email_fe_error").text("Email fe đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'Ten tai khoan cua can bo da ton tai') {
+                    $("#ten_tai_khoan_error").text("Tên tài khoản đã tồn tại");
+                }
             }
         });
     }
-};
+}
 
 function openModalUpdateCanBo(canBoId) {
     clearUpdate();
@@ -147,7 +166,6 @@ function openModalUpdateCanBo(canBoId) {
 }
 
 function update() {
-    event.preventDefault();
     let emailFpt = $("#email_fpt_update").val().trim();
     let emailFe = $("#email_fe_update").val().trim();
     let soDienThoai = $("#so_dien_thoai_Update").val().trim();
@@ -179,7 +197,6 @@ function update() {
         $("#email_fe_error_update").text(" ");
     }
 
-
     if (emailFpt.length == 0) {
         $("#email_fpt_error_update").text("Email Fpt Không Được Để Trống");
         check = false;
@@ -193,17 +210,15 @@ function update() {
         $("#email_fpt_error_update").text(" ");
     }
 
-
     if (soDienThoai.length == 0) {
         $("#so_dien_thoai_error_update").text("Số Điện Thoại Không Được Để Trống");
         check = false;
     } else if (regexSoDienThoai.test(soDienThoai) == false) {
-        $("#so_dien_thoai_error_update").text("Số Điện Thoại Phải Định Dạng");
+        $("#so_dien_thoai_error_update").text("Số Điện Thoại Phải Đúng Định Dạng");
         check = false;
     } else {
         $("#so_dien_thoai_error_update").text("");
     }
-
 
     if (tenCanBo.length == 0) {
         $("#ten_can_bo_error_update").text("Tên Cán Bộ Không Được Để Trống");
@@ -234,16 +249,67 @@ function update() {
                 $("#modal_update_can_bo").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message.trim() == 'email fpt da ton tai') {
+                    $("#email_fpt_error_update").text("Email fpt đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'email fe da ton tai') {
+                    $("#email_fe_error_update").text("Email fe đã tồn tại");
+                } else if (e.responseJSON.message.trim() == 'Ten tai khoan cua can bo da ton tai') {
+                    $("#ten_tai_khoan_error_update").text("Tên tài khoản đã tồn tại");
+                }
             }
         });
     }
 };
 
+function importCanBo() {
+    let typeExcel = $("#inputGroupFile01").val();
+    let indexDot = typeExcel.indexOf('.');
+    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
+    if (typeExcel.trim().length <= 0) {
+        $("#import_excel_error").text("Hãy chọn file excel cần import");
+    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
+        var form = $('#form_import_excel')[0];
+        $.ajax({
+                type: 'POST',
+                url: canBoApi + '/import',
+                enctype: 'multipart/form-data',
+                processData: false,
+                data: new FormData(form),
+                contentType: false,
+                cache: false,
+                success: function (response) {
+                    if (response.data.status == true) {
+                        bootbox.alert({
+                            message: "Import file excel thành công",
+                            backdrop: true,
+                            callback: function () {
+                                window.open(canBoView, '_self');
+                            }
+                        });
+                    } else {
+                        bootbox.alert({
+                            message: response.data.message,
+                            backdrop: true,
+                            callback: function () {
+                                window.open(canBoView, '_self');
+                            }
+                        });
+                    }
+                },
+                error: function (e) {
+                }
+            }
+        );
+    } else {
+        $("#import_excel_error").text("Hãy chọn đúng file excel");
+    }
+}
+
 function openModalRemoveCanBo(canBoId) {
     bootbox.confirm({
         title: "Xóa nhóm môn",
         message: "Bạn muốn xóa cán bộ này?",
+        backdrop: true,
         buttons: {
             cancel: {
                 className: 'btn-outline-secondary btn btn-light',
@@ -270,12 +336,20 @@ function openModalRemoveCanBo(canBoId) {
                         });
                     },
                     error: function (responseData) {
-                        if (responseData.responseJSON.message === 'Can Bo not exist') {
+                        if (responseData.responseJSON.message.trim() === 'Can Bo not exist') {
                             bootbox.alert({
                                 message: 'Cán Bộ Không Tồn Tại',
                                 backdrop: true,
                                 callback: function () {
-                                    window.open(nhomMonDatnView, '_self');
+                                    window.open(canBoView, '_self');
+                                }
+                            });
+                        } else if (responseData.responseJSON.message.trim() === 'Chu nhiem nay dang chu nhiem mot chuyen nganh') {
+                            bootbox.alert({
+                                message: 'Chủ nhiệm này đang chủ nhiệm một chuyên ngành',
+                                backdrop: true,
+                                callback: function () {
+                                    window.open(canBoView, '_self');
                                 }
                             });
                         }
@@ -286,40 +360,10 @@ function openModalRemoveCanBo(canBoId) {
     });
 }
 
-$("#form_import_excel").submit(function (event) {
-    event.preventDefault();
-    let typeExcel = $("#inputGroupFile01").val();
-    let indexDot = typeExcel.indexOf('.');
-    let typeFile = typeExcel.substring(indexDot + 1, typeExcel.length)
-    if (typeExcel.length <= 0) {
-        $("#import_excel_error").text("chọn file");
-    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
-        $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                enctype: 'multipart/form-data',
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    window.open(canBoView, '_self');
-                },
-                error: function (e) {
-                    window.open(canBoView, '_self');
-                    alert("ERROR: " + e);
-                }
-            }
-        );
-    } else {
-        $("#import_excel_error").text("chọn đúng file Excel ");
-    }
-});
-
-$("#modal_excel_mau").submit(function (event) {
-    event.preventDefault();
+function exportExcelMau() {
     let typeExcel = $("#type_mau_excel").val();
     if (typeExcel == '') {
-        $("#mau_excel_error").text("chọn định dạng file download");
+        $("#mau_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
@@ -333,4 +377,4 @@ $("#modal_excel_mau").submit(function (event) {
             }
         });
     }
-});
+}

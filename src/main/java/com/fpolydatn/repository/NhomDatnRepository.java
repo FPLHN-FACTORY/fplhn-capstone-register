@@ -17,10 +17,11 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
     public static final String NAME = "BaseNhomDatnRepository";
 
     @Query(value = """
-                SELECT IF(COUNT(id) = 0, 0, MAX(SUBSTRING(ma_nhom, 4))) FROM nhom_datn 
-                WHERE dot_dang_ky_id = :dotDangKyId
+                SELECT ma_nhom FROM do_an_tot_nghiep.nhom_datn
+                WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId
+                ORDER BY created_date DESC LIMIT 1
             """, nativeQuery = true)
-    String genMaNhomTuDong(@Param("dotDangKyId") String dotDangKyId);
+    String getNhomTaoGanNhat(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
 
     @Query(value = """
                 SELECT c.ma_co_so FROM  co_so c 
@@ -29,9 +30,10 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
     String getMaCoSo(@Param("coSoId") String coSoId);
 
     @Query(value = """
-            SELECT a.id FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
-            WHERE a.created_date + 43200000 < :currentTime
+            SELECT a.id FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id
+            WHERE a.created_date + :period < :currentTime
             GROUP BY a.id HAVING COUNT(b.id) <= 3
             """, nativeQuery = true)
-    List<String> listNhomKhongDuDieuKien(@Param("currentTime") Long currentTime);
+    List<String> listNhomKhongDuDieuKien(@Param("currentTime") Long currentTime,
+                                         @Param("period") Long period);
 }

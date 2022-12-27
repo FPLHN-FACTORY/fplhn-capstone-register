@@ -36,10 +36,6 @@ public class DtNhomDatnTheoDotController extends BaseController {
     public String findAllNhomDatn(Model model, final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        if (dotDangKyId != null) {
-            req.setDotDangKyId(dotDangKyId);
-        }
         PageableObject<DtNhomDatnTheoDotResponse> listNhomDatn = dtNhomDatnTheoDotService.findAllNhomDatn(req);
         List<SimpleEntityProj> listChuyenNganh = dtChuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("listChuyenNganh", listChuyenNganh);
