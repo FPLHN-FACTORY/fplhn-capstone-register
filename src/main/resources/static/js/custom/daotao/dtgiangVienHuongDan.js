@@ -14,7 +14,8 @@ $(document).ready(function () {
 })
 
 function clearData() {
-    $("#tenGiangVien").val("");;
+    $("#tenGiangVien").val("");
+    ;
     $("#search_dot_dang_ky").val("");
 }
 
@@ -89,10 +90,10 @@ function addGVHD() {
     if (tenTaiKhoan.length === 0) {
         $("#errorTenTaiKhoan").text(" Tên tài khoản không được để trống");
         index++;
-    } else if(tenTaiKhoan.indexOf(" ") > -1) {
-         $("#errorTenTaiKhoan").text(" Tên tài khoản không có khoảng trắng");
-         index++;
-     } else {
+    } else if (tenTaiKhoan.indexOf(" ") > -1) {
+        $("#errorTenTaiKhoan").text(" Tên tài khoản không có khoảng trắng");
+        index++;
+    } else {
         $("#errorTenTaiKhoan").text("");
     }
 
@@ -137,21 +138,17 @@ function addGVHD() {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                if (responseData.data.message == null) {
-                    window.open(giangVienHuongDanView, '_self');
-                    $("#modal_create").modal("hide");
-                } else {
-                    if (responseData.data.message == 'email fpt da ton tai') {
-                        $("#errorEmailFpt").text("Email Fpt đã tồn tại");
-                    } else if (responseData.data.message == 'email fe da ton tai') {
-                        $("#errorEmailFe").text("Email Fe đã tồn tại");
-                    } else if (responseData.data.message == 'ten tai khoan da ton tai') {
-                        $("#errorTenTaiKhoan").text("Tài khoản giảng viên bị trùng")
-                    }
-                }
+                window.open(giangVienHuongDanView, '_self');
+                $("#modal_create").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message == 'email fpt da ton tai') {
+                    $("#errorEmailFpt").text("Email Fpt đã tồn tại");
+                } else if (e.responseJSON.message == 'email fe da ton tai') {
+                    $("#errorEmailFe").text("Email Fe đã tồn tại");
+                } else if (e.responseJSON.message == 'ten tai khoan da ton tai') {
+                    $("#errorTenTaiKhoan").text("Tài khoản giảng viên bị trùng")
+                }
             }
         });
     }
@@ -227,7 +224,7 @@ function updateGVHD() {
     if (tenTaiKhoan.length === 0) {
         $("#errorTenTaiKhoanUpdate").text(" Tên tài khoản không được để trống");
         index++;
-    } else if(tenTaiKhoan.indexOf(" ") > -1) {
+    } else if (tenTaiKhoan.indexOf(" ") > -1) {
         $("#errorTenTaiKhoanUpdate").text(" Tên tài khoản không có khoảng trắng");
         index++;
     } else {
@@ -267,9 +264,7 @@ function updateGVHD() {
     } else {
         $("#errorDotDangKyUpdate").text("");
     }
-    console.log(index)
     if (index == 0) {
-        console.log(giangVienRequest +  giangVienId)
         $.ajax({
             type: "PUT",
             contentType: "application/json",
@@ -277,22 +272,18 @@ function updateGVHD() {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                if (responseData.data.message == null) {
-                    window.open(giangVienHuongDanView, '_self');
-                    $("#modal_create").modal("hide");
-                } else {
-                    if (responseData.data.message == 'email fpt da ton tai') {
-                        $("#errorEmailFptUpdate").text("Email Fpt đã tồn tại");
-                    } else if (responseData.data.message == 'email fe da ton tai') {
-                        $("#errorEmailFeUpdate").text("Email Fe đã tồn tại");
-                    } else if (responseData.data.message == 'ten tai khoan da ton tai') {
-                        $("#errorTenTaiKhoanUpdate").text("Tài khoản giảng viên bị trùng")
-                    }
-                }
-
+                console.log(responseData.data)
+                window.open(giangVienHuongDanView, '_self');
+                $("#modal_create").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message == 'email fpt da ton tai') {
+                    $("#errorEmailFptUpdate").text("Email Fpt đã tồn tại");
+                } else if (e.responseJSON.message == 'email fe da ton tai') {
+                    $("#errorEmailFeUpdate").text("Email Fe đã tồn tại");
+                } else if (e.responseJSON.message == 'ten tai khoan da ton tai') {
+                    $("#errorTenTaiKhoanUpdate").text("Tài khoản giảng viên bị trùng")
+                }
             }
         });
     }
@@ -377,7 +368,7 @@ function exportFile() {
             contentType: "application/json",
             url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenGiangVien=" + tenGiangVien,
             success: function () {
-                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId+ "&tenGiangVien=" + tenGiangVien, '_self');
+                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenGiangVien=" + tenGiangVien, '_self');
                 $("#modal_excel").modal('hide')
             },
             error: function (e) {

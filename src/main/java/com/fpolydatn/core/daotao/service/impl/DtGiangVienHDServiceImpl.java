@@ -70,18 +70,18 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     @Override
     public GiangVienHuongDan create(@Valid DtCreateGiangVienHDRequest command) {
-//        String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim(), command.getCoSoId());
-//        if (idByEmailFpt != null) {
-//            throw new RestApiException(Message.EMAIL_FPT_EXIST);
-//        }
-//        String idByEmailFe = dtGiangVienHDRepository.getIdByEmailFe(command.getEmailFe(), command.getCoSoId());
-//        if (idByEmailFe != null) {
-//            throw new RestApiException(Message.EMAIL_FE_EXIST);
-//        }
-//        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan(), command.getCoSoId());
-//        if (idByTenGiangVien != null) {
-//            throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
-//        }
+        String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim(), command.getCoSoId(), command.getDotDangKyId());
+        if (idByEmailFpt != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+        String idByEmailFe = dtGiangVienHDRepository.getIdByEmailFe(command.getEmailFe(), command.getCoSoId(), command.getDotDangKyId());
+        if (idByEmailFe != null) {
+            throw new RestApiException(Message.EMAIL_FE_EXIST);
+        }
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan(), command.getCoSoId(), command.getDotDangKyId());
+        if (idByTenGiangVien != null) {
+            throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
+        }
         GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class, command);
         return dtGiangVienHDRepository.save(gvhd);
     }
@@ -106,23 +106,23 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
-//
-//        String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId(), command.getCoSoId());
-//        System.out.println(idByEmailFpt + "aaaaaaaaaaa");
-//        if (idByEmailFpt != null) {
-//            throw new RestApiException(Message.EMAIL_FPT_EXIST);
-//        }
-//        String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId(), command.getCoSoId());
-//        System.out.println(idByEmailFe + "aaaaaaaaaaa");
-//
-//        if (idByEmailFe != null) {
-//            throw new RestApiException(Message.EMAIL_FE_EXIST);
-//        }
-//        String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId(), command.getCoSoId());
-//        System.out.println(idByTenGiangVien + "aaaaaaaaaaa");
-//        if (idByTenGiangVien != null) {
-//            throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
-//        }
+
+        String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+        System.out.println(idByEmailFpt + "aaaaaaaaaaa");
+        if (idByEmailFpt != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+        String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+        System.out.println(idByEmailFe + "aaaaaaaaaaa");
+
+        if (idByEmailFe != null) {
+            throw new RestApiException(Message.EMAIL_FE_EXIST);
+        }
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+        System.out.println(idByTenGiangVien + "aaaaaaaaaaa");
+        if (idByTenGiangVien != null) {
+            throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
+        }
         GiangVienHuongDan giangVien = gvhdCheck.get();
         giangVien.setTenGvhd(command.getTenGvhd());
         giangVien.setSoNhomHuongDanToiDa(command.getSoNhomHuongDanToiDa());
