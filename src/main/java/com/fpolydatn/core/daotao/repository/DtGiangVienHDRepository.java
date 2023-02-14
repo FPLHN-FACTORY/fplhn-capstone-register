@@ -2,7 +2,6 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
-import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -128,16 +127,15 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                 ORDER BY gvhd.last_modified_date DESC 
             """, nativeQuery = true)
     List<DtGiangVienHDResponse> exportExcel(@Param("req") DtFindGiangVienHDRequest req);
+    @Query(value = """
+            SELECT email_fe FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId""", nativeQuery = true)
+    List<String> findAllEmailFe(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT email_fe FROM giang_vien_huong_dan WHERE co_so_id = :coSoId""", nativeQuery = true)
-    List<String> findAllEmailFe(@Param("coSoId") String coSoId);
+            SELECT email_fpt FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId""", nativeQuery = true)
+    List<String> findAllEmailFpt(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT email_fpt FROM giang_vien_huong_dan WHERE co_so_id = :coSoId""", nativeQuery = true)
-    List<String> findAllEmailFpt(@Param("coSoId") String coSoId);
-
-    @Query(value = """
-            SELECT ten_tai_khoan FROM giang_vien_huong_dan WHERE co_so_id = :coSoId""", nativeQuery = true)
-    List<String> findAllTenTaiKhoan(@Param("coSoId") String coSoId);
+            SELECT ten_tai_khoan FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId""", nativeQuery = true)
+    List<String> findAllTenTaiKhoan(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 }

@@ -3,7 +3,6 @@ package com.fpolydatn.core.daotao.controller;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.core.daotao.excel.DtGiangVienFileImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
@@ -45,6 +44,9 @@ public class DtGiangVienRestController extends BaseController {
         try {
             String coSoid = session.getCoSoId();
             cmd.setCoSoId(coSoid);
+            if(cmd.getDotDangKyId().equalsIgnoreCase("")) {
+                cmd.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+            }
             return new ResponseObject(giangVienHDService.create(cmd));
         } catch (Exception e) {
             return new ResponseObject(e);
@@ -94,7 +96,6 @@ public class DtGiangVienRestController extends BaseController {
     @GetMapping("/export")
     public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
-        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         giangVienHDService.DtGiangVienHDExportExcel(response, typeExcel, request);
     }
 

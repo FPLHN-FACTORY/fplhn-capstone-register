@@ -123,8 +123,8 @@ function addGVHD() {
         $("#errorEmailFe").text("");
     }
 
-    if (dotDangKyId == "Chọn đợt đăng kí") {
-        $("#errorDotDangKy").text(" Đợt đăng ký không được để trống");
+    if (dotDangKyId.length === 0) {
+        $("#errorDotDangKy").text("Đợt đăng ký không được để trống");
         index++;
     } else {
         $("#errorDotDangKy").text("");
@@ -202,6 +202,7 @@ function updateGVHD() {
     giangVienRequest["emailFpt"] = emailFpt;
     giangVienRequest["emailFe"] = emailFe;
     giangVienRequest["dotDangKyId"] = dotDangKyId;
+
     let index = 0;
     if (tenGvhd.length === 0) {
         $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được để trống");
@@ -260,13 +261,15 @@ function updateGVHD() {
         $("#errorEmailFeUpdate").text("");
     }
 
-    if (dotDangKyId == "Chọn đợt đăng kí") {
+    if (dotDangKyId.length === 0) {
         $("#errorDotDangKyUpdate").text(" Đợt đăng ký không được để trống");
         index++;
     } else {
         $("#errorDotDangKyUpdate").text("");
     }
+    console.log(index)
     if (index == 0) {
+        console.log(giangVienRequest +  giangVienId)
         $.ajax({
             type: "PUT",
             contentType: "application/json",
@@ -361,16 +364,20 @@ function openModalImport() {
 }
 
 function exportFile() {
-    let typeExcel = $("#type_excel").val()
+    let typeExcel = $("#type_excel").val();
+
+    let tenGiangVien = $("#tenGiangVien").val();
+    let dotDangKyId = $("#search_dot_dang_ky").val();
+
     if (typeExcel == '') {
         $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel,
+            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenGiangVien=" + tenGiangVien,
             success: function () {
-                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel, '_self');
+                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId+ "&tenGiangVien=" + tenGiangVien, '_self');
                 $("#modal_excel").modal('hide')
             },
             error: function (e) {

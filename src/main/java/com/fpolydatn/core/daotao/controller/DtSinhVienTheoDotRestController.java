@@ -78,7 +78,7 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     public ResponseObject searchStudentById(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        return new ResponseObject(sinhVienService.searchStudentById(id, coSoId, dotDangKyId));
+        return new ResponseObject(sinhVienService.searchStudentById(id));
     }
 
     @PutMapping("/loai-sv/{id}")

@@ -390,8 +390,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId, String dotDangKyId) {
-        return sinhVienRepository.searchStudentById(id, coSoId, dotDangKyId);
+    public DtSinhVienTheoDotResponse searchStudentById(String id) {
+        return sinhVienRepository.searchStudentById(id);
     }
 
     @Override
