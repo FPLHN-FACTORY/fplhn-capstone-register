@@ -26,7 +26,8 @@ function clearData() {
 function CNChotDuLieu(id, count) {
     flag = 0;
     checkListCbb = 1;
-    bootbox.confirm({message: "Bạn có chắc muốn chốt đề tài không?",
+    bootbox.confirm({
+        message: "Bạn có chắc muốn chốt đề tài không?",
         buttons: {
             cancel: {
                 className: 'btn-outline-secondary btn btn-light',
@@ -35,7 +36,7 @@ function CNChotDuLieu(id, count) {
                 label: '<i class="fa fa-check"></i> Xác nhận'
             }
         },
-        callback: function(item) {
+        callback: function (item) {
             if (item) {
                 chotDeTai(id, count)
             }
@@ -73,7 +74,8 @@ function chotDeTai(id, count) {
 function CNXacNhanNhom(id, count) {
     flag = 0;
     checkListCbb = 1;
-    bootbox.confirm({message: "Bạn có chắc muốn xác nhận không?",
+    bootbox.confirm({
+        message: "Bạn có chắc muốn xác nhận không?",
         buttons: {
             cancel: {
                 className: 'btn-outline-secondary btn btn-light',
@@ -576,13 +578,28 @@ function reload() {
     window.open('/chu-nhiem/nhom-datn', '_self');
 }
 
-genPagingAndFillColor()
+// genPagingAndFillColor()
+//
+// function genPagingAndFillColor() {
+//     genPagzing();
+//     let colorPage = document.querySelectorAll("#pageColor");
+//     colorPage[currentPage].style.backgroundColor = '#0a8cf0';
+//     colorPage[currentPage].style.color = 'white';
+// }
 
-function genPagingAndFillColor() {
-    genPagzing();
-    let colorPage = document.querySelectorAll("#pageColor");
-    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
-    colorPage[currentPage].style.color = 'white';
+genPagzing()
+
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadDataNhomDatn(value - 1);
+    }
 }
 
 function genPagzing() {
@@ -590,18 +607,16 @@ function genPagzing() {
     let templatePageMid = ``;
     let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage - 1)">Back</a>
+                     <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage - 1})"><img src="/img/back.svg"></a>
                 </li>
                 `;
-    for (let i = 0; i < totalPages; i++) {
-        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
-                                        <a class="page-link" id="pageColor" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
-                                    </li>`
-    }
+    templatePageMid = `
+                            <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
+                             <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
     let templatePageAfter = `
-                <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(Number(currentPage) + 1)">Next</a>
-                </li>
+                              <li style="color: #0a8cf0" class="page-item">
+                                   <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage + 1})"><img src="/img/next.svg"></a>
+                              </li><li style="color: #0a8cf0" class="page-item">
                 `;
     let templateHtml = ``;
     templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
@@ -683,7 +698,7 @@ function loadDataNhomDatn(count) {
                 `
                 }))
                 $('[data-toggle = "tooltip"]').tooltip()
-                genPagingAndFillColor()
+                genPagzing()
             }
         },
         error: function (e) {

@@ -51,6 +51,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             SELECT count(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
             LEFT JOIN mon_datn k ON k.id = c.mon_datn_id
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
             LEFT JOIN chuyen_nganh f ON f.id = c.chuyen_nganh_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
@@ -68,14 +69,14 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             AND g.id = :#{#req.dotDangKyId}
             AND b.co_so_id = :#{#req.coSoId}
             AND h.id = :idChuNhiem
-            GROUP BY b.id ORDER BY b.last_modified_date DESC 
+            GROUP BY b.id ORDER BY b.created_date DESC 
             """, nativeQuery = true)
     Page<CnNhomDatnResponse> findNhomDatn(@Param("req") CnFindNhomDatnRequest req, Pageable page, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY ten_sinh_vien) AS STT, ma_sinh_vien,
             a.ten_sinh_vien as ten_sinh_vien, e.ma_nhom,
-            if(a.id = e.truong_nhom_id, 'Trưởng nhóm', '') as chuc_vu
+            if(a.id = e.truong_nhom_id, 'x', '') as chuc_vu
             , e.ten_de_tai, f.ten_tai_khoan AS 'gvhd', d.ten_dot_dang_ky
             FROM sinh_vien a
             LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
