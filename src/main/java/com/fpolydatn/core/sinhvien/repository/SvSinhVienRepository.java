@@ -19,7 +19,7 @@ public interface SvSinhVienRepository extends SinhVienRepository {
             SELECT COUNT(id) FROM sinh_vien
             WHERE nhom_id = :nhomId AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
-    int getSoLuongThanhVienById(@Param("nhomId") String nhomId,
+    Integer getSoLuongThanhVienById(@Param("nhomId") String nhomId,
                                 @Param("coSoId") String coSoId,
                                 @Param("dotDangKyId") String dotDangKyId);
 

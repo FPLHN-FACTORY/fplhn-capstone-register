@@ -121,7 +121,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             throw new RestApiException(Message.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG);
         }
 
-        int soLuongThanhVien = svSinhVienRepository.getSoLuongThanhVienById(req.getIdNhom(),
+        Integer soLuongThanhVien = svSinhVienRepository.getSoLuongThanhVienById(req.getIdNhom(),
                 req.getCoSoId(), req.getDotDangKyId());
         if (soLuongThanhVien == Constants.SO_THANH_VIEN_TOI_DA) {
             throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
