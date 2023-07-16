@@ -130,6 +130,7 @@
                                             <th>Số người</th>
                                             <th>Trưởng nhóm</th>
                                             <th>GVHD</th>
+                                            <th>Trạng thái</th>
                                             <th width="100px">
                                                 Hành động
                                             </th>
@@ -145,6 +146,7 @@
                                                     <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
                                                     <td th:text="${nhomDatn.getTenSinhVien()}"></td>
                                                     <td th:text="${nhomDatn.tenGvhd} == null ? 'Chưa có': (${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()})"></td>
+                                                    <td th:text="${nhomDatn.matKhauTonTai} == 0 ? 'Công khai': 'Nhóm kín'"></td>
                                                     <td>
                                                         <button class="btn_eye"
                                                                 th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"

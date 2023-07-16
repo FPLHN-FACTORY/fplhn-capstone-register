@@ -13,6 +13,7 @@ import java.util.List;
  */
 @Repository
 public interface SvGiangVienHuongDanRepository extends GiangVienHuongDanRepository {
+
     @Query(value = """
             SELECT g.id, g.ten_gvhd, g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
             JOIN phan_cong_huong_dan p ON p.giang_vien_id = g.id 
@@ -27,4 +28,19 @@ public interface SvGiangVienHuongDanRepository extends GiangVienHuongDanReposito
                                                                       @Param("coSoId") String coSoId,
                                                                       @Param("dotDangKyId") String dotDangKyId);
 
+    @Query(value = """
+                SELECT COUNT(nd.id) AS so_nhom_dang_huong_dan
+                FROM giang_vien_huong_dan gvhd 
+                LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
+                LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
+                LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                
+                WHERE gvhd.id = :idGvhd 
+                AND cs.id = :coSoId 
+                AND ddk.id = :dotDangKyId
+                GROUP BY gvhd.id
+            """
+            , nativeQuery = true)
+    Integer countSoNhomGiangVienDangHuongDan(@Param("idGvhd") String idGvhd,
+                                             @Param("coSoId") String coSoId,
+                                             @Param("dotDangKyId") String dotDangKyId);
 }

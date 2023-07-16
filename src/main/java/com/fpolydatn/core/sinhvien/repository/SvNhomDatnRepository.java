@@ -113,7 +113,7 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             a.ma_sinh_vien, a.ten_sinh_vien, b.ma_nhom, b.ten_nhom, b.mo_ta, 
             IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu 
             FROM sinh_vien a LEFT JOIN nhom_datn b ON a.nhom_id = b.id 
-            WHERE a.nhom_id = :nhomDatnId AND a.co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
+            WHERE a.nhom_id = :nhomDatnId AND a.co_so_id = :coSoId AND b.dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
     List<SvShowSinhVienTheoNhomResponse> getAllSinhVienByNhomDatnId(@Param("nhomDatnId") String nhomDatnId,
                                                                     @Param("coSoId") String coSoId,

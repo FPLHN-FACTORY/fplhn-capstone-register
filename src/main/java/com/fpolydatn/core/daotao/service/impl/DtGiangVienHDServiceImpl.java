@@ -108,18 +108,15 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         }
 
         String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
-        System.out.println(idByEmailFpt + "aaaaaaaaaaa");
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
         String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
-        System.out.println(idByEmailFe + "aaaaaaaaaaa");
 
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
         String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
-        System.out.println(idByTenGiangVien + "aaaaaaaaaaa");
         if (idByTenGiangVien != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
