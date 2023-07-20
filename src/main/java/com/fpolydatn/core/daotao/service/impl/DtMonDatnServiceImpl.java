@@ -233,9 +233,9 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành không được để trống"));
                     return;
                 }
-                if (createMonDant.getChuyenNganhId().trim().length() > 36) {
+                if (createMonDant.getChuyenNganhId().trim().length() > 100) {
                     mess.setStatus(false);
-                    mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành " + createMonDant.getChuyenNganhId() + " không được quá 36 ký tự"));
+                    mess.setMessage(formErrors("D" + (createMonDant.getStt() + 1), "Tên chuyên ngành " + createMonDant.getChuyenNganhId() + " không được quá 100 ký tự"));
                     return;
                 }
                 if (createMonDant.getNhomMonDatnId().trim().length() != 0) {
@@ -246,7 +246,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     }
                     if (monDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())) {
                         mess.setStatus(false);
-                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Mã nhóm " + createMonDant.getNhomMonDatnId() + " bị trùng với mã môn"));
+                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Mã nhóm môn " + createMonDant.getNhomMonDatnId() + " bị trùng với mã môn"));
                         return;
                     }
                     if (createMonDant.getNhomMonDatnId().indexOf(" ") > 0) {
