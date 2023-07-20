@@ -60,7 +60,7 @@ function create() {
             },
             error: function (e) {
                 if (e.responseJSON.message == 'Ma mon da ton tai') {
-                    $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
+                    $("#ma_mon_datn_error").text("Mã môn đã tồn tại hoặc Mã môn trùng với nhóm môn");
                 }
             }
         });

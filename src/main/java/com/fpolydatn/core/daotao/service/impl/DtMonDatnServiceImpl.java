@@ -185,6 +185,12 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         try {
             importMonDatnRequests = monDatnImport.importExcelList(file);
             importMonDatnRequests.parallelStream().forEach(createMonDant -> {
+                if (createMonDant.getMaMon().equalsIgnoreCase(createMonDant.getNhomMonDatnId())) {
+                    mess.setStatus(false);
+                    mess.setMessage("Mã môn và nhóm môn không được trùng.");
+                    return;
+                }
+
                 if (createMonDant.getMaMon().trim().length() == 0) {
                     mess.setStatus(false);
                     mess.setMessage(formErrors("B" + (createMonDant.getStt() + 1), "Mã không được để trống"));
@@ -260,8 +266,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
                 if (nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())
                         && createMonDant.getNhomMonDatnId().trim().length() != 0) {
-                    System.out.println(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getChuyenNganhId());
-                    if (!nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getChuyenNganhId().equalsIgnoreCase(createMonDant.getChuyenNganhId())) {
+                    if (!chuyenNganhById.get(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getChuyenNganhId()).getTenChuyenNganh().equalsIgnoreCase(createMonDant.getChuyenNganhId())) {
                         mess.setStatus(false);
                         mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Nhóm môn " + createMonDant.getNhomMonDatnId() + " không trùng chuyên ngành"));
                         return;
@@ -273,7 +278,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     MonDatn nhomMon = new MonDatn();
                     nhomMon.setMaMon(createMonDant.getNhomMonDatnId());
                     nhomMon.setCoSoId(coSoId);
-                    nhomMon.setChuyenNganhId(createMonDant.getChuyenNganhId());
+                    nhomMon.setChuyenNganhId(createMonDant.getChuyenNganhId().toUpperCase());
                     nhomMon.setTenMonDatn(createMonDant.getNhomMonDatnId());
                     nhomMon.setNhomMonDatnId(null);
                     nhomMonDatnHashMap.put(nhomMon.getMaMon(), nhomMon);
@@ -355,7 +360,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
             chuyenNganhById.put(x.getId(), x);
         }
         for (MonDatn e : monDatnRepository.getListNhomMonDatn(coSoId)) {
-            e.setChuyenNganhId(chuyenNganhById.get(e.getChuyenNganhId()).getTenChuyenNganh());
+//            e.setChuyenNganhId(chuyenNganhById.get(e.getChuyenNganhId()).getTenChuyenNganh());
             nhomMonDatnHashMap.put(e.getMaMon(), e);
         }
     }
