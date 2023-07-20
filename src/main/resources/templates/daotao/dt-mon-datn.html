@@ -145,7 +145,7 @@
                                                         <td th:text="${monDatn.stt}"></td>
                                                         <td th:text="${monDatn.maMon}"></td>
                                                         <td th:text="${monDatn.tenMon}"></td>
-                                                        <td th:text="${monDatn.tenNhomMon}"></td>
+                                                        <td th:text="${monDatn.id == monDatn.nhomMonDatnId ? 'Môn độc lập' : monDatn.tenNhomMon}"></td>
                                                         <td th:text="${monDatn.tenChuyenNganh}"></td>
                                                         <td>
                                                             <a

@@ -264,14 +264,16 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     chuyenNganhs.put(chuyenNganh.getTenChuyenNganh(), chuyenNganh);
                 }
 
-                if (nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())
-                        && createMonDant.getNhomMonDatnId().trim().length() != 0) {
-                    if (!chuyenNganhById.get(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getChuyenNganhId()).getTenChuyenNganh().equalsIgnoreCase(createMonDant.getChuyenNganhId())) {
-                        mess.setStatus(false);
-                        mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Nhóm môn " + createMonDant.getNhomMonDatnId() + " không trùng chuyên ngành"));
-                        return;
-                    }
-                }
+//                if (nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())
+//                        && createMonDant.getNhomMonDatnId().trim().length() != 0) {
+//                    if (chuyenNganhs.containsKey(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getChuyenNganhId())) {
+//                        if (!chuyenNganhs.get(nhomMonDatnHashMap.get(createMonDant.getNhomMonDatnId()).getChuyenNganhId()).getTenChuyenNganh().equalsIgnoreCase(createMonDant.getChuyenNganhId())) {
+//                            mess.setStatus(false);
+//                            mess.setMessage(formErrors("E" + (createMonDant.getStt() + 1), "Nhóm môn " + createMonDant.getNhomMonDatnId() + " không trùng chuyên ngành"));
+//                            return;
+//                        }
+//                    }
+//                }
 
                 if (!nhomMonDatnHashMap.containsKey(createMonDant.getNhomMonDatnId())
                         && createMonDant.getNhomMonDatnId().trim().length() != 0) {
