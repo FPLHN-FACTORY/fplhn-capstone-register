@@ -15,6 +15,9 @@ public interface SvGiangVienHuongDanResponse extends IsIdentified {
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
 
+    @Value("#{target.ten_tai_khoan}")
+    String getTenTaiKhoan();
+
     @Value("#{target.so_nhom_huong_dan_toi_da}")
     Integer getSoNhomHuongDanToiDa();
 }
