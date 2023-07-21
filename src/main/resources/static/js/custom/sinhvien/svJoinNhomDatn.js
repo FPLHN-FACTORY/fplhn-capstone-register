@@ -142,7 +142,7 @@ function getGiangVien(idMonDatn) {
         type: "GET", url: SVNhomDatnApi + "/search-giang-vien?idMonDatn=" + idMonDatn, success: function (data) {
             var text = "<option value='' selected>Không chọn</option>"
             data.data.map(function (item) {
-                text += `<option value="${item.id}" >${item.tenGvhd}</option>`
+                text += `<option value="${item.id}" >${item.tenGvhd} - ${item.tenTaiKhoan}</option>`
             })
             $('#giangVienCreateNhom').html(text)
         }

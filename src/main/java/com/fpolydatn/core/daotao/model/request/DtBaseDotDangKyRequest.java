@@ -17,7 +17,7 @@ public abstract class DtBaseDotDangKyRequest {
 
     @NotEmpty
     @NotBlank
-    @Length(min = 6, max = 100)
+    @Length(max = 100)
     private String tenDotDangKy;
 
     @NotEmpty

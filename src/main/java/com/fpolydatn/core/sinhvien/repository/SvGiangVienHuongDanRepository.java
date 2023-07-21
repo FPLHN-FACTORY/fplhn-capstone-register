@@ -15,7 +15,7 @@ import java.util.List;
 public interface SvGiangVienHuongDanRepository extends GiangVienHuongDanRepository {
 
     @Query(value = """
-            SELECT g.id, g.ten_gvhd, g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
+            SELECT g.id, g.ten_gvhd, g.ten_tai_khoan, g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
             JOIN phan_cong_huong_dan p ON p.giang_vien_id = g.id 
             JOIN mon_datn m ON p.mon_datn_id = m.id 
             LEFT JOIN nhom_datn n ON n.giang_vien_id = g.id
