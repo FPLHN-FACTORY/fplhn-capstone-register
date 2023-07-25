@@ -32,10 +32,10 @@ public class DailyCheckNhomDatn {
     @Autowired
     private EmailSender emailSender;
 
-    @Scheduled(fixedDelay = 3600000)
+    @Scheduled(fixedDelay = 1800000)
     public void daiLyChecking() throws InterruptedException {
         List<String> listNhomKhongDuDieuKien = nhomDatnRepository.listNhomKhongDuDieuKien(convertDateToTimeStampSecond(),
-                Constants.MUOI_HAI_TIENG);
+                Constants.HAI_TIENG);
         if (listNhomKhongDuDieuKien != null) {
             List<SinhVien> listSinhVien = new ArrayList<>();
             for (String xx : listNhomKhongDuDieuKien) {
@@ -55,7 +55,7 @@ public class DailyCheckNhomDatn {
                 emailSender.sendEmail(arrEmail, "[FCR] Thông báo xóa nhóm không đủ điều kiện",
                         "Nhóm của bạn đã bị xóa",
                         new String[]{"Lý do: Nhóm của bạn không đủ số lượng tối thiểu 4 " +
-                                "thành viên sau 12 tiếng kể từ khi được thành lập"});
+                                "thành viên sau 2 tiếng kể từ khi được thành lập"});
             }
             sinhVienRepository.saveAll(listSinhVien);
             nhomDatnRepository.deleteAllById(listNhomKhongDuDieuKien);

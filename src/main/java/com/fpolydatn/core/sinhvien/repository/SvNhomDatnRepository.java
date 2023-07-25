@@ -119,4 +119,15 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
                                                                     @Param("coSoId") String coSoId,
                                                                     @Param("dotDangKyId") String dotDangKyId);
 
+    @Query(value = """
+            SELECT a.id
+            FROM sinh_vien a 
+            WHERE a.nhom_id IS NOT NULL AND 
+            a.id = :idUser AND a.co_so_id = :coSoId 
+            AND a.dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
+    String checkNhomDatnSinhVien(@Param("idUser") String idUser,
+                                 @Param("coSoId") String coSoId,
+                                 @Param("dotDangKyId") String dotDangKyId);
+
 }
