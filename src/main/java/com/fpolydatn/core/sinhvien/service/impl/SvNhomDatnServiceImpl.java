@@ -116,7 +116,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(req.getIdUser());
         if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null // Có dấu vết rời nhóm
                 && // Chưa rời nhóm đủ 12 tiếng
-                Calendar.getInstance().getTimeInMillis() - Constants.HAI_TIENG
+                Calendar.getInstance().getTimeInMillis() - Constants.TIME_RESET
                         < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
             throw new RestApiException(Message.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG);
         }
@@ -142,7 +142,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
         if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null) {
-            if (Calendar.getInstance().getTimeInMillis() - Constants.HAI_TIENG < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+            if (Calendar.getInstance().getTimeInMillis() - Constants.TIME_RESET < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
                 throw new RestApiException(Message.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG);
             }
         }
@@ -355,7 +355,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     public Boolean checkThoiGianRoiNhom(String idUser) {
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
         if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null) {
-            if (Calendar.getInstance().getTimeInMillis() - Constants.HAI_TIENG < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
+            if (Calendar.getInstance().getTimeInMillis() - Constants.TIME_RESET < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
                 return false;
             }
         }

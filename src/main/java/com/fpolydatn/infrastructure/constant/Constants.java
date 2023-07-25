@@ -5,7 +5,7 @@ public final class Constants {
     private Constants() {
     }
 
-    public static final String VERSION = "v1.4.1";
+    public static final String VERSION = "v1.4.2";
 
     public static final String ENCODING_UTF8 = "UTF-8";
 
@@ -29,5 +29,5 @@ public final class Constants {
 
     public static final int SO_NHOM_HUONG_DAN_TOI_DA = 7;
 
-    public static final long HAI_TIENG = 7200000;
+    public static final long TIME_RESET = 43200000;
 }

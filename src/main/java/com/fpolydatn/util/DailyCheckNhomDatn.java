@@ -35,30 +35,47 @@ public class DailyCheckNhomDatn {
     @Scheduled(fixedDelay = 1800000)
     public void daiLyChecking() throws InterruptedException {
         List<String> listNhomKhongDuDieuKien = nhomDatnRepository.listNhomKhongDuDieuKien(convertDateToTimeStampSecond(),
-                Constants.HAI_TIENG);
+                Constants.TIME_RESET);
         if (listNhomKhongDuDieuKien != null) {
             List<SinhVien> listSinhVien = new ArrayList<>();
             for (String xx : listNhomKhongDuDieuKien) {
                 List<SinhVien> listSinhVienByNhomId = sinhVienRepository.getListSinhVienByNhomId(xx);
-                for (SinhVien yy : listSinhVienByNhomId){
+                for (SinhVien yy : listSinhVienByNhomId) {
                     yy.setMonDatnId(null);
                     yy.setNhomId(null);
                     listSinhVien.add(yy);
                 }
             }
-            Integer soSinhVien = listSinhVien.size();
-            if (soSinhVien > 0) {
-                String[] arrEmail = new String[soSinhVien];
-                for (int i = 0; i < soSinhVien; i++) {
-                    arrEmail[i] = listSinhVien.get(i).getEmail();
-                }
-                emailSender.sendEmail(arrEmail, "[FCR] Thông báo xóa nhóm không đủ điều kiện",
-                        "Nhóm của bạn đã bị xóa",
-                        new String[]{"Lý do: Nhóm của bạn không đủ số lượng tối thiểu 4 " +
-                                "thành viên sau 2 tiếng kể từ khi được thành lập"});
-            }
             sinhVienRepository.saveAll(listSinhVien);
             nhomDatnRepository.deleteAllById(listNhomKhongDuDieuKien);
+            Integer soSinhVien = listSinhVien.size();
+            if (soSinhVien > 0) {
+                List<String> listEmail = new ArrayList<>();
+                for (int i = 0; i < soSinhVien; i++) {
+                    listEmail.add(listSinhVien.get(i).getEmail());
+                    if (listEmail.size() == 450) {
+                        String[] emailArray = new String[listEmail.size()];
+                        for (int j = 0; j < listEmail.size(); j++) {
+                            emailArray[j] = listEmail.get(j);
+                        }
+                        emailSender.sendEmail(emailArray, "[FCR] Thông báo xóa nhóm không đủ điều kiện",
+                                "Nhóm của bạn đã bị xóa",
+                                new String[]{"Lý do: Nhóm của bạn không đủ số lượng tối thiểu 4 " +
+                                        "thành viên sau 2 tiếng kể từ khi được thành lập"});
+                        listEmail.clear();
+                    }
+                }
+                if (listEmail.size() > 0) {
+                    String[] emailArray = new String[listEmail.size()];
+                    for (int j = 0; j < listEmail.size(); j++) {
+                        emailArray[j] = listEmail.get(j);
+                    }
+                    emailSender.sendEmail(emailArray, "[FCR] Thông báo xóa nhóm không đủ điều kiện",
+                            "Nhóm của bạn đã bị xóa",
+                            new String[]{"Lý do: Nhóm của bạn không đủ số lượng tối thiểu 4 " +
+                                    "thành viên sau 2 tiếng kể từ khi được thành lập"});
+                }
+            }
         }
     }
 
