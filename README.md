@@ -3,14 +3,14 @@ Website đăng ký DATN cho các sinh viên kỳ 7 của Cao đẳng FPT Polytec
 ---
 ## Quy định về số phiên bản
 ### Số phiên bản: x.y.z
-####1. x: Sẽ tăng khi có sự bổ sung một luồng mới hay bắt đầu một phase mới trong toàn bộ dự án. Ví dụ:
+#### 1. x: Sẽ tăng khi có sự bổ sung một luồng mới hay bắt đầu một phase mới trong toàn bộ dự án. Ví dụ:
   * Các phiên bản ở phase 1: `1.x.x`
   * Các phiên bản ở phase 2: `2.x.x`
-####2. y: Sẽ tăng khi có một chức năng mới, tắt một chức năng đã có hoặc thay đổi giao diện. Ví dụ:
+#### 2. y: Sẽ tăng khi có một chức năng mới, tắt một chức năng đã có hoặc thay đổi giao diện. Ví dụ:
   * Đang ở phiên bản `1.2.9` và bổ sung thêm chức năng `Đổi tên nhóm DATN` thì khi release số phiên bản sẽ là `1.2.10`
   * Đang ở phiên bản `1.2.9` và tắt hoặc loại bỏ chức năng quét nhóm DATN không đủ điều kiện thì khi release số phiên bản sẽ là `1.2.10`
   * Đang ở phiên bản `1.2.9` và tiến hành thay đổi vị trí nút Tạo nhóm DATN thì khi release số phiên bản sẽ là `1.2.10`
-####3. z: Sẽ tăng khi fix một lỗi tồn tại trong phiên bản trước đó. Ví dụ:
+#### 3. z: Sẽ tăng khi fix một lỗi tồn tại trong phiên bản trước đó. Ví dụ:
   * Đang ở phiên bản `1.4.2` và cần fix lỗi khi SV tạo nhóm có thể tạo được nhiều nhóm cùng một lúc thì khi release số phiên bản sẽ là `1.4.3`
   * Đang ở phiên bản `1.4.11` và cần fix lỗi không gửi được email thì khi release số phiên bản sẽ là `1.4.12`
 ---
