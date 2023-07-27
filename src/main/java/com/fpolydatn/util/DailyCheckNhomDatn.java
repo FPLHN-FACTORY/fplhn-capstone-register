@@ -48,13 +48,12 @@ public class DailyCheckNhomDatn {
                     timestampResetNhomDatn);
             if (listNhomKhongDuDieuKien != null) {
                 List<SinhVien> listSinhVien = new ArrayList<>();
-                for (String xx : listNhomKhongDuDieuKien) {
-                    List<SinhVien> listSinhVienByNhomId = sinhVienRepository.getListSinhVienByNhomId(xx);
-                    for (SinhVien yy : listSinhVienByNhomId) {
-                        yy.setMonDatnId(null);
-                        yy.setNhomId(null);
-                        listSinhVien.add(yy);
-                    }
+                List<SinhVien> listSinhVienByNhomId = sinhVienRepository.getListSinhVienByNhomId(convertDateToTimeStampSecond(),
+                        timestampResetNhomDatn);
+                for (SinhVien yy : listSinhVienByNhomId) {
+                    yy.setMonDatnId(null);
+                    yy.setNhomId(null);
+                    listSinhVien.add(yy);
                 }
                 sinhVienRepository.saveAll(listSinhVien);
                 nhomDatnRepository.deleteAllById(listNhomKhongDuDieuKien);

@@ -30,7 +30,12 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
                                                    @Param("dotDangKyID") String dotDangKyID);
 
     @Query(value = """
-            SELECT * FROM sinh_vien WHERE nhom_id = :id
+            SELECT * FROM sinh_vien WHERE nhom_id IN 
+            (SELECT a.id FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id
+                    WHERE a.created_date + :period < :currentTime
+                    GROUP BY a.id HAVING COUNT(b.id) <= 3
+            )
             """, nativeQuery = true)
-    List<SinhVien> getListSinhVienByNhomId(@Param("id") String id);
+    List<SinhVien> getListSinhVienByNhomId(@Param("currentTime") Long currentTime,
+                                           @Param("period") Long period);
 }
