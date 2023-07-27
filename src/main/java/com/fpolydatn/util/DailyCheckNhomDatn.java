@@ -38,9 +38,6 @@ public class DailyCheckNhomDatn {
     @Value("${config.timestampResetNhomDatn}")
     private Long timestampResetNhomDatn;
 
-    @Value("${config.hoursResetNhomDatn}")
-    private Long hoursResetNhomDatn;
-
     @Scheduled(fixedDelayString = "${config.fixedDelayMillis}")
     public void daiLyChecking() throws InterruptedException {
         if (statusSchedule) {
@@ -60,14 +57,14 @@ public class DailyCheckNhomDatn {
                 Integer soSinhVien = listSinhVien.size();
                 if (soSinhVien > 0) {
                     List<String> listEmail = new ArrayList<>();
-                    for (int i = 0; i < soSinhVien; i++) {
-                        listEmail.add(listSinhVien.get(i).getEmail());
+                    for (SinhVien sinhVien : listSinhVien) {
+                        listEmail.add(sinhVien.getEmail());
                         if (listEmail.size() == 450) {
                             sendEmail(listEmail);
                             listEmail.clear();
                         }
                     }
-                    if (listEmail.size() > 0) {
+                    if (!listEmail.isEmpty()) {
                         sendEmail(listEmail);
                     }
                 }
@@ -82,8 +79,7 @@ public class DailyCheckNhomDatn {
         }
         emailSender.sendEmail(emailArray, "[FCR] Thông báo xóa nhóm không đủ điều kiện",
                 "Nhóm của bạn đã bị xóa",
-                new String[]{"Lý do: Nhóm của bạn không đủ số lượng tối thiểu 4 " +
-                        "thành viên sau " + hoursResetNhomDatn + " tiếng kể từ khi được thành lập"});
+                new String[]{"Lý do: Nhóm của bạn không đủ số lượng thành viên trong thời gian quy định kể từ khi thành lập"});
     }
 
 }
