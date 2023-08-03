@@ -302,15 +302,15 @@
                                                                     <label class="col-form-label">Đợt đăng ký</label>
                                                                     <br>
                                                                     <select class="form-control" id="dotDangKyId">
-                                                                        <option value="Chọn đợt đăng ký" hidden>Chọn đợt
+                                                                        <option value="" hidden>Chọn đợt
                                                                             đăng kí
                                                                         </option>
                                                                         <option th:each="item : ${listDotDangKy}"
                                                                                 th:value="${item.id}"
                                                                                 th:text="${item.getName()}"></option>
                                                                     </select>
-                                                                    <small class="text-danger"
-                                                                           id="errorDotDangKy"></small><br>
+                                                                    <span class="text-danger"
+                                                                           id="errorDotDangKy"></span><br>
                                                                     <br>
                                                                     <label class="col-form-label">Tên giảng viên</label><br>
                                                                     <input

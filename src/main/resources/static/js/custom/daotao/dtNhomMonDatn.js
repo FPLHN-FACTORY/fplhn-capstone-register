@@ -55,7 +55,7 @@ function createNhomMonDatn() {
             },
             error: function (e) {
                 if (e.responseJSON.message === 'Ma nhom mon da ton tai') {
-                    $("#ma_mon_datn_error").text('Mã nhóm đã tồn tại');
+                    $("#ma_mon_datn_error").text('Mã nhóm đã tồn tại hoặc mã nhóm môn đang trùng với mã môn');
                 }
             }
         });

@@ -16,7 +16,6 @@ import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
-import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.CommonHelper;
@@ -71,15 +70,15 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     @Override
     public GiangVienHuongDan create(@Valid DtCreateGiangVienHDRequest command) {
-        String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim(), command.getCoSoId());
+        String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim(), command.getCoSoId(), command.getDotDangKyId());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
-        String idByEmailFe = dtGiangVienHDRepository.getIdByEmailFe(command.getEmailFe(), command.getCoSoId());
+        String idByEmailFe = dtGiangVienHDRepository.getIdByEmailFe(command.getEmailFe(), command.getCoSoId(), command.getDotDangKyId());
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan(), command.getCoSoId());
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan(), command.getCoSoId(), command.getDotDangKyId());
         if (idByTenGiangVien != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
@@ -108,15 +107,16 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
 
-        String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId(), command.getCoSoId());
+        String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
-        String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId(), command.getCoSoId());
+        String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId(), command.getCoSoId());
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
         if (idByTenGiangVien != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
@@ -243,7 +243,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             DtGiangVienFileImportExcel dtGiangVienHDImport = new DtGiangVienFileImportExcel();
             List<DtGiagVienHDImportResquest> listGVHD = dtGiangVienHDImport.importData(file);
             ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
-            addDataInMap(map, coSoId);
+            addDataInMap(map, coSoId, doDangKyId);
 
             listGVHD.parallelStream().forEach(gv -> {
                 if (gv.getEmailFe().isEmpty() || gv.getEmailFpt().isEmpty() ||
@@ -332,14 +332,14 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         return dtGiangVienHDResponseMessage;
     }
 
-    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId) {
-        List<String> listEmailFe = dtGiangVienHDRepository.findAllEmailFe(coSoId);
+    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId, String dotDangKyId) {
+        List<String> listEmailFe = dtGiangVienHDRepository.findAllEmailFe(coSoId, dotDangKyId);
         setDataInMap(mapAll, listEmailFe);
 
-        List<String> listEmailFPT = dtGiangVienHDRepository.findAllEmailFpt(coSoId);
+        List<String> listEmailFPT = dtGiangVienHDRepository.findAllEmailFpt(coSoId, dotDangKyId);
         setDataInMap(mapAll, listEmailFPT);
 
-        List<String> listTenTaiKhoan = dtGiangVienHDRepository.findAllTenTaiKhoan(coSoId);
+        List<String> listTenTaiKhoan = dtGiangVienHDRepository.findAllTenTaiKhoan(coSoId, dotDangKyId);
         setDataInMap(mapAll, listTenTaiKhoan);
     }
 

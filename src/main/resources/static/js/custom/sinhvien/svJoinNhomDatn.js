@@ -142,7 +142,7 @@ function getGiangVien(idMonDatn) {
         type: "GET", url: SVNhomDatnApi + "/search-giang-vien?idMonDatn=" + idMonDatn, success: function (data) {
             var text = "<option value='' selected>Không chọn</option>"
             data.data.map(function (item) {
-                text += `<option value="${item.id}" >${item.tenGvhd}</option>`
+                text += `<option value="${item.id}" >${item.tenGvhd} - ${item.tenTaiKhoan}</option>`
             })
             $('#giangVienCreateNhom').html(text)
         }
@@ -284,7 +284,7 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
                 <td>${item.tenMonDatn}</td>
                 <td>${item.countSinhVien}/7</td>
-                <td>${item.maSinhVien + ' - ' + item.tenSinhVien}</td>
+                <td>${item.tenSinhVien}</td>
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
                 <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
                 <td>

@@ -14,7 +14,8 @@ $(document).ready(function () {
 })
 
 function clearData() {
-    $("#tenGiangVien").val("");;
+    $("#tenGiangVien").val("");
+    ;
     $("#search_dot_dang_ky").val("");
 }
 
@@ -89,10 +90,10 @@ function addGVHD() {
     if (tenTaiKhoan.length === 0) {
         $("#errorTenTaiKhoan").text(" Tên tài khoản không được để trống");
         index++;
-    } else if(tenTaiKhoan.indexOf(" ") > -1) {
-         $("#errorTenTaiKhoan").text(" Tên tài khoản không có khoảng trắng");
-         index++;
-     } else {
+    } else if (tenTaiKhoan.indexOf(" ") > -1) {
+        $("#errorTenTaiKhoan").text(" Tên tài khoản không có khoảng trắng");
+        index++;
+    } else {
         $("#errorTenTaiKhoan").text("");
     }
 
@@ -123,8 +124,8 @@ function addGVHD() {
         $("#errorEmailFe").text("");
     }
 
-    if (dotDangKyId == "Chọn đợt đăng kí") {
-        $("#errorDotDangKy").text(" Đợt đăng ký không được để trống");
+    if (dotDangKyId.length === 0) {
+        $("#errorDotDangKy").text("Đợt đăng ký không được để trống");
         index++;
     } else {
         $("#errorDotDangKy").text("");
@@ -137,21 +138,17 @@ function addGVHD() {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                if (responseData.data.message == null) {
-                    window.open(giangVienHuongDanView, '_self');
-                    $("#modal_create").modal("hide");
-                } else {
-                    if (responseData.data.message == 'email fpt da ton tai') {
-                        $("#errorEmailFpt").text("Email Fpt đã tồn tại");
-                    } else if (responseData.data.message == 'email fe da ton tai') {
-                        $("#errorEmailFe").text("Email Fe đã tồn tại");
-                    } else if (responseData.data.message == 'ten tai khoan da ton tai') {
-                        $("#errorTenTaiKhoan").text("Tài khoản giảng viên bị trùng")
-                    }
-                }
+                window.open(giangVienHuongDanView, '_self');
+                $("#modal_create").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message == 'email fpt da ton tai') {
+                    $("#errorEmailFpt").text("Email Fpt đã tồn tại");
+                } else if (e.responseJSON.message == 'email fe da ton tai') {
+                    $("#errorEmailFe").text("Email Fe đã tồn tại");
+                } else if (e.responseJSON.message == 'ten tai khoan da ton tai') {
+                    $("#errorTenTaiKhoan").text("Tài khoản giảng viên bị trùng")
+                }
             }
         });
     }
@@ -202,6 +199,7 @@ function updateGVHD() {
     giangVienRequest["emailFpt"] = emailFpt;
     giangVienRequest["emailFe"] = emailFe;
     giangVienRequest["dotDangKyId"] = dotDangKyId;
+
     let index = 0;
     if (tenGvhd.length === 0) {
         $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được để trống");
@@ -226,7 +224,7 @@ function updateGVHD() {
     if (tenTaiKhoan.length === 0) {
         $("#errorTenTaiKhoanUpdate").text(" Tên tài khoản không được để trống");
         index++;
-    } else if(tenTaiKhoan.indexOf(" ") > -1) {
+    } else if (tenTaiKhoan.indexOf(" ") > -1) {
         $("#errorTenTaiKhoanUpdate").text(" Tên tài khoản không có khoảng trắng");
         index++;
     } else {
@@ -260,7 +258,7 @@ function updateGVHD() {
         $("#errorEmailFeUpdate").text("");
     }
 
-    if (dotDangKyId == "Chọn đợt đăng kí") {
+    if (dotDangKyId.length === 0) {
         $("#errorDotDangKyUpdate").text(" Đợt đăng ký không được để trống");
         index++;
     } else {
@@ -274,22 +272,18 @@ function updateGVHD() {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                if (responseData.data.message == null) {
-                    window.open(giangVienHuongDanView, '_self');
-                    $("#modal_create").modal("hide");
-                } else {
-                    if (responseData.data.message == 'email fpt da ton tai') {
-                        $("#errorEmailFptUpdate").text("Email Fpt đã tồn tại");
-                    } else if (responseData.data.message == 'email fe da ton tai') {
-                        $("#errorEmailFeUpdate").text("Email Fe đã tồn tại");
-                    } else if (responseData.data.message == 'ten tai khoan da ton tai') {
-                        $("#errorTenTaiKhoanUpdate").text("Tài khoản giảng viên bị trùng")
-                    }
-                }
-
+                console.log(responseData.data)
+                window.open(giangVienHuongDanView, '_self');
+                $("#modal_create").modal("hide");
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message == 'email fpt da ton tai') {
+                    $("#errorEmailFptUpdate").text("Email Fpt đã tồn tại");
+                } else if (e.responseJSON.message == 'email fe da ton tai') {
+                    $("#errorEmailFeUpdate").text("Email Fe đã tồn tại");
+                } else if (e.responseJSON.message == 'ten tai khoan da ton tai') {
+                    $("#errorTenTaiKhoanUpdate").text("Tài khoản giảng viên bị trùng")
+                }
             }
         });
     }
@@ -361,16 +355,20 @@ function openModalImport() {
 }
 
 function exportFile() {
-    let typeExcel = $("#type_excel").val()
+    let typeExcel = $("#type_excel").val();
+
+    let tenGiangVien = $("#tenGiangVien").val();
+    let dotDangKyId = $("#search_dot_dang_ky").val();
+
     if (typeExcel == '') {
         $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel,
+            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenGiangVien=" + tenGiangVien,
             success: function () {
-                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel, '_self');
+                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenGiangVien=" + tenGiangVien, '_self');
                 $("#modal_excel").modal('hide')
             },
             error: function (e) {

@@ -35,7 +35,7 @@ public interface DtSinhVienTheoDotService {
 
     DtLoaiSinhVienResponse importSinhVienKhongDuDieukien(DtLoaiSinhVienKhongDatRequest request);
 
-    DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId, String dotDangKyId);
+    DtSinhVienTheoDotResponse searchStudentById(String id);
 
     SinhVien loaiSinhVien(String id, String coSoId, String dotDangKyId);
 

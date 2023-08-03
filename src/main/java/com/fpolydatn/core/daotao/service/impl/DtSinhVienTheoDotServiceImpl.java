@@ -216,6 +216,12 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                     return;
                 }
 
+                if (sinhVien.getSoDienThoai().length() > 11) {
+                    response.setStatus(false);
+                    response.setMessage("Số điện thoại " + sinhVien.getEmail() + " không được vượt quá 11 kí tự");
+                    return;
+                }
+
                 sinhVienEntity.setTenSinhVien(sinhVien.getTenSinhVien());
                 sinhVienEntity.setMaSinhVien(sinhVien.getMaSinhVien());
                 if (sinhVien.getSoDienThoai() == null) {
@@ -390,8 +396,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId, String dotDangKyId) {
-        return sinhVienRepository.searchStudentById(id, coSoId, dotDangKyId);
+    public DtSinhVienTheoDotResponse searchStudentById(String id) {
+        return sinhVienRepository.searchStudentById(id);
     }
 
     @Override

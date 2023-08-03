@@ -111,11 +111,9 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id
             LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
             LEFT JOIN do_an_tot_nghiep.mon_datn mct ON mct.id = s.mon_chuong_trinh_id
-            WHERE s.id = :id AND s.co_so_id = :coSoId AND s.dot_dang_ky_id = :dotDangKyId
+            WHERE s.id = :id
             """, nativeQuery = true)
-    DtSinhVienTheoDotResponse searchStudentById(@Param("id") String id,
-                                                @Param("coSoId") String coSoId,
-                                                @Param("dotDangKyId") String dotDangKyId);
+    DtSinhVienTheoDotResponse searchStudentById(@Param("id") String id);
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY s.last_modified_date DESC) AS stt,

@@ -20,7 +20,7 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
             SELECT a.id, b.id AS id_sinh_vien, ROW_NUMBER() OVER() AS Stt, ma_nhom, ten_nhom, ten_dot_dang_ky, 
-            ten_de_tai, ma_sinh_vien, ten_sinh_vien, ten_gvhd, a.mat_khau, 
+            ten_de_tai, ma_sinh_vien, ten_sinh_vien, ten_gvhd, c.ten_tai_khoan AS ten_tai_khoan_gvhd, a.mat_khau, 
             (SELECT CONCAT(e.ma_mon, ' - ', e.ten_mon_datn) FROM mon_datn e WHERE e.id = b.mon_chuong_trinh_id) as ten_mon_chuong_trinh, 
             CONCAT(f.ma_mon, ' - ', f.ten_mon_datn) AS ten_mon_datn, 
             IF(b.id = a.truong_nhom_id, 1, 0) AS chuc_vu, a.trang_thai, 
@@ -113,10 +113,21 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             a.ma_sinh_vien, a.ten_sinh_vien, b.ma_nhom, b.ten_nhom, b.mo_ta, 
             IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu 
             FROM sinh_vien a LEFT JOIN nhom_datn b ON a.nhom_id = b.id 
-            WHERE a.nhom_id = :nhomDatnId AND a.co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
+            WHERE a.nhom_id = :nhomDatnId AND a.co_so_id = :coSoId AND b.dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
     List<SvShowSinhVienTheoNhomResponse> getAllSinhVienByNhomDatnId(@Param("nhomDatnId") String nhomDatnId,
                                                                     @Param("coSoId") String coSoId,
                                                                     @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+            SELECT a.id
+            FROM sinh_vien a 
+            WHERE a.nhom_id IS NOT NULL AND 
+            a.id = :idUser AND a.co_so_id = :coSoId 
+            AND a.dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
+    String checkNhomDatnSinhVien(@Param("idUser") String idUser,
+                                 @Param("coSoId") String coSoId,
+                                 @Param("dotDangKyId") String dotDangKyId);
 
 }

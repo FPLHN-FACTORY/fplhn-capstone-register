@@ -92,5 +92,6 @@ public class PropertyKeys {
     public static final String SINH_VIEN_ALREADY_EXIST = "sinh.vien.mon.already.exist";
 
     public static final String TAO_NHOM_THAT_BAI = "tao.nhom.that.bai";
+    public static final String SINH_VIEN_DA_CO_NHOM = "sinh.vien.da.co.nhom";
 
 }

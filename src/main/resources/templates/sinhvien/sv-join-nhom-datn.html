@@ -74,7 +74,7 @@
                                         </div>
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
-                                            <span class="fillter-name col-5 text-center" for="">Tên giáo viên</span>
+                                            <span class="fillter-name col-5 text-center" for="">Tên giảng viên</span>
                                             <input class="form-control col-6" id="giangVien" name="giangVien"
                                                    type="text"
                                             >
@@ -130,6 +130,7 @@
                                             <th>Số người</th>
                                             <th>Trưởng nhóm</th>
                                             <th>GVHD</th>
+                                            <th>Trạng thái</th>
                                             <th width="100px">
                                                 Hành động
                                             </th>
@@ -145,6 +146,7 @@
                                                     <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
                                                     <td th:text="${nhomDatn.getTenSinhVien()}"></td>
                                                     <td th:text="${nhomDatn.tenGvhd} == null ? 'Chưa có': (${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()})"></td>
+                                                    <td th:text="${nhomDatn.matKhauTonTai} == 0 ? 'Công khai': 'Nhóm kín'"></td>
                                                     <td>
                                                         <button class="btn_eye"
                                                                 th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"

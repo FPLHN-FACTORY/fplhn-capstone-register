@@ -94,7 +94,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     ConcurrentHashMap<String, GiangVienHuongDan> mapGiangVien;
 
     @Override
-    public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
+        public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         if (request.getDotDangKyId() == null) {
             if (dotDangKyId != null) {
