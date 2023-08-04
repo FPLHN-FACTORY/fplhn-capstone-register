@@ -8,6 +8,7 @@ import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.model.request.MuitiPathFile;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
+import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +34,20 @@ public class DtMonDatnController extends BaseController {
     @Autowired
     private DtChuyenNganhService chuyenNganhService;
 
+    @Autowired
+    private DtSvDotDangKyService dotDangKyService;
+
     @GetMapping
     public String viewMonDatn(Model model, final DtFindMonDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
         List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
-//        List<MonDatn> tenNhomMon = monDatnService.findByTenNhomMon(coSoId);
+        List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(req.getCoSoId());
+        PageableObject<DtMonDatnResponse> pageMonDatn = monDatnService.search(req);
         model.addAttribute("page", pageMonDatn);
         model.addAttribute("file", new MuitiPathFile());
+        model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
-//        model.addAttribute("tenNhomMon", tenNhomMon);
         return "daotao/dt-mon-datn";
     }
 

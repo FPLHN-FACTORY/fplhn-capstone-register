@@ -15,6 +15,7 @@ import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,6 +44,9 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     @Autowired
     private DtChuyenNganhRepository chuyenNganhRepository;
 
+    @Autowired
+    private CommonHelper commonHelper;
+
     private FormUtils formUtils = new FormUtils();
 
     private ConcurrentHashMap<String, MonDatn> monDatnHashMap;
@@ -57,6 +61,20 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (req.getDotDangKyId() == null) {
+            if (dotDangKyId != null) {
+                req.setDotDangKyId(dotDangKyId);
+            } else {
+                req.setDotDangKyId("");
+            }
+        } else if (req.getDotDangKyId().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                req.setDotDangKyId(dotDangKyId);
+            } else {
+                req.setDotDangKyId("");
+            }
+        }
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
         Page<DtMonDatnResponse> res = monDatnRepository.getAllByCoSo(req, pageable);
         return new PageableObject(res);

@@ -34,6 +34,70 @@
             <div>
                 <div class="m-content">
                     <h3>Quản lý Môn DATN</h3>
+                    <section class="fillter-area  mb-5">
+                        <div class="m-portlet">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                <span class="m-portlet__head-icon">
+                                    <i class="m-menu__link-icon flaticon-web"></i>
+                                </span>
+                                        <h3 class="m-portlet__head-text">
+                                            Bộ lọc
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <form
+                                    id="searchGvhd"
+                                    method="GET"
+                                    class="m-portlet__body">
+                                <div class="row">
+                                    <div
+                                            class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                        <span for="" class="fillter-name col-5 text-center">Mã môn</span>
+                                        <input type="text" class="form-control col-6"
+                                               name="search_ma_mon" id="search_ma_mon" value="">
+                                    </div>
+                                    <div
+                                            class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                        <span for="" class="fillter-name col-5 text-center">Chuyên ngành</span>
+                                        <select name="chuyenNganh" id="chuyenNganh" class="form-control col-6">
+                                            <option value="">Chọn chuyên ngành</option>
+                                            <option th:each="chuyenhNganh : ${tenChuyenNganh}"
+                                                    th:value="${chuyenhNganh.getId}"
+                                                    th:text="${chuyenhNganh.getName}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                        <label class="fillter-name col-4 text-center">Đợt đăng ký</label>
+                                        <br>
+                                        <select class="form-control col-6" id="search_dot_dang_ky">
+                                            <option value="">Chọn đợt đăng ký</option>
+                                            <option th:each="item : ${listDotDangKy}"
+                                                    th:value="${item.getId()}"
+                                                    th:text="${item.getName()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center pt-2">
+                                    <div class="col-sm-1 col-12 text-center mt-1">
+                                        <button type="button"
+                                                class="btn btn-primary" th:attr="onclick=|loadTable(0)|"
+                                        >Tìm kiếm
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-1 col-12 text-center mt-1">
+                                        <a href="#"
+                                           class="btn btn-danger text-white" th:attr="onclick=|clearData()|">
+                                            Làm mới bộ lọc
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
                     <div class="mt-5">
                         <div class="m-portlet">
                             <div class="m-portlet">
@@ -136,16 +200,20 @@
                                                 <th width="150px">Mã môn</th>
                                                 <th width="200px">Tên môn</th>
                                                 <th width="250px">Nhóm môn</th>
+                                                <th width="250px">CNBM</th>
+                                                <th width="250px">GVHD</th>
                                                 <th width="200px">Chuyên ngành</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="searchListMon">
                                                 <th:block th:each="monDatn,i : ${page.data}">
                                                     <tr class="table-light">
                                                         <td th:text="${monDatn.stt}"></td>
                                                         <td th:text="${monDatn.maMon}"></td>
                                                         <td th:text="${monDatn.tenMon}"></td>
                                                         <td th:text="${monDatn.id == monDatn.nhomMonDatnId ? 'Môn độc lập' : monDatn.tenNhomMon}"></td>
+                                                        <td th:text="${monDatn.tenCanBo}"></td>
+                                                        <td th:text="${monDatn.danhSachGVHD}"></td>
                                                         <td th:text="${monDatn.tenChuyenNganh}"></td>
                                                         <td>
                                                             <a
