@@ -23,7 +23,7 @@ public interface DtMonDatnService {
 
     MonDatn findById(String id);
 
-    List<MonDatn> findByTenNhomMon(String coSoId);
+    List<MonDatn> getNhomMonByChuyeNganh(String coSoId, String chuyenNganhId);
 
     MonDatn update(@Valid final DtUpdateMonDatnRequest command);
 

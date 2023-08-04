@@ -3,7 +3,6 @@ package com.fpolydatn.core.daotao.controller;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.core.daotao.excel.DtGiangVienFileImportExcel;
 import com.fpolydatn.core.daotao.model.request.DtCreateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
@@ -42,13 +41,12 @@ public class DtGiangVienRestController extends BaseController {
 
     @PostMapping
     public ResponseObject add(@RequestBody DtCreateGiangVienHDRequest cmd) {
-        try {
-            String coSoid = session.getCoSoId();
-            cmd.setCoSoId(coSoid);
-            return new ResponseObject(giangVienHDService.create(cmd));
-        } catch (Exception e) {
-            return new ResponseObject(e);
+        String coSoid = session.getCoSoId();
+        cmd.setCoSoId(coSoid);
+        if (cmd.getDotDangKyId().equalsIgnoreCase("")) {
+            cmd.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         }
+        return new ResponseObject(giangVienHDService.create(cmd));
     }
 
     @GetMapping("/{id}")
@@ -59,22 +57,14 @@ public class DtGiangVienRestController extends BaseController {
     @PutMapping("/{id}")
     public ResponseObject update(@PathVariable("id") String id,
                                  @RequestBody DtUpdateGiangVienHDRequest cmd) {
-        try {
-            cmd.setId(id);
-            cmd.setCoSoId(session.getCoSoId());
-            return new ResponseObject(giangVienHDService.update(cmd));
-        } catch (Exception e) {
-            return new ResponseObject(e);
-        }
+        cmd.setId(id);
+        cmd.setCoSoId(session.getCoSoId());
+        return new ResponseObject(giangVienHDService.update(cmd));
     }
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
-        try {
-            return new ResponseObject(giangVienHDService.delete(id));
-        } catch (Exception e) {
-            return new ResponseObject(e);
-        }
+        return new ResponseObject(giangVienHDService.delete(id));
     }
 
     @GetMapping("/search")
@@ -87,14 +77,13 @@ public class DtGiangVienRestController extends BaseController {
     @PostMapping("/import/{dotDangKyId}")
     public ResponseObject importEcel(@RequestParam("file") MultipartFile file, @PathVariable("dotDangKyId") String dotDangKyId) throws IOException {
         String idCoSo = session.getCoSoId();
-        DtGiangVienHDResponseMessage responseMessage = giangVienHDService.DtGiangVienHDImport(file,idCoSo,dotDangKyId.trim());
+        DtGiangVienHDResponseMessage responseMessage = giangVienHDService.DtGiangVienHDImport(file, idCoSo, dotDangKyId.trim());
         return new ResponseObject(responseMessage);
     }
 
     @GetMapping("/export")
     public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
-        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         giangVienHDService.DtGiangVienHDExportExcel(response, typeExcel, request);
     }
 

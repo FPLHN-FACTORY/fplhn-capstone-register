@@ -36,6 +36,9 @@ public interface DtSinhVienTheoDotResponse extends IsIdentified {
     @Value("#{target.khoa}")
     String getKhoa();
 
+    @Value("#{target.chuyen_nganh_id}")
+    String getChuyenNganhId();
+
     @Value("#{target.ten_chuyen_nganh}")
     String getTenChuyenNganh();
 
@@ -54,6 +57,9 @@ public interface DtSinhVienTheoDotResponse extends IsIdentified {
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
 
+    @Value("#{target.id_dot_dang_ky}")
+    String getIdDotDangKy();
+
     @Value("#{target.ten_dot_dang_ky}")
     String getTenDotDangKy();
 
@@ -62,6 +68,9 @@ public interface DtSinhVienTheoDotResponse extends IsIdentified {
 
     @Value("#{target.so_thanh_vien}")
     Long getSoThanhVien();
+
+    @Value("#{target.id_mom_chuong_trinh}")
+    String getIdMonChuongTrinh();
 
     @Value("#{target.ten_mon_chuong_trinh}")
     String getMonChuongTrinh();

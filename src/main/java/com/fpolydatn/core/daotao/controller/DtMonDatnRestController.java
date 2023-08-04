@@ -64,4 +64,9 @@ public class DtMonDatnRestController extends BaseController {
         return new ResponseObject(check);
     }
 
+    @GetMapping("/get-nhom-mon")
+    public ResponseObject getNhomMon(@RequestParam("chuyenNganhId") String chuyenNganhId) {
+        return new ResponseObject(monDatnService.getNhomMonByChuyeNganh(session.getCoSoId(), chuyenNganhId));
+    }
+
 }

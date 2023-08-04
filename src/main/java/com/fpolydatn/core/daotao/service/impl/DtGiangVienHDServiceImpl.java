@@ -16,7 +16,6 @@ import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
-import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.CommonHelper;
@@ -71,15 +70,15 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     @Override
     public GiangVienHuongDan create(@Valid DtCreateGiangVienHDRequest command) {
-        String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim(), command.getCoSoId());
+        String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim(), command.getCoSoId(), command.getDotDangKyId());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
-        String idByEmailFe = dtGiangVienHDRepository.getIdByEmailFe(command.getEmailFe(), command.getCoSoId());
+        String idByEmailFe = dtGiangVienHDRepository.getIdByEmailFe(command.getEmailFe(), command.getCoSoId(), command.getDotDangKyId());
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan(), command.getCoSoId());
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdByTenTaiKhoan(command.getTenTaiKhoan(), command.getCoSoId(), command.getDotDangKyId());
         if (idByTenGiangVien != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
@@ -108,15 +107,16 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
 
-        String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId(), command.getCoSoId());
+        String idByEmailFpt = dtGiangVienHDRepository.getIdUpdateByEmailFpt(command.getEmailFpt().trim(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
-        String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId(), command.getCoSoId());
+        String idByEmailFe = dtGiangVienHDRepository.getIdUpdateByEmailFe(command.getEmailFe(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
+
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
-        String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId(), command.getCoSoId());
+        String idByTenGiangVien = dtGiangVienHDRepository.getIdUpdateByTenTaiKhoan(command.getTenTaiKhoan(), command.getId(), command.getCoSoId(), command.getDotDangKyId());
         if (idByTenGiangVien != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
@@ -243,69 +243,73 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             DtGiangVienFileImportExcel dtGiangVienHDImport = new DtGiangVienFileImportExcel();
             List<DtGiagVienHDImportResquest> listGVHD = dtGiangVienHDImport.importData(file);
             ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
-            addDataInMap(map, coSoId);
+            addDataInMap(map, coSoId, doDangKyId);
 
             listGVHD.parallelStream().forEach(gv -> {
                 if (gv.getEmailFe().isEmpty() || gv.getEmailFpt().isEmpty() ||
-                        gv.getSoDienThoai().isEmpty() || gv.getTenTaiKhoan().isEmpty() ||
+                        gv.getTenTaiKhoan().isEmpty() ||
                         gv.getSoNhomHuongDanToiDa() == null || gv.getTenGvhd().isEmpty()) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Không được để trống");
+                    dtGiangVienHDResponseMessage.setMessage("Tên, emailFE, emailFpt, Tên tài khoản, Số nhóm hướng dẫn không được để trống");
                     return;
                 }
 
                 if (map.get(gv.getEmailFpt()) != null) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email Fpt bị trùng");
+                    dtGiangVienHDResponseMessage.setMessage("Email Fpt "+ gv.getEmailFpt() +" bị trùng");
                     return;
                 }
 
                 if (map.get(gv.getEmailFe()) != null) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email Fe bị trùng");
+                    dtGiangVienHDResponseMessage.setMessage("Email Fe "+ gv.getEmailFe() +" bị trùng");
                     return;
                 }
 
                 if (map.get(gv.getTenTaiKhoan()) != null) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Tên tài khoản bị trùng");
+                    dtGiangVienHDResponseMessage.setMessage("Tên tài khoản " + gv.getTenTaiKhoan() +" bị trùng");
                     return;
                 }
 
-                if (!gv.getEmailFpt().matches("\\w+@fpt.edu.vn")) {
+//                if (!gv.getEmailFpt().matches("\\w+@fpt.edu.vn")) {
+//                    dtGiangVienHDResponseMessage.setStatus(false);
+//                    dtGiangVienHDResponseMessage.setMessage("Email fpt không đúng định dạng");
+//                    return;
+//                }
+//
+//                if (!gv.getEmailFe().matches("\\w+@fe.edu.vn")) {
+//                    dtGiangVienHDResponseMessage.setStatus(false);
+//                    dtGiangVienHDResponseMessage.setMessage("Email fe không đúng định dạng");
+//                    return;
+//                }
+
+                if (gv.getEmailFpt().length() > 50) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fpt không đúng định dạng");
+                    dtGiangVienHDResponseMessage.setMessage("Email fpt " + gv.getEmailFpt() +" quá 50 ký tự");
                     return;
                 }
 
-                if (!gv.getEmailFe().matches("\\w+@fe.edu.vn")) {
+                if (gv.getEmailFe().length() > 50) {
                     dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fe không đúng định dạng");
+                    dtGiangVienHDResponseMessage.setMessage("Email fe "+ gv.getEmailFe() +" quá 50 ký tự");
                     return;
                 }
 
-                if (gv.getEmailFpt().length() > 30) {
-                    dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fpt quá 30 ký tự");
-                    return;
-                }
-
-                if (gv.getEmailFe().length() > 30) {
-                    dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Email fe quá 30 ký tự");
-                    return;
-                }
-
-                if (!gv.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
-                    dtGiangVienHDResponseMessage.setStatus(false);
-                    dtGiangVienHDResponseMessage.setMessage("Số điện thoại không đúng định dạng");
-                    return;
-                }
+//                if (!gv.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
+//                    dtGiangVienHDResponseMessage.setStatus(false);
+//                    dtGiangVienHDResponseMessage.setMessage("Số điện thoại không đúng định dạng");
+//                    return;
+//                }
                 DtGiagVienHDImportResquest giangVien = new DtGiagVienHDImportResquest();
                 giangVien.setEmailFe(gv.getEmailFe());
                 giangVien.setEmailFpt(gv.getEmailFpt());
                 giangVien.setTenTaiKhoan(gv.getTenTaiKhoan());
-                giangVien.setSoDienThoai(gv.getSoDienThoai());
+                if (gv.getSoDienThoai() == null) {
+                    giangVien.setSoDienThoai("");
+                } else {
+                    giangVien.setSoDienThoai(gv.getSoDienThoai());
+                }
                 giangVien.setSoNhomHuongDanToiDa(gv.getSoNhomHuongDanToiDa());
                 giangVien.setTenGvhd(gv.getTenGvhd());
                 giangVien.setMonHoc(gv.getMonHoc());
@@ -328,14 +332,14 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         return dtGiangVienHDResponseMessage;
     }
 
-    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId) {
-        List<String> listEmailFe = dtGiangVienHDRepository.findAllEmailFe(coSoId);
+    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId, String dotDangKyId) {
+        List<String> listEmailFe = dtGiangVienHDRepository.findAllEmailFe(coSoId, dotDangKyId);
         setDataInMap(mapAll, listEmailFe);
 
-        List<String> listEmailFPT = dtGiangVienHDRepository.findAllEmailFpt(coSoId);
+        List<String> listEmailFPT = dtGiangVienHDRepository.findAllEmailFpt(coSoId, dotDangKyId);
         setDataInMap(mapAll, listEmailFPT);
 
-        List<String> listTenTaiKhoan = dtGiangVienHDRepository.findAllTenTaiKhoan(coSoId);
+        List<String> listTenTaiKhoan = dtGiangVienHDRepository.findAllTenTaiKhoan(coSoId, dotDangKyId);
         setDataInMap(mapAll, listTenTaiKhoan);
     }
 

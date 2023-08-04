@@ -25,8 +25,8 @@ public interface SvNhomDatnResponse extends IsIdentified {
     @Value("#{target.total_ma_sinh_vien}")
     String getCountSinhVien();
 
-    @Value("#{target.ma_sinh_vien}")
-    String getMaSinhVien();
+//    @Value("#{target.ma_sinh_vien}")
+//    String getMaSinhVien();
 
     @Value("#{target.mat_khau_ton_tai}")
     int getMatKhauTonTai();
@@ -40,8 +40,8 @@ public interface SvNhomDatnResponse extends IsIdentified {
     @Value("#{target.ten_tai_khoan}")
     String getTenTaiKhoan();
 
-    @Value("#{target.trang_thai}")
-    int getTrangThai();
+//    @Value("#{target.trang_thai}")
+//    int getTrangThai();
 
     @Value("#{target.nhan_xet}")
     String getNhanXet();

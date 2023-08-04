@@ -7,7 +7,7 @@ $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 });
 
-function openModalExportExcel(){
+function openModalExportExcel() {
     $("#type_excel_error").text('');
     $("#modal_excel").modal('show');
 }
@@ -30,14 +30,23 @@ function openModalDanhSachSinhVien(id) {
             console.log(responseData.data)
             var text = "";
             responseData.data.map(function (item) {
-                text += `
-                <tr>
-                <td>${item.stt}</td>
-                <td>${item.maSinhVien}</td>
-                <td>${item.tenSinhVien}</td>
-                <td>${item.chucVu == 1 ? 'Trưởng nhóm' : 'Thành viên'}</td>
-                </tr>
+                if (item.chucVu == 1) {
+                    text += `
+                    <tr style="color: red">
+                    <td><b>${item.stt}</b></td>
+                    <td><b>${item.maSinhVien}</b></td>
+                    <td><b>${item.tenSinhVien}</b></td>
+                    </tr>
                 `
+                } else {
+                    text += `
+                        <tr>
+                        <td>${item.stt}</td>
+                        <td>${item.maSinhVien}</td>
+                        <td>${item.tenSinhVien}</td>
+                        </tr>
+                `
+                }
             })
             $("#show_Dssv").html(text)
         },
@@ -72,31 +81,35 @@ function exportFileExcel() {
     }
 }
 
-genPagingAndFillColor()
-
-function genPagingAndFillColor() {
-    genPagzing();
-    let colorPage = document.querySelectorAll("#pageColor");
-    colorPage[currentPage].style.backgroundColor = '#0a8cf0';
-    colorPage[currentPage].style.color = 'white';
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadDataNhomDatn(value - 1);
+    }
 }
 
+genPagzing();
+
 function genPagzing() {
-    $("#page").html(``)
+    $("#page").html(``);
     let templatePageMid = ``;
     let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == 0 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(currentPage - 1)">Back</a>
+                     <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage - 1})"><img src="/img/back.svg"></a>
                 </li>
                 `;
-    for (let i = 0; i < totalPages; i++) {
-        templatePageMid += `<li class="page-item" style="color: #0a8cf0">
-                                        <a class="page-link" id="pageColor" onclick="loadDataNhomDatn(${i})">${i + 1}</a>
-                                    </li>`
-    }
+    templatePageMid = `
+                            <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
+                             <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
     let templatePageAfter = `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="${currentPage == totalPages - 1 ? 'pointer-events: none' : ''}" class="page-link" onclick="loadDataNhomDatn(Number(currentPage) + 1)">Next</a>
+                     <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage + 1})"><img src="/img/next.svg"></a>
                 </li>
                 `;
     let templateHtml = ``;
@@ -108,6 +121,12 @@ function genPagzing() {
 }
 
 function loadDataNhomDatn(count) {
+    if (count == -1) {
+        count = totalPages - 1;
+    }
+    if (count == totalPages) {
+        count = 0;
+    }
     let maNhom = $("#maNhom").val()
     let chuyenNganhId = $("#chuyenNganh").val()
     let dotDangKyId = $("#dotDangKy").val()
@@ -119,15 +138,12 @@ function loadDataNhomDatn(count) {
         url: DTNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData)
-            let array = responseData.data.data
-            totalPages = responseData.data.totalPages
-            console.log(array)
+            let array = responseData.data.data;
+            totalPages = responseData.data.totalPages;
             if (array.length == 0) {
-                console.log(array.length)
-                $("#listNhomDatn").html(``)
-                $("#page").html(``)
-                $("#empty").html(`<h3>Không có dữ liệu</h3>`)
+                $("#listNhomDatn").html(``);
+                $("#page").html(``);
+                $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {
                 $("#empty").html(``)
                 $("#listNhomDatn").html(array.map(function (item) {
@@ -153,7 +169,7 @@ function loadDataNhomDatn(count) {
                 </tr>
                 `
                 }))
-                genPagingAndFillColor()
+                genPagzing();
             }
         },
         error: function (e) {

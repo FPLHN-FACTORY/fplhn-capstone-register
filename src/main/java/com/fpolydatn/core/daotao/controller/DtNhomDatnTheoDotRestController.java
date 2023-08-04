@@ -4,7 +4,6 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
-import com.fpolydatn.core.daotao.model.request.FindSinhVienRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
@@ -29,16 +28,15 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     private CommonHelper commonHelper;
 
     @GetMapping("")
-    public ResponseObject showDanhSachSinhVien(@RequestParam("keyword") String id, final FindSinhVienRequest req) {
+    public ResponseObject showDanhSachSinhVien(@RequestParam("keyword") String id) {
         String coSoId = session.getCoSoId();
-        req.setCoSoId(coSoId);
-        req.setId(id);
-        List<DtSinhVienResponse> listDanhSachSinhVien = dtNhomDatnTheoDotService.showDanhSachSinhVien(req);
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        List<DtSinhVienResponse> listDanhSachSinhVien = dtNhomDatnTheoDotService.showDanhSachSinhVien(id, coSoId, dotDangKyId);
         return new ResponseObject(listDanhSachSinhVien);
     }
 
     @GetMapping("/search")
-    public ResponseObject viewHocKy(final FindDtNhomDatnTheoDotRequest req) {
+    public ResponseObject viewNhomDatn(final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);

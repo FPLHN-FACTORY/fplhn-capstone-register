@@ -188,7 +188,6 @@
                                                                         <th>STT</th>
                                                                         <th>Mã sinh viên</th>
                                                                         <th>Tên sinh viên</th>
-                                                                        <th>Chức Vụ</th>
                                                                         </thead>
                                                                         <!-- body-->
                                                                         <tbody id="show_Dssv">
@@ -205,18 +204,19 @@
                                     <!--                                        Table body-->
                                     <div class="table-responsive mt-3">
                                         <div class="mt-3">
-                                            <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+                                            <table style="text-align: center"
+                                                   class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
                                                    id="custom-table1">
                                                 <thead class="table-primary">
-                                                <th width="50px">STT</th>
-                                                <th>Mã nhóm</th>
+                                                <th width="40px">STT</th>
+                                                <th width="70px">Mã nhóm</th>
                                                 <th>Môn đăng ký</th>
                                                 <th>Tên đề tài</th>
                                                 <th>Chuyên nghành</th>
-                                                <th>Số thành viên</th>
+                                                <th width="95px">Số thành viên</th>
                                                 <th>GVHD</th>
                                                 <th>Trạng thái</th>
-                                                <th>Danh sách thành viên</th>
+                                                <th width="50px">Hành động</th>
                                                 </thead>
                                                 <tbody id="listNhomDatn">
                                                 <th:block th:each="nhomDatn : ${page.data}">

@@ -18,7 +18,8 @@ import java.util.List;
 public interface DtMonDatnRepository extends MonDatnRepository {
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, cn.ten_chuyen_nganh,
-             (SELECT CONCAT(b.ten_mon_datn, ' - ', b.ma_mon) FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon
+             (SELECT CONCAT(b.ten_mon_datn, ' - ', b.ma_mon) FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon,
+             m.nhom_mon_datn_id
                 FROM  mon_datn m
                 LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id 
                 WHERE m.co_so_id = :#{#req.coSoId} AND nhom_mon_datn_id IS NOT NULL
@@ -54,13 +55,6 @@ public interface DtMonDatnRepository extends MonDatnRepository {
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaMon(@Param("coSoId") String coSoId);
 
-    @Query(value = """
-                SELECT id 
-                FROM mon_datn
-                WHERE ma_mon = :maMon AND id <> :id AND co_so_id = :coSoId
-            """, nativeQuery = true)
-    String findByMaMonUpdate(@Param("maMon") String maMon, @Param("id") String id, @Param("coSoId") String coSoId);
-
     @Query(value = """ 
                 SELECT m.id, 
                 m.created_date, 
@@ -71,9 +65,9 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 m.nhom_mon_datn_id, 
                 m.ten_mon_datn
                 FROM mon_datn m 
-                WHERE nhom_mon_datn_id IS NULL AND co_so_id = :coSoId
+                WHERE nhom_mon_datn_id IS NULL AND co_so_id = :coSoId AND chuyen_nganh_id = :chuyeNganhId
             """, nativeQuery = true)
-    List<MonDatn> getNhomMonDatnByCoSo(@Param("coSoId") String coSoId);
+    List<MonDatn> getNhomMonDatnByCoSo(@Param("coSoId") String coSoId, @Param("chuyeNganhId") String chuyeNganhId);
 
     @Query(value = """
                 SELECT COUNT(giang_vien_id)
@@ -115,6 +109,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 m.ten_mon_datn
                 FROM mon_datn m 
                 WHERE m.co_so_id = :coSoId 
+                AND m.nhom_mon_datn_id IS NOT NULL 
             """, nativeQuery = true)
     List<MonDatn> getListMonDatnByIdCoSo(@Param("coSoId") String coSoId);
 }

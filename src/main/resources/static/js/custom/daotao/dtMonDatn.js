@@ -7,6 +7,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
+    $("#targetLink").text(monDatnView);
 });
 
 function openModalCreate() {
@@ -58,8 +59,8 @@ function create() {
                 });
             },
             error: function (e) {
-                if (e.responseJSON.message != null) {
-                    $("#ma_mon_datn_error").text("Mã môn đã tồn tại");
+                if (e.responseJSON.message == 'Ma mon da ton tai') {
+                    $("#ma_mon_datn_error").text("Mã môn đã tồn tại hoặc Mã môn trùng với nhóm môn");
                 }
             }
         });
@@ -81,7 +82,13 @@ function openModalUpdateMonDatn(monDatnId) {
             $("#ma_mon_datn_update").val(responseData.data.maMon);
             $("#ten_mon_datn_update").val(responseData.data.tenMonDatn);
             $("#chuyen_nganh_update").val(responseData.data.chuyenNganhId);
-            $("#ten_nhom_mon_datn_update").val(responseData.data.nhomMonDatnId);
+            // getNhomMon(responseData.data.chuyenNganhId, 2);
+            if (responseData.data.nhomMonDatnId == monDatnId) {
+                getNhomMon(responseData.data.chuyenNganhId, 2, 1);
+            } else {
+                getNhomMon(responseData.data.chuyenNganhId, 2, responseData.data.nhomMonDatnId);
+                $("#ten_nhom_mon_datn_update").val(responseData.data.nhomMonDatnId);
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -140,7 +147,6 @@ function update() {
 };
 
 function openModalRemoveMonDatn(monDatnId) {
-    $("#remove_mon_datn").text("");
     bootbox.confirm({
         title: "Xóa",
         message: "Bạn chắc chắn xóa không?",
@@ -224,7 +230,7 @@ function importExcel () {
                         message: "<strong>Import thành công</strong>",
                         backdrop: true,
                         callback: function () {
-                            reload();
+                            window.open(monDatnView, '_self');
                         }
                     });
                 } else {
@@ -233,7 +239,7 @@ function importExcel () {
                         message: '<strong>'+ response.data.message +'</strong>',
                         backdrop: true,
                         callback: function () {
-                            reload();
+                            window.open(monDatnView, '_self');
                         }
                     });
                 }
@@ -244,37 +250,35 @@ function importExcel () {
     );
 };
 
-function reload() {
-    window.open('/dao-tao/mon-datn', '_self');
-}
-
-const totalPage = Number($("#totalPage").text());
-const currentPage = Number($("#currentPage").text());
-
-function changePage() {
-    let input = parseInt($("#inputPage").val());
-    if (input <= 0) {
-        input = 1;
-    }
-    if (input > totalPage) {
-        input = totalPage;
-    }
-    window.open(monDatnView + '?page=' + (input - 1), '_self');
-}
-
-function buttonChangePage(type) {
-    if (type == 1) {
-        if (currentPage == 0) {
-            window.open(monDatnView + '?page=' + (totalPage - 1), '_self');
-        } else {
-            window.open(monDatnView + '?page=' + (currentPage - 1), '_self');
+function getNhomMon(chuyenNganhId, type, nhomMonHienTai) {
+    $.ajax({
+        type: "GET",
+        url: monDatnApi + "/get-nhom-mon?chuyenNganhId=" + chuyenNganhId,
+        success: function (data) {
+            var text = `<option value="" selected>Môn độc lập</option>`;
+            data.data.map(function (item) {
+                if (nhomMonHienTai == item.id && nhomMonHienTai != null) {
+                    text += `<option value="${item.id}" selected>${item.tenMonDatn}</option>`
+                } else {
+                    text += `<option value="${item.id}" >${item.tenMonDatn}</option>`
+                }
+            })
+            if (type == 1) {
+                $('#tenNhomMonDatn').html(text);
+            }
+            if (type == 2) {
+                $('#ten_nhom_mon_datn_update').html(text);
+            }
         }
-    }
-    if (type == 0) {
-        if (currentPage == (totalPage - 1)) {
-            window.open(monDatnView + '?page=0', '_self');
-        } else {
-            window.open(monDatnView + '?page=' + (currentPage + 1), '_self');
-        }
-    }
+    })
 }
+
+$('#chuyenNganh').change(function () {
+    var chuyenNganhId = $(this).val();
+    getNhomMon(chuyenNganhId, 1, null);
+})
+
+$('#chuyen_nganh_update').change(function () {
+    var chuyenNganhId = $(this).val();
+    getNhomMon(chuyenNganhId, 2, null);
+})

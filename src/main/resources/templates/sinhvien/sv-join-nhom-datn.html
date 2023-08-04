@@ -74,7 +74,7 @@
                                         </div>
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
-                                            <span class="fillter-name col-5 text-center" for="">Tên giáo viên</span>
+                                            <span class="fillter-name col-5 text-center" for="">Tên giảng viên</span>
                                             <input class="form-control col-6" id="giangVien" name="giangVien"
                                                    type="text"
                                             >
@@ -119,13 +119,14 @@
                                         <br><br>
                                         <!--                Table body       -->
                                         <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+                                               style="text-align: center"
                                                id="custom-table">
                                             <thead class="table-primary">
                                             <th width="50px">STT</th>
                                             <th>Mã nhóm</th>
                                             <th>Tên nhóm</th>
-                                            <th>Tên đề tài</th>
-                                            <th>Tên môn datn</th>
+                                            <th>Đề tài</th>
+                                            <th>Môn</th>
                                             <th>Số người</th>
                                             <th>Trưởng nhóm</th>
                                             <th>GVHD</th>
@@ -143,9 +144,9 @@
                                                     <td th:text="${nhomDatn.tenDeTai} == null ? 'Chưa có' : ${nhomDatn.tenDeTai}"></td>
                                                     <td th:text="${nhomDatn.tenMonDatn}"></td>
                                                     <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
-                                                    <td th:text="${nhomDatn.maSinhVien} + ' - ' + ${nhomDatn.getTenSinhVien()}"></td>
+                                                    <td th:text="${nhomDatn.getTenSinhVien()}"></td>
                                                     <td th:text="${nhomDatn.tenGvhd} == null ? 'Chưa có': (${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()})"></td>
-                                                    <td th:text="${nhomDatn.getMatKhauTonTai} == '0' ? 'Công khai' : 'Nhóm kín'"></td>
+                                                    <td th:text="${nhomDatn.matKhauTonTai} == 0 ? 'Công khai': 'Nhóm kín'"></td>
                                                     <td>
                                                         <button class="btn_eye"
                                                                 th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
@@ -170,17 +171,15 @@
                                         </table>
 
                                         <!-- Paging-->
-                                        <nav aria-label="Page navigation" th:if="${page.totalPages > 1}">
-                                            <ul class="pagination justify-content-end" id="page">
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <input hidden id="totalPages" th:value="${page.totalPages}">
-                                    <input hidden id="currentPage" th:value="${page.currentPage}">
-                                    <div id="empty">
-                                        <input hidden id="checkData" th:value="${page.data.isEmpty()}">
-                                        <div th:if="${page.data.isEmpty()}">
-                                            <h3>Không có dữ liệu</h3>
+                                        <div id="page">
+                                        </div>
+                                        <input hidden id="totalPages" th:value="${page.totalPages}">
+                                        <input hidden id="currentPage" th:value="${page.currentPage}">
+                                        <div id="empty">
+                                            <input hidden id="checkData" th:value="${page.data.isEmpty()}">
+                                            <div th:if="${page.data.isEmpty()}">
+                                                <h3>Không có dữ liệu</h3>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -207,8 +206,9 @@
                     <form id="form_create_sinh_vien">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label class="col-form-label">Danh sách thành viên
-                                    nhóm</label>
+                                <label class="col-form-label">
+                                    <h4 id="labelNhomDetail"></h4>
+                                </label>
                                 <hr>
                                 <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
                                        id="custom-detail-table">
@@ -223,6 +223,7 @@
                                     <tbody class="table-light" id="show_Dssv">
                                     </tbody>
                                 </table>
+                                <div id="moTa" class="form-group"></div>
                             </div>
                         </div>
                     </form>
@@ -251,31 +252,34 @@
                     <div class="form-group">
                         <span class="text-danger">(*)</span>
                         <label class="col-form-label">Môn DATN</label>
-                        <select class="form-control col-8" id="monDatnCreateNhom">
+                        <select class="form-control"
+                                id="monDatnCreateNhom">
                             <option hidden value="">Chọn môn DATN</option>
                             <option th:each="i : ${listDataMonDatn}"
                                     th:text="${i.getTenMon()}"
                                     th:value="${i.getId()}">
                             </option>
                         </select>
-                        <p class="text-danger" id="mon_datn_error"></p>
+                        <small class="text-danger" id="mon_datn_error"></small>
+                        <br>
                         <label class="col-form-label">Chọn giảng viên
                             hướng
                             dẫn</label>
-                        <select class="form-control col-8"
+                        <select class="form-control"
                                 id="giangVienCreateNhom">
-                            <option hidden>Không chọn</option>
+                            <option value="" hidden>Không chọn</option>
                         </select>
-                        <span class="text-danger">(*)</span>
+                        <br>
                         <label class="col-form-label">Tên nhóm:</label>
                         <input class="form-control" id="tenNhomCreateNhom"
                                type="text">
-                        <p class="text-danger" id="ten_nhom_error"></p>
-                        <span class="text-danger">(*)</span>
+                        <small class="text-danger" id="ten_nhom_error"></small>
+                        <br>
                         <label class="col-form-label">Tên đề tài</label>
                         <input class="form-control" id="tenDeTaiCreateNhom"
                                type="text">
-                        <p class="text-danger" id="ten_de_tai_error"></p>
+                        <small class="text-danger" id="ten_de_tai_error"></small>
+                        <br>
                         <label class="col-form-label">Trạng thái
                             nhóm</label>
                         <div class="form-check">
@@ -288,7 +292,7 @@
                         </div>
                         <label class="col-form-label">Mô tả:</label>
                         <textarea class="form-control" cols="30" id="moTaCreateNhom" name=""
-                                  rows="10"></textarea>
+                                  rows="4"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

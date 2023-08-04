@@ -2,7 +2,6 @@ package com.fpolydatn.core.daotao.repository;
 
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
-import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,23 +63,23 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
             """, nativeQuery = true)
     Long countByName(@Param("tenGiangVien") String tenGiangVien, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND co_so_id = :coSoId", nativeQuery = true)
-    String getIdByEmailFpt(@Param("emailFpt") String emailFpt, @Param("coSoId") String coSoId);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangkyId", nativeQuery = true)
+    String getIdByEmailFpt(@Param("emailFpt") String emailFpt, @Param("coSoId") String coSoId, @Param("dotDangkyId") String dotDangkyId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
-    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id, @Param("coSoId") String coSoId);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fpt = :emailFpt AND id <> :id AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangkyId", nativeQuery = true)
+    String getIdUpdateByEmailFpt(@Param("emailFpt") String emailFpt, @Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangkyId") String dotDangkyId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe AND co_so_id = :coSoId", nativeQuery = true)
-    String getIdByEmailFe(@Param("emailFe") String emailFe, @Param("coSoId") String coSoId);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangkyId", nativeQuery = true)
+    String getIdByEmailFe(@Param("emailFe") String emailFe, @Param("coSoId") String coSoId, @Param("dotDangkyId") String dotDangkyId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
-    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe, @Param("id") String id, @Param("coSoId") String coSoId);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE email_fe = :emailFe AND id <> :id AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangkyId", nativeQuery = true)
+    String getIdUpdateByEmailFe(@Param("emailFe") String emailFe, @Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangkyId") String dotDangkyId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND co_so_id = :coSoId ", nativeQuery = true)
-    String getIdByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("coSoId") String coSoId);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangkyId", nativeQuery = true)
+    String getIdByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("coSoId") String coSoId, @Param("dotDangkyId") String dotDangkyId);
 
-    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
-    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id, @Param("coSoId") String coSoId);
+    @Query(value = "SELECT id FROM giang_vien_huong_dan WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangkyId", nativeQuery = true)
+    String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangkyId") String dotDangkyId);
 
     @Query(value = """
                   SELECT  COUNT(nd.id) AS so_nhom_dang_huong_dan
@@ -128,16 +127,15 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                 ORDER BY gvhd.last_modified_date DESC 
             """, nativeQuery = true)
     List<DtGiangVienHDResponse> exportExcel(@Param("req") DtFindGiangVienHDRequest req);
+    @Query(value = """
+            SELECT email_fe FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId""", nativeQuery = true)
+    List<String> findAllEmailFe(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT email_fe FROM giang_vien_huong_dan WHERE co_so_id = :coSoId""", nativeQuery = true)
-    List<String> findAllEmailFe(@Param("coSoId") String coSoId);
+            SELECT email_fpt FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId""", nativeQuery = true)
+    List<String> findAllEmailFpt(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT email_fpt FROM giang_vien_huong_dan WHERE co_so_id = :coSoId""", nativeQuery = true)
-    List<String> findAllEmailFpt(@Param("coSoId") String coSoId);
-
-    @Query(value = """
-            SELECT ten_tai_khoan FROM giang_vien_huong_dan WHERE co_so_id = :coSoId""", nativeQuery = true)
-    List<String> findAllTenTaiKhoan(@Param("coSoId") String coSoId);
+            SELECT ten_tai_khoan FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId""", nativeQuery = true)
+    List<String> findAllTenTaiKhoan(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 }

@@ -18,13 +18,13 @@ import java.util.List;
  */
 
 public interface SvNhomDatnService {
-    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id, String coSoId);
+    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id, String coSoId, String dotDangKyId);
 
-    Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser);
+    Boolean checkTruongNhom(String idNhomDatn, String idCoSo, String idUser, String dotDangKyId);
 
     PageableObject<SvNhomDatnResponse> findAllNhomDatn(final SvFindNhomDatnRequest request, String idUser);
 
-    List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(String id, String coSoId);
+    List<SvShowSinhVienTheoNhomResponse> showDanhSachSinhVien(String id, String coSoId, String dotDangKyId);
 
     boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req);
 
@@ -32,11 +32,11 @@ public interface SvNhomDatnService {
 
     Boolean updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest);
 
-    Boolean roiNhom(String idUser);
+    Boolean roiNhom(String idUser, String coSoId, String dotDangKyId);
 
     Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi);
 
-    Boolean chonGvhd(String idUser, String idGiangVien, String coSoId);
+    Boolean chonGvhd(String idUser, String idGiangVien, String coSoId, String dotDangKyId);
 
     Boolean checkThoiGianRoiNhom(String idUser);
 

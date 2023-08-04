@@ -5,6 +5,8 @@ public final class Constants {
     private Constants() {
     }
 
+    public static final String VERSION = "v1.5.0";
+
     public static final String ENCODING_UTF8 = "UTF-8";
 
     public class FileProperties {
@@ -27,5 +29,5 @@ public final class Constants {
 
     public static final int SO_NHOM_HUONG_DAN_TOI_DA = 7;
 
-    public static final long MUOI_HAI_TIENG = 43200000L;
+    public static final long TIME_RESET = 43200000;
 }

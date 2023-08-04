@@ -3,10 +3,13 @@ package com.fpolydatn.core.daotao.service.impl;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotExport;
 import com.fpolydatn.core.daotao.excel.DtSinhVienTheoDotImport;
+import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienRequest;
 import com.fpolydatn.core.daotao.model.request.DtCreateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.DtLoaiSinhVienKhongDatRequest;
+import com.fpolydatn.core.daotao.model.request.DtUpdateSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
+import com.fpolydatn.core.daotao.model.response.DtMonDatnSearchResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
@@ -16,10 +19,12 @@ import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
-import com.zaxxer.hikari.util.ConcurrentBag;
+import com.fpolydatn.util.FormUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -43,6 +48,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -73,6 +79,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
 
     private ConcurrentHashMap<String, String> map;
+
+    private FormUtils formUtils = new FormUtils();
 
     @Override
     public PageableObject<DtSinhVienTheoDotResponse> searchStudent(final FindDtSinhVienTheoDotRequest request) {
@@ -148,7 +156,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId) throws IOException {
+    public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId, String dotDangKyId) throws IOException {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
 
         try {
@@ -161,20 +169,20 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             }
             ConcurrentMap<String, SinhVien> listSinhVienEntity = new ConcurrentHashMap<>();
             map = new ConcurrentHashMap<>();
-            addDataInMap(map, coSoId);
+            addDataInMap(map, coSoId, dotDangKyId);
             sinhVienList.parallelStream().forEach(sinhVien -> {
                 SinhVien sinhVienEntity = new SinhVien();
                 if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
-                        sinhVien.getSoDienThoai().isEmpty() || sinhVien.getEmail().isEmpty() ||
-                        sinhVien.getKhoa().isEmpty() || sinhVien.getChuyenNganh().isEmpty() ||
+                        sinhVien.getEmail().isEmpty() ||
+                        sinhVien.getChuyenNganh().isEmpty() ||
                         sinhVien.getDotDangKy().isEmpty()) {
                     response.setStatus(false);
-                    response.setMessage("Không để trống (Mã, tên, sđt, email, khóa, tên chuyên ngành, đợt đăng ký)");
+                    response.setMessage("Không để trống (Mã, tên, email, tên chuyên ngành, đợt đăng ký)");
                     return;
                 }
                 if (map.containsKey(sinhVien.getMaSinhVien())) {
                     response.setStatus(false);
-                    response.setMessage("Mã sinh viên không được trùng");
+                    response.setMessage("Mã sinh viên " + sinhVien.getMaSinhVien() + " không được trùng");
                     return;
                 }
 
@@ -204,13 +212,23 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
                 if (map.containsKey(sinhVien.getEmail())) {
                     response.setStatus(false);
-                    response.setMessage("Email không được trùng");
+                    response.setMessage("Email " + sinhVien.getEmail() + " không được trùng");
+                    return;
+                }
+
+                if (sinhVien.getSoDienThoai().length() > 11) {
+                    response.setStatus(false);
+                    response.setMessage("Số điện thoại " + sinhVien.getEmail() + " không được vượt quá 11 kí tự");
                     return;
                 }
 
                 sinhVienEntity.setTenSinhVien(sinhVien.getTenSinhVien());
                 sinhVienEntity.setMaSinhVien(sinhVien.getMaSinhVien());
-                sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
+                if (sinhVien.getSoDienThoai() == null) {
+                    sinhVienEntity.setSoDienThoai("");
+                } else {
+                    sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
+                }
                 sinhVienEntity.setEmail(sinhVien.getEmail());
                 sinhVienEntity.setKhoa(sinhVien.getKhoa());
                 sinhVienEntity.setCoSoId(coSoId);
@@ -219,7 +237,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 map.put(sinhVien.getEmail(), sinhVien.getEmail());
                 listSinhVienEntity.put(sinhVienEntity.getMaSinhVien(), sinhVienEntity);
             });
-            if (response.getStatus() == true) {
+            if (response.getStatus()) {
                 sinhVienRepository.saveAll(listSinhVienEntity.values());
             }
         } catch (Exception e) {
@@ -232,10 +250,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         return response;
     }
 
-    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId) {
+    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId, String dotDangKyId) {
 
         //lấy id, MaSv của tất cả sv theo cơ sở
-        List<SimpleEntityProj> getAllMaSV = sinhVienRepository.getAllMaSV(coSoId);
+        List<SimpleEntityProj> getAllMaSV = sinhVienRepository.getAllMaSV(coSoId, dotDangKyId);
         getAllPutMap(mapAll, getAllMaSV);
         // lấy id, MaNhom tất cả nhóm theo cơ sở
 //        List<SimpleEntityProj> getAllMaNhom = nhomDatnTheoDotRepository.getAllMaNhom(coSoId);
@@ -258,7 +276,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public DtLoaiSinhVienResponse loaiSinhVienKhongDat(DtLoaiSinhVienKhongDatRequest request) {
+    public DtLoaiSinhVienResponse importSinhVienKhongDuDieukien(DtLoaiSinhVienKhongDatRequest request) {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
         response.setStatus(true);
         ConcurrentMap<String, String> mapMsvLoai = new ConcurrentHashMap<>();
@@ -299,6 +317,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+        if (mapMsvLoai.size() == 0) {
+            response.setStatus(false);
+            response.setMessage("Không có sinh viên nào được đọc");
+            return response;
         }
         ConcurrentMap<String, SinhVien> listSvKhongDat = new ConcurrentHashMap<>();
         Map<String, SinhVien> mapSinhVien = new HashMap<>();
@@ -363,7 +386,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             try {
                 sinhVienRepository.saveAll(listSvKhongDat.values());
                 response.setMessage("Đã loại sinh viên không đủ điều kiện");
-            } catch (Exception e){
+            } catch (Exception e) {
                 response.setStatus(false);
                 response.setMessage("Lỗi hệ thống");
                 return response;
@@ -373,14 +396,17 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public DtSinhVienTheoDotResponse searchStudentById(String id, String coSoId) {
-        return sinhVienRepository.searchStudentById(id, coSoId);
+    public DtSinhVienTheoDotResponse searchStudentById(String id) {
+        return sinhVienRepository.searchStudentById(id);
     }
 
     @Override
-    public SinhVien loaiSinhVien(String id, String coSoId) {
+    public SinhVien loaiSinhVien(String id, String coSoId, String dotDangKyId) {
         Map<String, NhomDatn> map = new HashMap<>();
         Optional<SinhVien> sv = sinhVienRepository.findById(id);
+        if (!sv.isPresent()) {
+            throw new RestApiException(Message.SINH_VIEN_NOT_EXISTS);
+        }
         SinhVien sinhVien = sv.get();
         List<NhomDatn> nhomDatnList = nhomDatnTheoDotRepository.findAll();
         NhomDatn chuyenTruongNhom;
@@ -397,7 +423,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
             } else {
                 //nếu là nhóm trưởng thì chuyển quyền cho sinh viên trong nhóm
-                SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(), sinhVien.getNhomId(), coSoId);
+                SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(),
+                        sinhVien.getNhomId(), coSoId, dotDangKyId);
                 chuyenTruongNhom = map.get(sinhVien.getId());
                 if (motSVtrongNhom == null) {
                     nhomDatnTheoDotRepository.delete(chuyenTruongNhom);
@@ -418,4 +445,91 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
         return svKhongDuDK;
     }
+
+    @Override
+    public Boolean delete(String id, String coSoId, String dotDangKyId) {
+        Optional<SinhVien> checkSV = sinhVienRepository.findById(id);
+        if (Objects.isNull(checkSV)) {
+            throw new RestApiException(Message.SINH_VIEN_NOT_EXISTS);
+        }
+        sinhVienRepository.delete(checkSV.get());
+        return true;
+    }
+
+    @Override
+    public SinhVien update(DtUpdateSinhVienTheoDotRequest command) {
+
+        Optional<SinhVien> checkSinhVien = sinhVienRepository.findById(command.getId());
+
+        String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSVUpdate(command.getMaSinhVien(),
+                command.getId(), command.getCoSoId(), command.getDotDangKyId());
+        if (idSinhVienCheckMaSV != null) {
+            throw new RestApiException(Message.SINH_VIEN_ALREADY_EXIST);
+        }
+
+        String idSinhVienCheckEmail = sinhVienRepository.findSinhVienByEmailUpdate(command.getEmail(),
+                command.getId(), command.getCoSoId(), command.getDotDangKyId());
+        if (idSinhVienCheckEmail != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+
+        SinhVien sinhVien = checkSinhVien.get();
+        sinhVien.setMaSinhVien(command.getMaSinhVien());
+        sinhVien.setTenSinhVien(command.getTenSinhVien());
+        sinhVien.setEmail(command.getEmail());
+        sinhVien.setSoDienThoai(command.getSdt());
+        sinhVien.setKhoa(command.getKhoa());
+        sinhVien.setDotDangKyId(command.getDotDangKyId());
+        sinhVien.setMonChuongTrinhId(command.getMonChuongTrinh());
+        sinhVien.setChuyenNganhId(command.getChuyenNganhId());
+        if (command.getTrangThai() == 0) {
+            sinhVien.setTrangThai(TrangThaiSinhVien.DU_DIEU_KIEN);
+        } else {
+            sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+        }
+        return sinhVienRepository.save(sinhVien);
+    }
+
+    @Override
+    public SinhVien create(DtCreateSinhVienRequest command) {
+        SinhVien sinhVien = new SinhVien();
+
+        String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSV(command.getMaSinhVien(),
+                command.getCoSoId(), command.getDotDangKyId());
+        if (idSinhVienCheckMaSV != null) {
+            throw new RestApiException(Message.SINH_VIEN_ALREADY_EXIST);
+        }
+
+        String idSinhVienCheckEmail = sinhVienRepository.findSinhVienByEmail(command.getEmail(),
+                command.getCoSoId(), command.getDotDangKyId());
+        if (idSinhVienCheckEmail != null) {
+            throw new RestApiException(Message.EMAIL_FPT_EXIST);
+        }
+        if (command.getTrangThai() == 0) {
+            sinhVien.setTrangThai(TrangThaiSinhVien.DU_DIEU_KIEN);
+        } else {
+            sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+        }
+        sinhVien = formUtils.convertToObject(SinhVien.class, command);
+        sinhVien.setSoDienThoai(command.getSdt());
+        sinhVien.setMonChuongTrinhId(command.getMonChuongTrinh());
+        return sinhVienRepository.save(sinhVien);
+    }
+
+    @Override
+    public List<DtMonDatnSearchResponse> getAllMonDatnByChuyenNganhId(String chuyenNganhId, String coSoId) {
+        return sinhVienRepository.getAllMonDatnByChuyenNganhId(chuyenNganhId, coSoId);
+    }
+
+    @Override
+    public List<SimpleEntityProj> getMaMonChuongTrinh(String coSoId) {
+        return monDatnRepository.getAllMaMon(coSoId);
+    }
+
+    @Override
+    public List<NhomDatn> getListNhomMon(String coSoId) {
+        return nhomDatnTheoDotRepository.findAllByDotDangKyId(commonHelper.getDotDangKyHienTai(), coSoId);
+    }
+
+
 }
