@@ -9,7 +9,7 @@ public final class EntityProperties {
 
     public static final byte LENGTH_ID = 36;
     public static final byte LENGTH_NAME_SHORT = 50;
-    public static final byte LENGTH_NAME = 100;
+    public static final byte LENGTH_NAME = 255;
     public static final byte LENGTH_CODE = 10;
     public static final byte LENGTH_PASSWORD = 30;
     public static final byte LENGTH_ACCOUNT = 20;
