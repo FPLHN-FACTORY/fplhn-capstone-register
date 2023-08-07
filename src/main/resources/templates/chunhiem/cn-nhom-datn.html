@@ -132,15 +132,30 @@
                                                         th:value="${item.getId()}" th:text="${item.getName()}"></option>
                                             </select>
                                         </div>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Số thành viên:</span>
+                                            <input type="number" class="form-control col-7"
+                                                   name="soThanhVien" id="soThanhVien"
+                                                   value="">
+                                        </div>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for=""
+                                                  class="fillter-name col-4 text-center">Mã/Tên trưởng nhóm:</span>
+                                            <input type="text" class="form-control col-7"
+                                                   name="maTruongNhom" id="maTruongNhom"
+                                                   value="">
+                                        </div>
                                     </div>
 
-                                    <div class="row justify-content-center pt-2">
-                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-1 col-12 text-center">
                                             <button type="button" th:attr="onclick=|loadDataNhomDatn(0)|"
                                                     class="btn btn-primary">Tìm kiếm
                                             </button>
                                         </div>
-                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                        <div class="col-sm-1 col-12 text-center">
                                             <a href="#" class="btn btn-danger text-white" onclick="clearData();">
                                                 Làm mới bộ lọc
                                             </a>
@@ -156,127 +171,37 @@
                                 <div class="m-portlet__body">
                                     <div class="row">
                                         <div class="col-6 d-inline">
-                                            <button th:attr="onclick=|openModalCreate()|" data-toggle="tooltip"
-                                                    title="Tạo nhóm dự án tốt nghiệp"
-                                                    class="col-8 col-sm-4 col-md-2 btn btn-success">
-                                                Tạo nhóm
-                                            </button>
-                                            <button class="col-8 col-sm-4 col-md-2 btn btn-success"
-                                                    data-toggle="tooltip"
-                                                    title="Chốt đề tài của nhiều nhóm"
-                                                    th:attr="onclick=|chotNhieuDeTai('${page.currentPage}')|">
-                                                Chốt đề tài
-                                            </button>
-                                            <button class="col-8 col-sm-4 col-md-2 btn btn-success"
-                                                    data-toggle="tooltip"
-                                                    title="Xác nhận nhiều nhóm"
-                                                    th:attr="onclick=|xacNhanNhieuNhom('${page.currentPage}')|">
-                                                Xác nhận
-                                            </button>
-                                            <button class="col-8 col-sm-4 col-md-2 btn btn-success"
-                                                    th:attr="onclick=|openModalExport()|">
-                                                Export
-                                            </button>
-                                            <button th:attr="onclick=|openModalImport()|"
-                                                    class="col-8 col-sm-4 col-md-2 btn btn-success">
-                                                Import
-                                            </button>
-                                            <!--                                            modal export-->
-                                            <div class="modal fade"
-                                                 id="modal_excel"
-                                                 tabindex="-1"
-                                                 aria-labelledby="exampleModalLabel"
-                                                 aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Export
-                                                                Excel</h5>
-                                                            <button type="button" class="close" data-bs-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <p class="col-form-label">Định dạng file excel </p>
-                                                                <select id="type_excel" class="form-control col-5">
-                                                                    <option value="">Chọn kiểu file excel</option>
-                                                                    <option value="xls">.xls</option>
-                                                                    <option value="xlsx">.xlsx</option>
-                                                                </select>
-                                                                <span class="text-danger"
-                                                                      id="type_excel_error"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button"
-                                                                    class="btn btn-outline-secondary btn btn-light"
-                                                                    data-bs-dismiss="modal">Hủy
-                                                            </button>
-                                                            <button class="btn btn-primary"
-                                                                    th:attr="onclick=|exportFile()|">Download
-                                                                excel
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                            <div class="row" style="flex-wrap: nowrap">
+                                                <div style="float: left">
+                                                    <button th:attr="onclick=|openModalCreate()|" data-toggle="tooltip"
+                                                            title="Tạo nhóm dự án tốt nghiệp"
+                                                            class="col-8 col-sm-4 col-md-2 btn btn-success">
+                                                        Tạo nhóm
+                                                    </button>
+                                                    <button class="col-8 col-sm-4 col-md-2 btn btn-success"
+                                                            data-toggle="tooltip"
+                                                            title="Chốt đề tài của nhiều nhóm"
+                                                            th:attr="onclick=|chotNhieuDeTai('${page.currentPage}')|">
+                                                        Chốt đề tài
+                                                    </button>
+                                                    <button class="col-8 col-sm-4 col-md-2 btn btn-success"
+                                                            data-toggle="tooltip"
+                                                            title="Xác nhận nhiều nhóm"
+                                                            th:attr="onclick=|xacNhanNhieuNhom('${page.currentPage}')|">
+                                                        Xác nhận
+                                                    </button>
                                                 </div>
-                                            </div>
-                                            <!--                                            import excel-->
-                                            <div class="modal fade"
-                                                 id="modal_import_excel"
-                                                 tabindex="-1"
-                                                 aria-labelledby="exampleModalLabel"
-                                                 aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <form id="form_import_excel" enctype="multipart/form-data">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">
-                                                                    Import file excel
-                                                                </h5>
-                                                                <button type="button" class="close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close">
-                                                                    <span aria-hidden="true">x</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="form-group">
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text"
-                                                                                  id="inputGroupFileAddon01">Upload</span>
-                                                                        </div>
-                                                                        <div class="custom-file">
-                                                                            <input type="file" class="custom-file-input"
-                                                                                   id="inputGroupFile01"
-                                                                                   aria-describedby="inputGroupFileAddon01"
-                                                                                   name="file">
-                                                                            <label class="custom-file-label"
-                                                                                   id="labelFile"
-                                                                                   for="inputGroupFile01">Choose
-                                                                                file</label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <span class="text-danger"
-                                                                          id="import_excel_error"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button"
-                                                                        class="btn btn-outline-secondary btn btn-light"
-                                                                        data-bs-dismiss="modal">Hủy
-                                                                </button>
-                                                                <button
-                                                                        th:attr="onclick=|importExcel()|"
-                                                                        type="button" class="btn btn-primary">
-                                                                    Upload
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                                <div style="float: right">
+                                                    <select style="width: 205px; float: right; cursor: pointer"
+                                                            class="form-control-sm" name="sortNhomDatn"
+                                                            id="sortNhomDatn" th:attr="onchange=|loadDataNhomDatn(0)|">
+                                                        <option value="lastModifiedDesc">Theo ngày sửa giảm dần</option>
+                                                        <option value="lastModifiedAsc">Theo ngày sửa tăng dần</option>
+                                                        <option value="createdDesc">Theo ngày tạo giảm dần</option>
+                                                        <option value="createdAsc">Theo ngày tạo tăng dần</option>
+                                                        <option value="numberDesc">Theo SL thành viên giảm dần</option>
+                                                        <option value="numberAsc">Theo SL thành viên tăng dần</option>
+                                                    </select></div>
                                             </div>
                                             <!--                                            modal create nhóm-->
                                             <div
@@ -316,14 +241,8 @@
                                                                     <label class="col-form-label">Chọn giảng viên hướng
                                                                         dẫn</label><br>
                                                                     <select class="form-control" id="gvhd_create">
-                                                                    </select><br>
-                                                                    <label class="col-form-label">Mật khẩu nhóm</label>
-                                                                    <input
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                            id="matKhau">
-                                                                    <span class="text-danger"
-                                                                          id="mat_khau_erorr"></span><br>
+                                                                    </select>
+                                                                    <br/>
                                                                     <div class="ui-widget">
                                                                         <label for="tags"><span
                                                                                 style="color: red">(*)</span> Mời nhập
@@ -362,13 +281,15 @@
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead class="table-primary">
                                                 <th width="20px"><input data-toggle="tooltip"
-                                                           title="Chọn tất cả" type="checkbox" id="checkbox_father">
+                                                                        title="Chọn tất cả" type="checkbox"
+                                                                        id="checkbox_father">
                                                 </th>
                                                 <th width="50px">STT</th>
                                                 <th>Mã nhóm</th>
                                                 <th>Tên đề tài</th>
                                                 <th>Mã môn</th>
                                                 <th>SL thành viên</th>
+                                                <th>Trưởng nhóm</th>
                                                 <th>GVHD</th>
                                                 <th>Đợt đăng ký</th>
                                                 <th>Trạng thái</th>
@@ -397,10 +318,11 @@
                                                         <td th:text="${nhomDatn.getTenDeTai()}==null ? 'Chưa có' : (${nhomDatn.getTenDeTai()})"></td>
                                                         <td th:text="${nhomDatn.getMaMonDatn()}"></td>
                                                         <td th:text="${nhomDatn.getTotal()}"></td>
+                                                        <td th:text="${nhomDatn.getTruongNhom()}"></td>
                                                         <td th:switch="${nhomDatn.getTenGvhd()}">
                                                             <p th:case=null>Chưa có</p>
                                                             <p th:case="*"
-                                                               th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getTenTaiKhoan()}"></p>
+                                                               th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getTenTaiKhoan()} + ' (' + ${nhomDatn.getSoNhomDangHuongDan()} + '/' + ${nhomDatn.getSoNhomHuongDanToiDa()} + ')'"></p>
                                                         </td>
                                                         <td th:text="${nhomDatn.getTenDotDangKy()}"></td>
                                                         <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
@@ -440,12 +362,28 @@
                                                 </th:block>
                                                 </tbody>
                                             </table>
-
                                             <!-- Paging-->
-                                            <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
-                                                <ul class="pagination justify-content-end" id="page">
-                                                </ul>
+                                            <nav
+                                                    aria-label="Page navigation">
+                                                <div class="justify-content-end"
+                                                     style="display: flex;">
+                                                    <select id="sizeNhomDatn"
+                                                            th:attr="onchange=|loadDataNhomDatn(0)|"
+                                                            class="form-control-sm"
+                                                            style="margin-right: 10px">
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                        <option value="250">250</option>
+                                                        <option value="500">500</option>
+                                                        <option value="1000">1000</option>
+                                                    </select>
+                                                    <ul th:if="${page.totalPages > 1}" class="pagination" id="page">
+                                                    </ul>
+                                                </div>
                                             </nav>
+
                                         </div>
                                         <input hidden th:value="${page.totalPages}" id="totalPages">
                                         <input hidden th:value="${page.currentPage}" id="currentPage">

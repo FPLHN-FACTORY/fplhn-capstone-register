@@ -6,11 +6,13 @@ import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoNhomResponse;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.DotDangKy;
+import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 
 import java.util.List;
 
 public interface CnSinhVienTheoNhomService {
+
     PageableObject<CnSinhVienTheoNhomResponse> searchByIdNhom(final CnFindSinhVienTheoNhomRequest req);
 
     boolean addSinhVienTheoNhom(String maNhom,String maSinhVien);
@@ -33,4 +35,5 @@ public interface CnSinhVienTheoNhomService {
 
     List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest request, String idChuNhiem);
 
+    NhomDatn doiTenDeTai(String idNhom, String tenDeTai);
 }

@@ -1,8 +1,10 @@
 package com.fpolydatn.core.chunhiem.controller;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnMonDatnResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.chunhiem.service.CnDotDangKyService;
+import com.fpolydatn.core.chunhiem.service.CnMonDatnService;
 import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoDotService;
 import com.fpolydatn.core.common.base.BaseController;
@@ -34,6 +36,9 @@ public class CnSinhVienTheoDotController extends BaseController {
     @Autowired
     private CnNhomDatnService nhomDatnService;
 
+    @Autowired
+    private CnMonDatnService cnMonDatnService;
+
     @GetMapping
     public String viewSinhVienTheoDot(Model model, final CnFindSinhVienTheoDotRequest req){
         req.setIdDotDangKy(commonHelper.getDotDangKyHienTai());
@@ -46,7 +51,9 @@ public class CnSinhVienTheoDotController extends BaseController {
         req.setCoSoId(coSoId);
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
         PageableObject<CnSinhVienTheoDotResponse> pageSinhVien = cnSinhVienTheoDotService.searchByIdDotDangKy(req);
+        List<CnMonDatnResponse> listMonDatn = cnMonDatnService.getAllMonDatnByChuyenNganh(coSoId, session.getUserId());
         model.addAttribute("page",pageSinhVien);
+        model.addAttribute("listMonDatn", listMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("checkHanChuNhiem", checkHanChuNhiem);
         return "chunhiem/cn-sinh-vien-theo-dot";

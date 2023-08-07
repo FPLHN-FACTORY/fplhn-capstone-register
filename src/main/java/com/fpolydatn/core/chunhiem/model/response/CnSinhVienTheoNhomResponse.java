@@ -20,15 +20,16 @@ public interface CnSinhVienTheoNhomResponse extends IsIdentified {
     @Value("#{target.ten_sinh_vien}")
     String getTenSinhVien();
 
+    @Value("#{target.email}")
+    String getEmail();
+
+    @Value("#{target.so_dien_thoai}")
+    String getSoDienThoai();
+
+    @Value("#{target.khoa}")
+    String getKhoa();
+
     @Value("#{target.ma_mon_chuong_trinh}")
     String getMaMonChuongTrinh();
 
-    @Value("#{target.ma_mon_du_an}")
-    String getMaMonDuAn();
-
-    @Value("#{target.ten_nhom}")
-    String getTenNhom();
-
-    @Value("#{target.ten_gvhd}")
-    String getTenGvhd();
 }

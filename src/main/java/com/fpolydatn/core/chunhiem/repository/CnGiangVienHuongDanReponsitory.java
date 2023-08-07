@@ -19,7 +19,10 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
     String getIdFromGiangVienId(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT CONCAT(g.ten_tai_khoan, '_' , g.ten_gvhd) AS thong_tin , g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
+            SELECT CONCAT(g.ten_tai_khoan, '_' , g.ten_gvhd, ' (',
+             (SELECT COUNT(i.id) FROM nhom_datn i WHERE i.giang_vien_id = g.id)
+             , '/' , g.so_nhom_huong_dan_toi_da, ')' ) 
+             AS thong_tin , g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
             JOIN phan_cong_huong_dan p ON p.giang_vien_id = g.id 
             JOIN mon_datn m ON p.mon_datn_id = m.id 
             LEFT JOIN nhom_datn n ON n.giang_vien_id = g.id
@@ -40,7 +43,9 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
     String checkIdGiangVienAndMonDatn(@Param("idGiangVien") String idGiangVien, @Param("idMonDatn") String idMonDatn, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT g.id, g.ten_tai_khoan, g.ten_gvhd, g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
+            SELECT g.id, g.ten_tai_khoan, g.ten_gvhd, (SELECT COUNT(i.id) FROM nhom_datn i
+             WHERE i.giang_vien_id = g.id) as so_nhom_dang_huong_dan
+            , g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
             JOIN phan_cong_huong_dan p ON p.giang_vien_id = g.id 
             JOIN mon_datn m ON p.mon_datn_id = m.id 
             LEFT JOIN nhom_datn n ON n.giang_vien_id = g.id

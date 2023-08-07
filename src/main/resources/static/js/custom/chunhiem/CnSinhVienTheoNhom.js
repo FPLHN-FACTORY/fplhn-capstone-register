@@ -46,6 +46,36 @@ function openModalThemSinhVien() {
     $("#modal_create").modal('show')
 }
 
+function openModalDoiTenDeTai() {
+    $("#modal_change_ten_de_tai").modal('show')
+}
+
+function doiTenDeTai() {
+    let idNhom = $("#idNhom").val()
+    let tenDeTai = $("#tenDeTai").val().trim()
+    if (tenDeTai === "") {
+        $("#change_ten_de_tai_error").html("Tên đề tài không được để trống")
+        return;
+    }
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: sinhVienApi + "/doi-ten-de-tai?idNhom=" + idNhom + "&tenDeTai=" + tenDeTai,
+        success: function (responseData) {
+            bootbox.alert({
+                message: 'Đổi tên đề tài thành công',
+                backdrop: true,
+                callback: function () {
+                    window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+                }
+            });
+        },
+        error: function (e) {
+            $("#change_ten_de_tai_error").html(e.responseJSON.message)
+        }
+    });
+}
+
 function themSinhVien() {
     let idNhom = $("#idNhom").val()
     let listMaSinhVien = document.querySelectorAll("#ma_sinh_vien")
@@ -58,7 +88,14 @@ function themSinhVien() {
         contentType: "application/json",
         url: sinhVienApi + "/addSinhVien?id=" + idNhom + "&maSinhVien=" + maSinhViens,
         success: function (responseData) {
-            window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+            bootbox.alert({
+                message: 'Thêm sinh viên vào nhóm thành công',
+                backdrop: true,
+                callback: function () {
+                    window.open(sinhVienTheoNhomView + "?id=" + idNhom, '_self');
+                }
+            });
+
         },
         error: function (e) {
             $("#idStudentError").html(e.responseJSON.message)
@@ -132,6 +169,9 @@ function thayDoiGiangVien() {
         error: function (e) {
             if (e.responseJSON.message == 'Giang vien khong ton tai') {
                 $("#change_gvhd_error").text('Giảng viên không tồn tại')
+            }
+            if (e.responseJSON.message == 'Giang Vien Da Huong Dan Du So Nhom') {
+                $("#change_gvhd_error").text('Giảng viên đã hướng dẫn đủ số nhóm')
             }
         }
     });

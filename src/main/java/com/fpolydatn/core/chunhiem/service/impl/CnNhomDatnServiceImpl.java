@@ -2,13 +2,18 @@ package com.fpolydatn.core.chunhiem.service.impl;
 
 import com.fpolydatn.core.chunhiem.excel.CnSinhVienTheoDotExport;
 import com.fpolydatn.core.chunhiem.excel.CnSinhVienTheoDotImport;
+import com.fpolydatn.core.chunhiem.excel.CnThongTinSinhVienExport;
 import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnCreateSinhVienTheoDotRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnSearchNhomInputRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienImport;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotExcel;
+import com.fpolydatn.core.chunhiem.model.response.CnThongTinNhomResponse;
+import com.fpolydatn.core.chunhiem.model.response.CnThongTinSinhVienExcel;
 import com.fpolydatn.core.chunhiem.repository.CnGiangVienHuongDanReponsitory;
 import com.fpolydatn.core.chunhiem.repository.CnMonDatnRepository;
 import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
@@ -27,7 +32,6 @@ import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.EmailSender;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
-import org.apache.commons.math3.analysis.function.Sinh;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,7 +46,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -83,6 +86,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     private List<CnSinhVienTheoDotExcel> list;
 
+    private List<CnThongTinSinhVienExcel> listThongTinSinhVien;
+
     List<CnCreateSinhVienTheoDotRequest> sinhVienList;
 
     ConcurrentHashMap<String, SinhVien> mapSinhVien;
@@ -94,7 +99,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     ConcurrentHashMap<String, GiangVienHuongDan> mapGiangVien;
 
     @Override
-        public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
+    public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         if (request.getDotDangKyId() == null) {
             if (dotDangKyId != null) {
@@ -111,7 +116,6 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<CnNhomDatnResponse> res = cnNhomDatnRepository.findNhomDatn(request, pageable, idChuNhiem);
-        list = cnNhomDatnRepository.findNhomDatnExport(request, idChuNhiem, TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
         return new PageableObject(res);
     }
 
@@ -126,6 +130,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CNBM_CHOT);
         cnNhomDatnRepository.save(nhomDatnCheck.get());
+        return true;
+    }
+
+    @Override
+    public boolean chotNhieuDeTai(List<String> listIdNhom) {
+        List<NhomDatn> listNhomDatn = cnNhomDatnRepository.findAllById(listIdNhom);
+        if(listIdNhom.size() != listNhomDatn.size()) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        for (NhomDatn nhomDatn: listNhomDatn) {
+            if (nhomDatn.getTrangThai() != TrangThaiNhom.GVHD_CHOT) {
+                throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
+            }
+            nhomDatn.setTrangThai(TrangThaiNhom.CNBM_CHOT);
+        }
+        cnNhomDatnRepository.saveAll(listNhomDatn);
         return true;
     }
 
@@ -166,10 +186,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             }
         }
         String[] messageSV = null;
-        if (!gvhd.isPresent()) {
+        if (gvhd == null || !gvhd.isPresent()) {
             messageSV = new String[]{"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:", "GVHD: Chưa có",
                     "Tên đề tài: " + (nhomDatnCheck.get().getTenDeTai() == null ? "chưa có" : nhomDatnCheck.get().getTenDeTai())};
-        } else {
+        } else if (gvhd.isPresent() && gvhd != null) {
             messageSV = new String[]{"Chủ nhiệm đã xác nhận nhóm của bạn được thành lập:",
                     "GVHD: " + gvhd.get().getTenGvhd() + " - " + gvhd.get().getTenTaiKhoan(),
                     "SĐT: " + gvhd.get().getSoDienThoai(),
@@ -178,6 +198,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
                 "Xác nhận nhóm thành lập", messageSV);
+        return true;
+    }
+
+    @Override
+    public boolean xacNhanNhieuNhom(List<String> listIdNhom) {
+        List<NhomDatn> listNhomDatn = cnNhomDatnRepository.findAllById(listIdNhom);
+        if(listIdNhom.size() != listNhomDatn.size()) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        for (NhomDatn nhomDatn: listNhomDatn) {
+            if (nhomDatn.getTrangThai() != TrangThaiNhom.MOI_THANH_LAP) {
+                throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
+            }
+            nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
+        }
+        cnNhomDatnRepository.saveAll(listNhomDatn);
         return true;
     }
 
@@ -213,8 +249,11 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             email[i] = listSinhVien.get(i).getEmail();
         }
         String[] message = new String[]{"Chủ nhiệm đã xóa nhóm của bạn"};
-        emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xóa nhóm",
-                "Nhóm đã bị xóa", message);
+        Thread newThread = new Thread(() ->
+                emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xóa nhóm",
+                        "Nhóm đã bị xóa", message)
+        );
+        newThread.start();
         return true;
     }
 
@@ -264,8 +303,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         if (maNhom == null) {
             throw new RestApiException(Message.TAO_NHOM_THAT_BAI);
         }
+        nhomDatn.setGiangVienId(cnCreateNhomDatnRequest.getIdGiangVien());
         nhomDatn.setMaNhom(maNhom);
-        nhomDatn.setMatKhau(cnCreateNhomDatnRequest.getMatKhau());
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
         nhomDatn.setCoSoId(cnCreateNhomDatnRequest.getCoSoId());
         nhomDatn.setDotDangKyId(cnCreateNhomDatnRequest.getDotDangKyId());
@@ -285,17 +324,88 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     }
 
     @Override
-    public void CnSinhVienExport(HttpServletResponse response, String typeExcel, CnFindNhomDatnRequest request) throws IOException {
+    public List<String> searchNhomDatnInput(final CnSearchNhomInputRequest request) {
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (request.getDotDangKyId() == null) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
+        } else if (request.getDotDangKyId().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                request.setDotDangKyId(dotDangKyId);
+            } else {
+                request.setDotDangKyId("");
+            }
+        }
+        return cnNhomDatnRepository.searchNhomDatnInput(request);
+    }
+
+    @Override
+    public CnThongTinNhomResponse getThongTinNhom(String idNhom, String coSoId) {
+        return cnNhomDatnRepository.getThongTinNhom(idNhom, coSoId, commonHelper.getDotDangKyHienTai());
+    }
+
+    @Override
+    public void CnSinhVienExport(HttpServletResponse response, final CnFindSinhVienTheoDotRequest request, String idChuNhiem) throws IOException {
         try {
             response.setContentType("application/octet-stream");
             DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
             String currentDateTime = dateFormatter.format(new Date());
 
             String headerKey = "Content-Disposition";
-            String headerValue = "attachment; filename=SinhVienTheoDot" + currentDateTime + "." + typeExcel;
+            String headerValue = "attachment; filename=SinhVienTheoDot" + currentDateTime + "." + request.getTypeExcel();
             response.setHeader(headerKey, headerValue);
             CnSinhVienTheoDotExport cnNhomDatnExport = new CnSinhVienTheoDotExport();
+            String dotDangKyId = commonHelper.getDotDangKyHienTai();
+            if (request.getIdDotDangKy() == null) {
+                if (dotDangKyId != null) {
+                    request.setIdDotDangKy(dotDangKyId);
+                } else {
+                    request.setIdDotDangKy("");
+                }
+            } else if (request.getIdDotDangKy().equalsIgnoreCase("")) {
+                if (dotDangKyId != null) {
+                    request.setIdDotDangKy(dotDangKyId);
+                } else {
+                    request.setIdDotDangKy("");
+                }
+            }
+            list = cnNhomDatnRepository.findNhomDatnExport(request, request.getIdDotDangKy(), idChuNhiem, TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
             cnNhomDatnExport.employeeDetailReport(response, list);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void CnExportThongTinSinhVien(HttpServletResponse response, CnFindSinhVienTheoDotRequest request, String idChuNhiem) throws IOException {
+        try {
+            response.setContentType("application/octet-stream");
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+            String currentDateTime = dateFormatter.format(new Date());
+
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=ThongTinSinhVien" + currentDateTime + "." + request.getTypeExcel();
+            response.setHeader(headerKey, headerValue);
+            CnThongTinSinhVienExport cnThongTinSinhVienExport = new CnThongTinSinhVienExport();
+            String dotDangKyId = commonHelper.getDotDangKyHienTai();
+            if (request.getIdDotDangKy() == null) {
+                if (dotDangKyId != null) {
+                    request.setIdDotDangKy(dotDangKyId);
+                } else {
+                    request.setIdDotDangKy("");
+                }
+            } else if (request.getIdDotDangKy().equalsIgnoreCase("")) {
+                if (dotDangKyId != null) {
+                    request.setIdDotDangKy(dotDangKyId);
+                } else {
+                    request.setIdDotDangKy("");
+                }
+            }
+            listThongTinSinhVien = cnSinhVienRepository.findThongTinSinhVien(request, request.getIdDotDangKy(), idChuNhiem, TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
+            cnThongTinSinhVienExport.exportThongTinSinhVien(response, listThongTinSinhVien);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -359,7 +469,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 //                            return;
 //                        }
                         nhomDatn.setTruongNhomId(sv.getId());
-                        if(giangVien != null) {
+                        if (giangVien != null) {
                             nhomDatn.setGiangVienId(giangVien.getId());
                         }
                         if (nhomDatn.getTrangThai() == TrangThaiNhom.MOI_THANH_LAP) {
@@ -405,9 +515,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 }
             });
             if (response.getStatus() == true) {
-                for (Map.Entry<String, SinhVien> item : listSinhVienEntity.entrySet()){
+                for (Map.Entry<String, SinhVien> item : listSinhVienEntity.entrySet()) {
                     SinhVien sinhVien = item.getValue();
-                    if(sinhVien.getNhomId() == null){
+                    if (sinhVien.getNhomId() == null) {
                         sinhVien.setMonDatnId(null);
                     }
                 }
@@ -421,7 +531,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 }
                 String array[] = maNhom.split("_");
                 Long count = Long.parseLong(array[1]);
-                for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()){
+                for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()) {
                     String maNhomCreate = item.getValue();
                     NhomDatn nhomDatn = new NhomDatn();
                     nhomDatn.setMaNhom(array[0] + "_" + count++);
@@ -432,7 +542,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         if (xx.getValue().getChucVu().equalsIgnoreCase("x")) {
                             GiangVienHuongDan giangVien = mapGiangVien.get(mapTruongNhomCreate.get(maNhomCreate).getGvhd());
                             nhomDatn.setTruongNhomId(mapSinhVien.get(mapTruongNhomCreate.get(maNhomCreate).getMaSinhVien()).getId());
-                            if(giangVien != null) {
+                            if (giangVien != null) {
                                 nhomDatn.setGiangVienId(giangVien.getId());
                             }
                         }
@@ -440,7 +550,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     listNhomDatnCreate.put(nhomDatn.getTruongNhomId(), nhomDatn);
                 }
                 cnNhomDatnRepository.saveAll(listNhomDatnCreate.values());
-                for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()){
+                for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()) {
                     String maNhomCreate = item.getValue();
                     for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapSinhVienTaoNhom.entrySet()) {
                         SinhVien truongNhomCreate = mapSinhVien.get(mapTruongNhomCreate.get(maNhomCreate).getMaSinhVien());
