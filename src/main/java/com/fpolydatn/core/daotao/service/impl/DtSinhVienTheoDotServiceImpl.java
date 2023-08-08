@@ -25,6 +25,7 @@ import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
+import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -37,7 +38,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.github.pjfanning.xlsx.StreamingReader;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -408,16 +408,13 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             throw new RestApiException(Message.SINH_VIEN_NOT_EXISTS);
         }
         SinhVien sinhVien = sv.get();
-        List<NhomDatn> nhomDatnList = nhomDatnTheoDotRepository.findAll();
-        NhomDatn chuyenTruongNhom;
-        for (NhomDatn nhomDatn : nhomDatnList) {
-            map.put(nhomDatn.getTruongNhomId(), nhomDatn);
-        }
 
         if (sinhVien.getNhomId() == null) {
             sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
         } else {
-            if (map.get(sinhVien.getId()) == null) {
+            Optional<NhomDatn> nhomDatn = nhomDatnTheoDotRepository.findById(sinhVien.getNhomId());
+
+            if (!nhomDatn.get().getTruongNhomId().equals(sinhVien.getId())) {
                 sinhVien.setNhomId(null);
                 sinhVien.setMonDatnId(null);
                 sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
@@ -425,24 +422,22 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 //nếu là nhóm trưởng thì chuyển quyền cho sinh viên trong nhóm
                 SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(),
                         sinhVien.getNhomId(), coSoId, dotDangKyId);
-                chuyenTruongNhom = map.get(sinhVien.getId());
+//                chuyenTruongNhom = map.get(sinhVien.getId());
                 if (motSVtrongNhom == null) {
-                    nhomDatnTheoDotRepository.delete(chuyenTruongNhom);
+                    nhomDatnTheoDotRepository.delete(nhomDatn.get());
                     sinhVien.setNhomId(null);
                     sinhVien.setMonDatnId(null);
                     sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
                 } else {
-                    chuyenTruongNhom.setTruongNhomId(motSVtrongNhom.getId());
-                    nhomDatnTheoDotRepository.save(chuyenTruongNhom);
+                    nhomDatn.get().setTruongNhomId(motSVtrongNhom.getId());
+                    nhomDatnTheoDotRepository.save(nhomDatn.get());
                     sinhVien.setNhomId(null);
                     sinhVien.setMonDatnId(null);
                     sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
                 }
-
             }
         }
         SinhVien svKhongDuDK = sinhVienRepository.save(sinhVien);
-
         return svKhongDuDK;
     }
 
