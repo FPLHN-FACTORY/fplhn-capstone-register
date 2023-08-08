@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -16,14 +17,18 @@ import java.util.List;
  * @author SonPT
  */
 
+@Repository
 public interface DtDotDangKyRepository extends DotDangKyRepository {
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY ddk.last_modified_date DESC) AS STT, ddk.id, hk.ten_hoc_ky, 
             ddk.ten_dot_dang_ky, ddk.ngay_bat_dau, ddk.ngay_ket_thuc, 
-            FROM_UNIXTIME(ddk.ngay_ket_thuc / 1000) > CURRENT_DATE() AS trang_thai 
+            FROM_UNIXTIME(ddk.ngay_ket_thuc / 1000) > CURRENT_DATE() AS trang_thai,
+            (SELECT COUNT(id) FROM sinh_vien WHERE dot_dang_ky_id = ddk.id) AS tong_sinh_vien,
+            (SELECT COUNT(id) FROM sinh_vien WHERE dot_dang_ky_id = ddk.id AND nhom_id IS NULL) AS tong_sv_chua_co_nhom            
             FROM dot_dang_ky ddk 
-            INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id WHERE ddk.co_so_id = :#{#req.coSoId} 
+            INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id 
+            WHERE ddk.co_so_id = :#{#req.coSoId} 
             GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
             """,
             countQuery = """

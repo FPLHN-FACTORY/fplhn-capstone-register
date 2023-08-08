@@ -1,56 +1,62 @@
 const svNhomDatnApi = '/api/sinh-vien';
 const svNhomDatnView = '/sinh-vien';
 
-function openModalDoiDeTai(){
+function openModalDoiDeTai() {
     $("#modal_doi_ten_de_Tai").modal('show');
 }
 
-function openModalChonGVHD(){
+function openModalChonGVHD() {
     $("#modal_chon_giang_vien").modal('show');
 }
 
 function doiTenDeTai() {
-    $("#modal_doi_ten_de_Tai").modal('hide');
-    let inputTenDeTai = $("#inputTenDeTai").val();
+    let inputTenDeTai = $("#inputTenDeTai").val().trim();
     let updateTenDeTaiRequest = {};
     updateTenDeTaiRequest["tenDeTai"] = inputTenDeTai;
-    bootbox.confirm({
-        title: "Đổi tên đề tài",
-        message: "Bạn muốn đổi tên đề tài?",
-        buttons: {
-            cancel: {
-                className: 'btn-outline-secondary btn btn-light',
-                label: '<i class="fa fa-times"></i> Quay lại'
+    if (inputTenDeTai.length == 0) {
+        $("#errorTenDeTai").text("Vui lòng nhập tên đề tài");
+    } else if (inputTenDeTai.length > 255) {
+        $("#errorTenDeTai").text("Vượt quá số ký tự cho phép");
+    } else {
+        $("#modal_doi_ten_de_Tai").modal('hide');
+        bootbox.confirm({
+            title: "Đổi tên đề tài",
+            message: "Bạn muốn đổi tên đề tài?",
+            buttons: {
+                cancel: {
+                    className: 'btn-outline-secondary btn btn-light',
+                    label: '<i class="fa fa-times"></i> Quay lại'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Xác nhận'
+                }
             },
-            confirm: {
-                label: '<i class="fa fa-check"></i> Xác nhận'
+            callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "PUT",
+                        contentType: "application/json",
+                        url: svNhomDatnApi + "/update-ten-de-tai",
+                        data: JSON.stringify(updateTenDeTaiRequest),
+                        datatype: 'json',
+                        success: function (responseData) {
+                            bootbox.alert({
+                                message: 'Đổi đề tài thành công',
+                                backdrop: true,
+                                callback: function () {
+                                    window.open(svNhomDatnView, '_self');
+                                }
+                            });
+                        },
+                        error: function (responseData) {
+                            console.log(responseData);
+                            $("#errorTenDeTai").text(responseData.responseJSON.message);
+                        }
+                    });
+                }
             }
-        },
-        callback: function (result) {
-            if (result) {
-                $.ajax({
-                    type: "PUT",
-                    contentType: "application/json",
-                    url: svNhomDatnApi + "/update-ten-de-tai",
-                    data: JSON.stringify(updateTenDeTaiRequest),
-                    datatype: 'json',
-                    success: function (responseData) {
-                        bootbox.alert({
-                            message: 'Đổi đề tài thành công',
-                            backdrop: true,
-                            callback: function () {
-                                window.open(svNhomDatnView, '_self');
-                            }
-                        });
-                    },
-                    error: function (responseData) {
-                        console.log(responseData);
-                        $("#errorTenDeTai").text(responseData.responseJSON.message);
-                    }
-                });
-            }
-        }
-    });
+        });
+    }
 }
 
 function confirmRoiNhom(soThanhVien) {
