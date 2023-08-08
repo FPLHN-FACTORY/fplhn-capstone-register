@@ -18,6 +18,9 @@ public interface DtNhomDatnTheoDotResponse extends IsIdentified {
     @Value("#{target.ten_mon_datn}")
     String getTenMonDatn();
 
+    @Value("#{target.danh_sach_sinh_vien}")
+    String getDanhSachSinhVien();
+
     @Value("#{target.ten_de_tai}")
     String getTenDeTai();
 
