@@ -55,11 +55,23 @@
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Tên giảng viên</span>
+                                            <span for="" class="fillter-name col-4 text-center">Tên tài khoản</span>
                                             <input type="text" class="form-control col-6"
-                                                   name="tenGiangVien" id="tenGiangVien" value="">
+                                                   name="ten_tai_khoan" id="ten_tai_khoan" value="">
                                         </div>
-                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Chuyên ngành</span>
+                                            <select name="chuyenNganh" id="chuyenNganh" class="form-control col-6">
+                                                <option value="">Chọn chuyên ngành</option>
+                                                <option th:each="chuyenhNganh : ${tenChuyenNganh}"
+                                                        th:value="${chuyenhNganh.getId}"
+                                                        th:text="${chuyenhNganh.getName}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <label class="fillter-name col-4 text-center">Đợt đăng ký</label>
                                             <br>
                                             <select class="form-control col-6" id="search_dot_dang_ky">
@@ -386,6 +398,7 @@
                                                 <th>Số nhóm</th>
                                                 <th>SĐT</th>
                                                 <th>Email Fe</th>
+                                                <th>Chuyên ngành</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
                                                 <tbody id="searchListGvhd">
@@ -396,6 +409,7 @@
                                                         <td th:text="${giangVienHD.getSoNhomDangHuongDan() + '/' + giangVienHD.getSoNhomHuongDanToiDa()}"></td>
                                                         <td th:text="${giangVienHD.getSoDienThoai()}"></td>
                                                         <td th:text="${giangVienHD.getEmailFe()}"></td>
+                                                        <td th:text="${giangVienHD.getChuyenNganh()}"></td>
                                                         <td>
                                                             <button
                                                                     type="button"

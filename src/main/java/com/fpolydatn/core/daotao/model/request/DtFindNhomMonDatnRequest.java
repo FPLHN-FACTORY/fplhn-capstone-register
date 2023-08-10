@@ -10,4 +10,8 @@ public class DtFindNhomMonDatnRequest extends PageableRequest {
 
     private String coSoId;
 
+    private String maNhomMon;
+
+    private String chuyenNganhId;
+
 }

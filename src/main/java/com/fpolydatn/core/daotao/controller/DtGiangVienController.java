@@ -5,6 +5,7 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.MuitiPathFile;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
+import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -32,14 +33,19 @@ public class DtGiangVienController extends BaseController {
     @Autowired
     private DtDotDangKyService dangKyService;
 
+    @Autowired
+    private DtChuyenNganhService chuyenNganhService;
+
 
     @GetMapping("")
     public String viewGiangVienHD(Model model, final DtFindGiangVienHDRequest rep) {
-        String coSoid = session.getCoSoId();
-        rep.setCoSoId(coSoid);
+        String coSoId = session.getCoSoId();
+        rep.setCoSoId(coSoId);
         PageableObject<DtGiangVienHDResponse> listGiangVien = giangVienHDService.search(rep);
-        List<SimpleEntityProj> listDotDangKy = dangKyService.findAllSimpleEntity(coSoid);
+        List<SimpleEntityProj> listDotDangKy = dangKyService.findAllSimpleEntity(coSoId);
+        List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("listDotDangKy", listDotDangKy);
+        model.addAttribute("tenChuyenNganh", listChuyenNganh);
         model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("page", listGiangVien);
         return "daotao/dt-giang-vien-huong-dan";

@@ -42,4 +42,7 @@ public interface DtGiangVienHDResponse extends IsIdentified {
     @Value("#{target.email_fe}")
     String getEmailFe();
 
+    @Value("#{target.danh_sach_chuyen_nganh}")
+    String getChuyenNganh();
+
 }

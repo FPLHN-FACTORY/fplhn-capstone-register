@@ -34,6 +34,60 @@
             <div>
                 <div class="m-content">
                     <h3>Quản lý nhóm môn DATN</h3>
+                    <section class="fillter-area  mb-5">
+                        <div class="m-portlet">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                <span class="m-portlet__head-icon">
+                                    <i class="m-menu__link-icon flaticon-web"></i>
+                                </span>
+                                        <h3 class="m-portlet__head-text">
+                                            Bộ lọc
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <form
+                                    id="searchGvhd"
+                                    method="GET"
+                                    class="m-portlet__body">
+                                <div class="row">
+                                    <div
+                                            class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                        <span for="" class="fillter-name col-5 text-center">Mã nhóm môn</span>
+                                        <input type="text" class="form-control col-6"
+                                               name="search_ma_nhom_mon" id="search_ma_nhom_mon" value="">
+                                    </div>
+                                    <div
+                                            class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                        <span for="" class="fillter-name col-5 text-center">Chuyên ngành</span>
+                                        <select name="chuyenNganh" id="chuyenNganh" class="form-control col-6">
+                                            <option value="">Chọn chuyên ngành</option>
+                                            <option th:each="chuyenhNganh : ${listChuyenNganh}"
+                                                    th:value="${chuyenhNganh.getId}"
+                                                    th:text="${chuyenhNganh.getName}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center pt-2">
+                                    <div class="col-sm-1 col-12 text-center mt-1">
+                                        <button type="button"
+                                                class="btn btn-primary" th:attr="onclick=|loadTable(0)|"
+                                        >Tìm kiếm
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-1 col-12 text-center mt-1">
+                                        <a href="#"
+                                           class="btn btn-danger text-white" th:attr="onclick=|clearData()|">
+                                            Làm mới bộ lọc
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
                     <div class="mt-5">
                         <div class="m-portlet">
                             <div class="m-portlet">
@@ -57,7 +111,8 @@
                                                                 <h5 class="modal-title" id="exampleModalLabel">
                                                                     Tạo nhóm môn
                                                                 </h5>
-                                                                <button type="button" class="close" data-bs-dismiss="modal"
+                                                                <button type="button" class="close"
+                                                                        data-bs-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -79,7 +134,7 @@
                                                                     <span class="text-danger"
                                                                           id="ten_mon_datn_error"></span><br>
                                                                     <label
-                                                                          class="col-form-label">Chuyên ngành:</label>
+                                                                            class="col-form-label">Chuyên ngành:</label>
                                                                     <select class="form-control"
                                                                             id="chuyenNganh"
                                                                             name="tenChuyenNganh">
@@ -94,7 +149,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-outline-secondary btn btn-light"
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary btn btn-light"
                                                                         data-bs-dismiss="modal">Hủy
                                                                 </button>
                                                                 <button type="button"
@@ -123,7 +179,7 @@
                                                 <th width="200px">Số môn trong nhóm</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="searchListMon">
                                                 <th:block th:each="nhomMonDatn,i : ${page.data}">
                                                     <tr class="table-light">
                                                         <td th:text="${nhomMonDatn.stt}"></td>
@@ -242,8 +298,8 @@
                                 id="ten_nhom_mon_datn_update"/>
                         <span class="text-danger"
                               id="errorTenMonUpdate"></span><br>
-                        <label 
-                              class="col-form-label">Chuyên ngành:</label>
+                        <label
+                                class="col-form-label">Chuyên ngành:</label>
                         <select class="form-control"
                                 id="chuyenNganhUpdate"
                                 name="tenChuyenNganh">

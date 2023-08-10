@@ -1,10 +1,15 @@
 package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
+import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateNhomMonDatnRequest;
+import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
+import com.fpolydatn.core.daotao.model.request.DtFindNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateNhomMonDatnRequest;
 import com.fpolydatn.core.daotao.model.response.DtDetailNhomMonResponse;
+import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
+import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
 import com.fpolydatn.core.daotao.service.DtNhomMonDatnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,5 +60,12 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
     public ResponseObject delete(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
         return new ResponseObject(dtNhomMonDatnService.delete(id, coSoId));
+    }
+
+    @GetMapping("/search")
+    public ResponseObject search(final DtFindNhomMonDatnRequest req) {
+        req.setCoSoId(session.getCoSoId());
+        PageableObject<DtNhomMonDatnResponse> listMon = dtNhomMonDatnService.findAllByCoSo(req);
+        return new ResponseObject(listMon);
     }
 }
