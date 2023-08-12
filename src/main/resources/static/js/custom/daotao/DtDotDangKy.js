@@ -396,6 +396,7 @@ function detail(dotDangKyid) {
                 $("#btnShowSinhVienChuaCoNhom").attr('style', "display: block; line-height: 27px");
                 $("#btnShowSinhVienChuaCoNhom").attr('href', "/dao-tao/sinh-vien?idTrangThaiNhom=b&idDotDangKy=" + dotDangKyid);
             }
+            $("#detailSoNhomHopLe").val(responseData.data.soNhomHopLe);
         },
         error: function (e) {
             console.log("ERROR : ", e);

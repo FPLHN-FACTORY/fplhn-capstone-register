@@ -57,7 +57,8 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
             SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ma_nhom, b.ten_nhom
-            ,b.ten_de_tai, i.ten_mon_datn , f.ten_chuyen_nganh, COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ten_sinh_vien,
+            ,b.ten_de_tai, i.ten_mon_datn , f.ten_chuyen_nganh, COUNT(d.ma_sinh_vien) AS total_sinh_vien, 
+            c.ten_sinh_vien AS ten_truong_nhom, c.ma_sinh_vien AS ma_sinh_vien_truong_nhom, 
             e.ten_gvhd, e.ten_tai_khoan, b.last_modified_date, 
             IF(b.mat_khau IS NULL, 0, 1) AS mat_khau_ton_tai, b.nhan_xet, c.thoi_diem_roi_nhom_gan_nhat 
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id 

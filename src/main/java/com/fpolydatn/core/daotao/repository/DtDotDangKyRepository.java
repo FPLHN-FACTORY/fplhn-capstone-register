@@ -21,14 +21,23 @@ import java.util.List;
 public interface DtDotDangKyRepository extends DotDangKyRepository {
 
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY ddk.last_modified_date DESC) AS STT, ddk.id, hk.ten_hoc_ky, 
-            ddk.ten_dot_dang_ky, ddk.ngay_bat_dau, ddk.ngay_ket_thuc, 
+            WITH SoNhomKhongDuDK AS (SELECT n.id, n.dot_dang_ky_id
+                    FROM nhom_datn n JOIN sinh_vien sv ON n.id = sv.nhom_id
+                    WHERE n.co_so_id = :#{#req.coSoId}
+                    GROUP BY n.id HAVING COUNT(sv.id) < 4),
+                SoNhomKhongDuDKTheoDot AS (SELECT COUNT(snkddk.id) AS so_nhom, snkddk.dot_dang_ky_id 
+                FROM SoNhomKhongDuDK snkddk GROUP BY snkddk.dot_dang_ky_id)
+            SELECT ROW_NUMBER() OVER(ORDER BY ddk.last_modified_date DESC) AS STT, ddk.id, hk.ten_hoc_ky,
+            ddk.ten_dot_dang_ky, ddk.ngay_bat_dau, ddk.ngay_ket_thuc,
             FROM_UNIXTIME(ddk.ngay_ket_thuc / 1000) > CURRENT_DATE() AS trang_thai,
             (SELECT COUNT(id) FROM sinh_vien WHERE dot_dang_ky_id = ddk.id) AS tong_sinh_vien,
-            (SELECT COUNT(id) FROM sinh_vien WHERE dot_dang_ky_id = ddk.id AND nhom_id IS NULL) AS tong_sv_chua_co_nhom            
-            FROM dot_dang_ky ddk 
-            INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id 
-            WHERE ddk.co_so_id = :#{#req.coSoId} 
+            (SELECT COUNT(id) FROM sinh_vien WHERE dot_dang_ky_id = ddk.id AND nhom_id IS NULL) AS tong_sv_chua_co_nhom,
+            (SELECT count(id) FROM nhom_datn WHERE dot_dang_ky_id = ddk.id) AS tong_so_nhom,
+            COALESCE(snkddktd.so_nhom, 0) AS tong_nhom_khong_hop_le           
+            FROM dot_dang_ky ddk
+            INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id
+            LEFT JOIN SoNhomKhongDuDKTheoDot snkddktd ON ddk.id = snkddktd.dot_dang_ky_id
+            WHERE ddk.co_so_id = :#{#req.coSoId}
             GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
             """,
             countQuery = """
@@ -59,9 +68,14 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             COUNT(sv.id) - COUNT(sv.nhom_id) AS tong_sinh_vien_chua_co_nhom,
             COUNT(sv.nhom_id) AS tong_sinh_vien_co_nhom,
             (SELECT COUNT(id) FROM nhom_datn WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id) AS tong_so_nhom,
-            ROUND((SELECT COUNT(id) FROM nhom_datn WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id AND trang_thai != 1 AND trang_thai != 0) / 
-            (SELECT COUNT(id) FROM nhom_datn WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id) * 100, 1) AS ti_le_xac_nhan,
-            FROM_UNIXTIME(ddk.ngay_ket_thuc / 1000) > CURRENT_DATE() AS trang_thai
+            ROUND((SELECT COUNT(id) FROM nhom_datn 
+            	WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id AND trang_thai != 1 AND trang_thai != 0) / 
+            (SELECT COUNT(id) FROM nhom_datn 
+            	WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id) * 100, 1) AS ti_le_xac_nhan,
+            FROM_UNIXTIME(ddk.ngay_ket_thuc / 1000) > CURRENT_DATE() AS trang_thai,
+            (SELECT COUNT(*) FROM (SELECT COUNT(n.id) FROM nhom_datn n INNER JOIN sinh_vien sv ON n.id = sv.nhom_id 
+            	WHERE n.co_so_id = :coSoId AND n.dot_dang_ky_id = :id 
+            	GROUP BY n.id HAVING COUNT(sv.id) > 3) AS nhom_hop_le) AS so_nhom_hop_le
             FROM dot_dang_ky ddk LEFT JOIN sinh_vien sv ON ddk.id = sv.dot_dang_ky_id
             INNER JOIN hoc_ky hk ON ddk.hoc_ky_id = hk.id  WHERE ddk.co_so_id = :coSoId AND ddk.id = :id
             GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC

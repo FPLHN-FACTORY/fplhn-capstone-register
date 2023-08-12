@@ -46,4 +46,7 @@ public interface DtDetailDotDangKyResponse {
     @Value("#{target.trang_thai}")
     Integer getTrangThai();
 
+    @Value("#{target.so_nhom_hop_le}")
+    Integer getSoNhomHopLe();
+
 }
