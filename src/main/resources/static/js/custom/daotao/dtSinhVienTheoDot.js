@@ -32,9 +32,9 @@ function viewTable(page) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/api/dao-tao/sinh-vien?page=" + page+ "&sortNhomDatn=" + sortNhomDatn + "&tenSinhVien=" + keyword +
+        url: "/api/dao-tao/sinh-vien?page=" + page + "&tenSinhVien=" + keyword +
             "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai +
-             + "&idDotDangKy=" + dotDangKy,
+            +"&idDotDangKy=" + dotDangKy + "&sortNhomDatn=" + sortNhomDatn,
         dataType: 'json',
         success: function (responseData) {
             if (responseData.data.data.length > 0) {
@@ -484,6 +484,7 @@ function exportExcel() {
     let chuyenNganh = $("#chuyenNganh").val();
     let trangThai = $("#trangThai").val();
     let dotDangKy = $("#dotDangKy").val();
+    let sortNhomDatn = $("#sortNhomDatn").val();
     let typeExcel = $("#type_excel").val();
     if (typeExcel == '') {
         $("#type_excel_error").text("Chọn định dạng file download");
@@ -491,10 +492,10 @@ function exportExcel() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy,
+            url: "/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy + "&sortNhomDatn=" + sortNhomDatn,
 
             success: function () {
-                window.open("/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy, '_self');
+                window.open("/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy + "&sortNhomDatn=" + sortNhomDatn, '_self');
             },
             error: function (e) {
                 console.log("ERROR : ", e);
