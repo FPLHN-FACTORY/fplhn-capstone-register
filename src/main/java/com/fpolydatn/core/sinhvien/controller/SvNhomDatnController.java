@@ -10,6 +10,7 @@ import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvMonDatnService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
+import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,10 @@ public class SvNhomDatnController extends BaseController {
             List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getDetailNhomDatnById(nhomId, coSoId, dotDangKyHienTai);
             Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId, coSoId, dotDangKyHienTai);
             String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(idUSer);
-            List<SvGiangVienHuongDanResponse> listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
+            List<SvGiangVienHuongDanResponse> listGiangVien = null;
+            if (svDetailNhomDatnResponse.get(0).getTrangThai() == 0) {
+                listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
+            }
             model.addAttribute("soThanhVien", soThanhVien);
             model.addAttribute("listGiangVien", listGiangVien);
             model.addAttribute("checkTruongNhom", checkTruongNhom);

@@ -94,5 +94,6 @@ public class PropertyKeys {
     public static final String TAO_NHOM_THAT_BAI = "tao.nhom.that.bai";
     public static final String SINH_VIEN_DA_CO_NHOM = "sinh.vien.da.co.nhom";
     public static final String SINH_VIEN_KHONG_PHAI_TRUONG_NHOM = "sinh.vien.khong.phai.truong.nhom";
+    public static final String QUA_SO_KY_TU_CHO_PHEP = "qua.so.ky.tu.cho.phep";
 
 }

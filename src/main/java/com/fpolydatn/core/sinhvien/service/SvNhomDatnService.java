@@ -5,6 +5,7 @@ import com.fpolydatn.core.sinhvien.model.request.SvAddSinhVienRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvCreateNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenDeTaiRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenNhomRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
@@ -30,14 +31,16 @@ public interface SvNhomDatnService {
 
     NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest, String idUser);
 
-    Boolean updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest);
+    String updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest);
 
     Boolean roiNhom(String idUser, String coSoId, String dotDangKyId);
 
     Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi);
 
-    Boolean chonGvhd(String idUser, String idGiangVien, String coSoId, String dotDangKyId);
+    String chonGvhd(String idUser, String idGiangVien, String coSoId, String dotDangKyId);
 
     Boolean checkThoiGianRoiNhom(String idUser);
+
+    String doiTenNhom(@Valid SvUpdateTenNhomRequest request);
 
 }

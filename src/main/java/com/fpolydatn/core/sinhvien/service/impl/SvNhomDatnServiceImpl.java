@@ -5,6 +5,7 @@ import com.fpolydatn.core.sinhvien.model.request.SvAddSinhVienRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvCreateNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenDeTaiRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenNhomRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
@@ -19,18 +20,21 @@ import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.constant.PropertyKeys;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.EmailSender;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
+import com.fpolydatn.util.PropertiesReader;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.Calendar;
@@ -42,6 +46,7 @@ import java.util.Optional;
  * @author hoangnt
  */
 @Service
+@Validated
 public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Autowired
@@ -218,7 +223,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     @Synchronized
-    public Boolean updateTenDeTai(SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
+    public String updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
@@ -248,7 +253,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             }
         }
         svNhomDatnRepository.save(nhomDatn.get());
-        return true;
+        return svUpdateTenDeTaiRequest.getTenDeTai();
     }
 
     @Override
@@ -327,7 +332,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     @Synchronized
-    public Boolean chonGvhd(String idUser, String idGiangVien, String coSoId, String dotDangKyId) {
+    public String chonGvhd(String idUser, String idGiangVien, String coSoId, String dotDangKyId) {
         if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
@@ -348,7 +353,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         nhomDatn.setGiangVienId(idGiangVien);
         svNhomDatnRepository.save(nhomDatn);
-        return true;
+        return giangVienHuongDan.get().getTenGvhd() + " - " + giangVienHuongDan.get().getTenTaiKhoan();
     }
 
     @Override
@@ -360,6 +365,25 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             }
         }
         return true;
+    }
+
+    @Override
+    public String doiTenNhom(@Valid SvUpdateTenNhomRequest request) {
+        NhomDatn nhomDatn = svNhomDatnRepository.getNhomDatnByTruongNhomId(request.getUserId(), request.getCoSoId(), request.getDotDangKyId());
+        if (nhomDatn == null) {
+            throw new RestApiException(Message.SINH_VIEN_KHONG_PHAI_TRUONG_NHOM);
+        }
+        if (request.getTenNhom() == null) {
+            nhomDatn.setTenNhom(null);
+        } else {
+            if ("".equals(request.getTenNhom().trim())) {
+                nhomDatn.setTenNhom(null);
+            } else {
+                nhomDatn.setTenNhom(request.getTenNhom());
+            }
+        }
+        svNhomDatnRepository.save(nhomDatn);
+        return request.getTenNhom();
     }
 
 }

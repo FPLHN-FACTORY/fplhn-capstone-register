@@ -7,6 +7,7 @@ import com.fpolydatn.core.sinhvien.model.request.SvAddSinhVienRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvCreateNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenDeTaiRequest;
+import com.fpolydatn.core.sinhvien.model.request.SvUpdateTenNhomRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.core.sinhvien.service.SvExportFileWordService;
@@ -130,4 +131,13 @@ public class SvNhomDatnRestController extends BaseController {
                 .contentLength(resource.contentLength())
                 .body(resource);
     }
+
+    @PutMapping("/update-ten-nhom")
+    public ResponseObject doiTenNhom(@RequestBody SvUpdateTenNhomRequest request) {
+        request.setUserId(session.getUserId());
+        request.setCoSoId(session.getCoSoId());
+        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        return new ResponseObject(svNhomDatnService.doiTenNhom(request));
+    }
+
 }
