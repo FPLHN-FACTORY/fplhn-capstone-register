@@ -607,9 +607,7 @@ function loadDataNhomDatn(count) {
     let sizeNhomDatn = parseInt($("#sizeNhomDatn").val())
     let maTruongNhom = $("#maTruongNhom").val().trim()
     currentPage = count;
-    if (count < 0 || count > totalPages - 1) {
-        return;
-    }
+
     $.ajax({
         type: "GET",
         contentType: "application/json",
