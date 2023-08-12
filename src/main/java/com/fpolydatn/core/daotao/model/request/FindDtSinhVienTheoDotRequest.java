@@ -21,4 +21,6 @@ public class FindDtSinhVienTheoDotRequest extends PageableRequest {
 
     private String coSoId;
 
+    private String sortNhomDatn = "maSinhVienAsc";
+
 }

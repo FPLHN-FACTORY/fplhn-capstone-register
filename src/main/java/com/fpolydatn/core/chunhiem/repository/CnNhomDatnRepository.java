@@ -26,7 +26,9 @@ import java.util.List;
 public interface CnNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
-            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, b.ma_nhom
+            SELECT b.id, ROW_NUMBER() OVER(
+            ORDER BY b.last_modified_date DESC
+            ) AS stt, b.ma_nhom
             ,b.ten_de_tai, k.ma_mon AS ma_mon_datn, COUNT(d.ma_sinh_vien)
             AS total_ma_sinh_vien, CONCAT(c.ma_sinh_vien, '_', c.ten_sinh_vien) as truong_nhom,e.ten_gvhd, e.ten_tai_khoan,
             (SELECT COUNT(i.id) FROM nhom_datn i WHERE i.giang_vien_id = e.id) AS so_nhom_dang_huong_dan,

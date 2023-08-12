@@ -25,12 +25,16 @@ function viewTable(page) {
     let chuyenNganh = $("#chuyenNganh").val();
     let trangThai = $("#trangThai").val();
     let dotDangKy = $("#dotDangKy").val();
+    let sortNhomDatn = $("#sortNhomDatn").val();
+
     currentPage = page;
     $("#valueInput").val(page + 1);
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/api/dao-tao/sinh-vien?page=" + page + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy,
+        url: "/api/dao-tao/sinh-vien?page=" + page+ "&sortNhomDatn=" + sortNhomDatn + "&tenSinhVien=" + keyword +
+            "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai +
+             + "&idDotDangKy=" + dotDangKy,
         dataType: 'json',
         success: function (responseData) {
             if (responseData.data.data.length > 0) {

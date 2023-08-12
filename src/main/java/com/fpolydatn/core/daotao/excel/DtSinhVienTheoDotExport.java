@@ -115,11 +115,11 @@ public class DtSinhVienTheoDotExport {
 
 
             //set border to table
-            cellStyle.setBorderTop(BorderStyle.MEDIUM);
-            cellStyle.setBorderRight(BorderStyle.MEDIUM);
-            cellStyle.setBorderBottom(BorderStyle.MEDIUM);
-            cellStyle.setBorderLeft(BorderStyle.MEDIUM);
-            cellStyle.setAlignment(HorizontalAlignment.LEFT);
+//            cellStyle.setBorderTop(BorderStyle.MEDIUM);
+//            cellStyle.setBorderRight(BorderStyle.MEDIUM);
+//            cellStyle.setBorderBottom(BorderStyle.MEDIUM);
+//            cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+//            cellStyle.setAlignment(HorizontalAlignment.LEFT);
 
 
             // Header
