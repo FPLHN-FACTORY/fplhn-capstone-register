@@ -114,7 +114,9 @@ function loadDataToTable(count) {
     let maNhomSearch = $("#maNhomSearch").val().trim();
     let trangThai = $("#trangThai").val().trim();
     let sizeSinhVien = parseInt($("#sizeSinhVien").val().trim());
-
+    if (count < 0 || count > totalPages - 1) {
+        return;
+    }
     $("#listSV").html("");
     currentPage = count;
     $.ajax({

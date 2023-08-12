@@ -126,7 +126,7 @@ public class CnSinhVienTheoDotExport {
             cell4.setCellStyle(cellStyle);
 
             Cell cell5 = row.createCell(5);
-            cell5.setCellValue("Chức vụ");
+            cell5.setCellValue("Trưởng nhóm");
             cell5.setCellStyle(cellStyle);
 
             Cell cell6 = row.createCell(6);
