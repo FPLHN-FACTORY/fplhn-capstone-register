@@ -36,7 +36,7 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
             SELECT  COUNT(pc.giang_vien_id) FROM do_an_tot_nghiep.phan_cong_huong_dan pc
             JOIN do_an_tot_nghiep.giang_vien_huong_dan gv ON pc.giang_vien_id = gv.id
             JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
-            WHERE pc.mon_datn_id = :monIDó
+            WHERE pc.mon_datn_id = :monID
              AND ddk.id = :#{#req.dotDangKy} AND
                  ( :#{#req.tenGV} IS NULL 
                     OR :#{#req.tenGV} LIKE '' 
