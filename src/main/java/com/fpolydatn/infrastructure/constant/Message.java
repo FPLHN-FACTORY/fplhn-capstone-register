@@ -82,7 +82,8 @@ public enum Message {
     SINH_VIEN_ALREADY_EXIST(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_ALREADY_EXIST)),
     SINH_VIEN_DA_CO_NHOM(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_DA_CO_NHOM)),
     SINH_VIEN_KHONG_PHAI_TRUONG_NHOM(PropertiesReader.getProperty(PropertyKeys.SINH_VIEN_KHONG_PHAI_TRUONG_NHOM)),
-    QUA_SO_KY_TU_CHO_PHEP(PropertiesReader.getProperty(PropertyKeys.QUA_SO_KY_TU_CHO_PHEP));
+    QUA_SO_KY_TU_CHO_PHEP(PropertiesReader.getProperty(PropertyKeys.QUA_SO_KY_TU_CHO_PHEP)),
+    CHUA_DU_12_TIENG_TRONG_NHOM(PropertiesReader.getProperty(PropertyKeys.CHUA_DU_12_TIENG_TRONG_NHOM));
 
     private String message;
 

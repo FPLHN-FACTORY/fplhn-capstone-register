@@ -78,20 +78,21 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             AND b.co_so_id = :#{#req.coSoId} 
             AND g.id = :#{#req.dotDangKyId} 
             AND b.trang_thai = 0 
-            AND (SELECT i.nhom_mon_datn_id FROM mon_datn i WHERE i.id = d.mon_datn_id) = :idNhomMon 
+            AND i.nhom_mon_datn_id = :idNhomMon 
             GROUP BY b.id 
             HAVING (:#{#req.soLuong} IS NULL OR :#{#req.soLuong} LIKE '' 
             OR CONVERT(COUNT(d.ma_sinh_vien), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED))  AND COUNT(d.ma_sinh_vien) < 7 
             ORDER BY b.last_modified_date DESC
             """, countQuery = """
-            SELECT count(b.id) 
+            SELECT COUNT(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id 
-            LEFT JOIN chuyen_nganh f ON f.id = c.chuyen_nganh_id 
+            LEFT JOIN sinh_vien d ON d.nhom_id = b.id 
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id 
             LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id 
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id 
             LEFT JOIN mon_datn i ON i.id = c.mon_datn_id 
             WHERE (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE '' 
-            OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%)  
+            OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%) 
             AND (:#{#req.truongNhom} IS NULL OR :#{#req.truongNhom} LIKE '' 
             OR c.ten_sinh_vien LIKE %:#{#req.truongNhom}%) 
             AND (:#{#req.giangVien} IS NULL OR :#{#req.giangVien} LIKE '' 
@@ -99,13 +100,10 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             AND b.co_so_id = :#{#req.coSoId} 
             AND g.id = :#{#req.dotDangKyId} 
             AND b.trang_thai = 0 
-            AND (SELECT i.nhom_mon_datn_id FROM mon_datn i WHERE i.id = c.mon_datn_id) = :idNhomMon 
-            GROUP BY b.id
+            AND i.nhom_mon_datn_id = :idNhomMon 
+            GROUP BY b.id 
             HAVING (:#{#req.soLuong} IS NULL OR :#{#req.soLuong} LIKE '' 
-            OR CONVERT((select count(sv.id) from nhom_datn mn join sinh_vien sv on mn.id = sv.nhom_id 
-               where b.id = mn.id), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED)) 
-               AND (select count(sv.id) from nhom_datn mn join sinh_vien sv on mn.id = sv.nhom_id 
-               where b.id = mn.id ) < 7
+            OR CONVERT(COUNT(d.ma_sinh_vien), UNSIGNED) = CONVERT(:#{#req.soLuong}, UNSIGNED))  AND COUNT(d.ma_sinh_vien) < 7 
             ORDER BY b.last_modified_date DESC
             """, nativeQuery = true)
     Page<SvNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") SvFindNhomDatnRequest req,

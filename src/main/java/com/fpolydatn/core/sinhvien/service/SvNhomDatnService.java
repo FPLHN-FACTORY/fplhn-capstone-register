@@ -39,7 +39,9 @@ public interface SvNhomDatnService {
 
     String chonGvhd(String idUser, String idGiangVien, String coSoId, String dotDangKyId);
 
-    Boolean checkThoiGianRoiNhom(String idUser);
+    // Boolean checkThoiGianRoiNhom(String idUser);
+
+    Boolean checkThoiDiemJoinNhomGanNhat(String idUser);
 
     String doiTenNhom(@Valid SvUpdateTenNhomRequest request);
 

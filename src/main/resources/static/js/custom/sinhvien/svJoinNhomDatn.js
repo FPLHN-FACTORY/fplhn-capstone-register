@@ -284,7 +284,7 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
                 <td>${item.tenMonDatn}</td>
                 <td>${item.countSinhVien}/7</td>
-                <td>${item.tenSinhVien}</td>
+                <td>${item.tenTruongNhom + ' - ' + item.maSinhVienTruongNhom}</td>
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
                 <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
                 <td>
@@ -295,13 +295,13 @@ function loadDataNhomDatn(count) {
                     >  
                         <img src="/img/eye-fill.svg">
                     </button>
-                    <button class="btn_box_arrow" style="${checkHanSV == 'false' ? 'display:none' : checkThoiGianRoiNhom == 'true' ? 'display: block' : 'display:none'}"                                 
+                    <button class="btn_box_arrow" 
                             data-target="#modal_create1"
                             data-toggle="modal"
-                            onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
-                            >
+                            onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')">
                         <img src="/img/box-arrow.svg">
                     </button>
+                    
                 </td>
                 <div class="modal fade"></div>
                 </td>
@@ -314,5 +314,13 @@ function loadDataNhomDatn(count) {
         error: function (e) {
             console.log("ERROR : ", e);
         }
+        // Nút tham gia nhóm: Có validate -> phải đủ 12 tiếng sau thời điểm rời nhóm gần nhất mới được join nhóm mới
+    // <button className="btn_box_arrow"
+    //         style="${checkHanSV == 'false' ? 'display:none' : checkThoiGianRoiNhom == 'true' ? 'display: block' : 'display:none'}"
+    //         data-target="#modal_create1"
+    //         data-toggle="modal"
+    //         onClick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')">
+    //     <img src="/img/box-arrow.svg">
+    // </button>
     });
 }

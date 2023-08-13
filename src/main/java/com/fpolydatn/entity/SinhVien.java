@@ -59,4 +59,8 @@ public class SinhVien extends MultiTenantEntity
 
     @Column
     private Long thoiDiemRoiNhomGanNhat;
+
+    @Column
+    private Long thoiDiemJoinNhomGanNhat;
+
 }
