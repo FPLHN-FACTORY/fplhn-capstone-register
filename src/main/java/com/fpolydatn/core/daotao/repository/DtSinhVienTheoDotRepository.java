@@ -167,9 +167,9 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
     @Query(value = """
             SELECT * FROM do_an_tot_nghiep.sinh_vien s 
             WHERE s.nhom_id= :nhomId
-            AND s.id <> :idNhomTruong LIMIT 1
+            AND s.id <> :idNhomTruong 
             AND s.co_so_id = :coSoId
-            AND s.dot_dang_ky_id = :dotDangKyId
+            AND s.dot_dang_ky_id = :dotDangKyId LIMIT 1
             """, nativeQuery = true)
     SinhVien motSVTrongNhom(@Param("idNhomTruong") String idNhomTruong,
                             @Param("nhomId") String nhomId,
