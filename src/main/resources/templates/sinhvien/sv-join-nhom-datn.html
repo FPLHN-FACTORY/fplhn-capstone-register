@@ -81,13 +81,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="row justify-content-center pt-2">
-                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-1 col-12 text-center mt-1">
                                             <button class="btn btn-primary" th:attr="onclick=|loadDataNhomDatn(0)|"
                                                     type="button">Tìm kiếm
                                             </button>
                                         </div>
-                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                        <div class="col-sm-1 col-12 text-center mt-1">
                                             <a class="btn btn-danger text-white"
                                                href="#" onclick="clearform();">
                                                 Làm mới bộ lọc
@@ -103,22 +103,28 @@
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="mt-3 overflow-hidden">
-                                        <button
-                                                class="btn btn-primary"
-                                                th:attr="onclick=|openModalCreate()|"
-                                                th:style="${checkMocThoiGian} == false ? 'display: none' :
-                                                                (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')">
+                                        <!-- Validate Button: Phải đủ 12 tiếng sau thời gian rời nhóm gần nhất -->
+<!--                                        <button-->
+<!--                                                class="btn btn-primary"-->
+<!--                                                th:attr="onclick=|openModalCreate()|"-->
+<!--                                                th:style="${checkMocThoiGian} == false ? 'display: none' :-->
+<!--                                                                (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')">-->
+<!--                                            Tạo nhóm DATN-->
+<!--                                        </button>-->
+<!--                                        <i-->
+<!--                                                style="color: red"-->
+<!--                                                th:text="${checkMocThoiGian} == false ? '*Hết hạn sinh viên tham gia và tạo nhóm' :-->
+<!--                                                                (${checkThoiGianRoiNhom} == false ? '*Thời gian rời nhóm gần nhất của bạn chưa đủ 12 giờ' : '')">-->
+
+<!--                                        </i>-->
+
+                                        <button class="btn btn-primary"
+                                                th:attr="onclick=|openModalCreate()|">
                                             Tạo nhóm DATN
                                         </button>
-                                        <i
-                                                style="color: red"
-                                                th:text="${checkMocThoiGian} == false ? '*Hết hạn sinh viên tham gia và tạo nhóm' :
-                                                                (${checkThoiGianRoiNhom} == false ? '*Thời gian rời nhóm gần nhất của bạn chưa đủ 12 giờ' : '')">
 
-                                        </i>
-                                        <br><br>
                                         <!--                Table body       -->
-                                        <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+                                        <table class="mt-3 table table-bordered m-table d-sm-table m-table--head-bg-primary"
                                                style="text-align: center"
                                                id="custom-table">
                                             <thead class="table-primary">
@@ -144,10 +150,10 @@
                                                     <td th:text="${nhomDatn.tenDeTai} == null ? 'Chưa có' : ${nhomDatn.tenDeTai}"></td>
                                                     <td th:text="${nhomDatn.tenMonDatn}"></td>
                                                     <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
-                                                    <td th:text="${nhomDatn.getTenSinhVien()}"></td>
+                                                    <td th:text="${nhomDatn.getTenTruongNhom() + ' - ' + nhomDatn.getMaSinhVienTruongNhom()}"></td>
                                                     <td th:text="${nhomDatn.tenGvhd} == null ? 'Chưa có': (${nhomDatn.tenGvhd} + ' - ' + ${nhomDatn.getTenTaiKhoan()})"></td>
                                                     <td th:text="${nhomDatn.matKhauTonTai} == 0 ? 'Công khai': 'Nhóm kín'"></td>
-                                                    <td>
+                                                    <td class="d-flex justify-content-center">
                                                         <button class="btn_eye"
                                                                 th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
                                                                 title="Xem chi tiết nhóm"
@@ -158,12 +164,21 @@
                                                         <button
                                                                 class="btn_box_arrow"
                                                                 th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|"
-                                                                th:style="${checkMocThoiGian} == false ? 'display: none' :
-                                                                (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')"
                                                                 title="Tham gia nhóm"
                                                                 type="button">
                                                             <img th:src="@{/img/box-arrow.svg}">
                                                         </button>
+
+                                                        <!-- Button có check phải đủ 12 tiếng mới được tham gia nhóm mới -->
+<!--                                                        <button-->
+<!--                                                                class="btn_box_arrow"-->
+<!--                                                                th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|"-->
+<!--                                                                th:style="${checkMocThoiGian} == false ? 'display: none' :-->
+<!--                                                                (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')"-->
+<!--                                                                title="Tham gia nhóm"-->
+<!--                                                                type="button">-->
+<!--                                                            <img th:src="@{/img/box-arrow.svg}">-->
+<!--                                                        </button>-->
                                                     </td>
                                                 </tr>
                                             </th:block>

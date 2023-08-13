@@ -172,6 +172,10 @@
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                             <th>Trạng thái</th>
+                                            <th>Tổng SV</th>
+                                            <th>Tổng SV chưa có nhóm</th>
+                                            <th>Tổng số nhóm</th>
+                                            <th>Số nhóm đủ ĐK</th>
                                             <th width="90px">Chức năng</th>
                                             </thead>
                                             <tbody>
@@ -185,6 +189,10 @@
                                                     <td th:text="${dotDangKy.getTrangThai()} == 1 ? 'Mở' : 'Đóng'"
                                                         th:style="${dotDangKy.getTrangThai()} == 1 ? 'color: #5867dd; font-weight: bold' :
                                                                     'color: red; font-weight: bold'"></td>
+                                                    <td th:text="${dotDangKy.getTongSinhVien()}"></td>
+                                                    <td th:text="${dotDangKy.getTongSvChuaCoNhom()}"></td>
+                                                    <td th:text="${dotDangKy.getTongSoNhom()}"></td>
+                                                    <td th:text="${dotDangKy.tongSoNhom - dotDangKy.tongNhomKhongHopLe}"></td>
                                                     <td>
                                                         <button
                                                                 type="button"
@@ -321,6 +329,10 @@
                     <label class="col-form-label">Tổng số nhóm</label>
                     <div class="input-group mb-3">
                         <input type="text" readonly class="form-control" id="detailTongSoNhom">
+                    </div>
+                    <label class="col-form-label">Số nhóm hợp lệ</label>
+                    <div class="input-group mb-3">
+                        <input type="text" readonly class="form-control" id="detailSoNhomHopLe">
                     </div>
                     <div id="labelDetailTiLe">
                         <label class="col-form-label">Tỉ lệ xác nhận</label>

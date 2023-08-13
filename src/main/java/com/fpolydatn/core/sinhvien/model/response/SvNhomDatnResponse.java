@@ -22,17 +22,17 @@ public interface SvNhomDatnResponse extends IsIdentified {
     @Value("#{target.ten_chuyen_nganh}")
     String getTenChuyenNganh();
 
-    @Value("#{target.total_ma_sinh_vien}")
+    @Value("#{target.total_sinh_vien}")
     String getCountSinhVien();
-
-//    @Value("#{target.ma_sinh_vien}")
-//    String getMaSinhVien();
 
     @Value("#{target.mat_khau_ton_tai}")
     int getMatKhauTonTai();
 
-    @Value("#{target.ten_sinh_vien}")
-    String getTenSinhVien();
+    @Value("#{target.ma_sinh_vien_truong_nhom}")
+    String getMaSinhVienTruongNhom();
+
+    @Value("#{target.ten_truong_nhom}")
+    String getTenTruongNhom();
 
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();

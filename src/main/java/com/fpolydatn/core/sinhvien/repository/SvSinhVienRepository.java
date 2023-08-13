@@ -1,8 +1,11 @@
 package com.fpolydatn.core.sinhvien.repository;
 
+import com.fpolydatn.core.sinhvien.model.response.SvSinhVienExportWordResponse;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /**
  * @author thangdt
@@ -20,8 +23,8 @@ public interface SvSinhVienRepository extends SinhVienRepository {
             WHERE nhom_id = :nhomId AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
     Integer getSoLuongThanhVienById(@Param("nhomId") String nhomId,
-                                @Param("coSoId") String coSoId,
-                                @Param("dotDangKyId") String dotDangKyId);
+                                    @Param("coSoId") String coSoId,
+                                    @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
             SELECT mon_chuong_trinh_id FROM sinh_vien 
@@ -32,5 +35,15 @@ public interface SvSinhVienRepository extends SinhVienRepository {
     String getMonChuongTrinhIdById(@Param("id") String id,
                                    @Param("coSoId") String coSoId,
                                    @Param("dotDangKyId") String dotDangKyId);
+
+    @Query(value = """
+            SELECT ma_sinh_vien, ten_sinh_vien, so_dien_thoai, email FROM sinh_vien 
+            WHERE nhom_id = :idNhom
+            AND co_so_id = :coSoId
+            AND dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
+    List<SvSinhVienExportWordResponse> getThanhVienTheoNhom(@Param("idNhom") String idNhom,
+                                                            @Param("coSoId") String coSoId,
+                                                            @Param("dotDangKyId") String dotDangKyId);
 
 }
