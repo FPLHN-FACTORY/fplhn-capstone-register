@@ -6,6 +6,107 @@ $(document).ready(function () {
     $("#targetLink").text(nhomMonDatnView);
 });
 
+let totalPages = $("#totalPages").val();
+let currentPage = $("#currentPage").val();
+
+function clearData() {
+    $("#search_ma_nhom_mon").val("");
+    ;
+    $("#chuyenNganh").val("");
+}
+
+function genPaging() {
+    if (totalPages <= 1) {
+        $("#page").html('');
+    } else {
+        let templatePageMid = ``;
+        let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="loadTable(${currentPage - 1})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+        templatePageMid = `
+                            <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
+                             <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
+        let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="loadTable(${currentPage + 1})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+        let templateHtml = ``;
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        $("#page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+    }
+}
+
+function loadTable(count) {
+    if (count == -1) {
+        count = totalPages - 1;
+    }
+    if (count == totalPages) {
+        count = 0;
+    }
+    let maNhomMon = $("#search_ma_nhom_mon").val();
+    let chuyenNganhId = $("#chuyenNganh").val();
+    currentPage = count;
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomMonDatnApi + "/search" + "?maNhomMon=" + maNhomMon + "&chuyenNganhId=" + chuyenNganhId + "&page=" + count,
+        dataType: 'json',
+        success: function (responseData) {
+            totalPages = responseData.data.totalPages;
+            if (responseData.data.data.length == 0) {
+                $("#searchListMon").html(``);
+                $("#page").html(``);
+                $("#empty").html(`<h3>Không có dữ liệu</h3>`);
+            } else {
+                $("#empty").html(``)
+                $("#searchListMon").html(responseData.data.data.map(function (nhomMonDatn) {
+                    return `
+                <tr class="table-light">
+                      <td>${nhomMonDatn.stt}</td>
+                      <td>${nhomMonDatn.maNhomMon}</td>
+                      <td>${nhomMonDatn.tenNhomMon}</td>
+                      <td>${nhomMonDatn.tenChuyenNganh}</td>
+                      <td>${nhomMonDatn.soMon}</td>
+                      <td>
+                          <a
+                            type="button"
+                            class="btn_clipboard_user" data-toggle="tooltip"
+                            title="Sửa nhóm môn"
+                            onclick="openModalUpdateNhomMonDatn('${nhomMonDatn.id}','${count}')">
+                            <img src="/img/pencil-square.svg">
+                          </a>
+                          <button
+                            type="button"
+                            class="btn_pencil_square"
+                            data-toggle="tooltip"
+                            title="Xóa nhóm môn"
+                            onclick="deleteNhomMonDatn('${nhomMonDatn.id}','${count}')">
+                            <img src="/img/trash.svg">
+                         </button>
+                         <button
+                            type="button"
+                            class="btn_trash"
+                            data-toggle="tooltip"
+                            title="Xem chi tiết nhóm môn"
+                            onclick="openModalChiTietNhomMonDatn('${nhomMonDatn.id}','${count})">
+                            <img src="/img/eye-fill.svg">
+                        </button>
+                    </td>
+                </tr>
+               `
+                }));
+                genPaging();
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
 function openModalCreate() {
     $("#maNhomMon").val('');
     $("#tenNhomMon").val('');

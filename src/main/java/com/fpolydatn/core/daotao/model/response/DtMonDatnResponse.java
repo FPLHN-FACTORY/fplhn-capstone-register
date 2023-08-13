@@ -27,6 +27,12 @@ public interface DtMonDatnResponse extends IsIdentified {
     @Value("#{target.ten_chuyen_nganh}")
     String getTenChuyenNganh();
 
+    @Value("#{target.danh_sach_gvhd}")
+    String getDanhSachGVHD();
+
+    @Value("#{target.ten_can_bo}")
+    String getTenCanBo();
+
     @Value("#{target.nhom_mon_datn_id}")
     String getNhomMonDatnId();
 
