@@ -32,9 +32,9 @@ function viewTable(page) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/api/dao-tao/sinh-vien?page=" + page + "&tenSinhVien=" + keyword +
-            "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai +
-            +"&idDotDangKy=" + dotDangKy + "&sortNhomDatn=" + sortNhomDatn,
+        url: "/api/dao-tao/sinh-vien?page=" + page
+            + "&sortNhomDatn=" + sortNhomDatn + "&idDotDangKy=" + dotDangKy + "&idTrangThaiNhom=" + trangThai + "&tenSinhVien=" + keyword
+            + "&idChuyenNganh=" + chuyenNganh,
         dataType: 'json',
         success: function (responseData) {
             if (responseData.data.data.length > 0) {
@@ -492,10 +492,15 @@ function exportExcel() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy + "&sortNhomDatn=" + sortNhomDatn,
+            url: "/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien="
+                + keyword + "&idChuyenNganh=" + chuyenNganh + "&idDotDangKy="
+                + dotDangKy + "&sortNhomDatn=" + sortNhomDatn + "&idTrangThaiNhom=" + trangThai,
 
             success: function () {
-                window.open("/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy + "&sortNhomDatn=" + sortNhomDatn, '_self');
+                window.open("/api/dao-tao/sinh-vien/export?typeExcel="
+                    + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh="
+                    + chuyenNganh + "&idDotDangKy=" + dotDangKy + "&sortNhomDatn="
+                    + sortNhomDatn + "&idTrangThaiNhom=" + trangThai, '_self');
             },
             error: function (e) {
                 console.log("ERROR : ", e);
