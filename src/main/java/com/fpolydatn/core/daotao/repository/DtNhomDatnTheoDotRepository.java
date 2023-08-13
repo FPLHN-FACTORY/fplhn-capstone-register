@@ -15,16 +15,18 @@ import java.util.List;
 
 public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
     @Query(value = """
-            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.created_date DESC) AS stt, b.ma_nhom, i.ten_mon_datn
-            ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien, 
-            e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
-            FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
-            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
-            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
-            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
-            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
-            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
-            LEFT JOIN mon_datn i ON i.id = c.mon_datn_id
+            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.created_date DESC) AS stt, b.ma_nhom, i.ten_mon_datn, (
+            				SELECT GROUP_CONCAT(d.ma_sinh_vien SEPARATOR ', ') from sinh_vien d where d.nhom_id = b.id
+            			) AS danh_sach_sinh_vien
+                        ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, d.ma_sinh_vien, d.ten_sinh_vien,\s
+                        e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
+                        FROM nhom_datn b
+                        LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+                        LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+                        LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+                        LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+                        LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+                        LEFT JOIN mon_datn i ON i.id = d.mon_datn_id
             WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
@@ -55,32 +57,34 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             """, nativeQuery = true)
     Page<DtNhomDatnTheoDotResponse> findAllNhomDatn(Pageable page, @Param("req") final FindDtNhomDatnTheoDotRequest req);
 
-    @Query(value ="""
-                SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, 
-                a.ma_sinh_vien, a.ten_sinh_vien, IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu
-                FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id
-                WHERE b.id = :idNhom
-                AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId     
-                """, countQuery = """
-                SELECT COUNT(a.id) FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id
-                WHERE b.id = :idNhom
-                AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId
-                """, nativeQuery = true)
+    @Query(value = """
+            SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, 
+            a.ma_sinh_vien, a.ten_sinh_vien, IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu
+            FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id
+            WHERE b.id = :idNhom
+            AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId     
+            """, countQuery = """
+            SELECT COUNT(a.id) FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id
+            WHERE b.id = :idNhom
+            AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
     List<DtSinhVienResponse> showDanhSachSinhVien(@Param("idNhom") String idNhom,
                                                   @Param("coSoId") String coSoId,
                                                   @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.created_date DESC) AS stt, b.ma_nhom, i.ten_mon_datn
-            ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, c.ma_sinh_vien, c.ten_sinh_vien, 
-            e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
-            FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
-            LEFT JOIN sinh_vien d ON d.nhom_id = b.id
-            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
-            LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
-            LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
-            LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
-            LEFT JOIN mon_datn i ON i.id = c.mon_datn_id
+            SELECT b.id, ROW_NUMBER() OVER(ORDER BY b.created_date DESC) AS stt, b.ma_nhom, i.ten_mon_datn, (
+            				SELECT GROUP_CONCAT(d.ma_sinh_vien SEPARATOR ', ') from sinh_vien d where d.nhom_id = b.id
+            			) AS danh_sach_sinh_vien
+                        ,b.ten_de_tai , f.ten_chuyen_nganh,COUNT(d.ma_sinh_vien) AS total_ma_sinh_vien, d.ma_sinh_vien, d.ten_sinh_vien,\s
+                        e.ten_gvhd, e.ten_tai_khoan, b.trang_thai, b.last_modified_date
+                        FROM nhom_datn b
+                        LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+                        LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+                        LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
+                        LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+                        LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+                        LEFT JOIN mon_datn i ON i.id = d.mon_datn_id
             WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''

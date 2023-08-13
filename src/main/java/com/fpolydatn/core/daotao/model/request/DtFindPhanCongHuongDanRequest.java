@@ -13,4 +13,6 @@ public final class DtFindPhanCongHuongDanRequest extends PageableRequest {
 
     private String tenGV;
     private String coSoId;
+    private String dotDangKy;
+    private String fullName;
 }
