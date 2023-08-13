@@ -93,5 +93,6 @@ public class PropertyKeys {
 
     public static final String TAO_NHOM_THAT_BAI = "tao.nhom.that.bai";
     public static final String SINH_VIEN_DA_CO_NHOM = "sinh.vien.da.co.nhom";
+    public static final String KHONG_DU_SINH_VIEN_DE_TAO_NHOM = "khong.du.sinh.vien.de.tao.nhom";
 
 }

@@ -22,6 +22,9 @@ public interface CnSinhVienTheoDotExcel {
     @Value("#{target.ten_sinh_vien}")
     String getTenSinhVien();
 
+    @Value("#{target.email}")
+    String getEmail();
+
     @Value("#{target.ma_nhom}")
     String getMaNhom();
 

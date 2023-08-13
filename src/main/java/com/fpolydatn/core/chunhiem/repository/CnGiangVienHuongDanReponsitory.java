@@ -1,6 +1,7 @@
 package com.fpolydatn.core.chunhiem.repository;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanDanhSachNhomResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnGvhdSearchResponse;
 import com.fpolydatn.entity.GiangVienHuongDan;
@@ -19,7 +20,10 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
     String getIdFromGiangVienId(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT CONCAT(g.ten_tai_khoan, '_' , g.ten_gvhd) AS thong_tin , g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
+            SELECT CONCAT(g.ten_tai_khoan, '_' , g.ten_gvhd, ' (',
+             (SELECT COUNT(i.id) FROM nhom_datn i WHERE i.giang_vien_id = g.id)
+             , '/' , g.so_nhom_huong_dan_toi_da, ')' ) 
+             AS thong_tin , g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
             JOIN phan_cong_huong_dan p ON p.giang_vien_id = g.id 
             JOIN mon_datn m ON p.mon_datn_id = m.id 
             LEFT JOIN nhom_datn n ON n.giang_vien_id = g.id
@@ -40,7 +44,9 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
     String checkIdGiangVienAndMonDatn(@Param("idGiangVien") String idGiangVien, @Param("idMonDatn") String idMonDatn, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT g.id, g.ten_tai_khoan, g.ten_gvhd, g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
+            SELECT g.id, g.ten_tai_khoan, g.ten_gvhd, (SELECT COUNT(i.id) FROM nhom_datn i
+             WHERE i.giang_vien_id = g.id) as so_nhom_dang_huong_dan
+            , g.so_nhom_huong_dan_toi_da FROM giang_vien_huong_dan g
             JOIN phan_cong_huong_dan p ON p.giang_vien_id = g.id 
             JOIN mon_datn m ON p.mon_datn_id = m.id 
             LEFT JOIN nhom_datn n ON n.giang_vien_id = g.id
@@ -57,4 +63,18 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
             SELECT * FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
     List<GiangVienHuongDan> getAllGiangVienByIdCoSoAndByIdDotDangKy(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
+
+    @Query(value = """
+            WITH DanhSachNhom AS (
+            SELECT b.giang_vien_id,
+            GROUP_CONCAT(b.ma_nhom ORDER BY b.id SEPARATOR ', ') AS danh_sach_ma_nhom
+            FROM nhom_datn b GROUP BY b.giang_vien_id)
+            SELECT a.ten_tai_khoan, COALESCE(dsn.danh_sach_ma_nhom, '') AS danh_sach_nhom
+            FROM giang_vien_huong_dan a
+            LEFT JOIN DanhSachNhom dsn ON a.id = dsn.giang_vien_id
+            WHERE a.dot_dang_ky_id = :dotDangKyId AND a.co_so_id = :coSoId
+            """, nativeQuery = true)
+    List<CnGiangVienHuongDanDanhSachNhomResponse> getGiangVienAndDanhSachNhomDangHuongDan(@Param("dotDangKyId") String dotDangKyId,
+                                                                                          @Param("coSoId") String coSoId);
+
 }

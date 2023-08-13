@@ -17,11 +17,17 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
     public static final String NAME = "BaseNhomDatnRepository";
 
     @Query(value = """
-                SELECT ma_nhom FROM do_an_tot_nghiep.nhom_datn
-                WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId
-                ORDER BY created_date DESC LIMIT 1
+            SELECT ma_nhom
+            FROM do_an_tot_nghiep.nhom_datn
+            WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId
+            ORDER BY CAST(SUBSTRING_INDEX(ma_nhom, '_', -1) AS SIGNED) DESC
+            LIMIT 1
             """, nativeQuery = true)
     String getNhomTaoGanNhat(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
+
+//    SELECT ma_nhom FROM do_an_tot_nghiep.nhom_datn
+//    WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId
+//    ORDER BY created_date DESC LIMIT 1
 
     @Query(value = """
                 SELECT c.ma_co_so FROM  co_so c 
