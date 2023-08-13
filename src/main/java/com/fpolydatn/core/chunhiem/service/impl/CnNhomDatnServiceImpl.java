@@ -9,6 +9,8 @@ import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnSearchNhomInputRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanDanhSachNhomResponse;
+import com.fpolydatn.core.chunhiem.model.response.CnGvhdAndDanhSachNhomResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienImport;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotExcel;
@@ -45,6 +47,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +101,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     ConcurrentHashMap<String, GiangVienHuongDan> mapGiangVien;
 
+    ConcurrentHashMap<String, CnGvhdAndDanhSachNhomResponse> mapGiangVienAndDanhSachNhom;
+
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
@@ -136,10 +141,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Override
     public boolean chotNhieuDeTai(List<String> listIdNhom) {
         List<NhomDatn> listNhomDatn = cnNhomDatnRepository.findAllById(listIdNhom);
-        if(listIdNhom.size() != listNhomDatn.size()) {
+        if (listIdNhom.size() != listNhomDatn.size()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        for (NhomDatn nhomDatn: listNhomDatn) {
+        for (NhomDatn nhomDatn : listNhomDatn) {
             if (nhomDatn.getTrangThai() != TrangThaiNhom.GVHD_CHOT) {
                 throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
             }
@@ -204,10 +209,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Override
     public boolean xacNhanNhieuNhom(List<String> listIdNhom) {
         List<NhomDatn> listNhomDatn = cnNhomDatnRepository.findAllById(listIdNhom);
-        if(listIdNhom.size() != listNhomDatn.size()) {
+        if (listIdNhom.size() != listNhomDatn.size()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        for (NhomDatn nhomDatn: listNhomDatn) {
+        for (NhomDatn nhomDatn : listNhomDatn) {
             if (nhomDatn.getTrangThai() != TrangThaiNhom.MOI_THANH_LAP) {
                 throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
             }
@@ -427,11 +432,13 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             mapNhomDatn = new ConcurrentHashMap<>();
             mapGiangVien = new ConcurrentHashMap<>();
             mapTruongNhom = new ConcurrentHashMap<>();
+            mapGiangVienAndDanhSachNhom = new ConcurrentHashMap<>();
             ConcurrentHashMap<String, CnCreateSinhVienTheoDotRequest> mapSinhVienTaoNhom = new ConcurrentHashMap<>();
             addDataInMapSinhVien(mapSinhVien, dotDangKyId, coSoId, idChuNhiem);
             addDataInMapNhomDatn(mapNhomDatn, dotDangKyId, coSoId, idChuNhiem);
             addDataInMapGiangVien(mapGiangVien, dotDangKyId, coSoId);
             addDataInMapTruongNhomCu(mapTruongNhom, dotDangKyId, coSoId, idChuNhiem);
+            addDataInMapGiangVienAndDanhSachNhom(mapGiangVienAndDanhSachNhom, dotDangKyId, coSoId);
 
             sinhVienList.parallelStream().forEach(sinhVien -> {
                 SinhVien sv = mapSinhVien.get(sinhVien.getMaSinhVien());
@@ -443,9 +450,17 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         return;
                     }
                 }
-                GiangVienHuongDan giangVien = mapGiangVien.get(sinhVien.getGvhd());
+                GiangVienHuongDan giangVien = null;
+                if (!sinhVien.getGvhd().isEmpty()) {
+                    giangVien = mapGiangVien.get(sinhVien.getGvhd());
+                    if (giangVien == null) {
+                        response.setStatus(false);
+                        response.setMessage("Giảng viên " + sinhVien.getGvhd() + " không tồn tại");
+                        return;
+                    }
+                }
                 if (giangVien != null) {
-                    if (countSoNhomGiangVienDangHuongDan(giangVien.getTenTaiKhoan())) {
+                    if (countSoNhomGiangVienDangHuongDan(giangVien.getTenTaiKhoan().toLowerCase())) {
                         response.setStatus(false);
                         response.setMessage("Giảng viên " + giangVien.getTenTaiKhoan() + " đang hướng dẫn số nhóm nhiều hơn đăng ký");
                         return;
@@ -600,18 +615,36 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     public boolean countSoNhomGiangVienDangHuongDan(String tenTaiKhoan) {
         AtomicInteger count = new AtomicInteger(0);
-        sinhVienList.parallelStream().forEach(sinhVien -> {
-            if (sinhVien.getGvhd().equals(tenTaiKhoan) && sinhVien.getChucVu().equalsIgnoreCase("x")) {
-                count.set(count.get() + 1);
+        CnGvhdAndDanhSachNhomResponse cnGvhdAndDanhSachNhomResponse = mapGiangVienAndDanhSachNhom.get(tenTaiKhoan.toLowerCase());
+        boolean allNull = cnGvhdAndDanhSachNhomResponse.getListMaNhomDangHuongDan().stream().allMatch(item -> item == null);
+
+        if (!allNull) {
+            sinhVienList.parallelStream().forEach(sinhVien -> {
+                if (sinhVien.getGvhd().equals(tenTaiKhoan) && sinhVien.getChucVu().equalsIgnoreCase("x")) {
+                    if (!cnGvhdAndDanhSachNhomResponse.getListMaNhomDangHuongDan().contains(sinhVien.getMaNhom())) {
+                        count.set(count.get() + 1);
+                    }
+                }
+            });
+            if (count.get() + cnGvhdAndDanhSachNhomResponse.getListMaNhomDangHuongDan().size()
+                    > mapGiangVien.get(tenTaiKhoan).getSoNhomHuongDanToiDa()) {
+                return true;
             }
-        });
-        if (count.get() > mapGiangVien.get(tenTaiKhoan).getSoNhomHuongDanToiDa()) {
-            return true;
+        } else {
+            sinhVienList.parallelStream().forEach(sinhVien -> {
+                if (sinhVien.getGvhd().equals(tenTaiKhoan) && sinhVien.getChucVu().equalsIgnoreCase("x")) {
+                    count.set(count.get() + 1);
+                }
+            });
+            if (count.get() > mapGiangVien.get(tenTaiKhoan).getSoNhomHuongDanToiDa()) {
+                return true;
+            }
         }
         return false;
     }
 
-    public void addDataInMapSinhVien(ConcurrentHashMap<String, SinhVien> mapAll, String dotDangKyId, String coSoId, String idChuNhiem) {
+    public void addDataInMapSinhVien(ConcurrentHashMap<String, SinhVien> mapAll, String dotDangKyId, String
+            coSoId, String idChuNhiem) {
         List<SinhVien> sinhVienList = cnSinhVienRepository.getALlSinhVienByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
         List<SinhVien> truongNhomList = cnSinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
         List<SinhVien> truongNhomCuList = cnSinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
@@ -620,54 +653,88 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         getTruongNhomCuPutMapSinhVien(mapAll, truongNhomCuList);
     }
 
-    public void addDataInMapTruongNhomCu(ConcurrentHashMap<String, SinhVien> mapAll, String dotDangKyId, String coSoId, String idChuNhiem) {
+    public void addDataInMapTruongNhomCu(ConcurrentHashMap<String, SinhVien> mapAll, String dotDangKyId, String
+            coSoId, String idChuNhiem) {
         List<SinhVien> truongNhomCuList = cnSinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
         getTruongNhomCuPutMapSinhVien(mapAll, truongNhomCuList);
     }
 
-    public void addDataInMapNhomDatn(ConcurrentHashMap<String, NhomDatn> mapAll, String dotDangKyId, String coSoId, String idChuNhiem) {
+    public void addDataInMapNhomDatn(ConcurrentHashMap<String, NhomDatn> mapAll, String dotDangKyId, String
+            coSoId, String idChuNhiem) {
         List<NhomDatn> nhomDatnList = cnNhomDatnRepository.getAllNhomDatnByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
         getALlPutMapNhomDatn(mapAll, nhomDatnList);
     }
 
-    public void addDataInMapGiangVien(ConcurrentHashMap<String, GiangVienHuongDan> mapAll, String dotDangKyId, String coSoId) {
+    public void addDataInMapGiangVien(ConcurrentHashMap<String, GiangVienHuongDan> mapAll, String
+            dotDangKyId, String coSoId) {
         List<GiangVienHuongDan> giangVienHuongDanList = cnGiangVienHuongDanReponsitory.getAllGiangVienByIdCoSoAndByIdDotDangKy(dotDangKyId, coSoId);
         getALlPutMapGiangVien(mapAll, giangVienHuongDanList);
     }
 
-    public void getAllPutMap(ConcurrentHashMap<String, String> mapSimple, List<SimpleEntityProj> getAllSimpleEntityProjs) {
+    public void addDataInMapGiangVienAndDanhSachNhom(ConcurrentHashMap<String, CnGvhdAndDanhSachNhomResponse> mapAll, String
+            dotDangKyId, String coSoId) {
+        List<CnGiangVienHuongDanDanhSachNhomResponse> gvhdDanhSachNhom = cnGiangVienHuongDanReponsitory.getGiangVienAndDanhSachNhomDangHuongDan(dotDangKyId, coSoId);
+        getALlPutMapGiangVienAndDanhSachNhom(mapAll, gvhdDanhSachNhom);
+    }
+
+    public void getAllPutMap
+            (ConcurrentHashMap<String, String> mapSimple, List<SimpleEntityProj> getAllSimpleEntityProjs) {
         for (SimpleEntityProj simpleEntityProj : getAllSimpleEntityProjs) {
             mapSimple.put(simpleEntityProj.getName(), simpleEntityProj.getId());
         }
     }
 
-    public void getAllPutMapSinhVien(ConcurrentHashMap<String, SinhVien> mapSimple, List<SinhVien> listSinhVien) {
+    public void getAllPutMapSinhVien
+            (ConcurrentHashMap<String, SinhVien> mapSimple, List<SinhVien> listSinhVien) {
         for (SinhVien xx : listSinhVien) {
             mapSimple.put(xx.getMaSinhVien(), xx);
         }
     }
 
-    public void getTruongNhomPutMapSinhVien(ConcurrentHashMap<String, SinhVien> mapSimple, List<SinhVien> listTruongNhom) {
+    public void getTruongNhomPutMapSinhVien
+            (ConcurrentHashMap<String, SinhVien> mapSimple, List<SinhVien> listTruongNhom) {
         for (SinhVien xx : listTruongNhom) {
             mapSimple.put(xx.getNhomId(), xx);
         }
     }
 
-    public void getTruongNhomCuPutMapSinhVien(ConcurrentHashMap<String, SinhVien> mapSimple, List<SinhVien> listTruongNhom) {
+    public void getTruongNhomCuPutMapSinhVien
+            (ConcurrentHashMap<String, SinhVien> mapSimple, List<SinhVien> listTruongNhom) {
         for (SinhVien xx : listTruongNhom) {
             mapSimple.put(xx.getMaSinhVien(), xx);
         }
     }
 
-    public void getALlPutMapNhomDatn(ConcurrentHashMap<String, NhomDatn> mapSimple, List<NhomDatn> listNhomDatn) {
+    public void getALlPutMapNhomDatn
+            (ConcurrentHashMap<String, NhomDatn> mapSimple, List<NhomDatn> listNhomDatn) {
         for (NhomDatn xx : listNhomDatn) {
             mapSimple.put(xx.getMaNhom(), xx);
         }
     }
 
-    public void getALlPutMapGiangVien(ConcurrentHashMap<String, GiangVienHuongDan> mapSimple, List<GiangVienHuongDan> listGiangVien) {
+    public void getALlPutMapGiangVien
+            (ConcurrentHashMap<String, GiangVienHuongDan> mapSimple, List<GiangVienHuongDan> listGiangVien) {
         for (GiangVienHuongDan xx : listGiangVien) {
-            mapSimple.put(xx.getTenTaiKhoan(), xx);
+            mapSimple.put(xx.getTenTaiKhoan().toLowerCase(), xx);
+        }
+    }
+
+    public void getALlPutMapGiangVienAndDanhSachNhom
+            (ConcurrentHashMap<String, CnGvhdAndDanhSachNhomResponse> mapSimple, List<CnGiangVienHuongDanDanhSachNhomResponse> listGvhdDSN) {
+        for (CnGiangVienHuongDanDanhSachNhomResponse xx : listGvhdDSN) {
+            String danhSachNhom = xx.getDanhSachNhom();
+            String[] nhomArray = new String[7];
+            if (danhSachNhom != null && !danhSachNhom.isEmpty()) {
+                nhomArray = danhSachNhom.split(", ");
+            }
+            List<String> danhSachNhomList = new ArrayList<>();
+            Collections.addAll(danhSachNhomList, nhomArray);
+            CnGvhdAndDanhSachNhomResponse cnGvhdAndDanhSachNhomResponse = new CnGvhdAndDanhSachNhomResponse();
+            cnGvhdAndDanhSachNhomResponse.setTenTaiKhoan(xx.getTenTaiKhoan());
+            cnGvhdAndDanhSachNhomResponse.setListMaNhomDangHuongDan(danhSachNhomList);
+            if (danhSachNhomList != null && danhSachNhomList.size() > 0) {
+                mapSimple.put(xx.getTenTaiKhoan().toLowerCase(), cnGvhdAndDanhSachNhomResponse);
+            }
         }
     }
 

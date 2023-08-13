@@ -1,6 +1,7 @@
 package com.fpolydatn.core.chunhiem.repository;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanDanhSachNhomResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnGvhdSearchResponse;
 import com.fpolydatn.entity.GiangVienHuongDan;
@@ -62,4 +63,18 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
             SELECT * FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
             """, nativeQuery = true)
     List<GiangVienHuongDan> getAllGiangVienByIdCoSoAndByIdDotDangKy(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
+
+    @Query(value = """
+            WITH DanhSachNhom AS (
+            SELECT b.giang_vien_id,
+            GROUP_CONCAT(b.ma_nhom ORDER BY b.id SEPARATOR ', ') AS danh_sach_ma_nhom
+            FROM nhom_datn b GROUP BY b.giang_vien_id)
+            SELECT a.ten_tai_khoan, COALESCE(dsn.danh_sach_ma_nhom, '') AS danh_sach_nhom
+            FROM giang_vien_huong_dan a
+            LEFT JOIN DanhSachNhom dsn ON a.id = dsn.giang_vien_id
+            WHERE a.dot_dang_ky_id = :dotDangKyId AND a.co_so_id = :coSoId
+            """, nativeQuery = true)
+    List<CnGiangVienHuongDanDanhSachNhomResponse> getGiangVienAndDanhSachNhomDangHuongDan(@Param("dotDangKyId") String dotDangKyId,
+                                                                                          @Param("coSoId") String coSoId);
+
 }
