@@ -57,17 +57,17 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
             """, nativeQuery = true)
     Page<DtNhomDatnTheoDotResponse> findAllNhomDatn(Pageable page, @Param("req") final FindDtNhomDatnTheoDotRequest req);
 
-    @Query(value ="""
-                SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, 
-                a.ma_sinh_vien, a.ten_sinh_vien, IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu
-                FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id
-                WHERE b.id = :idNhom
-                AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId     
-                """, countQuery = """
-                SELECT COUNT(a.id) FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id
-                WHERE b.id = :idNhom
-                AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId
-                """, nativeQuery = true)
+    @Query(value = """
+            SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt, 
+            a.ma_sinh_vien, a.ten_sinh_vien, IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu
+            FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id
+            WHERE b.id = :idNhom
+            AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId     
+            """, countQuery = """
+            SELECT COUNT(a.id) FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id
+            WHERE b.id = :idNhom
+            AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
     List<DtSinhVienResponse> showDanhSachSinhVien(@Param("idNhom") String idNhom,
                                                   @Param("coSoId") String coSoId,
                                                   @Param("dotDangKyId") String dotDangKyId);

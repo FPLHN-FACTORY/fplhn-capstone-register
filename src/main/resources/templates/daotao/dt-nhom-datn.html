@@ -286,21 +286,5 @@
 <script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
 <script th:src="@{/js/plugin/bootbox.min.js}"></script>
 <script th:src="@{/js/plugin/bootbox.locales.min.js}"></script>
-<script>
-    var chuoiGoc = $('#danhSachNhom').text();
-    var viTriDauPhay = chuoiGoc.indexOf(', ');
-
-    /* Nếu tìm thấy dấu phẩy, thì hiển thị phần cắt */
-    if (viTriDauPhay !== -1) {
-        var chuoiDaCat = chuoiGoc.substring(0, viTriDauPhay);
-        var chuoiCuoi = chuoiGoc.substring(viTriDauPhay, chuoiGoc.length - 1);
-        /* Gán kết quả vào thẻ có id là "aaaa" */
-        $('#danhSachNhom').html(<b>${chuoiDaCat}</b>, <span>${chuoiCuoi}</span> );
-
-        alert($('#danhSachNhom'))
-
-    }
-    alert($('#danhSachNhom'))
-</script>
 </body>
 </html>

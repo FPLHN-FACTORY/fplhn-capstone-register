@@ -33,8 +33,8 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     private DtPhanCongHuongDanRepository phanCongHuongDanRepository;
 
     @Override
-    public PageableObject<DtPhanCongHuongDanResponse> search(String id, final DtFindPhanCongHuongDanRequest req) {
-        Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
+    public PageableObject<DtPhanCongHuongDanResponse> search(String id, final DtFindPhanCongHuongDanRequest req, int page) {
+        Pageable pageable = PageRequest.of(page, req.getSize());
         Page<DtPhanCongHuongDanResponse> res = phanCongHuongDanRepository.getGiangVienHuongDan(id, req, pageable);
         return new PageableObject(res);
     }
@@ -67,8 +67,8 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
-    public List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId) {
-        return phanCongHuongDanRepository.getPhanCongGiaoVien(coSoId, maMonId);
+    public List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId, final DtFindPhanCongHuongDanRequest req) {
+        return phanCongHuongDanRepository.getPhanCongGiaoVien(coSoId, maMonId, req);
     }
 
     @Override
@@ -77,9 +77,9 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
-    public PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatn(String id, DtFindPhanMonGiangVienHuongDanRequest req) {
+    public PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatn(String coSoId, String id, DtFindPhanMonGiangVienHuongDanRequest req) {
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
-        Page<DtPhanMonDatnChoGiangVienHuongDanResponse> res = phanCongHuongDanRepository.getMonDatn(id, req, pageable);
+        Page<DtPhanMonDatnChoGiangVienHuongDanResponse> res = phanCongHuongDanRepository.getMonDatn(coSoId, id, req, pageable);
         return new PageableObject(res);
     }
 
