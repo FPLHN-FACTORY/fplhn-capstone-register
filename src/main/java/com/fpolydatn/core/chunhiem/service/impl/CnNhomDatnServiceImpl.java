@@ -438,7 +438,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             addDataInMapNhomDatn(mapNhomDatn, dotDangKyId, coSoId, idChuNhiem);
             addDataInMapGiangVien(mapGiangVien, dotDangKyId, coSoId);
             addDataInMapTruongNhomCu(mapTruongNhom, dotDangKyId, coSoId, idChuNhiem);
-            addDataInMapGiangVienAndDanhSachNhom(mapGiangVienAndDanhSachNhom, dotDangKyId, coSoId);
+//            addDataInMapGiangVienAndDanhSachNhom(mapGiangVienAndDanhSachNhom, dotDangKyId, coSoId);
 
             sinhVienList.parallelStream().forEach(sinhVien -> {
                 SinhVien sv = mapSinhVien.get(sinhVien.getMaSinhVien());
@@ -615,22 +615,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     public boolean countSoNhomGiangVienDangHuongDan(String tenTaiKhoan) {
         AtomicInteger count = new AtomicInteger(0);
-        CnGvhdAndDanhSachNhomResponse cnGvhdAndDanhSachNhomResponse = mapGiangVienAndDanhSachNhom.get(tenTaiKhoan.toLowerCase());
-        boolean allNull = cnGvhdAndDanhSachNhomResponse.getListMaNhomDangHuongDan().stream().allMatch(item -> item == null);
-
-        if (!allNull) {
-            sinhVienList.parallelStream().forEach(sinhVien -> {
-                if (sinhVien.getGvhd().equals(tenTaiKhoan) && sinhVien.getChucVu().equalsIgnoreCase("x")) {
-                    if (!cnGvhdAndDanhSachNhomResponse.getListMaNhomDangHuongDan().contains(sinhVien.getMaNhom())) {
-                        count.set(count.get() + 1);
-                    }
-                }
-            });
-            if (count.get() + cnGvhdAndDanhSachNhomResponse.getListMaNhomDangHuongDan().size()
-                    > mapGiangVien.get(tenTaiKhoan).getSoNhomHuongDanToiDa()) {
-                return true;
-            }
-        } else {
+//        CnGvhdAndDanhSachNhomResponse cnGvhdAndDanhSachNhomResponse = mapGiangVienAndDanhSachNhom.get(tenTaiKhoan.toLowerCase());
+//        boolean allNull = cnGvhdAndDanhSachNhomResponse.getListMaNhomDangHuongDan().stream().allMatch(item -> item == null);
+//
+//        if (!allNull) {
+//            sinhVienList.parallelStream().forEach(sinhVien -> {
+//                if (sinhVien.getGvhd().equals(tenTaiKhoan) && sinhVien.getChucVu().equalsIgnoreCase("x")) {
+//                    if (!cnGvhdAndDanhSachNhomResponse.getListMaNhomDangHuongDan().contains(sinhVien.getMaNhom())) {
+//                        count.set(count.get() + 1);
+//                    }
+//                }
+//            });
+//            if (count.get() + cnGvhdAndDanhSachNhomResponse.getListMaNhomDangHuongDan().size()
+//                    > mapGiangVien.get(tenTaiKhoan).getSoNhomHuongDanToiDa()) {
+//                return true;
+//            }
+//        } else {
             sinhVienList.parallelStream().forEach(sinhVien -> {
                 if (sinhVien.getGvhd().equals(tenTaiKhoan) && sinhVien.getChucVu().equalsIgnoreCase("x")) {
                     count.set(count.get() + 1);
@@ -639,7 +639,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             if (count.get() > mapGiangVien.get(tenTaiKhoan).getSoNhomHuongDanToiDa()) {
                 return true;
             }
-        }
+//        }
         return false;
     }
 
