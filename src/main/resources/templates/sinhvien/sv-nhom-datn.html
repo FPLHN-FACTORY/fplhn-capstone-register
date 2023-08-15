@@ -187,32 +187,27 @@
                                                 <th>Tên Sinh Viên</th>
                                                 <th>Môn Theo Chương Trình</th>
                                                 <th>Chức Vụ</th>
-                                                <th
-                                                        th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
-                                                                (${checkTruongNhom} == false ? 'display:none' : 'display:block')"
-                                                >
+                                                <th th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
+                                                    (${checkTruongNhom} == false ? 'display:none' : 'display:block')">
                                                     Chức năng
                                                 </th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="SvNhomDatn : ${nhomDatnThamGia}">
-                                                    <tr>
+                                                    <tr th:style="${SvNhomDatn.getChucVu()} == 1 ? 'color: #5867dd; font-weight: bold' : ''">
                                                         <td th:text="${SvNhomDatn.getStt()}"></td>
                                                         <td th:text="${SvNhomDatn.getMaSinhVien()}"></td>
                                                         <td th:text="${SvNhomDatn.getTenSinhVien()}"></td>
                                                         <td th:text="${SvNhomDatn.getTenMonChuongTrinh()}"></td>
                                                         <td th:text="${SvNhomDatn.getChucVu()} == 1 ? 'Trưởng nhóm' : 'Thành viên'"></td>
-                                                        <td
-                                                                th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
-                                                                            (${checkTruongNhom} == false ? 'display:none' :
-                                                                            (${SvNhomDatn.getChucVu()} == 1 ? 'display: none' : 'display: block'))"
-                                                        >
+                                                        <td th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
+                                                            (${checkTruongNhom} == false ? 'display:none' :
+                                                            (${SvNhomDatn.getChucVu()} == 1 ? 'display: none' : 'display: block'))">
                                                             <button
                                                                     class="btn_change_role"
                                                                     data-toggle="tooltip"
                                                                     title="Chuyển quyền trưởng nhóm"
-                                                                    th:attr="onclick=|chuyenQuyenTruongNhom('${SvNhomDatn.getIdSinhVien()}', '${SvNhomDatn.getTenSinhVien()}')|"
-                                                            >
+                                                                    th:attr="onclick=|chuyenQuyenTruongNhom('${SvNhomDatn.getIdSinhVien()}', '${SvNhomDatn.getTenSinhVien()}')|">
                                                                 <img th:src="@{/img/change-role.svg}">
                                                             </button>
                                                         </td>
@@ -221,9 +216,9 @@
                                                 </tbody>
                                             </table>
                                             <!-- Điều kiện khi chưa check thời điểm tham gia, tạo nhóm -->
-<!--                                            th:style="${checkMocThoiGian} == false ? 'display:none' :-->
-<!--                                            (${soThanhVien} == 1 ? 'display: block' :-->
-<!--                                            (${checkTruongNhom} == true ? 'display:none' : 'display:block'))"-->
+                                            <!--                                            th:style="${checkMocThoiGian} == false ? 'display:none' :-->
+                                            <!--                                            (${soThanhVien} == 1 ? 'display: block' :-->
+                                            <!--                                            (${checkTruongNhom} == true ? 'display:none' : 'display:block'))"-->
                                             <div th:style="${checkMocThoiGian} == false ? 'display:none' :
                                                  (${checkThoiDiemJoinNhom} == false ? 'display: none' :
                                                  (${soThanhVien} == 1 ? 'display: block' :
@@ -235,16 +230,16 @@
                                                 </button>
                                             </div>
                                             <!-- Nút chưa validate -->
-<!--                                            <div-->
-<!--                                                    th:style="${checkMocThoiGian} == false ? 'display:none' :-->
-<!--                                                                (${soThanhVien} == 1 ? 'display: block' :-->
-<!--                                                                (${checkTruongNhom} == true ? 'display:none' : 'display:block'))">-->
-<!--                                                <button-->
-<!--                                                        class="btn btn-danger text-white"-->
-<!--                                                        th:attr="onclick=|confirmRoiNhom(${soThanhVien})|">-->
-<!--                                                    Rời nhóm-->
-<!--                                                </button>-->
-<!--                                            </div>-->
+                                            <!--                                            <div-->
+                                            <!--                                                    th:style="${checkMocThoiGian} == false ? 'display:none' :-->
+                                            <!--                                                                (${soThanhVien} == 1 ? 'display: block' :-->
+                                            <!--                                                                (${checkTruongNhom} == true ? 'display:none' : 'display:block'))">-->
+                                            <!--                                                <button-->
+                                            <!--                                                        class="btn btn-danger text-white"-->
+                                            <!--                                                        th:attr="onclick=|confirmRoiNhom(${soThanhVien})|">-->
+                                            <!--                                                    Rời nhóm-->
+                                            <!--                                                </button>-->
+                                            <!--                                            </div>-->
 
                                         </div>
                                     </div>
