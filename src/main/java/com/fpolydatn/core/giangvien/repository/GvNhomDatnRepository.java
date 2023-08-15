@@ -65,5 +65,4 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             ORDER BY nd.last_modified_date DESC
             """, nativeQuery = true)
     Page<GvNhomDatnResponse> fillAllNhomDatn(@Param("request") GvFindNhomDatnRequest request, Pageable page);
-
 }
