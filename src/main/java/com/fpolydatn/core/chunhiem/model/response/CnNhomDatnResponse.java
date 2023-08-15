@@ -29,11 +29,20 @@ public interface CnNhomDatnResponse extends IsIdentified {
     @Value("#{target.total_ma_sinh_vien}")
     String getTotal();
 
+    @Value("#{target.truong_nhom}")
+    String getTruongNhom();
+
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
 
     @Value("#{target.ten_tai_khoan}")
     String getTenTaiKhoan();
+
+    @Value("#{target.so_nhom_dang_huong_dan}")
+    Integer getSoNhomDangHuongDan();
+
+    @Value("#{target.so_nhom_huong_dan_toi_da}")
+    Integer getSoNhomHuongDanToiDa();
 
     @Value("#{target.ten_dot_dang_ky}")
     String getTenDotDangKy();

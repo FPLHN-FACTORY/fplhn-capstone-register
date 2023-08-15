@@ -18,9 +18,11 @@ function clearData() {
     $("#maNhom").val("");
     $("#tenDeTai").val("");
     $("#tenTaiKhoan").val("");
+    $("#maTruongNhom").val("");
     $("#trangThai").val("");
     $("#dotDangKyId").val("");
     $("#monDatnId").val("");
+    $("#soThanhVien").val("");
 }
 
 function CNChotDuLieu(id, count) {
@@ -133,7 +135,7 @@ $("#mon_datn_create").change(function (event) {
             let array = responseData.data
             var text = "<option value='' hidden selected>Chọn giảng viên hướng dẫn</option>"
             array.map(function (item) {
-                text += `<option value="${item.id}" >${item.tenTaiKhoan + '_' + item.tenGvhd}</option>`
+                text += `<option value="${item.id}" >${item.tenTaiKhoan + '_' + item.tenGvhd + ' (' + item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa + ')'}</option>`
             })
             $('#gvhd_create').html(text)
         },
@@ -327,15 +329,37 @@ function chotNhieuDeTai(count) {
             },
             callback: function (result) {
                 if (result) {
-                    for (var xx of list_checkbox_son) {
+                    let arrayId = [];
+                    for (let xx of list_checkbox_son) {
                         if (xx.checked) {
-                            if (currentPage == -1) {
-                                chotDeTai(xx.value, count);
-                            } else {
-                                chotDeTai(xx.value, currentPage);
-                            }
+                            arrayId.push(xx.value)
                         }
                     }
+                    $.ajax({
+                        type: "PUT",
+                        contentType: "application/json",
+                        url: CNNhomDatnApi + "/chot-nhieu-de-tai",
+                        data: JSON.stringify(arrayId),
+                        dataType: 'json',
+                        success: function () {
+                            if (currentPage == -1) {
+                                loadDataNhomDatn(count)
+                            } else {
+                                loadDataNhomDatn(currentPage)
+                            }
+                            bootbox.alert('Chốt nhiều đề tài thành công')
+                        },
+                        error: function (e) {
+                            bootbox.alert({
+                                message: e.responseJSON.message + '',
+                                backdrop: true,
+                                callback: function () {
+                                    loadDataNhomDatn(0);
+                                }
+                            });
+                            return;
+                        }
+                    });
                     var checkboxFather = document.querySelector("#checkbox_father")
                     checkboxFather.checked = false;
                 }
@@ -398,15 +422,38 @@ function xacNhanNhieuNhom(count) {
             },
             callback: function (result) {
                 if (result) {
-                    for (var xx of list_checkbox_son) {
+                    let arrayId = [];
+                    for (let xx of list_checkbox_son) {
                         if (xx.checked) {
-                            if (currentPage == -1) {
-                                xacNhanNhom(xx.value, count);
-                            } else {
-                                xacNhanNhom(xx.value, currentPage);
-                            }
+                            arrayId.push(xx.value)
                         }
                     }
+                    $.ajax({
+                        type: "PUT",
+                        contentType: "application/json",
+                        url: CNNhomDatnApi + "/xac-nhan-nhieu-nhom",
+                        data: JSON.stringify(arrayId),
+                        dataType: 'json',
+                        success: function () {
+                            if (currentPage == -1) {
+                                loadDataNhomDatn(count)
+                            } else {
+                                loadDataNhomDatn(currentPage)
+                            }
+                            bootbox.alert('Xác nhận thành công')
+                        },
+                        error: function (e) {
+                            bootbox.alert({
+                                message: e.responseJSON.message + '',
+                                backdrop: true,
+                                callback: function () {
+                                    loadDataNhomDatn(0);
+                                }
+                            });
+                            return;
+                        }
+                    });
+
                     var checkboxFather = document.querySelector("#checkbox_father")
                     checkboxFather.checked = false;
                 }
@@ -416,37 +463,36 @@ function xacNhanNhieuNhom(count) {
 }
 
 function clearForm() {
-    $("#matKhau").val("");
+    $("#mon_datn_create").val("");
     $("#gvhd_create").val("");
     $("#tags").val("");
+    $("#mon_datn_error").text("");
+    $("#ma_truong_nhom_erorr").text("");
 }
 
 function openModalCreate() {
     $("#modal_create").modal('show')
+    clearForm()
 }
 
 function create() {
 
-    let matKhau = $("#matKhau").val().trim();
     let monDatn = $("#mon_datn_create").val();
-    let maGiangVien = $("#gvhd_create").val().trim().split('_');
+
     let maTruongNhom = $("#tags").val().trim().split('_');
 
-    if (matKhau === '') {
-        matKhau = null;
-    }
-
-    let nhomDatnRequest = {};
-    nhomDatnRequest["matKhau"] = matKhau;
-    nhomDatnRequest["idGiangVien"] = maGiangVien[0];
-    nhomDatnRequest["maSinhVien"] = maTruongNhom[0];
-    nhomDatnRequest["monDatnId"] = monDatn;
-
-    if (matKhau != null && matKhau.length < 6 && matKhau.length > 0) {
-        $("#mat_khau_erorr").text("Mật khẩu tối thiểu 6 ký tự");
+    if (monDatn === "") {
+        $("#mon_datn_error").text("Môn DATN không được để trống");
+        $("#ma_truong_nhom_erorr").text("");
     } else if (maTruongNhom[0].length == 0) {
         $("#ma_truong_nhom_erorr").text("Mã trưởng nhóm không được để trống");
+        $("#mon_datn_error").text("");
     } else {
+        let maGiangVien = $("#gvhd_create").val().split('_');
+        let nhomDatnRequest = {};
+        nhomDatnRequest["idGiangVien"] = maGiangVien[0];
+        nhomDatnRequest["maSinhVien"] = maTruongNhom[0];
+        nhomDatnRequest["monDatnId"] = monDatn;
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -494,84 +540,6 @@ function searchSinhVienNoGroup() {
         error: function (e) {
         }
     });
-}
-
-function openModalExport() {
-    $("#type_excel_error").text("");
-    $("#modal_excel").modal('show')
-}
-
-function openModalImport() {
-    $("#import_excel_error").text("");
-    $("#labelFile").text('Choose file');
-    $("#inputGroupFile01").val('');
-    $("#modal_import_excel").modal('show')
-}
-
-function exportFile() {
-    $("#type_excel_error").text("");
-    let typeExcel = $("#type_excel").val()
-    if (typeExcel == '') {
-        $("#type_excel_error").text("Chọn định dạng file download");
-    } else {
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: CNNhomDatnApi + "/export?typeExcel=" + typeExcel,
-            success: function () {
-                window.open(CNNhomDatnApi + "/export?typeExcel=" + typeExcel, '_self');
-                $("#modal_excel").modal('hide')
-            },
-            error: function (e) {
-            }
-        });
-    }
-}
-
-function importExcel() {
-
-    var form = $('#form_import_excel')[0];
-    let typeExcel = $("#inputGroupFile01").val();
-    let fileName = typeExcel.split(".");
-    let typeFile = fileName[fileName.length - 1];
-    if (typeExcel.length <= 0) {
-        $("#import_excel_error").text("Hãy chọn file excel cần import");
-    } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
-        $.ajax({
-                type: 'POST',
-                url: CNNhomDatnApi + '/import',
-                enctype: 'multipart/form-data',
-                processData: false,
-                data: new FormData(form),
-                contentType: false,
-                cache: false,
-                success: function (response) {
-                    if (response.data.status == true) {
-                        bootbox.alert({
-                            message: 'Import file excel thành công',
-                            backdrop: true,
-                            callback: function () {
-                                loadDataNhomDatn(0);
-                            }
-                        });
-                    } else {
-                        bootbox.alert({
-                            message: response.data.message,
-                            backdrop: true,
-                            callback: function () {
-                                loadDataNhomDatn(0);
-                            }
-                        });
-                    }
-                    $('#modal_import_excel').modal("hide");
-                },
-                error: function (e) {
-                }
-            }
-        );
-    } else {
-        $("#import_excel_error").text("Hãy chọn đúng file excel");
-    }
 }
 
 function reload() {
@@ -628,19 +596,23 @@ function genPagzing() {
 
 function loadDataNhomDatn(count) {
 
-    let maNhom = $("#maNhom").val()
-    let tenTaiKhoan = $("#tenTaiKhoan").val()
-    let tenDeTai = $("#tenDeTai").val()
+    let maNhom = $("#maNhom").val().trim()
+    let tenTaiKhoan = $("#tenTaiKhoan").val().trim()
+    let tenDeTai = $("#tenDeTai").val().trim()
     let monDatnId = $("#monDatnId").val()
     let trangThai = $("#trangThai").val()
     let dotDangKyId = $("#dotDangKyId").val()
+    let soThanhVien = $("#soThanhVien").val()
+    let sortNhomDatn = $("#sortNhomDatn").val()
+    let sizeNhomDatn = parseInt($("#sizeNhomDatn").val())
+    let maTruongNhom = $("#maTruongNhom").val().trim()
     currentPage = count;
 
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: CNNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&tenDeTai=" + tenDeTai + "&monDatnId=" + monDatnId
-            + "&tenTaiKhoan=" + tenTaiKhoan + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
+        url: CNNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&tenDeTai=" + tenDeTai + "&monDatnId=" + monDatnId + "&maTruongNhom=" + maTruongNhom
+            + "&tenTaiKhoan=" + tenTaiKhoan + "&trangThai=" + trangThai + "&sortNhomDatn=" + sortNhomDatn + "&soThanhVien=" + soThanhVien + "&dotDangKyId=" + dotDangKyId + "&page=" + count + "&size=" + sizeNhomDatn,
         dataType: 'json',
         success: function (responseData) {
             let array = responseData.data.data
@@ -670,12 +642,13 @@ function loadDataNhomDatn(count) {
                 <td>${item.stt}</td>
                 <td>${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
                 <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
-                <td>${item.maMonDatn}</td>
+                <td>${item.maMonDatn == null ? 'Chưa có' : item.maMonDatn}</td>
                 <td>${item.total}</td>
-                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
+                <td>${item.truongNhom}</td>
+                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan + ' (' + item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa + ')'}</td>
                 <td>${item.tenDotDangKy}</td>
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
-                <td><a href="/chu-nhiem/sinh-vien?id=${item.id}">
+                <td class="text-center align-middle"><div class="d-flex justify-content-center align-items-center"><a href="/chu-nhiem/sinh-vien?id=${item.id}">
                 <div id="eye-custom" data-toggle="tooltip" title="Xem chi tiết nhóm">
                 <img src="/img/eye-fill.svg"></div></a>
                 <button class="btn_check_circle" 
@@ -694,6 +667,7 @@ function loadDataNhomDatn(count) {
                 style="${item.trangThai == 5 ? 'display : none' : 'display : block'}" 
                 data-toggle="tooltip" title="Xóa" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">
                 <img src="/img/trash.svg"></button></td>
+                </div>
                 </tr>
                 `
                 }))

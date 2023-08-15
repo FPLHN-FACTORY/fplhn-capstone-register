@@ -154,4 +154,11 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         return cnSinhVienTheoNhomRepository.getListSinhVienNoGroup(req, idChuNhiem);
     }
 
+    @Override
+    public NhomDatn doiTenDeTai(String idNhom, String tenDeTai) {
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        nhomDatnFind.get().setTenDeTai(tenDeTai);
+        return cnNhomDatnRepository.save(nhomDatnFind.get());
+    }
+
 }

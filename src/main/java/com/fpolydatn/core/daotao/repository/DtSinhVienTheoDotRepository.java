@@ -21,27 +21,23 @@ import java.util.List;
 public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
 
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY s.last_modified_date DESC) AS stt,
-            s.id,
-            s.ma_sinh_vien,
-            s.ten_sinh_vien,
-            s.so_dien_thoai,
-            s.email,
-            s.khoa,
-            c.id as 'chuyen_nganh_id',
-            c.ten_chuyen_nganh,
-            m.ma_mon,
-            m.ten_mon_datn,
-            n.ma_nhom,
-            n.ten_de_tai,
-            g.ten_gvhd ,
-            d.id as 'id_dot_dang_ky',
-            d.ten_dot_dang_ky ,
-            s.trang_thai,
-            (SELECT COUNT(a.id) FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id WHERE b.id = n.id) AS so_thanh_vien,
+            WITH CountSinhVien AS (
+                SELECT y.id AS nhom_id, COUNT(x.id) AS so_thanh_vien
+                FROM sinh_vien x
+                JOIN nhom_datn y ON x.nhom_id = y.id
+                WHERE x.dot_dang_ky_id = :#{#req.idDotDangKy} AND x.co_so_id = :#{#req.coSoId}
+                GROUP BY y.id
+            )
+            SELECT ROW_NUMBER() OVER(
+            ORDER BY CONVERT(SUBSTRING(s.ma_sinh_vien, 3), SIGNED) ASC
+            ) AS stt, s.id, s.ma_sinh_vien, s.ten_sinh_vien, s.so_dien_thoai,
+            s.email, s.khoa, c.id as 'chuyen_nganh_id', c.ten_chuyen_nganh,
+            m.ma_mon, m.ten_mon_datn, n.ma_nhom, n.ten_de_tai, g.ten_gvhd ,
+            d.id as 'id_dot_dang_ky', d.ten_dot_dang_ky, s.trang_thai,
+            COALESCE(sv_count.so_thanh_vien, 0) AS so_thanh_vien,
             mct.id as 'id_mom_chuong_trinh',
             mct.ten_mon_datn as 'ten_mon_chuong_trinh',
-            mct.ma_mon AS 'ma_mom_chuong_trinh'
+            mct.ma_mon AS 'ma_mon_chuong_trinh'
             FROM do_an_tot_nghiep.sinh_vien s
             LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id = s.nhom_id
             LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
@@ -49,14 +45,30 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id
             LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
             LEFT JOIN do_an_tot_nghiep.mon_datn mct ON mct.id = s.mon_chuong_trinh_id
+            LEFT JOIN CountSinhVien sv_count ON n.id = sv_count.nhom_id
             WHERE (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL) AND 
             (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
-            AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
+            AND (if('b'= :#{#req.idTrangThaiNhom}, s.nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom}, s.nhom_id IS NOT NULL, (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
             AND d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
-            GROUP BY s.id 
-            ORDER BY s.last_modified_date DESC """,
+            GROUP BY s.id, sv_count.so_thanh_vien
+            ORDER BY
+              CASE WHEN :#{#req.sortNhomDatn} = 'lastModifiedDesc' THEN s.last_modified_date END DESC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'lastModifiedAsc' THEN s.last_modified_date END ASC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'maSinhVienAsc' THEN CONVERT(SUBSTRING(s.ma_sinh_vien, 3), SIGNED) END ASC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'maSinhVienDesc' THEN CONVERT(SUBSTRING(s.ma_sinh_vien, 3) ,SIGNED) END DESC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'chuyenNganhAsc' THEN c.ten_chuyen_nganh END ASC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'chuyenNganhDesc' THEN c.ten_chuyen_nganh END DESC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'gvhdAsc' THEN g.ten_gvhd END ASC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'gvhdDesc' THEN g.ten_gvhd END DESC 
+            """,
             countQuery = """
-                    SELECT count(s.id) 
+                    WITH CountSinhVien AS (
+                    SELECT y.id AS nhom_id, COUNT(x.id) AS so_thanh_vien
+                    FROM sinh_vien x
+                    JOIN nhom_datn y ON x.nhom_id = y.id
+                    WHERE x.dot_dang_ky_id = :#{#req.idDotDangKy} AND x.co_so_id = :#{#req.coSoId}
+                    GROUP BY y.id)
+                    SELECT COUNT(s.id) 
                     FROM do_an_tot_nghiep.sinh_vien s
                     LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id = s.nhom_id
                     LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
@@ -64,11 +76,21 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
                     LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id
                     LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
                     LEFT JOIN do_an_tot_nghiep.mon_datn mct ON mct.id = s.mon_chuong_trinh_id
+                    LEFT JOIN CountSinhVien sv_count ON n.id = sv_count.nhom_id
                     WHERE (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL) AND 
                     (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
-                    AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
+                    AND (if('b'= :#{#req.idTrangThaiNhom}, s.nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom}, s.nhom_id IS NOT NULL, (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
                     AND  d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
-                    GROUP BY s.id  
+                    GROUP BY s.id, sv_count.so_thanh_vien
+                    ORDER BY
+                      CASE WHEN :#{#req.sortNhomDatn} = 'lastModifiedDesc' THEN s.last_modified_date END DESC,
+                      CASE WHEN :#{#req.sortNhomDatn} = 'lastModifiedAsc' THEN s.last_modified_date END ASC,
+                      CASE WHEN :#{#req.sortNhomDatn} = 'maSinhVienAsc' THEN CONVERT(SUBSTRING(s.ma_sinh_vien, 3), SIGNED) END ASC,
+                      CASE WHEN :#{#req.sortNhomDatn} = 'maSinhVienDesc' THEN CONVERT(SUBSTRING(s.ma_sinh_vien, 3) ,SIGNED) END DESC,
+                      CASE WHEN :#{#req.sortNhomDatn} = 'chuyenNganhAsc' THEN c.ten_chuyen_nganh END ASC,
+                      CASE WHEN :#{#req.sortNhomDatn} = 'chuyenNganhDesc' THEN c.ten_chuyen_nganh END DESC,
+                      CASE WHEN :#{#req.sortNhomDatn} = 'gvhdAsc' THEN g.ten_gvhd END ASC,
+                      CASE WHEN :#{#req.sortNhomDatn} = 'gvhdDesc' THEN g.ten_gvhd END DESC 
                             """, nativeQuery = true)
     Page<DtSinhVienTheoDotResponse> searchStudent(@Param("req") FindDtSinhVienTheoDotRequest req, Pageable page);
 
@@ -86,26 +108,14 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY s.last_modified_date DESC) AS stt,
-            s.id,
-            s.ma_sinh_vien,
-            s.ten_sinh_vien,
-            s.so_dien_thoai,
-            s.email,
-            s.khoa,
-            c.id as 'chuyen_nganh_id',
-            c.ten_chuyen_nganh,
-            m.ma_mon,
-            m.ten_mon_datn,
-            n.ma_nhom,
-            n.ten_de_tai,
-            g.ten_gvhd ,
-            d.id as 'id_dot_dang_ky',
-            d.ten_dot_dang_ky ,
-            s.trang_thai,
+            s.id, s.ma_sinh_vien, s.ten_sinh_vien, s.so_dien_thoai, s.email,
+            s.khoa, c.id as 'chuyen_nganh_id', c.ten_chuyen_nganh, m.ma_mon,
+            m.ten_mon_datn, n.ma_nhom, n.ten_de_tai, g.ten_gvhd, d.id as 'id_dot_dang_ky',
+            d.ten_dot_dang_ky, s.trang_thai,
             (SELECT COUNT(a.id) FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id WHERE b.id = n.id) AS so_thanh_vien,
             mct.id as 'id_mom_chuong_trinh',
             mct.ten_mon_datn as 'ten_mon_chuong_trinh',
-            mct.ma_mon AS 'ma_mom_chuong_trinh'
+            mct.ma_mon AS 'ma_mon_chuong_trinh'
             FROM do_an_tot_nghiep.sinh_vien s
             LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id = s.nhom_id
             LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
@@ -118,52 +128,43 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
     DtSinhVienTheoDotResponse searchStudentById(@Param("id") String id);
 
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY s.last_modified_date DESC) AS stt,
-            s.id,
-            s.ma_sinh_vien,
-            s.ten_sinh_vien,
-            s.so_dien_thoai,
-            s.email,
-            s.khoa,
-            c.ten_chuyen_nganh,
-            m.ma_mon,
-            m.ten_mon_datn,
-            n.ma_nhom,
-            n.ten_de_tai,
-            g.ten_gvhd ,
-            d.ten_dot_dang_ky ,
-            s.trang_thai,
-            (SELECT COUNT(a.id) FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id WHERE b.id = n.id) AS so_thanh_vien,
+            WITH CountSinhVien AS (
+                SELECT y.id AS nhom_id, COUNT(x.id) AS so_thanh_vien
+                FROM sinh_vien x
+                JOIN nhom_datn y ON x.nhom_id = y.id
+                WHERE x.dot_dang_ky_id = :#{#req.idDotDangKy} AND x.co_so_id = :#{#req.coSoId}
+                GROUP BY y.id
+            )
+            SELECT ROW_NUMBER() OVER(
+            ORDER BY CONVERT(SUBSTRING(s.ma_sinh_vien, 3), SIGNED) ASC
+            ) AS stt, s.id, s.ma_sinh_vien, s.ten_sinh_vien, s.so_dien_thoai, s.email,
+            s.khoa, c.ten_chuyen_nganh, m.ma_mon, m.ten_mon_datn, n.ma_nhom, n.ten_de_tai,
+            g.ten_gvhd, d.ten_dot_dang_ky, s.trang_thai,
+            COALESCE(sv_count.so_thanh_vien, 0) AS so_thanh_vien,
             mct.ten_mon_datn AS 'ten_mon_chuong_trinh',
-            mct.ma_mon AS 'ma_mom_chuong_trinh'
-            FROM do_an_tot_nghiep.sinh_vien s
-            LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id = s.nhom_id
+            mct.ma_mon AS 'ma_mon_chuong_trinh'
+            FROM do_an_tot_nghiep.sinh_vien s LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id = s.nhom_id
             LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
             LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id
             LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id
             LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
             LEFT JOIN do_an_tot_nghiep.mon_datn mct ON mct.id = s.mon_chuong_trinh_id
+            LEFT JOIN CountSinhVien sv_count ON n.id = sv_count.nhom_id
             WHERE (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL) AND 
             (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
-            AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
+            AND (if('b'= :#{#req.idTrangThaiNhom}, s.nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom}, s.nhom_id IS NOT NULL, (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
             AND d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
-            GROUP BY s.id 
-            ORDER BY s.last_modified_date DESC """,
-            countQuery = """
-                    SELECT count(s.id) 
-                    FROM do_an_tot_nghiep.sinh_vien s 
-                    LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id= s.nhom_id 
-                    LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id 
-                    LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id 
-                    LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan g ON g.id = n.giang_vien_id 
-                    LEFT JOIN do_an_tot_nghiep.dot_dang_ky d ON d.id =s.dot_dang_ky_id
-                    LEFT JOIN do_an_tot_nghiep.mon_datn mct ON mct.id = s.mon_chuong_trinh_id
-                    WHERE (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL) AND 
-                    (s.chuyen_nganh_id = :#{#req.idChuyenNganh} OR  :#{#req.idChuyenNganh} IS NULL OR :#{#req.idChuyenNganh} LIKE '')
-                    AND (if('b'= :#{#req.idTrangThaiNhom},nhom_id IS NULL,if('a'= :#{#req.idTrangThaiNhom},nhom_id IS NOT NULL, (s.ma_sinh_vien LIKE %:#{#req.tenSinhVien}% OR s.ten_sinh_vien LIKE %:#{#req.tenSinhVien}% OR :#{#req.tenSinhVien} IS NULL))))
-                    AND  d.id =:#{#req.idDotDangKy} AND s.co_so_id = :#{#req.coSoId}
-                    GROUP BY s.id  
-                            """, nativeQuery = true)
+            GROUP BY s.id, sv_count.so_thanh_vien
+            ORDER BY
+              CASE WHEN :#{#req.sortNhomDatn} = 'lastModifiedDesc' THEN s.last_modified_date END DESC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'lastModifiedAsc' THEN s.last_modified_date END ASC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'maSinhVienAsc' THEN CONVERT(SUBSTRING(s.ma_sinh_vien, 3), SIGNED) END ASC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'maSinhVienDesc' THEN CONVERT(SUBSTRING(s.ma_sinh_vien, 3) ,SIGNED) END DESC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'chuyenNganhAsc' THEN c.ten_chuyen_nganh END ASC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'chuyenNganhDesc' THEN c.ten_chuyen_nganh END DESC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'gvhdAsc' THEN g.ten_gvhd END ASC,
+              CASE WHEN :#{#req.sortNhomDatn} = 'gvhdDesc' THEN g.ten_gvhd END DESC 
+            """, nativeQuery = true)
     List<DtSinhVienTheoDotResponse> exportExcel(@Param("req") FindDtSinhVienTheoDotRequest req);
 
     @Query(value = """

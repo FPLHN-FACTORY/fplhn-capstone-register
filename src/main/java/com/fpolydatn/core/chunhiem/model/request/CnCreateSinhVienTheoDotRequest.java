@@ -14,6 +14,8 @@ public class CnCreateSinhVienTheoDotRequest {
 
     private String tenSinhVien;
 
+    private String email;
+
     private String maNhom;
 
     private String chucVu;

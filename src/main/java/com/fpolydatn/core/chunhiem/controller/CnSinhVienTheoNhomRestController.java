@@ -29,12 +29,10 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @Autowired
     private CommonHelper commonHelper;
 
-
     @DeleteMapping("")
     public ResponseObject updateSinhVienByNhom(@RequestParam("maSinhVien") String maSinhVien, @RequestParam("idNhom") String idNhom) {
         return new ResponseObject(sinhVienTheoNhomService.deleteFromIdSinhVien(idNhom, maSinhVien, session.getCoSoId()));
     }
-
 
     @PostMapping("/addSinhVien")
     public ResponseObject addSinhVienByNhom(@RequestParam("id") String idNhom, @RequestParam("maSinhVien") String maSinhVien) {
@@ -72,6 +70,12 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
         req.setCoSoId(session.getCoSoId());
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         return new ResponseObject(sinhVienTheoNhomService.getListSinhVienNoGroup(req, idChuNhiem));
+    }
+
+    @PutMapping("/doi-ten-de-tai")
+    public ResponseObject getListSinhVienNoGroup(@RequestParam("idNhom") String idNhom,
+                                                 @RequestParam("tenDeTai") String tenDetai) {
+        return new ResponseObject(sinhVienTheoNhomService.doiTenDeTai(idNhom, tenDetai));
     }
 
     @GetMapping("/listGvhd")

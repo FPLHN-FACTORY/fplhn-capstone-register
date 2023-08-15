@@ -12,6 +12,8 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(types = {HocKy.class})
 public interface HocKyResponse extends IsIdentified {
 
+    Integer getSTT();
+
     @Value("#{target.ten_hoc_ky}")
     String getTenHocKy();
 }

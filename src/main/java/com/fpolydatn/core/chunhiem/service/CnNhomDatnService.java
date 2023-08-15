@@ -3,8 +3,11 @@ package com.fpolydatn.core.chunhiem.service;
 import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnSearchNhomInputRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienImport;
+import com.fpolydatn.core.chunhiem.model.response.CnThongTinNhomResponse;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.NhomDatn;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +26,11 @@ public interface CnNhomDatnService {
 
     boolean chotDeTai(String id);
 
+    boolean chotNhieuDeTai(List<String> listIdNhom);
+
     boolean xacNhanNhom(String id);
+
+    boolean xacNhanNhieuNhom(List<String> listIdNhom);
 
     boolean tuChoiChotDeTai(String id, String nhanXet);
 
@@ -35,10 +42,16 @@ public interface CnNhomDatnService {
 
     List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem);
 
-    void CnSinhVienExport(HttpServletResponse response, String typeExcel, CnFindNhomDatnRequest request) throws IOException;
+    void CnSinhVienExport(HttpServletResponse response, final CnFindSinhVienTheoDotRequest request, String idChuNhiem) throws IOException;
+
+    void CnExportThongTinSinhVien(HttpServletResponse response, final CnFindSinhVienTheoDotRequest request, String idChuNhiem) throws IOException;
 
     CnSinhVienImport CnSinhVienImport(MultipartFile file, String dotDangKyId, String coSoId, String idChuNhiem) throws IOException;
 
     boolean checkHanChuNhiem();
+
+    List<String> searchNhomDatnInput(final CnSearchNhomInputRequest request);
+
+    CnThongTinNhomResponse getThongTinNhom(String idNhom, String coSoId);
 
 }

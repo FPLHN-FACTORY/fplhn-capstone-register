@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/api/admin/hoc-ky")
+@RequestMapping("/api/dao-tao/hoc-ky")
 public final class HocKyRestController extends BaseController {
 
     @Autowired

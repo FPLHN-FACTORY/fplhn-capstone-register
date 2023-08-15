@@ -15,15 +15,10 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public abstract class CnBaseNhomDatnRequest {
 
+    @NotEmpty()
+    @NotBlank()
     private String monDatnId;
 
-    @NotEmpty()
-    @NotBlank()
-    @Column(length = EntityProperties.LENGTH_PASSWORD)
-    private String matKhau;
-
-    @NotEmpty()
-    @NotBlank()
     private String idGiangVien;
 
     @NotEmpty()

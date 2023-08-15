@@ -69,7 +69,8 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <div style="width: 48%;margin-right: 2%;" class="float-left">
+                                                                    <div style="width: 48%;margin-right: 2%;"
+                                                                         class="float-left">
                                                                         <label class="col-form-label">Học kỳ</label>
                                                                         <select class="custom-select"
                                                                                 id="hocKyAdd"
@@ -111,7 +112,8 @@
                                                                         <small class="text-danger"
                                                                                id="errorMessageAddNgayKetThuc"></small>
                                                                     </div>
-                                                                    <div class="float-left" style="width: 48%;margin-right: 2%;">
+                                                                    <div class="float-left"
+                                                                         style="width: 48%;margin-right: 2%;">
                                                                         <label class="col-form-label">Hạn sinh
                                                                             viên</label>
                                                                         <input
@@ -166,48 +168,60 @@
                                         <table style="text-align: center" id="custom-table"
                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                             <thead class="table-primary">
-                                            <th width="50px">STT</th>
-                                            <th>Tên học kỳ</th>
-                                            <th>Tên đợt</th>
-                                            <th>Ngày bắt đầu</th>
-                                            <th>Ngày kết thúc</th>
-                                            <th>Trạng thái</th>
-                                            <th>Tổng SV</th>
-                                            <th>Tổng SV chưa có nhóm</th>
-                                            <th>Tổng số nhóm</th>
-                                            <th>Số nhóm đủ ĐK</th>
-                                            <th width="90px">Chức năng</th>
+                                            <th width="50px" class="text-center align-middle">STT</th>
+                                            <th class="text-center align-middle">Tên học kỳ</th>
+                                            <th class="text-center align-middle">Tên đợt</th>
+                                            <th class="text-center align-middle">Ngày bắt đầu</th>
+                                            <th class="text-center align-middle">Ngày kết thúc</th>
+                                            <th class="text-center align-middle">Trạng thái</th>
+                                            <th class="text-center align-middle">Tổng SV</th>
+                                            <th class="text-center align-middle">Tổng SV chưa có nhóm</th>
+                                            <th class="text-center align-middle">Tổng số nhóm</th>
+                                            <th class="text-center align-middle">Số nhóm đủ ĐK</th>
+                                            <th width="90px" class="text-center align-middle">Chức năng</th>
                                             </thead>
                                             <tbody>
                                             <th:block th:each="dotDangKy, i: ${page.data}">
-                                                <tr class="table-light">
-                                                    <td th:text="${dotDangKy.getSTT()}"></td>
-                                                    <td th:text="${dotDangKy.getTenHocKy()}"></td>
-                                                    <td th:text="${dotDangKy.getTenDotDangKy()}"></td>
-                                                    <td th:text="${#dates.format(dotDangKy.getNgayBatDau(), 'dd-MM-yyyy HH:mm')}"></td>
-                                                    <td th:text="${#dates.format(dotDangKy.getNgayKetThuc(), 'dd-MM-yyyy HH:mm')}"></td>
-                                                    <td th:text="${dotDangKy.getTrangThai()} == 1 ? 'Mở' : 'Đóng'"
+                                                <tr class="table-light text-center align-middle">
+                                                    <td class="text-center align-middle"
+                                                        th:text="${dotDangKy.getSTT()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${dotDangKy.getTenHocKy()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${dotDangKy.getTenDotDangKy()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${#dates.format(dotDangKy.getNgayBatDau(), 'dd-MM-yyyy HH:mm')}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${#dates.format(dotDangKy.getNgayKetThuc(), 'dd-MM-yyyy HH:mm')}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${dotDangKy.getTrangThai()} == 1 ? 'Mở' : 'Đóng'"
                                                         th:style="${dotDangKy.getTrangThai()} == 1 ? 'color: #5867dd; font-weight: bold' :
                                                                     'color: red; font-weight: bold'"></td>
-                                                    <td th:text="${dotDangKy.getTongSinhVien()}"></td>
-                                                    <td th:text="${dotDangKy.getTongSvChuaCoNhom()}"></td>
-                                                    <td th:text="${dotDangKy.getTongSoNhom()}"></td>
-                                                    <td th:text="${dotDangKy.tongSoNhom - dotDangKy.tongNhomKhongHopLe}"></td>
-                                                    <td>
-                                                        <button
-                                                                type="button"
-                                                                class="btn_pencil_square"
-                                                                data-toggle="tooltip"
-                                                                title="Sửa đợt đăng ký"
-                                                                th:attr="onclick=|openModalUpdateDotDangKy('${dotDangKy.getId()}')|">
-                                                            <img th:src="@{/img/pencil-square.svg}">
-                                                        </button>
-                                                        <button class="btn_eye"
-                                                                data-toggle="tooltip"
-                                                                title="Xem chi tiết"
-                                                                th:attr="onclick=|detail('${dotDangKy.getId()}')|">
-                                                            <img th:src="@{/img/eye-fill.svg}">
-                                                        </button>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${dotDangKy.getTongSinhVien()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${dotDangKy.getTongSvChuaCoNhom()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${dotDangKy.getTongSoNhom()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${dotDangKy.tongSoNhom - dotDangKy.tongNhomKhongHopLe}"></td>
+                                                    <td class="text-center align-middle">
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <button
+                                                                    type="button"
+                                                                    class="btn_pencil_square"
+                                                                    data-toggle="tooltip"
+                                                                    title="Sửa đợt đăng ký"
+                                                                    th:attr="onclick=|openModalUpdateDotDangKy('${dotDangKy.getId()}')|">
+                                                                <img th:src="@{/img/pencil-square.svg}">
+                                                            </button>
+                                                            <button class="btn_eye"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xem chi tiết"
+                                                                    th:attr="onclick=|detail('${dotDangKy.getId()}')|">
+                                                                <img th:src="@{/img/eye-fill.svg}">
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </th:block>
@@ -316,9 +330,9 @@
                     <div class="input-group mb-3">
                         <input type="text" readonly class="form-control" id="detailTongSoSinhVienChuaCoNhom">
                         <a class="btn btn-success"
-                                data-toggle="tooltip"
-                                title="Xem danh sách sinh viên chưa có nhóm"
-                                id="btnShowSinhVienChuaCoNhom">
+                           data-toggle="tooltip"
+                           title="Xem danh sách sinh viên chưa có nhóm"
+                           id="btnShowSinhVienChuaCoNhom">
                             <img th:src="@{/img/eye-fill.svg}">
                         </a>
                     </div>

@@ -19,7 +19,7 @@ import java.util.List;
  * @author HangNT
  */
 @Controller
-@RequestMapping("/admin/hoc-ky")
+@RequestMapping("/dao-tao/hoc-ky")
 //@PreAuthorize("hasAuthority('admin')")
 public final class HocKyController extends BaseController {
 

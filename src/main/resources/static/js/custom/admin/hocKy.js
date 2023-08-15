@@ -1,5 +1,5 @@
-const hocKyApi = '/api/admin/hoc-ky';
-const hocKyView = '/admin/hoc-ky';
+const hocKyApi = '/api/dao-tao/hoc-ky';
+const hocKyView = '/dao-tao/hoc-ky';
 
 $(document).ready(function () {
     $("#hoc_ky_error").text("");

@@ -75,7 +75,7 @@ public interface DtSinhVienTheoDotResponse extends IsIdentified {
     @Value("#{target.ten_mon_chuong_trinh}")
     String getMonChuongTrinh();
 
-    @Value("#{target.ma_mom_chuong_trinh}")
+    @Value("#{target.ma_mon_chuong_trinh}")
     String getMaMonChuongTrinh();
 
 }
