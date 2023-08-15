@@ -73,6 +73,20 @@
                                                                            readonly="readonly" class="form-control">
                                                                 </div>
                                                             </div>
+                                                            <div class="row">
+                                                                <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <a th:href="@{/dao-tao/mon-datn}"
+                                                                       class="btn-danger btn">
+                                                                        Quay lại
+                                                                    </a>
+                                                                    <button type="button"
+                                                                            th:attr="onclick=|openPhanCong()|"
+                                                                            class="btn btn-success">
+                                                                        Phân công GVHD
+                                                                    </button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -97,22 +111,25 @@
                                                 </div>
                                             </div>
                                             <div class="table-responsive mt-3" style="overflow: hidden;">
-                                                <div class="row" style="padding: 20px 0 ;">
 
-                                                    <div class="col-sm-6 text-left" style="padding: 0 ;">
-                                                        <div class="col-6 d-inline">
-                                                            <button th:attr="onclick=|openPhanCong()|"
-                                                                    class="btn btn-success">
-                                                                Phân công GVHD
-                                                            </button>
+                                                <div id="form_search"
+                                                     class="m-portlet__body">
+                                                    <div>
+                                                        <div class="row justify-content-between align-items-center">
+                                                            <span for="" class="fillter-name col-3 text-end">Tìm tên tài khoản, họ tên gvhd</span>
+                                                            <div class="col-7">
+                                                                <input type="text" class="form-control" name="keyword"
+                                                                       id="keyword">
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <button type="button" data-bs-dismiss="modal"
+                                                                        class="btn btn-success" onclick="viewTable(0)">
+                                                                    Tìm
+                                                                    kiếm
+                                                                </button>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-6 d-inline">
-                                                            <a th:href="@{/dao-tao/mon-datn}"
-                                                               class="btn-secondary btn btn-light">
-                                                                Quay lại
-                                                            </a>
 
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="table-responsive mt-3">
@@ -122,17 +139,19 @@
                                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                             <thead class="table-primary">
                                                             <th width="50px">STT</th>
+                                                            <th>Tên tài khoản</th>
                                                             <th>Tên Giảng Viên</th>
                                                             <th>Đợt đăng ký</th>
                                                             <th width="200px">Chức năng</th>
                                                             </thead>
-                                                            <tbody>
+                                                            <tbody id="list">
                                                             <th:block th:each="phanCongHuongDan : ${page.data}">
                                                                 <tr class="table-light">
                                                                     <td th:text="${phanCongHuongDan.stt}"></td>
-                                                                    <td th:text="${phanCongHuongDan.tenGV}"></td>
+                                                                    <td th:text="${phanCongHuongDan.getTenTaiKhoan()}"></td>
+                                                                    <td th:text="${phanCongHuongDan.getTenGV()}"></td>
                                                                     <td th:text="${phanCongHuongDan.dotDangKy}"></td>
-                                                                    <td>
+                                                                    <td style="display: flex; justify-content: center">
                                                                         <button
                                                                                 class="btn_trash" data-toggle="tooltip"
                                                                                 title="Xóa"
@@ -145,19 +164,15 @@
                                                             </tbody>
                                                         </table>
                                                         <!-- Paging-->
-                                                        <nav th:if="${page.totalPages > 1}"
-                                                             aria-label="Page navigation">
-                                                            <ul class="pagination justify-content-end">
-                                                                <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                                    <li class="page-item">
-                                                                        <a class="page-link"
-                                                                           th:href="@{?page={page.currentPage}(page.currentPage=${i}-1)}"
-                                                                           th:text="${i}">
-                                                                        </a>
-                                                                    </li>
-                                                                </div>
-                                                            </ul>
-                                                        </nav>
+                                                        <div id="list_page">
+                                                        </div>
+                                                        <input hidden th:value="${page.totalPages}" id="totalPages">
+                                                        <input hidden th:value="${page.currentPage}" id="currentPage">
+                                                        <div id="is_empty" class="text-center">
+                                                            <div th:if="${page.data.isEmpty()}">
+                                                                <span>Không có dữ liệu</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div th:if="${page.data.isEmpty()}">
                                                         <h3>Không có dữ liệu</h3>
@@ -193,23 +208,36 @@
                     </div>
                     <input type="text" id="getMonDatnId" th:value="${monDatn.getId()}" hidden>
                     <div class="modal-body">
+                        <div class="row g-2 align-items-center pb-4">
+                            <div class="col-auto col-4">
+                                <span for="" class="fillter-name text-center">Tìm tên tài khoản, họ tên gvhd</span>
+                            </div>
+                            <div class="col-auto col-8">
+                                <input type="text" class="form-control" name="keyword" id="searchPhanCong"
+                                       onkeyup="viewTablePhanCongHuongDan()"
+                                >
+                            </div>
+                        </div>
                         <div class="form-group">
                             <table id="table-add"
+                                   style="text-align: center"
                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                 <thead class="table-primary">
                                 <th width="50px">STT</th>
+                                <th>Tên tài khoản</th>
                                 <th>Tên Giảng Viên</th>
                                 <th>Đợt đăng ký</th>
-                                <th width="200px">Chức năng</th>
+                                <th width="100px" align="center">Chọn</th>
                                 </thead>
-                                <tbody>
+                                <tbody id="importGiangVien">
                                 <th:block th:each="phanCongHuongDanGiaoVien : ${phanCongHuongDanGiaoViens}">
                                     <tr class="table-light">
                                         <td th:text="${phanCongHuongDanGiaoVien.stt}"></td>
-                                        <td th:text="${phanCongHuongDanGiaoVien.getTenGV()}" class="giangVienId"
+                                        <td th:text="${phanCongHuongDanGiaoVien.getTenTaiKhoan()}" class="giangVienId"
                                             th:value="${phanCongHuongDanGiaoVien.id}"></td>
+                                        <td th:text="${phanCongHuongDanGiaoVien.getTenGV()}"></td>
                                         <td th:text="${phanCongHuongDanGiaoVien.dotDangKy}"></td>
-                                        <td>
+                                        <td style="display: flex; justify-content: center">
                                             <input type="checkbox" name="checkThemTatCa" id="" class="checkThemTatCa">
                                         </td>
                                     </tr>
@@ -220,7 +248,8 @@
                         <div id="errLoi" style="color:red"></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal">Hủy
+                        <button type="button" class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal">
+                            Hủy
                         </button>
                         <input class="btn btn-success" onclick="checkAll()" value="Chọn tất cả" type="button"/>
                         <button type="button" class="btn btn-success" th:attr="onclick=|phanCong()|">Thêm

@@ -53,4 +53,11 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         dtNhomDatnTheoDotService.DTNhomDatnExport(response, typeExcel, request);
     }
+
+    @GetMapping("/export-excel")
+    public void exportEcel(HttpServletResponse response, FindDtNhomDatnTheoDotRequest request) throws IOException {
+        request.setCoSoId(session.getCoSoId());
+        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        dtNhomDatnTheoDotService.DTNhomDatnSinhVienExport(response, request);
+    }
 }

@@ -1,7 +1,9 @@
 package com.fpolydatn.core.daotao.repository;
 
+import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnSearchResponse;
+import com.fpolydatn.core.daotao.model.response.DtNhomDatnSinhVienExportExcelReponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -230,4 +232,37 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
     List<DtMonDatnSearchResponse> getAllMonDatnByChuyenNganhId(@Param("chuyenNganhId") String chuyenNganhId,
                                                                @Param("coSoId") String coSoId);
 
+    @Query(value = """
+        SELECT
+        	sv.id,
+            sv.ma_sinh_vien,
+            sv.ten_sinh_vien,
+            cn.ten_chuyen_nganh,
+            m.ten_mon_datn,
+            sv.nhom_id,
+            sv.email,
+            n.ma_nhom,
+             n.ten_nhom,
+             COALESCE(n.ten_de_tai, 'Chưa có') AS ten_de_tai,
+             COALESCE(gv.ten_gvhd, 'Chưa có') AS ten_gvhd,
+             COALESCE(gv.ten_tai_khoan, 'Chưa có') AS ten_tai_khoan,
+             n.trang_thai,
+             n.truong_nhom_id
+        FROM do_an_tot_nghiep.sinh_vien sv join do_an_tot_nghiep.chuyen_nganh cn
+        ON sv.chuyen_nganh_id = cn.id
+        join do_an_tot_nghiep.mon_datn m
+        ON sv.mon_datn_id = m.id
+        join do_an_tot_nghiep.nhom_datn n on sv.nhom_id = n.id
+        LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan gv
+             ON n.giang_vien_id = gv.id
+        WHERE sv.nhom_id IS NOT NULL
+         AND sv.dot_dang_ky_id = :#{#req.dotDangKyId}
+             AND sv.co_so_id = :#{#req.coSoId}
+             AND (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
+            OR n.ma_nhom LIKE %:#{#req.maNhom}%) 
+             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
+            OR n.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
+        ORDER BY sv.nhom_id
+    """, nativeQuery = true)
+    List<DtNhomDatnSinhVienExportExcelReponse> getSinhVienNhomDatnExportExcel(@Param("req") final FindDtNhomDatnTheoDotRequest req);
 }
