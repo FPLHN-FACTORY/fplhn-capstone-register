@@ -25,14 +25,27 @@ public interface DtCanBoRepository extends CanBoRepository {
                     JOIN do_an_tot_nghiep.co_so cs
                     ON cb.co_so_id= cs.id 
                     LEFT JOIN do_an_tot_nghiep.chuyen_nganh cn on cb.id = cn.chu_nhiem_bo_mon
-                     WHERE cb.co_so_id = :#{#req.coSoID}
+                    WHERE cb.co_so_id = :#{#req.coSoId}
+                    AND ( :#{#req.tenTaiKhoan} IS NULL 
+                        OR :#{#req.tenTaiKhoan} LIKE '' 
+                        OR cb.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}% )  
+                    AND ( :#{#req.vaiTro} IS NULL 
+                        OR :#{#req.vaiTro} LIKE '' 
+                        OR cb.vai_tro LIKE %:#{#req.vaiTro}% )  
             ORDER BY cb.last_modified_date DESC
              """,
             countQuery = """
                     SELECT  COUNT(cb.id)
                             FROM do_an_tot_nghiep.can_bo cb 
                             JOIN do_an_tot_nghiep.co_so cs
-                            ON cb.co_so_id= cs.id  WHERE cb.co_so_id = :#{#req.coSoID}
+                            ON cb.co_so_id= cs.id  
+                            WHERE cb.co_so_id = :#{#req.coSoID}
+                            AND ( :#{#req.tenTaiKhoan} IS NULL 
+                                OR :#{#req.tenTaiKhoan} LIKE '' 
+                                OR cb.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}% )  
+                            AND ( :#{#req.vaiTro} IS NULL 
+                                OR :#{#req.vaiTro} LIKE '' 
+                                OR cb.vai_tro LIKE %:#{#req.vaiTro}% )  
                             ORDER BY cb.last_modified_date DESC 
                     """,
             nativeQuery = true)
@@ -74,6 +87,6 @@ public interface DtCanBoRepository extends CanBoRepository {
     @Query(value = "SELECT id FROM can_bo WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
     String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM chuyen_nganh where chu_nhiem_bo_mon = :idChuNhiem AND co_so_id = :coSoId",nativeQuery = true)
+    @Query(value = "SELECT id FROM chuyen_nganh where chu_nhiem_bo_mon = :idChuNhiem AND co_so_id = :coSoId", nativeQuery = true)
     String getIdChuyenNganhByIdChuNhiem(@Param("idChuNhiem") String idChuNhiem, @Param("coSoId") String coSoId);
 }

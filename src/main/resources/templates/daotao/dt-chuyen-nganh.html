@@ -64,10 +64,10 @@
                                     </div>
 
                                     <div class="row justify-content-center pt-2">
-                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                        <div class="col-sm-1 col-12 text-center mt-1">
                                             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                                         </div>
-                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                        <div class="col-sm-1 col-12 text-center mt-1">
                                             <a href="#"
                                                class="btn btn-danger text-white" onclick="clearData();">
                                                 Làm mới bộ lọc
@@ -105,27 +105,32 @@
                                             <tbody>
                                             <th:block th:each="chuyenNganh,i : ${page.data}">
                                                 <tr class="table-light">
-                                                    <td th:text="${chuyenNganh.getStt()}"></td>
-                                                    <td th:text="${chuyenNganh.getTenChuyenNganh()}"></td>
-                                                    <td th:text="${chuyenNganh.getTenCanBo()} == null ? 'Chưa có' : ${chuyenNganh.getTenCanBo()} + ' - ' + ${chuyenNganh.getTenTaiKhoan()}"></td>
-                                                    <td>
-                                                        <button
-                                                                style="margin-left: 50px"
-                                                                type="button"
-                                                                class="btn_pencil_square"
-                                                                data-toggle="tooltip"
-                                                                title="Sửa chuyên ngành"
-                                                                th:attr="onclick=|openModalUpdateChuyenNganh('${chuyenNganh.getId()}', '${chuyenNganh.getTenCanBo()}')|">
-                                                            <img th:src="@{/img/pencil-square.svg}">
-                                                        </button>
-                                                        <button
-                                                                type="button"
-                                                                class="btn_trash"
-                                                                data-toggle="tooltip"
-                                                                title="Xóa chuyên ngành"
-                                                                th:attr="onclick=|remove('${chuyenNganh.getId()}')|">
-                                                            <img th:src="@{/img/trash.svg}">
-                                                        </button>
+                                                    <td th:text="${chuyenNganh.getStt()}"
+                                                        class="text-center align-middle"></td>
+                                                    <td th:text="${chuyenNganh.getTenChuyenNganh()}"
+                                                        class="text-center align-middle"></td>
+                                                    <td th:text="${chuyenNganh.getTenCanBo()} == null ? 'Chưa có' : ${chuyenNganh.getTenCanBo()} + ' - ' + ${chuyenNganh.getTenTaiKhoan()}"
+                                                        class="text-center align-middle"></td>
+                                                    <td class="text-center align-middle">
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <button
+                                                                    style="margin-left: 50px"
+                                                                    type="button"
+                                                                    class="btn_pencil_square"
+                                                                    data-toggle="tooltip"
+                                                                    title="Sửa chuyên ngành"
+                                                                    th:attr="onclick=|openModalUpdateChuyenNganh('${chuyenNganh.getId()}', '${chuyenNganh.getTenCanBo()}')|">
+                                                                <img th:src="@{/img/pencil-square.svg}">
+                                                            </button>
+                                                            <button
+                                                                    type="button"
+                                                                    class="btn_trash"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xóa chuyên ngành"
+                                                                    th:attr="onclick=|remove('${chuyenNganh.getId()}')|">
+                                                                <img th:src="@{/img/trash.svg}">
+                                                            </button>
+                                                            <div/>
                                                     </td>
                                                 </tr>
                                             </th:block>

@@ -24,7 +24,7 @@ public final class DtCanBoController extends BaseController {
 
     @GetMapping
     public String viewHocKy(Model model, final DtFindCanBoRequest canBoRequest) {
-        canBoRequest.setCoSoID(session.getCoSoId());
+        canBoRequest.setCoSoId(session.getCoSoId());
         PageableObject<DtCanBoResponse> listCanBo = canBoService.search(canBoRequest);
         model.addAttribute("page", listCanBo);
         return "daotao/dt-can-bo";

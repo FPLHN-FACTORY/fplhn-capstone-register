@@ -29,14 +29,14 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                 gvhd.so_dien_thoai,
                 gvhd.email_fpt,
                 gvhd.email_fe,
-                GROUP_CONCAT(cn.ten_chuyen_nganh SEPARATOR ', ') AS danh_sach_chuyen_nganh
+                GROUP_CONCAT(DISTINCT cn.ten_chuyen_nganh SEPARATOR ', ') AS danh_sach_chuyen_nganh
                 FROM giang_vien_huong_dan gvhd 
                 LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
                 LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
                 LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id  
                 LEFT JOIN phan_cong_huong_dan pc ON pc.giang_vien_id = gvhd.id  
                 LEFT JOIN mon_datn m ON m.id = pc.mon_datn_id  
-                LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id   
+                JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id   
                 WHERE 
                     ( :#{#req.tenTaiKhoan} IS NULL 
                         OR :#{#req.tenTaiKhoan} LIKE '' 

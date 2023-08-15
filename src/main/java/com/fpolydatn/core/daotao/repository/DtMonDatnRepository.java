@@ -24,10 +24,8 @@ public interface DtMonDatnRepository extends MonDatnRepository {
             cn.ten_chuyen_nganh,
             GROUP_CONCAT(gv.ten_tai_khoan SEPARATOR ', ') AS danh_sach_gvhd,
             cb.ten_can_bo,
-             (SELECT CONCAT(b.ten_mon_datn, ' - ', b.ma_mon) 
-             FROM mon_datn b 
-             WHERE b.id = m.nhom_mon_datn_id) AS ten_nhom_mon,
-             m.nhom_mon_datn_id
+            GROUP_CONCAT(CONCAT(m.ten_mon_datn, ' - ', m.ma_mon) SEPARATOR ', ') AS ten_nhom_mon,
+            m.nhom_mon_datn_id
                 FROM  mon_datn m
                 LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id 
                 LEFT JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id
@@ -43,7 +41,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 AND m.co_so_id = :#{#req.coSoId} 
                 AND ddk.id = :#{#req.dotDangKyId}
                 AND nhom_mon_datn_id IS NOT NULL
-                GROUP BY m.id, m.ma_mon, m.ten_mon_datn, cn.ten_chuyen_nganh, ten_nhom_mon, m.nhom_mon_datn_id
+                GROUP BY m.id, m.ma_mon, m.ten_mon_datn, cn.ten_chuyen_nganh, m.nhom_mon_datn_id
                 ORDER BY m.last_modified_date DESC 
             """, countQuery = """
             SELECT COUNT(m.id)
@@ -54,7 +52,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
                 LEFT JOIN giang_vien_huong_dan gv ON pc.giang_vien_id = gv.id
                 LEFT JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
                 WHERE ( :#{#req.maMon} IS NULL 
-                        OR :#{#req.maMon} LIKE '' 
+                        OR :#{#req.maMon} LIKE ''   
                         OR ma_mon LIKE %:#{#req.maMon}% )  
                 AND (m.chuyen_nganh_id = :#{#req.chuyenNganhId} 
                 OR :#{#req.chuyenNganhId} IS NULL 

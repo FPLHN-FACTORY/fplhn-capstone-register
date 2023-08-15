@@ -35,6 +35,58 @@
                 <div class="m-content">
                     <h3>Quản lý cán bộ</h3>
                     <div class="mt-5">
+                        <section class="fillter-area  mb-5">
+                            <div class="m-portlet">
+                                <div class="m-portlet__head">
+                                    <div class="m-portlet__head-caption">
+                                        <div class="m-portlet__head-title">
+                                <span class="m-portlet__head-icon">
+                                    <i class="m-menu__link-icon flaticon-web"></i>
+                                </span>
+                                            <h3 class="m-portlet__head-text">
+                                                Bộ lọc
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form
+                                        id="searchGvhd"
+                                        method="GET"
+                                        class="m-portlet__body">
+                                    <div class="row">
+                                        <div
+                                                class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-5 text-center">Tên tài khoản</span>
+                                            <input type="text" class="form-control col-6"
+                                                   name="ten_tai_khoan" id="ten_tai_khoan" value="">
+                                        </div>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-5 text-center">Vai trò</span>
+                                            <select name="vai_tro" id="vai_tro" class="form-control col-6">-->
+                                                <option value="">Chọn vai trò</option>
+                                                <option value="1">CNBM</option>
+                                                <option value="0">Đào tạo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center pt-2">
+                                        <div class="col-sm-1 col-12 text-center mt-1">
+                                            <button type="button"
+                                                    class="btn btn-primary" th:attr="onclick=|loadTable(0)|"
+                                            >Tìm kiếm
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-1 col-12 text-center mt-1">
+                                            <a href="#"
+                                               class="btn btn-danger text-white" th:attr="onclick=|clearData()|">
+                                                Làm mới bộ lọc
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
@@ -217,31 +269,38 @@
                                             <th width="200px">Vai trò</th>
                                             <th width="80px">Chức năng</th>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="searchListCanBo">
                                             <th:block th:each="canbo : ${page.data}">
                                                 <tr class="table-light">
-                                                    <td th:text="${canbo.getSTT()}"></td>
-                                                    <td th:text="${canbo.getEmailFE}"></td>
-                                                    <td th:text="${canbo.getSoDienThoai}"></td>
-                                                    <td th:text="${canbo.getTenCanBo} + ' - ' +  ${canbo.getTenTaiKhoan}"></td>
-                                                    <td th:switch="${canbo.getVaiTro()}">
+                                                    <td th:text="${canbo.getSTT()}"
+                                                        class="text-center align-middle"></td>
+                                                    <td th:text="${canbo.getEmailFE}"
+                                                        class="text-center align-middle"></td>
+                                                    <td th:text="${canbo.getSoDienThoai}"
+                                                        class="text-center align-middle"></td>
+                                                    <td th:text="${canbo.getTenCanBo} + ' - ' +  ${canbo.getTenTaiKhoan}"
+                                                        class="text-center align-middle"></td>
+                                                    <td th:switch="${canbo.getVaiTro()}"
+                                                        class="text-center align-middle">
                                                         <span th:case="'0'" th:text="'Đào Tạo'"></span>
                                                         <span th:case="'1'"
                                                               th:text="${canbo.getTenChuyenNganh} != null ?  'CNBM' + ' - ' +  ${canbo.getTenChuyenNganh} : 'CNBM' "> </span>
                                                     </td>
-                                                    <td>
-                                                        <button
-                                                                class="btn_pencil_square" data-toggle="tooltip"
-                                                                title="Sửa"
-                                                                th:attr="onclick=|openModalUpdateCanBo('${canbo.getId}')|">
-                                                            <img th:src="@{/img/pencil-square.svg}">
-                                                        </button>
-                                                        </button>
-                                                        <button
-                                                                class="btn_trash" data-toggle="tooltip" title="Xóa"
-                                                                th:attr="onclick=|openModalRemoveCanBo('${canbo.getId}')|">
-                                                            <img th:src="@{/img/trash.svg}">
-                                                        </button>
+                                                    <td class="text-center align-middle">
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <button
+                                                                    class="btn_pencil_square" data-toggle="tooltip"
+                                                                    title="Sửa"
+                                                                    th:attr="onclick=|openModalUpdateCanBo('${canbo.getId}')|">
+                                                                <img th:src="@{/img/pencil-square.svg}">
+                                                            </button>
+                                                            </button>
+                                                            <button
+                                                                    class="btn_trash" data-toggle="tooltip" title="Xóa"
+                                                                    th:attr="onclick=|openModalRemoveCanBo('${canbo.getId}')|">
+                                                                <img th:src="@{/img/trash.svg}">
+                                                            </button>
+                                                            <div/>
                                                     </td>
                                                 </tr>
                                             </th:block>

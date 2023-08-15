@@ -14,8 +14,8 @@ $(document).ready(function () {
 })
 
 function clearData() {
-    $("#tenGiangVien").val("");
-    ;
+    $("#ten_tai_khoan").val("");
+    $("#chuyenNganh").val("");
     $("#search_dot_dang_ky").val("");
 }
 
@@ -503,7 +503,7 @@ function loadTable(count) {
         success: function (responseData) {
             totalPages = responseData.data.totalPages;
             if (responseData.data.data.length == 0) {
-                $("#searchListGvhd").html(``);
+                $("#searchListGvhd").html(``);2
                 $("#page").html(``);
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {

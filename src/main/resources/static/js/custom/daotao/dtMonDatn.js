@@ -15,7 +15,6 @@ let currentPage = $("#currentPage").val();
 
 function clearData() {
     $("#search_ma_mon").val("");
-    ;
     $("#search_dot_dang_ky").val("");
 }
 
