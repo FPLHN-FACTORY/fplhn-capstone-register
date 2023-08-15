@@ -10,6 +10,110 @@ $(document).ready(function () {
     $("#targetLink").text(monDatnView);
 });
 
+let totalPages = $("#totalPages").val();
+let currentPage = $("#currentPage").val();
+
+function clearData() {
+    $("#search_ma_mon").val("");
+    $("#search_dot_dang_ky").val("");
+}
+
+function genPaging() {
+    if (totalPages <= 1) {
+        $("#page").html('');
+    } else {
+        let templatePageMid = ``;
+        let templatePageBefore = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="loadTable(${currentPage - 1})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+        templatePageMid = `
+                            <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
+                             <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
+        let templatePageAfter = `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="loadTable(${currentPage + 1})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+        let templateHtml = ``;
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        $("#page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+    }
+}
+
+function loadTable(count) {
+    if (count == -1) {
+        count = totalPages - 1;
+    }
+    if (count == totalPages) {
+        count = 0;
+    }
+    let maMon = $("#search_ma_mon").val();
+    let dotDangKyId = $("#search_dot_dang_ky").val();
+    let chuyenNganhId = $("#chuyenNganh").val();
+    currentPage = count;
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: monDatnApi + "/search" + "?maMon=" + maMon + "&dotDangKyId=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId + "&page=" + count,
+        dataType: 'json',
+        success: function (responseData) {
+            totalPages = responseData.data.totalPages;
+            if (responseData.data.data.length == 0) {
+                $("#searchListMon").html(``);
+                $("#page").html(``);
+                $("#empty").html(`<h3>Không có dữ liệu</h3>`);
+            } else {
+                $("#empty").html(``)
+                $("#searchListMon").html(responseData.data.data.map(function (monDatn) {
+                    return `
+                <tr class="table-light">
+                      <td>${monDatn.stt}</td>
+                      <td>${monDatn.maMon}</td>
+                      <td>${monDatn.tenMon}</td>
+                      <td>${monDatn.id == monDatn.nhomMonDatnId ? 'Môn độc lập' : monDatn.tenNhomMon}</td>
+                      <td>${monDatn.tenCanBo == null ? '' : monDatn.tenCanBo}</td>
+                      <td>${monDatn.danhSachGVHD}</td>
+                      <td>${monDatn.tenChuyenNganh}</td>
+                      <td>
+                      
+                          <a
+                            type="button"
+                            class="btn_clipboard_user" data-toggle="tooltip"
+                            title="Phân môn đồ án tốt nghiệp"
+                            href="/dao-tao/mon-datn/${monDatn.id}">
+                            <img src="/img/clipboard-user.svg">
+                          </a>
+                          <button
+                            type="button"
+                            class="btn_pencil_square"
+                            data-toggle="tooltip"
+                            title="Sửa môn datn"
+                            onclick="openModalUpdateMonDatn('${monDatn.id}','${count}')">
+                            <img src="/img/pencil-square.svg">
+                         </button>
+                         <button
+                            type="button"
+                            class="btn_trash"
+                            data-toggle="tooltip"
+                            title="Xóa môn datn"
+                            onclick="openModalRemoveMonDatn('${monDatn.id}','${count})">
+                            <img src="/img/trash.svg">
+                        </button>
+                    </td>
+                </tr>
+               `
+                }));
+                genPaging();
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
+
 function openModalCreate() {
     $("#maMon").val("");
     $("#tenMonDatn").val("");
@@ -168,13 +272,13 @@ function openModalRemoveMonDatn(monDatnId) {
                     data: JSON.stringify(monDatnId),
                     dataType: 'json',
                     success: function (responseData) {
-                            bootbox.alert({
-                                message: 'Xóa thành công',
-                                backdrop: true,
-                                callback: function (e) {
-                                    window.open(monDatnView, '_self');
-                                }
-                            });
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function (e) {
+                                window.open(monDatnView, '_self');
+                            }
+                        });
                     },
                     error: function (e) {
                         if (e.responseJSON.message != null) {
@@ -197,20 +301,20 @@ function openImport() {
     $("#import_excel").modal("show")
 }
 
-function importExcel () {
+function importExcel() {
     const newFile = $("#inputGroupFile04").val();
 
-    if(newFile.trim().length === 0) {
+    if (newFile.trim().length === 0) {
         $("#errImport").text("Bạn hãy chọn file");
         return;
     }
 
-    if($("#inputGroupFile04")[0].files[0].size > 104857600) {
+    if ($("#inputGroupFile04")[0].files[0].size > 104857600) {
         $("#errImport").text("File quá hơn 104857600 byte");
         return;
     }
 
-    if(newFile.substring(newFile.lastIndexOf(".")+1, newFile.length) !== "xlsx") {
+    if (newFile.substring(newFile.lastIndexOf(".") + 1, newFile.length) !== "xlsx") {
         $("#errImport").text("Không đúng định dạng xlsx");
         return;
     }
@@ -236,7 +340,7 @@ function importExcel () {
                 } else {
                     bootbox.alert({
                         title: "Thất bại",
-                        message: '<strong>'+ response.data.message +'</strong>',
+                        message: '<strong>' + response.data.message + '</strong>',
                         backdrop: true,
                         callback: function () {
                             window.open(monDatnView, '_self');

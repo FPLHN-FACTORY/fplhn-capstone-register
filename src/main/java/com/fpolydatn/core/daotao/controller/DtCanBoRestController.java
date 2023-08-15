@@ -1,10 +1,15 @@
 package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
+import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateCanBoRequest;
+import com.fpolydatn.core.daotao.model.request.DtFindCanBoRequest;
+import com.fpolydatn.core.daotao.model.request.DtFindMonDatnRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateCanBoRequest;
+import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
+import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -66,5 +71,12 @@ public final class DtCanBoRestController extends BaseController {
     @GetMapping("/export-mau")
     public void exportMauExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel) throws IOException {
         canBoService.MauImportExcel(response, typeExcel);
+    }
+
+    @GetMapping("/search")
+    public ResponseObject search(final DtFindCanBoRequest req) {
+        req.setCoSoId(session.getCoSoId());
+        PageableObject<DtCanBoResponse> listCanBo = canBoService.search(req);
+        return new ResponseObject(listCanBo);
     }
 }

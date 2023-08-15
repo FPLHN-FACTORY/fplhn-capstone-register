@@ -55,13 +55,24 @@
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Tên giảng viên</span>
+                                            <span for="" class="fillter-name col-4 text-center">Tên tài khoản</span>
                                             <input type="text" class="form-control col-6"
-                                                   name="tenGiangVien" id="tenGiangVien" value="">
+                                                   name="ten_tai_khoan" id="ten_tai_khoan" value="">
                                         </div>
-                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <label class="fillter-name col-4 text-center">Đợt đăng ký</label>
-                                            <br>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Tên tài khoản</span>
+                                            <select name="chuyenNganh" id="chuyenNganh" class="form-control col-6">
+                                                <option value="">Chọn chuyên ngành</option>
+                                                <option th:each="chuyenhNganh : ${tenChuyenNganh}"
+                                                        th:value="${chuyenhNganh.getId}"
+                                                        th:text="${chuyenhNganh.getName}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Đợt đăng ký</span>
                                             <select class="form-control col-6" id="search_dot_dang_ky">
                                                 <option value="">Chọn đợt đăng ký</option>
                                                 <option th:each="item : ${listDotDangKy}"
@@ -72,13 +83,13 @@
                                     </div>
 
                                     <div class="row justify-content-center pt-2">
-                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                        <div class="col-sm-1 col-12 text-center mt-1">
                                             <button type="button"
                                                     class="btn btn-primary" th:attr="onclick=|loadTable(0)|"
                                             >Tìm kiếm
                                             </button>
                                         </div>
-                                        <div class="col-sm-2 col-12 text-center mt-2">
+                                        <div class="col-sm-1 col-12 text-center mt-1">
                                             <a href="#"
                                                class="btn btn-danger text-white" th:attr="onclick=|clearData()|">
                                                 Làm mới bộ lọc
@@ -229,7 +240,8 @@
                                                                     </div>
                                                                     <br>
                                                                     <label class="col-form-label">Đợt đăng ký</label>
-                                                                    <select class="form-control" id="dot_dang_ky_import">
+                                                                    <select class="form-control"
+                                                                            id="dot_dang_ky_import">
                                                                         <option value="">Chọn đợt đăng ký</option>
                                                                         <option th:each="item : ${listDotDangKy}"
                                                                                 th:value="${item.getId()}"
@@ -310,7 +322,7 @@
                                                                                 th:text="${item.getName()}"></option>
                                                                     </select>
                                                                     <span class="text-danger"
-                                                                           id="errorDotDangKy"></span><br>
+                                                                          id="errorDotDangKy"></span><br>
                                                                     <br>
                                                                     <label class="col-form-label">Tên giảng viên</label><br>
                                                                     <input
@@ -386,41 +398,51 @@
                                                 <th>Số nhóm</th>
                                                 <th>SĐT</th>
                                                 <th>Email Fe</th>
+                                                <th>Chuyên ngành</th>
                                                 <th width="200px">Chức năng</th>
                                                 </thead>
                                                 <tbody id="searchListGvhd">
                                                 <th:block th:each="giangVienHD,i : ${page.data}">
                                                     <tr class="table-light">
-                                                        <td th:text="${giangVienHD.getSTT()}"></td>
-                                                        <td th:text="${giangVienHD.getTenGvhd() +' - ' +giangVienHD.getTenTaiKhoan()}"></td>
-                                                        <td th:text="${giangVienHD.getSoNhomDangHuongDan() + '/' + giangVienHD.getSoNhomHuongDanToiDa()}"></td>
-                                                        <td th:text="${giangVienHD.getSoDienThoai()}"></td>
-                                                        <td th:text="${giangVienHD.getEmailFe()}"></td>
-                                                        <td>
-                                                            <button
-                                                                    type="button"
-                                                                    class="btn_pencil_square"
-                                                                    data-toggle="tooltip"
-                                                                    title="Sửa "
-                                                                    th:attr="onclick=|openModalUpdateGiangVien('${giangVienHD.id}','${page.currentPage}')|">
-                                                                <img th:src="@{/img/pencil-square.svg}">
-                                                            </button>
-                                                            </button>
-                                                            <button
-                                                                    type="button"
-                                                                    class="btn_trash"
-                                                                    data-toggle="tooltip"
-                                                                    title="Xóa "
-                                                                    th:attr="onclick=|openModalRemoveGiangVien('${giangVienHD.id}','${page.currentPage}')|">
-                                                                <img th:src="@{/img/trash.svg}">
-                                                            </button>
-                                                            <a type="button"
-                                                               class="btn_clipboard_user"
-                                                               data-toggle="tooltip"
-                                                               title="Phân công giảng viên"
-                                                               th:href="@{'/dao-tao/giang-vien-huong-dan/'+ ${giangVienHD.getId()}}">
-                                                                <img th:src="@{/img/clipboard-user.svg}">
-                                                            </a>
+                                                        <td th:text="${giangVienHD.getSTT()}"
+                                                            class="text-center align-middle"></td>
+                                                        <td th:text="${giangVienHD.getTenGvhd() +' - ' +giangVienHD.getTenTaiKhoan()}"
+                                                            class="text-center align-middle"></td>
+                                                        <td th:text="${giangVienHD.getSoNhomDangHuongDan() + '/' + giangVienHD.getSoNhomHuongDanToiDa()}"
+                                                            class="text-center align-middle"></td>
+                                                        <td th:text="${giangVienHD.getSoDienThoai()}"
+                                                            class="text-center align-middle"></td>
+                                                        <td th:text="${giangVienHD.getEmailFe()}"
+                                                            class="text-center align-middle"></td>
+                                                        <td th:text="${giangVienHD.getChuyenNganh()}"
+                                                            class="text-center align-middle"></td>
+                                                        <td class="text-center align-middle">
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <button
+                                                                        type="button"
+                                                                        class="btn_pencil_square"
+                                                                        data-toggle="tooltip"
+                                                                        title="Sửa "
+                                                                        th:attr="onclick=|openModalUpdateGiangVien('${giangVienHD.id}','${page.currentPage}')|">
+                                                                    <img th:src="@{/img/pencil-square.svg}">
+                                                                </button>
+                                                                </button>
+                                                                <button
+                                                                        type="button"
+                                                                        class="btn_trash"
+                                                                        data-toggle="tooltip"
+                                                                        title="Xóa "
+                                                                        th:attr="onclick=|openModalRemoveGiangVien('${giangVienHD.id}','${page.currentPage}')|">
+                                                                    <img th:src="@{/img/trash.svg}">
+                                                                </button>
+                                                                <a type="button"
+                                                                   class="btn_clipboard_user"
+                                                                   data-toggle="tooltip"
+                                                                   title="Phân công giảng viên"
+                                                                   th:href="@{'/dao-tao/giang-vien-huong-dan/'+ ${giangVienHD.getId()}}">
+                                                                    <img th:src="@{/img/clipboard-user.svg}">
+                                                                </a>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </th:block>
@@ -550,6 +572,6 @@
         crossorigin="anonymous"></script>
 <script th:src="@{/js/plugin/bootbox.min.js}"></script>
 <script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
-<script th:src="@{/js/custom/daotao/dtgiangVienHuongDan.js}" type="text/javascript"></script>
+<script th:src="@{/js/custom/daotao/dtGiangVienHuongDan.js}" type="text/javascript"></script>
 </body>
 </html>

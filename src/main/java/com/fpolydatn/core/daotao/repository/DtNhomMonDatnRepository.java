@@ -17,15 +17,30 @@ public interface DtNhomMonDatnRepository extends MonDatnRepository {
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS
                     stt, m.id, m.ma_mon, m.ten_mon_datn,cn.ten_chuyen_nganh,
-                    (SELECT  COUNT(n.id) FROM mon_datn n where n.nhom_mon_datn_id = m.id) AS so_mon_datn
-                    FROM mon_datn m JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id  
+                    (SELECT COUNT(n.id) 
+                    FROM mon_datn n 
+                    WHERE n.nhom_mon_datn_id = m.id) AS so_mon_datn
+                    FROM mon_datn m 
+                    JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id  
                     WHERE m.co_so_id = :#{#req.coSoId}
+                    AND ( :#{#req.maNhomMon} IS NULL 
+                        OR :#{#req.maNhomMon} LIKE '' 
+                        OR m.ma_mon LIKE %:#{#req.maNhomMon}% )  
+                    AND (m.chuyen_nganh_id = :#{#req.chuyenNganhId} 
+                    OR :#{#req.chuyenNganhId} IS NULL 
+                    OR :#{#req.chuyenNganhId} LIKE '')
                     AND m.nhom_mon_datn_id IS NULL
                     ORDER BY m.last_modified_date DESC                                            
              """, countQuery = """
                         SELECT COUNT(m.id)
                         FROM mon_datn m
                         WHERE m.co_so_id = :#{#req.coSoId}
+                        AND ( :#{#req.maNhomMon} IS NULL 
+                        OR :#{#req.maNhomMon} LIKE '' 
+                        OR m.ma_mon LIKE %:#{#req.maMon}% )  
+                        AND (m.chuyen_nganh_id = :#{#req.chuyenNganhId} 
+                        OR :#{#req.chuyenNganhId} IS NULL 
+                        OR :#{#req.chuyenNganhId} LIKE '')
                         AND m.nhom_mon_datn_id IS NULL 
                         ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
@@ -33,7 +48,8 @@ public interface DtNhomMonDatnRepository extends MonDatnRepository {
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.ma_mon, m.ten_mon_datn
-            FROM mon_datn m WHERE m.co_so_id = :coSoId
+            FROM mon_datn m 
+            WHERE m.co_so_id = :coSoId
             AND m.nhom_mon_datn_id =:nhomMonID
             ORDER BY m.last_modified_date DESC 
              """, countQuery = """

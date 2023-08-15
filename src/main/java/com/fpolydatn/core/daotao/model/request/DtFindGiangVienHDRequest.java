@@ -11,10 +11,12 @@ import lombok.Setter;
 @Setter
 public final class DtFindGiangVienHDRequest extends PageableRequest {
 
-    private String tenGiangVien;
+    private String tenTaiKhoan;
 
     private String coSoId;
 
     private String dotDangKyId;
+
+    private String chuyenNganhId;
 
 }

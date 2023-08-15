@@ -6,10 +6,9 @@ import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienImport;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
-import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.entity.NhomDatn;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;

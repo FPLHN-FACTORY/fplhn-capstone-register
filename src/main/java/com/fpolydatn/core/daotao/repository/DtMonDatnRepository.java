@@ -17,18 +17,50 @@ import java.util.List;
  */
 public interface DtMonDatnRepository extends MonDatnRepository {
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ma_mon, m.ten_mon_datn, cn.ten_chuyen_nganh,
-             (SELECT CONCAT(b.ten_mon_datn, ' - ', b.ma_mon) FROM mon_datn b where b.id = m.nhom_mon_datn_id) as ten_nhom_mon,
-             m.nhom_mon_datn_id
+            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, 
+            m.id, 
+            m.ma_mon, 
+            m.ten_mon_datn, 
+            cn.ten_chuyen_nganh,
+            GROUP_CONCAT(gv.ten_tai_khoan SEPARATOR ', ') AS danh_sach_gvhd,
+            cb.ten_can_bo,
+            GROUP_CONCAT(CONCAT(m.ten_mon_datn, ' - ', m.ma_mon) SEPARATOR ', ') AS ten_nhom_mon,
+            m.nhom_mon_datn_id
                 FROM  mon_datn m
                 LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id 
-                WHERE m.co_so_id = :#{#req.coSoId} AND nhom_mon_datn_id IS NOT NULL
+                LEFT JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id
+                LEFT JOIN phan_cong_huong_dan pc ON pc.mon_datn_id = m.id
+                LEFT JOIN giang_vien_huong_dan gv ON pc.giang_vien_id = gv.id
+                LEFT JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
+                WHERE ( :#{#req.maMon} IS NULL 
+                        OR :#{#req.maMon} LIKE '' 
+                        OR ma_mon LIKE %:#{#req.maMon}% )  
+                AND (m.chuyen_nganh_id = :#{#req.chuyenNganhId} 
+                OR :#{#req.chuyenNganhId} IS NULL 
+                OR :#{#req.chuyenNganhId} LIKE '')
+                AND m.co_so_id = :#{#req.coSoId} 
+                AND ddk.id = :#{#req.dotDangKyId}
+                AND nhom_mon_datn_id IS NOT NULL
+                GROUP BY m.id, m.ma_mon, m.ten_mon_datn, cn.ten_chuyen_nganh, m.nhom_mon_datn_id
                 ORDER BY m.last_modified_date DESC 
             """, countQuery = """
             SELECT COUNT(m.id)
                 FROM  mon_datn m
                 LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id 
-                WHERE m.co_so_id = :#{#req.coSoId} AND nhom_mon_datn_id IS NOT NULL
+                LEFT JOIN can_bo cb ON cn.chu_nhiem_bo_mon = cb.id
+                LEFT JOIN phan_cong_huong_dan pc ON pc.mon_datn_id = m.id
+                LEFT JOIN giang_vien_huong_dan gv ON pc.giang_vien_id = gv.id
+                LEFT JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
+                WHERE ( :#{#req.maMon} IS NULL 
+                        OR :#{#req.maMon} LIKE ''   
+                        OR ma_mon LIKE %:#{#req.maMon}% )  
+                AND (m.chuyen_nganh_id = :#{#req.chuyenNganhId} 
+                OR :#{#req.chuyenNganhId} IS NULL 
+                OR :#{#req.chuyenNganhId} LIKE '')
+                AND m.co_so_id = :#{#req.coSoId} 
+                AND ddk.id = :#{#req.dotDangKyId}
+                AND nhom_mon_datn_id IS NOT NULL
+                GROUP BY m.id
                 ORDER BY m.last_modified_date DESC 
             """, nativeQuery = true)
     Page<DtMonDatnResponse> getAllByCoSo(@Param("req") DtFindMonDatnRequest req, Pageable page);

@@ -14,8 +14,8 @@ $(document).ready(function () {
 })
 
 function clearData() {
-    $("#tenGiangVien").val("");
-    ;
+    $("#ten_tai_khoan").val("");
+    $("#chuyenNganh").val("");
     $("#search_dot_dang_ky").val("");
 }
 
@@ -491,18 +491,19 @@ function loadTable(count) {
     if (count == totalPages) {
         count = 0;
     }
-    let tenGiangVien = $("#tenGiangVien").val();
+    let tenTaiKhoan = $("#ten_tai_khoan").val();
     let dotDangKyId = $("#search_dot_dang_ky").val();
+    let chuyenNganhId = $("#chuyenNganh").val();
     currentPage = count;
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: giangVienHuongDanApi + "/search" + "?tenGiangVien=" + tenGiangVien + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
+        url: giangVienHuongDanApi + "/search" + "?tenTaiKhoan=" + tenTaiKhoan + "&dotDangKyId=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
             totalPages = responseData.data.totalPages;
             if (responseData.data.data.length == 0) {
-                $("#searchListGvhd").html(``);
+                $("#searchListGvhd").html(``);2
                 $("#page").html(``);
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {
@@ -515,6 +516,7 @@ function loadTable(count) {
                    <td >${item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa}</td>
                    <td >${item.soDienThoai}</td>
                    <td >${item.emailFe}</td>
+                   <td >${item.chuyenNganh}</td>
                    <td>
                        <button
                            type="button"
