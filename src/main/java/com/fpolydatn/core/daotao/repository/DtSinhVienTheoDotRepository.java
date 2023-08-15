@@ -35,7 +35,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             COALESCE(sv_count.so_thanh_vien, 0) AS so_thanh_vien,
             mct.id as 'id_mom_chuong_trinh',
             mct.ten_mon_datn as 'ten_mon_chuong_trinh',
-            mct.ma_mon AS 'ma_mom_chuong_trinh'
+            mct.ma_mon AS 'ma_mon_chuong_trinh'
             FROM do_an_tot_nghiep.sinh_vien s
             LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id = s.nhom_id
             LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
@@ -113,7 +113,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             (SELECT COUNT(a.id) FROM sinh_vien a JOIN nhom_datn b ON a.nhom_id = b.id WHERE b.id = n.id) AS so_thanh_vien,
             mct.id as 'id_mom_chuong_trinh',
             mct.ten_mon_datn as 'ten_mon_chuong_trinh',
-            mct.ma_mon AS 'ma_mom_chuong_trinh'
+            mct.ma_mon AS 'ma_mon_chuong_trinh'
             FROM do_an_tot_nghiep.sinh_vien s
             LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id = s.nhom_id
             LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
@@ -140,7 +140,7 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             g.ten_gvhd, d.ten_dot_dang_ky, s.trang_thai,
             COALESCE(sv_count.so_thanh_vien, 0) AS so_thanh_vien,
             mct.ten_mon_datn AS 'ten_mon_chuong_trinh',
-            mct.ma_mon AS 'ma_mom_chuong_trinh'
+            mct.ma_mon AS 'ma_mon_chuong_trinh'
             FROM do_an_tot_nghiep.sinh_vien s LEFT JOIN do_an_tot_nghiep.nhom_datn n ON n.id = s.nhom_id
             LEFT JOIN do_an_tot_nghiep.chuyen_nganh c ON c.id= s.chuyen_nganh_id
             LEFT JOIN do_an_tot_nghiep.mon_datn m ON m.id = s.mon_datn_id

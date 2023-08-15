@@ -33,4 +33,10 @@ public interface GvNhomDatnResponse extends IsIdentified {
     @Value("#{target.trang_thai}")
     int getTrangThai();
 
+    @Value("#{target.danh_sach_thanh_vien}")
+    String getDanhSachThanhVien();
+
+    @Value("#{target.truong_nhom}")
+    String getTruongNhom();
+
 }

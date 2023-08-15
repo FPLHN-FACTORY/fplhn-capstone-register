@@ -150,12 +150,12 @@
                                     </div>
 
                                     <div class="row justify-content-center">
-                                        <div class="col-sm-1 col-12 text-center">
+                                        <div class="col-sm-1 col-12 text-center mt-2">
                                             <button type="button" th:attr="onclick=|loadDataNhomDatn(0)|"
                                                     class="btn btn-primary">Tìm kiếm
                                             </button>
                                         </div>
-                                        <div class="col-sm-1 col-12 text-center">
+                                        <div class="col-sm-1 col-12 text-center mt-2">
                                             <a href="#" class="btn btn-danger text-white" onclick="clearData();">
                                                 Làm mới bộ lọc
                                             </a>
@@ -326,37 +326,40 @@
                                                         </td>
                                                         <td th:text="${nhomDatn.getTenDotDangKy()}"></td>
                                                         <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
-                                                        <td>
-                                                            <a th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}"
-                                                            >
-                                                                <div id="eye-custom" data-toggle="tooltip"
-                                                                     title="Xem chi tiết nhóm">
-                                                                    <img th:src="@{/img/eye-fill.svg}">
-                                                                </div>
-                                                            </a>
-                                                            <button class="btn_check_circle" data-toggle="tooltip"
-                                                                    title="Xác nhận nhóm"
-                                                                    th:style="${nhomDatn.getTrangThai()}==0 ? 'display: block' : 'display: none'"
-                                                                    th:attr="onclick=|CNXacNhanNhom('${nhomDatn.getId()}','${page.currentPage}')|">
-                                                                <img th:src="@{/img/check-circle.svg}">
-                                                            </button>
-                                                            <button class="btn_check" data-toggle="tooltip"
-                                                                    title="Chốt đề tài"
-                                                                    th:style="${nhomDatn.getTrangThai()}==4 ?'display: block':'display: none'"
-                                                                    th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
-                                                                <img th:src="@{/img/clipboard-check.svg}">
-                                                            </button>
-                                                            <button class="btn_x_circle" data-toggle="tooltip"
-                                                                    title="Từ chối chốt đề tài"
-                                                                    th:style="${nhomDatn.getTrangThai()}==4 ?'display: block':'display: none'"
-                                                                    th:attr="onclick=|openModalNhanXet('${nhomDatn.getId()}','${page.currentPage}')|">
-                                                                <img th:src="@{/img/x-circle.svg}">
-                                                            </button>
-                                                            <button class="btn_trash" data-toggle="tooltip" title="Xóa"
-                                                                    th:style="${nhomDatn.getTrangThai()}==5 ?'display: none':'display: block'"
-                                                                    th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">
-                                                                <img th:src="@{/img/trash.svg}">
-                                                            </button>
+                                                        <td class="text-center align-middle">
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <a th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}"
+                                                                >
+                                                                    <div id="eye-custom" data-toggle="tooltip"
+                                                                         title="Xem chi tiết nhóm">
+                                                                        <img th:src="@{/img/eye-fill.svg}">
+                                                                    </div>
+                                                                </a>
+                                                                <button class="btn_check_circle" data-toggle="tooltip"
+                                                                        title="Xác nhận nhóm"
+                                                                        th:style="${nhomDatn.getTrangThai()}==0 ? 'display: block' : 'display: none'"
+                                                                        th:attr="onclick=|CNXacNhanNhom('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                    <img th:src="@{/img/check-circle.svg}">
+                                                                </button>
+                                                                <button class="btn_check" data-toggle="tooltip"
+                                                                        title="Chốt đề tài"
+                                                                        th:style="${nhomDatn.getTrangThai()}==4 ?'display: block':'display: none'"
+                                                                        th:attr="onclick=|CNChotDuLieu('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                    <img th:src="@{/img/clipboard-check.svg}">
+                                                                </button>
+                                                                <button class="btn_x_circle" data-toggle="tooltip"
+                                                                        title="Từ chối chốt đề tài"
+                                                                        th:style="${nhomDatn.getTrangThai()}==4 ?'display: block':'display: none'"
+                                                                        th:attr="onclick=|openModalNhanXet('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                    <img th:src="@{/img/x-circle.svg}">
+                                                                </button>
+                                                                <button class="btn_trash" data-toggle="tooltip"
+                                                                        title="Xóa"
+                                                                        th:style="${nhomDatn.getTrangThai()}==5 ?'display: none':'display: block'"
+                                                                        th:attr="onclick=|openModalRemoveNhomDatn('${nhomDatn.getId()}','${page.currentPage}')|">
+                                                                    <img th:src="@{/img/trash.svg}">
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </th:block>

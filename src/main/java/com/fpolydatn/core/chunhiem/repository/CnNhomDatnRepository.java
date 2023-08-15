@@ -117,46 +117,6 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN nhom_datn e ON e.id= a.nhom_id
             LEFT JOIN giang_vien_huong_dan f ON f.id  = e.giang_vien_id
             WHERE d.id = :dotDangKyId AND a.co_so_id = :#{#req.coSoId} AND g.id = :idChuNhiem
-            AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%  
-            OR a.ma_sinh_vien LIKE %:#{#req.tenSinhVien}%) 
-            AND (:#{#req.monChuongTrinh} IS NULL OR :#{#req.monChuongTrinh} LIKE ''
-            OR m.id LIKE %:#{#req.monChuongTrinh}%) 
-            AND (:#{#req.monDatn} IS NULL OR :#{#req.monDatn} LIKE ''
-            OR c.id LIKE %:#{#req.monDatn}%) 
-            AND (:#{#req.tenGvhd} IS NULL OR :#{#req.tenGvhd} LIKE ''
-            OR f.ten_gvhd LIKE %:#{#req.tenGvhd}%
-            OR f.ten_tai_khoan LIKE %:#{#req.tenGvhd}%)
-            AND (:#{#req.maNhomSearch} IS NULL OR :#{#req.maNhomSearch} LIKE ''
-            OR e.ma_nhom LIKE %:#{#req.maNhomSearch}%)
-            AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
-            OR IF(:#{#req.trangThai} = '0', a.nhom_id IS NOT NULL, a.nhom_id IS NULL))
-            AND a.trang_thai = :trangThai
-            """, countQuery = """
-            SELECT COUNT(a.id)
-            FROM sinh_vien a
-            LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
-            LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
-            LEFT JOIN mon_datn c ON c.id = a.mon_datn_id
-            LEFT JOIN mon_datn m ON m.id = a.mon_chuong_trinh_id
-            LEFT JOIN dot_dang_ky d ON d.id = a.dot_dang_ky_id
-            LEFT JOIN nhom_datn e ON e.id= a.nhom_id
-            LEFT JOIN giang_vien_huong_dan f ON f.id  = e.giang_vien_id
-            WHERE d.id = :dotDangKyId AND a.co_so_id = :#{#req.coSoId} AND g.id = :idChuNhiem
-            AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
-            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%  
-            OR a.ma_sinh_vien LIKE %:#{#req.tenSinhVien}%) 
-            AND (:#{#req.monChuongTrinh} IS NULL OR :#{#req.monChuongTrinh} LIKE ''
-            OR m.id LIKE %:#{#req.monChuongTrinh}%) 
-            AND (:#{#req.monDatn} IS NULL OR :#{#req.monDatn} LIKE ''
-            OR c.id LIKE %:#{#req.monDatn}%) 
-            AND (:#{#req.tenGvhd} IS NULL OR :#{#req.tenGvhd} LIKE ''
-            OR f.ten_gvhd LIKE %:#{#req.tenGvhd}%
-            OR f.ten_tai_khoan LIKE %:#{#req.tenGvhd}%)
-            AND (:#{#req.maNhomSearch} IS NULL OR :#{#req.maNhomSearch} LIKE ''
-            OR e.ma_nhom LIKE %:#{#req.maNhomSearch}%)
-            AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
-            OR IF(:#{#req.trangThai} = '0', a.nhom_id IS NOT NULL, a.nhom_id IS NULL))
             AND a.trang_thai = :trangThai
             """, nativeQuery = true)
     List<CnSinhVienTheoDotExcel> findNhomDatnExport(@Param("req") CnFindSinhVienTheoDotRequest req, @Param("dotDangKyId") String dotDangKyId, @Param("idChuNhiem") String idChuNhiem, @Param("trangThai") int trangThai);

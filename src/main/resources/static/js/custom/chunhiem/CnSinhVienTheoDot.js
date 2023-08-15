@@ -153,11 +153,13 @@ function loadDataToTable(count) {
                             <td> ${sinhVien.maMonDuAn == null ? 'Chưa có' : sinhVien.maMonDuAn}</td>
                                                         `
                     text2 = sinhVien.maNhom == null ? `
-                <td>
+                <td class="text-center align-middle">
+                <div class="d-flex justify-content-center align-items-center">
                   <button onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class="btn_pencil_square">
                        <img src="/img/pencil-square.svg">  
                         </button>
+                        </div>
                       </td>
                 ` : `
                 <td>

@@ -648,7 +648,7 @@ function loadDataNhomDatn(count) {
                 <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan + ' (' + item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa + ')'}</td>
                 <td>${item.tenDotDangKy}</td>
                 <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
-                <td><a href="/chu-nhiem/sinh-vien?id=${item.id}">
+                <td class="text-center align-middle"><div class="d-flex justify-content-center align-items-center"><a href="/chu-nhiem/sinh-vien?id=${item.id}">
                 <div id="eye-custom" data-toggle="tooltip" title="Xem chi tiết nhóm">
                 <img src="/img/eye-fill.svg"></div></a>
                 <button class="btn_check_circle" 
@@ -667,6 +667,7 @@ function loadDataNhomDatn(count) {
                 style="${item.trangThai == 5 ? 'display : none' : 'display : block'}" 
                 data-toggle="tooltip" title="Xóa" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">
                 <img src="/img/trash.svg"></button></td>
+                </div>
                 </tr>
                 `
                 }))

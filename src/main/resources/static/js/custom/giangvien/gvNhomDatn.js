@@ -97,9 +97,15 @@ function seachNhomdatn(index) {
                 <td>${item.maNhom}</td>
                 <td>${item.tenDeTai}</td>
                 <td>${item.totalMaSinhVien}</td>
+                <td>
+                    ${item.danhSachThanhVien.split(', ').map(function (value, index) {
+                    return `<span style="${item.truongNhom == value ? 'font-weight: bold; text-decoration: underline;' : ''}">${value}${index === item.danhSachThanhVien.length - 1 ? ' ' : ''}</span>`;
+                })}
+                </td>
                 <td>${item.maMon}</td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giáo viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
-                 <td >
+                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
+                 <td class="text-center align-middle">
+                 <div class="d-flex justify-content-center align-items-center">
                         <button type="button" onclick=showDetail('${item.id}') class="btn_eye" data-toggle="tooltip" title="Xem chi tiết nhóm">
                                     <img src="/img/eye-fill.svg">
                         </button>
@@ -115,10 +121,10 @@ function seachNhomdatn(index) {
                          </button>
                          <button type="button" onclick= "updateTenDeTai('${item.id}')"
                                 style="${item.trangThai == 2 ? 'display: block' : (item.trangThai == 3 ? 'display: block' : (item.trangThai == 4 ? 'display: block' : 'display: none'))}"
-                                class="btn_pencil_square " data-toggle="tooltip" title="Xác nhận đề tài">
+                                class="btn_pencil_square " data-toggle="tooltip" title="Sửa tên đề tài">
                                     <img src="/img/pencil-square.svg">
                          </button>
-   
+                    </div>
                  </td>
                 </tr>
                 `
