@@ -1,11 +1,13 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.core.daotao.excel.DtNhomDatnExportExcel;
 import com.fpolydatn.core.daotao.excel.DtNhomDatnTheoDotExport;
 import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
+import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,11 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     private DtNhomDatnTheoDotRepository dtNhomDatnTheoDotRepository;
 
     @Autowired
+    private DtSinhVienTheoDotRepository sinhVienTheoDotRepository;
+
+    @Autowired
     private CommonHelper commonHelper;
+
     private List<DtNhomDatnTheoDotResponse> listNhomDatn;
 
     @Override
@@ -69,5 +75,15 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         listNhomDatn = dtNhomDatnTheoDotRepository.findAllNhomDatnToExcel(request);
         DtNhomDatnTheoDotExport dtNhomDatnTheoDotExport = new DtNhomDatnTheoDotExport();
         dtNhomDatnTheoDotExport.exportData(response, listNhomDatn);
+    }
+
+    @Override
+    public void DTNhomDatnSinhVienExport(HttpServletResponse response, FindDtNhomDatnTheoDotRequest request) throws IOException {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=NhomDatn.xlsx";
+        response.setHeader(headerKey, headerValue);
+        DtNhomDatnExportExcel mau = new DtNhomDatnExportExcel(sinhVienTheoDotRepository.getSinhVienNhomDatnExportExcel(request));
+        mau.exportData(response);
     }
 }

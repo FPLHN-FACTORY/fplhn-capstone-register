@@ -16,5 +16,7 @@ public interface DtNhomDatnTheoDotService {
 
     void DTNhomDatnExport(HttpServletResponse response, String typeExcel, final FindDtNhomDatnTheoDotRequest request) throws IOException;
 
+    void DTNhomDatnSinhVienExport(HttpServletResponse response, final FindDtNhomDatnTheoDotRequest request) throws IOException;
+
 }
 

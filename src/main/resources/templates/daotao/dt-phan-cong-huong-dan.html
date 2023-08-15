@@ -151,7 +151,7 @@
                                                                     <td th:text="${phanCongHuongDan.getTenTaiKhoan()}"></td>
                                                                     <td th:text="${phanCongHuongDan.getTenGV()}"></td>
                                                                     <td th:text="${phanCongHuongDan.dotDangKy}"></td>
-                                                                    <td align="center">
+                                                                    <td style="display: flex; justify-content: center">
                                                                         <button
                                                                                 class="btn_trash" data-toggle="tooltip"
                                                                                 title="Xóa"
@@ -220,13 +220,14 @@
                         </div>
                         <div class="form-group">
                             <table id="table-add"
+                                   style="text-align: center"
                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                 <thead class="table-primary">
                                 <th width="50px">STT</th>
                                 <th>Tên tài khoản</th>
                                 <th>Tên Giảng Viên</th>
                                 <th>Đợt đăng ký</th>
-                                <th width="200px" align="center">Chức năng</th>
+                                <th width="100px" align="center">Chọn</th>
                                 </thead>
                                 <tbody id="importGiangVien">
                                 <th:block th:each="phanCongHuongDanGiaoVien : ${phanCongHuongDanGiaoViens}">
@@ -236,7 +237,7 @@
                                             th:value="${phanCongHuongDanGiaoVien.id}"></td>
                                         <td th:text="${phanCongHuongDanGiaoVien.getTenGV()}"></td>
                                         <td th:text="${phanCongHuongDanGiaoVien.dotDangKy}"></td>
-                                        <td>
+                                        <td style="display: flex; justify-content: center">
                                             <input type="checkbox" name="checkThemTatCa" id="" class="checkThemTatCa">
                                         </td>
                                     </tr>
@@ -255,39 +256,6 @@
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade "
-         id="modal_filter"
-         tabindex="-1"
-         aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div id="form_filter_phan_cong">
-                    <section class="fillter-area">
-                        <div class="m-portlet m-0">
-                            <div class="m-portlet__head mb-3">
-                                <div class="m-portlet__head-caption">
-                                    <div class="m-portlet__head-title">
-                                        <span class="m-portlet__head-icon">
-                                            <i class="m-menu__link-icon flaticon-web"></i>
-                                        </span>
-                                        <h3 class="m-portlet__head-text">
-                                            Bộ lọc
-                                        </h3>
-                                    </div>
-                                </div>
-                                <button type="button" class="close" data-bs-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        </div>
-                    </section>
-                </div>
             </div>
         </div>
     </div>

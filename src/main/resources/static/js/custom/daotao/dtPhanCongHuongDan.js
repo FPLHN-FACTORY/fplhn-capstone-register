@@ -8,10 +8,6 @@ function openPhanCong() {
     $("#modal_create").modal("show")
 }
 
-function openPhanCongFilter() {
-    $("#modal_filter").modal("show")
-}
-
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 });
@@ -118,7 +114,7 @@ function viewTable(page) {
                             <td>${item.tenTaiKhoan}</td>
                             <td>${item.tenGV}</td>
                             <td>${item.dotDangKy}</td>
-                            <td>
+                             <td style="display: flex; justify-content: center">
                                 <button
                                         class="btn_trash" data-toggle="tooltip"
                                         title="Xóa"
@@ -154,12 +150,12 @@ function viewTablePhanCongHuongDan() {
     let table = $("#table-add");
     let row = table.get(0).lastElementChild.children;
     let search = $("#searchPhanCong");
-    let searchValue = search.val().trim();
+    let searchValue = search.val().trim().toUpperCase();
     let dem = 0;
 
     for (const a of row) {
-        let tenTaiKhoan = a.children[1].textContent;
-        let hoVaTen = a.children[2].textContent;
+        let tenTaiKhoan = a.children[1].textContent.trim().toUpperCase();
+        let hoVaTen = a.children[2].textContent.trim().toUpperCase();
         let stt = a.children[0];
         if (!tenTaiKhoan.includes(searchValue) && !hoVaTen.includes(searchValue)) {
             a.style.display = "none";
