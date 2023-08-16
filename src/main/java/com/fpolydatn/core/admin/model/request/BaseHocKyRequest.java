@@ -20,4 +20,12 @@ public abstract class BaseHocKyRequest {
     @Length(min = 6, max = EntityProperties.LENGTH_NAME_SHORT)
     private String tenHocKy;
 
+    @NotEmpty
+    @NotBlank
+    private String ngayBatDau;
+
+    @NotEmpty
+    @NotBlank
+    private String ngayKetThuc;
+
 }

@@ -72,9 +72,9 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             WHERE (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE '' 
             OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%) 
             AND (:#{#req.truongNhom} IS NULL OR :#{#req.truongNhom} LIKE '' 
-            OR c.ten_sinh_vien LIKE %:#{#req.truongNhom}%) 
+            OR c.ten_sinh_vien LIKE %:#{#req.truongNhom}% OR c.ma_sinh_vien LIKE %:#{#req.truongNhom}%) 
             AND (:#{#req.giangVien} IS NULL OR :#{#req.giangVien} LIKE '' 
-            OR e.ten_gvhd LIKE %:#{#req.giangVien}%) 
+            OR e.ten_gvhd LIKE %:#{#req.giangVien}% OR e.ten_tai_khoan LIKE %:#{#req.giangVien}%) 
             AND b.co_so_id = :#{#req.coSoId} 
             AND g.id = :#{#req.dotDangKyId} 
             AND b.trang_thai = 0 
@@ -94,9 +94,9 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             WHERE (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE '' 
             OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%) 
             AND (:#{#req.truongNhom} IS NULL OR :#{#req.truongNhom} LIKE '' 
-            OR c.ten_sinh_vien LIKE %:#{#req.truongNhom}%) 
+            OR c.ten_sinh_vien LIKE %:#{#req.truongNhom}% OR c.ma_sinh_vien LIKE %:#{#req.truongNhom}%) 
             AND (:#{#req.giangVien} IS NULL OR :#{#req.giangVien} LIKE '' 
-            OR e.ten_gvhd LIKE %:#{#req.giangVien}%) 
+            OR e.ten_gvhd LIKE %:#{#req.giangVien}% OR e.ten_tai_khoan LIKE %:#{#req.giangVien}%) 
             AND b.co_so_id = :#{#req.coSoId} 
             AND g.id = :#{#req.dotDangKyId} 
             AND b.trang_thai = 0 

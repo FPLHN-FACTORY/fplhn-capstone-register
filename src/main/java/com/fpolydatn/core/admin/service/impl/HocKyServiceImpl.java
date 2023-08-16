@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +51,25 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public HocKy create(@Valid final CreateHocKyRequest cmd) {
-        HocKy hocKy = formUtils.convertToObject(HocKy.class, cmd);
+    public HocKy create(@Valid final CreateHocKyRequest request) {
+        HocKy hocKy = new HocKy();
+        hocKy.setTenHocKy(request.getTenHocKy());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
+        Date ngayBatDau = null;
+        Date ngayKetThuc = null;
+        try {
+            ngayBatDau = sdf.parse(request.getNgayBatDau());
+            ngayKetThuc = sdf.parse(request.getNgayKetThuc());
+        } catch (ParseException e) {
+            throw new RestApiException(Message.INVALID_DATE);
+        }
+        Long ngayBatDauLong = ngayBatDau.getTime();
+        Long ngayKetThucLong = ngayKetThuc.getTime();
+        if(ngayKetThucLong < ngayBatDauLong) {
+            throw new RestApiException(Message.INVALID_NGAY_KET_THUC);
+        }
+        hocKy.setNgayBatDau(ngayBatDauLong);
+        hocKy.setNgayKetThuc(ngayKetThucLong);
         return hocKyRepository.save(hocKy);
     }
 
@@ -68,15 +88,30 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public HocKy update(@Valid final UpdateHocKyRequest cmd) {
-        Optional<HocKy> hocKyCheck = hocKyRepository.findById(cmd.getId());
+    public HocKy update(@Valid final UpdateHocKyRequest request) {
+        Optional<HocKy> hocKyCheck = hocKyRepository.findById(request.getId());
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
 
         HocKy hocKy = hocKyCheck.get();
-        hocKy.setTenHocKy(cmd.getTenHocKy());
-
+        hocKy.setTenHocKy(request.getTenHocKy());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
+        Date ngayBatDau = null;
+        Date ngayKetThuc = null;
+        try {
+            ngayBatDau = sdf.parse(request.getNgayBatDau());
+            ngayKetThuc = sdf.parse(request.getNgayKetThuc());
+        } catch (ParseException e) {
+            throw new RestApiException(Message.INVALID_DATE);
+        }
+        Long ngayBatDauLong = ngayBatDau.getTime();
+        Long ngayKetThucLong = ngayKetThuc.getTime();
+        if(ngayKetThucLong < ngayBatDauLong) {
+            throw new RestApiException(Message.INVALID_NGAY_KET_THUC);
+        }
+        hocKy.setNgayBatDau(ngayBatDauLong);
+        hocKy.setNgayKetThuc(ngayKetThucLong);
         return hocKyRepository.save(hocKy);
     }
 

@@ -167,28 +167,30 @@ function loadDataNhomDatn(count) {
                 $("#empty").html(``)
                 $("#listNhomDatn").html(array.map(function (item) {
                     return `
-                <tr>
-                <td>${item.stt}</td>
-                <td>${item.maNhom}</td>
-                <td>${item.tenMonDatn}</td>
-                <td>${item.tenDeTai != null ? item.tenDeTai : 'Chưa có'}</td>
-                <td>${item.tenChuyenNganh}</td>
-                <td>
+                <tr class="table-light">
+                <td class="text-center align-middle">${item.stt}</td>
+                <td class="text-center align-middle">${item.maNhom}</td>
+                <td class="text-center align-middle">${item.tenMonDatn}</td>
+                <td class="text-center align-middle">${item.tenDeTai != null ? item.tenDeTai : 'Chưa có'}</td>
+                <td class="text-center align-middle">${item.tenChuyenNganh}</td>
+                <td class="text-center align-middle">
                     ${item.danhSachSinhVien.split(', ').map(function (value, index) {
                         return `<span style="${item.maSinhVien == value ? 'font-weight: bold; text-decoration: underline;' : ''}">${value}${index === item.danhSachSinhVien.length - 1 ? ' ' : ''}</span>`;
                     })}
                 </td>
-                <td>${item.countSinhVien}/7</td>
-                <td>${item.tenGvhd != null ? item.tenGvhd + ' - ' + item.tenTaiKhoan : 'Chưa có'}</td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                
-                <td style="display: flex; justify-content: center">
-                <button type="button"
+                <td class="text-center align-middle">${item.countSinhVien}/7</td>
+                <td class="text-center align-middle">${item.tenGvhd != null ? item.tenGvhd + ' - ' + item.tenTaiKhoan : 'Chưa có'}</td>
+                <td class="text-center align-middle">${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                
+                <td class="text-center align-middle">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <button type="button"
                         class="btn_eye"
                         title="Xem chi tiết nhóm"
                         onclick="openModalDanhSachSinhVien('${item.id}')"
-                >
-                    <img src="/img/eye-fill.svg">
-                </button>
+                         >
+                            <img src="/img/eye-fill.svg">
+                        </button>
+                    </div>
                 </td>
                 </tr>
                 `

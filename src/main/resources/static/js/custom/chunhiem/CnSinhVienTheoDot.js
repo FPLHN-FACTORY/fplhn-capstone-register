@@ -144,7 +144,7 @@ function loadDataToTable(count) {
                     var tenGvhd = sinhVien.tenGvhd == null ? 'Chưa có' : sinhVien.tenGvhd;
                     var maSinhVien = sinhVien.maSinhVien;
                     text1 = `
-                      <tr >
+                      <tr class="table-light">
                             <td >${sinhVien.stt}</td>
                             <td> ${sinhVien.maSinhVien}</td>
                             <td> ${sinhVien.tenSinhVien}</td>

@@ -46,9 +46,11 @@ import javax.swing.text.html.Option;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -142,10 +144,16 @@ public class SvExportFileWordServiceImpl implements SvExportFileWordService {
             if (!hocKyFind.isPresent()) {
                 throw new RestApiException(Message.HOC_KY_NOT_EXIST);
             }
+            Date ngayBatDau = new Date(hocKyFind.get().getNgayBatDau());
+            Date ngayKetThuc = new Date(hocKyFind.get().getNgayKetThuc());
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String ngayBatDauFormatted = sdf.format(ngayBatDau);
+            String ngayKetThucFormatted = sdf.format(ngayKetThuc);
 
             XWPFParagraph infoParagraph = document.createParagraph();
             XWPFRun infoRun = infoParagraph.createRun();
-            infoRun.setText("Kỳ: " + hocKyFind.get().getTenHocKy() + "       Thời gian:  Từ ... đến ...");
+            infoRun.setText("Kỳ: " + hocKyFind.get().getTenHocKy() + "       Thời gian:  Từ " + ngayBatDauFormatted + " đến " + ngayKetThucFormatted);
             infoRun.addBreak();
             infoRun.setText("Chuyên ngành: " + chuyenNganhFind.get().getTenChuyenNganh());
             infoRun.addBreak();

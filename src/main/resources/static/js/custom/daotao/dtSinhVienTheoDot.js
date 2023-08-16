@@ -41,16 +41,17 @@ function viewTable(page) {
                 totalPages = responseData.data.totalPages;
                 $("#is_empty").html('')
                 $("#list").html(responseData.data.data.map(function (item) {
-                    return ` <tr style="${item.trangThai == 1 ? 'color : red' : ''}">
-                                <td>${item.stt}</td>
-                                <td>${item.maSinhVien}</td>
-                                <td>${item.tenSinhVien}</td>
-                                <td>${item.monChuongTrinh == null ? '-' : item.maMonChuongTrinh}</td>
-                                <td>${item.maNhom == null ? '-' : item.maNhom}</td>
-                                <td>${item.tenDeTai == null ? '-' : item.tenDeTai}</td>
-                                <td>${item.tenGvhd == null ? '-' : item.tenGvhd}</td>
-                                <td>${item.tenChuyenNganh}</td>
-                                <td>
+                    return ` <tr style="${item.trangThai == 1 ? 'color : red' : ''}" class="table-light">
+                                <td class="text-center align-middle">${item.stt}</td>
+                                <td class="text-center align-middle">${item.maSinhVien}</td>
+                                <td class="text-center align-middle">${item.tenSinhVien}</td>
+                                <td class="text-center align-middle">${item.monChuongTrinh == null ? '-' : item.maMonChuongTrinh}</td>
+                                <td class="text-center align-middle">${item.maNhom == null ? '-' : item.maNhom}</td>
+                                <td class="text-center align-middle">${item.tenDeTai == null ? '-' : item.tenDeTai}</td>
+                                <td class="text-center align-middle">${item.tenGvhd == null ? '-' : item.tenGvhd}</td>
+                                <td class="text-center align-middle">${item.tenChuyenNganh}</td>
+                                <td class="text-center align-middle">
+                                <div class="d-flex justify-content-center align-items-center">
                                     <button class="btn_eye"
                                             data-toggle="tooltip"
                                             title="Xem chi tiết"
@@ -75,6 +76,7 @@ function viewTable(page) {
                                          onclick="loaiSinhVienDetail('${item.id}','${page}')">                      
                                            <img src="/img/person-off.svg">                                                               
                                      </button>
+                                     </div>
                                 </td>
                         </tr>`
                 }));

@@ -104,14 +104,28 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label class="col-form-label">Học kỳ</label>
+                                                                    <label class="col-form-label">Tên học kỳ:</label>
                                                                     <input
                                                                             maxlength="50"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="tenHocKyAdd">
                                                                     <span class="text-danger"
-                                                                          id="hoc_ky_error"></span>
+                                                                          id="hoc_ky_error"></span> </br>
+                                                                    <label class="col-form-label">Ngày bắt đầu:</label>
+                                                                    <input
+                                                                            type="date"
+                                                                            class="form-control"
+                                                                            id="ngayBatDauAdd">
+                                                                    <span class="text-danger"
+                                                                          id="ngay_bat_dau_add_error"></span></br>
+                                                                    <label class="col-form-label">Ngày kết thúc:</label>
+                                                                    <input
+                                                                            type="date"
+                                                                            class="form-control"
+                                                                            id="ngayKetThucAdd">
+                                                                    <span class="text-danger"
+                                                                          id="ngay_ket_thuc_add_error"></span>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -136,13 +150,21 @@
                                                 <thead class="table-primary">
                                                 <th width="50px" class="text-center align-middle">STT</th>
                                                 <th class="text-center align-middle">Tên học kỳ</th>
+                                                <th class="text-center align-middle">Ngày bắt đầu</th>
+                                                <th class="text-center align-middle">Ngày kết thúc</th>
                                                 <th width="200px" class="text-center align-middle">Chức năng</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="hocKy,i : ${page.data}">
-                                                    <tr>
-                                                        <td class="text-center align-middle" th:text="${hocKy.getSTT()}"></td>
-                                                        <td class="text-center align-middle" th:text="${hocKy.tenHocKy}"></td>
+                                                    <tr class="table-light">
+                                                        <td class="text-center align-middle"
+                                                            th:text="${hocKy.getSTT()}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${hocKy.tenHocKy}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${#dates.format(hocKy.getNgayBatDau(), 'dd-MM-yyyy')}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${#dates.format(hocKy.getNgayKetThuc(), 'dd-MM-yyyy')}"></td>
                                                         <td class="text-center align-middle">
                                                             <div class="d-flex justify-content-center align-items-center">
                                                                 <button
@@ -238,14 +260,29 @@
                     <span id="id_hoc_ky_update" style="color:red;"></span>
 
                     <div class="form-group">
-                        <label class="col-form-label">Tên Học Kỳ</label>
+                        <label class="col-form-label">Tên học kỳ:</label>
                         <input
                                 max="50"
                                 type="text"
                                 class="form-control"
                                 id="ten_hoc_ky_update"/>
-                        <small class="text-danger"
-                               id="errorMessageUpdate"></small>
+                        <span class="text-danger"
+                               id="errorMessageUpdate"></span>
+                        </br>
+                        <label class="col-form-label">Ngày bắt đầu:</label>
+                        <input
+                                type="date"
+                                class="form-control"
+                                id="ngayBatDauUpdate">
+                        <span class="text-danger"
+                              id="ngay_bat_dau_update_error"></span></br>
+                        <label class="col-form-label">Ngày kết thúc:</label>
+                        <input
+                                type="date"
+                                class="form-control"
+                                id="ngayKetThucUpdate">
+                        <span class="text-danger"
+                              id="ngay_ket_thuc_update_error"></span>
                     </div>
                 </div>
                 <div class="modal-footer">

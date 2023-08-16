@@ -222,21 +222,23 @@
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
                                                     <tr class="table-light">
-                                                        <td th:text="${sinhVienResponse.getStt()}"></td>
-                                                        <td th:text="${sinhVienResponse.maSinhVien}"></td>
-                                                        <td th:text="${sinhVienResponse.tenSinhVien}"></td>
-                                                        <td th:text="${sinhVienResponse.email}"></td>
-                                                        <td th:text="${sinhVienResponse.soDienThoai}"></td>
-                                                        <td th:text="${sinhVienResponse.khoa}"></td>
-                                                        <td th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
-                                                        <td>
-                                                            <button
-                                                                    type="button" data-toggle="tooltip"
-                                                                    title="Kích thành viên"
-                                                                    class="btn_person_off"
-                                                                    th:attr="onclick=|openModalRemoveNhom('${sinhVienResponse.maSinhVien}')|">
-                                                                <img th:src="@{/img/person-off.svg}">
-                                                            </button>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.getStt()}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.maSinhVien}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.tenSinhVien}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.email}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.soDienThoai}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.khoa}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
+                                                        <td class="text-center align-middle">
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <button
+                                                                        type="button" data-toggle="tooltip"
+                                                                        title="Kích thành viên"
+                                                                        class="btn_person_off"
+                                                                        th:attr="onclick=|openModalRemoveNhom('${sinhVienResponse.maSinhVien}')|">
+                                                                    <img th:src="@{/img/person-off.svg}">
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </th:block>

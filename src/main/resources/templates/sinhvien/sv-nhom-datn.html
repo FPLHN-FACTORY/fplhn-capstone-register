@@ -12,6 +12,11 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
 </head>
 <!-- end::Head -->
 
@@ -194,22 +199,24 @@
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="SvNhomDatn : ${nhomDatnThamGia}">
-                                                    <tr th:style="${SvNhomDatn.getChucVu()} == 1 ? 'color: #5867dd; font-weight: bold' : ''">
-                                                        <td th:text="${SvNhomDatn.getStt()}"></td>
-                                                        <td th:text="${SvNhomDatn.getMaSinhVien()}"></td>
-                                                        <td th:text="${SvNhomDatn.getTenSinhVien()}"></td>
-                                                        <td th:text="${SvNhomDatn.getTenMonChuongTrinh()}"></td>
-                                                        <td th:text="${SvNhomDatn.getChucVu()} == 1 ? 'Trưởng nhóm' : 'Thành viên'"></td>
-                                                        <td th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
+                                                    <tr th:style="${SvNhomDatn.getChucVu()} == 1 ? 'color: #5867dd; font-weight: bold' : ''" class="table-light">
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getStt()}"></td>
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getMaSinhVien()}"></td>
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getTenSinhVien()}"></td>
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getTenMonChuongTrinh()}"></td>
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getChucVu()} == 1 ? 'Trưởng nhóm' : 'Thành viên'"></td>
+                                                        <td class="text-center align-middle" th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
                                                             (${checkTruongNhom} == false ? 'display:none' :
                                                             (${SvNhomDatn.getChucVu()} == 1 ? 'display: none' : 'display: block'))">
-                                                            <button
-                                                                    class="btn_change_role"
-                                                                    data-toggle="tooltip"
-                                                                    title="Chuyển quyền trưởng nhóm"
-                                                                    th:attr="onclick=|chuyenQuyenTruongNhom('${SvNhomDatn.getIdSinhVien()}', '${SvNhomDatn.getTenSinhVien()}')|">
-                                                                <img th:src="@{/img/change-role.svg}">
-                                                            </button>
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <button
+                                                                        class="btn_change_role"
+                                                                        data-toggle="tooltip"
+                                                                        title="Chuyển quyền trưởng nhóm"
+                                                                        th:attr="onclick=|chuyenQuyenTruongNhom('${SvNhomDatn.getIdSinhVien()}', '${SvNhomDatn.getTenSinhVien()}')|">
+                                                                    <img th:src="@{/img/change-role.svg}">
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </th:block>

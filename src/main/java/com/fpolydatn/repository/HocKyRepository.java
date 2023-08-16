@@ -18,7 +18,7 @@ public interface HocKyRepository extends JpaRepository<HocKy, String> {
     public static final String NAME = "BaseHocKyRepository";
 
     @Query(value = """
-            SELECT id, ten_hoc_ky AS 'name' FROM hoc_ky ORDER BY last_modified_date
+            SELECT id, ten_hoc_ky AS 'name' FROM hoc_ky ORDER BY created_date DESC
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntity();
 

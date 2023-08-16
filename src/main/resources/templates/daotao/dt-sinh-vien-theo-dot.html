@@ -56,7 +56,8 @@
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-5 text-center">MSSV/Tên sinh viên:</span>
+                                            <span for=""
+                                                  class="fillter-name col-5 text-center">MSSV/Tên sinh viên:</span>
                                             <input type="text" class="form-control col-6" name="keyword" id="keyword"
                                             >
                                         </div>
@@ -328,44 +329,53 @@
                                             <tbody id="list" class="table-light">
                                             <th:block th:each="sinhVien :  ${page.data}">
                                                 <tr th:style="${sinhVien.trangThai} == 1 ? 'color : red' : ''">
-                                                    <td th:text="${sinhVien.getStt}"/>
-                                                    <td th:text="${sinhVien.maSinhVien}"/>
-                                                    <td th:text="${sinhVien.tenSinhVien}"/>
-                                                    <td th:text="${sinhVien.getMaMonChuongTrinh} == null ? '-': ${sinhVien.getMaMonChuongTrinh}"/>
-                                                    <td th:text="${sinhVien.maNhom} ==null? '-': ${sinhVien.maNhom}"/>
-                                                    <td th:text="${sinhVien.tenDeTai}==null? '-':${sinhVien.tenDeTai}"/>
-                                                    <td th:text="${sinhVien.tenGvhd}==null? '-':${sinhVien.tenGvhd}"/>
-                                                    <td th:text="${sinhVien.tenChuyenNganh}"/>
-                                                    <td>
-                                                        <button class="btn_eye"
-                                                                data-toggle="tooltip"
-                                                                title="Xem chi tiết"
-                                                                th:attr="onclick=|detail('${sinhVien.getId()}')|">
-                                                            <img th:src="@{/img/eye-fill.svg}">
-                                                        </button>
-                                                        <button
-                                                                type="button"
-                                                                class="btn_pencil_square"
-                                                                data-toggle="tooltip"
-                                                                title="Cập nhật thông tin sinh viên"
-                                                                th:attr="onclick=|openModalUpdateSinhVien('${sinhVien.getId()}')|">
-                                                            <img th:src="@{/img/pencil-square.svg}">
-                                                        </button>
-                                                        <button
-                                                                type="button"
-                                                                class="btn_trash"
-                                                                data-toggle="tooltip"
-                                                                title="Xóa sinh viên"
-                                                                th:attr="onclick=|openModalRemoveSinhVien('${sinhVien.getId()}')|">
-                                                            <img th:src="@{/img/trash.svg}">
-                                                        </button>
-                                                        <button class="btn_pencil_square"
-                                                                data-toggle="tooltip"
-                                                                title="Loại sinh viên"
-                                                                th:style="${sinhVien.trangThai} == 0 ? 'display : block' : 'display : none'"
-                                                                th:attr="onclick=|loaiSinhVienDetail('${sinhVien.getId()}','${page.currentPage}')|">
-                                                            <img th:src="@{/img/person-off.svg}">
-                                                        </button>
+                                                    <td class="text-center align-middle" th:text="${sinhVien.getStt}"/>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${sinhVien.maSinhVien}"/>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${sinhVien.tenSinhVien}"/>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${sinhVien.getMaMonChuongTrinh} == null ? '-': ${sinhVien.getMaMonChuongTrinh}"/>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${sinhVien.maNhom} ==null? '-': ${sinhVien.maNhom}"/>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${sinhVien.tenDeTai}==null? '-':${sinhVien.tenDeTai}"/>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${sinhVien.tenGvhd}==null? '-':${sinhVien.tenGvhd}"/>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${sinhVien.tenChuyenNganh}"/>
+                                                    <td class="text-center align-middle">
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <button class="btn_eye"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xem chi tiết"
+                                                                    th:attr="onclick=|detail('${sinhVien.getId()}')|">
+                                                                <img th:src="@{/img/eye-fill.svg}">
+                                                            </button>
+                                                            <button
+                                                                    type="button"
+                                                                    class="btn_pencil_square"
+                                                                    data-toggle="tooltip"
+                                                                    title="Cập nhật thông tin sinh viên"
+                                                                    th:attr="onclick=|openModalUpdateSinhVien('${sinhVien.getId()}')|">
+                                                                <img th:src="@{/img/pencil-square.svg}">
+                                                            </button>
+                                                            <button
+                                                                    type="button"
+                                                                    class="btn_trash"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xóa sinh viên"
+                                                                    th:attr="onclick=|openModalRemoveSinhVien('${sinhVien.getId()}')|">
+                                                                <img th:src="@{/img/trash.svg}">
+                                                            </button>
+                                                            <button class="btn_pencil_square"
+                                                                    data-toggle="tooltip"
+                                                                    title="Loại sinh viên"
+                                                                    th:style="${sinhVien.trangThai} == 0 ? 'display : block' : 'display : none'"
+                                                                    th:attr="onclick=|loaiSinhVienDetail('${sinhVien.getId()}','${page.currentPage}')|">
+                                                                <img th:src="@{/img/person-off.svg}">
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </th:block>

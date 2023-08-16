@@ -53,7 +53,7 @@
                                         th:action="@{/dao-tao/chuyen-nganh}"
                                         method="GET"
                                         class="m-portlet__body">
-                                    <div class="row">
+                                    <div class="row d-flex justify-content-center">
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Tên chuyên ngành:</span>
@@ -86,7 +86,7 @@
                                             <button
                                                     type="button"
                                                     th:attr="onclick=|openModalCreateChuyenNganh()|"
-                                                    class="col-12 col-sm-8 col-md-4 btn btn-success">
+                                                    class="btn btn-success">
                                                 Thêm chuyên ngành
                                             </button>
                                         </div>
@@ -114,7 +114,6 @@
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-center align-items-center">
                                                             <button
-                                                                    style="margin-left: 50px"
                                                                     type="button"
                                                                     class="btn_pencil_square"
                                                                     data-toggle="tooltip"

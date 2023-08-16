@@ -18,8 +18,8 @@ public interface HocKyResponse extends IsIdentified {
     String getTenHocKy();
 
     @Value("#{target.ngay_bat_dau}")
-    String getNgayBatDau();
+    Long getNgayBatDau();
 
     @Value("#{target.ngay_ket_thuc}")
-    String getNgayKetThuc();
+    Long getNgayKetThuc();
 }
