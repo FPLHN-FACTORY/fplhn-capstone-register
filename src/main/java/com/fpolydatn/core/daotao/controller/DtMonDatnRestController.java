@@ -77,6 +77,7 @@ public class DtMonDatnRestController extends BaseController {
     @GetMapping("/search")
     public ResponseObject search(final DtFindMonDatnRequest req) {
         req.setCoSoId(session.getCoSoId());
+        System.out.println(req);
         PageableObject<DtMonDatnResponse> listMon = monDatnService.search(req);
         return new ResponseObject(listMon);
     }

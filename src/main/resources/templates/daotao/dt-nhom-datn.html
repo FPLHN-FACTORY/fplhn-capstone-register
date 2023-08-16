@@ -56,13 +56,13 @@
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
-                                            <span class="fillter-name col-5 text-center" for="">Tìm mã nhóm</span>
+                                            <span class="fillter-name col-5 text-center" for="">Mã nhóm:</span>
                                             <input class="form-control col-6" id="maNhom" name="maNhom" type="text"
                                             >
                                         </div>
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
-                                            <span class="fillter-name col-5 text-center" for="">Chuyên ngành</span>
+                                            <span class="fillter-name col-5 text-center" for="">Chuyên ngành:</span>
                                             <select class="form-control col-6" id="chuyenNganh" name="chuyenNganh">
                                                 <option value="">Chọn chuyên ngành</option>
                                                 <option th:each="chuyenhNganh : ${listChuyenNganh}"
@@ -86,7 +86,7 @@
                                         </div>
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
-                                            <span class="fillter-name col-5 text-center" for="">Đợt đăng ký</span>
+                                            <span class="fillter-name col-5 text-center" for="">Đợt đăng ký:</span>
                                             <select class="form-control col-6" id="dotDangKy" name="dotDangKy">
                                                 <option value="">Chọn đợt đăng ký</option>
                                                 <option th:each="dotDangKy : ${listDotDangKy}"
@@ -99,9 +99,11 @@
 
                                     <div class="row justify-content-center pt-2">
                                         <div class="col-sm-12 col-12 text-center mt-2">
-                                            <button class="btn btn-primary" type="button" th:attr="onclick=|loadDataNhomDatn(0)|"
-                                               >Tìm
-                                                kiếm</button>
+                                            <button class="btn btn-primary" type="button"
+                                                    th:attr="onclick=|loadDataNhomDatn(0)|"
+                                            >Tìm
+                                                kiếm
+                                            </button>
                                             <a class="btn btn-danger text-white"
                                                href="#" onclick="clearform();">
                                                 Làm mới bộ lọc
@@ -117,11 +119,14 @@
                                     <div class="row">
                                         <!--   export excel-->
                                         <div class="col-4 d-inline float-left">
-                                            <button  class="btn btn-success" type="button" th:attr="onclick=|openModalExportExcel()|">
+                                            <button class="btn btn-success" type="button"
+                                                    th:attr="onclick=|openModalExportExcel()|">
                                                 Export
                                             </button>
-                                            <button class="btn btn-success" th:attr="onclick=|exportFileExcelSinhVien()|"
-                                               type="button">Export sv theo nhóm</button>
+                                            <button class="btn btn-success"
+                                                    th:attr="onclick=|exportFileExcelSinhVien()|"
+                                                    type="button">Export SV theo nhóm
+                                            </button>
                                             <div aria-hidden="true"
                                                  aria-labelledby="exampleModalLabel"
                                                  class="modal fade "
@@ -152,10 +157,12 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal"
+                                                                <button class="btn btn-outline-secondary btn btn-light"
+                                                                        data-bs-dismiss="modal"
                                                                         type="button">Hủy
                                                                 </button>
-                                                                <button type="button" class="btn btn-primary" th:attr="onclick=|exportFileExcel()|">Download
+                                                                <button type="button" class="btn btn-primary"
+                                                                        th:attr="onclick=|exportFileExcel()|">Download
                                                                     excel
                                                                 </button>
                                                             </div>
@@ -203,64 +210,64 @@
                                     </div>
                                     <!--                                        Table body-->
                                     <div class="table-responsive mt-3">
-                                        <div class="mt-3">
-                                            <table style="text-align: center"
-                                                   class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
-                                                   id="custom-table1">
-                                                <thead class="table-primary">
-                                                <th width="40px">STT</th>
-                                                <th width="70px">Mã nhóm</th>
-                                                <th>Môn đăng ký</th>
-                                                <th>Tên đề tài</th>
-                                                <th>Chuyên nghành</th>
-                                                <th>D.s nhóm</th>
-                                                <th width="95px">Số thành viên</th>
-                                                <th>GVHD</th>
-                                                <th>Trạng thái</th>
-                                                <th width="50px">Hành động</th>
-                                                </thead>
-                                                <tbody id="listNhomDatn">
-                                                <th:block th:each="nhomDatn : ${page.data}">
-                                                    <tr class="table-light">
-                                                        <td th:text="${nhomDatn.getStt()}"></td>
-                                                        <td th:text="${nhomDatn.maNhom}"></td>
-                                                        <td th:text="${nhomDatn.getTenMonDatn}"></td>
-                                                        <td th:text="${nhomDatn.tenDeTai} != null ? ${nhomDatn.tenDeTai} : 'Chưa có'"></td>
-                                                        <td th:text="${nhomDatn.tenChuyenNganh}"></td>
-                                                        <td>
-                                                            <span th:each="value, iterStat : ${#strings.arraySplit(nhomDatn.danhSachSinhVien, ', ')}"
-                                                               th:text="${value} + (${iterStat.last} ? '' : ', ')"
-                                                               th:style="${value == nhomDatn.maSinhVien} ? 'font-weight: bold; text-decoration: underline;' : ''">
-                                                            </span>
-                                                        </td>
-                                                        <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
-                                                        <td th:text="${nhomDatn.tenGvhd} != null ? ${nhomDatn.tenGvhd}  + ' - ' + ${nhomDatn.getTenTaiKhoan()} : 'Chưa có'"></td>
-                                                        <td th:text="${nhomDatn.getTrangThai()}==0?'Mới thành lập':(${nhomDatn.getTrangThai()}==1?'Đã liên hệ giảng viên':(${nhomDatn.getTrangThai()}==2?'Sẵn sàng phê duyệt':(${nhomDatn.getTrangThai()}==3?'Cần sửa':(${nhomDatn.getTrangThai()}==4?'Giảng viên đã chốt':'Chủ nhiệm bộ môn đã chốt'))))">
-                                                        <td style="display: flex; justify-content: center">
-                                                            <button class="btn_eye"
-                                                                    th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
-                                                                    data-toggle="tooltip"
-                                                                    title="Xem chi tiết nhóm"
-                                                                    type="button"
-                                                            >
-                                                                <img th:src="@{/img/eye-fill.svg}">
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </th:block>
-                                                </tbody>
-                                            </table>
 
-                                            <!-- Paging-->
-                                            <nav aria-label="Page navigation" th:if="${page.totalPages > 1}">
-                                                <ul class="pagination justify-content-end" id="page">
-                                                </ul>
-                                            </nav>
-                                        </div>
+                                        <table style="text-align: center"
+                                               class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+                                               id="custom-table1">
+                                            <thead class="table-primary">
+                                            <th width="40px">STT</th>
+                                            <th width="70px">Mã nhóm</th>
+                                            <th>Môn đăng ký</th>
+                                            <th>Tên đề tài</th>
+                                            <th>Chuyên nghành</th>
+                                            <th>D.s nhóm</th>
+                                            <th width="95px">Số thành viên</th>
+                                            <th>GVHD</th>
+                                            <th>Trạng thái</th>
+                                            <th width="50px">Hành động</th>
+                                            </thead>
+                                            <tbody id="listNhomDatn">
+                                            <th:block th:each="nhomDatn : ${page.data}">
+                                                <tr class="table-light">
+                                                    <td th:text="${nhomDatn.getStt()}"></td>
+                                                    <td th:text="${nhomDatn.maNhom}"></td>
+                                                    <td th:text="${nhomDatn.getTenMonDatn}"></td>
+                                                    <td th:text="${nhomDatn.tenDeTai} != null ? ${nhomDatn.tenDeTai} : 'Chưa có'"></td>
+                                                    <td th:text="${nhomDatn.tenChuyenNganh}"></td>
+                                                    <td>
+                                                            <span th:each="value, iterStat : ${#strings.arraySplit(nhomDatn.danhSachSinhVien, ', ')}"
+                                                                  th:text="${value} + (${iterStat.last} ? '' : ', ')"
+                                                                  th:style="${value == nhomDatn.maSinhVien} ? 'font-weight: bold; text-decoration: underline;' : ''">
+                                                            </span>
+                                                    </td>
+                                                    <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
+                                                    <td th:text="${nhomDatn.tenGvhd} != null ? ${nhomDatn.tenGvhd}  + ' - ' + ${nhomDatn.getTenTaiKhoan()} : 'Chưa có'"></td>
+                                                    <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
+                                                    <td style="display: flex; justify-content: center">
+                                                        <button class="btn_eye"
+                                                                th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
+                                                                data-toggle="tooltip"
+                                                                title="Xem chi tiết nhóm"
+                                                                type="button"
+                                                        >
+                                                            <img th:src="@{/img/eye-fill.svg}">
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Paging-->
+                                        <nav aria-label="Page navigation" th:if="${page.totalPages > 1}">
+                                            <ul class="pagination justify-content-end" id="page">
+                                            </ul>
+                                        </nav>
+
                                         <input hidden id="totalPages" th:value="${page.totalPages}">
                                         <input hidden id="currentPage" th:value="${page.currentPage}">
                                         <div id="empty">
-                                        <input hidden id="checkData" th:value="${page.data.isEmpty()}">
+                                            <input hidden id="checkData" th:value="${page.data.isEmpty()}">
                                             <div th:if="${page.data.isEmpty()}">
                                                 <h3>Không có dữ liệu</h3>
                                             </div>

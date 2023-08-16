@@ -10,6 +10,7 @@
     <link th:href="@{/assets/demo/default/base/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="https://ap.poly.edu.vn/images/favicon.ico"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
 </head>
@@ -56,13 +57,13 @@
                                     <div class="row">
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-5 text-center">Mã nhóm môn</span>
+                                            <span for="" class="fillter-name col-5 text-center">Mã nhóm môn:</span>
                                             <input type="text" class="form-control col-6"
                                                    name="search_ma_nhom_mon" id="search_ma_nhom_mon" value="">
                                         </div>
                                         <div
                                                 class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-5 text-center">Chuyên ngành</span>
+                                            <span for="" class="fillter-name col-5 text-center">Chuyên ngành:</span>
                                             <select name="chuyenNganh" id="chuyenNganh" class="form-control col-6">
                                                 <option value="">Chọn chuyên ngành</option>
                                                 <option th:each="chuyenhNganh : ${listChuyenNganh}"

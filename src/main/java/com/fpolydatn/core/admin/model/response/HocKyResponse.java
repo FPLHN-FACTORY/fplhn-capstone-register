@@ -16,4 +16,10 @@ public interface HocKyResponse extends IsIdentified {
 
     @Value("#{target.ten_hoc_ky}")
     String getTenHocKy();
+
+    @Value("#{target.ngay_bat_dau}")
+    String getNgayBatDau();
+
+    @Value("#{target.ngay_ket_thuc}")
+    String getNgayKetThuc();
 }

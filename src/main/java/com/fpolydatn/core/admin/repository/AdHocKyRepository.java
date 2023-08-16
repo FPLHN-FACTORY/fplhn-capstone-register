@@ -15,7 +15,7 @@ public interface AdHocKyRepository extends HocKyRepository {
 
     @Query(value = """
         SELECT ROW_NUMBER() OVER(ORDER BY created_date DESC) AS STT,
-        	id, ten_hoc_ky, created_date
+        	id, ten_hoc_ky, ngay_bat_dau, ngay_ket_thuc, created_date
             FROM hoc_ky
             WHERE 
                 ( :#{#req.tenHocKy} IS NULL 

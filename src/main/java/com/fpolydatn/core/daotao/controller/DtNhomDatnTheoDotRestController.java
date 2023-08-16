@@ -38,11 +38,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     @GetMapping("/search")
     public ResponseObject viewNhomDatn(final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
-        if (dotDangKyId != null) {
-            req.setDotDangKyId(dotDangKyId);
-        }
         PageableObject<DtNhomDatnTheoDotResponse> listNhomDatn = dtNhomDatnTheoDotService.findAllNhomDatn(req);
         return new ResponseObject(listNhomDatn);
     }

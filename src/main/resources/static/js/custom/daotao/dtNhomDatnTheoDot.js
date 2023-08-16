@@ -154,7 +154,7 @@ function loadDataNhomDatn(count) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: DTNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&dotDangKyId=" + dotDangKyId + "&page=" + count,
+        url: DTNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&dotDangKyId=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId + "&trangThai=" + trangThai + "&page=" + count,
         dataType: 'json',
         success: function (responseData) {
             let array = responseData.data.data;
@@ -180,7 +180,7 @@ function loadDataNhomDatn(count) {
                 </td>
                 <td>${item.countSinhVien}/7</td>
                 <td>${item.tenGvhd != null ? item.tenGvhd + ' - ' + item.tenTaiKhoan : 'Chưa có'}</td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Đã liên hệ giảng viên' : (item.trangThai == 2 ? 'Sẵn sàng phê duyệt' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                
+                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>                
                 <td style="display: flex; justify-content: center">
                 <button type="button"
                         class="btn_eye"

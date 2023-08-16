@@ -72,7 +72,7 @@ function loadTable(count) {
                       <td>${canbo.emailFE}</td>
                       <td>${canbo.soDienThoai}</td>
                       <td>${canbo.tenCanBo} - ${canbo.tenTaiKhoan}</td>
-                      <td>${canbo.vaiTro === 0 ? 'Đào Tạo' : 'CNBM'}</td>
+                      <td>${canbo.vaiTro === 0 ? 'Đào Tạo' : 'CNBM - ' + canbo.tenChuyenNganh}</td>
                       <td>
                           <button
                             type="button"

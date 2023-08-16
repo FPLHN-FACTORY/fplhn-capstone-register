@@ -55,6 +55,10 @@ function openModalUpdateHocKy(hocKyId) {
     });
 }
 
+function openModalCreateHocKy() {
+    $("#modal_create").modal('show');
+}
+
 $("#form_hoc_ky_update").submit(function (event) {
     event.preventDefault();
     let tenHocKy = $("#ten_hoc_ky_update").val();

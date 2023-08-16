@@ -56,7 +56,7 @@
                                     <div class="row d-flex justify-content-center">
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Tên học kỳ</span>
+                                            <span for="" class="fillter-name col-4 text-center">Tên học kỳ:</span>
                                             <input type="text" class="form-control col-8"
                                                    name="tenHocKy" id="ten-hoc-ky" value="">
                                         </div>
@@ -82,9 +82,8 @@
                                 <div class="m-portlet__body">
                                     <div class="row">
                                         <div class="col-6 d-inline">
-                                            <button data-toggle="modal"
-                                                    class="btn btn-success"
-                                                    data-target="#modal_create">
+                                            <button th:attr="onclick=|openModalCreateHocKy()|"
+                                                    class="btn btn-success">
                                                 Thêm học kỳ
                                             </button>
                                             <div class="modal fade "
