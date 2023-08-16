@@ -81,5 +81,6 @@ public class PropertyKeys {
     public static final String QUA_SO_KY_TU_CHO_PHEP = "qua.so.ky.tu.cho.phep";
     public static final String CHUA_DU_12_TIENG_TRONG_NHOM = "chua.du.12.tieng.trong.nhom";
     public static final String KHONG_DU_SINH_VIEN_DE_TAO_NHOM = "khong.du.sinh.vien.de.tao.nhom";
+    public static final String TON_TAI_DOT_DANG_KY = "ton.tai.dot.dang.ky";
 
 }

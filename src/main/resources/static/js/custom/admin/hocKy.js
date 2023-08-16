@@ -83,40 +83,63 @@ $("#form_hoc_ky_update").submit(function (event) {
     }
 });
 
-function openModalRemoveHocKy(hocKyId) {
-    $("#modal_hoc_ky_remove").modal('show');
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: hocKyApi + "/" + hocKyId,
-        data: JSON.stringify(hocKyId),
-        dataType: 'json',
-        success: function () {
-            $("#remove_hoc_ky").val(hocKyId);
+// function openModalRemoveHocKy(hocKyId) {
+//     $("#modal_hoc_ky_remove").modal('show');
+//     $.ajax({
+//         type: "GET",
+//         contentType: "application/json",
+//         url: hocKyApi + "/" + hocKyId,
+//         data: JSON.stringify(hocKyId),
+//         dataType: 'json',
+//         success: function () {
+//             $("#remove_hoc_ky").val(hocKyId);
+//         },
+//         error: function (e) {
+//             console.log("ERROR : ", e);
+//         }
+//     });
+// }
+
+function remove(id) {
+    bootbox.confirm({
+        title: "Xóa học kỳ?",
+        message: "Bạn chắc chắn muốn xóa học kỳ này?",
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
         },
-        error: function (e) {
-            console.log("ERROR : ", e);
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: hocKyApi + "/" + id,
+                    data: JSON.stringify(id),
+                    dataType: 'json',
+                    success: function () {
+                        window.open(hocKyView, '_self');
+                    },
+                    error: function (e) {
+                        console.log("ERROR : ", e);
+                        if (e.responseJSON.message == 'Ton tai dot dang ky') {
+                            bootbox.alert({
+                                message: `<strong>Thất bại.</strong> Học kỳ đang tồn tại đợt đăng ký`,
+                                backdrop: true,
+                            });
+                        } else {
+                            bootbox.alert({
+                                message: 'Xóa thất bại',
+                                backdrop: true,
+                            });
+                        }
+                    }
+                });
+            }
         }
     });
-}
-
-$("#form_hoc_ky_delete").submit(function (event) {
-    event.preventDefault();
-    let hocKyId = $("#remove_hoc_ky").val();
-
-    $.ajax({
-        type: "DELETE",
-        contentType: "application/json",
-        url: hocKyApi + "/" + hocKyId,
-        data: JSON.stringify(hocKyId),
-        dataType: 'json',
-        success: function () {
-            window.open(hocKyView, '_self');
-            $("#modal_update_hoc_ky").modal("hide");
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-        }
-    });
-
-});
+};

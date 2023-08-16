@@ -3,8 +3,10 @@ package com.fpolydatn.core.admin.service.impl;
 import com.fpolydatn.core.admin.model.request.CreateHocKyRequest;
 import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
 import com.fpolydatn.core.admin.model.request.UpdateHocKyRequest;
+import com.fpolydatn.core.admin.repository.AdDotDangKyRepository;
 import com.fpolydatn.core.admin.repository.AdHocKyRepository;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
@@ -33,6 +35,9 @@ public class HocKyServiceImpl implements HocKyService {
     @Autowired
     private AdHocKyRepository hocKyRepository;
 
+    @Autowired
+    private AdDotDangKyRepository dotDangKyRepository;
+
     private final FormUtils formUtils = new FormUtils();
 
     @Override
@@ -53,6 +58,10 @@ public class HocKyServiceImpl implements HocKyService {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
+        }
+        DotDangKy dotDangKy = dotDangKyRepository.findByHocKyId(hocKyCheck.get().getId());
+        if (dotDangKy != null) {
+            throw new RestApiException(Message.TON_TAI_DOT_DANG_KY);
         }
         hocKyRepository.delete(hocKyCheck.get());
         return true;
