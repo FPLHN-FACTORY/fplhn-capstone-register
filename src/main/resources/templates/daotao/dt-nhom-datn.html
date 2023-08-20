@@ -224,34 +224,45 @@
                                             <th width="95px">Số thành viên</th>
                                             <th>GVHD</th>
                                             <th>Trạng thái</th>
-                                            <th width="50px">Hành động</th>
+                                            <th>Hành động</th>
                                             </thead>
                                             <tbody id="listNhomDatn">
                                             <th:block th:each="nhomDatn : ${page.data}">
                                                 <tr class="table-light">
-                                                    <td th:text="${nhomDatn.getStt()}"></td>
-                                                    <td th:text="${nhomDatn.maNhom}"></td>
-                                                    <td th:text="${nhomDatn.getTenMonDatn}"></td>
-                                                    <td th:text="${nhomDatn.tenDeTai} != null ? ${nhomDatn.tenDeTai} : 'Chưa có'"></td>
-                                                    <td th:text="${nhomDatn.tenChuyenNganh}"></td>
-                                                    <td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.getStt()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.maNhom}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.getTenMonDatn}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.tenDeTai} != null ? ${nhomDatn.tenDeTai} : 'Chưa có'"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.tenChuyenNganh}"></td>
+                                                    <td class="text-center align-middle">
                                                             <span th:each="value, iterStat : ${#strings.arraySplit(nhomDatn.danhSachSinhVien, ', ')}"
                                                                   th:text="${value} + (${iterStat.last} ? '' : ', ')"
                                                                   th:style="${value == nhomDatn.maSinhVien} ? 'font-weight: bold; text-decoration: underline;' : ''">
                                                             </span>
                                                     </td>
-                                                    <td th:text="${nhomDatn.countSinhVien} + '/7'"></td>
-                                                    <td th:text="${nhomDatn.tenGvhd} != null ? ${nhomDatn.tenGvhd}  + ' - ' + ${nhomDatn.getTenTaiKhoan()} : 'Chưa có'"></td>
-                                                    <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
-                                                    <td style="display: flex; justify-content: center">
-                                                        <button class="btn_eye"
-                                                                th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
-                                                                data-toggle="tooltip"
-                                                                title="Xem chi tiết nhóm"
-                                                                type="button"
-                                                        >
-                                                            <img th:src="@{/img/eye-fill.svg}">
-                                                        </button>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.countSinhVien} + '/7'"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.tenGvhd} != null ? ${nhomDatn.tenGvhd}  + ' - ' + ${nhomDatn.getTenTaiKhoan()} : 'Chưa có'"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
+                                                    <td class="text-center align-middle"
+                                                        style="display: flex; justify-content: center">
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <button class="btn_eye"
+                                                                    th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xem chi tiết nhóm"
+                                                                    type="button"
+                                                            >
+                                                                <img th:src="@{/img/eye-fill.svg}">
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </th:block>
