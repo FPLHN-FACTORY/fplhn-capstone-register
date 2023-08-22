@@ -18,6 +18,21 @@ function clearData() {
     $("#search_dot_dang_ky").val("");
 }
 
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadTable(value - 1);
+    }
+}
+
+genPaging();
+
 function genPaging() {
     if (totalPages <= 1) {
         $("#page").html('');
@@ -69,15 +84,15 @@ function loadTable(count) {
                 $("#searchListMon").html(responseData.data.data.map(function (monDatn) {
                     return `
                 <tr class="table-light">
-                      <td>${monDatn.stt}</td>
-                      <td>${monDatn.maMon}</td>
-                      <td>${monDatn.tenMon}</td>
-                      <td>${monDatn.id == monDatn.nhomMonDatnId ? 'Môn độc lập' : monDatn.tenNhomMon}</td>
-                      <td>${monDatn.tenCanBo == null ? '' : monDatn.tenCanBo}</td>
-                      <td>${monDatn.danhSachGVHD}</td>
-                      <td>${monDatn.tenChuyenNganh}</td>
-                      <td>
-                      
+                      <td class="text-center align-middle">${monDatn.stt}</td>
+                      <td class="text-center align-middle">${monDatn.maMon}</td>
+                      <td class="text-center align-middle">${monDatn.tenMon}</td>
+                      <td class="text-center align-middle">${monDatn.id == monDatn.nhomMonDatnId ? 'Môn độc lập' : monDatn.tenNhomMon}</td>
+                      <td class="text-center align-middle">${monDatn.tenCanBo == null ? '' : monDatn.tenCanBo}</td>
+                      <td class="text-center align-middle">${monDatn.danhSachGVHD}</td>
+                      <td class="text-center align-middle">${monDatn.tenChuyenNganh}</td>
+                      <td class="text-center align-middle">
+                      <div class="d-flex justify-content-center align-items-center">
                           <a
                             type="button"
                             class="btn_clipboard_user" data-toggle="tooltip"
@@ -101,9 +116,9 @@ function loadTable(count) {
                             onclick="openModalRemoveMonDatn('${monDatn.id}','${count})">
                             <img src="/img/trash.svg">
                         </button>
+                        <div/>
                     </td>
-                </tr>
-               `
+                </tr>`
                 }));
                 genPaging();
             }

@@ -24,7 +24,7 @@ public interface DtMonDatnRepository extends MonDatnRepository {
             cn.ten_chuyen_nganh,
             GROUP_CONCAT(gv.ten_tai_khoan SEPARATOR ', ') AS danh_sach_gvhd,
             cb.ten_can_bo,
-            GROUP_CONCAT(CONCAT(m.ten_mon_datn, ' - ', m.ma_mon) SEPARATOR ', ') AS ten_nhom_mon,
+            GROUP_CONCAT(DISTINCT CONCAT(m.ten_mon_datn, ' - ', m.ma_mon) SEPARATOR ', ') AS ten_nhom_mon,
             m.nhom_mon_datn_id
                 FROM  mon_datn m
                 LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id 
