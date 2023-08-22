@@ -19,15 +19,28 @@
                 m-menu-dropdown-timeout="500"
                 style="position: relative;">
             <ul class="m-menu__nav m-menu__nav--dropdown-submenu-arrow">
-
+                <li
+                        class="m-menu__item"
+                        aria-haspopup="true">
+                    <a th:href="@{/dao-tao/hoc-ky}" class="m-menu__link ">
+                        <i class="m-menu__link-icon fas fa-calendar-alt"></i>
+                        <span class="m-menu__link-title">
+                        <span class="m-menu__link-wrap">
+                            <span class="m-menu__link-text">
+                                Quản lý học kỳ
+                            </span>
+                        </span>
+                    </span>
+                    </a>
+                </li>
                 <li
                         class="m-menu__item"
                         aria-haspopup="true">
                     <a th:href="@{/dao-tao/mon-datn}" class="m-menu__link ">
-                        <i class="m-menu__link-icon flaticon-line-graph"></i>
+                        <i class="m-menu__link-icon fas fa-book"></i>
                         <span class="m-menu__link-title">
                         <span class="m-menu__link-wrap">
-                            <span class="m-menu__link-text">Môn DATN</span>
+                            <span class="m-menu__link-text">Quản lý môn DATN</span>
                         </span>
                     </span>
                     </a>
@@ -36,10 +49,10 @@
                         class="m-menu__item"
                         aria-haspopup="true">
                     <a th:href="@{/dao-tao/nhom-mon-datn}" class="m-menu__link ">
-                        <i class="m-menu__link-icon flaticon-line-graph"></i>
+                        <i class="m-menu__link-icon fa fa-layer-group"></i>
                         <span class="m-menu__link-title">
                         <span class="m-menu__link-wrap">
-                            <span class="m-menu__link-text">Nhóm môn DATN</span>
+                            <span class="m-menu__link-text">Quản lý nhóm môn DATN</span>
                         </span>
                     </span>
                     </a>
@@ -48,10 +61,10 @@
                         class="m-menu__item"
                         aria-haspopup="true">
                     <a th:href="@{/dao-tao/chuyen-nganh}" class="m-menu__link ">
-                        <i class="m-menu__link-icon flaticon-line-graph"></i>
+                        <i class="m-menu__link-icon fas fa-graduation-cap"></i>
                         <span class="m-menu__link-title">
                         <span class="m-menu__link-wrap">
-                            <span class="m-menu__link-text">Chuyên ngành</span>
+                            <span class="m-menu__link-text">Quản lý chuyên ngành</span>
                         </span>
                     </span>
                     </a>
@@ -60,7 +73,7 @@
                         class="m-menu__item"
                         aria-haspopup="true">
                     <a th:href="@{/dao-tao/sinh-vien}" class="m-menu__link ">
-                        <i class="m-menu__link-icon flaticon-line-graph"></i>
+                        <i class="m-menu__link-icon fas fa-user-graduate"></i>
                         <span class="m-menu__link-title">
                         <span class="m-menu__link-wrap">
                             <span class="m-menu__link-text">Quản lý sinh viên</span>
@@ -72,7 +85,7 @@
                         class="m-menu__item"
                         aria-haspopup="true">
                     <a th:href="@{/dao-tao/giang-vien-huong-dan}" class="m-menu__link ">
-                        <i class="m-menu__link-icon flaticon-line-graph"></i>
+                        <i class="m-menu__link-icon fa fa-chalkboard-teacher"></i>
                         <span class="m-menu__link-title">
                         <span class="m-menu__link-wrap">
                             <span class="m-menu__link-text">Quản lý GVHD</span>
@@ -84,7 +97,7 @@
                         class="m-menu__item"
                         aria-haspopup="true">
                     <a th:href="@{/dao-tao/can-bo}" class="m-menu__link ">
-                        <i class="m-menu__link-icon flaticon-line-graph"></i>
+                        <i class="m-menu__link-icon fas fa-user-tie"></i>
                         <span class="m-menu__link-title">
                         <span class="m-menu__link-wrap">
                             <span class="m-menu__link-text">Quản lý Cán bộ</span>
@@ -96,7 +109,7 @@
                         class="m-menu__item"
                         aria-haspopup="true">
                     <a th:href="@{/dao-tao/dot-dang-ky}" class="m-menu__link ">
-                        <i class="m-menu__link-icon flaticon-line-graph"></i>
+                        <i class="m-menu__link-icon fas fa-clipboard-list"></i>
                         <span class="m-menu__link-title">
                         <span class="m-menu__link-wrap">
                             <span class="m-menu__link-text">Quản lý Đợt đăng ký</span>
@@ -108,10 +121,10 @@
                         class="m-menu__item"
                         aria-haspopup="true">
                     <a th:href="@{/dao-tao/nhom-datn}" class="m-menu__link ">
-                        <i class="m-menu__link-icon flaticon-line-graph"></i>
+                        <i class="m-menu__link-icon fas fa-users"></i>
                         <span class="m-menu__link-title">
                         <span class="m-menu__link-wrap">
-                            <span class="m-menu__link-text">Nhóm DATN</span>
+                            <span class="m-menu__link-text">Danh sách Nhóm DATN</span>
                         </span>
                     </span>
                     </a>
@@ -121,7 +134,7 @@
                         class="m-menu__item"
                         aria-haspopup="true">
                     <a target="_blank" th:href="@{https://youtu.be/aF1ASAW_npI}" class="m-menu__link ">
-                        <i class="m-menu__link-icon flaticon-line-graph"></i>
+                        <i class="m-menu__link-icon fas fa-info-circle"></i>
                         <span class="m-menu__link-title">
                         <span class="m-menu__link-wrap">
                             <span class="m-menu__link-text">Hướng dẫn sử dụng</span>

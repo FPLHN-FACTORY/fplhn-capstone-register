@@ -503,15 +503,14 @@ function loadTable(count) {
         success: function (responseData) {
             totalPages = responseData.data.totalPages;
             if (responseData.data.data.length == 0) {
-                $("#searchListGvhd").html(``);
-                2
+                $("#searchListGvhd").html(``);2
                 $("#page").html(``);
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {
                 $("#empty").html(``)
                 $("#searchListGvhd").html(responseData.data.data.map(function (item) {
                     return `
-               <tr>
+               <tr class="table-light">
                    <td class="text-center align-middle">${item.stt}</td>
                    <td class="text-center align-middle">${item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
                    <td class="text-center align-middle">${item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa}</td>
@@ -519,7 +518,7 @@ function loadTable(count) {
                    <td class="text-center align-middle">${item.emailFe}</td>
                    <td class="text-center align-middle">${item.chuyenNganh}</td>
                    <td class="text-center align-middle">
-                   <div class="d-flex justify-content-center align-items-center">
+                    <div class="d-flex justify-content-center align-items-center">
                        <button
                            type="button"
                            class="btn_pencil_square"
@@ -543,7 +542,7 @@ function loadTable(count) {
                             href="/dao-tao/giang-vien-huong-dan/${item.id}">
                             <img src="/img/clipboard-user.svg">
                         </a>
-                        <div/>
+                        </div>
                    </td>
                </tr>
                `

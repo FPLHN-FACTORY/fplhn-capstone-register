@@ -20,26 +20,29 @@ import java.util.List;
  */
 public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository {
     @Query(value = """
-            SELECT ROW_NUMBER() OVER(ORDER BY gv.last_modified_date DESC) AS stt
-            , gv.id, gv.ten_gvhd, ddk.ten_dot_dang_ky FROM do_an_tot_nghiep.phan_cong_huong_dan pc
+            SELECT ROW_NUMBER() OVER(ORDER BY gv.last_modified_date DESC) AS stt, gv.id, gv.ten_gvhd, gv.ten_tai_khoan, ddk.ten_dot_dang_ky
+             FROM do_an_tot_nghiep.phan_cong_huong_dan pc
             JOIN do_an_tot_nghiep.giang_vien_huong_dan gv ON pc.giang_vien_id = gv.id
-                JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
-            WHERE pc.mon_datn_id = :monID 
-             AND
-                ( :#{#req.tenGV} IS NULL 
+            JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
+            WHERE pc.mon_datn_id = :monID
+             AND ddk.id = :#{#req.dotDangKy} AND
+                 ( :#{#req.tenGV} IS NULL 
                     OR :#{#req.tenGV} LIKE '' 
-                    OR gv.ten_gvhd LIKE %:#{#req.tenGV}% ) 
+                    OR gv.ten_tai_khoan LIKE %:#{#req.tenGV}% OR gv.ten_gvhd LIKE %:#{#req.tenGV}% )
                     AND gv.co_so_id = :#{#req.coSoId}
+                    group by gv.id
                     ORDER BY gv.last_modified_date DESC 
             """, countQuery = """
             SELECT  COUNT(pc.giang_vien_id) FROM do_an_tot_nghiep.phan_cong_huong_dan pc
             JOIN do_an_tot_nghiep.giang_vien_huong_dan gv ON pc.giang_vien_id = gv.id
-                JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
-            WHERE pc.mon_datn_id = :monID AND
-                ( :#{#req.tenGV} IS NULL 
+            JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
+            WHERE pc.mon_datn_id = :monID
+             AND ddk.id = :#{#req.dotDangKy} AND
+                 ( :#{#req.tenGV} IS NULL 
                     OR :#{#req.tenGV} LIKE '' 
-                    OR gv.ten_gvhd LIKE %:#{#req.tenGV}% ) 
+                    OR gv.ten_tai_khoan LIKE %:#{#req.tenGV}% OR gv.ten_gvhd LIKE %:#{#req.tenGV}% )
                     AND gv.co_so_id = :#{#req.coSoId}
+                    group by gv.id
                     ORDER BY gv.last_modified_date DESC 
             """
             , nativeQuery = true)
@@ -56,38 +59,51 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
     DtPhanCongHuongDanMonDatnResponse getMon(@Param("maMonId") String maMonId);
 
     @Query(value = """
-            SELECT ROW_NUMBER() OVER() AS stt, gv.id, gv.ten_gvhd, ddk.ten_dot_dang_ky
+            SELECT ROW_NUMBER() OVER(ORDER BY gv.last_modified_date DESC) AS stt, gv.id, gv.ten_gvhd, gv.ten_tai_khoan, ddk.ten_dot_dang_ky
              FROM do_an_tot_nghiep.giang_vien_huong_dan gv
-                JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
-            WHERE gv.co_so_id = :coSoId
-            AND gv.id NOT IN (SELECT giang_vien_id FROM do_an_tot_nghiep.phan_cong_huong_dan WHERE mon_datn_id = :maMonId)
-            """
+             JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
+            WHERE gv.id NOT IN (SELECT giang_vien_id FROM do_an_tot_nghiep.phan_cong_huong_dan WHERE mon_datn_id = :maMonId) AND ddk.id = :#{#req.dotDangKy}
+                    AND gv.co_so_id = :coSoId
+                    ORDER BY gv.last_modified_date DESC 
+            """,
+            countQuery = """
+                        SELECT gv.id
+                         FROM do_an_tot_nghiep.giang_vien_huong_dan gv
+                         JOIN dot_dang_ky ddk ON gv.dot_dang_ky_id = ddk.id 
+                        WHERE gv.id NOT IN (SELECT giang_vien_id FROM do_an_tot_nghiep.phan_cong_huong_dan WHERE mon_datn_id = :maMonId) AND ddk.id = :#{#req.dotDangKy}
+                                AND gv.co_so_id = :coSoId
+                                ORDER BY gv.last_modified_date DESC 
+                    """
             , nativeQuery = true)
-    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(@Param("coSoId") String coSoId, @Param("maMonId") String maMonId);
+    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(@Param("coSoId") String coSoId, @Param("maMonId") String maMonId, @Param("req") DtFindPhanCongHuongDanRequest req);
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ten_mon_datn, m.ma_mon FROM do_an_tot_nghiep.mon_datn m
             JOIN do_an_tot_nghiep.phan_cong_huong_dan pc on m.id = pc.mon_datn_id
             WHERE pc.giang_vien_id = :giangVienId
               AND m.nhom_mon_datn_id IS NOT NULL
+              AND m.co_so_id = :coSoId
              AND
                 ( :#{#req.tenMonDatn} IS NULL 
                     OR :#{#req.tenMonDatn} LIKE '' 
-                    OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
+                    OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% OR m.ma_mon LIKE %:#{#req.tenMonDatn}% )
+                    GROUP BY m.id
                     ORDER BY last_modified_date DESC 
             """, countQuery = """
-            SELECT ROW_NUMBER() OVER(ORDER BY m.last_modified_date DESC) AS stt, m.id, m.ten_mon_datn FROM do_an_tot_nghiep.mon_datn m
+            SELECT m.id FROM do_an_tot_nghiep.mon_datn m
             JOIN do_an_tot_nghiep.phan_cong_huong_dan pc on m.id = pc.mon_datn_id
             WHERE pc.giang_vien_id = :giangVienId
               AND m.nhom_mon_datn_id IS NOT NULL 
+              AND m.co_so_id = :coSoId
              AND
                 ( :#{#req.tenMonDatn} IS NULL 
                     OR :#{#req.tenMonDatn} LIKE '' 
-                    OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% ) 
+                    OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% OR m.ma_mon LIKE %:#{#req.tenMonDatn}% )
+                    GROUP BY m.id
                     ORDER BY last_modified_date DESC 
             """
             , nativeQuery = true)
-    Page<DtPhanMonDatnChoGiangVienHuongDanResponse> getMonDatn(@Param("giangVienId") String id, @Param("req") DtFindPhanMonGiangVienHuongDanRequest req, Pageable page);
+    Page<DtPhanMonDatnChoGiangVienHuongDanResponse> getMonDatn(@Param("coSoId") String coSoId, @Param("giangVienId") String id, @Param("req") DtFindPhanMonGiangVienHuongDanRequest req, Pageable page);
 
     @Query(value = """
             SELECT ROW_NUMBER() OVER(ORDER BY gvhd.last_modified_date DESC ) AS stt,
@@ -111,6 +127,7 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
             SELECT ROW_NUMBER() OVER() AS stt, m.id, m.ten_mon_datn, m.ma_mon FROM do_an_tot_nghiep.mon_datn m
             WHERE m.co_so_id = :coSoId AND nhom_mon_datn_id IS NOT NULL
             AND m.id NOT IN (SELECT mon_datn_id FROM do_an_tot_nghiep.phan_cong_huong_dan WHERE giang_vien_id = :maGiangVienHuongDan)
+                        
             """
             , nativeQuery = true)
     List<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanCongMonDatn(@Param("coSoId") String coSoId, @Param("maGiangVienHuongDan") String maMonId);

@@ -12,6 +12,11 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/plugin/query-ui.css}">
     <link th:href="@{/css/plugin/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/custom/button-icon.css}" rel="stylesheet" type="text/css"/>
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
 </head>
 <!-- end::Head -->
 
@@ -65,6 +70,7 @@
                                             nhóm</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <input type="text"
+                                                   id="detailTenNhom"
                                                    th:value="${nhomDatnThamGia[0].tenNhom} == null ? 'Chưa có' : ${nhomDatnThamGia[0].tenNhom}"
                                                    readonly="readonly" class="form-control">
                                         </div>
@@ -83,15 +89,18 @@
                                             tài</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <input type="text"
+                                                   id="detailTenDeTai"
                                                    th:value="${nhomDatnThamGia[0].tenDeTai} == null ? 'Chưa có' : ${nhomDatnThamGia[0].tenDeTai}"
                                                    readonly="readonly" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <span hidden="" th:text="${nhomDatnThamGia[0].getGvhdId()}"></span>
                                         <label class="col-xl-3 col-lg-3 col-form-label">Tên
                                             GVHD</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <input type="text"
+                                                   id="detailGvhd"
                                                    th:value="${nhomDatnThamGia[0].tenGvhd} == null ? '*Chưa có giảng viên hướng dẫn*' : ${nhomDatnThamGia[0].tenGvhd + ' - ' + nhomDatnThamGia[0].tenTaiKhoanGvhd}"
                                                    readonly="readonly" class="form-control">
                                         </div>
@@ -101,15 +110,6 @@
                                         <div class="col-lg-9 col-xl-6">
                                             <input type="text"
                                                    th:value="${nhomDatnThamGia[0].tenMonDatn}"
-                                                   readonly="readonly" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Trạng
-                                            thái</label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <input type="text"
-                                                   th:value="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatnThamGia[0].getTrangThai())}"
                                                    readonly="readonly" class="form-control">
                                         </div>
                                     </div>
@@ -124,8 +124,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label">Nhận
-                                            xét</label>
+                                        <label class="col-xl-3 col-lg-3 col-form-label">
+                                            Nhận xét
+                                        </label>
                                         <div class="col-lg-9 col-xl-6">
                                             <textarea
                                                     th:text="${nhomDatnThamGia[0].getNhanXet()}"
@@ -133,24 +134,44 @@
                                             </textarea>
                                         </div>
                                     </div>
-
-                                    <div class="row justify-content-center pt-2">
-                                        <div
-                                                th:style="${checkMocThoiGian} == true
-                                                            and ${nhomDatnThamGia[0].getTrangThai()} == 0
-                                                            and ${checkTruongNhom} == true ? '' : 'display: none'"
-                                        >
-                                            <button
-                                                    type="button" class="btn btn-primary"
-                                                    th:attr="onclick=|openModalDoiDeTai()|">
-                                                Đổi tên đề tài
-                                            </button>
-                                            <button
-                                                    type="button" class="btn btn-primary"
-                                                    th:attr="onclick=|openModalChonGVHD()|">
-                                                Chọn GVHG
-                                            </button>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Trạng
+                                            thái</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   th:style="'color: #5867dd; font-weight: bold'"
+                                                   th:value="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatnThamGia[0].getTrangThai())}"
+                                                   readonly="readonly" class="form-control">
                                         </div>
+                                    </div>
+                                    <div class="justify-content-center pt-2">
+                                        <button th:style="${checkTruongNhom} == true ? '' : 'display: none'"
+                                                type="button" class="btn btn-primary"
+                                                th:attr="onclick=|openModalDoiTenNhom()|">
+                                            Đổi tên nhóm
+                                        </button>
+                                        <button th:style="${checkMocThoiGian} == true
+                                                    and ${nhomDatnThamGia[0].getTrangThai()} == 0
+                                                    and ${checkTruongNhom} == true ? '' : 'display: none'"
+                                                type="button" class="btn btn-primary"
+                                                th:attr="onclick=|openModalDoiDeTai()|">
+                                            Đổi tên đề tài
+                                        </button>
+                                        <button th:style="${checkMocThoiGian} == true
+                                                    and ${nhomDatnThamGia[0].getTrangThai()} == 0
+                                                    and ${checkTruongNhom} == true ? '' : 'display: none'"
+                                                type="button" class="btn btn-primary"
+                                                th:attr="onclick=|openModalChonGVHD()|">
+                                            Chọn GVHG
+                                        </button>
+                                        <button data-toggle="tooltip"
+                                                title="Export mẫu phiếu đăng ký DATN"
+                                                type="button" class="btn btn-primary"
+                                                th:style=" ${nhomDatnThamGia[0].getTrangThai()} == 5
+                                                            and ${checkTruongNhom} == true ? '' : 'display: none'"
+                                                th:attr="onclick=|exportWord()|">
+                                            Export mẫu phiếu
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -171,49 +192,61 @@
                                                 <th>Tên Sinh Viên</th>
                                                 <th>Môn Theo Chương Trình</th>
                                                 <th>Chức Vụ</th>
-                                                <th
-                                                        th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
-                                                                (${checkTruongNhom} == false ? 'display:none' : 'display:block')"
-                                                >
+                                                <th th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
+                                                    (${checkTruongNhom} == false ? 'display:none' : 'display:block')">
                                                     Chức năng
                                                 </th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="SvNhomDatn : ${nhomDatnThamGia}">
-                                                    <tr>
-                                                        <td th:text="${SvNhomDatn.getStt()}"></td>
-                                                        <td th:text="${SvNhomDatn.getMaSinhVien()}"></td>
-                                                        <td th:text="${SvNhomDatn.getTenSinhVien()}"></td>
-                                                        <td th:text="${SvNhomDatn.getTenMonChuongTrinh()}"></td>
-                                                        <td th:text="${SvNhomDatn.getChucVu()} == 1 ? 'Trưởng nhóm' : 'Thành viên'"></td>
-                                                        <td
-                                                                th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
-                                                                            (${checkTruongNhom} == false ? 'display:none' :
-                                                                            (${SvNhomDatn.getChucVu()} == 1 ? 'display: none' : 'display: block'))"
-                                                        >
-                                                            <button
-                                                                    class="btn_change_role"
-                                                                    data-toggle="tooltip"
-                                                                    title="Chuyển quyền trưởng nhóm"
-                                                                    th:attr="onclick=|chuyenQuyenTruongNhom('${SvNhomDatn.getIdSinhVien()}', '${SvNhomDatn.getTenSinhVien()}')|"
-                                                            >
-                                                                <img th:src="@{/img/change-role.svg}">
-                                                            </button>
+                                                    <tr th:style="${SvNhomDatn.getChucVu()} == 1 ? 'color: #5867dd; font-weight: bold' : ''" class="table-light">
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getStt()}"></td>
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getMaSinhVien()}"></td>
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getTenSinhVien()}"></td>
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getTenMonChuongTrinh()}"></td>
+                                                        <td class="text-center align-middle" th:text="${SvNhomDatn.getChucVu()} == 1 ? 'Trưởng nhóm' : 'Thành viên'"></td>
+                                                        <td class="text-center align-middle" th:style="${checkMocThoiGian} == false or ${soThanhVien} == 1 ? 'display:none' :
+                                                            (${checkTruongNhom} == false ? 'display:none' :
+                                                            (${SvNhomDatn.getChucVu()} == 1 ? 'display: none' : 'display: block'))">
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <button
+                                                                        class="btn_change_role"
+                                                                        data-toggle="tooltip"
+                                                                        title="Chuyển quyền trưởng nhóm"
+                                                                        th:attr="onclick=|chuyenQuyenTruongNhom('${SvNhomDatn.getIdSinhVien()}', '${SvNhomDatn.getTenSinhVien()}')|">
+                                                                    <img th:src="@{/img/change-role.svg}">
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </th:block>
                                                 </tbody>
                                             </table>
-                                            <div
-                                                    th:style="${checkMocThoiGian} == false ? 'display:none' :
-                                                                (${soThanhVien} == 1 ? 'display: block' :
-                                                                (${checkTruongNhom} == true ? 'display:none' : 'display:block'))">
-                                                <button
-                                                        class="btn btn-danger text-white"
+                                            <!-- Điều kiện khi chưa check thời điểm tham gia, tạo nhóm -->
+                                            <!--                                            th:style="${checkMocThoiGian} == false ? 'display:none' :-->
+                                            <!--                                            (${soThanhVien} == 1 ? 'display: block' :-->
+                                            <!--                                            (${checkTruongNhom} == true ? 'display:none' : 'display:block'))"-->
+                                            <div th:style="${checkMocThoiGian} == false ? 'display:none' :
+                                                 (${checkThoiDiemJoinNhom} == false ? 'display: none' :
+                                                 (${soThanhVien} == 1 ? 'display: block' :
+                                                 (${checkTruongNhom} == true ? 'display:none' : 'display:block')))">
+
+                                                <button class="btn btn-danger text-white"
                                                         th:attr="onclick=|confirmRoiNhom(${soThanhVien})|">
                                                     Rời nhóm
                                                 </button>
                                             </div>
+                                            <!-- Nút chưa validate -->
+                                            <!--                                            <div-->
+                                            <!--                                                    th:style="${checkMocThoiGian} == false ? 'display:none' :-->
+                                            <!--                                                                (${soThanhVien} == 1 ? 'display: block' :-->
+                                            <!--                                                                (${checkTruongNhom} == true ? 'display:none' : 'display:block'))">-->
+                                            <!--                                                <button-->
+                                            <!--                                                        class="btn btn-danger text-white"-->
+                                            <!--                                                        th:attr="onclick=|confirmRoiNhom(${soThanhVien})|">-->
+                                            <!--                                                    Rời nhóm-->
+                                            <!--                                                </button>-->
+                                            <!--                                            </div>-->
 
                                         </div>
                                     </div>
@@ -234,9 +267,8 @@
         <div class="modal-content">
             <form id="form_chon_giang_vien">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Đăng
-                        ký
-                        nhóm Dự án tốt nghiệp</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Đăng ký nhóm Dự án tốt nghiệp</h5>
                     <button type="button" class="close"
                             data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -248,7 +280,11 @@
                         <select class="form-control col-12"
                                 id="chonGiangVien">
                             <option th:each="giangVien : ${listGiangVien}"
-                                    th:text="${giangVien.getTenGvhd + ' - ' + giangVien.getTenTaiKhoan()}"
+                                    th:style="${giangVien.getId() == nhomDatnThamGia[0].getGvhdId() ? 'font-weight: bold;' : ''}"
+                                    th:text="${giangVien.getId() == nhomDatnThamGia[0].getGvhdId() ?
+                                    	giangVien.getTenGvhd + ' - ' + giangVien.getTenTaiKhoan() + ' (Đã chọn)'
+                                    	: giangVien.getTenGvhd + ' - ' + giangVien.getTenTaiKhoan()}"
+                                    th:selected="${giangVien.getId() == nhomDatnThamGia[0].getGvhdId()}"
                                     th:value="${giangVien.getId}"></option>
                         </select>
                     </div>
@@ -266,8 +302,8 @@
         </div>
     </div>
 </div>
-<!--  End modal chọn giảng viên-->
-<!--                        begin Đổi tên đề tài-->
+<!--                     End modal chọn giảng viên         -->
+<!--                        begin Đổi tên đề tài           -->
 <div
         class="modal fade"
         tabindex="-1"
@@ -290,6 +326,7 @@
                         <br>
                         <label class="col-form-label">Tên đề tài</label>
                         <input
+                                maxlength="255"
                                 type="text"
                                 class="form-control"
                                 id="inputTenDeTai">
@@ -311,7 +348,52 @@
         </div>
     </div>
 </div>
-<!--                        end Đổi tên đề tài-->
+<!--                        End đổi tên đề tài           -->
+<!--                        Begin đổi tên nhóm           -->
+<div
+        class="modal fade"
+        tabindex="-1"
+        id="modal_doi_ten_nhom"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_doi_ten_nhom">
+                <div class="modal-header">
+                    <h5 class="modal-title">Đổi tên nhóm</h5>
+                    <button type="button" class="close"
+                            data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <br>
+                        <label class="col-form-label">Tên nhóm</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                maxlength="255"
+                                id="inputTenNhom">
+                        <span class="text-danger"
+                              id="errorTenNhom"></span><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn btn-light"
+                            data-bs-dismiss="modal">Hủy
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            th:attr="onclick=|doiTenNhom()|">
+                        Đổi tên nhóm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--                        End đổi tên nhóm-->
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

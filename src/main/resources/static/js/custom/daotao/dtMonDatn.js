@@ -18,21 +18,6 @@ function clearData() {
     $("#search_dot_dang_ky").val("");
 }
 
-function changeInput() {
-    if ($("#valueInput").val().length != 0) {
-        let value = parseInt($("#valueInput").val());
-        if (Number(value) <= 0) {
-            value = 1;
-        }
-        if (Number(value) > totalPages) {
-            value = totalPages;
-        }
-        loadTable(value - 1);
-    }
-}
-
-genPaging();
-
 function genPaging() {
     if (totalPages <= 1) {
         $("#page").html('');
@@ -116,9 +101,10 @@ function loadTable(count) {
                             onclick="openModalRemoveMonDatn('${monDatn.id}','${count})">
                             <img src="/img/trash.svg">
                         </button>
-                        <div/>
+                        </div>
                     </td>
-                </tr>`
+                </tr>
+               `
                 }));
                 genPaging();
             }
@@ -401,3 +387,18 @@ $('#chuyen_nganh_update').change(function () {
     var chuyenNganhId = $(this).val();
     getNhomMon(chuyenNganhId, 2, null);
 })
+
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadTable(value - 1);
+    }
+}
+
+genPaging();

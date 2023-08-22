@@ -1,22 +1,33 @@
 const svNhomDatnApi = '/api/sinh-vien';
 const svNhomDatnView = '/sinh-vien';
 
-function openModalDoiDeTai(){
+var detailTenNhom = $("#detailTenNhom").val() == "Chưa có" ? "" :  $("#detailTenNhom").val();
+var detailTenDeTai = $("#detailTenDeTai").val() == "Chưa có" ? "" : $("#detailTenDeTai").val();
+
+function openModalDoiDeTai() {
+    $("#inputTenDeTai").val(detailTenDeTai);
     $("#modal_doi_ten_de_Tai").modal('show');
 }
 
-function openModalChonGVHD(){
+function openModalChonGVHD() {
     $("#modal_chon_giang_vien").modal('show');
 }
 
 function doiTenDeTai() {
     $("#modal_doi_ten_de_Tai").modal('hide');
-    let inputTenDeTai = $("#inputTenDeTai").val();
+    let inputTenDeTai = $("#inputTenDeTai").val().trim();
     let updateTenDeTaiRequest = {};
     updateTenDeTaiRequest["tenDeTai"] = inputTenDeTai;
+    var message = "";
+    if (inputTenDeTai.length == 0) {
+        message = "Bạn muốn để trống tên đề tài?";
+    } else {
+        message = "Bạn muốn đổi tên đề tài?";
+    }
+
     bootbox.confirm({
         title: "Đổi tên đề tài",
-        message: "Bạn muốn đổi tên đề tài?",
+        message: message,
         buttons: {
             cancel: {
                 className: 'btn-outline-secondary btn btn-light',
@@ -35,17 +46,82 @@ function doiTenDeTai() {
                     data: JSON.stringify(updateTenDeTaiRequest),
                     datatype: 'json',
                     success: function (responseData) {
+                        console.log(responseData)
                         bootbox.alert({
                             message: 'Đổi đề tài thành công',
                             backdrop: true,
                             callback: function () {
-                                window.open(svNhomDatnView, '_self');
+                                detailTenDeTai = responseData.data;
+                                $("#detailTenDeTai").val(detailTenDeTai == "" ? 'Chưa có' : responseData.data);
                             }
                         });
                     },
                     error: function (responseData) {
                         console.log(responseData);
-                        $("#errorTenDeTai").text(responseData.responseJSON.message);
+                        bootbox.alert({
+                            message: 'Đổi tên đề tài thất bại',
+                            backdrop: true,
+                        });
+                    }
+                });
+            }
+        }
+    });
+}
+
+function openModalDoiTenNhom() {
+    $("#inputTenNhom").val(detailTenNhom);
+    $("#modal_doi_ten_nhom").modal('show');
+}
+
+function doiTenNhom() {
+    $("#modal_doi_ten_nhom").modal('hide');
+    let inputTenNhom = $("#inputTenNhom").val().trim();
+    let updateTenNhomRequest = {};
+    updateTenNhomRequest["tenNhom"] = inputTenNhom;
+    var message = "";
+    if (inputTenNhom.length == 0) {
+        message = "Bạn muốn để trống tên nhóm?";
+    } else {
+        message = "Bạn muốn đổi tên nhóm?";
+    }
+    bootbox.confirm({
+        title: "Đổi tên nhóm",
+        message: message,
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: svNhomDatnApi + "/update-ten-nhom?tenNhom=" + inputTenNhom,
+                    datatype: 'json',
+                    data: JSON.stringify(updateTenNhomRequest),
+                    success: function (responseData) {
+                        bootbox.alert({
+                            message: 'Đổi tên nhóm thành công',
+                            backdrop: true,
+                            callback: function () {
+                                detailTenNhom = responseData.data;
+                                $("#detailTenNhom").val(detailTenNhom == "" ? 'Chưa có' : responseData.data);
+                                // window.open(svNhomDatnView, '_self');
+                            }
+                        });
+                    },
+                    error: function (responseData) {
+                        console.log(responseData);
+                        bootbox.alert({
+                            message: 'Đổi tên nhóm thất bại',
+                            backdrop: true,
+                        });
                     }
                 });
             }
@@ -189,6 +265,21 @@ function chonGiangVienHuongDan() {
                     }
                 });
             }
+        }
+    });
+}
+
+function exportWord() {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: svNhomDatnApi + "/export-word",
+        success: function (responseData) {
+            window.open(svNhomDatnApi + "/export-word",'_self');
+        },
+        error: function (responseData) {
+            console.log(responseData);
+            bootbox.alert(responseData.responseJSON.message);
         }
     });
 }

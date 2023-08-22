@@ -14,8 +14,17 @@ import org.springframework.data.repository.query.Param;
 public interface GvNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
-              SELECT ROW_NUMBER() OVER( ORDER BY nd.last_modified_date DESC ) AS stt, nd.ma_nhom, nd.id, nd.ten_de_tai , mdatn.ma_mon, 
-                               COUNT(sv.ma_sinh_vien) AS total_ma_sinh_vien, nd.trang_thai
+                      WITH DanhSachThanhVien AS (
+                      SELECT a.id, GROUP_CONCAT(c.ma_sinh_vien SEPARATOR ', ') AS danh_sach_ma_sinh_vien
+                      FROM nhom_datn a
+                      LEFT JOIN sinh_vien b ON a.truong_nhom_id = b.id
+                      LEFT JOIN sinh_vien c ON a.id = c.nhom_id
+                      WHERE a.giang_vien_id = :#{#request.giangVienHDId}
+                      GROUP BY a.id
+                      )
+                      SELECT ROW_NUMBER() OVER( ORDER BY nd.last_modified_date DESC ) AS stt, nd.ma_nhom, nd.id, nd.ten_de_tai , mdatn.ma_mon, 
+                               COUNT(sv.ma_sinh_vien) AS total_ma_sinh_vien, nd.trang_thai, dstv.danh_sach_ma_sinh_vien as danh_sach_thanh_vien
+                        , c.ma_sinh_vien as truong_nhom
                         FROM nhom_datn nd
                          LEFT JOIN sinh_vien c ON nd.truong_nhom_id = c.id
                          LEFT JOIN sinh_vien sv ON sv.nhom_id = nd.id
@@ -24,7 +33,8 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
                          LEFT JOIN giang_vien_huong_dan gvhd ON gvhd.id = nd.giang_vien_id
                          LEFT JOIN dot_dang_ky ddk ON ddk.id = nd.dot_dang_ky_id
                          LEFT JOIN hoc_ky hk ON hk.id = ddk.hoc_ky_id
-                 WHERE   gvhd.id LIKE :#{#request.giangVienHDId}
+                         LEFT JOIN DanhSachThanhVien dstv ON dstv.id = nd.id
+                 WHERE gvhd.id LIKE :#{#request.giangVienHDId}
                  AND nd.co_so_id = :#{#request.coSoId}
                   AND ( :#{#request.monId} IS NULL
                           OR :#{#request.monId} LIKE ''
@@ -55,5 +65,4 @@ public interface GvNhomDatnRepository extends NhomDatnRepository {
             ORDER BY nd.last_modified_date DESC
             """, nativeQuery = true)
     Page<GvNhomDatnResponse> fillAllNhomDatn(@Param("request") GvFindNhomDatnRequest request, Pageable page);
-
 }

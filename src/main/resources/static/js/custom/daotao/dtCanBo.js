@@ -18,6 +18,21 @@ function clearData() {
 let totalPages = $("#totalPages").val();
 let currentPage = $("#currentPage").val();
 
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadTable(value - 1);
+    }
+}
+
+genPaging();
+
 function genPaging() {
     if (totalPages <= 1) {
         $("#page").html('');
@@ -67,13 +82,14 @@ function loadTable(count) {
                 $("#empty").html(``)
                 $("#searchListCanBo").html(responseData.data.data.map(function (canbo) {
                     return `
-                <tr class="table-light">
-                      <td>${canbo.stt}</td>
-                      <td>${canbo.emailFE}</td>
-                      <td>${canbo.soDienThoai}</td>
-                      <td>${canbo.tenCanBo} - ${canbo.tenTaiKhoan}</td>
-                      <td>${canbo.vaiTro === 0 ? 'Đào Tạo' : 'CNBM'}</td>
-                      <td>
+                <tr class="table-light">                 
+                      <td class="text-center align-middle">${canbo.stt}</td>
+                      <td class="text-center align-middle">${canbo.emailFE}</td>
+                      <td class="text-center align-middle">${canbo.soDienThoai}</td>
+                      <td class="text-center align-middle">${canbo.tenCanBo} - ${canbo.tenTaiKhoan}</td>
+                      <td class="text-center align-middle">${canbo.vaiTro === 0 ? 'Đào Tạo' : 'CNBM - ' + canbo.tenChuyenNganh}</td>
+                      <td class="text-center align-middle">
+                        <div class="d-flex justify-content-center align-items-center">
                           <button
                             type="button"
                             class="btn_pencil_square"
@@ -90,6 +106,7 @@ function loadTable(count) {
                             onclick="openModalRemoveCanBo('${canbo.id}','${count})">
                             <img src="/img/trash.svg">
                         </button>
+                        </div>
                     </td>
                 </tr>
                `

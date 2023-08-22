@@ -25,28 +25,33 @@ function viewTable(page) {
     let chuyenNganh = $("#chuyenNganh").val();
     let trangThai = $("#trangThai").val();
     let dotDangKy = $("#dotDangKy").val();
+    let sortNhomDatn = $("#sortNhomDatn").val();
+
     currentPage = page;
     $("#valueInput").val(page + 1);
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/api/dao-tao/sinh-vien?page=" + page + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy,
+        url: "/api/dao-tao/sinh-vien?page=" + page
+            + "&sortNhomDatn=" + sortNhomDatn + "&idDotDangKy=" + dotDangKy + "&idTrangThaiNhom=" + trangThai + "&tenSinhVien=" + keyword
+            + "&idChuyenNganh=" + chuyenNganh,
         dataType: 'json',
         success: function (responseData) {
             if (responseData.data.data.length > 0) {
                 totalPages = responseData.data.totalPages;
                 $("#is_empty").html('')
                 $("#list").html(responseData.data.data.map(function (item) {
-                    return ` <tr style="${item.trangThai == 1 ? 'color : red' : ''}">
-                                <td>${item.stt}</td>
-                                <td>${item.maSinhVien}</td>
-                                <td>${item.tenSinhVien}</td>
-                                <td>${item.monChuongTrinh == null ? '-' : item.maMonChuongTrinh}</td>
-                                <td>${item.maNhom == null ? '-' : item.maNhom}</td>
-                                <td>${item.tenDeTai == null ? '-' : item.tenDeTai}</td>
-                                <td>${item.tenGvhd == null ? '-' : item.tenGvhd}</td>
-                                <td>${item.tenChuyenNganh}</td>
-                                <td>
+                    return ` <tr style="${item.trangThai == 1 ? 'color : red' : ''}" class="table-light">
+                                <td class="text-center align-middle">${item.stt}</td>
+                                <td class="text-center align-middle">${item.maSinhVien}</td>
+                                <td class="text-center align-middle">${item.tenSinhVien}</td>
+                                <td class="text-center align-middle">${item.monChuongTrinh == null ? '-' : item.maMonChuongTrinh}</td>
+                                <td class="text-center align-middle">${item.maNhom == null ? '-' : item.maNhom}</td>
+                                <td class="text-center align-middle">${item.tenDeTai == null ? '-' : item.tenDeTai}</td>
+                                <td class="text-center align-middle">${item.tenGvhd == null ? '-' : item.tenGvhd}</td>
+                                <td class="text-center align-middle">${item.tenChuyenNganh}</td>
+                                <td class="text-center align-middle">
+                                <div class="d-flex justify-content-center align-items-center">
                                     <button class="btn_eye"
                                             data-toggle="tooltip"
                                             title="Xem chi tiết"
@@ -71,6 +76,7 @@ function viewTable(page) {
                                          onclick="loaiSinhVienDetail('${item.id}','${page}')">                      
                                            <img src="/img/person-off.svg">                                                               
                                      </button>
+                                     </div>
                                 </td>
                         </tr>`
                 }));
@@ -480,6 +486,7 @@ function exportExcel() {
     let chuyenNganh = $("#chuyenNganh").val();
     let trangThai = $("#trangThai").val();
     let dotDangKy = $("#dotDangKy").val();
+    let sortNhomDatn = $("#sortNhomDatn").val();
     let typeExcel = $("#type_excel").val();
     if (typeExcel == '') {
         $("#type_excel_error").text("Chọn định dạng file download");
@@ -487,10 +494,15 @@ function exportExcel() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy,
+            url: "/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien="
+                + keyword + "&idChuyenNganh=" + chuyenNganh + "&idDotDangKy="
+                + dotDangKy + "&sortNhomDatn=" + sortNhomDatn + "&idTrangThaiNhom=" + trangThai,
 
             success: function () {
-                window.open("/api/dao-tao/sinh-vien/export?typeExcel=" + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh=" + chuyenNganh + "&idTrangThaiNhom=" + trangThai + "&idDotDangKy=" + dotDangKy, '_self');
+                window.open("/api/dao-tao/sinh-vien/export?typeExcel="
+                    + typeExcel + "&tenSinhVien=" + keyword + "&idChuyenNganh="
+                    + chuyenNganh + "&idDotDangKy=" + dotDangKy + "&sortNhomDatn="
+                    + sortNhomDatn + "&idTrangThaiNhom=" + trangThai, '_self');
             },
             error: function (e) {
                 console.log("ERROR : ", e);

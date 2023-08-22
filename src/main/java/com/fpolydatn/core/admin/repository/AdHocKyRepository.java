@@ -14,14 +14,23 @@ import org.springframework.data.repository.query.Param;
 public interface AdHocKyRepository extends HocKyRepository {
 
     @Query(value = """
-        SELECT id, ten_hoc_ky, last_modified_date 
-            FROM hoc_ky hk 
+        SELECT ROW_NUMBER() OVER(ORDER BY created_date DESC) AS STT,
+        	id, ten_hoc_ky, ngay_bat_dau, ngay_ket_thuc
+            FROM hoc_ky
             WHERE 
                 ( :#{#req.tenHocKy} IS NULL 
                     OR :#{#req.tenHocKy} LIKE '' 
                     OR ten_hoc_ky LIKE %:#{#req.tenHocKy}% ) 
-            ORDER BY last_modified_date DESC 
-        """, nativeQuery = true)
+            ORDER BY created_date DESC 
+        """, countQuery = """
+            SELECT COUNT(id)
+                        FROM hoc_ky
+                        WHERE 
+                            ( :#{#req.tenHocKy} IS NULL 
+                                OR :#{#req.tenHocKy} LIKE '' 
+                                OR ten_hoc_ky LIKE %:#{#req.tenHocKy}% ) 
+                        ORDER BY created_date DESC 
+            """,nativeQuery = true)
     Page<HocKyResponse> findByName(@Param("req") FindHocKyRequest req, Pageable page);
 
     @Query(value = """

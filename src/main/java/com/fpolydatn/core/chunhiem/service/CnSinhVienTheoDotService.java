@@ -3,6 +3,8 @@ package com.fpolydatn.core.chunhiem.service;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.entity.SinhVien;
 
 import java.util.List;
 
@@ -13,4 +15,6 @@ public interface CnSinhVienTheoDotService {
     boolean addSinhVienTheoNhom(String maNhom,String maSinhVien);
 
     List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(String tenSinhVien,String coSoId);
+
+    Boolean randomNhomDatnByIdChuNhiem(String idChuNhiem, String coSoId, Integer number);
 }

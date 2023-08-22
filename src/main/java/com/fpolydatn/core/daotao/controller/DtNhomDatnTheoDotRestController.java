@@ -38,11 +38,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     @GetMapping("/search")
     public ResponseObject viewNhomDatn(final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
         req.setCoSoId(coSoId);
-        if (dotDangKyId != null) {
-            req.setDotDangKyId(dotDangKyId);
-        }
         PageableObject<DtNhomDatnTheoDotResponse> listNhomDatn = dtNhomDatnTheoDotService.findAllNhomDatn(req);
         return new ResponseObject(listNhomDatn);
     }
@@ -52,5 +48,12 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         request.setCoSoId(session.getCoSoId());
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         dtNhomDatnTheoDotService.DTNhomDatnExport(response, typeExcel, request);
+    }
+
+    @GetMapping("/export-excel")
+    public void exportEcel(HttpServletResponse response, FindDtNhomDatnTheoDotRequest request) throws IOException {
+        request.setCoSoId(session.getCoSoId());
+        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        dtNhomDatnTheoDotService.DTNhomDatnSinhVienExport(response, request);
     }
 }

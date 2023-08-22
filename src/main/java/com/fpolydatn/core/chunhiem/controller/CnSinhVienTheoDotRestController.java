@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/chu-nhiem/dot-dang-ky/sinh-vien")
 public class CnSinhVienTheoDotRestController extends BaseController {
+
     @Autowired
     private CnSinhVienTheoDotService cnSinhVienTheoDotService;
 
@@ -31,6 +32,13 @@ public class CnSinhVienTheoDotRestController extends BaseController {
     @PostMapping("/addSinhVien")
     public ResponseObject addSinhVienByNhom(@RequestParam("id") String maNhom, @RequestParam("maSinhVien") String maSinhVien) {
         return new ResponseObject(cnSinhVienTheoDotService.addSinhVienTheoNhom(maNhom, maSinhVien));
+    }
+
+    @PostMapping("/random-nhom-datn")
+    public ResponseObject randomNhomDatn(@RequestParam("number") Integer number) {
+        String coSoId = session.getCoSoId();
+        String idChuNhiem = session.getUserId();
+        return new ResponseObject(cnSinhVienTheoDotService.randomNhomDatnByIdChuNhiem(idChuNhiem, coSoId, number));
     }
 
 }

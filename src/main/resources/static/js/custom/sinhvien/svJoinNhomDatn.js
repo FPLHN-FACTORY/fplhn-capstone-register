@@ -48,10 +48,10 @@ function openModalDanhSachSinhVien(id) {
             responseData.data.map(function (item) {
                 text += `
                 <tr>
-                <td>${item.stt}</td>
-                <td>${item.maSinhVien}</td>
-                <td>${item.tenSinhVien}</td>
-                <td>${item.chucVu == 1 ? 'Trưởng nhóm' : 'Thành viên'}</td>
+                <td class="text-center align-middle">${item.stt}</td>
+                <td class="text-center align-middle">${item.maSinhVien}</td>
+                <td class="text-center align-middle">${item.tenSinhVien}</td>
+                <td class="text-center align-middle">${item.chucVu == 1 ? 'Trưởng nhóm' : 'Thành viên'}</td>
                 </tr>
                 `
             })
@@ -277,17 +277,18 @@ function loadDataNhomDatn(count) {
                 $("#empty").html(``)
                 $("#listNhomDatn").html(array.map(function (item) {
                     return `
-                <tr>
-                <td>${item.stt}</td>
-                <td>${item.maNhom}</td>
-                <td>${item.tenNhom == null ? 'Chưa có' : item.tenNhom}</td>
-                <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
-                <td>${item.tenMonDatn}</td>
-                <td>${item.countSinhVien}/7</td>
-                <td>${item.tenSinhVien}</td>
-                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
-                <td>${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
-                <td>
+                <tr class="table-light">
+                <td class="text-center align-middle">${item.stt}</td>
+                <td class="text-center align-middle">${item.maNhom}</td>
+                <td class="text-center align-middle">${item.tenNhom == null ? 'Chưa có' : item.tenNhom}</td>
+                <td class="text-center align-middle">${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
+                <td class="text-center align-middle">${item.tenMonDatn}</td>
+                <td class="text-center align-middle">${item.countSinhVien}/7</td>
+                <td class="text-center align-middle">${item.tenTruongNhom + ' - ' + item.maSinhVienTruongNhom}</td>
+                <td class="text-center align-middle">${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan}</td>
+                <td class="text-center align-middle">${item.matKhauTonTai == 0 ? 'Công khai' : 'Nhóm kín'}</td>
+                <td class="text-center align-middle">
+                <div class="d-flex justify-content-center align-items-center">
                     <button type="button"
                         class="btn_eye"
                         title="Xem chi tiết nhóm"
@@ -295,13 +296,13 @@ function loadDataNhomDatn(count) {
                     >  
                         <img src="/img/eye-fill.svg">
                     </button>
-                    <button class="btn_box_arrow" style="${checkHanSV == 'false' ? 'display:none' : checkThoiGianRoiNhom == 'true' ? 'display: block' : 'display:none'}"                                 
+                    <button class="btn_box_arrow" 
                             data-target="#modal_create1"
                             data-toggle="modal"
-                            onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')"
-                            >
+                            onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')">
                         <img src="/img/box-arrow.svg">
                     </button>
+                    </div>
                 </td>
                 <div class="modal fade"></div>
                 </td>
@@ -314,5 +315,13 @@ function loadDataNhomDatn(count) {
         error: function (e) {
             console.log("ERROR : ", e);
         }
+        // Nút tham gia nhóm: Có validate -> phải đủ 12 tiếng sau thời điểm rời nhóm gần nhất mới được join nhóm mới
+    // <button className="btn_box_arrow"
+    //         style="${checkHanSV == 'false' ? 'display:none' : checkThoiGianRoiNhom == 'true' ? 'display: block' : 'display:none'}"
+    //         data-target="#modal_create1"
+    //         data-toggle="modal"
+    //         onClick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')">
+    //     <img src="/img/box-arrow.svg">
+    // </button>
     });
 }

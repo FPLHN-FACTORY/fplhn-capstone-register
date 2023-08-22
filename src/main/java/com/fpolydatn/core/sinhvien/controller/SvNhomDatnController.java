@@ -10,6 +10,7 @@ import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvMonDatnService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
+import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +59,13 @@ public class SvNhomDatnController extends BaseController {
             req.setCoSoId(coSoId );
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUSer);
-            Boolean checkThoiGianRoiNhom = svNhomDatnService.checkThoiGianRoiNhom(idUSer);
+            // Truyền thời gian rời nhóm gần nhất -> validate chờ 12 tiếng sau thời điểm rời nhóm gần nhất
+            // mới được join nhóm mới
+            // Boolean checkThoiGianRoiNhom = svNhomDatnService.checkThoiGianRoiNhom(idUSer);
+            // model.addAttribute("checkThoiGianRoiNhom", checkThoiGianRoiNhom);
+
             model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer, coSoId, dotDangKyHienTai));
             model.addAttribute("page", listNhomDatn);
-            model.addAttribute("checkThoiGianRoiNhom", checkThoiGianRoiNhom);
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(
@@ -69,7 +73,12 @@ public class SvNhomDatnController extends BaseController {
             List<SvDetailNhomDatnResponse> svDetailNhomDatnResponse = svNhomDatnService.getDetailNhomDatnById(nhomId, coSoId, dotDangKyHienTai);
             Integer soThanhVien = svSinhVienService.getSoThanhVienByNhomId(nhomId, coSoId, dotDangKyHienTai);
             String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(idUSer);
-            List<SvGiangVienHuongDanResponse> listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
+            List<SvGiangVienHuongDanResponse> listGiangVien = null;
+            if (svDetailNhomDatnResponse.get(0).getTrangThai() == 0) {
+                listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
+            }
+            Boolean checkThoiDiemJoinNhom = svNhomDatnService.checkThoiDiemJoinNhomGanNhat(idUSer);
+            model.addAttribute("checkThoiDiemJoinNhom", checkThoiDiemJoinNhom);
             model.addAttribute("soThanhVien", soThanhVien);
             model.addAttribute("listGiangVien", listGiangVien);
             model.addAttribute("checkTruongNhom", checkTruongNhom);

@@ -57,41 +57,30 @@ public class PropertyKeys {
     public static final String GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN = "giang.vien.dang.co.nhom.huong.dan";
     public static final String CHUA_DEN_THOI_GIAN_CUA_CHU_NHIEM = "chua.den.thoi.gian.cua.chu.nhiem";
     public static final String MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN = "mon.datn.khong.thoa.man.voi.sinh.vien";
-
     public static final String VUOT_QUA_SO_LUONG_CHO_PHEP = "vuot.qua.so.luong.cho.phep";
-
     public static final String MON_KHONG_TUONG_DUONG = "mon.khong.tuong.duong";
-
     public static final String GIANG_VIEN_KHONG_DAY_MON_NAY = "giang.vien.khong.day.mon.nay";
-
     public static final String MOC_THOI_GIAN_GVHD = "moc.thoi.gian.gvhd";
-
     public static final String DONT_UPDATE_TEN_DE_TAI = "dont.update.ten.de.tai";
-
     public static final String DONT_PHE_DUYET_NHOM_DATN = "dont.phe.duyet.nhom.datn";
-
     public static final String DONT_CHOT_DE_TAI_NHOM_DATN = "dont.chot.de.tai.nhom.datn";
-
     public static final String CHUYEN_NGANH_ALREADY_EXIST = "chuyen.nganh.already.exist";
-
     public static final String CHU_NHIEM_ALREADY_EXIST = "chu.nhiem.already.exist";
-
     public static final String MA_NHOM_MON_DATN_ALREADY_EXIST = "ma.nhom.mon.already.exist";
-
     public static final String NHOM_MON_DATN_NOT_EXIST = "nhom.mon.datn.not.exist";
-
     public static final String NHOM_MON_DANG_TON_TAI_MON = "nhom.mon.dang.ton.tai.mon";
     public static final String TEN_TAI_KHOAN_CAN_BO_EXIST = "ten.tai.khoan.can.bo.exist";
-
     public static final String GIANG_VIEN_DANG_DUOC_PHAN_CONG = "giang.vien.huong.dang.duoc.phan.cong";
-
     public static final String CHU_NHIEM_NOT_EXISTS = "chu.nhiem.not.exists";
-
     public static final String CHU_NHIEM_NAY_DANG_CHU_NHIEM_1_CHUYEN_NGANH = "chu.nhiem.nay.dang.chu.nhiem.mot.chuyen.nganh";
     public static final String SINH_VIEN_NOT_EXISTS = "sinh.vien.not.exists";
     public static final String SINH_VIEN_ALREADY_EXIST = "sinh.vien.mon.already.exist";
-
     public static final String TAO_NHOM_THAT_BAI = "tao.nhom.that.bai";
     public static final String SINH_VIEN_DA_CO_NHOM = "sinh.vien.da.co.nhom";
+    public static final String SINH_VIEN_KHONG_PHAI_TRUONG_NHOM = "sinh.vien.khong.phai.truong.nhom";
+    public static final String QUA_SO_KY_TU_CHO_PHEP = "qua.so.ky.tu.cho.phep";
+    public static final String CHUA_DU_12_TIENG_TRONG_NHOM = "chua.du.12.tieng.trong.nhom";
+    public static final String KHONG_DU_SINH_VIEN_DE_TAO_NHOM = "khong.du.sinh.vien.de.tao.nhom";
+    public static final String TON_TAI_DOT_DANG_KY = "ton.tai.dot.dang.ky";
 
 }

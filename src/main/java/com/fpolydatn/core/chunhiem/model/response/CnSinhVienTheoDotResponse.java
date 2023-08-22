@@ -20,6 +20,9 @@ public interface CnSinhVienTheoDotResponse {
     @Value("#{target.ten_sinh_vien}")
     String getTenSinhVien();
 
+    @Value("#{target.ten_chuyen_nganh}")
+    String getTenChuyenNganh();
+
     @Value("#{target.ma_mon_chuong_trinh}")
     String getMaMonChuongTrinh();
 

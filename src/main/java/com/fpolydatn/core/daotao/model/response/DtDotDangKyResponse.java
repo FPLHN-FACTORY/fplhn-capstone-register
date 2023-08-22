@@ -30,4 +30,16 @@ public interface DtDotDangKyResponse extends IsIdentified {
     @Value("#{target.trang_thai}")
     Integer getTrangThai();
 
+    @Value("#{target.tong_sinh_vien}")
+    Integer getTongSinhVien();
+
+    @Value("#{target.tong_sv_chua_co_nhom}")
+    Integer getTongSvChuaCoNhom();
+
+    @Value("#{target.tong_so_nhom}")
+    Integer getTongSoNhom();
+
+    @Value("#{target.tong_nhom_khong_hop_le}")
+    Integer getTongNhomKhongHopLe();
+
 }

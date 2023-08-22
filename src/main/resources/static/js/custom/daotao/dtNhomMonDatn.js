@@ -65,12 +65,13 @@ function loadTable(count) {
                 $("#searchListMon").html(responseData.data.data.map(function (nhomMonDatn) {
                     return `
                 <tr class="table-light">
-                      <td>${nhomMonDatn.stt}</td>
-                      <td>${nhomMonDatn.maNhomMon}</td>
-                      <td>${nhomMonDatn.tenNhomMon}</td>
-                      <td>${nhomMonDatn.tenChuyenNganh}</td>
-                      <td>${nhomMonDatn.soMon}</td>
-                      <td>
+                      <td class="text-center align-middle">${nhomMonDatn.stt}</td>
+                      <td class="text-center align-middle">${nhomMonDatn.maNhomMon}</td>
+                      <td class="text-center align-middle">${nhomMonDatn.tenNhomMon}</td>
+                      <td class="text-center align-middle">${nhomMonDatn.tenChuyenNganh}</td>
+                      <td class="text-center align-middle">${nhomMonDatn.soMon}</td>
+                      <td class="text-center align-middle">
+                        <div class="d-flex justify-content-center align-items-center">
                           <a
                             type="button"
                             class="btn_clipboard_user" data-toggle="tooltip"
@@ -94,6 +95,7 @@ function loadTable(count) {
                             onclick="openModalChiTietNhomMonDatn('${nhomMonDatn.id}','${count})">
                             <img src="/img/eye-fill.svg">
                         </button>
+                        </div>
                     </td>
                 </tr>
                `

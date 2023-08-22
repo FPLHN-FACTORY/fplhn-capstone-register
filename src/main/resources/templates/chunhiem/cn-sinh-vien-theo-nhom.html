@@ -17,6 +17,44 @@
         .ui-autocomplete {
             z-index: 2147483647;
         }
+
+        .info-container {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .info-container h5 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-weight: bold;
+            flex: 3;
+            display: inline-block;
+            width: 200px;
+        }
+
+        .info-label-content {
+            flex: 7;
+            width: 300px;
+        }
+
+        .info-value {
+            display: flex;
+            font-size: 13px;
+            margin-bottom: 17px;
+        }
+
+        .info-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <!-- end::Head -->
@@ -49,26 +87,68 @@
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div class="row">
+                                        <div class="col-md-6 offset-md-3">
+                                            <div class="info-container">
+                                                <h5>Thông tin nhóm:</h5>
+                                                <div class="info-value">
+                                                    <span class="info-label" style="display: flex;">Mã nhóm:</span>
+                                                    <span
+                                                            class="info-label-content"
+                                                            th:text="${thongTinNhom.maNhom}">  </span>
+                                                </div>
+                                                <div class="info-value">
+                                                    <span class="info-label">Tên nhóm:</span><span
+                                                        class="info-label-content"
+                                                        th:text="${thongTinNhom.tenNhom == null ? 'Chưa có' : thongTinNhom.tenNhom}"> </span>
+                                                </div>
+                                                <div class="info-value">
+                                                    <span class="info-label" style="flex: 3">Tên đề tài:</span> <span
+                                                        class="info-label-content"
+                                                        th:text="${thongTinNhom.tenDeTai == null ? 'Chưa có' : thongTinNhom.tenDeTai}"></span>
+                                                </div>
+                                                <div class="info-value">
+                                                    <span class="info-label">Giảng viên HD:</span> <span
+                                                        class="info-label-content"
+                                                        th:text="${thongTinNhom.gvhd == null ? 'Chưa có' : thongTinNhom.gvhd}"></span>
+                                                </div>
+                                                <div class="info-value">
+                                                    <span class="info-label">Môn DATN:</span> <span
+                                                        class="info-label-content"
+                                                        th:text="${thongTinNhom.monDatn}"> </span>
+                                                </div>
+                                                <div class="info-value">
+                                                    <span class="info-label">Trạng thái:</span> <span
+                                                        class="info-label-content"
+                                                        th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(thongTinNhom.trangThai)}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 10px">
+                                        <h5>Danh sách thành viên:</h5>
                                         <div class="d-inline"
                                         >
                                             <button type="button" th:attr="onclick=|openModalThemSinhVien()|"
-                                                     class=" btn btn-success">
+                                                    class=" btn btn-success">
                                                 Thêm thành viên
                                             </button>
                                             <!--                                            them giao vien huong dan -->
-                                                <button type="button" th:attr="onclick=|openModalChangeGvhd()|"
-                                                        class=" btn btn-success">
-                                                    Thay đổi GVHD
-                                                </button>
+                                            <button type="button" th:attr="onclick=|openModalChangeGvhd()|"
+                                                    class=" btn btn-success">
+                                                Thay đổi GVHD
+                                            </button>
+                                            <button type="button"
+                                                    id="changeTenDeTai"
+                                                    th:attr="onclick=|openModalDoiTenDeTai()|"
+                                                    class=" btn btn-success">
+                                                Đổi tên đề tài
+                                            </button>
                                             <!--                                            thay đổi trưởng nhóm-->
-                                                <button type="button" th:attr="onclick=|openModalChangeCaptain()|"
-                                                        id="changeCaptain"
-                                                        class=" btn btn-success">
-                                                    Thay đổi trưởng nhóm
-                                                </button>
-                                            <a href="/chu-nhiem/nhom-datn" class="btn btn-success">
-                                                Trở lại
-                                            </a>
+                                            <button type="button" th:attr="onclick=|openModalChangeCaptain()|"
+                                                    id="changeCaptain"
+                                                    class=" btn btn-success">
+                                                Thay đổi trưởng nhóm
+                                            </button>
 
                                             <div class="modal fade "
                                                  id="modal_create"
@@ -123,6 +203,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="table-responsive mt-3">
                                         <div th:unless="${page.data.isEmpty()}">
                                             <table id="custom-table"
@@ -132,33 +213,32 @@
                                                 <th width="30px">STT</th>
                                                 <th width="80px">MSSV</th>
                                                 <th width="200px">Họ tên</th>
+                                                <th>Email</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Khóa</th>
                                                 <th>Môn chương trình</th>
-                                                <th>Môn đăng ký</th>
-                                                <th width="120px">Tên nhóm</th>
-                                                <th width="200px">GVHD</th>
                                                 <th width="80px">Chức năng</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
                                                     <tr class="table-light">
-                                                        <td th:text="${sinhVienResponse.getStt()}"></td>
-                                                        <td th:text="${sinhVienResponse.maSinhVien}"></td>
-                                                        <td th:text="${sinhVienResponse.tenSinhVien}"></td>
-                                                        <td th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
-                                                        <td th:text="${sinhVienResponse.maMonDuAn}"></td>
-                                                        <td th:text="${sinhVienResponse.tenNhom}==null ? 'Chưa có' : (${sinhVienResponse.tenNhom})"></td>
-                                                        <td th:switch="${sinhVienResponse.tenGvhd}">
-                                                            <p th:case=null>Chưa có </p>
-                                                            <p th:case="*" th:text="${sinhVienResponse.tenGvhd}"></p>
-                                                        </td>
-                                                        <td>
-                                                            <button
-                                                                    type="button" data-toggle="tooltip"
-                                                                    title="Kích thành viên"
-                                                                    class="btn_person_off"
-                                                                    th:attr="onclick=|openModalRemoveNhom('${sinhVienResponse.maSinhVien}')|">
-                                                                <img th:src="@{/img/person-off.svg}">
-                                                            </button>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.getStt()}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.maSinhVien}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.tenSinhVien}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.email}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.soDienThoai}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.khoa}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
+                                                        <td class="text-center align-middle">
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <button
+                                                                        type="button" data-toggle="tooltip"
+                                                                        title="Kích thành viên"
+                                                                        class="btn_person_off"
+                                                                        th:attr="onclick=|openModalRemoveNhom('${sinhVienResponse.maSinhVien}')|">
+                                                                    <img th:src="@{/img/person-off.svg}">
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </th:block>
@@ -212,6 +292,45 @@
                                 data-bs-dismiss="modal">Hủy
                         </button>
                         <button type="button" th:attr="onclick=|thayDoiGiangVien()|" class="btn btn-primary">Thay đổi
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div
+        class="modal fade"
+        id="modal_change_ten_de_tai"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg"
+         role="document">
+        <div class="modal-content">
+            <form id="form_change_ten_de_tai">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thay đổi tên đề tài</h5>
+                    <button type="button" class="close"
+                            data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="ui-widget">
+                            <label for="tags">Nhập tên đề tài: </label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="tenDeTai">
+                        </div>
+                        <span style="color: red" id="change_ten_de_tai_error"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary btn btn-light"
+                                data-bs-dismiss="modal">Hủy
+                        </button>
+                        <button type="button" th:attr="onclick=|doiTenDeTai()|" class="btn btn-primary">Thay đổi
                         </button>
                     </div>
                 </div>

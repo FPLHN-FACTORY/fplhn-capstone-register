@@ -51,7 +51,7 @@
                                                             </div>
                                                             <div class="form-group row">
                                                                 <label class="col-xl-3 col-lg-3 col-form-label">Tên
-                                                                    giảng viên hướng dẫn</label>
+                                                                    giảng viên hướng dẫn:</label>
                                                                 <div class="col-lg-9 col-xl-6">
                                                                     <input type="text"
                                                                            th:value="${giangVienHuongDan.tenTaiKhoan} + ' - ' +${giangVienHuongDan.tenGvhd}"
@@ -59,7 +59,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="col-xl-3 col-lg-3 col-form-label">SĐT</label>
+                                                                <label class="col-xl-3 col-lg-3 col-form-label">SĐT:</label>
                                                                 <div class="col-lg-9 col-xl-6">
                                                                     <input type="text"
                                                                            th:value="${giangVienHuongDan.soDienThoai}"
@@ -68,7 +68,7 @@
                                                             </div>
                                                             <div class="form-group row">
                                                                 <label class="col-xl-3 col-lg-3 col-form-label">Email
-                                                                    FPT</label>
+                                                                    FPT:</label>
                                                                 <div class="col-lg-9 col-xl-6">
                                                                     <input type="text"
                                                                            th:value="${giangVienHuongDan.emailFpt}"
@@ -77,7 +77,7 @@
                                                             </div>
                                                             <div class="form-group row">
                                                                 <label class="col-xl-3 col-lg-3 col-form-label">Email
-                                                                    FE</label>
+                                                                    FE:</label>
                                                                 <div class="col-lg-9 col-xl-6">
                                                                     <input type="text"
                                                                            th:value="${giangVienHuongDan.emailFe}"
@@ -86,11 +86,25 @@
                                                             </div>
                                                             <div class="form-group row">
                                                                 <label class="col-xl-3 col-lg-3 col-form-label">Tên đợt
-                                                                    đăng ký</label>
+                                                                    đăng ký:</label>
                                                                 <div class="col-lg-9 col-xl-6">
                                                                     <input type="text"
                                                                            th:value="${giangVienHuongDan.tenDotDangKy}"
                                                                            readonly="readonly" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="padding: 20px 0 ;">
+                                                                <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                                                                <div class="col-lg-9 col-xl-6">
+                                                                    <a th:href="@{/dao-tao/giang-vien-huong-dan}"
+                                                                       class="btn-secondary btn btn-light">
+                                                                        Quay lại
+                                                                    </a>
+                                                                    <button type="button"
+                                                                            th:attr="onclick=|openPhanCong()|"
+                                                                            class="btn btn-success">
+                                                                        Phân môn DATN
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -118,23 +132,24 @@
                                                     </div>
                                                 </div>
                                                 <div class="table-responsive mt-3" style="overflow: hidden;">
-                                                    <div class="row" style="padding: 20px 0 ;">
-
-                                                        <div class="col-sm-6 text-left" style="padding: 0 ;">
-                                                            <div class="col-6 d-inline">
-                                                                <button th:attr="onclick=|openPhanCong()|"
-                                                                        class="btn btn-success">
-                                                                    Phân môn DATN
-                                                                </button>
-
+                                                    <div id="form_search"
+                                                         class="m-portlet__body">
+                                                        <div>
+                                                            <div class="row justify-content-between align-items-center">
+                                                                <span for="" class="fillter-name col-3 text-end">Tìm kiếm mã, tên môn</span>
+                                                                <div class="col-7">
+                                                                    <input type="text" class="form-control"
+                                                                           name="keyword" id="keyword">
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <button type="button" data-bs-dismiss="modal"
+                                                                            class="btn btn-success"
+                                                                            onclick="viewTable(0)">Tìm
+                                                                        kiếm
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-6 d-inline">
-                                                                <a th:href="@{/dao-tao/giang-vien-huong-dan}"
-                                                                   class="btn-secondary btn btn-light">
-                                                                    Quay lại
-                                                                </a>
 
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="table-responsive mt-3">
@@ -146,15 +161,15 @@
                                                                 <th width="50px">STT</th>
                                                                 <th>Mã môn</th>
                                                                 <th>Tên môn</th>
-                                                                <th width="200px">Chức năng</th>
+                                                                <th width="100px">Chức năng</th>
                                                                 </thead>
-                                                                <tbody>
+                                                                <tbody id="list">
                                                                 <th:block th:each="phanCongHuongDan : ${page.data}">
                                                                     <tr class="table-light">
                                                                         <td th:text="${phanCongHuongDan.stt}"></td>
                                                                         <td th:text="${phanCongHuongDan.MaMonDatn}"></td>
                                                                         <td th:text="${phanCongHuongDan.MonDatn}"></td>
-                                                                        <td>
+                                                                        <td style="display: flex; justify-content: center">
                                                                             <button
                                                                                     class="btn_trash"
                                                                                     data-toggle="tooltip"
@@ -168,19 +183,16 @@
                                                                 </tbody>
                                                             </table>
                                                             <!-- Paging-->
-                                                            <nav th:if="${page.totalPages > 1}"
-                                                                 aria-label="Page navigation">
-                                                                <ul class="pagination justify-content-end">
-                                                                    <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                                        <li class="page-item">
-                                                                            <a class="page-link"
-                                                                               th:href="@{?page={page.currentPage}(page.currentPage=${i}-1)}"
-                                                                               th:text="${i}">
-                                                                            </a>
-                                                                        </li>
-                                                                    </div>
-                                                                </ul>
-                                                            </nav>
+                                                            <div id="list_page">
+                                                            </div>
+                                                            <input hidden th:value="${page.totalPages}" id="totalPages">
+                                                            <input hidden th:value="${page.currentPage}"
+                                                                   id="currentPage">
+                                                            <div id="is_empty" class="text-center">
+                                                                <div th:if="${page.data.isEmpty()}">
+                                                                    <span>Không có dữ liệu</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div th:if="${page.data.isEmpty()}">
                                                             <h3>Không có dữ liệu</h3>
@@ -208,7 +220,7 @@
         <div class="modal-dialog modal-lg">
 
             <div class="modal-content">
-                <div id="form_add_phan_cong" >
+                <div id="form_add_phan_cong">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Phân môn</h5>
                         <button type="button" class="close" data-bs-dismiss="modal"
@@ -218,14 +230,25 @@
                     </div>
                     <input type="text" id="getGiangVienHuongDanId" th:value="${giangVienHuongDan.getId()}" hidden>
                     <div class="modal-body">
+                        <div class="row g-2 align-items-center pb-4">
+                            <div class="col-auto col-4">
+                                <span for="" class="fillter-name text-center">Tìm mã, tên môn</span>
+                            </div>
+                            <div class="col-auto col-8">
+                                <input type="text" class="form-control" name="keyword" id="searchPhanCong"
+                                       onkeyup="viewTablePhanCongHuongDan()"
+                                >
+                            </div>
+                        </div>
                         <div class="form-group">
                             <table id="table-add"
+                                   style="text-align: center"
                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                 <thead class="table-primary">
                                 <th width="50px">STT</th>
                                 <th>Mã môn</th>
                                 <th>Tên môn</th>
-                                <th width="200px">Chức năng</th>
+                                <th width="100px">Chọn</th>
                                 </thead>
                                 <tbody>
                                 <th:block th:each="phanMonDatn : ${phanMonDatns}">
@@ -234,7 +257,7 @@
                                         <td th:text="${phanMonDatn.getMaMonDatn()}"></td>
                                         <td th:text="${phanMonDatn.getMonDatn()}" class="giangVienId"
                                             th:value="${phanMonDatn.id}"></td>
-                                        <td>
+                                        <td style="display: flex; justify-content: center">
                                             <input type="checkbox" name="checkThemTatCa" id="" class="checkThemTatCa">
                                         </td>
                                     </tr>
@@ -245,7 +268,8 @@
                         <div id="errLoi" style="color:red"></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal">Hủy
+                        <button type="button" class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal">
+                            Hủy
                         </button>
                         <input class="btn btn-success" onclick="checkAll()" value="Chọn tất cả" type="button"/>
                         <button type="button" class="btn btn-success" th:attr="onclick=|phanCong()|">Thêm
