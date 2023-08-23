@@ -138,7 +138,13 @@ function addGVHD() {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                window.open(giangVienHuongDanView, '_self');
+                bootbox.alert({
+                    message: "Thêm thành công",
+                    backdrop: true,
+                    callback: function () {
+                        window.open(giangVienHuongDanView, '_self');
+                    }
+                });
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
@@ -503,7 +509,8 @@ function loadTable(count) {
         success: function (responseData) {
             totalPages = responseData.data.totalPages;
             if (responseData.data.data.length == 0) {
-                $("#searchListGvhd").html(``);2
+                $("#searchListGvhd").html(``);
+                2
                 $("#page").html(``);
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {

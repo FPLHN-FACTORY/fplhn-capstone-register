@@ -126,13 +126,14 @@ function openModalCreate() {
 function create() {
     let maMon = $("#maMon").val().trim();
     let tenMonDatn = $("#tenMonDatn").val().trim();
-    let chuyenNganhId = $("#chuyenNganh").val();
+    let chuyenNganhId = $("#chuyenNganhAdd").val();
     let nhomMonId = $("#tenNhomMonDatn").val();
     let monDatnRequest = {};
     monDatnRequest["maMon"] = maMon;
     monDatnRequest["tenMonDatn"] = tenMonDatn;
     monDatnRequest["chuyenNganhId"] = chuyenNganhId;
     monDatnRequest["nhomMonDatnId"] = nhomMonId;
+
     let index = 0;
     if (maMon.trim().length === 0) {
         $("#ma_mon_datn_error").text("Mã môn không được để trống");
