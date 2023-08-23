@@ -414,7 +414,7 @@
                                                             class="text-center align-middle"></td>
                                                         <td th:text="${giangVienHD.getEmailFe()}"
                                                             class="text-center align-middle"></td>
-                                                        <td th:text="${giangVienHD.getChuyenNganh()}"
+                                                        <td th:text="${giangVienHD.getChuyenNganh() == null || giangVienHD.getChuyenNganh() == '' ? 'Chưa có' : giangVienHD.getChuyenNganh()}"
                                                             class="text-center align-middle"></td>
                                                         <td class="text-center align-middle">
                                                             <div class="d-flex justify-content-center align-items-center">

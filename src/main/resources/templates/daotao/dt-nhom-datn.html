@@ -251,8 +251,7 @@
                                                         th:text="${nhomDatn.tenGvhd} != null ? ${nhomDatn.tenGvhd}  + ' - ' + ${nhomDatn.getTenTaiKhoan()} : 'Chưa có'"></td>
                                                     <td class="text-center align-middle"
                                                         th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
-                                                    <td class="text-center align-middle"
-                                                        style="display: flex; justify-content: center">
+                                                    <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-center align-items-center">
                                                             <button class="btn_eye"
                                                                     th:attr="onclick=|openModalDanhSachSinhVien('${nhomDatn.getId()}')|"

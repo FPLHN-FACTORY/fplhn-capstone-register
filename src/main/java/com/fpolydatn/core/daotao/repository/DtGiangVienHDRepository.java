@@ -36,7 +36,7 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                 LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id  
                 LEFT JOIN phan_cong_huong_dan pc ON pc.giang_vien_id = gvhd.id  
                 LEFT JOIN mon_datn m ON m.id = pc.mon_datn_id  
-                JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id   
+                LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id   
                 WHERE 
                     ( :#{#req.tenTaiKhoan} IS NULL 
                         OR :#{#req.tenTaiKhoan} LIKE '' 

@@ -73,8 +73,8 @@ function loadTable(count) {
                       <td class="text-center align-middle">${monDatn.maMon}</td>
                       <td class="text-center align-middle">${monDatn.tenMon}</td>
                       <td class="text-center align-middle">${monDatn.id == monDatn.nhomMonDatnId ? 'Môn độc lập' : monDatn.tenNhomMon}</td>
-                      <td class="text-center align-middle">${monDatn.tenCanBo == null ? '' : monDatn.tenCanBo}</td>
-                      <td class="text-center align-middle">${monDatn.danhSachGVHD}</td>
+                      <td class="text-center align-middle">${monDatn.tenCanBo == null ? 'Chưa có' : monDatn.tenCanBo}</td>
+                      <td class="text-center align-middle">${monDatn.danhSachGVHD == null || monDatn.danhSachGVHD == '' ? 'Chưa có' : monDatn.danhSachGVHD}</td>
                       <td class="text-center align-middle">${monDatn.tenChuyenNganh}</td>
                       <td class="text-center align-middle">
                       <div class="d-flex justify-content-center align-items-center">

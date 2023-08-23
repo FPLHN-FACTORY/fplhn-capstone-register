@@ -516,7 +516,7 @@ function loadTable(count) {
                    <td class="text-center align-middle">${item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa}</td>
                    <td class="text-center align-middle">${item.soDienThoai}</td>
                    <td class="text-center align-middle">${item.emailFe}</td>
-                   <td class="text-center align-middle">${item.chuyenNganh}</td>
+                   <td class="text-center align-middle">${item.chuyenNganh == null || item.chuyenNganh == '' ? 'Chưa có' : item.chuyenNganh}</td>
                    <td class="text-center align-middle">
                     <div class="d-flex justify-content-center align-items-center">
                        <button

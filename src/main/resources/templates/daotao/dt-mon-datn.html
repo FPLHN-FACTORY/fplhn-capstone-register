@@ -218,9 +218,9 @@
                                                                 class="text-center align-middle"></td>
                                                             <td th:text="${monDatn.id == monDatn.nhomMonDatnId ? 'Môn độc lập' : monDatn.tenNhomMon}"
                                                                 class="text-center align-middle"></td>
-                                                            <td th:text="${monDatn.tenCanBo}"
+                                                            <td th:text="${monDatn.tenCanBo == null ? 'Chưa có' : monDatn.tenCanBo}"
                                                                 class="text-center align-middle"></td>
-                                                            <td th:text="${monDatn.danhSachGVHD}"
+                                                            <td th:text="${monDatn.danhSachGVHD == null || monDatn.danhSachGVHD == '' ? 'Chưa có' : monDatn.danhSachGVHD}"
                                                                 class="text-center align-middle"></td>
                                                             <td th:text="${monDatn.tenChuyenNganh}"
                                                                 class="text-center align-middle"></td>
