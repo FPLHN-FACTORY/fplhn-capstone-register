@@ -121,7 +121,7 @@ function openModalCreate() {
 function createNhomMonDatn() {
     let maMon = $("#maNhomMon").val();
     let tenMonDatn = $("#tenNhomMon").val();
-    let chuyenNganhId = $("#chuyenNganh").val();
+    let chuyenNganhId = $("#chuyenNganhId").val();
     let monDatnRequest = {};
     monDatnRequest["maNhomMon"] = maMon;
     monDatnRequest["tenNhomMon"] = tenMonDatn;
