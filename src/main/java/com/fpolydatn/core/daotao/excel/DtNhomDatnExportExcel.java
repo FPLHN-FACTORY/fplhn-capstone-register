@@ -1,5 +1,6 @@
 package com.fpolydatn.core.daotao.excel;
 
+import com.fpolydatn.core.daotao.model.response.DtNhomDatnExportResponse;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnSinhVienExportExcelReponse;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -15,17 +16,24 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DtNhomDatnExportExcel {
     private XSSFWorkbook xssfWorkbook;
     private XSSFSheet xssfSheet;
 
     private List<DtNhomDatnSinhVienExportExcelReponse> listSv;
+    private ConcurrentHashMap<String, DtNhomDatnExportResponse> map = new ConcurrentHashMap<>();
 
-    public DtNhomDatnExportExcel(List<DtNhomDatnSinhVienExportExcelReponse> listSv) {
+    public DtNhomDatnExportExcel(List<DtNhomDatnSinhVienExportExcelReponse> listSv, List<DtNhomDatnExportResponse> listNhom) {
         xssfWorkbook = new XSSFWorkbook();
         this.listSv = listSv;
+        listNhom.parallelStream().forEach(el -> {
+            map.put(el.getId(), el);
+        });
     }
 
     private void headerLine() {
@@ -59,32 +67,30 @@ public class DtNhomDatnExportExcel {
         createCell(row, 10, "Tên tài khoản", cellStyle);
         createCell(row, 11, "Trạng thái", cellStyle);
 
-        CellStyle cellDataStyle = xssfWorkbook.createCellStyle();
-        XSSFFont fontData = xssfWorkbook.createFont();
-        fontData.setFontHeight(11);
-        cellDataStyle.setFont(fontData);
-        cellDataStyle.setBorderTop(BorderStyle.THIN);
-        cellDataStyle.setBorderBottom(BorderStyle.THIN);
-        cellDataStyle.setBorderLeft(BorderStyle.THIN);
-        cellDataStyle.setBorderRight(BorderStyle.THIN);
-        cellDataStyle.setAlignment(HorizontalAlignment.CENTER);
-
+        int index = 0;
         for (int i = 0; i < listSv.size(); i++) {
             DtNhomDatnSinhVienExportExcelReponse sv = listSv.get(i);
-            Row row1 = xssfSheet.createRow(i + 1);
-            createCell(row1, 0, i + 1, cellDataStyle);
-            createCell(row1, 1, sv.getMaSinhVien(), cellDataStyle);
-            createCell(row1, 2, sv.getTenSinhVien(), cellDataStyle);
-            createCell(row1, 3, sv.getEmail(), cellDataStyle);
-            createCell(row1, 4, sv.getId().equals(sv.getTruongNhomId()) ? "X" : "", cellDataStyle);
-            createCell(row1, 5, sv.getMaNhom(), cellDataStyle);
-            createCell(row1, 6, sv.getMonDatn(), cellDataStyle);
-            createCell(row1, 7, sv.getTenDeTai(), cellDataStyle);
-            createCell(row1, 8, sv.getChuyenNganh(), cellDataStyle);
-            createCell(row1, 9, sv.getTenGvhd(), cellDataStyle);
-            createCell(row1, 10, sv.getTenTaiKhoan(), cellDataStyle);
-            createCell(row1, 11, sv.getTrangThai() == 0 ? "Mới thành lập" : (sv.getTrangThai() == 1 ? "Đã liên hệ giảng viên" :
-                    (sv.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (sv.getTrangThai() == 3 ? "Cần sửa" : (sv.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))), cellDataStyle);
+            if (!map.contains(sv.getNhomId())) {
+                DtNhomDatnExportResponse nhomDatn = map.get(sv.getNhomId());
+                if (nhomDatn != null) {
+                    index ++;
+                    Row row1 = xssfSheet.createRow(index);
+                    row1.createCell(0).setCellValue(String.valueOf(index));
+                    row1.createCell(1).setCellValue(sv.getMaSinhVien());
+                    row1.createCell(2).setCellValue(sv.getTenSinhVien());
+                    row1.createCell(3).setCellValue(sv.getEmail());
+                    row1.createCell(4).setCellValue(sv.getId().equals(nhomDatn.getTruongNhomId()) ? "X" : "");
+                    row1.createCell(5).setCellValue(nhomDatn.getMaNhom());
+                    row1.createCell(6).setCellValue(sv.getTenMonDatn());
+                    row1.createCell(7).setCellValue(nhomDatn.getTenDeTai());
+                    row1.createCell(8).setCellValue(sv.getChuyenNganh());
+                    row1.createCell(9).setCellValue(nhomDatn.getTenGvhd());
+                    row1.createCell(10).setCellValue(nhomDatn.getTenTaiKhoan());
+                    row1.createCell(11).setCellValue(nhomDatn.getTrangThai() == 0 ? "Mới thành lập" : (nhomDatn.getTrangThai() == 1 ? "Đã liên hệ giảng viên" :
+                            (nhomDatn.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (nhomDatn.getTrangThai() == 3 ? "Cần sửa" : (nhomDatn.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))));
+
+                }
+            }
         }
 
     }

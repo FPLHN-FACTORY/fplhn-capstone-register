@@ -83,7 +83,7 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=NhomDatn.xlsx";
         response.setHeader(headerKey, headerValue);
-        DtNhomDatnExportExcel mau = new DtNhomDatnExportExcel(sinhVienTheoDotRepository.getSinhVienNhomDatnExportExcel(request));
+        DtNhomDatnExportExcel mau = new DtNhomDatnExportExcel(sinhVienTheoDotRepository.getSinhVienNhomDatnExportExcel(request), sinhVienTheoDotRepository.getNhomDatnExportExcel(request));
         mau.exportData(response);
     }
 }
