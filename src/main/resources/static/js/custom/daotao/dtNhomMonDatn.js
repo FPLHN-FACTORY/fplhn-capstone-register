@@ -72,27 +72,25 @@ function loadTable(count) {
                       <td class="text-center align-middle">${nhomMonDatn.soMon}</td>
                       <td class="text-center align-middle">
                         <div class="d-flex justify-content-center align-items-center">
-                          <a
-                            type="button"
-                            class="btn_clipboard_user" data-toggle="tooltip"
+                          <button
+                            class="btn_pencil_square" 
+                            data-toggle="tooltip"
                             title="Sửa nhóm môn"
                             onclick="openModalUpdateNhomMonDatn('${nhomMonDatn.id}','${count}')">
                             <img src="/img/pencil-square.svg">
-                          </a>
+                          </button>
                           <button
-                            type="button"
-                            class="btn_pencil_square"
+                            class="btn_trash"
                             data-toggle="tooltip"
                             title="Xóa nhóm môn"
                             onclick="deleteNhomMonDatn('${nhomMonDatn.id}','${count}')">
                             <img src="/img/trash.svg">
                          </button>
                          <button
-                            type="button"
-                            class="btn_trash"
+                            class="btn_eye"
                             data-toggle="tooltip"
                             title="Xem chi tiết nhóm môn"
-                            onclick="openModalChiTietNhomMonDatn('${nhomMonDatn.id}','${count})">
+                            onclick="openModalChiTietNhomMonDatn('${nhomMonDatn.id}','${count}')">
                             <img src="/img/eye-fill.svg">
                         </button>
                         </div>
