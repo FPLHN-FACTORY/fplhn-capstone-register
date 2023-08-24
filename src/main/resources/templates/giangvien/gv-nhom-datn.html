@@ -148,18 +148,18 @@
                                             <tbody id="list_nhom_datn">
                                             <th:block th:each="nhomDatn : ${page.data}">
                                                 <tr class="table-light">
-                                                    <td th:text="${nhomDatn.getStt()}"></td>
-                                                    <td th:text="${nhomDatn.getMaNhom()}"></td>
-                                                    <td th:text="${nhomDatn.getTenDeTai()}"></td>
-                                                    <td th:text="${nhomDatn.getTotalMaSinhVien()}"></td>
-                                                    <td>
+                                                    <td class="text-center align-middle" th:text="${nhomDatn.getStt()}"></td>
+                                                    <td class="text-center align-middle" th:text="${nhomDatn.getMaNhom()}"></td>
+                                                    <td class="text-center align-middle" th:text="${nhomDatn.getTenDeTai() == null || nhomDatn.getTenDeTai() == '' ? 'Chưa có' : nhomDatn.getTenDeTai()}"></td>
+                                                    <td class="text-center align-middle" th:text="${nhomDatn.getTotalMaSinhVien()}"></td>
+                                                    <td class="text-center align-middle">
                                                             <span th:each="value, iterStat : ${#strings.arraySplit(nhomDatn.getDanhSachThanhVien(), ', ')}"
                                                                   th:text="${value} + (${iterStat.last} ? '' : ', ')"
                                                                   th:style="${value == nhomDatn.truongNhom} ? 'font-weight: bold; text-decoration: underline;' : ''">
                                                             </span>
                                                     </td>
-                                                    <td th:text="${nhomDatn.getMaMon()}"></td>
-                                                    <td th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
+                                                    <td class="text-center align-middle" th:text="${nhomDatn.getMaMon()}"></td>
+                                                    <td class="text-center align-middle" th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-center align-items-center">
                                                             <button type="button"
