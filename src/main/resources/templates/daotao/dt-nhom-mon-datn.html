@@ -226,42 +226,16 @@
                                                     </tbody>
                                                 </table>
                                                 <!-- Paging-->
-                                                <span id="targetLink" hidden></span>
-                                                <span id="totalPage" th:text="${page.totalPages}" hidden></span>
-                                                <span id="currentPage" th:text="${page.currentPage}" hidden></span>
-                                                <nav th:if="${page.totalPages > 1}" aria-label="Page navigation ">
-                                                    <ul class="pagination justify-content-end">
-                                                        <li class="page-item">
-                                                            <button class="page-link"
-                                                                    style="border: none"
-                                                                    th:attr="onclick=|buttonChangePage(1)|">
-                                                                <img th:src="@{/img/back.svg}">
-                                                            </button>
-                                                        </li>
-                                                        <input type="number"
-                                                               autocomplete="false"
-                                                               id="inputPage"
-                                                               th:value="${page.currentPage} + 1"
-                                                               min="1" th:max="${page.totalPages}"
-                                                               th:attr="onchange=|changePage()|"
-                                                               class="input-page">
-                                                        <input class="total-page"
-                                                               th:value="'|    ' + ${page.totalPages}"
-                                                               readonly>
-                                                        <li class="page-item">
-                                                            <button class="page-link"
-                                                                    style="border: none"
-                                                                    th:attr="onclick=|buttonChangePage(0)|">
-                                                                <img th:src="@{/img/next.svg}">
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
+                                                <input hidden th:value="${page.totalPages}" id="totalPages">
+                                                <input hidden th:value="${page.currentPage}" id="currentPage">
+                                                <div id="page">
+                                                </div>
+                                                <div id="empty">
+                                                    <div th:if="${page.data.isEmpty()}">
+                                                        <h3>Không có dữ liệu</h3>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div th:if="${page.data.isEmpty()}">
-                                                <h3>Không có dữ liệu</h3>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

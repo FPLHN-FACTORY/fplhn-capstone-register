@@ -39,6 +39,21 @@ function genPaging() {
     }
 }
 
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadTable(value - 1);
+    }
+}
+
+genPaging();
+
 function loadTable(count) {
     if (count == -1) {
         count = totalPages - 1;
