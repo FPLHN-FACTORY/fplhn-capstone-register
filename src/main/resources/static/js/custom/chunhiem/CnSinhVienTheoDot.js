@@ -145,12 +145,12 @@ function loadDataToTable(count) {
                     var maSinhVien = sinhVien.maSinhVien;
                     text1 = `
                       <tr class="table-light">
-                            <td >${sinhVien.stt}</td>
-                            <td> ${sinhVien.maSinhVien}</td>
-                            <td> ${sinhVien.tenSinhVien}</td>
-                            <td> ${sinhVien.tenChuyenNganh}</td>
-                            <td> ${sinhVien.maMonChuongTrinh == null ? 'Chưa có' : sinhVien.maMonChuongTrinh}</td>
-                            <td> ${sinhVien.maMonDuAn == null ? 'Chưa có' : sinhVien.maMonDuAn}</td>
+                            <td class="text-center align-middle">${sinhVien.stt}</td>
+                            <td class="text-center align-middle"> ${sinhVien.maSinhVien}</td>
+                            <td class="text-center align-middle"> ${sinhVien.tenSinhVien}</td>
+                            <td class="text-center align-middle"> ${sinhVien.tenChuyenNganh}</td>
+                            <td class="text-center align-middle"> ${sinhVien.maMonChuongTrinh == null ? 'Chưa có' : sinhVien.maMonChuongTrinh}</td>
+                            <td class="text-center align-middle"> ${sinhVien.maMonDuAn == null ? 'Chưa có' : sinhVien.maMonDuAn}</td>
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td class="text-center align-middle">
@@ -162,13 +162,13 @@ function loadDataToTable(count) {
                         </div>
                       </td>
                 ` : `
-                <td>
+                <td class="text-center align-middle">
                     <p>${sinhVien.maNhom}</p>
                 </td>
                 `;
                     text3 = `
-                    <td>${tenDeTai}</td>
-                    <td>${tenGvhd}</td>
+                    <td class="text-center align-middle">${tenDeTai}</td>
+                    <td class="text-center align-middle">${tenGvhd}</td>
                     </tr >
                 `;
                     text += text1 + text2 + text3;
