@@ -112,9 +112,9 @@ function openModalCreateHocKy() {
     $("#tenHocKyAdd").val("")
     $("#ngayBatDauAdd").val("")
     $("#ngayKetThucAdd").val("")
-    $("#hoc_ky_error").val("")
-    $("#ngay_bat_dau_add_error").val("")
-    $("#ngay_ket_thuc_add_error").val("")
+    $("#hoc_ky_error").text("")
+    $("#ngay_bat_dau_add_error").text("")
+    $("#ngay_ket_thuc_add_error").text("")
 }
 
 $("#form_hoc_ky_update").submit(function (event) {
