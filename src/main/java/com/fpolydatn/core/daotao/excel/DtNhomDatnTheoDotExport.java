@@ -87,8 +87,8 @@ public class DtNhomDatnTheoDotExport {
 
                 Cell empTrangThaiCell = empDataRow.createCell(7);
                 empTrangThaiCell.setCellStyle(cellStyle);
-                empTrangThaiCell.setCellValue(dtNhomDatn.getTrangThai() == 0 ? "Mới thành lập" : (dtNhomDatn.getTrangThai() == 1 ? "Đã liên hệ giảng viên" :
-                        (dtNhomDatn.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (dtNhomDatn.getTrangThai() == 3 ? "Cần sửa" : (dtNhomDatn.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))));
+                empTrangThaiCell.setCellValue(dtNhomDatn.getTrangThai() == 0 ? "Mới thành lập" : (dtNhomDatn.getTrangThai() == 1 ? "Chủ nhiệm bộ môn đã xác nhận" :
+                        (dtNhomDatn.getTrangThai() == 2 ? "Giảng viên đã liên hệ" : (dtNhomDatn.getTrangThai() == 3 ? "Cần sửa" : (dtNhomDatn.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))));
             }
             //write output to response
             workbook.write(response.getOutputStream());
