@@ -32,18 +32,18 @@ function openModalDanhSachSinhVien(id) {
             responseData.data.map(function (item) {
                 if (item.chucVu == 1) {
                     text += `
-                    <tr style="color: red">
-                    <td><b>${item.stt}</b></td>
-                    <td><b>${item.maSinhVien}</b></td>
-                    <td><b>${item.tenSinhVien}</b></td>
+                    <tr style="color: red" class="table-light">
+                    <td class="text-center align-middle"><b>${item.stt}</b></td>
+                    <td class="text-center align-middle"><b>${item.maSinhVien}</b></td>
+                    <td class="text-center align-middle"><b>${item.tenSinhVien}</b></td>
                     </tr>
                 `
                 } else {
                     text += `
-                        <tr>
-                        <td>${item.stt}</td>
-                        <td>${item.maSinhVien}</td>
-                        <td>${item.tenSinhVien}</td>
+                        <tr class="table-light">
+                        <td class="text-center align-middle">${item.stt}</td>
+                        <td class="text-center align-middle">${item.maSinhVien}</td>
+                        <td class="text-center align-middle">${item.tenSinhVien}</td>
                         </tr>
                 `
                 }
