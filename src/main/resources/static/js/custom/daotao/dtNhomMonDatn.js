@@ -301,10 +301,10 @@ function openModalChiTietNhomMonDatn(nhomMonDatnId) {
             if (responseData.data.length > 0) {
                 $("#table_detail").html(responseData.data.map(function (item) {
                     return `
-               <tr>
-                   <td >${item.stt}</td>
-                   <td >${item.maMon}</td>
-                   <td >${item.tenMon}</td>
+               <tr class="table-light">
+                   <td class="text-center align-middle">${item.stt}</td>
+                   <td class="text-center align-middle">${item.maMon}</td>
+                   <td class="text-center align-middle">${item.tenMon}</td>
                </tr>
                `
                 }))
