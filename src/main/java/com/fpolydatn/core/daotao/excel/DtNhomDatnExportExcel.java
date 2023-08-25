@@ -86,8 +86,8 @@ public class DtNhomDatnExportExcel {
                     row1.createCell(8).setCellValue(sv.getChuyenNganh());
                     row1.createCell(9).setCellValue(nhomDatn.getTenGvhd());
                     row1.createCell(10).setCellValue(nhomDatn.getTenTaiKhoan());
-                    row1.createCell(11).setCellValue(nhomDatn.getTrangThai() == 0 ? "Mới thành lập" : (nhomDatn.getTrangThai() == 1 ? "Đã liên hệ giảng viên" :
-                            (nhomDatn.getTrangThai() == 2 ? "Sẵn sàng phê duyệt" : (nhomDatn.getTrangThai() == 3 ? "Cần sửa" : (nhomDatn.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))));
+                    row1.createCell(11).setCellValue(nhomDatn.getTrangThai() == 0 ? "Mới thành lập" : (nhomDatn.getTrangThai() == 1 ? "Chủ nhiệm bộ môn đã xác nhận" :
+                            (nhomDatn.getTrangThai() == 2 ? "Giảng viên đã liên hệ" : (nhomDatn.getTrangThai() == 3 ? "Cần sửa" : (nhomDatn.getTrangThai() == 4 ? "Giảng viên đã chốt" : "Chủ nhiệm bộ môn đã chốt")))));
 
                 }
             }

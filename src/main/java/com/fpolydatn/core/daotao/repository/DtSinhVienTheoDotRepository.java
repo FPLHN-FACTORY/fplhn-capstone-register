@@ -267,11 +267,13 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             sv.email
         FROM do_an_tot_nghiep.sinh_vien sv JOIN do_an_tot_nghiep.chuyen_nganh cn
         ON sv.chuyen_nganh_id = cn.id
-        join do_an_tot_nghiep.mon_datn m
+        JOIN do_an_tot_nghiep.mon_datn m
         ON sv.mon_datn_id = m.id
+        LEFT JOIN nhom_datn nda ON nda.id = sv.nhom_id
         WHERE sv.nhom_id IS NOT NULL
          AND sv.dot_dang_ky_id = :#{#req.dotDangKyId}
              AND sv.co_so_id = :#{#req.coSoId}
+             ORDER BY nda.ma_nhom
     """, nativeQuery = true)
     List<DtNhomDatnSinhVienExportExcelReponse> getSinhVienNhomDatnExportExcel(@Param("req") final FindDtNhomDatnTheoDotRequest req);
 }
