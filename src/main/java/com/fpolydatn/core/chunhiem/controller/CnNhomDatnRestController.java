@@ -1,7 +1,6 @@
 package com.fpolydatn.core.chunhiem.controller;
 
 import com.fpolydatn.core.chunhiem.model.request.CnCreateNhomDatnRequest;
-import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindNhomDatnRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
@@ -14,8 +13,6 @@ import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
-import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

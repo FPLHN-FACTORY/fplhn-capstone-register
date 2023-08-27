@@ -358,12 +358,14 @@ function randomNhomDatn() {
             });
         },
         error: function (e) {
-            bootbox.alert({
-                message: e.responseJSON.message,
-                backdrop: true,
-                callback: function () {
-                }
-            });
+            if (e.responseJSON.message == 'Tao nhom that bai') {
+                bootbox.alert({
+                    message: "Tạo nhóm thất bại",
+                    backdrop: true,
+                    callback: function () {
+                    }
+                });
+            }
         }
     });
 }

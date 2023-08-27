@@ -20,6 +20,6 @@ public final class GvUpdateTenDeTaiRequest {
 
     @NotEmpty()
     @NotBlank()
-    @Length(min = 6, max = EntityProperties.LENGTH_NAME_SHORT)
+    @Length(min = 6, max = EntityProperties.LENGTH_NAME)
     private String tenDeTai;
 }

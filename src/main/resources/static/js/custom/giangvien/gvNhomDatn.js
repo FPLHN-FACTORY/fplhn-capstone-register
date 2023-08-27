@@ -70,14 +70,27 @@ function xacDaNhanLienHe(idNhom, maNhom) {
                         });
                     },
                     error: function (e) {
-                        console.log("ERROR : ", e);
+                        if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                            bootbox.alert({
+                                message: "Nhóm dự án tốt nghiệp không tồn tại",
+                                backdrop: true,
+                                callback: function () {
+                                }
+                            });
+                        }
+                        if (e.responseJSON.message === 'khong the chot nhom datn') {
+                            bootbox.alert({
+                                message: "Không thể chốt nhóm dự án tốt nghiệp",
+                                backdrop: true,
+                                callback: function () {
+                                }
+                            });
+                        }
                     }
                 });
             }
         }
     });
-
-
 }
 
 function seachNhomdatn(index) {
@@ -155,7 +168,7 @@ function updateTenDeTai(maNhom) {
 }
 
 function updateTenDeTaiSubmit() {
-    let tenDeTai = $("#ten_de_tai_update").val();
+    let tenDeTai = $("#ten_de_tai_update").val().trim();
     let maNhom = $("#id_nhom_datn_update").val();
 
     let NhomDatnRequest = {};
@@ -178,7 +191,22 @@ function updateTenDeTaiSubmit() {
                 window.location.reload(false)
             },
             error: function (e) {
-                console.log("ERROR : ", e);
+                if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                    bootbox.alert({
+                        message: "Nhóm dự án tốt nghiệp không tồn tại",
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
+                }
+                if (e.responseJSON.message === 'khong the chinh sua ten de tai') {
+                    bootbox.alert({
+                        message: "Không thể chỉnh sửa tên đề tài",
+                        backdrop: true,
+                        callback: function () {
+                        }
+                    });
+                }
             }
         });
     }
@@ -206,7 +234,22 @@ function chotDeTaiNhomDatn(idNhom, maNhom) {
                         });
                     },
                     error: function (e) {
-                        console.log("ERROR : ", e);
+                        if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                            bootbox.alert({
+                                message: "Nhóm dự án tốt nghiệp không tồn tại",
+                                backdrop: true,
+                                callback: function () {
+                                }
+                            });
+                        }
+                        if (e.responseJSON.message === 'khong the chot de tai nhom datn') {
+                            bootbox.alert({
+                                message: "Không thể chốt đề tài nhóm đồ án tốt nghiệp",
+                                backdrop: true,
+                                callback: function () {
+                                }
+                            });
+                        }
                     }
                 });
             }

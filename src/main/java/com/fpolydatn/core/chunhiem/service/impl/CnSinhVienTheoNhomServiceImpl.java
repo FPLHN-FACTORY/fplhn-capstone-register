@@ -157,6 +157,12 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public NhomDatn doiTenDeTai(String idNhom, String tenDeTai) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(tenDeTai.trim().length() > 255){
+            throw new RestApiException(Message.DO_DAI_KHONG_QUA_255_KY_TU);
+        }
         nhomDatnFind.get().setTenDeTai(tenDeTai);
         return cnNhomDatnRepository.save(nhomDatnFind.get());
     }

@@ -95,7 +95,26 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
                             if (responseData.responseJSON.message === 'Het han quyen sinh vien') {
                                 bootbox.alert({
                                     message: 'Hết hạn quyền sinh viên', backdrop: true, callback: function () {
-                                        window.open(SVNhomDatnView, '_self');
+                                    }
+                                });
+                            }
+                            if (responseData.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                                bootbox.alert({
+                                    message: 'Nhóm dự án tốt nghiệp không tồn tại',
+                                    backdrop: true,
+                                    callback: function () {
+                                    }
+                                });
+                            }
+                            if (responseData.responseJSON.message === 'Mat Khau Khong Chinh Xac') {
+                                bootbox.alert({
+                                    message: 'Mật khẩu không chính xác', backdrop: true, callback: function () {
+                                    }
+                                });
+                            }
+                            if (responseData.responseJSON.message === 'Nhom da du thanh vien') {
+                                bootbox.alert({
+                                    message: 'Nhóm đã đủ thành viên', backdrop: true, callback: function () {
                                     }
                                 });
                             }
@@ -129,9 +148,26 @@ function addSinhVienHasPassword() {
             });
         },
         error: function (responseData) {
-            console.log(responseData);
+            if (responseData.responseJSON.message === 'Het han quyen sinh vien') {
+                bootbox.alert({
+                    message: 'Hết hạn quyền sinh viên', backdrop: true, callback: function () {
+                    }
+                });
+            }
+            if (responseData.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                bootbox.alert({
+                    message: 'Nhóm dự án tốt nghiệp không tồn tại', backdrop: true, callback: function () {
+                    }
+                });
+            }
             if (responseData.responseJSON.message === 'Mat Khau Khong Chinh Xac') {
                 $("#errorPassword").text("Mật khẩu không chính xác");
+            }
+            if (responseData.responseJSON.message === 'Nhom da du thanh vien') {
+                bootbox.alert({
+                    message: 'Nhóm đã đủ thành viên', backdrop: true, callback: function () {
+                    }
+                });
             }
         }
     });
@@ -203,8 +239,30 @@ function createNhomDatn() {
                 });
             },
             error: function (e) {
-                console.log("ERROR : ", e);
-                alert(e.responseJSON.message);
+                if (e.responseJSON.message === 'Het han quyen sinh vien') {
+                    bootbox.alert('Hết hạn quyền sinh viên', function () {
+                    });
+                }
+                if (e.responseJSON.message === 'Giang vien khong ton tai') {
+                    bootbox.alert('Giảng viên không tồn tại', function () {
+                    });
+                }
+                if (e.responseJSON.message === 'Giang vien da du nhom huong dan') {
+                    bootbox.alert('Giảng viên đã đủ nhóm hướng dẫn', function () {
+                    });
+                }
+                if (e.responseJSON.message === 'Mon Datn not exist') {
+                    bootbox.alert('Môn dự án tốt nghiệp không tồn tại', function () {
+                    });
+                }
+                if (e.responseJSON.message === 'Sinh vien da co nhom') {
+                    bootbox.alert('Sinh viên đã có nhóm', function () {
+                    });
+                }
+                if (e.responseJSON.message === 'Tao nhom that bai') {
+                    bootbox.alert('Tạo nhóm thất bại', function () {
+                    });
+                }
             }
         });
     }
@@ -316,12 +374,12 @@ function loadDataNhomDatn(count) {
             console.log("ERROR : ", e);
         }
         // Nút tham gia nhóm: Có validate -> phải đủ 12 tiếng sau thời điểm rời nhóm gần nhất mới được join nhóm mới
-    // <button className="btn_box_arrow"
-    //         style="${checkHanSV == 'false' ? 'display:none' : checkThoiGianRoiNhom == 'true' ? 'display: block' : 'display:none'}"
-    //         data-target="#modal_create1"
-    //         data-toggle="modal"
-    //         onClick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')">
-    //     <img src="/img/box-arrow.svg">
-    // </button>
+        // <button className="btn_box_arrow"
+        //         style="${checkHanSV == 'false' ? 'display:none' : checkThoiGianRoiNhom == 'true' ? 'display: block' : 'display:none'}"
+        //         data-target="#modal_create1"
+        //         data-toggle="modal"
+        //         onClick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')">
+        //     <img src="/img/box-arrow.svg">
+        // </button>
     });
 }
