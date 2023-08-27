@@ -1,5 +1,6 @@
 package com.fpolydatn.core.daotao.model.request;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -16,12 +17,12 @@ public abstract class DtBaseMonDatnRequest {
 
     @NotEmpty
     @NotBlank
-    @Length(max = 10)
+    @Length(max = EntityProperties.LENGTH_CODE)
     private String maMon;
 
     @NotEmpty
     @NotBlank
-    @Length(max = 100)
+    @Length(max = EntityProperties.LENGTH_NAME)
     private String tenMonDatn;
 
     private String nhomMonDatnId;

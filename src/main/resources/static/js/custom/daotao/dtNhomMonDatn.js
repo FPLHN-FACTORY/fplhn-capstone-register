@@ -11,7 +11,6 @@ let currentPage = $("#currentPage").val();
 
 function clearData() {
     $("#search_ma_nhom_mon").val("");
-    ;
     $("#chuyenNganh").val("");
 }
 
@@ -125,6 +124,7 @@ function loadTable(count) {
 function openModalCreate() {
     $("#maNhomMon").val('');
     $("#tenNhomMon").val('');
+    $("#chuyenNganhId").val('');
     $("#ma_mon_datn_error").text('');
     $("#ten_mon_datn_error").text('');
     $("#chuyen_nganh_error").text('');
@@ -132,8 +132,8 @@ function openModalCreate() {
 }
 
 function createNhomMonDatn() {
-    let maMon = $("#maNhomMon").val();
-    let tenMonDatn = $("#tenNhomMon").val();
+    let maMon = $("#maNhomMon").val().trim();
+    let tenMonDatn = $("#tenNhomMon").val().trim();
     let chuyenNganhId = $("#chuyenNganhId").val();
     let monDatnRequest = {};
     monDatnRequest["maNhomMon"] = maMon;
@@ -201,8 +201,8 @@ function openModalUpdateNhomMonDatn(monDatnId) {
 }
 
 function updateNhomMonDatn() {
-    let maNhomMon = $("#ma_nhom_mon_datn_update").val();
-    let tenNhomMonDatn = $("#ten_nhom_mon_datn_update").val();
+    let maNhomMon = $("#ma_nhom_mon_datn_update").val().trim();
+    let tenNhomMonDatn = $("#ten_nhom_mon_datn_update").val().trim();
     let nhomMonDatnId = $("#id_nhom_mon_datn_update").val();
     let chuyenNganhId = $("#chuyenNganhUpdate").val();
     let monDatnRequest = {};

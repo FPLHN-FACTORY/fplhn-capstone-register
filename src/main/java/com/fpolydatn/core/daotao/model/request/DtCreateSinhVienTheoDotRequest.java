@@ -1,7 +1,9 @@
 package com.fpolydatn.core.daotao.model.request;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * @author thepvph20110
@@ -12,6 +14,7 @@ public class DtCreateSinhVienTheoDotRequest {
 
     private String maSinhVien;
 
+    @Length(max = EntityProperties.LENGTH_NAME)
     private String tenSinhVien;
 
     private String soDienThoai;
