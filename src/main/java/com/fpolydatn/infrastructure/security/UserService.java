@@ -2,6 +2,7 @@ package com.fpolydatn.infrastructure.security;
 
 import com.fpolydatn.infrastructure.constant.ActorConstant;
 import com.fpolydatn.infrastructure.constant.SessionConstant;
+import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.CanBoRepository;
@@ -58,7 +59,8 @@ public class UserService {
                 break;
             }
             case ActorConstant.SINH_VIEN: {
-                account = sinhVienRepository.findSimpleEntityByTenSinhVien(coSoID, email, dotDangKyID);
+                account = sinhVienRepository.findSimpleEntityByTenSinhVien(coSoID, email, dotDangKyID,
+                        TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/authentication/" + ActorConstant.SINH_VIEN);
                 } else {

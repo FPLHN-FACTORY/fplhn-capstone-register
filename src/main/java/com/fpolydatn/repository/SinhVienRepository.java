@@ -25,9 +25,11 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
             AND sv.dot_dang_ky_id =:dotDangKyID
             AND sv.email=:email
             AND sv.co_so_id=:coSoId
+            AND sv.trang_thai = :trangThai
             """, nativeQuery = true)
     SimpleEntityProj findSimpleEntityByTenSinhVien(@Param("coSoId") String coSoId, @Param("email") String email,
-                                                   @Param("dotDangKyID") String dotDangKyID);
+                                                   @Param("dotDangKyID") String dotDangKyID,
+                                                   @Param("trangThai") Integer trangThai);
 
     @Query(value = """
             SELECT * FROM sinh_vien WHERE nhom_id IN 
