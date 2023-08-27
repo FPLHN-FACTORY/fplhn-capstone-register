@@ -55,19 +55,29 @@ function chotDeTai(id, count) {
         success: function () {
             ++flag;
             if (flag == checkListCbb) {
-                // toastr.success('Chốt thành công');
                 bootbox.alert('Chốt thành công')
             }
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            bootbox.alert({
-                message: e.responseJSON.message + '',
-                backdrop: true,
-                callback: function () {
-                    loadDataNhomDatn(0);
-                }
-            });
+            if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                bootbox.alert({
+                    message: 'Nhóm dự án tốt nghiệp không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
+            if (e.responseJSON.message === 'Trang thai nhom khong thoa man') {
+                bootbox.alert({
+                    message: 'Trạng thái nhóm không thỏa mãn',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
             return;
         }
     });
@@ -109,13 +119,24 @@ function xacNhanNhom(id, count) {
             loadDataNhomDatn(count)
         },
         error: function (e) {
-            bootbox.alert({
-                message: e.responseJSON.message + '',
-                backdrop: true,
-                callback: function () {
-                    loadDataNhomDatn(0);
-                }
-            });
+            if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                bootbox.alert({
+                    message: 'Nhóm dự án tốt nghiệp không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
+            if (e.responseJSON.message === 'Trang thai nhom khong thoa man') {
+                bootbox.alert({
+                    message: 'Trạng thái nhóm không thỏa mãn',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
             return;
         }
     });
@@ -176,13 +197,15 @@ function openModalRemoveNhomDatn(nhomDatnId, count) {
                         });
                     },
                     error: function (e) {
-                        bootbox.alert({
-                            message: e.responseJSON.message,
-                            backdrop: true,
-                            callback: function () {
-                                loadDataNhomDatn(0);
-                            }
-                        });
+                        if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                            bootbox.alert({
+                                message: 'Nhóm dự án tốt nghiệp không tồn tại',
+                                backdrop: true,
+                                callback: function () {
+
+                                }
+                            });
+                        }
                         return;
                     }
                 });
@@ -209,7 +232,7 @@ function openModalNhanXet(id, count) {
                 message: e.responseJSON.message,
                 backdrop: true,
                 callback: function () {
-                    loadDataNhomDatn(0);
+
                 }
             });
             return;
@@ -234,13 +257,24 @@ function tuChoi() {
         },
         error: function (e) {
             $("#modal_nhom_datn_nhan_xet").modal("hide");
-            bootbox.alert({
-                message: e.responseJSON.message,
-                backdrop: true,
-                callback: function () {
-                    loadDataNhomDatn(0);
-                }
-            });
+            if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                bootbox.alert({
+                    message: 'Nhóm dự án tốt nghiệp không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
+            if (e.responseJSON.message === 'Trang thai nhom khong thoa man') {
+                bootbox.alert({
+                    message: 'Trạng thái nhóm không thỏa mãn',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
             return;
         }
     });
@@ -350,13 +384,24 @@ function chotNhieuDeTai(count) {
                             bootbox.alert('Chốt nhiều đề tài thành công')
                         },
                         error: function (e) {
-                            bootbox.alert({
-                                message: e.responseJSON.message + '',
-                                backdrop: true,
-                                callback: function () {
-                                    loadDataNhomDatn(0);
-                                }
-                            });
+                            if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                                bootbox.alert({
+                                    message: 'Nhóm dự án tốt nghiệp không tồn tại',
+                                    backdrop: true,
+                                    callback: function () {
+
+                                    }
+                                });
+                            }
+                            if (e.responseJSON.message === 'Trang thai nhom khong thoa man') {
+                                bootbox.alert({
+                                    message: 'Trạng thái nhóm không thỏa mãn',
+                                    backdrop: true,
+                                    callback: function () {
+
+                                    }
+                                });
+                            }
                             return;
                         }
                     });
@@ -443,13 +488,24 @@ function xacNhanNhieuNhom(count) {
                             bootbox.alert('Xác nhận thành công')
                         },
                         error: function (e) {
-                            bootbox.alert({
-                                message: e.responseJSON.message + '',
-                                backdrop: true,
-                                callback: function () {
-                                    loadDataNhomDatn(0);
-                                }
-                            });
+                            if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                                bootbox.alert({
+                                    message: 'Nhóm dự án tốt nghiệp không tồn tại',
+                                    backdrop: true,
+                                    callback: function () {
+
+                                    }
+                                });
+                            }
+                            if (e.responseJSON.message === 'Trang thai nhom khong thoa man') {
+                                bootbox.alert({
+                                    message: 'Trạng thái nhóm không thỏa mãn',
+                                    backdrop: true,
+                                    callback: function () {
+
+                                    }
+                                });
+                            }
                             return;
                         }
                     });
@@ -512,13 +568,60 @@ function create() {
             },
             error: function (e) {
                 $("#modal_create").modal("hide");
-                bootbox.alert({
-                    message: e.responseJSON.message,
-                    backdrop: true,
-                    callback: function () {
-                        loadDataNhomDatn(0);
-                    }
-                });
+                if (e.responseJSON.message === 'Giang vien khong ton tai') {
+                    bootbox.alert({
+                        message: "Giảng viên không tồn tại",
+                        backdrop: true,
+                        callback: function () {
+
+                        }
+                    });
+                }
+                if (e.responseJSON.message === 'Giang Vien Da Huong Dan Du So Nhom') {
+                    bootbox.alert({
+                        message: "Giảng viên đã hướng dẫn đủ số nhóm",
+                        backdrop: true,
+                        callback: function () {
+
+                        }
+                    });
+                }
+                if (e.responseJSON.message === 'Khong tim thay sinh vien nao') {
+                    bootbox.alert({
+                        message: "Không tìm thấy sinh viên nào",
+                        backdrop: true,
+                        callback: function () {
+
+                        }
+                    });
+                }
+                if (e.responseJSON.message === 'Sinh vien nay da co nhom') {
+                    bootbox.alert({
+                        message: "Sinh viên này đã có nhóm",
+                        backdrop: true,
+                        callback: function () {
+
+                        }
+                    });
+                }
+                if (e.responseJSON.message === 'Mon du an tot nghiep khong thoa man voi sinh vien') {
+                    bootbox.alert({
+                        message: "Môn dự án tốt nghiệp không thỏa mãn với sinh viên",
+                        backdrop: true,
+                        callback: function () {
+
+                        }
+                    });
+                }
+                if (e.responseJSON.message === 'Tao nhom that bai') {
+                    bootbox.alert({
+                        message: "Tạo nhóm thất bại",
+                        backdrop: true,
+                        callback: function () {
+
+                        }
+                    });
+                }
             }
         });
     }
@@ -647,7 +750,7 @@ function loadDataNhomDatn(count) {
                 <td class="text-center align-middle">${item.truongNhom}</td>
                 <td class="text-center align-middle"> 
                 <div class="d-flex justify-content-center align-items-center">
-                ${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan + ' (' 
+                ${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan + ' ('
                             + item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa + ')'}</div></td> 
                 <td class="text-center align-middle">${item.tenDotDangKy}</td>
                 <td class="text-center align-middle">${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>

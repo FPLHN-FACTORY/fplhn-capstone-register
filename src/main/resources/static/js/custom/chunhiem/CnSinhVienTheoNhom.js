@@ -71,7 +71,12 @@ function doiTenDeTai() {
             });
         },
         error: function (e) {
-            $("#change_ten_de_tai_error").html(e.responseJSON.message)
+            if(e.responseJSON.message === 'Nhom du an tot nghiep not exist'){
+                $("#change_ten_de_tai_error").html("Nhóm dự án tốt nghiệp không tồn tại")
+            }
+            if(e.responseJSON.message === 'Do dai khong qua 255 ky tu'){
+                $("#change_ten_de_tai_error").html("Độ dài không quá 255 ký tự")
+            }
         }
     });
 }
@@ -98,7 +103,12 @@ function themSinhVien() {
 
         },
         error: function (e) {
-            $("#idStudentError").html(e.responseJSON.message)
+            if(e.responseJSON.message === 'So luong thanh vien toi da trong nhom la 7 nguoi'){
+                $("#idStudentError").html("Số lượng thành viên tối đa trong nhóm là 7 người")
+            }
+            if(e.responseJSON.message === 'mon dang hoc cua sinh vien khong thich hop.vui long chon lai'){
+                $("#idStudentError").html("Môn đang học của sinh viên không thích hợp. Vui lòng chọn lại")
+            }
         }
     });
 }
@@ -172,6 +182,9 @@ function thayDoiGiangVien() {
             }
             if (e.responseJSON.message == 'Giang Vien Da Huong Dan Du So Nhom') {
                 $("#change_gvhd_error").text('Giảng viên đã hướng dẫn đủ số nhóm')
+            }
+            if (e.responseJSON.message == 'giang vien nay khong day mon hoc nay. vui long chon giang vien khac') {
+                $("#change_gvhd_error").text('Giảng viên này không dạy môn DATN của nhóm này. Vui lòng chọn giảng viên khác')
             }
         }
     });

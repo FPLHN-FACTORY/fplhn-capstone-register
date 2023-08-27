@@ -57,11 +57,36 @@ function doiTenDeTai() {
                         });
                     },
                     error: function (responseData) {
-                        console.log(responseData);
-                        bootbox.alert({
-                            message: 'Đổi tên đề tài thất bại',
-                            backdrop: true,
-                        });
+                        if(e.responseJSON.message === 'Het han quyen sinh vien') {
+                            bootbox.alert({
+                                message: 'Hết hạn quyền sinh viên',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Khong tim thay sinh vien nao') {
+                            bootbox.alert({
+                                message: 'Không tìm thấy sinh viên nào',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Sinh vien khong co nhom') {
+                            bootbox.alert({
+                                message: 'Sinh viên không có nhóm',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Khong phai truong nhom') {
+                            bootbox.alert({
+                                message: 'Không phải trưởng nhóm',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Trang thai nhom khong thoa man') {
+                            bootbox.alert({
+                                message: 'Trạng thái nhóm không thỏa mãn',
+                                backdrop: true,
+                            });
+                        }
                     }
                 });
             }
@@ -116,12 +141,13 @@ function doiTenNhom() {
                             }
                         });
                     },
-                    error: function (responseData) {
-                        console.log(responseData);
-                        bootbox.alert({
-                            message: 'Đổi tên nhóm thất bại',
-                            backdrop: true,
-                        });
+                    error: function (e) {
+                        if(e.responseJSON.message === 'Sinh vien khong phai truong nhom'){
+                            bootbox.alert({
+                                message: 'Sinh viên không phải trưởng nhóm',
+                                backdrop: true,
+                            });
+                        }
                     }
                 });
             }
@@ -184,9 +210,37 @@ function roiNhom() {
                 }
             );
         },
-        error: function (responseData) {
-            console.log(responseData);
-            alert(responseData.responseJSON.message);
+        error: function (e) {
+            if(e.responseJSON.message === 'Het han quyen sinh vien'){
+                bootbox.alert('Hết hạn quyền sinh viên', function () {
+                    }
+                );
+            }
+            if(e.responseJSON.message === 'Khong tim thay sinh vien nao'){
+                bootbox.alert('Không tìm thấy sinh viên nào', function () {
+                    }
+                );
+            }
+            if(e.responseJSON.message === 'Sinh vien khong co nhom'){
+                bootbox.alert('Sinh viên không có nhóm', function () {
+                    }
+                );
+            }
+            if(e.responseJSON.message === 'Nhom du an tot nghiep not exist'){
+                bootbox.alert('Nhóm dự án tốt nghiệp không tồn tại', function () {
+                    }
+                );
+            }
+            if(e.responseJSON.message === 'Chua du 12 tieng trong nhom'){
+                bootbox.alert('Chưa đủ 12 tiếng trong nhóm', function () {
+                    }
+                );
+            }
+            if(e.responseJSON.message === 'Roi nhom khi la truong nhom'){
+                bootbox.alert('Rời nhóm khi là trưởng nhóm', function () {
+                    }
+                );
+            }
         }
     });
 }
@@ -219,9 +273,43 @@ function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi) {
                             }
                         });
                     },
-                    error: function (responseData) {
-                        console.log(responseData);
-                        alert(responseData.responseJSON.message);
+                    error: function (e) {
+                        if(e.responseJSON.message === 'Het han quyen sinh vien') {
+                            bootbox.alert({
+                                message: 'Hết hạn quyền sinh viên',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Khong tim thay sinh vien nao') {
+                            bootbox.alert({
+                                message: 'Không tìm thấy sinh viên nào',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Sinh vien khong co nhom') {
+                            bootbox.alert({
+                                message: 'Sinh viên không có nhóm',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Khong phai truong nhom') {
+                            bootbox.alert({
+                                message: 'Không phải trưởng nhóm',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Sinh vien dang la truong nhom') {
+                            bootbox.alert({
+                                message: 'Sinh viên đang là trưởng nhóm',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Truong nhom moi khong cung nhom') {
+                            bootbox.alert({
+                                message: 'Trưởng nhóm mới không cùng nhóm',
+                                backdrop: true,
+                            });
+                        }
                     }
                 });
             }
@@ -259,9 +347,37 @@ function chonGiangVienHuongDan() {
                             }
                         });
                     },
-                    error: function (responseData) {
-                        console.log(responseData);
-                        alert(responseData.responseJSON.message);
+                    error: function (e) {
+                        if(e.responseJSON.message === 'Het han quyen sinh vien'){
+                            bootbox.alert({
+                                message: 'Hết hạn quyền sinh viên',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Giang vien khong ton tai'){
+                            bootbox.alert({
+                                message: 'Giảng viên không tồn tại',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Giang Vien Da Huong Dan Du So Nhom'){
+                            bootbox.alert({
+                                message: 'Giảng viên đã hướng dẫn đủ số nhóm',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Nhom du an tot nghiep not exist'){
+                            bootbox.alert({
+                                message: 'Nhóm dự án tốt nghiệp không tồn tại',
+                                backdrop: true,
+                            });
+                        }
+                        if(e.responseJSON.message === 'Trang thai nhom khong thoa man'){
+                            bootbox.alert({
+                                message: 'Trạng thái không thỏa mãn',
+                                backdrop: true,
+                            });
+                        }
                     }
                 });
             }
