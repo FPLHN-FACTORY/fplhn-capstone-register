@@ -302,12 +302,16 @@
                         </select>
                         <br>
                         <label class="col-form-label">Tên nhóm:</label>
-                        <input class="form-control" id="tenNhomCreateNhom"
+                        <input class="form-control"
+                               maxlength="255"
+                               id="tenNhomCreateNhom"
                                type="text">
                         <small class="text-danger" id="ten_nhom_error"></small>
                         <br>
                         <label class="col-form-label">Tên đề tài</label>
-                        <input class="form-control" id="tenDeTaiCreateNhom"
+                        <input class="form-control"
+                               id="tenDeTaiCreateNhom"
+                               maxlength="255"
                                type="text">
                         <small class="text-danger" id="ten_de_tai_error"></small>
                         <br>
@@ -322,7 +326,7 @@
                             </label>
                         </div>
                         <label class="col-form-label">Mô tả:</label>
-                        <textarea class="form-control" cols="30" id="moTaCreateNhom" name=""
+                        <textarea class="form-control" maxlength="255" cols="30" id="moTaCreateNhom" name=""
                                   rows="4"></textarea>
                     </div>
                 </div>
@@ -362,7 +366,7 @@
                     <div class="form-group">
                         <br>
                         <label class="col-form-label">Mật khẩu</label>
-                        <input
+                        <input	maxlength="30"
                                 class="form-control"
                                 id="inputPassword"
                                 type="text">

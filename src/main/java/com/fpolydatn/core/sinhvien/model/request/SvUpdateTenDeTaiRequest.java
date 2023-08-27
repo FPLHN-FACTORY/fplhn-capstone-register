@@ -1,5 +1,6 @@
 package com.fpolydatn.core.sinhvien.model.request;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,6 @@ public class SvUpdateTenDeTaiRequest{
 
     private String idUser;
 
-    @Length(max = 255)
+    @Length(max = EntityProperties.LENGTH_NAME)
     private String tenDeTai;
 }

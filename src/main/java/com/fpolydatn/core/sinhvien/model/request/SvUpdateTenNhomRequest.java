@@ -1,5 +1,6 @@
 package com.fpolydatn.core.sinhvien.model.request;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -21,7 +22,7 @@ public class SvUpdateTenNhomRequest {
 
     private String userId;
 
-    @Length(max = 255)
+    @Length(max = EntityProperties.LENGTH_NAME)
     private String tenNhom;
 
 }
