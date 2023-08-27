@@ -47,4 +47,10 @@ public final class HocKyRestController extends BaseController {
     public ResponseObject delete(@PathVariable("id") String id) {
         return new ResponseObject(hocKyService.delete(id));
     }
+
+    @GetMapping
+    public ResponseObject getAll() {
+        return new ResponseObject(hocKyService.getAll());
+    }
+
 }

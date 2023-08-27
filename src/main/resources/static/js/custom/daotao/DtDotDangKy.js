@@ -174,7 +174,9 @@ function update() {
                     if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
                         && ngayBatDau.getTime() > listDotDangKy[i].ngayBatDau) {
                         $("#errorMessageNgayBatDauUpdate").text("Thời gian bắt đầu trùng với: " + listDotDangKy[i].tenDotDangKy);
+                        $("#errorMessageNgayKetThucUpdate").text('');
                     } else {
+                        $("#errorMessageNgayBatDauUpdate").text('');
                         $("#errorMessageNgayKetThucUpdate").text("Thời gian kết thúc trùng với: " + listDotDangKy[i].tenDotDangKy);
                     }
                     check += 1;
@@ -316,7 +318,9 @@ function create() {
                     if (ngayBatDau.getTime() < listDotDangKy[i].ngayKetThuc
                         && ngayBatDau.getTime() > listDotDangKy[i].ngayBatDau) {
                         $("#errorMessageAddNgayBatDau").text("Thời gian bắt đầu trùng với: " + listDotDangKy[i].tenDotDangKy);
+                        $("#errorMessageAddNgayKetThuc").text('');
                     } else {
+                        $("#errorMessageAddNgayBatDau").text('');
                         $("#errorMessageAddNgayKetThuc").text("Thời gian kết thúc trùng với: " + listDotDangKy[i].tenDotDangKy);
                     }
                     check += 1;

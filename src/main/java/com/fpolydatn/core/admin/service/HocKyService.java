@@ -29,6 +29,6 @@ public interface HocKyService {
 
     PageableObject<HocKyResponse> search(final FindHocKyRequest req);
 
-    List<SimpleEntityProj> getListHocKy();
+    List<HocKy> getAll();
 
 }

@@ -41,8 +41,6 @@ public class HocKyServiceImpl implements HocKyService {
     @Autowired
     private AdDotDangKyRepository dotDangKyRepository;
 
-    private final FormUtils formUtils = new FormUtils();
-
     @Override
     public PageableObject<HocKyResponse> search(final FindHocKyRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
@@ -53,8 +51,8 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     public HocKy create(@Valid final CreateHocKyRequest request) {
         HocKy hocKy = new HocKy();
-        hocKy.setTenHocKy(request.getTenHocKy());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
+        hocKy.setTenHocKy(request.getTenHocKy().trim());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date ngayBatDau = null;
         Date ngayKetThuc = null;
         try {
@@ -68,6 +66,13 @@ public class HocKyServiceImpl implements HocKyService {
         if(ngayKetThucLong < ngayBatDauLong) {
             throw new RestApiException(Message.INVALID_NGAY_KET_THUC);
         }
+        List<HocKy> listHocKy = hocKyRepository.findAll();
+        listHocKy.forEach(item -> {
+            if (ngayBatDauLong < item.getNgayKetThuc()
+                    && ngayKetThucLong > item.getNgayBatDau()) {
+                throw new RestApiException(Message.HOC_KY_OVERLAP);
+            }
+        });
         hocKy.setNgayBatDau(ngayBatDauLong);
         hocKy.setNgayKetThuc(ngayKetThucLong);
         return hocKyRepository.save(hocKy);
@@ -95,8 +100,8 @@ public class HocKyServiceImpl implements HocKyService {
         }
 
         HocKy hocKy = hocKyCheck.get();
-        hocKy.setTenHocKy(request.getTenHocKy());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
+        hocKy.setTenHocKy(request.getTenHocKy().trim());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date ngayBatDau = null;
         Date ngayKetThuc = null;
         try {
@@ -109,6 +114,16 @@ public class HocKyServiceImpl implements HocKyService {
         Long ngayKetThucLong = ngayKetThuc.getTime();
         if(ngayKetThucLong < ngayBatDauLong) {
             throw new RestApiException(Message.INVALID_NGAY_KET_THUC);
+        }
+        List<HocKy> listHocKy = hocKyRepository.findAll();
+        for (HocKy item :listHocKy) {
+            if (item.getId().equals(request.getId())) {
+                continue;
+            }
+            if (ngayBatDauLong < item.getNgayKetThuc()
+                    && ngayKetThucLong > item.getNgayBatDau()) {
+                throw new RestApiException(Message.HOC_KY_OVERLAP);
+            }
         }
         hocKy.setNgayBatDau(ngayBatDauLong);
         hocKy.setNgayKetThuc(ngayKetThucLong);
@@ -130,8 +145,8 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
-    public List<SimpleEntityProj> getListHocKy() {
-        return hocKyRepository.findAllSimpleEntity();
+    public List<HocKy> getAll() {
+        return hocKyRepository.findAll();
     }
 
 }

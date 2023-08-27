@@ -11,7 +11,7 @@ function clearData() {
 
 $("#form_create_hoc_ky").submit(function (event) {
     event.preventDefault();
-    let tenHocKy = $("#tenHocKyAdd").val();
+    let tenHocKy = $("#tenHocKyAdd").val().trim();
     let ngayBatDauStr = $("#ngayBatDauAdd").val();
     let ngayBatDau = new Date(ngayBatDauStr);
     let ngayKetThucStr = $("#ngayKetThucAdd").val();
@@ -50,12 +50,41 @@ $("#form_create_hoc_ky").submit(function (event) {
         $("#ngay_ket_thuc_add_error").text("");
     }
 
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: hocKyApi,
+        dataType: 'json',
+        async: false,
+        success: function (responseData) {
+            let listHocKy = responseData.data;
+            let size = listHocKy.length;
+            for (let i = 0; i < size; i++) {
+                if (ngayBatDau.getTime() < listHocKy[i].ngayKetThuc
+                    && ngayKetThuc.getTime() > listHocKy[i].ngayBatDau) {
+                    if (ngayBatDau.getTime() < listHocKy[i].ngayKetThuc
+                        && ngayBatDau.getTime() > listHocKy[i].ngayBatDau) {
+                        $("#ngay_bat_dau_add_error").text("Thời gian bắt đầu trùng với: " + listHocKy[i].tenHocKy);
+                        $("#ngay_ket_thuc_add_error").text('');
+                    } else {
+                        $("#ngay_bat_dau_add_error").text('');
+                        $("#ngay_ket_thuc_add_error").text("Thời gian kết thúc trùng với: " + listHocKy[i].tenHocKy);
+                    }
+                    check += 1;
+                }
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+
     if (check === 0) {
 
         let hocKyRequest = {};
         hocKyRequest["tenHocKy"] = tenHocKy;
-        hocKyRequest["ngayBatDau"] = ngayBatDau.toLocaleString('en-CA', {hour12: false});
-        hocKyRequest["ngayKetThuc"] = ngayKetThuc.toLocaleString('en-CA', {hour12: false});
+        hocKyRequest["ngayBatDau"] = ngayBatDau.toLocaleDateString('en-CA');
+        hocKyRequest["ngayKetThuc"] = ngayKetThuc.toLocaleDateString('en-CA');
 
         $.ajax({
             type: "POST",
@@ -69,6 +98,10 @@ $("#form_create_hoc_ky").submit(function (event) {
             },
             error: function (e) {
                 console.log("ERROR : ", e);
+                bootbox.alert({
+                    message: 'Thêm thất bại',
+                    backdrop: true,
+                });
             }
         });
     }
@@ -119,7 +152,7 @@ function openModalCreateHocKy() {
 
 $("#form_hoc_ky_update").submit(function (event) {
     event.preventDefault();
-    let tenHocKy = $("#ten_hoc_ky_update").val();
+    let tenHocKy = $("#ten_hoc_ky_update").val().trim();
     let hocKyId = $("#id_hoc_ky_update").val();
     let ngayBatDauStr = $("#ngayBatDauUpdate").val();
     let ngayBatDau = new Date(ngayBatDauStr);
@@ -159,11 +192,43 @@ $("#form_hoc_ky_update").submit(function (event) {
         $("#ngay_ket_thuc_update_error").text("");
     }
 
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: hocKyApi,
+        dataType: 'json',
+        async: false,
+        success: function (responseData) {
+            let listHocKy = responseData.data;
+            let size = listHocKy.length;
+            for (let i = 0; i < size; i++) {
+                if (hocKyId === listHocKy[i].id) {
+                    continue;
+                }
+                if (ngayBatDau.getTime() < listHocKy[i].ngayKetThuc
+                    && ngayKetThuc.getTime() > listHocKy[i].ngayBatDau) {
+                    if (ngayBatDau.getTime() < listHocKy[i].ngayKetThuc
+                        && ngayBatDau.getTime() > listHocKy[i].ngayBatDau) {
+                        $("#ngay_bat_dau_update_error").text("Thời gian bắt đầu trùng với: " + listHocKy[i].tenHocKy);
+                        $("#ngay_ket_thuc_update_error").text('');
+                    } else {
+                        $("#ngay_bat_dau_update_error").text('');
+                        $("#ngay_ket_thuc_update_error").text("Thời gian kết thúc trùng với: " + listHocKy[i].tenHocKy);
+                    }
+                    check += 1;
+                }
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+
     if (check === 0) {
         let hocKyRequest = {};
         hocKyRequest["tenHocKy"] = tenHocKy;
-        hocKyRequest["ngayBatDau"] = ngayBatDau.toLocaleString('en-CA', {hour12: false});
-        hocKyRequest["ngayKetThuc"] = ngayKetThuc.toLocaleString('en-CA', {hour12: false});
+        hocKyRequest["ngayBatDau"] = ngayBatDau.toLocaleDateString('en-CA');
+        hocKyRequest["ngayKetThuc"] = ngayKetThuc.toLocaleDateString('en-CA');
 
         $.ajax({
             type: "PUT",
@@ -177,6 +242,10 @@ $("#form_hoc_ky_update").submit(function (event) {
             },
             error: function (e) {
                 console.log("ERROR : ", e);
+                bootbox.alert({
+                    message: 'Sửa thất bại',
+                    backdrop: true,
+                });
             }
         });
     }
