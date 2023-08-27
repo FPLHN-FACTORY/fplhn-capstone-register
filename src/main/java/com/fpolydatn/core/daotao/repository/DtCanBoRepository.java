@@ -89,6 +89,6 @@ public interface DtCanBoRepository extends CanBoRepository {
     @Query(value = "SELECT id FROM can_bo WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
     String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM chuyen_nganh where chu_nhiem_bo_mon = :idChuNhiem AND co_so_id = :coSoId", nativeQuery = true)
-    String getIdChuyenNganhByIdChuNhiem(@Param("idChuNhiem") String idChuNhiem, @Param("coSoId") String coSoId);
+    @Query(value = "SELECT COUNT(id) FROM chuyen_nganh where chu_nhiem_bo_mon = :idChuNhiem AND co_so_id = :coSoId GROUP BY chu_nhiem_bo_mon", nativeQuery = true)
+    Integer getIdChuyenNganhByIdChuNhiem(@Param("idChuNhiem") String idChuNhiem, @Param("coSoId") String coSoId);
 }

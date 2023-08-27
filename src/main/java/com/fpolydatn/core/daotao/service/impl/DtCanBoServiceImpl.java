@@ -87,11 +87,13 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         if (Objects.isNull(canBoCheck)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
-        String check = dtCanBoRepository.getIdChuyenNganhByIdChuNhiem(id, coSoId);
-        if (check != null) {
+        Integer check = dtCanBoRepository.getIdChuyenNganhByIdChuNhiem(id, coSoId);
+        if (check != null && check > 0) {
             throw new RestApiException(Message.CHU_NHIEM_NAY_DANG_CHU_NHIEM_1_CHUYEN_NGANH);
         }
-        dtCanBoRepository.delete(canBoCheck.get());
+        if(check == null || check == 0) {
+            dtCanBoRepository.delete(canBoCheck.get());
+        }
         return true;
     }
 
