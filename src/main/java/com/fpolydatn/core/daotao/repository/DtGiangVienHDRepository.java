@@ -119,23 +119,19 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                 FROM giang_vien_huong_dan gvhd 
                 LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
                 LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
-                LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                
+                LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id  
+                LEFT JOIN phan_cong_huong_dan pc ON pc.giang_vien_id = gvhd.id  
+                LEFT JOIN mon_datn m ON m.id = pc.mon_datn_id  
+                LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id   
                 WHERE 
-                 cs.id = :#{#req.coSoId}
-                 AND
-                 ddk.id = :#{#req.dotDangKyId}
-                GROUP BY gvhd.id
-                ORDER BY gvhd.last_modified_date DESC 
-            """, countQuery = """
-                SELECT COUNT(gvhd.id)
-                FROM giang_vien_huong_dan gvhd 
-                LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
-                LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
-                LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id                
-                WHERE
-                 cs.id = :#{#req.coSoId}
-                 AND
-                 ddk.id = :#{#req.dotDangKyId}
+                    ( :#{#req.tenTaiKhoan} IS NULL 
+                        OR :#{#req.tenTaiKhoan} LIKE '' 
+                        OR ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}% )
+                    AND (m.chuyen_nganh_id = :#{#req.chuyenNganhId} 
+                    OR :#{#req.chuyenNganhId} IS NULL 
+                    OR :#{#req.chuyenNganhId} LIKE '')
+                    AND cs.id = :#{#req.coSoId}
+                    AND ddk.id = :#{#req.dotDangKyId}
                 GROUP BY gvhd.id
                 ORDER BY gvhd.last_modified_date DESC 
             """, nativeQuery = true)

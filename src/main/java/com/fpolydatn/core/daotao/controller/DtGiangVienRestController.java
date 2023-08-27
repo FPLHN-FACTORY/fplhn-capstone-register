@@ -84,6 +84,9 @@ public class DtGiangVienRestController extends BaseController {
     @GetMapping("/export")
     public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
+        if (request != null && (request.getDotDangKyId() == null || request.getDotDangKyId().trim().length() == 0)) {
+            request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        }
         giangVienHDService.DtGiangVienHDExportExcel(response, typeExcel, request);
     }
 

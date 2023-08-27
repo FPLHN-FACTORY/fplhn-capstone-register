@@ -68,7 +68,10 @@ function addGVHD() {
     if (tenGvhd.length === 0) {
         $("#errorTenGiangVien").text(" Tên giảng viên không được để trống");
         index++;
-    } else {
+    } if (tenGvhd.length > 100) {
+        $("#errorTenGiangVien").text(" Tên giảng viên không được quá 100 ký tự");
+        index++;
+    }  else {
         $("#errorTenGiangVien").text("");
     }
     if (soNhomHuongDanToiDa.length === 0) {
@@ -209,6 +212,9 @@ function updateGVHD() {
     let index = 0;
     if (tenGvhd.length === 0) {
         $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được để trống");
+        index++;
+    } if (tenGvhd.length > 100) {
+        $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được quá 100 ký tự");
         index++;
     } else {
         $("#errorTenGiangVienUpdate").text("");
@@ -363,8 +369,9 @@ function openModalImport() {
 function exportFile() {
     let typeExcel = $("#type_excel").val();
 
-    let tenGiangVien = $("#tenGiangVien").val();
+    let tenTaiKhoan = $("#ten_tai_khoan").val();
     let dotDangKyId = $("#search_dot_dang_ky").val();
+    let chuyenNganhId = $("#chuyenNganh").val();
 
     if (typeExcel == '') {
         $("#type_excel_error").text("Chọn định dạng file download");
@@ -372,9 +379,9 @@ function exportFile() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenGiangVien=" + tenGiangVien,
+            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenTaiKhoan=" + tenTaiKhoan + "&chuyenNganhId="+chuyenNganhId,
             success: function () {
-                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenGiangVien=" + tenGiangVien, '_self');
+                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenTaiKhoan=" + tenTaiKhoan + "&chuyenNganhId="+chuyenNganhId, '_self');
                 $("#modal_excel").modal('hide')
             },
             error: function (e) {

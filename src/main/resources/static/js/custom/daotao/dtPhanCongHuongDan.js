@@ -20,7 +20,7 @@ function phanCong() {
     let table = $("#table-add");
     let row = table.get(0).lastElementChild.children
     for (const a of row) {
-        if (a.children[4].children[0].checked === true) {
+        if (a.children[4].children[0].children[0].checked === true) {
             index = true;
             let phanCongRequest = {};
             phanCongRequest["monDatnId"] = monDatnId;
