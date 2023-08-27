@@ -146,7 +146,7 @@ function loadDataNhomDatn(count) {
     if (count == totalPages) {
         count = 0;
     }
-    let maNhom = $("#maNhom").val()
+    let maNhom = $("#maNhom").val().trim()
     let chuyenNganhId = $("#chuyenNganh").val()
     let dotDangKyId = $("#dotDangKy").val()
     let trangThai = $("#trangThai").val()

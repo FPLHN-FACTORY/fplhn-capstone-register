@@ -46,14 +46,18 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     @GetMapping("/export")
     public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, FindDtNhomDatnTheoDotRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
-        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        if (request != null && (request.getDotDangKyId() == null || request.getDotDangKyId().trim().length() == 0)) {
+            request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        }
         dtNhomDatnTheoDotService.DTNhomDatnExport(response, typeExcel, request);
     }
 
     @GetMapping("/export-excel")
     public void exportEcel(HttpServletResponse response, FindDtNhomDatnTheoDotRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
-        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        if (request != null && (request.getDotDangKyId() == null || request.getDotDangKyId().trim().length() == 0)) {
+            request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        }
         dtNhomDatnTheoDotService.DTNhomDatnSinhVienExport(response, request);
     }
 }

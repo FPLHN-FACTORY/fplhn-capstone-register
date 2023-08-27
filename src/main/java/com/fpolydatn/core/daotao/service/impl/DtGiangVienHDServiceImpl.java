@@ -296,6 +296,18 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                     return;
                 }
 
+                if (gv.getSoNhomHuongDanToiDa() == null) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Số nhóm hướng dẫn của giảng viên "+ gv.getTenGvhd() +" không được để trống");
+                    return;
+                }
+
+                if (gv.getSoNhomHuongDanToiDa() < 1 || gv.getSoNhomHuongDanToiDa() > 7) {
+                    dtGiangVienHDResponseMessage.setStatus(false);
+                    dtGiangVienHDResponseMessage.setMessage("Số nhóm hướng dẫn của giảng viên "+ gv.getTenGvhd() +" chỉ từ 1-7");
+                    return;
+                }
+
 //                if (!gv.getSoDienThoai().matches(Constants.REGEX_PHONE_NUMBER)) {
 //                    dtGiangVienHDResponseMessage.setStatus(false);
 //                    dtGiangVienHDResponseMessage.setMessage("Số điện thoại không đúng định dạng");

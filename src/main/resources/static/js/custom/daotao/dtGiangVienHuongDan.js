@@ -68,7 +68,7 @@ function addGVHD() {
     if (tenGvhd.length === 0) {
         $("#errorTenGiangVien").text(" Tên giảng viên không được để trống");
         index++;
-    } if (tenGvhd.length > 100) {
+    } else if (tenGvhd.length > 100) {
         $("#errorTenGiangVien").text(" Tên giảng viên không được quá 100 ký tự");
         index++;
     }  else {
@@ -151,6 +151,7 @@ function addGVHD() {
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
+                console.log(e.responseJSON.message)
                 if (e.responseJSON.message == 'email fpt da ton tai') {
                     $("#errorEmailFpt").text("Email Fpt đã tồn tại");
                 } else if (e.responseJSON.message == 'email fe da ton tai') {
@@ -213,7 +214,7 @@ function updateGVHD() {
     if (tenGvhd.length === 0) {
         $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được để trống");
         index++;
-    } if (tenGvhd.length > 100) {
+    } else if (tenGvhd.length > 100) {
         $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được quá 100 ký tự");
         index++;
     } else {

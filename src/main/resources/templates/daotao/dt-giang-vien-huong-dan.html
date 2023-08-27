@@ -311,7 +311,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
-                                                                    <label class="col-form-label">Đợt đăng ký</label>
+                                                                    <label class="col-form-label">Đợt đăng ký <span style="color: red">*</span></label>
                                                                     <br>
                                                                     <select class="form-control" id="dotDangKyId">
                                                                         <option value="" hidden>Chọn đợt
@@ -324,21 +324,21 @@
                                                                     <span class="text-danger"
                                                                           id="errorDotDangKy"></span><br>
                                                                     <br>
-                                                                    <label class="col-form-label">Tên giảng viên</label><br>
+                                                                    <label class="col-form-label">Tên giảng viên <span style="color: red">*</span></label><br>
                                                                     <input
                                                                             type="text"
                                                                             class="form-control"
-                                                                            id="tenGvhd">
+                                                                            id="tenGvhd" maxlength="255">
                                                                     <span class="text-danger"
                                                                           id="errorTenGiangVien"></span><br>
                                                                     <label class="col-form-label">Số nhóm hướng
-                                                                        dẫn</label>
+                                                                        dẫn  <span style="color: red">*</span></label>
                                                                     <input
                                                                             type="text"
-                                                                            class="form-control"
+                                                                            class="form-control" maxlength="255"
                                                                             id="soNhomHuongDanToiDa">
                                                                     <span class="text-danger" id="errorSoNhomHD"></span><br>
-                                                                    <label class="col-form-label">Tên tài khoản</label>
+                                                                    <label class="col-form-label">Tên tài khoản <span style="color: red">*</span></label>
                                                                     <input
                                                                             maxlength="20"
                                                                             type="text"
@@ -353,14 +353,14 @@
                                                                             class="form-control"
                                                                             id="soDienThoai">
                                                                     <span class="text-danger" id="errorSDT"></span><br>
-                                                                    <label class="col-form-label">Email Fpt</label>
+                                                                    <label class="col-form-label">Email Fpt <span style="color: red">*</span></label>
                                                                     <input
                                                                             maxlength="50"
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="emailFpt">
                                                                     <span class="text-danger" id="errorEmailFpt"></span><br>
-                                                                    <label class="col-form-label">Email Fe</label>
+                                                                    <label class="col-form-label">Email Fe <span style="color: red">*</span></label>
                                                                     <input
                                                                             type="text"
                                                                             class="form-control"
@@ -498,7 +498,7 @@
                     <span id="update_giang_vien_item" value="" style="color:red;"></span>
 
                     <div class="form-group">
-                        <label class="col-form-label">Đợt đăng ký</label> <br>
+                        <label class="col-form-label">Đợt đăng ký <span style="color: red">*</span></label> <br>
                         <select class="form-control" id="dot_dang_ky_update">
                             <option value="" hidden>Chọn đợt đăng kí</option>
                             <option th:each="item : ${listDotDangKy}" th:value="${item.id}"
@@ -506,19 +506,19 @@
                         </select>
                         <small class="text-danger" id="errorDotDangKyUpdate"></small><br>
                         <br>
-                        <label class="col-form-label">Tên giảng viên</label>
+                        <label class="col-form-label">Tên giảng viên <span style="color: red">*</span></label>
                         <input
                                 type="text"
-                                class="form-control"
+                                class="form-control" maxlength="255"
                                 id="ten_giang_vien_update">
                         <small class="text-danger" id="errorTenGiangVienUpdate"></small><br>
-                        <label class="col-form-label">Số nhóm hướng dẫn</label>
+                        <label class="col-form-label">Số nhóm hướng dẫn <span style="color: red">*</span></label>
                         <input
                                 type="text"
-                                class="form-control"
+                                class="form-control" maxlength="255"
                                 id="so_nhom_update">
                         <small class="text-danger" id="errorSoNhomHDUpdate"></small><br>
-                        <label class="col-form-label">Tên tài khoản</label>
+                        <label class="col-form-label">Tên tài khoản <span style="color: red">*</span></label>
                         <input
                                 maxlength="20"
                                 type="text"
@@ -532,14 +532,14 @@
                                 class="form-control"
                                 id="so_dien_thoai_update">
                         <small class="text-danger" id="errorSDTUpdate"></small><br>
-                        <label class="col-form-label">Email Fpt</label>
+                        <label class="col-form-label">Email Fpt <span style="color: red">*</span></label>
                         <input
                                 maxlength="50"
                                 type="text"
                                 class="form-control"
                                 id="emailFpt_update">
                         <small class="text-danger" id="errorEmailFptUpdate"></small><br>
-                        <label class="col-form-label">Email Fe</label>
+                        <label class="col-form-label">Email Fe <span style="color: red">*</span></label>
                         <input
                                 type="text"
                                 class="form-control"
