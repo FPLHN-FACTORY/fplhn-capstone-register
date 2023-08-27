@@ -13,7 +13,6 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 public class SvCreateNhomDatnRequest {
-
     @NotBlank
     @NotEmpty
     private String giangVienId;
@@ -27,6 +26,8 @@ public class SvCreateNhomDatnRequest {
     @NotBlank()
     @Length(max = EntityProperties.LENGTH_NAME)
     private String tenNhom;
+
+    private Boolean matKhau;
 
     @Length(max = 255)
     private String moTa;
@@ -42,5 +43,4 @@ public class SvCreateNhomDatnRequest {
     @NotBlank
     @NotBlank
     private String idMonDatn;
-
 }
