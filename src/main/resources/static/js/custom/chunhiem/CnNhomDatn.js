@@ -635,19 +635,22 @@ function loadDataNhomDatn(count) {
                 $("#listNhomDatn").html(array.map(function (item) {
                     templateString = item.trangThai == 4 | item.trangThai == 0 ? `<td><div class="form-check"><input type="checkbox" class="form-check-input" data-toggle="tooltip" title="Chọn một" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"><input hidden id="check-trang-thai" value="${item.trangThai}"></div></td>` : `<td><div class="form-check"><input disabled type="checkbox" data-toggle="tooltip" title="Chọn một" class="form-check-input" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()"><input hidden id="check-trang-thai" value="${item.trangThai}"></div></td>`
                     return `
-                <tr class="table-light">`
+                <tr class="table-light" xmlns="http://www.w3.org/1999/html">`
 
                         + templateString +
                         `
-                <td>${item.stt}</td>
-                <td>${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
-                <td>${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
-                <td>${item.maMonDatn == null ? 'Chưa có' : item.maMonDatn}</td>
-                <td>${item.total}</td>
-                <td>${item.truongNhom}</td>
-                <td>${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan + ' (' + item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa + ')'}</td>
-                <td>${item.tenDotDangKy}</td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
+                <td class="text-center align-middle">${item.stt}</td>
+                <td class="text-center align-middle">${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
+                <td class="text-center align-middle">${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
+                <td class="text-center align-middle">${item.maMonDatn == null ? 'Chưa có' : item.maMonDatn}</td>
+                <td class="text-center align-middle">${item.total}</td>
+                <td class="text-center align-middle">${item.truongNhom}</td>
+                <td class="text-center align-middle"> 
+                <div class="d-flex justify-content-center align-items-center">
+                ${item.tenGvhd == null ? 'Chưa có' : item.tenGvhd + ' - ' + item.tenTaiKhoan + ' (' 
+                            + item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa + ')'}</div></td> 
+                <td class="text-center align-middle">${item.tenDotDangKy}</td>
+                <td class="text-center align-middle">${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
                 <td class="text-center align-middle"><div class="d-flex justify-content-center align-items-center"><a href="/chu-nhiem/sinh-vien?id=${item.id}">
                 <div id="eye-custom" data-toggle="tooltip" title="Xem chi tiết nhóm">
                 <img src="/img/eye-fill.svg"></div></a>

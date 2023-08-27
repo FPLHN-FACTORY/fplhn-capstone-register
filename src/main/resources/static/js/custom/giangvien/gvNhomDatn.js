@@ -27,15 +27,15 @@ function showDetail(maNhom) {
         success: function (responseData) {
             $("#table_body_dssv").html(responseData.data.map(function (item) {
                 return `
-                    <tr>
-                    <td>${item.stt}</td>
-                    <td>${item.chucVu != 0 ? "Trưởng nhóm" : "Thành viên"}</td>
-                    <td>${item.maSinhVien}</td>
-                    <td>${item.tenSinhVien}</td>
-                    <td>${item.soDienThoai}</td>
-                    <td>${item.email}</td>
-                    <td>${item.maMon}</td>
-                    <td>${item.khoa}</td>
+                    <tr class="table-light">
+                    <td class="text-center align-middle">${item.stt}</td>
+                    <td class="text-center align-middle">${item.chucVu != 0 ? "Trưởng nhóm" : "Thành viên"}</td>
+                    <td class="text-center align-middle">${item.maSinhVien}</td>
+                    <td class="text-center align-middle">${item.tenSinhVien}</td>
+                    <td class="text-center align-middle">${item.soDienThoai}</td>
+                    <td class="text-center align-middle">${item.email}</td>
+                    <td class="text-center align-middle">${item.maMon}</td>
+                    <td class="text-center align-middle">${item.khoa}</td>
                     `
             }))
         },
@@ -93,17 +93,17 @@ function seachNhomdatn(index) {
             $("#list_nhom_datn").html(responseData.data.data.map(function (item) {
                 return `
                 <tr class="table-light">
-                <td>${item.stt}</td>
-                <td>${item.maNhom}</td>
-                <td>${item.tenDeTai}</td>
-                <td>${item.totalMaSinhVien}</td>
-                <td>
+                <td class="text-center align-middle">${item.stt}</td>
+                <td class="text-center align-middle">${item.maNhom}</td>
+                <td class="text-center align-middle">${item.tenDeTai == null || item.tenDeTai == '' ? 'Chưa có' : item.tenDeTai}</td>
+                <td class="text-center align-middle">${item.totalMaSinhVien}</td>
+                <td class="text-center align-middle">
                     ${item.danhSachThanhVien.split(', ').map(function (value, index) {
                     return `<span style="${item.truongNhom == value ? 'font-weight: bold; text-decoration: underline;' : ''}">${value}${index === item.danhSachThanhVien.length - 1 ? ' ' : ''}</span>`;
                 })}
                 </td>
-                <td>${item.maMon}</td>
-                <td>${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
+                <td class="text-center align-middle">${item.maMon}</td>
+                <td class="text-center align-middle">${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
                  <td class="text-center align-middle">
                  <div class="d-flex justify-content-center align-items-center">
                         <button type="button" onclick=showDetail('${item.id}') class="btn_eye" data-toggle="tooltip" title="Xem chi tiết nhóm">

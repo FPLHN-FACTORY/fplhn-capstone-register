@@ -242,12 +242,12 @@
                                                 <tbody id="listSV">
                                                 <th:block th:each="sinhVien,i : ${page.data}">
                                                     <tr class="table-light">
-                                                        <td th:text="${sinhVien.stt}"></td>
-                                                        <td th:text="${sinhVien.maSinhVien}"></td>
-                                                        <td th:text="${sinhVien.tenSinhVien}"></td>
-                                                        <td th:text="${sinhVien.tenChuyenNganh}"></td>
-                                                        <td th:text="${sinhVien.maMonChuongTrinh}==null ? 'Chưa có' : (${sinhVien.maMonChuongTrinh})"></td>
-                                                        <td th:text="${sinhVien.maMonDuAn}==null ? 'Chưa có' : (${sinhVien.maMonDuAn})"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVien.stt}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVien.maSinhVien}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVien.tenSinhVien}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVien.tenChuyenNganh}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVien.maMonChuongTrinh}==null ? 'Chưa có' : (${sinhVien.maMonChuongTrinh})"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVien.maMonDuAn}==null ? 'Chưa có' : (${sinhVien.maMonDuAn})"></td>
                                                         <td th:switch="${sinhVien.maNhom}"
                                                             class="text-center align-middle">
                                                             <div class="d-flex justify-content-center align-items-center">
@@ -261,8 +261,8 @@
                                                                 <p th:case="*" th:text="${sinhVien.maNhom}"></p>
                                                             </div>
                                                         </td>
-                                                        <td th:text="${sinhVien.tenDeTai}==null?'Chưa có':${sinhVien.tenDeTai}"></td>
-                                                        <td th:text="${sinhVien.tenGvhd}==null?'Chưa có':${sinhVien.tenGvhd}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVien.tenDeTai}==null?'Chưa có':${sinhVien.tenDeTai}"></td>
+                                                        <td class="text-center align-middle" th:text="${sinhVien.tenGvhd}==null?'Chưa có':${sinhVien.tenGvhd}"></td>
                                                     </tr>
                                                 </th:block>
                                                 </tbody>
@@ -499,6 +499,7 @@
 <script th:src="@{/js/plugin/bootbox.min.js}"></script>
 <script th:src="@{/js/plugin/bootbox.locales.min.js}"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script th:src="@{/js/custom/common/loadding.js}" type="text/javascript"></script>
 <script th:src="@{/js/custom/chunhiem/CnSinhVienTheoDot.js}" type="text/javascript"></script>
 </body>
 </html>

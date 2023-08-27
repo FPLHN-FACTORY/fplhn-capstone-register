@@ -17,10 +17,10 @@ import java.util.List;
 public interface DtCanBoRepository extends CanBoRepository {
 
     @Query(value = """
-            SELECT  ROW_NUMBER() OVER(ORDER BY cb.last_modified_date DESC) AS STT, cb.id,cb.email_fe,
-                    cb.email_fpt,cb.so_dien_thoai,cb.last_modified_date,
+            SELECT  ROW_NUMBER() OVER(ORDER BY cb.last_modified_date DESC) AS STT, cb.id, cb.email_fe,
+                    cb.email_fpt, cb.so_dien_thoai,cb.last_modified_date,
                     cb.ten_can_bo,cb.ten_tai_khoan ,cb.vai_tro,
-                    cn.ten_chuyen_nganh
+                    GROUP_CONCAT(DISTINCT cn.ten_chuyen_nganh SEPARATOR ', ') AS ten_chuyen_nganh
                     FROM do_an_tot_nghiep.can_bo cb
                     JOIN do_an_tot_nghiep.co_so cs
                     ON cb.co_so_id= cs.id 
@@ -32,6 +32,7 @@ public interface DtCanBoRepository extends CanBoRepository {
                     AND ( :#{#req.vaiTro} IS NULL 
                         OR :#{#req.vaiTro} LIKE '' 
                         OR cb.vai_tro LIKE %:#{#req.vaiTro}% )  
+                        GROUP BY cb.id
             ORDER BY cb.last_modified_date DESC
              """,
             countQuery = """
@@ -46,6 +47,7 @@ public interface DtCanBoRepository extends CanBoRepository {
                             AND ( :#{#req.vaiTro} IS NULL 
                                 OR :#{#req.vaiTro} LIKE '' 
                                 OR cb.vai_tro LIKE %:#{#req.vaiTro}% )  
+                                     GROUP BY cb.id
                             ORDER BY cb.last_modified_date DESC 
                     """,
             nativeQuery = true)
@@ -87,6 +89,6 @@ public interface DtCanBoRepository extends CanBoRepository {
     @Query(value = "SELECT id FROM can_bo WHERE ten_tai_khoan = :tenTaiKhoan AND id <> :id AND co_so_id = :coSoId", nativeQuery = true)
     String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id, @Param("coSoId") String coSoId);
 
-    @Query(value = "SELECT id FROM chuyen_nganh where chu_nhiem_bo_mon = :idChuNhiem AND co_so_id = :coSoId", nativeQuery = true)
-    String getIdChuyenNganhByIdChuNhiem(@Param("idChuNhiem") String idChuNhiem, @Param("coSoId") String coSoId);
+    @Query(value = "SELECT COUNT(id) FROM chuyen_nganh where chu_nhiem_bo_mon = :idChuNhiem AND co_so_id = :coSoId GROUP BY chu_nhiem_bo_mon", nativeQuery = true)
+    Integer getIdChuyenNganhByIdChuNhiem(@Param("idChuNhiem") String idChuNhiem, @Param("coSoId") String coSoId);
 }

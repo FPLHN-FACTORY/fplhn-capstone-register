@@ -1,5 +1,6 @@
 package com.fpolydatn.core.daotao.model.request;
 
+import com.fpolydatn.infrastructure.constant.EntityProperties;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public abstract class DtBaseCanBoRequest {
 
     @NotEmpty
     @NotBlank
+    @Length(max = EntityProperties.LENGTH_NAME)
     private String tenCanBo;
 
     @NotEmpty

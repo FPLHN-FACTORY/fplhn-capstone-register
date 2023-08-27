@@ -452,9 +452,9 @@ function openModalRemoveCanBo(canBoId) {
                                     window.open(canBoView, '_self');
                                 }
                             });
-                        } else if (responseData.responseJSON.message.trim() === 'Chu nhiem nay dang chu nhiem mot chuyen nganh') {
+                        } else if (responseData.responseJSON.message.trim() === 'Chu nhiem nay dang chu nhiem mot hoac nhieu chuyen nganh') {
                             bootbox.alert({
-                                message: 'Chủ nhiệm này đang chủ nhiệm một chuyên ngành',
+                                message: 'Chủ nhiệm này đang chủ nhiệm một hoặc nhiều chuyên ngành',
                                 backdrop: true,
                                 callback: function () {
                                     window.open(canBoView, '_self');

@@ -17,7 +17,7 @@ public interface CoSoRepository extends JpaRepository<CoSo, String> {
     public static final String NAME = "BaseCoSoRepository";
 
     @Query(value = """
-            SELECT id, ten_co_so AS 'name' FROM co_so
+            SELECT id, ten_co_so AS 'name' FROM co_so ORDER BY created_date ASC
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntity();
 }

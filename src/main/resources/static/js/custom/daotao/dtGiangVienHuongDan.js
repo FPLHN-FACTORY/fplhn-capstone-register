@@ -68,7 +68,10 @@ function addGVHD() {
     if (tenGvhd.length === 0) {
         $("#errorTenGiangVien").text(" Tên giảng viên không được để trống");
         index++;
-    } else {
+    } if (tenGvhd.length > 100) {
+        $("#errorTenGiangVien").text(" Tên giảng viên không được quá 100 ký tự");
+        index++;
+    }  else {
         $("#errorTenGiangVien").text("");
     }
     if (soNhomHuongDanToiDa.length === 0) {
@@ -138,7 +141,13 @@ function addGVHD() {
             data: JSON.stringify(giangVienRequest),
             dataType: 'json',
             success: function (responseData) {
-                window.open(giangVienHuongDanView, '_self');
+                bootbox.alert({
+                    message: "Thêm thành công",
+                    backdrop: true,
+                    callback: function () {
+                        window.open(giangVienHuongDanView, '_self');
+                    }
+                });
                 $("#modal_create").modal("hide");
             },
             error: function (e) {
@@ -203,6 +212,9 @@ function updateGVHD() {
     let index = 0;
     if (tenGvhd.length === 0) {
         $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được để trống");
+        index++;
+    } if (tenGvhd.length > 100) {
+        $("#errorTenGiangVienUpdate").text(" Tên giảng viên không được quá 100 ký tự");
         index++;
     } else {
         $("#errorTenGiangVienUpdate").text("");
@@ -357,8 +369,9 @@ function openModalImport() {
 function exportFile() {
     let typeExcel = $("#type_excel").val();
 
-    let tenGiangVien = $("#tenGiangVien").val();
+    let tenTaiKhoan = $("#ten_tai_khoan").val();
     let dotDangKyId = $("#search_dot_dang_ky").val();
+    let chuyenNganhId = $("#chuyenNganh").val();
 
     if (typeExcel == '') {
         $("#type_excel_error").text("Chọn định dạng file download");
@@ -366,9 +379,9 @@ function exportFile() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenGiangVien=" + tenGiangVien,
+            url: "/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenTaiKhoan=" + tenTaiKhoan + "&chuyenNganhId="+chuyenNganhId,
             success: function () {
-                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenGiangVien=" + tenGiangVien, '_self');
+                window.open("/api/dao-tao/giang-vien-huong-dan/export?typeExcel=" + typeExcel + "&dotDangKyId=" + dotDangKyId + "&tenTaiKhoan=" + tenTaiKhoan + "&chuyenNganhId="+chuyenNganhId, '_self');
                 $("#modal_excel").modal('hide')
             },
             error: function (e) {
@@ -503,7 +516,8 @@ function loadTable(count) {
         success: function (responseData) {
             totalPages = responseData.data.totalPages;
             if (responseData.data.data.length == 0) {
-                $("#searchListGvhd").html(``);2
+                $("#searchListGvhd").html(``);
+                2
                 $("#page").html(``);
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {
@@ -516,7 +530,7 @@ function loadTable(count) {
                    <td class="text-center align-middle">${item.soNhomDangHuongDan + '/' + item.soNhomHuongDanToiDa}</td>
                    <td class="text-center align-middle">${item.soDienThoai}</td>
                    <td class="text-center align-middle">${item.emailFe}</td>
-                   <td class="text-center align-middle">${item.chuyenNganh}</td>
+                   <td class="text-center align-middle">${item.chuyenNganh == null || item.chuyenNganh == '' ? 'Chưa có' : item.chuyenNganh}</td>
                    <td class="text-center align-middle">
                     <div class="d-flex justify-content-center align-items-center">
                        <button

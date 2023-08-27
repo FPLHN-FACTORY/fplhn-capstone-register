@@ -322,6 +322,7 @@
                             <label for="tags">Nhập tên đề tài: </label>
                             <input type="text"
                                    class="form-control"
+                                   maxlength="255"
                                    id="tenDeTai">
                         </div>
                         <span style="color: red" id="change_ten_de_tai_error"></span>
@@ -357,9 +358,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Trưởng nhóm hiện tại</p>
+                    <p>Trưởng nhóm hiện tại:</p>
                     <div id="oldCaptain"></div>
-                    <p>Thành viên trong nhóm</p>
+                    <p>Các thành viên khác trong nhóm:</p>
                     <div id="manofteam"></div>
                 </div>
             </form>
@@ -377,6 +378,7 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script th:src="@{/js/plugin/bootbox.min.js}"></script>
 <script th:src="@{/js/plugin/bootbox.locales.min.js}"></script>
+<script th:src="@{/js/custom/common/loadding.js}" type="text/javascript"></script>
 <script th:src="@{/js/custom/chunhiem/CnSinhVienTheoNhom.js}" type="text/javascript"></script>
 <script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
 </body>

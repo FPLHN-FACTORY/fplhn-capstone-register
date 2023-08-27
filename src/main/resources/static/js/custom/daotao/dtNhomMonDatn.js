@@ -11,7 +11,6 @@ let currentPage = $("#currentPage").val();
 
 function clearData() {
     $("#search_ma_nhom_mon").val("");
-    ;
     $("#chuyenNganh").val("");
 }
 
@@ -38,6 +37,21 @@ function genPaging() {
         $("#page").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
     }
 }
+
+function changeInput() {
+    if ($("#valueInput").val().length != 0) {
+        let value = parseInt($("#valueInput").val());
+        if (Number(value) <= 0) {
+            value = 1;
+        }
+        if (Number(value) > totalPages) {
+            value = totalPages;
+        }
+        loadTable(value - 1);
+    }
+}
+
+genPaging();
 
 function loadTable(count) {
     if (count == -1) {
@@ -72,27 +86,25 @@ function loadTable(count) {
                       <td class="text-center align-middle">${nhomMonDatn.soMon}</td>
                       <td class="text-center align-middle">
                         <div class="d-flex justify-content-center align-items-center">
-                          <a
-                            type="button"
-                            class="btn_clipboard_user" data-toggle="tooltip"
+                          <button
+                            class="btn_pencil_square" 
+                            data-toggle="tooltip"
                             title="Sửa nhóm môn"
                             onclick="openModalUpdateNhomMonDatn('${nhomMonDatn.id}','${count}')">
                             <img src="/img/pencil-square.svg">
-                          </a>
+                          </button>
                           <button
-                            type="button"
-                            class="btn_pencil_square"
+                            class="btn_trash"
                             data-toggle="tooltip"
                             title="Xóa nhóm môn"
                             onclick="deleteNhomMonDatn('${nhomMonDatn.id}','${count}')">
                             <img src="/img/trash.svg">
                          </button>
                          <button
-                            type="button"
-                            class="btn_trash"
+                            class="btn_eye"
                             data-toggle="tooltip"
                             title="Xem chi tiết nhóm môn"
-                            onclick="openModalChiTietNhomMonDatn('${nhomMonDatn.id}','${count})">
+                            onclick="openModalChiTietNhomMonDatn('${nhomMonDatn.id}','${count}')">
                             <img src="/img/eye-fill.svg">
                         </button>
                         </div>
@@ -112,6 +124,7 @@ function loadTable(count) {
 function openModalCreate() {
     $("#maNhomMon").val('');
     $("#tenNhomMon").val('');
+    $("#chuyenNganhId").val('');
     $("#ma_mon_datn_error").text('');
     $("#ten_mon_datn_error").text('');
     $("#chuyen_nganh_error").text('');
@@ -119,9 +132,9 @@ function openModalCreate() {
 }
 
 function createNhomMonDatn() {
-    let maMon = $("#maNhomMon").val();
-    let tenMonDatn = $("#tenNhomMon").val();
-    let chuyenNganhId = $("#chuyenNganh").val();
+    let maMon = $("#maNhomMon").val().trim();
+    let tenMonDatn = $("#tenNhomMon").val().trim();
+    let chuyenNganhId = $("#chuyenNganhId").val();
     let monDatnRequest = {};
     monDatnRequest["maNhomMon"] = maMon;
     monDatnRequest["tenNhomMon"] = tenMonDatn;
@@ -188,8 +201,8 @@ function openModalUpdateNhomMonDatn(monDatnId) {
 }
 
 function updateNhomMonDatn() {
-    let maNhomMon = $("#ma_nhom_mon_datn_update").val();
-    let tenNhomMonDatn = $("#ten_nhom_mon_datn_update").val();
+    let maNhomMon = $("#ma_nhom_mon_datn_update").val().trim();
+    let tenNhomMonDatn = $("#ten_nhom_mon_datn_update").val().trim();
     let nhomMonDatnId = $("#id_nhom_mon_datn_update").val();
     let chuyenNganhId = $("#chuyenNganhUpdate").val();
     let monDatnRequest = {};
@@ -288,10 +301,10 @@ function openModalChiTietNhomMonDatn(nhomMonDatnId) {
             if (responseData.data.length > 0) {
                 $("#table_detail").html(responseData.data.map(function (item) {
                     return `
-               <tr>
-                   <td >${item.stt}</td>
-                   <td >${item.maMon}</td>
-                   <td >${item.tenMon}</td>
+               <tr class="table-light">
+                   <td class="text-center align-middle">${item.stt}</td>
+                   <td class="text-center align-middle">${item.maMon}</td>
+                   <td class="text-center align-middle">${item.tenMon}</td>
                </tr>
                `
                 }))

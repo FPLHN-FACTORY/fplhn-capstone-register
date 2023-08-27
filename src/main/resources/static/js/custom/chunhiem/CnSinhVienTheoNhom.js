@@ -190,14 +190,14 @@ function openModalChangeCaptain() {
                class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
               >
               <thead>
-              <th>Mã sinh viên</th>
-              <th>Họ tên</th>
-              <th>Chức vụ</th>
+              <th class="text-center align-middle">Mã sinh viên</th>
+              <th class="text-center align-middle">Họ tên</th>
+              <th class="text-center align-middle">Chức vụ</th>
               </thead>
-              <tr>
-              <td>${captain.data.maSinhVien}</td>
-              <td>${captain.data.tenSinhVien}</td>
-              <td>Trưởng nhóm</td>
+              <tr class="table-light">
+              <td class="text-center align-middle">${captain.data.maSinhVien}</td>
+              <td class="text-center align-middle">${captain.data.tenSinhVien}</td>
+              <td class="text-center align-middle">Trưởng nhóm</td>
               </tr>
               </table>
          `)
@@ -217,23 +217,25 @@ function openModalChangeCaptain() {
                class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
               >
               <thead>
-              <th>Mã sinh viên</th>
-              <th>Họ tên</th>
-              <th>Chức năng</th>
+              <th class="text-center align-middle">Mã sinh viên</th>
+              <th class="text-center align-middle">Họ tên</th>
+              <th class="text-center align-middle">Chức năng</th>
               </thead>
             `;
             responseData.data.map(function (sinhVien) {
                 text += `
             
-              <tr>
-              <td>${sinhVien.maSinhVien}</td>
-              <td>${sinhVien.tenSinhVien}</td>
-              <td>
+              <tr class="table-light">
+              <td class="text-center align-middle">${sinhVien.maSinhVien}</td>
+              <td class="text-center align-middle">${sinhVien.tenSinhVien}</td>
+              <td class="text-center align-middle">
+              <div class="d-flex justify-content-center align-items-center">
               <a onclick="changeCaptain('${sinhVien.id}')"
               class="btn btn-success text-white"
               >
               Thay đổi
               </a>
+              </div>
               </td>
               </tr>
              `

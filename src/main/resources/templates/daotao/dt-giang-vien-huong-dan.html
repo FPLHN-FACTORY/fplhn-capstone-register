@@ -125,7 +125,7 @@
                                                         <div class="modal-body">
                                                             <div class="form-group">
                                                                 <p class="col-form-label">Định dạng file excel </p>
-                                                                <select id="type_excel" class="form-control col-5">
+                                                                <select id="type_excel" class="form-control">
                                                                     <option value="">Chọn kiểu file excel</option>
                                                                     <option value="xls">.xls</option>
                                                                     <option value="xlsx">.xlsx</option>
@@ -167,7 +167,7 @@
                                                         <div class="modal-body">
                                                             <div class="form-group">
                                                                 <p class="col-form-label">Định dạng file excel </p>
-                                                                <select id="type_mau_import" class="form-control col-5">
+                                                                <select id="type_mau_import" class="form-control">
                                                                     <option value="">Chọn kiểu file excel</option>
                                                                     <option value="xls">.xls</option>
                                                                     <option value="xlsx">.xlsx</option>
@@ -414,7 +414,7 @@
                                                             class="text-center align-middle"></td>
                                                         <td th:text="${giangVienHD.getEmailFe()}"
                                                             class="text-center align-middle"></td>
-                                                        <td th:text="${giangVienHD.getChuyenNganh()}"
+                                                        <td th:text="${giangVienHD.getChuyenNganh() == null || giangVienHD.getChuyenNganh() == '' ? 'Chưa có' : giangVienHD.getChuyenNganh()}"
                                                             class="text-center align-middle"></td>
                                                         <td class="text-center align-middle">
                                                             <div class="d-flex justify-content-center align-items-center">
@@ -572,6 +572,7 @@
         crossorigin="anonymous"></script>
 <script th:src="@{/js/plugin/bootbox.min.js}"></script>
 <script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/js/custom/common/loadding.js}" type="text/javascript"></script>
 <script th:src="@{/js/custom/daotao/dtGiangVienHuongDan.js}" type="text/javascript"></script>
 </body>
 </html>
