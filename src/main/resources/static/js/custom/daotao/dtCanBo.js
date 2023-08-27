@@ -176,9 +176,6 @@ function save() {
     if (emailFe.length === 0) {
         $("#email_fe_error").text("Email Fe Không Được Để Trống");
         check = false;
-    } else if (regexFE.test(emailFe) == false) {
-        $("#email_fe_error").text("Email Fe Phải Đúng Định Dạng");
-        check = false;
     } else if (emailFe.includes(" ")) {
         $("#email_fe_error").text("Email Fe không được để dấu cách");
         check = false;
@@ -187,9 +184,6 @@ function save() {
     }
     if (emailFpt.length == 0) {
         $("#email_fpt_error").text("Email Fpt Không Được Để Trống");
-        check = false;
-    } else if (regexFPT.test(emailFpt) == false) {
-        $("#email_fpt_error").text("Email Fpt Phải Đúng Định Dạng");
         check = false;
     } else if (emailFpt.includes(" ")) {
         $("#email_fpt_error").text("Email Fe không được để dấu cách");
@@ -200,9 +194,6 @@ function save() {
 
     if (soDienThoai.length == 0) {
         $("#so_dien_thoai_error").text("Số Điện Thoại Không Được Để Trống");
-        check = false;
-    } else if (regexSoDienThoai.test(soDienThoai) == false) {
-        $("#so_dien_thoai_error").text("Số Điện Thoại Phải Định Dạng");
         check = false;
     } else {
         $("#so_dien_thoai_error").text("");
@@ -295,9 +286,6 @@ function update() {
     if (emailFe.length === 0) {
         $("#email_fe_error_update").text("Email Fe Không Được Để Trống");
         check = false;
-    } else if (regexFE.test(emailFe) == false) {
-        $("#email_fe_error_update").text("Email Fe Phải Đúng Định Dạng");
-        check = false;
     } else if (emailFe.includes(" ")) {
         $("#email_fe_error_update").text("Email Fe không được để dấu cách");
         check = false;
@@ -308,9 +296,6 @@ function update() {
     if (emailFpt.length == 0) {
         $("#email_fpt_error_update").text("Email Fpt Không Được Để Trống");
         check = false;
-    } else if (regexFPT.test(emailFpt) == false) {
-        $("#email_fpt_error_update").text("Email Fpt Phải Đúng Định Dạng");
-        check = false;
     } else if (emailFpt.includes(" ")) {
         $("#email_fpt_error_update").text("Email Fpt không được để dấu cách");
         check = false;
@@ -320,9 +305,6 @@ function update() {
 
     if (soDienThoai.length == 0) {
         $("#so_dien_thoai_error_update").text("Số Điện Thoại Không Được Để Trống");
-        check = false;
-    } else if (regexSoDienThoai.test(soDienThoai) == false) {
-        $("#so_dien_thoai_error_update").text("Số Điện Thoại Phải Đúng Định Dạng");
         check = false;
     } else {
         $("#so_dien_thoai_error_update").text("");

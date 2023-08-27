@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author phongtt35
@@ -26,22 +27,22 @@ public abstract class DtBaseCanBoRequest {
     @NotBlank
     private String tenTaiKhoan;
 
-    @NotEmpty
-    @NotBlank
+    @NotNull
     private String soDienThoai;
 
     @NotEmpty
     @NotBlank
-    @Length(min = 0, max = 50)
+    @Length(max = EntityProperties.LENGTH_EMAIL)
     private String emailFpt;
 
     @NotEmpty
     @NotBlank
-    @Length(min = 0, max = 50)
+    @Length(max = EntityProperties.LENGTH_EMAIL)
     private String emailFe;
 
     private String coSoId;
 
+    @NotNull
     private VaiTro vaiTro;
 
 }

@@ -17,7 +17,7 @@ public abstract class DtBaseMonDatnRequest {
 
     @NotEmpty
     @NotBlank
-    @Length(max = 10)
+    @Length(max = EntityProperties.LENGTH_CODE)
     private String maMon;
 
     @NotEmpty
