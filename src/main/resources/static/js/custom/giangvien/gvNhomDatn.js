@@ -26,19 +26,35 @@ function showDetail(maNhom) {
         url: nhomDatnAPI + "?maNhom=" + maNhom,
         dataType: 'json',
         success: function (responseData) {
-            $("#table_body_dssv").html(responseData.data.map(function (item) {
-                return `
-                    <tr class="table-light" style="${item.chucVu != 0 ? 'color: red; font-weight: 500' : ''}">
-                    <td class="text-center align-middle">${item.stt}</td>
-                    <td class="text-center align-middle">${item.chucVu != 0 ? "Trưởng nhóm" : "Thành viên"}</td>
-                    <td class="text-center align-middle">${item.maSinhVien}</td>
-                    <td class="text-center align-middle">${item.tenSinhVien}</td>
-                    <td class="text-center align-middle">${item.soDienThoai}</td>
-                    <td class="text-center align-middle">${item.email}</td>
-                    <td class="text-center align-middle">${item.maMon}</td>
-                    <td class="text-center align-middle">${item.khoa}</td>
-                    `
-            }))
+            let text = "";
+            responseData.data.map(function (item) {
+                if (item.chucVu != 0) {
+                    text += `
+                    <tr class="table-light" style="color: red;">
+                        <td class="text-center align-middle"><b>${item.stt}</b></td>
+                        <td class="text-center align-middle"><b>${item.chucVu != 0 ? "Trưởng nhóm" : "Thành viên"}</b></td>
+                        <td class="text-center align-middle"><b>${item.maSinhVien}</b></td>
+                        <td class="text-center align-middle"><b>${item.tenSinhVien}</b></td>
+                        <td class="text-center align-middle"><b>${item.soDienThoai}</b></td>
+                        <td class="text-center align-middle"><b>${item.email}</b></td>
+                        <td class="text-center align-middle"><b>${item.maMon}</b></td>
+                        <td class="text-center align-middle"><b>${item.khoa}</b></td></tr>
+                `
+                } else {
+                    text += `
+                        <tr class="table-light" style="${item.chucVu != 0 ? 'color: red; font-weight: 500' : ''}">
+                        <td class="text-center align-middle">${item.stt}</td>
+                        <td class="text-center align-middle">${item.chucVu != 0 ? "Trưởng nhóm" : "Thành viên"}</td>
+                        <td class="text-center align-middle">${item.maSinhVien}</td>
+                        <td class="text-center align-middle">${item.tenSinhVien}</td>
+                        <td class="text-center align-middle">${item.soDienThoai}</td>
+                        <td class="text-center align-middle">${item.email}</td>
+                        <td class="text-center align-middle">${item.maMon}</td>
+                        <td class="text-center align-middle">${item.khoa}</td></tr>
+                `
+                }
+            })
+            $("#table_body_dssv").html(text)
         },
         error: function (e) {
             console.log("ERROR : ", e);

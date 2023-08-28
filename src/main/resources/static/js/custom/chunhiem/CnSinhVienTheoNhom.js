@@ -43,10 +43,14 @@ function searchGvhd() {
 loadData()
 
 function openModalThemSinhVien() {
+    $("#idStudentError").text("")
     $("#modal_create").modal('show')
 }
 
 function openModalDoiTenDeTai() {
+    let tenDeTaiCu = $("#tenDeTaiCu").val()
+    $("#tenDeTai").val(tenDeTaiCu);
+    $("#change_ten_de_tai_error").text("")
     $("#modal_change_ten_de_tai").modal('show')
 }
 
@@ -71,10 +75,10 @@ function doiTenDeTai() {
             });
         },
         error: function (e) {
-            if(e.responseJSON.message === 'Nhom du an tot nghiep not exist'){
+            if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
                 $("#change_ten_de_tai_error").html("Nhóm dự án tốt nghiệp không tồn tại")
             }
-            if(e.responseJSON.message === 'Do dai khong qua 255 ky tu'){
+            if (e.responseJSON.message === 'Do dai khong qua 255 ky tu') {
                 $("#change_ten_de_tai_error").html("Độ dài không quá 255 ký tự")
             }
         }
@@ -103,10 +107,10 @@ function themSinhVien() {
 
         },
         error: function (e) {
-            if(e.responseJSON.message === 'So luong thanh vien toi da trong nhom la 7 nguoi'){
+            if (e.responseJSON.message === 'So luong thanh vien toi da trong nhom la 7 nguoi') {
                 $("#idStudentError").html("Số lượng thành viên tối đa trong nhóm là 7 người")
             }
-            if(e.responseJSON.message === 'mon dang hoc cua sinh vien khong thich hop.vui long chon lai'){
+            if (e.responseJSON.message === 'mon dang hoc cua sinh vien khong thich hop.vui long chon lai') {
                 $("#idStudentError").html("Môn đang học của sinh viên không thích hợp. Vui lòng chọn lại")
             }
         }
@@ -163,6 +167,8 @@ function openModalRemoveNhom(maSinhVien) {
 }
 
 function openModalChangeGvhd() {
+    $("#tags").val("")
+    $("#change_gvhd_error").text("")
     $('#modal_change_gvhd').modal('show');
 }
 
