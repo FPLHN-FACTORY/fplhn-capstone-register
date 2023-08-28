@@ -29,7 +29,7 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
                 FROM SoNhomKhongDuDK snkddk GROUP BY snkddk.dot_dang_ky_id)
             SELECT ROW_NUMBER() OVER(ORDER BY ddk.last_modified_date DESC) AS STT, ddk.id, hk.ten_hoc_ky,
             ddk.ten_dot_dang_ky, ddk.ngay_bat_dau, ddk.ngay_ket_thuc,
-            FROM_UNIXTIME(ddk.ngay_ket_thuc / 1000) > CURRENT_DATE() AS trang_thai,
+            ddk.ngay_ket_thuc > :curDate AS trang_thai,
             (SELECT COUNT(id) FROM sinh_vien WHERE dot_dang_ky_id = ddk.id) AS tong_sinh_vien,
             (SELECT COUNT(id) FROM sinh_vien WHERE dot_dang_ky_id = ddk.id AND nhom_id IS NULL) AS tong_sv_chua_co_nhom,
             (SELECT count(id) FROM nhom_datn WHERE dot_dang_ky_id = ddk.id) AS tong_so_nhom,
@@ -47,7 +47,9 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
                     GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
                     """,
             nativeQuery = true)
-    Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest req, Pageable page);
+    Page<DtDotDangKyResponse> findByCoSo(@Param("req") DtFindDotDangKyRequest req,
+                                         @Param("curDate") Long currentDate,
+                                         Pageable page);
 
     @Query(value = "SELECT id, created_date, last_modified_date, co_so_id, hoc_ky_id, " +
             "ngay_bat_dau, ngay_ket_thuc, ten_dot_dang_ky, han_sinh_vien, han_giang_vien, han_chu_nhiem_bo_mon " +
@@ -72,7 +74,7 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
             	WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id AND trang_thai != 1 AND trang_thai != 0) / 
             (SELECT COUNT(id) FROM nhom_datn 
             	WHERE co_so_id = :coSoId AND dot_dang_ky_id = :id) * 100, 1) AS ti_le_xac_nhan,
-            FROM_UNIXTIME(ddk.ngay_ket_thuc / 1000) > CURRENT_DATE() AS trang_thai,
+            ddk.ngay_ket_thuc > :curDate AS trang_thai,
             (SELECT COUNT(*) FROM (SELECT COUNT(n.id) FROM nhom_datn n INNER JOIN sinh_vien sv ON n.id = sv.nhom_id 
             	WHERE n.co_so_id = :coSoId AND n.dot_dang_ky_id = :id 
             	GROUP BY n.id HAVING COUNT(sv.id) > 3) AS nhom_hop_le) AS so_nhom_hop_le
@@ -87,6 +89,8 @@ public interface DtDotDangKyRepository extends DotDangKyRepository {
                     GROUP BY ddk.id ORDER BY ddk.last_modified_date DESC
                     """,
             nativeQuery = true)
-    DtDetailDotDangKyResponse detailDotDangKy(@Param("id") String id, @Param("coSoId") String coSoId);
+    DtDetailDotDangKyResponse detailDotDangKy(@Param("id") String id,
+                                              @Param("curDate") Long currentDate,
+                                              @Param("coSoId") String coSoId);
 
 }

@@ -47,7 +47,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Override
     public PageableObject<DtDotDangKyResponse> findByCoSo(DtFindDotDangKyRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<DtDotDangKyResponse> response = dtDotDangKyRepository.findByCoSo(request, pageable);
+        Page<DtDotDangKyResponse> response = dtDotDangKyRepository.findByCoSo(request,  new Date().getTime(),pageable);
         return new PageableObject(response);
     }
 
@@ -128,7 +128,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
 
     @Override
     public DtDetailDotDangKyResponse detail(String id, String coSoId) {
-        DtDetailDotDangKyResponse dtDotDangKyResponse = dtDotDangKyRepository.detailDotDangKy(id, coSoId);
+        DtDetailDotDangKyResponse dtDotDangKyResponse = dtDotDangKyRepository.detailDotDangKy(id, new Date().getTime(), coSoId);
         if (dtDotDangKyResponse == null) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }

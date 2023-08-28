@@ -52,8 +52,8 @@ function openModalUpdateDotDangKy(dotDangKyId) {
             var ngayBatDauStr = ngayBatDau.toLocaleDateString('en-CA') + " " + ngayBatDau.toLocaleTimeString();
             $("#ngay_bat_dau_update").val(ngayBatDauStr);
             var ngayKetThuc = new Date(responseData.data.ngayKetThuc);
-            var ngayBatDauStr = ngayKetThuc.toLocaleDateString('en-CA') + " " + ngayBatDau.toLocaleTimeString();
-            $("#ngay_ket_thuc_update").val(ngayBatDauStr);
+            var ngayKetThucStr = ngayKetThuc.toLocaleDateString('en-CA') + " " + ngayKetThuc.toLocaleTimeString();
+            $("#ngay_ket_thuc_update").val(ngayKetThucStr);
             var hanSinhVien = new Date(responseData.data.hanSinhVien);
             var hanSinhVienStr = hanSinhVien.toLocaleDateString('en-CA') + " " + hanSinhVien.toLocaleTimeString();
             $("#han_sinh_vien_update").val(hanSinhVienStr);
