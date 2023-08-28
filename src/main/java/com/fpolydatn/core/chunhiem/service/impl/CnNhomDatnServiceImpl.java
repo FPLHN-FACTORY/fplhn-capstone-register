@@ -349,7 +349,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public CnThongTinNhomResponse getThongTinNhom(String idNhom, String coSoId) {
-        return cnNhomDatnRepository.getThongTinNhom(idNhom, coSoId, commonHelper.getDotDangKyHienTai());
+        return cnNhomDatnRepository.getThongTinNhom(idNhom, coSoId);
     }
 
     @Override

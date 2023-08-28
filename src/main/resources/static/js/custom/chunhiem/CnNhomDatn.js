@@ -658,8 +658,6 @@ function reload() {
 //     colorPage[currentPage].style.color = 'white';
 // }
 
-genPagzing()
-
 function changeInput() {
     if ($("#valueInput").val().length != 0) {
         let value = parseInt($("#valueInput").val());
@@ -674,28 +672,33 @@ function changeInput() {
 }
 
 function genPagzing() {
-    $("#page").html(``)
-    let templatePageMid = ``;
-    let templatePageBefore = `
+    if (totalPages <= 1) {
+        $("#page").html('');
+    } else {
+        let templatePageMid = ``;
+        let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage - 1})"><img src="/img/back.svg"></a>
                 </li>
                 `;
-    templatePageMid = `
+        templatePageMid = `
                             <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
                              <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
-    let templatePageAfter = `
+        let templatePageAfter = `
                               <li style="color: #0a8cf0" class="page-item">
                                    <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage + 1})"><img src="/img/next.svg"></a>
                               </li><li style="color: #0a8cf0" class="page-item">
                 `;
-    let templateHtml = ``;
-    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
-    if (totalPages == 1) {
-        templateHtml = ``;
+        let templateHtml = ``;
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        if (totalPages == 1) {
+            templateHtml = ``;
+        }
+        $("#page").html(templateHtml);
     }
-    $("#page").html(templateHtml);
 }
+
+genPagzing()
 
 function loadDataNhomDatn(count) {
 
@@ -719,7 +722,8 @@ function loadDataNhomDatn(count) {
         dataType: 'json',
         success: function (responseData) {
             let array = responseData.data.data
-            totalPages = responseData.data.totalPages
+            totalPages = responseData.data.totalPages;
+
             if (array.length == 0) {
                 $("#listNhomDatn").html(``)
                 $("#page").html(``)
@@ -778,7 +782,9 @@ function loadDataNhomDatn(count) {
                 `
                 }))
                 $('[data-toggle = "tooltip"]').tooltip()
-                genPagzing()
+                if (responseData.data.totalPages > 1) {
+                    genPagzing()
+                }
             }
         },
         error: function (e) {

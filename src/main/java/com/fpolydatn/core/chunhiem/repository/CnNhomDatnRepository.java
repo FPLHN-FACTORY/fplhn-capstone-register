@@ -207,11 +207,10 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             JOIN sinh_vien c ON c.nhom_id = a.id
             JOIN mon_datn d ON b.mon_datn_id = d.id
             LEFT JOIN giang_vien_huong_dan e ON a.giang_vien_id = e.id
-            WHERE a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId
+            WHERE a.co_so_id = :coSoId 
             GROUP BY a.id HAVING a.id = :idNhom
             """, nativeQuery = true)
     CnThongTinNhomResponse getThongTinNhom(@Param("idNhom") String idNhom,
-                                           @Param("coSoId") String coSoId,
-                                           @Param("dotDangKyId") String dotDangKyId);
+                                           @Param("coSoId") String coSoId);
 
 }

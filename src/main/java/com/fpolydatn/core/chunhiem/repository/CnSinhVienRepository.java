@@ -34,7 +34,7 @@ public interface CnSinhVienRepository extends SinhVienRepository {
                 LEFT JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id 
                 LEFT JOIN nhom_datn e ON e.id= a.nhom_id 
                 LEFT JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id 
-                WHERE e.id = :#{#req.idNhom} AND d.id = :#{#req.dotDangKyId} AND a.co_so_id = :#{#req.coSoId} 
+                WHERE e.id = :#{#req.idNhom} AND a.co_so_id = :#{#req.coSoId} 
                 ORDER BY ten_sinh_vien """,
             countQuery = """ 
                     SELECT COUNT(a.id) FROM sinh_vien a
@@ -43,7 +43,7 @@ public interface CnSinhVienRepository extends SinhVienRepository {
                     LEFT JOIN dot_dang_ky  d ON d.id = a.dot_dang_ky_id
                     LEFT JOIN nhom_datn e ON e.id= a.nhom_id
                     LEFT JOIN giang_vien_huong_dan  f ON f.id  = e.giang_vien_id
-                    WHERE e.id =  :#{#req.idNhom} AND d.id = :#{#req.dotDangKyId} AND a.co_so_id = :#{#req.coSoId}  ORDER BY ten_sinh_vien""", nativeQuery = true)
+                    WHERE e.id =  :#{#req.idNhom} AND a.co_so_id = :#{#req.coSoId}  ORDER BY ten_sinh_vien""", nativeQuery = true)
     Page<CnSinhVienTheoNhomResponse> searchSinhVien(@Param("req") CnFindSinhVienTheoNhomRequest req, Pageable page);
 
     @Query(value = "SELECT IF(COUNT(1) IS NULL, 0, COUNT(1)) FROM sinh_vien a WHERE a.nhom_id = :id_nhom AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)

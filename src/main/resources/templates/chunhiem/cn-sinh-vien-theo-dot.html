@@ -224,7 +224,7 @@
                                     </div>
 
                                     <div class="table-responsive mt-3">
-                                        <div th:unless="${page.data.isEmpty()}">
+                                        <div>
                                             <table id="custom-table"
                                                    style="text-align: center"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
@@ -242,12 +242,18 @@
                                                 <tbody id="listSV">
                                                 <th:block th:each="sinhVien,i : ${page.data}">
                                                     <tr class="table-light">
-                                                        <td class="text-center align-middle" th:text="${sinhVien.stt}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVien.maSinhVien}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVien.tenSinhVien}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVien.tenChuyenNganh}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVien.maMonChuongTrinh}==null ? 'Chưa có' : (${sinhVien.maMonChuongTrinh})"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVien.maMonDuAn}==null ? 'Chưa có' : (${sinhVien.maMonDuAn})"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVien.stt}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVien.maSinhVien}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVien.tenSinhVien}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVien.tenChuyenNganh}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVien.maMonChuongTrinh}==null ? 'Chưa có' : (${sinhVien.maMonChuongTrinh})"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVien.maMonDuAn}==null ? 'Chưa có' : (${sinhVien.maMonDuAn})"></td>
                                                         <td th:switch="${sinhVien.maNhom}"
                                                             class="text-center align-middle">
                                                             <div class="d-flex justify-content-center align-items-center">
@@ -261,8 +267,10 @@
                                                                 <p th:case="*" th:text="${sinhVien.maNhom}"></p>
                                                             </div>
                                                         </td>
-                                                        <td class="text-center align-middle" th:text="${sinhVien.tenDeTai}==null?'Chưa có':${sinhVien.tenDeTai}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVien.tenGvhd}==null?'Chưa có':${sinhVien.tenGvhd}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVien.tenDeTai}==null?'Chưa có':${sinhVien.tenDeTai}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVien.tenGvhd}==null?'Chưa có':${sinhVien.tenGvhd}"></td>
                                                     </tr>
                                                 </th:block>
                                                 </tbody>
@@ -270,29 +278,28 @@
                                             <!-- Paging-->
                                             <input hidden th:value="${page.totalPages}" id="totalPages">
                                             <input hidden th:value="${page.currentPage}" id="currentPage">
-                                            <nav id="pageing"
-                                                 aria-label="Page navigation">
-                                                <div class="justify-content-end"
-                                                     style="display: flex;">
-                                                    <select id="sizeSinhVien"
-                                                            th:attr="onchange=|loadDataToTable(0)|"
-                                                            class="form-control-sm"
-                                                            style="margin-right: 10px">
-                                                        <option value="10">10</option>
-                                                        <option value="25">25</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                        <option value="250">250</option>
-                                                        <option value="500">500</option>
-                                                        <option value="1000">1000</option>
-                                                    </select>
-                                                    <ul th:if="${page.totalPages > 1}" class="pagination" id="page">
-                                                        <div th:each="i:${#numbers.sequence( 1, page.totalPages, 1)}">
-                                                        </div>
-                                                    </ul>
-                                                </div>
-                                            </nav>
                                         </div>
+                                        <nav id="pageing"
+                                             aria-label="Page navigation">
+                                            <div class="justify-content-end"
+                                                 style="display: flex;">
+                                                <select id="sizeSinhVien"
+                                                        th:attr="onchange=|loadDataToTable(0)|"
+                                                        class="form-control-sm"
+                                                        style="margin-right: 10px">
+                                                    <option value="10">10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                    <option value="250">250</option>
+                                                    <option value="500">500</option>
+                                                    <option value="1000">1000</option>
+                                                </select>
+                                                <ul class="pagination" id="page">
+
+                                                </ul>
+                                            </div>
+                                        </nav>
                                     </div>
                                 </div>
                             </div>

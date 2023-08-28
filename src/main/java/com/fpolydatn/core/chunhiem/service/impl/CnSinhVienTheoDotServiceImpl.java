@@ -45,7 +45,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
     private NhomDatnHelper nhomDatnHelper;
 
     @Override
-    public PageableObject<CnSinhVienTheoDotResponse> searchByIdDotDangKy(CnFindSinhVienTheoDotRequest request) {
+    public PageableObject<CnSinhVienTheoDotResponse> searchByIdDotDangKy(final CnFindSinhVienTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         if (request.getIdDotDangKy() == null) {
             if (dotDangKyId != null) {
@@ -60,8 +60,10 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
                 request.setIdDotDangKy("");
             }
         }
+        System.out.println(request.getIdDotDangKy() + " aaaaaaaaaaaaaaa");
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<CnSinhVienTheoDotResponse> res = cnSinhVienTheoNhomRepository.searchSinhVien(request, pageable);
+        System.out.println(res);
         return new PageableObject<>(res);
     }
 

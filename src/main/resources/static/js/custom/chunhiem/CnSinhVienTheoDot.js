@@ -81,28 +81,30 @@ function changeInput() {
 }
 
 function genPagzing() {
-
-    $("#page").html(``)
-    let templatePageMid = ``;
-    let templatePageBefore = `
+    if (totalPages <= 1) {
+        $("#page").html('');
+    } else {
+        let templatePageMid = ``;
+        let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="border: none" class="page-link" onclick="loadDataToTable(${currentPage - 1})"><img src="/img/back.svg"></a>
                 </li>
                 `;
-    templatePageMid = `
+        templatePageMid = `
                             <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
                              <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
-    let templatePageAfter = `
+        let templatePageAfter = `
                               <li style="color: #0a8cf0" class="page-item">
                                    <a style="border: none" class="page-link" onclick="loadDataToTable(${currentPage + 1})"><img src="/img/next.svg"></a>
                               </li><li style="color: #0a8cf0" class="page-item">
                 `;
-    let templateHtml = ``;
-    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
-    if (totalPages == 1) {
-        templateHtml = ``;
+        let templateHtml = ``;
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        if (totalPages == 1) {
+            templateHtml = ``;
+        }
+        $("#page").html(templateHtml);
     }
-    $("#page").html(templateHtml);
 }
 
 function loadDataToTable(count) {
@@ -113,11 +115,7 @@ function loadDataToTable(count) {
     let tenGvhd = $("#tenGvhd").val().trim();
     let maNhomSearch = $("#maNhomSearch").val().trim();
     let trangThai = $("#trangThai").val().trim();
-    let sizeSinhVien = parseInt($("#sizeSinhVien").val().trim());
-    if (count < 0 || count > totalPages - 1) {
-        return;
-    }
-    $("#listSV").html("");
+    let sizeSinhVien = parseInt($("#sizeSinhVien").val());
     currentPage = count;
     $.ajax({
         type: "GET",
@@ -136,6 +134,14 @@ function loadDataToTable(count) {
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`)
                 $("#listSV").html(``)
                 $("#page").html(``)
+                if (responseData.data.totalPages == 1) {
+                    loadDataToTable(0);
+                    return;
+                }
+                if (count == responseData.data.totalPages && count != 0) {
+                    loadDataToTable(count - 1);
+                    return;
+                }
             } else {
                 $("#empty").html(``)
                 totalPages = responseData.data.totalPages
