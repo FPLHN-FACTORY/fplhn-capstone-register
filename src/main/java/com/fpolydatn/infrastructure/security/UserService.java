@@ -1,5 +1,6 @@
 package com.fpolydatn.infrastructure.security;
 
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
 import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author HangNT
@@ -48,6 +50,7 @@ public class UserService {
         String dotDangKyID = commonHelper.getDotDangKyHienTai();
 
         SimpleEntityProj account = null;
+        String sinhVienMessage = null;
         switch (role.toLowerCase()) {
             case ActorConstant.GIANG_VIEN: {
                 account = gvhdRepository.findSimpleEntityByTenGiangVienHuongDan(coSoID, email, dotDangKyID);
@@ -59,12 +62,19 @@ public class UserService {
                 break;
             }
             case ActorConstant.SINH_VIEN: {
-                account = sinhVienRepository.findSimpleEntityByTenSinhVien(coSoID, email, dotDangKyID,
-                        TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
+                account = sinhVienRepository.findSimpleEntityByTenSinhVien(coSoID, email, dotDangKyID);
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/authentication/" + ActorConstant.SINH_VIEN);
                 } else {
-                    response.sendRedirect("/sinh-vien");
+                    Integer trangThaiSinhVien = sinhVienRepository.getTrangThaiSinhVienForLogin(coSoID,
+                            account.getId(), dotDangKyID);
+                    if (trangThaiSinhVien == TrangThaiSinhVien.KHONG_DU_DIEU_KIEN.ordinal()) {
+                        account = null;
+                        sinhVienMessage = "Thất bại. Sinh viên không đủ điều kiện";
+                        response.sendRedirect("/authentication/" + ActorConstant.SINH_VIEN);
+                    } else {
+                        response.sendRedirect("/sinh-vien");
+                    }
                 }
                 break;
             }
@@ -96,7 +106,11 @@ public class UserService {
         if (Objects.nonNull(account)) {
             session.setAttribute(SessionConstant.USER, account);
         } else {
-            session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thống");
+            if (sinhVienMessage != null) {
+                session.setAttribute("messageError", sinhVienMessage);
+            } else {
+                session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thống");
+            }
         }
     }
 }

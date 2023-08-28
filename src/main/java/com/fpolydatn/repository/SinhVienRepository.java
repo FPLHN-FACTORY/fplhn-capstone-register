@@ -1,6 +1,7 @@
 package com.fpolydatn.repository;
 
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.apache.commons.math3.analysis.function.Sinh;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,11 +26,9 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
             AND sv.dot_dang_ky_id =:dotDangKyID
             AND sv.email=:email
             AND sv.co_so_id=:coSoId
-            AND sv.trang_thai = :trangThai
             """, nativeQuery = true)
     SimpleEntityProj findSimpleEntityByTenSinhVien(@Param("coSoId") String coSoId, @Param("email") String email,
-                                                   @Param("dotDangKyID") String dotDangKyID,
-                                                   @Param("trangThai") Integer trangThai);
+                                                   @Param("dotDangKyID") String dotDangKyID);
 
     @Query(value = """
             SELECT * FROM sinh_vien WHERE nhom_id IN 
@@ -40,4 +39,16 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
             """, nativeQuery = true)
     List<SinhVien> getListSinhVienByNhomId(@Param("currentTime") Long currentTime,
                                            @Param("period") Long period);
+
+    @Query(value = """
+            SELECT trang_thai
+            FROM sinh_vien sv INNER JOIN co_so cs 
+            ON sv.co_so_id = cs.id
+            AND sv.dot_dang_ky_id =:dotDangKyID
+            AND sv.id=:id
+            AND sv.co_so_id=:coSoId
+            """, nativeQuery = true)
+    Integer getTrangThaiSinhVienForLogin(@Param("coSoId") String coSoId, @Param("id") String id,
+                                                   @Param("dotDangKyID") String dotDangKyID);
+
 }
