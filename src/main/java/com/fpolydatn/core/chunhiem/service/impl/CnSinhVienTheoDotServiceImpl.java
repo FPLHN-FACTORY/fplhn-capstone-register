@@ -13,6 +13,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
     @Autowired
     private NhomDatnHelper nhomDatnHelper;
 
+    @Autowired
+    private MocThoiGianCommon mocThoiGianCommon;
+
     @Override
     public PageableObject<CnSinhVienTheoDotResponse> searchByIdDotDangKy(final CnFindSinhVienTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
@@ -69,6 +73,10 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
 
     @Override
     public boolean addSinhVienTheoNhom(String maNhom, String maSinhVien) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         String idNhom = nhomDatnRepository.getIdByMaNhom(maNhom, commonHelper.getDotDangKyHienTai());
         if (idNhom == null) {
             throw new RestApiException(Message.GROUP_NO_EXIST);
@@ -186,6 +194,10 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
     }
 
     public Boolean randomNhomDatnByIdChuNhiem(String idChuNhiem, String coSoId, Integer number) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         try {
             String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
             List<String> monDatnByIdChuNhiem = cnSinhVienTheoNhomRepository.getAllMonDatnByIdChuNhiem(idChuNhiem, coSoId);

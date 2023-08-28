@@ -87,7 +87,9 @@ public enum Message {
     KHONG_DU_SINH_VIEN_DE_TAO_NHOM(PropertiesReader.getProperty(PropertyKeys.KHONG_DU_SINH_VIEN_DE_TAO_NHOM)),
     TON_TAI_DOT_DANG_KY(PropertiesReader.getProperty(PropertyKeys.TON_TAI_DOT_DANG_KY)),
     HOC_KY_OVERLAP(PropertiesReader.getProperty(PropertyKeys.HOC_KY_OVERLAP)),
-    DO_DAI_KHONG_QUA_255_KY_TU(PropertiesReader.getProperty(PropertyKeys.DO_DAI_KHONG_QUA_255_KY_TU));
+    DO_DAI_KHONG_QUA_255_KY_TU(PropertiesReader.getProperty(PropertyKeys.DO_DAI_KHONG_QUA_255_KY_TU)),
+    HET_HAN_QUYEN_CHU_NHIEM_BO_MON(PropertiesReader.getProperty(PropertyKeys.HET_HAN_QUYEN_CHU_NHIEM_BO_MON)),
+    HET_HAN_QUYEN_GIANG_VIEN(PropertiesReader.getProperty(PropertyKeys.HET_HAN_QUYEN_GIANG_VIEN));
 
 
     private String message;

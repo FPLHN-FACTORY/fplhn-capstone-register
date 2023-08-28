@@ -4,6 +4,7 @@ let flag = 0;
 let checkListCbb = 0;
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
+const checkHanChuNhiem = $("#check_han_cnbm").text();
 
 $("#form_list_nhom_datn").submit(function (event) {
     event.preventDefault();
@@ -762,19 +763,19 @@ function loadDataNhomDatn(count) {
                 <div id="eye-custom" data-toggle="tooltip" title="Xem chi tiết nhóm">
                 <img src="/img/eye-fill.svg"></div></a>
                 <button class="btn_check_circle" 
-                style="${item.trangThai == 0 ? 'display : block' : 'display : none'}" 
+                style="${checkHanChuNhiem === 'false' ? 'display:none' : (item.trangThai == 0 ? 'display : block' : 'display : none')}" 
                 data-toggle="tooltip" title="Xác nhận nhóm" onclick="CNXacNhanNhom('${item.id}','${count}')">
                 <img src="/img/check-circle.svg"></button>
                 <button class="btn_check" 
-                style="${item.trangThai == 4 ? 'display : block' : 'display : none'}" 
+                style="${checkHanChuNhiem === 'false' ? 'display:none' : (item.trangThai == 4 ? 'display : block' : 'display : none')}" 
                 data-toggle="tooltip" title="Chốt đề tài" onclick="CNChotDuLieu('${item.id}','${count}')">
                 <img src="/img/clipboard-check.svg"></button>
                 <button class="btn_x_circle" 
-                style="${item.trangThai == 4 ? 'display : block' : 'display : none'}" 
+                style="${checkHanChuNhiem === 'false' ? 'display:none' : (item.trangThai == 4 ? 'display : block' : 'display : none')}" 
                 data-toggle="tooltip" title="Từ chối chốt đề tài" onclick="openModalNhanXet('${item.id}','${count}')">
                 <img src="/img/x-circle.svg"></button>
                 <button class="btn_trash" 
-                style="${item.trangThai == 5 ? 'display : none' : 'display : block'}" 
+                style="${checkHanChuNhiem === 'false' ? 'display:none' : (item.trangThai == 5 ? 'display : none' : 'display : block')}" 
                 data-toggle="tooltip" title="Xóa" onclick="openModalRemoveNhomDatn('${item.id}','${count}')">
                 <img src="/img/trash.svg"></button></td>
                 </div>
@@ -782,9 +783,7 @@ function loadDataNhomDatn(count) {
                 `
                 }))
                 $('[data-toggle = "tooltip"]').tooltip()
-                if (responseData.data.totalPages > 1) {
-                    genPagzing()
-                }
+                genPagzing()
             }
         },
         error: function (e) {

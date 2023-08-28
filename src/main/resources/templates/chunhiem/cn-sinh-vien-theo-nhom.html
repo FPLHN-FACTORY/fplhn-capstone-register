@@ -128,23 +128,23 @@
                                         <h5>Danh sách thành viên:</h5>
                                         <div class="d-inline"
                                         >
-                                            <button type="button" th:attr="onclick=|openModalThemSinhVien()|"
+                                            <button th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" type="button" th:attr="onclick=|openModalThemSinhVien()|"
                                                     class=" btn btn-success">
                                                 Thêm thành viên
                                             </button>
                                             <!--                                            them giao vien huong dan -->
-                                            <button type="button" th:attr="onclick=|openModalChangeGvhd()|"
+                                            <button th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" type="button" th:attr="onclick=|openModalChangeGvhd()|"
                                                     class=" btn btn-success">
                                                 Thay đổi GVHD
                                             </button>
-                                            <button type="button"
+                                            <button th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" type="button"
                                                     id="changeTenDeTai"
                                                     th:attr="onclick=|openModalDoiTenDeTai()|"
                                                     class=" btn btn-success">
                                                 Đổi tên đề tài
                                             </button>
                                             <!--                                            thay đổi trưởng nhóm-->
-                                            <button type="button" th:attr="onclick=|openModalChangeCaptain()|"
+                                            <button th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" type="button" th:attr="onclick=|openModalChangeCaptain()|"
                                                     id="changeCaptain"
                                                     class=" btn btn-success">
                                                 Thay đổi trưởng nhóm
@@ -217,7 +217,7 @@
                                                 <th>Số điện thoại</th>
                                                 <th>Khóa</th>
                                                 <th>Môn chương trình</th>
-                                                <th width="80px">Chức năng</th>
+                                                <th th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" width="80px">Chức năng</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
@@ -229,7 +229,7 @@
                                                         <td class="text-center align-middle" th:text="${sinhVienResponse.soDienThoai}"></td>
                                                         <td class="text-center align-middle" th:text="${sinhVienResponse.khoa}"></td>
                                                         <td class="text-center align-middle" th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
-                                                        <td class="text-center align-middle">
+                                                        <td class="text-center align-middle" th:style="${checkHanChuNhiem} == false ? 'display:none' : 'display:block'" >
                                                             <div class="d-flex justify-content-center align-items-center">
                                                                 <button
                                                                         type="button" data-toggle="tooltip"

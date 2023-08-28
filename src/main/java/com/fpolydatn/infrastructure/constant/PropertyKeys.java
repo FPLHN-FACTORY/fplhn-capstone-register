@@ -84,5 +84,7 @@ public class PropertyKeys {
     public static final String TON_TAI_DOT_DANG_KY = "ton.tai.dot.dang.ky";
     public static final String HOC_KY_OVERLAP = "hoc.ky.overlap";
     public static final String DO_DAI_KHONG_QUA_255_KY_TU = "do.dai.khong.qua.255.ky.tu";
+    public static final String HET_HAN_QUYEN_CHU_NHIEM_BO_MON = "het.han.quyen.chu.nhiem.bo.mon";
+    public static final String HET_HAN_QUYEN_GIANG_VIEN = "het.han.quyen.giang.vien";
 
 }

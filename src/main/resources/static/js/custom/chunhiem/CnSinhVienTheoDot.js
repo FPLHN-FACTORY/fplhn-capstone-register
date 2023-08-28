@@ -3,6 +3,7 @@ const sinhVienTheoDotDangKyView = '/chu-nhiem/dot-dang-ky/sinh-vien';
 const CNNhomDatnApi = '/api/chu-nhiem/nhom-datn';
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
+const checkHanChuNhiem = $("#check_han_cnbm").text();
 
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
@@ -162,10 +163,12 @@ function loadDataToTable(count) {
                 <td class="text-center align-middle">
                 <div class="d-flex justify-content-center align-items-center">
                   <button onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
+                      style="${checkHanChuNhiem === 'false' ? 'display:none' : 'display : block'}"
                       class="btn_pencil_square">
                        <img src="/img/pencil-square.svg">  
                         </button>
                         </div>
+                        <span style="${checkHanChuNhiem === 'true' ? 'display:none' : 'display : block'}">-</span>
                       </td>
                 ` : `
                 <td class="text-center align-middle">

@@ -126,6 +126,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean chotDeTai(String id) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -140,6 +144,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean chotNhieuDeTai(List<String> listIdNhom) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         List<NhomDatn> listNhomDatn = cnNhomDatnRepository.findAllById(listIdNhom);
         if (listIdNhom.size() != listNhomDatn.size()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -156,6 +164,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean xacNhanNhom(String id) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -208,6 +220,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean xacNhanNhieuNhom(List<String> listIdNhom) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         List<NhomDatn> listNhomDatn = cnNhomDatnRepository.findAllById(listIdNhom);
         if (listIdNhom.size() != listNhomDatn.size()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -224,6 +240,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean tuChoiChotDeTai(String id, String nhanXet) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -239,6 +259,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public Boolean delete(String id) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -273,6 +297,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean create(@Valid final CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         String idGiangVien = cnCreateNhomDatnRequest.getIdGiangVien();
         if (cnGiangVienHuongDanReponsitory.findById(idGiangVien) == null) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
@@ -355,6 +383,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     @Override
     public void CnSinhVienExport(HttpServletResponse response, final CnFindSinhVienTheoDotRequest request, String idChuNhiem) throws IOException {
         try {
+            boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+            if (!check) {
+                throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+            }
             response.setContentType("application/octet-stream");
             DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
             String currentDateTime = dateFormatter.format(new Date());
@@ -420,6 +452,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     public CnSinhVienImport CnSinhVienImport(MultipartFile file, String dotDangKyId, String coSoId, String idChuNhiem) throws IOException {
         CnSinhVienImport response = new CnSinhVienImport();
         try {
+            boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+            if (!check) {
+                throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+            }
             response.setStatus(true);
             CnSinhVienTheoDotImport sinhVienTheoDotImport = new CnSinhVienTheoDotImport();
             sinhVienList = new ArrayList<>();

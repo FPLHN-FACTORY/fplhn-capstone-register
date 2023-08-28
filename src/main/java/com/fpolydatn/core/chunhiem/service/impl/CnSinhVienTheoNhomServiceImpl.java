@@ -18,6 +18,7 @@ import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.MocThoiGianCommon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,6 +49,9 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Autowired
     private CommonHelper commonHelper;
 
+    @Autowired
+    private MocThoiGianCommon mocThoiGianCommon;
+
     @Override
     public PageableObject<CnSinhVienTheoNhomResponse> searchByIdNhom(final CnFindSinhVienTheoNhomRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
@@ -57,6 +61,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean addSinhVienTheoNhom(String idNhom, String maSinhViens) {
+        boolean checkMocThoiGianChuNhiem = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!checkMocThoiGianChuNhiem) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         String listMaSinhVien[] = maSinhViens.split("-");
         int soSinhVienDangLuaChon = listMaSinhVien.length;
         int soThanhVienTrongNhom = cnNhomDatnRepository.getSoLuongThanhVienNhom(idNhom, commonHelper.getDotDangKyHienTai());
@@ -85,6 +93,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean deleteFromIdSinhVien(String idNhom, String maSinhVien, String coSoId) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien, commonHelper.getDotDangKyHienTai());
         if (getSizeListSinhVien(idNhom, coSoId) == 0) {
             cnNhomDatnRepository.deleteById(idNhom);
@@ -94,6 +106,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean addGvhd(String tenTaiKhoan, String idNhom) {
+        boolean checkMocThoiGianChuNhiem = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!checkMocThoiGianChuNhiem) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         String idGiangVien = cnGiangVienHuongDanReponsitory.getIdFromGiangVienId(tenTaiKhoan, commonHelper.getDotDangKyHienTai());
         if (idGiangVien == null) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
@@ -114,12 +130,20 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean changeCaptain(String idCaptain, String idNhom) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         cnNhomDatnRepository.changeCaptainByTruongNhomId(idCaptain, idNhom, commonHelper.getDotDangKyHienTai());
         return true;
     }
 
     @Override
     public boolean changeCaptainToOther(String maSinhVien, String idNhom) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         String idCapTainOld = cnSinhVienTheoNhomRepository.getIdByMaSinhVienAndIdNhom(maSinhVien, idNhom, commonHelper.getDotDangKyHienTai());
         String idCapTainNew = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCapTainOld, idNhom, commonHelper.getDotDangKyHienTai()).get(0).getId();
         cnNhomDatnRepository.changeCaptainByTruongNhomId(idCapTainNew, idNhom, commonHelper.getDotDangKyHienTai());
@@ -146,6 +170,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            return null;
+        }
         String idNhom = req.getIdNhom();
         Optional<NhomDatn> nhomDatn = cnNhomDatnRepository.findById(idNhom);
         Optional<SinhVien> truongNhom = cnSinhVienTheoNhomRepository.findById(nhomDatn.get().getTruongNhomId());
@@ -156,6 +184,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public NhomDatn doiTenDeTai(String idNhom, String tenDeTai) {
+        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        if (!check) {
+            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        }
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
         if(!nhomDatnFind.isPresent()){
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);

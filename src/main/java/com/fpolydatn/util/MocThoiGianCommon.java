@@ -25,33 +25,42 @@ public class MocThoiGianCommon {
     public boolean checkMocThoiGianSinhVien() {
         boolean check = false;
         String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
-        KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianSinhVien(dotDangKyHienTaiId);
-        Long currentTime = convertDateToTimeStampSecond();
-        if (currentTime >= khoangThoiGianResponse.getNgayBatDau() && currentTime <= khoangThoiGianResponse.getNgayKetThuc()) {
-            check = true;
+        if(dotDangKyHienTaiId != null) {
+            KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianSinhVien(dotDangKyHienTaiId);
+            Long currentTime = convertDateToTimeStampSecond();
+            if (currentTime >= khoangThoiGianResponse.getNgayBatDau() && currentTime <= khoangThoiGianResponse.getNgayKetThuc()) {
+                check = true;
+            }
+            return check;
         }
-        return check;
+        return false;
     }
 
     public boolean checkMocThoiGianGiangVien() {
         boolean check = false;
         String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
-        KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianGiangVien(dotDangKyHienTaiId);
-        Long currentTime = convertDateToTimeStampSecond();
-        if (currentTime >= khoangThoiGianResponse.getNgayBatDau() && currentTime <= khoangThoiGianResponse.getNgayKetThuc()) {
-            check = true;
+        if(dotDangKyHienTaiId != null) {
+            KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianGiangVien(dotDangKyHienTaiId);
+            Long currentTime = convertDateToTimeStampSecond();
+            if (currentTime >= khoangThoiGianResponse.getNgayBatDau() && currentTime <= khoangThoiGianResponse.getNgayKetThuc()) {
+                check = true;
+            }
+            return check;
         }
-        return check;
+        return false;
     }
 
     public boolean checkMocThoiGianChuNhiem() {
         boolean check = false;
         String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
-        KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianChuNhiem(dotDangKyHienTaiId);
-        Long currentTime = convertDateToTimeStampSecond();
-        if (currentTime >= khoangThoiGianResponse.getNgayBatDau() && currentTime <= khoangThoiGianResponse.getNgayKetThuc()) {
-            check = true;
+        if(dotDangKyHienTaiId != null) {
+            KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianChuNhiem(dotDangKyHienTaiId);
+            Long currentTime = convertDateToTimeStampSecond();
+            if (currentTime >= khoangThoiGianResponse.getNgayBatDau() && currentTime <= khoangThoiGianResponse.getNgayKetThuc()) {
+                check = true;
+            }
+            return check;
         }
-        return check;
+        return false;
     }
 }

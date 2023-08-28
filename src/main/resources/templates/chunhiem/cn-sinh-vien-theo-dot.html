@@ -152,11 +152,13 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <button class="btn btn-success"
+                                                    th:style="${checkHanChuNhiem} == false ? 'display:none' : ''"
                                                     th:attr="onclick=|openModalExport()|">
                                                 Export sắp nhóm
                                             </button>
                                             <button
                                                     th:attr="onclick=|openModalImport()|"
+                                                    th:style="${checkHanChuNhiem} == false ? 'display:none' : ''"
                                                     class="btn btn-success">
                                                 Import sắp nhóm
                                             </button>
@@ -168,6 +170,7 @@
                                         <div class="col-6">
                                             <button style="float: right"
                                                     class="btn btn-success"
+                                                    th:if="${checkHanChuNhiem}"
                                                     th:attr="onclick=|openModalRandomNhomDatn()|">
                                                 Random nhóm
                                             </button>
@@ -260,10 +263,12 @@
                                                                 <button th:case=null
                                                                         data-toggle="tooltip"
                                                                         title="Thêm sinh viên vào nhóm"
+                                                                        th:style="${checkHanChuNhiem} == false ? 'display:none' : 'display:block'"
                                                                         th:attr="onclick=|openModalAddSinhVien('${sinhVien.maSinhVien}','${page.currentPage}')|"
                                                                         class="btn_pencil_square">
                                                                     <img th:src="@{/img/pencil-square.svg}">
                                                                 </button>
+
                                                                 <p th:case="*" th:text="${sinhVien.maNhom}"></p>
                                                             </div>
                                                         </td>
@@ -493,6 +498,7 @@
             </form>
         </div>
     </div>
+    <span hidden id="check_han_cnbm" style="color:red;" th:text="${checkHanChuNhiem}"></span>
 </div>
 <!--   End Modal Create Group-->
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
