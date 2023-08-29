@@ -26,6 +26,10 @@ import java.util.List;
 public interface CnNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
+            WITH CheckDotDangKy AS (
+            SELECT a.id, IF(:#{#req.currentTime} BETWEEN a.ngay_bat_dau AND a.ngay_ket_thuc, 1, 0) 
+            AS check_dot_dang_ky FROM dot_dang_ky a WHERE a.id = :#{#req.dotDangKyId}
+            )
             SELECT b.id, ROW_NUMBER() OVER(
             ORDER BY b.last_modified_date DESC
             ) AS stt, b.ma_nhom
@@ -33,7 +37,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             AS total_ma_sinh_vien, CONCAT(c.ma_sinh_vien, '_', c.ten_sinh_vien) as truong_nhom,e.ten_gvhd, e.ten_tai_khoan,
             (SELECT COUNT(i.id) FROM nhom_datn i WHERE i.giang_vien_id = e.id) AS so_nhom_dang_huong_dan,
             e.so_nhom_huong_dan_toi_da,
-             g.ten_dot_dang_ky, b.trang_thai, b.last_modified_date
+            g.ten_dot_dang_ky, b.trang_thai, cddk.check_dot_dang_ky
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
             LEFT JOIN mon_datn k ON k.id = c.mon_datn_id
             LEFT JOIN sinh_vien d ON d.nhom_id = b.id
@@ -41,6 +45,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            LEFT JOIN CheckDotDangKy cddk ON cddk.id = g.id
             WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
@@ -67,14 +72,19 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
               CASE WHEN :#{#req.sortNhomDatn} = 'numberDesc' THEN COUNT(d.ma_sinh_vien) END DESC,
               CASE WHEN :#{#req.sortNhomDatn} = 'numberAsc' THEN COUNT(d.ma_sinh_vien) END ASC
             """, countQuery = """
+            WITH CheckDotDangKy AS (
+            SELECT a.id, IF(:#{#req.currentTime} BETWEEN a.ngay_bat_dau AND a.ngay_ket_thuc, 1, 0) 
+            AS check_dot_dang_ky FROM dot_dang_ky a WHERE a.id = :#{#req.dotDangKyId}
+            )
             SELECT COUNT(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
             LEFT JOIN mon_datn k ON k.id = c.mon_datn_id
             LEFT JOIN sinh_vien d ON d.nhom_id = b.id
-            LEFT JOIN chuyen_nganh f ON f.id = c.chuyen_nganh_id
+            LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
             LEFT JOIN giang_vien_huong_dan e ON e.id = b.giang_vien_id
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+            LEFT JOIN CheckDotDangKy cddk ON cddk.id = g.id
             WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
@@ -84,7 +94,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             AND (:#{#req.tenTaiKhoan} IS NULL OR :#{#req.tenTaiKhoan} LIKE ''
             OR e.ten_gvhd LIKE %:#{#req.tenTaiKhoan}% OR e.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
-            OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
+            OR b.trang_thai = CONVERT(:#{#req.trangThai}, UNSIGNED))
             AND (:#{#req.maTruongNhom} IS NULL OR :#{#req.maTruongNhom} LIKE ''
             OR c.ma_sinh_vien LIKE %:#{#req.maTruongNhom}% OR c.ten_sinh_vien LIKE %:#{#req.maTruongNhom}%)
             AND g.id = :#{#req.dotDangKyId}

@@ -312,7 +312,9 @@ function loadData() {
         contentType: "application/json",
         url: sinhVienApi + "/oldCaptain?idGroup=" + idGroup,
         success: function (captain) {
-            idOldCaptain = captain.data.maSinhVien;
+            if(captain.data != null) {
+                idOldCaptain = captain.data.maSinhVien;
+            }
         },
         error: function () {
         }

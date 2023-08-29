@@ -36,4 +36,6 @@ public interface CnSinhVienTheoNhomService {
     List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest request, String idChuNhiem);
 
     NhomDatn doiTenDeTai(String idNhom, String tenDeTai);
+
+    Boolean checkDotDangKyHienTai(String idNhom);
 }

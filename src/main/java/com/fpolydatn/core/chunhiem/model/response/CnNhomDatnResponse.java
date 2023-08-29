@@ -48,6 +48,9 @@ public interface CnNhomDatnResponse extends IsIdentified {
     String getTenDotDangKy();
 
     @Value("#{target.trang_thai}")
-    int getTrangThai();
+    Integer getTrangThai();
+
+    @Value("#{target.check_dot_dang_ky}")
+    Integer getCheckDotDangKy();
 
 }

@@ -37,4 +37,7 @@ public interface CnSinhVienTheoDotResponse {
 
     @Value("#{target.ten_gvhd}")
     String getTenGvhd();
+
+    @Value("#{target.check_dot_dang_ky}")
+    Integer getCheckDotDangKy();
 }

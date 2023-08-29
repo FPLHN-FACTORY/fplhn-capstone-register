@@ -3,7 +3,6 @@ const sinhVienTheoDotDangKyView = '/chu-nhiem/dot-dang-ky/sinh-vien';
 const CNNhomDatnApi = '/api/chu-nhiem/nhom-datn';
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
-const checkHanChuNhiem = $("#check_han_cnbm").text();
 
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
@@ -145,6 +144,15 @@ function loadDataToTable(count) {
                     return;
                 }
             } else {
+                if (array[0].checkDotDangKy == 0) {
+                    $("#idButtonExportSapNhom").attr('style', 'display: none');
+                    $("#idButtonImportSapNhom").attr('style', 'display: none');
+                    $("#idButtonRandom").attr('style', 'display: none');
+                } else {
+                    $("#idButtonExportSapNhom").attr('style', '');
+                    $("#idButtonImportSapNhom").attr('style', '');
+                    $("#idButtonRandom").attr('style', 'float: right');
+                }
                 $("#empty").html(``)
                 totalPages = responseData.data.totalPages
                 array.map(function (sinhVien) {
@@ -163,13 +171,12 @@ function loadDataToTable(count) {
                     text2 = sinhVien.maNhom == null ? `
                 <td class="text-center align-middle">
                 <div class="d-flex justify-content-center align-items-center">
-                  <button onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
-                      style="${checkHanChuNhiem === 'false' ? 'display:none' : 'display : block'}"
+                  <button style="${sinhVien.checkDotDangKy == 0 ? 'display : none' : 'display:block'}" onclick="openModalAddSinhVien('${maSinhVien}','${count}')"
                       class="btn_pencil_square">
                        <img src="/img/pencil-square.svg">  
                         </button>
+                        <span style="${sinhVien.checkDotDangKy == 1 ? 'display : none' : 'display:block'}">-</span>
                         </div>
-                        <span style="${checkHanChuNhiem === 'true' ? 'display:none' : 'display : block'}">-</span>
                       </td>
                 ` : `
                 <td class="text-center align-middle">

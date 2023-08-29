@@ -1,6 +1,5 @@
 const nhomDatnAPI = '/api/giang-vien/nhom-datn';
 const nhomDatnView = '/giang-vien/nhom-datn';
-const checkHanGiangVien = $("#check_han_gv").text();
 
 function clearDataGVHD() {
     $("#idMon").val("");
@@ -140,17 +139,17 @@ function seachNhomdatn(index) {
                                     <img src="/img/eye-fill.svg">
                         </button>
                         <button type="button" onclick= "xacDaNhanLienHe('${item.id}', '${item.maNhom}')"
-                                style="${checkHanGiangVien === 'false' ? 'display: none' : (item.trangThai == 1 ? 'display: block' : 'display: none')}" 
+                                style="${item.trangThai == 1 ? 'display: block' : 'display: none'}" 
                                 class="btn_check_circle " data-toggle="tooltip" title="Xác nhận nhóm">
                                     <img src="/img/check-circle.svg">
                         </button>
                         <button type="button" onclick= "chotDeTaiNhomDatn('${item.id}', '${item.maNhom}')"
-                                style="${checkHanGiangVien === 'false' ? 'display: none' : (item.trangThai == 2 ? 'display: block' : (item.trangThai == 3 ? 'display: block' : 'display: none'))}"
+                                style="${item.trangThai == 2 ? 'display: block' : (item.trangThai == 3 ? 'display: block' : 'display: none')}"
                                 class="btn_check " data-toggle="tooltip" title="Xác nhận đề tài">
                                     <img src="/img/clipboard-check.svg">
                          </button>
                          <button type="button" onclick= "updateTenDeTai('${item.id}')"
-                                style="${checkHanGiangVien === 'false' ? 'display: none' : (item.trangThai == 2 ? 'display: block' : (item.trangThai == 3 ? 'display: block' : (item.trangThai == 4 ? 'display: block' : 'display: none')))}"
+                                style="${item.trangThai == 2 ? 'display: block' : (item.trangThai == 3 ? 'display: block' : (item.trangThai == 4 ? 'display: block' : 'display: none'))}"
                                 class="btn_pencil_square " data-toggle="tooltip" title="Sửa tên đề tài">
                                     <img src="/img/pencil-square.svg">
                          </button>

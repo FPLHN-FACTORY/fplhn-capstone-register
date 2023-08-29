@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Calendar;
+
 @Getter
 @Setter
 @ToString
@@ -31,4 +33,5 @@ public class CnFindSinhVienTheoDotRequest extends PageableRequest {
 
     private String idChuNhiem;
 
+    private Long currentTime = Calendar.getInstance().getTimeInMillis();
 }

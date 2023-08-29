@@ -17,14 +17,17 @@ import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +55,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Autowired
     private MocThoiGianCommon mocThoiGianCommon;
 
+    @Autowired
+    @Qualifier(DotDangKyRepository.NAME)
+    private DotDangKyRepository dotDangKyRepository;
+
     @Override
     public PageableObject<CnSinhVienTheoNhomResponse> searchByIdNhom(final CnFindSinhVienTheoNhomRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
@@ -61,9 +68,12 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean addSinhVienTheoNhom(String idNhom, String maSinhViens) {
-        boolean checkMocThoiGianChuNhiem = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!checkMocThoiGianChuNhiem) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+            throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         String listMaSinhVien[] = maSinhViens.split("-");
         int soSinhVienDangLuaChon = listMaSinhVien.length;
@@ -88,14 +98,24 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public Integer getSizeListSinhVien(String idNhom, String coSoId) {
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+            return null;
+        }
         return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom, coSoId, commonHelper.getDotDangKyHienTai());
     }
 
     @Override
     public boolean deleteFromIdSinhVien(String idNhom, String maSinhVien, String coSoId) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+            throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien, commonHelper.getDotDangKyHienTai());
         if (getSizeListSinhVien(idNhom, coSoId) == 0) {
@@ -106,9 +126,12 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean addGvhd(String tenTaiKhoan, String idNhom) {
-        boolean checkMocThoiGianChuNhiem = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!checkMocThoiGianChuNhiem) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+            throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         String idGiangVien = cnGiangVienHuongDanReponsitory.getIdFromGiangVienId(tenTaiKhoan, commonHelper.getDotDangKyHienTai());
         if (idGiangVien == null) {
@@ -130,9 +153,12 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean changeCaptain(String idCaptain, String idNhom) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+            throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         cnNhomDatnRepository.changeCaptainByTruongNhomId(idCaptain, idNhom, commonHelper.getDotDangKyHienTai());
         return true;
@@ -140,9 +166,12 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean changeCaptainToOther(String maSinhVien, String idNhom) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+            throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         String idCapTainOld = cnSinhVienTheoNhomRepository.getIdByMaSinhVienAndIdNhom(maSinhVien, idNhom, commonHelper.getDotDangKyHienTai());
         String idCapTainNew = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCapTainOld, idNhom, commonHelper.getDotDangKyHienTai()).get(0).getId();
@@ -152,6 +181,13 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public SinhVien getOldCaptain(String idGroup) {
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idGroup);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+            return null;
+        }
         String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup, commonHelper.getDotDangKyHienTai());
         Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(idOldCaptain);
         return captain.get();
@@ -159,6 +195,13 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public List<SinhVien> getStudentNotCaptain(String idCaptain, String idGroup) {
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idGroup);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+            return null;
+        }
         List<SinhVien> listStudentNotCaptain = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCaptain, idGroup, commonHelper.getDotDangKyHienTai());
         return listStudentNotCaptain;
     }
@@ -170,11 +213,14 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
+        String idNhom = req.getIdNhom();
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if(!nhomDatnFind.isPresent()){
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
             return null;
         }
-        String idNhom = req.getIdNhom();
         Optional<NhomDatn> nhomDatn = cnNhomDatnRepository.findById(idNhom);
         Optional<SinhVien> truongNhom = cnSinhVienTheoNhomRepository.findById(nhomDatn.get().getTruongNhomId());
         Optional<MonDatn> nhomMonDatn = cnMonDatnRepository.findById(truongNhom.get().getMonDatnId());
@@ -184,19 +230,39 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public NhomDatn doiTenDeTai(String idNhom, String tenDeTai) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
-        }
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
         if(!nhomDatnFind.isPresent()){
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+            throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         if(tenDeTai.trim().length() > 255){
             throw new RestApiException(Message.DO_DAI_KHONG_QUA_255_KY_TU);
         }
         nhomDatnFind.get().setTenDeTai(tenDeTai);
         return cnNhomDatnRepository.save(nhomDatnFind.get());
+    }
+
+    public Boolean checkDotDangKy(String dotDangKyId) {
+        Optional<DotDangKy> dotDangKyFind = dotDangKyRepository.findById(dotDangKyId);
+        if (!dotDangKyFind.isPresent()) {
+            throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
+        }
+        Long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime >= dotDangKyFind.get().getNgayBatDau() && currentTime <= dotDangKyFind.get().getNgayKetThuc()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean checkDotDangKyHienTai(String idNhom) {
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if(!nhomDatnFind.isPresent()) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        return checkDotDangKy(nhomDatnFind.get().getDotDangKyId());
     }
 
 }

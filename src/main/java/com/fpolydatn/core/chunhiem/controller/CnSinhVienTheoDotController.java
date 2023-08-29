@@ -43,19 +43,20 @@ public class CnSinhVienTheoDotController extends BaseController {
     public String viewSinhVienTheoDot(Model model, final CnFindSinhVienTheoDotRequest req){
         req.setIdDotDangKy(commonHelper.getDotDangKyHienTai());
         req.setIdChuNhiem(session.getUserId());
-        boolean checkHanChuNhiem = false;
-        if(req.getIdDotDangKy() != null){
-            checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
-        }
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
+        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+        Boolean checkDotDangKyHienTai = false;
+        if(dotDangKyHienTai != null) {
+            checkDotDangKyHienTai = true;
+        }
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
         PageableObject<CnSinhVienTheoDotResponse> pageSinhVien = cnSinhVienTheoDotService.searchByIdDotDangKy(req);
         List<CnMonDatnResponse> listMonDatn = cnMonDatnService.getAllMonDatnByChuyenNganh(coSoId, session.getUserId());
         model.addAttribute("page",pageSinhVien);
         model.addAttribute("listMonDatn", listMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
-        model.addAttribute("checkHanChuNhiem", checkHanChuNhiem);
+        model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
         return "chunhiem/cn-sinh-vien-theo-dot";
     }
 }

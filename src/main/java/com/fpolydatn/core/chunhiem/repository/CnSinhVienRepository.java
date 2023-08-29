@@ -78,14 +78,18 @@ public interface CnSinhVienRepository extends SinhVienRepository {
     void addSinhVienInGroup(@Param("idNhom") String idNhom, @Param("maSinhVien") String maSinhVien, @Param("idMonDatn") String idMondatn, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
+            WITH CheckDotDangKy AS (
+            SELECT a.id, IF(:#{#req.currentTime} BETWEEN a.ngay_bat_dau AND a.ngay_ket_thuc, 1, 0) 
+            AS check_dot_dang_ky FROM dot_dang_ky a WHERE a.id = :#{#req.idDotDangKy}
+            )
             SELECT ROW_NUMBER() OVER(ORDER BY d.ma_nhom) AS STT,a.ma_sinh_vien,a.ten_sinh_vien,
             b.ten_chuyen_nganh,
-            (select ma_mon from mon_datn where id = a.mon_chuong_trinh_id ) as 'ma_mon_chuong_trinh',
-            (select ma_mon from mon_datn where id = a.mon_datn_id ) as 'ma_mon_du_an'
+            m.ma_mon as 'ma_mon_chuong_trinh',
+            c.ma_mon as 'ma_mon_du_an'
             ,d.ma_nhom,d.ten_de_tai,
             CONCAT(e.ten_gvhd, ' - ',e.ten_tai_khoan, ' (',
              (SELECT COUNT(i.id) FROM nhom_datn i WHERE i.giang_vien_id = e.id)
-             , '/' , e.so_nhom_huong_dan_toi_da, ')') as ten_gvhd
+             , '/' , e.so_nhom_huong_dan_toi_da, ')') as ten_gvhd, cddk.check_dot_dang_ky
             FROM sinh_vien a
             LEFT JOIN chuyen_nganh b  ON b.id = a.chuyen_nganh_id
             LEFT JOIN mon_datn c ON c.id = a.mon_datn_id
@@ -94,6 +98,7 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
             LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
             LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
+            LEFT JOIN CheckDotDangKy cddk ON cddk.id = f.id
             WHERE a.co_so_id = :#{#req.coSoId} 
             AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
             OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%  
@@ -114,6 +119,10 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             AND a.trang_thai = 0
             ORDER BY d.ma_nhom
             """, countQuery = """
+            WITH CheckDotDangKy AS (
+            SELECT a.id, IF(:#{#req.currentTime} BETWEEN a.ngay_bat_dau AND a.ngay_ket_thuc, 1, 0) 
+            AS check_dot_dang_ky FROM dot_dang_ky a WHERE a.id = :#{#req.idDotDangKy}
+            )
             SELECT COUNT(a.id)
             FROM sinh_vien a
             LEFT JOIN chuyen_nganh b  ON b.id = a.chuyen_nganh_id
@@ -123,6 +132,7 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             LEFT JOIN giang_vien_huong_dan e ON e.id = d.giang_vien_id
             LEFT JOIN dot_dang_ky f ON f.id = a.dot_dang_ky_id
             LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
+            LEFT JOIN CheckDotDangKy cddk ON cddk.id = f.id
             WHERE a.co_so_id = :#{#req.coSoId} 
             AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
             OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%  

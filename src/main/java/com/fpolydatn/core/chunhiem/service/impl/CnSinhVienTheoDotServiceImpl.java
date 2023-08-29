@@ -7,22 +7,26 @@ import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
 import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoDotService;
 import com.fpolydatn.core.common.base.PageableObject;
+import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -48,6 +52,10 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
     @Autowired
     private MocThoiGianCommon mocThoiGianCommon;
 
+    @Autowired
+    @Qualifier(DotDangKyRepository.NAME)
+    private DotDangKyRepository dotDangKyRepository;
+
     @Override
     public PageableObject<CnSinhVienTheoDotResponse> searchByIdDotDangKy(final CnFindSinhVienTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
@@ -64,7 +72,6 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
                 request.setIdDotDangKy("");
             }
         }
-        System.out.println(request.getIdDotDangKy() + " aaaaaaaaaaaaaaa");
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<CnSinhVienTheoDotResponse> res = cnSinhVienTheoNhomRepository.searchSinhVien(request, pageable);
         System.out.println(res);
@@ -73,13 +80,12 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
 
     @Override
     public boolean addSinhVienTheoNhom(String maNhom, String maSinhVien) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
-        }
         String idNhom = nhomDatnRepository.getIdByMaNhom(maNhom, commonHelper.getDotDangKyHienTai());
         if (idNhom == null) {
             throw new RestApiException(Message.GROUP_NO_EXIST);
+        }
+        if (!checkDotDangKyHienTai((idNhom))) {
+            throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         int numberOfGroup = nhomDatnRepository.getSoLuongThanhVienNhom(idNhom, commonHelper.getDotDangKyHienTai());
         if (numberOfGroup >= 7) {
@@ -194,12 +200,11 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
     }
 
     public Boolean randomNhomDatnByIdChuNhiem(String idChuNhiem, String coSoId, Integer number) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianChuNhiem();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_CHU_NHIEM_BO_MON);
-        }
         try {
             String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            if (dotDangKyHienTai == null) {
+                throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
+            }
             List<String> monDatnByIdChuNhiem = cnSinhVienTheoNhomRepository.getAllMonDatnByIdChuNhiem(idChuNhiem, coSoId);
 
             for (String monDatnId : monDatnByIdChuNhiem) {
@@ -211,6 +216,26 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
             throw new RestApiException("Lỗi hệ thống");
         }
         return true;
+    }
+
+    public Boolean checkDotDangKy(String dotDangKyId) {
+        Optional<DotDangKy> dotDangKyFind = dotDangKyRepository.findById(dotDangKyId);
+        if (!dotDangKyFind.isPresent()) {
+            throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
+        }
+        Long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime >= dotDangKyFind.get().getNgayBatDau() && currentTime <= dotDangKyFind.get().getNgayKetThuc()) {
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean checkDotDangKyHienTai(String idNhom) {
+        Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
+        if (!nhomDatnFind.isPresent()) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        return checkDotDangKy(nhomDatnFind.get().getDotDangKyId());
     }
 
 }

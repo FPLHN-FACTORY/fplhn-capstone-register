@@ -4,6 +4,9 @@ import com.fpolydatn.core.common.base.PageableRequest;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * @author thangncph26123
  */
@@ -30,5 +33,7 @@ public final class CnFindNhomDatnRequest extends PageableRequest {
     private String dotDangKyId;
 
     private String coSoId;
+
+    private Long currentTime = Calendar.getInstance().getTimeInMillis();
 
 }

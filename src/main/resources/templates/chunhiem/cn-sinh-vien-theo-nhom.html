@@ -128,24 +128,28 @@
                                         <h5>Danh sách thành viên:</h5>
                                         <div class="d-inline"
                                         >
-                                            <button th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" type="button" th:attr="onclick=|openModalThemSinhVien()|"
+                                            <button type="button" th:attr="onclick=|openModalThemSinhVien()|"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     class=" btn btn-success">
                                                 Thêm thành viên
                                             </button>
                                             <!--                                            them giao vien huong dan -->
-                                            <button th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" type="button" th:attr="onclick=|openModalChangeGvhd()|"
+                                            <button type="button" th:attr="onclick=|openModalChangeGvhd()|"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     class=" btn btn-success">
                                                 Thay đổi GVHD
                                             </button>
-                                            <button th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" type="button"
+                                            <button type="button"
                                                     id="changeTenDeTai"
                                                     th:attr="onclick=|openModalDoiTenDeTai()|"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     class=" btn btn-success">
                                                 Đổi tên đề tài
                                             </button>
                                             <!--                                            thay đổi trưởng nhóm-->
-                                            <button th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" type="button" th:attr="onclick=|openModalChangeCaptain()|"
+                                            <button type="button" th:attr="onclick=|openModalChangeCaptain()|"
                                                     id="changeCaptain"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     class=" btn btn-success">
                                                 Thay đổi trưởng nhóm
                                             </button>
@@ -217,19 +221,26 @@
                                                 <th>Số điện thoại</th>
                                                 <th>Khóa</th>
                                                 <th>Môn chương trình</th>
-                                                <th th:style="${checkHanChuNhiem} == false ? 'display:none' : ''" width="80px">Chức năng</th>
+                                                <th width="80px" th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''">Chức năng</th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
                                                     <tr class="table-light">
-                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.getStt()}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.maSinhVien}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.tenSinhVien}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.email}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.soDienThoai}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.khoa}"></td>
-                                                        <td class="text-center align-middle" th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
-                                                        <td class="text-center align-middle" th:style="${checkHanChuNhiem} == false ? 'display:none' : 'display:block'" >
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVienResponse.getStt()}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVienResponse.maSinhVien}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVienResponse.tenSinhVien}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVienResponse.email}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVienResponse.soDienThoai}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVienResponse.khoa}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
+                                                        <td class="text-center align-middle" th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''">
                                                             <div class="d-flex justify-content-center align-items-center">
                                                                 <button
                                                                         type="button" data-toggle="tooltip"

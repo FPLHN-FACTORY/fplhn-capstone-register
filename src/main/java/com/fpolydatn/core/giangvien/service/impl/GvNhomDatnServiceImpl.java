@@ -42,7 +42,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
         return new PageableObject(responses);
     }
 
-
     @Override
     public NhomDatn findById(String maNhom) {
         Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(maNhom);
@@ -54,10 +53,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
 
     @Override
     public NhomDatn updateTenDeTai(@Valid final GvUpdateTenDeTaiRequest request) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianGiangVien();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_GIANG_VIEN);
-        }
         Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -71,10 +66,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
 
     @Override
     public NhomDatn pheDuyetNhomDatn(GvChotNhomDatnRequest request) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianGiangVien();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_GIANG_VIEN);
-        }
         Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
@@ -88,10 +79,6 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
 
     @Override
     public NhomDatn chotDeTaiNhomDatn(GvChotNhomDatnRequest request) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianGiangVien();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_GIANG_VIEN);
-        }
         Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(request.getMaNhom());
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);

@@ -37,23 +37,19 @@ public class CnSinhVienTheoNhomController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setIdNhom(id);
         req.setCoSoId(coSoId);
-        boolean checkHanChuNhiem = false;
-        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
-        if(req.getDotDangKyId() != null){
-            checkHanChuNhiem = nhomDatnService.checkHanChuNhiem();
-        }
         request.setCoSoId(session.getCoSoId());
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         request.setIdNhom(req.getIdNhom());
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         List<CnSinhVienSearchResponse> listSinhVienNoGroup = sinhVienTheoNhomService.getListSinhVienNoGroup(request, session.getUserId());
         CnThongTinNhomResponse cnThongTinNhomResponse = nhomDatnService.getThongTinNhom(id, coSoId);
+        Boolean checkDotDangKyHienTai = sinhVienTheoNhomService.checkDotDangKyHienTai(id);
         model.addAttribute("soThanhVien", sinhVienTheoNhomService.getSizeListSinhVien(id, coSoId));
         model.addAttribute("page", pageSinhVien);
         model.addAttribute("thongTinNhom", cnThongTinNhomResponse);
         model.addAttribute("idNhom",req.getIdNhom());
         model.addAttribute("listSinhVienNoGroup", listSinhVienNoGroup);
-        model.addAttribute("checkHanChuNhiem", checkHanChuNhiem);
+        model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
         return "chunhiem/cn-sinh-vien-theo-nhom";
     }
 
