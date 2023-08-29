@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author SonPT
@@ -13,20 +14,16 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 public class SvCreateNhomDatnRequest {
-    @NotBlank
-    @NotEmpty
+
     private String giangVienId;
 
-    @NotEmpty()
-    @NotBlank()
     @Length(max = EntityProperties.LENGTH_NAME)
     private String tenDeTai;
 
-    @NotEmpty()
-    @NotBlank()
     @Length(max = EntityProperties.LENGTH_NAME)
     private String tenNhom;
 
+    @NotNull
     private Boolean matKhau;
 
     @Length(max = 255)
@@ -36,11 +33,12 @@ public class SvCreateNhomDatnRequest {
     @NotBlank
     private String dotDangKyId;
 
-    @NotEmpty()
-    @NotBlank()
+    @NotEmpty
+    @NotBlank
     private String coSoId;
 
     @NotBlank
-    @NotBlank
+    @NotEmpty
     private String idMonDatn;
+
 }

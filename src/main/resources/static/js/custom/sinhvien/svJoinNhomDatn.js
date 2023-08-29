@@ -1,7 +1,7 @@
 const SVNhomDatnApi = '/api/sinh-vien';
 const SVNhomDatnView = '/sinh-vien';
 const checkHanSV = $("#check_han_sv").text();
-const checkThoiGianRoiNhom = $("#check_thoi_gian_roi_nhom").text();
+// const checkThoiGianRoiNhom = $("#check_thoi_gian_roi_nhom").text();
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
@@ -213,12 +213,6 @@ function createNhomDatn() {
         } else {
             matKhau = false;
         }
-        if (moTa.length == 0) {
-            moTa = null;
-        }
-        if (giangVienId.length == 0) {
-            giangVienId = null;
-        }
         let nhomDatnRequest = {};
         nhomDatnRequest["giangVienId"] = giangVienId;
         nhomDatnRequest["tenNhom"] = tenNhom;
@@ -355,6 +349,7 @@ function loadDataNhomDatn(count) {
                         <img src="/img/eye-fill.svg">
                     </button>
                     <button class="btn_box_arrow" 
+                    		style="${checkHanSV == 'false' ? 'display:none' : 'display: block'}"
                             data-target="#modal_create1"
                             data-toggle="modal"
                             onclick="openModalAddSinhVienJoinNhom(${item.matKhauTonTai}, '${item.id}')">

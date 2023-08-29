@@ -116,14 +116,12 @@
                                         <!--                                                                (${checkThoiGianRoiNhom} == true ? 'display: block' : 'display: none')">-->
                                         <!--                                            Tạo nhóm DATN-->
                                         <!--                                        </button>-->
-                                        <!--                                        <i-->
-                                        <!--                                                style="color: red"-->
-                                        <!--                                                th:text="${checkMocThoiGian} == false ? '*Hết hạn sinh viên tham gia và tạo nhóm' :-->
-                                        <!--                                                                (${checkThoiGianRoiNhom} == false ? '*Thời gian rời nhóm gần nhất của bạn chưa đủ 12 giờ' : '')">-->
 
-                                        <!--                                        </i>-->
-
+                                        <i style="color: red"
+                                           th:text="${checkMocThoiGian} == false ? '*Hết hạn sinh viên tham gia và tạo nhóm' : ''">
+                                        </i>
                                         <button class="btn btn-primary"
+                                                th:style="${checkMocThoiGian} == false ? 'display: none' : 'display: block'"
                                                 th:attr="onclick=|openModalCreate()|">
                                             Tạo nhóm DATN
                                         </button>
@@ -179,6 +177,7 @@
                                                             <button
                                                                     class="btn_box_arrow"
                                                                     th:attr="onclick=|openModalAddSinhVienJoinNhom('${nhomDatn.getMatKhauTonTai()}', '${nhomDatn.getId()}')|"
+                                                                    th:style="${checkMocThoiGian} == false ? 'display: none' : 'display: block'"
                                                                     title="Tham gia nhóm"
                                                                     type="button">
                                                                 <img th:src="@{/img/box-arrow.svg}">
@@ -393,7 +392,7 @@
 </div>
 <!--                        end add Sinh vien-->
 <span hidden id="check_han_sv" style="color:red;" th:text="${checkMocThoiGian}"></span>
-<span hidden id="check_thoi_gian_roi_nhom" style="color:red;" th:text="${checkThoiGianRoiNhom}"></span>
+<!--<span hidden id="check_thoi_gian_roi_nhom" style="color:red;" th:text="${checkThoiGianRoiNhom}"></span>-->
 <!--        End confirm Success                -->
 <script th:src="@{/assets/vendors/base/vendors.bundle.js}" type="text/javascript"></script>
 <script th:src="@{/assets/demo/default/base/scripts.bundle.js}" type="text/javascript"></script>

@@ -155,8 +155,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 //            }
 //        }
         String giangVienId = svNhomDatnRequest.getGiangVienId();
+        Optional<GiangVienHuongDan> giangVienHuongDan = null;
         if (giangVienId != null) {
-            Optional<GiangVienHuongDan> giangVienHuongDan = svGiangVienHuongDanRepository.findById(giangVienId);
+            giangVienHuongDan = svGiangVienHuongDanRepository.findById(giangVienId);
             if (!giangVienHuongDan.isPresent()) {
                 throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
             }
@@ -175,7 +176,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             throw new RestApiException(Message.SINH_VIEN_DA_CO_NHOM);
         }
         NhomDatn nhomDatn = new NhomDatn();
-        nhomDatn.setGiangVienId(svNhomDatnRequest.getGiangVienId());
+        if (giangVienHuongDan != null) {
+            nhomDatn.setGiangVienId(giangVienHuongDan.get().getId());
+        }
         String tenDeTai = svNhomDatnRequest.getTenDeTai();
         if (tenDeTai == null) {
             nhomDatn.setTenDeTai(null);
@@ -183,7 +186,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             if ("".equals(tenDeTai.trim())) {
                 nhomDatn.setTenDeTai(null);
             } else {
-                nhomDatn.setTenDeTai(tenDeTai);
+                nhomDatn.setTenDeTai(tenDeTai.trim());
             }
         }
         String tenNhom = svNhomDatnRequest.getTenNhom();
@@ -193,10 +196,19 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             if ("".equals(tenDeTai.trim())) {
                 nhomDatn.setTenNhom(null);
             } else {
-                nhomDatn.setTenNhom(tenNhom);
+                nhomDatn.setTenNhom(tenNhom.trim());
             }
         }
-        nhomDatn.setMoTa(svNhomDatnRequest.getMoTa());
+        String moTa = svNhomDatnRequest.getMoTa();
+        if (moTa == null) {
+            nhomDatn.setMoTa(null);
+        } else {
+            if ("".equals(tenDeTai.trim())) {
+                nhomDatn.setMoTa(null);
+            } else {
+                nhomDatn.setMoTa(moTa.trim());
+            }
+        }
         nhomDatn.setDotDangKyId(svNhomDatnRequest.getDotDangKyId());
         nhomDatn.setCoSoId(svNhomDatnRequest.getCoSoId());
         if (svNhomDatnRequest.getMatKhau()) {
