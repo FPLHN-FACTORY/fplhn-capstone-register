@@ -9,6 +9,9 @@ import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
+import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
@@ -59,8 +63,12 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     }
 
     @Override
-    public List<DtSinhVienResponse> showDanhSachSinhVien(String idNhom, String coSoId, String dotDangKyId) {
-        List<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(idNhom, coSoId, dotDangKyId);
+    public List<DtSinhVienResponse> showDanhSachSinhVien(String idNhom, String coSoId) {
+        Optional<NhomDatn> nhomDatnFind = dtNhomDatnTheoDotRepository.findById(idNhom);
+        if (!nhomDatnFind.isPresent()) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        List<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(idNhom, coSoId, nhomDatnFind.get().getDotDangKyId());
         return res;
     }
 
