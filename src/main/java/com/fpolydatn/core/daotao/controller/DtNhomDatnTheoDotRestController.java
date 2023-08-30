@@ -30,8 +30,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     @GetMapping("")
     public ResponseObject showDanhSachSinhVien(@RequestParam("keyword") String id) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        List<DtSinhVienResponse> listDanhSachSinhVien = dtNhomDatnTheoDotService.showDanhSachSinhVien(id, coSoId, dotDangKyId);
+        List<DtSinhVienResponse> listDanhSachSinhVien = dtNhomDatnTheoDotService.showDanhSachSinhVien(id, coSoId);
         return new ResponseObject(listDanhSachSinhVien);
     }
 

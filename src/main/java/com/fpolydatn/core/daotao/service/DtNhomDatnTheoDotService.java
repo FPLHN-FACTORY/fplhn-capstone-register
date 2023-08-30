@@ -12,7 +12,7 @@ import java.util.List;
 public interface DtNhomDatnTheoDotService {
     PageableObject<DtNhomDatnTheoDotResponse> findAllNhomDatn(final FindDtNhomDatnTheoDotRequest request);
 
-    List<DtSinhVienResponse> showDanhSachSinhVien(String idNhom, String coSoId, String dotDangKyId);
+    List<DtSinhVienResponse> showDanhSachSinhVien(String idNhom, String coSoId);
 
     void DTNhomDatnExport(HttpServletResponse response, String typeExcel, final FindDtNhomDatnTheoDotRequest request) throws IOException;
 
