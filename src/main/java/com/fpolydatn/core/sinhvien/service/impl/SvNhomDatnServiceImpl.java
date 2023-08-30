@@ -350,7 +350,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             message = new String[]{"Bạn đã trở thành trưởng nhóm" + nhomDatn.get().getMaNhom(),
                     "Mật khẩu nhóm DATN của bạn là: " + nhomDatn.get().getMatKhau()};
         }
-        emailSender.sendEmail(email, "[FCR] Thông báo mật khẩu nhóm",
+        emailSender.sendEmail(email, "[FCR] Thông báo chuyển quyền trưởng nhóm",
                 "Chuyển quyền trưởng nhóm",
                 message);
         svNhomDatnRepository.save(nhomDatn.get());
