@@ -51,7 +51,6 @@ function openModalUpdateDotDangKy(dotDangKyId) {
             var ngayBatDau = new Date(responseData.data.ngayBatDau);
             // var ngayBatDauStr = ngayBatDau.toLocaleDateString('en-CA') + " " + ngayBatDau.toLocaleTimeString();
             $("#ngay_bat_dau_update").val((new Date(ngayBatDau.getTime() - ngayBatDau.getTimezoneOffset() * 60000).toISOString()).slice(0, -1));
-            console.log(ngayBatDau.toISOString().slice(0, -1))
             var ngayKetThuc = new Date(responseData.data.ngayKetThuc);
             // var ngayKetThucStr = ngayKetThuc.toLocaleDateString('en-CA') + " " + ngayKetThuc.toLocaleTimeString();
             $("#ngay_ket_thuc_update").val((new Date(ngayKetThuc.getTime() - ngayKetThuc.getTimezoneOffset() * 60000).toISOString()).slice(0, -1));
