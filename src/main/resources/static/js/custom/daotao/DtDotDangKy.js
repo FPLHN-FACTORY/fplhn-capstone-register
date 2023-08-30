@@ -49,20 +49,21 @@ function openModalUpdateDotDangKy(dotDangKyId) {
             $("#id_co_so_update").val(responseData.data.coSoId);
             $("#ten_dot_dang_ky_update").val(responseData.data.tenDotDangKy);
             var ngayBatDau = new Date(responseData.data.ngayBatDau);
-            var ngayBatDauStr = ngayBatDau.toLocaleDateString('en-CA') + " " + ngayBatDau.toLocaleTimeString();
-            $("#ngay_bat_dau_update").val(ngayBatDauStr);
+            // var ngayBatDauStr = ngayBatDau.toLocaleDateString('en-CA') + " " + ngayBatDau.toLocaleTimeString();
+            $("#ngay_bat_dau_update").val((new Date(ngayBatDau.getTime() - ngayBatDau.getTimezoneOffset() * 60000).toISOString()).slice(0, -1));
+            console.log(ngayBatDau.toISOString().slice(0, -1))
             var ngayKetThuc = new Date(responseData.data.ngayKetThuc);
-            var ngayKetThucStr = ngayKetThuc.toLocaleDateString('en-CA') + " " + ngayKetThuc.toLocaleTimeString();
-            $("#ngay_ket_thuc_update").val(ngayKetThucStr);
+            // var ngayKetThucStr = ngayKetThuc.toLocaleDateString('en-CA') + " " + ngayKetThuc.toLocaleTimeString();
+            $("#ngay_ket_thuc_update").val((new Date(ngayKetThuc.getTime() - ngayKetThuc.getTimezoneOffset() * 60000).toISOString()).slice(0, -1));
             var hanSinhVien = new Date(responseData.data.hanSinhVien);
-            var hanSinhVienStr = hanSinhVien.toLocaleDateString('en-CA') + " " + hanSinhVien.toLocaleTimeString();
-            $("#han_sinh_vien_update").val(hanSinhVienStr);
+            // var hanSinhVienStr = hanSinhVien.toLocaleDateString('en-CA') + " " + hanSinhVien.toLocaleTimeString();
+            $("#han_sinh_vien_update").val((new Date(hanSinhVien.getTime() - hanSinhVien.getTimezoneOffset() * 60000).toISOString()).slice(0, -1));
             var hanGiangVien = new Date(responseData.data.hanGiangVien);
-            var hanGiangVienStr = hanGiangVien.toLocaleDateString('en-CA') + " " + hanGiangVien.toLocaleTimeString();
-            $("#han_giang_vien_update").val(hanGiangVienStr);
+            // var hanGiangVienStr = hanGiangVien.toLocaleDateString('en-CA') + " " + hanGiangVien.toLocaleTimeString();
+            $("#han_giang_vien_update").val((new Date(hanGiangVien.getTime() - hanGiangVien.getTimezoneOffset() * 60000).toISOString()).slice(0, -1));
             var hanChuNhiemBoMon = new Date(responseData.data.hanChuNhiemBoMon);
-            var hanChuNhiemBoMonStr = hanChuNhiemBoMon.toLocaleDateString('en-CA') + " " + hanChuNhiemBoMon.toLocaleTimeString();
-            $("#han_chu_nhiem_bo_mon_update").val(hanChuNhiemBoMonStr);
+            // var hanChuNhiemBoMonStr = hanChuNhiemBoMon.toLocaleDateString('en-CA') + " " + hanChuNhiemBoMon.toLocaleTimeString();
+            $("#han_chu_nhiem_bo_mon_update").val((new Date(hanChuNhiemBoMon.getTime() - hanChuNhiemBoMon.getTimezoneOffset() * 60000).toISOString()).slice(0, -1));
         },
         error: function (e) {
             console.log("ERROR : ", e);
