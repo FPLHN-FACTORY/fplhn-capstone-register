@@ -116,27 +116,27 @@ function changeInput() {
 genPagzing();
 
 function genPagzing() {
-    $("#page").html(``);
-    let templatePageMid = ``;
-    let templatePageBefore = `
+    if (totalPages <= 1) {
+        $("#page").html('');
+    } else {
+        let templatePageMid = ``;
+        let templatePageBefore = `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage - 1})"><img src="/img/back.svg"></a>
                 </li>
                 `;
-    templatePageMid = `
+        templatePageMid = `
                             <input id="valueInput" class="input-page" type="number" min="1" max="${totalPages}" value="${Number(currentPage) + 1}" onchange="changeInput()">
                              <input style="border: none; width: 50px" value="|    ${totalPages}" readonly>`
-    let templatePageAfter = `
+        let templatePageAfter = `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="border: none" class="page-link" onclick="loadDataNhomDatn(${currentPage + 1})"><img src="/img/next.svg"></a>
                 </li>
                 `;
-    let templateHtml = ``;
-    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
-    if (totalPages == 1) {
-        templateHtml = ``;
+        let templateHtml = ``;
+        templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        $("#page").html(templateHtml);
     }
-    $("#page").html(templateHtml);
 }
 
 function loadDataNhomDatn(count) {
