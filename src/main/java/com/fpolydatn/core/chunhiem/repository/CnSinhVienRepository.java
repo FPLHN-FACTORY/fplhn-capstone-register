@@ -3,6 +3,7 @@ package com.fpolydatn.core.chunhiem.repository;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienNoGroupRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoNhomRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnNhomTheoDotExcel;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienSearchResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotExcel;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
@@ -232,11 +233,23 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             LEFT JOIN nhom_datn e ON e.id= a.nhom_id
             LEFT JOIN giang_vien_huong_dan f ON f.id  = e.giang_vien_id
             WHERE d.id = :dotDangKyId AND a.co_so_id = :#{#req.coSoId} AND g.id = :idChuNhiem
+            
+            AND (:#{#req.tenSinhVien} IS NULL OR :#{#req.tenSinhVien} LIKE ''
+            OR a.ten_sinh_vien LIKE %:#{#req.tenSinhVien}%  
+            OR a.ma_sinh_vien LIKE %:#{#req.tenSinhVien}%) 
+            AND (:#{#req.monChuongTrinh} IS NULL OR :#{#req.monChuongTrinh} LIKE ''
+            OR m.id LIKE %:#{#req.monChuongTrinh}%) 
+            AND (:#{#req.monDatn} IS NULL OR :#{#req.monDatn} LIKE ''
+            OR c.id LIKE %:#{#req.monDatn}%) 
+            AND (:#{#req.tenGvhd} IS NULL OR :#{#req.tenGvhd} LIKE ''
+            OR f.ten_gvhd LIKE %:#{#req.tenGvhd}%
+            OR f.ten_tai_khoan LIKE %:#{#req.tenGvhd}%)
+            AND (:#{#req.maNhomSearch} IS NULL OR :#{#req.maNhomSearch} LIKE ''
+            OR e.ma_nhom LIKE %:#{#req.maNhomSearch}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR IF(:#{#req.trangThai} = '0', a.nhom_id IS NOT NULL, a.nhom_id IS NULL))
-            AND a.trang_thai = :trangThai
             """, nativeQuery = true)
-    List<CnThongTinSinhVienExcel> findThongTinSinhVien(@Param("req") CnFindSinhVienTheoDotRequest req, @Param("dotDangKyId") String dotDangKyId, @Param("idChuNhiem") String idChuNhiem, @Param("trangThai") int trangThai);
+    List<CnThongTinSinhVienExcel> findThongTinSinhVien(@Param("req") CnFindSinhVienTheoDotRequest req, @Param("dotDangKyId") String dotDangKyId, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = """
             SELECT * FROM sinh_vien a
@@ -258,4 +271,15 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             """, nativeQuery = true)
     List<String> getAllMonDatnByIdChuNhiem(@Param("idChuNhiem") String idChuNhiem,
                                             @Param("coSoId") String coSoId);
+
+    @Query(value = """
+            SELECT a.id, ROW_NUMBER() OVER(ORDER BY e.ten_tai_khoan) AS STT, a.ma_nhom, a.ten_de_tai, e.ten_tai_khoan
+            FROM nhom_datn a JOIN sinh_vien b ON a.truong_nhom_id = b.id
+            LEFT JOIN giang_vien_huong_dan e ON a.giang_vien_id = e.id
+            JOIN chuyen_nganh c ON b.chuyen_nganh_id = c.id
+            JOIN can_bo d ON c.chu_nhiem_bo_mon = d.id
+            WHERE a.dot_dang_ky_id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId}
+            AND d.id = :idChuNhiem ORDER BY e.ten_tai_khoan
+            """, nativeQuery = true)
+    List<CnNhomTheoDotExcel> findNhomDatnExport(@Param("req") CnFindSinhVienTheoDotRequest req, @Param("idChuNhiem") String idChuNhiem);
 }

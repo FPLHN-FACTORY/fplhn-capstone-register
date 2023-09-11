@@ -150,7 +150,7 @@
                                 <div class="m-portlet__body">
 
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-8">
                                             <button class="btn btn-success"
                                                     th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     id="idButtonExportSapNhom"
@@ -164,18 +164,32 @@
                                                     class="btn btn-success">
                                                 Import sắp nhóm
                                             </button>
-                                            <button class="btn btn-success"
-                                                    th:attr="onclick=|openModalExportThongTinSinhVien()|">
-                                                Export sinh viên
+                                            <button class="btn btn-primary"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
+                                                    th:attr="onclick=|openModalExportSapGvhd()|"
+                                                    id="idButtonExportSapGVHD">
+                                                Export sắp GVHD
+                                            </button>
+                                            <button
+                                                    id="idButtonImportSapGVHD"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
+                                                    th:attr="onclick=|openModalImportSapGvhd()|"
+                                                    class="btn btn-primary"
+                                            >
+                                                Import sắp GVHD
                                             </button>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <button style="float: right"
                                                     id="idButtonRandom"
                                                     th:if="${checkDotDangKyHienTai}"
                                                     class="btn btn-success"
                                                     th:attr="onclick=|openModalRandomNhomDatn()|">
                                                 Random nhóm
+                                            </button>
+                                            <button style="float: right; margin-right: 4px" class="btn btn-success"
+                                                    th:attr="onclick=|openModalExportThongTinSinhVien()|">
+                                                Export thông tin SV
                                             </button>
                                             <div
                                                     class="modal fade"
@@ -374,6 +388,63 @@
         </div>
     </div>
 </div>
+<!---->
+<div class="modal fade"
+     id="modal_import_excel_sap_gvhd"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="form_import_excel_sap_gvhd" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Import file excel
+                    </h5>
+                    <button type="button" class="close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text"
+                                  id="inputGroupFileAddon01_sap_gvhd">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input"
+                                       id="inputGroupFile01SapGvhd"
+                                       aria-describedby="inputGroupFileAddon01"
+                                       name="file">
+                                <label class="custom-file-label"
+                                       id="labelFileSapGvhd"
+                                       for="inputGroupFile01">Choose
+                                    file</label>
+                            </div>
+                        </div>
+                        <span class="text-danger"
+                              id="import_excel_sap_gvhd_error"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-outline-secondary btn btn-light"
+                            data-bs-dismiss="modal">Hủy
+                    </button>
+                    <button
+                            th:attr="onclick=|importExcelSapGvhd()|"
+                            type="button" class="btn btn-primary">
+                        Upload
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!---->
 <!--  end modal import -->
 <!--                                            modal export-->
 <div class="modal fade"
@@ -452,6 +523,47 @@
                 </button>
                 <button class="btn btn-primary"
                         th:attr="onclick=|exportFileThongTinSinhVien()|">Download
+                    excel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!---->
+<div class="modal fade"
+     id="modal_excel_sap_gvhd"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalExcelLabel">Export
+                    Excel</h5>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <p class="col-form-label">Định dạng file excel:</p>
+                    <select id="type_excel_sap_gvhd" class="form-control">
+                        <option value="">Chọn kiểu file excel</option>
+                        <option value="xls">.xls</option>
+                        <option value="xlsx">.xlsx</option>
+                    </select>
+                    <span class="text-danger"
+                          id="type_excel_sap_gvhd_error"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-outline-secondary btn btn-light"
+                        data-bs-dismiss="modal">Hủy
+                </button>
+                <button class="btn btn-primary"
+                        th:attr="onclick=|exportFileExcelSapGvhd()|">Download
                     excel
                 </button>
             </div>

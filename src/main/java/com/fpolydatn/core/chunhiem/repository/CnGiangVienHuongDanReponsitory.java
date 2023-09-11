@@ -60,9 +60,15 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
                                                                       @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT * FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
+            SELECT distinct * FROM giang_vien_huong_dan a 
+            LEFT JOIN phan_cong_huong_dan b ON a.id = b.giang_vien_id
+            LEFT JOIN mon_datn c ON b.mon_datn_id = c.id
+            LEFT JOIN chuyen_nganh d ON d.id = c.chuyen_nganh_id
+            LEFT JOIN can_bo e ON d.chu_nhiem_bo_mon = e.id
+            WHERE a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId 
+            AND e.id = :idChuNhiem
             """, nativeQuery = true)
-    List<GiangVienHuongDan> getAllGiangVienByIdCoSoAndByIdDotDangKy(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
+    List<GiangVienHuongDan> getAllGiangVienByIdCoSoAndByIdDotDangKy(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = """
             WITH DanhSachNhom AS (
