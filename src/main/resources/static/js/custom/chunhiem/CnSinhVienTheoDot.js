@@ -111,6 +111,7 @@ function genPagzing() {
 function loadDataToTable(count) {
     let tenSinhVien = $("#tenSinhVien").val().trim();
     let dotDangKyId = $("#dotDangKyId").val().trim();
+    let chuyenNganhId = $("#chuyenNganhId").val().trim();
     let monChuongTrinh = $("#monChuongTrinh").val().trim();
     let monDatn = $("#monDatn").val().trim();
     let tenGvhd = $("#tenGvhd").val().trim();
@@ -124,7 +125,7 @@ function loadDataToTable(count) {
         url: sinhVienApi + "/search" + "?tenSinhVien=" + tenSinhVien
             + "&monDatn=" + monDatn + "&monChuongTrinh=" + monChuongTrinh + "&tenGvhd=" + tenGvhd
             + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
-            + "&idDotDangKy=" + dotDangKyId + "&page=" + count + "&size=" + sizeSinhVien,
+            + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId + "&page=" + count + "&size=" + sizeSinhVien,
         success: function (responseData) {
             let array = responseData.data.data
             var text = "";
@@ -321,6 +322,7 @@ function exportFileThongTinSinhVien() {
     let typeExcel = $("#type_excel_thong_tin_sinh_vien").val()
     let tenSinhVien = $("#tenSinhVien").val().trim();
     let dotDangKyId = $("#dotDangKyId").val().trim();
+    let chuyenNganhId = $("#chuyenNganhId").val().trim();
     let monChuongTrinh = $("#monChuongTrinh").val().trim();
     let monDatn = $("#monDatn").val().trim();
     let tenGvhd = $("#tenGvhd").val().trim();
@@ -333,12 +335,12 @@ function exportFileThongTinSinhVien() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: CNNhomDatnApi + "/export/sinh-vien?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId
+            url: CNNhomDatnApi + "/export/sinh-vien?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                 + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&monChuongTrinh=" + monChuongTrinh
                 + "&tenGvhd=" + tenGvhd + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
             ,
             success: function () {
-                window.open(CNNhomDatnApi + "/export/sinh-vien?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId
+                window.open(CNNhomDatnApi + "/export/sinh-vien?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                     + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
                     + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
                     + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai

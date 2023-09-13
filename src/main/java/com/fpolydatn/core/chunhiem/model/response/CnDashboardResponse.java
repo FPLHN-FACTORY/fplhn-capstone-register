@@ -14,27 +14,33 @@ import java.util.List;
 @ToString
 public class CnDashboardResponse {
 
-    private String tenChuyenNganh;
+    private String tenChuyenNganh; //
 
-    private Integer tongSLSinhVien;
+    private Integer tongSLSinhVien; //
 
-    private Integer tongSoNhom;
+    private Integer tongSoNhom; //
 
-    private Integer tongSoNhomDaChotDeTai;
+    private Integer tongSoGvhd; //
 
-    private Integer tongSoNhomChuaChotDeTai;
+    private Integer tongSoGvhdDangCoNhom; //
 
-    private Integer tongSoGvhd;
+    private Integer tongSoNhomDaChotDeTai; //
 
-    private Integer tongSoGvhdDangCoNhom;
+    private Integer tongSinhVienDaCoNhomHopLe; //
 
-    private Integer tongSoGvhdChuaCoNhomNao;
+    private Integer tongSLSinhVienDuDieuKien; //
 
-    private Integer tongSinhVienDaCoNhomHopLe;
+    private Integer tongSoGvhdChuaCoNhomNao; //
 
-    private Integer tongSinhVienChuaCoNhomHopLe;
+    private Integer tongSoNhomChuaChotDeTai; //
 
-    private Integer tongSinhVienChuaCoNhom;
+    private Integer tongSinhVienChuaCoNhomHopLe; //
+
+    private Integer tongSinhVienChuaCoNhom; //
+
+    private Integer tongSLNhomChuaCoGvhd;
+
+    private Integer tongSLSinhVienKhongDuDieuKien; //
 
     private List<CnDashboardGvhdResponse> listGvhd;
 }

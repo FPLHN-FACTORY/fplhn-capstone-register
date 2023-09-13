@@ -36,15 +36,29 @@ public class CnDashboardController extends BaseController {
     public String viewDashboard(Model model, final CnFindDashboardRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
-        req.setDotDangKyId(dotDangKyHienTai);
         String idUser = session.getUserId();
         req.setIdChuNhiem(idUser);
+        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        if (req.getDotDangKyId() == null) {
+            if (dotDangKyId != null) {
+                req.setDotDangKyId(dotDangKyId);
+            } else {
+                req.setDotDangKyId("");
+            }
+        } else if (req.getDotDangKyId().equalsIgnoreCase("")) {
+            if (dotDangKyId != null) {
+                req.setDotDangKyId(dotDangKyId);
+            } else {
+                req.setDotDangKyId("");
+            }
+        }
         CnDashboardResponse cnDashboardResponse = cnDashboardService.dashboard(req);
         List<SimpleEntityProj> listChuyenNganh = cnDashboardService.getAllChuyenNganhByIdChuNhiem(req);
+        List<SimpleEntityProj> listMonDatn = cnDashboardService.getAllMonDatnByIdChuNhiem(req);
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
         model.addAttribute("dashboard", cnDashboardResponse);
         model.addAttribute("listChuyenNganh", listChuyenNganh);
+        model.addAttribute("listMonDatn", listMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
         return "chunhiem/cn-thong-ke";
     }

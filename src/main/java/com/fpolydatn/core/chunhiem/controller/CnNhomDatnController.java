@@ -54,9 +54,11 @@ public class CnNhomDatnController extends BaseController {
         PageableObject<CnNhomDatnResponse> listNhomDatn = nhomDatnService.search(req, session.getUserId());
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(coSoId);
         List<CnMonDatnResponse> listMonDatn = cnMonDatnService.getAllMonDatnByChuyenNganh(coSoId, session.getUserId());
+        List<SimpleEntityProj> listChuyenNganh = chuyenNganhService.getAllChuyenNganhByIdChuNhiem(coSoId, session.getUserId());
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listMonDatn", listMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
+        model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
         return "chunhiem/cn-nhom-datn";
     }

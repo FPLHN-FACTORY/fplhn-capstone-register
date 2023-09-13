@@ -17,4 +17,12 @@ public class CnFindDashboardRequest {
     private String coSoId;
 
     private String idChuNhiem;
+
+    private String maGvhd;
+
+    private String monDatnId;
+
+    private Integer soNhomHuongDanToiDa;
+
+    private String sort = "sortDesc";
 }

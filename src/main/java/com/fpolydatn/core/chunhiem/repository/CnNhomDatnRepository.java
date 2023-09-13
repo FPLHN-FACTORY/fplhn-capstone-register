@@ -52,6 +52,8 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%)
             AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE ''
             OR k.id = :#{#req.monDatnId})
+            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
+            OR f.id = :#{#req.chuyenNganhId})
             AND (:#{#req.tenTaiKhoan} IS NULL OR :#{#req.tenTaiKhoan} LIKE ''
             OR e.ten_gvhd LIKE %:#{#req.tenTaiKhoan}% OR e.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
@@ -91,6 +93,8 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%)
             AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE ''
             OR k.id = :#{#req.monDatnId})
+            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
+            OR f.id = :#{#req.chuyenNganhId})
             AND (:#{#req.tenTaiKhoan} IS NULL OR :#{#req.tenTaiKhoan} LIKE ''
             OR e.ten_gvhd LIKE %:#{#req.tenTaiKhoan}% OR e.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''

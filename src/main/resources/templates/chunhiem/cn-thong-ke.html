@@ -111,11 +111,12 @@
                                     <div class="row justify-content-center">
                                         <div class="col-sm-1 col-12 text-center mt-2">
                                             <button type="button"
+                                                    th:attr="onclick=|loadDashBoard()|"
                                                     class="btn btn-primary">Tìm kiếm
                                             </button>
                                         </div>
                                         <div class="col-sm-1 col-12 text-center mt-2">
-                                            <a href="#" class="btn btn-danger text-white" onclick="clearData();">
+                                            <a href="#" class="btn btn-danger text-white" onclick="clearDataAll()">
                                                 Làm mới bộ lọc
                                             </a>
                                         </div>
@@ -140,46 +141,85 @@
                                 </div>
                                 <div class="card-body" style="padding: 30px">
                                     <div class="row">
+                                        <ul class="list-unstyled">
+                                            <li class="li-custom">(*) Chuyên ngành đang chủ nhiệm: <span
+                                                    class="span-custom"
+                                                    id="tenChuyenNganh"
+                                                    th:text="${dashboard.tenChuyenNganh}"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-6">
                                             <ul class="list-unstyled">
-                                                <li class="li-custom">Chuyên ngành đang chủ nhiệm: <span
+                                                <li class="li-custom">- Tổng số lượng SV: <span class="span-custom"
+                                                                                                id="tongSLSinhVien"
+                                                                                                th:text="${dashboard.tongSLSinhVien}"></span>
+                                                </li>
+                                                <li class="li-custom">- Tổng số nhóm đăng ký: <span class="span-custom"
+                                                                                                    id="tongSoNhom"
+                                                                                                    th:text="${dashboard.tongSoNhom}"></span>
+                                                </li>
+                                                <li class="li-custom">- Tổng số lượng GVHD: <span class="span-custom"
+                                                                                                  id="tongSoGvhd"
+                                                                                                  th:text="${dashboard.tongSoGvhd}"></span>
+                                                </li>
+                                                <li class="li-custom">- Tổng số GVHD đang có nhóm: <span
                                                         class="span-custom"
-                                                        th:text="${dashboard.tenChuyenNganh}"></span>
-                                                </li>
-                                                <li class="li-custom">Tổng số lượng SV: <span class="span-custom"
-                                                                                              th:text="${dashboard.tongSLSinhVien}"></span>
-                                                </li>
-                                                <li class="li-custom">Tổng số nhóm đăng ký: <span class="span-custom"
-                                                                                                  th:text="${dashboard.tongSoNhom}"></span>
-                                                </li>
-                                                <li class="li-custom">Tổng số lượng GVHD: <span class="span-custom"
-                                                                                                th:text="${dashboard.tongSoGvhd}"></span>
-                                                </li>
-                                                <li class="li-custom">Tổng số GVHD đang có nhóm: <span
-                                                        class="span-custom"
+                                                        id="tongSoGvhdDangCoNhom"
                                                         th:text="${dashboard.tongSoGvhdDangCoNhom}"></span></li>
-                                                <li class="li-custom">Tổng số GVHD chưa có nhóm: <span
+                                                <li class="li-custom">- Tổng số nhóm đã chốt đề tài: <span
                                                         class="span-custom"
-                                                        th:text="${dashboard.tongSoGvhdChuaCoNhomNao}"></span></li>
+                                                        id="tongSoNhomDaChotDeTai"
+                                                        th:text="${dashboard.tongSoNhomDaChotDeTai}"></span></li>
+                                                <li class="li-custom">- Tổng số lượng sinh viên đã có nhóm hợp lệ: <span
+                                                        class="span-custom"
+                                                        id="tongSinhVienDaCoNhomHopLe"
+                                                        th:text="${dashboard.tongSinhVienDaCoNhomHopLe}"></span></li>
+                                                <li class="li-custom">- Tổng số lượng sinh viên đủ điều kiện: <span
+                                                        class="span-custom"
+                                                        id="tongSLSinhVienDuDieuKien"
+                                                        th:text="${dashboard.tongSLSinhVienDuDieuKien}"></span></li>
                                             </ul>
                                         </div>
                                         <div class="col-6">
                                             <ul class="list-unstyled">
-                                                <li class="li-custom">Tổng số nhóm đã chốt đề tài: <span
-                                                        class="span-custom"
-                                                        th:text="${dashboard.tongSoNhomDaChotDeTai}"></span></li>
-                                                <li class="li-custom">Tổng số nhóm chưa chốt đề tài: <span
-                                                        class="span-custom"
-                                                        th:text="${dashboard.tongSoNhomChuaChotDeTai}"></span></li>
-                                                <li class="li-custom">Tổng số lượng sinh viên đã có nhóm hợp lệ: <span
-                                                        class="span-custom"
-                                                        th:text="${dashboard.tongSoGvhdChuaCoNhomNao}"></span></li>
-                                                <li class="li-custom">Tổng số lượng sinh viên chưa có nhóm hợp lệ: <span
-                                                        class="span-custom"
-                                                        th:text="${dashboard.tongSoGvhdChuaCoNhomNao}"></span></li>
-                                                <li class="li-custom">Tổng số lượng sinh viên chưa có nhóm: <span
-                                                        class="span-custom"
-                                                        th:text="${dashboard.tongSoGvhdChuaCoNhomNao}"></span></li>
+                                                <li class="li-custom" style="font-weight: bold">- Tổng số GVHD chưa có
+                                                    nhóm: <span
+                                                            class="span-custom"
+                                                            id="tongSoGvhdChuaCoNhomNao"
+                                                            th:text="${dashboard.tongSoGvhdChuaCoNhomNao}"></span></li>
+                                                <li class="li-custom" style="font-weight: bold">- Tổng số nhóm chưa chốt
+                                                    đề tài: <span
+                                                            class="span-custom"
+                                                            id="tongSoNhomChuaChotDeTai"
+                                                            th:text="${dashboard.tongSoNhomChuaChotDeTai}"></span></li>
+                                                <li class="li-custom" style="font-weight: bold">- Tổng số lượng sinh
+                                                    viên
+                                                    chưa có nhóm hợp lệ: <span
+                                                            class="span-custom"
+                                                            id="tongSinhVienChuaCoNhomHopLe"
+                                                            th:text="${dashboard.tongSinhVienChuaCoNhomHopLe}"></span>
+                                                </li>
+                                                <li class="li-custom" style="font-weight: bold">- Tổng số lượng sinh
+                                                    viên
+                                                    chưa có nhóm: <span
+                                                            class="span-custom"
+                                                            id="tongSinhVienChuaCoNhom"
+                                                            th:text="${dashboard.tongSinhVienChuaCoNhom}"></span></li>
+                                                <li class="li-custom" style="font-weight: bold">- Tổng số lượng nhóm
+                                                    chưa
+                                                    có GVHD: <span
+                                                            class="span-custom"
+                                                            id="tongSLNhomChuaCoGvhd"
+                                                            th:text="${dashboard.tongSLNhomChuaCoGvhd}"></span></li>
+                                                <li class="li-custom" style="font-weight: bold">- Tổng số lượng sinh
+                                                    viên
+                                                    không đủ điều kiện: <span
+                                                            class="span-custom"
+                                                            id="tongSLSinhVienKhongDuDieuKien"
+                                                            th:text="${dashboard.tongSLSinhVienKhongDuDieuKien}"></span>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -201,43 +241,108 @@
                                     </div>
                                 </div>
                                 <div class="card-body" style="padding: 30px">
-                                    <div th:each="gvhd, y : ${dashboard.listGvhd}"
-                                         style="padding: 10px; border-radius: 7px; margin-bottom: 5px">
+                                    <div class="filter-custom" style="margin-top: 15px; margin-bottom: 15px">
                                         <div class="row">
-                                            <div class="col-12">
-                                                <h6 class="font-weight-bold" style="margin-bottom: 0">
-                                                    <span th:text="${y.count} + '. ' + ${gvhd.gvhd}"></span>
-                                                    <span style="color: red"
-                                                          th:text="' (' + ${gvhd.soNhomDangHuongDan} + ')'"></span>
-                                                </h6>
+                                            <div
+                                                    class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                                <span for="" class="fillter-name col-4 text-center">Mã/Tên GVHD:</span>
+                                                <input type="text" class="form-control col-7"
+                                                       name="gvhd" id="gvhd"
+                                                       value="">
+                                            </div>
+                                            <div
+                                                    class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                                <span for="" class="fillter-name col-4 text-center">Môn Datn:</span>
+                                                <select class="form-control col-7"
+                                                        id="monDatnId" name="monDatnId">
+                                                    <option value="">Tất cả</option>
+                                                    <option th:each="item : ${listMonDatn}" th:value="${item.getId()}"
+                                                            th:text="${item.getName()}"></option>
+                                                </select>
+                                            </div>
+                                            <div
+                                                    class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                                <span for="" class="fillter-name col-4 text-center">Số nhóm đang hướng dẫn/tối đa:</span>
+                                                <input type="number" class="form-control col-7"
+                                                       name="soNhomHuongDanToiDa" id="soNhomHuongDanToiDa"
+                                                       value="">
+                                            </div>
+                                            <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
+                                            >
+                                                <span for="" class="fillter-name col-4 text-center">Sắp xếp:</span>
+                                                <select class="form-control col-7"
+                                                        id="sortGvhd" name="sortGvhd">
+                                                    <option value="sortDesc">Theo SL nhóm đang hướng dẫn giảm dần
+                                                    </option>
+                                                    <option value="sortAsc">Theo SL nhóm đang hướng dẫn tăng dần
+                                                    </option>
+                                                    <option value="sortMaxDesc">Theo SL nhóm hướng dẫn tối đa giảm dần
+                                                    </option>
+                                                    <option value="sortMaxAsc">Theo SL nhóm hướng dẫn tối đa tăng dần
+                                                    </option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="row mt-3">
-                                            <div class="col-12">
-                                                <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
-                                                       th:if="${not #lists.isEmpty(gvhd.listNhomDatn)}">
-                                                    <thead class="thead-primary">
-                                                    <tr>
-                                                        <th width="50px">STT</th>
-                                                        <th>Mã nhóm</th>
-                                                        <th>SL thành viên</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <th:block th:each="nhomDatn, i : ${gvhd.listNhomDatn}">
+                                        <div class="row justify-content-center">
+                                            <div class="col-sm-1 col-12 text-center mt-2">
+                                                <button type="button"
+                                                        th:attr="onclick=|loadDashBoardGvhd()|"
+                                                        class="btn btn-primary">Tìm kiếm
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-1 col-12 text-center mt-2">
+                                                <button class="btn btn-danger text-white" onclick="clearDataGvhd();">
+                                                    Làm mới bộ lọc
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="box_gvhd">
+                                        <div th:each="gvhd, y : ${dashboard.listGvhd}"
+                                             style="padding: 10px; border-radius: 7px; margin-bottom: 5px">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h6 class="font-weight-bold" style="margin-bottom: 0">
+                                                        <span th:text="${y.count} + '. ' + ${gvhd.gvhd}"></span>
+                                                        <span style="color: red"
+                                                              th:text="' (' + ${gvhd.soNhomDangHuongDan} + ')'"></span>
+                                                        <span
+                                                                th:text="' (Môn hướng dẫn: ' + ${gvhd.monDatn} + ')'"></span>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-12">
+                                                    <table class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
+                                                           th:if="${not #lists.isEmpty(gvhd.listNhomDatn)}">
+                                                        <thead class="thead-primary">
                                                         <tr>
-                                                            <td th:text="${i.count}"></td>
-                                                            <td th:text="${nhomDatn.maNhom}"></td>
-                                                            <td th:text="${nhomDatn.soLuongThanhVien} + '/7'"></td>
+                                                            <th class="text-center align-middle" width="50px">STT</th>
+                                                            <th class="text-center align-middle">Mã nhóm</th>
+                                                            <th class="text-center align-middle">SL thành viên</th>
+                                                            <th class="text-center align-middle">Tên đề tài</th>
                                                         </tr>
-                                                    </th:block>
-                                                    </tbody>
-                                                </table>
-                                                <div th:unless="${not #lists.isEmpty(gvhd.listNhomDatn)}"
-                                                     style="text-align: center"><span style="color: red">Chưa hướng dẫn nhóm nào</span>
+                                                        </thead>
+                                                        <tbody>
+                                                        <th:block th:each="nhomDatn, i : ${gvhd.listNhomDatn}">
+                                                            <tr>
+                                                                <td th:text="${i.count}"></td>
+                                                                <td th:text="${nhomDatn.maNhom} + ' - ' + ${nhomDatn.monDatn}"></td>
+                                                                <td th:text="${nhomDatn.soLuongThanhVien} + '/7'"></td>
+                                                                <td th:text="${(nhomDatn.getTenDeTai() == null || nhomDatn.getTenDeTai() == '') ? 'Chưa có' : nhomDatn.getTenDeTai()}"></td>
+                                                            </tr>
+                                                        </th:block>
+                                                        </tbody>
+                                                    </table>
+                                                    <div th:unless="${not #lists.isEmpty(gvhd.listNhomDatn)}"
+                                                         style="text-align: center"><span style="color: red">Chưa hướng dẫn nhóm nào</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div id="empty"
+                                         style="text-align: center"><span th:if="${dashboard.listGvhd.isEmpty()}" style="color: red;font-size: 18px">Không có dữ liệu</span>
                                     </div>
                                 </div>
                             </div>

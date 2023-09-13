@@ -67,18 +67,13 @@
                                                    name="tenSinhVien" id="tenSinhVien"
                                                    value="">
                                         </div>
-                                        <br>
-                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
-                                        >
-                                            <span for="" class="fillter-name col-4 text-center">Đợt đăng ký:</span>
-                                            <select class="form-control col-7"
-                                                    id="dotDangKyId" name="dotDangKyId">
-                                                <option value="" hidden>Chọn đợt đăng ký</option>
-                                                <option th:each="item : ${listDotDangKy}"
-                                                        th:value="${item.getId()}" th:text="${item.getName()}"></option>
-                                            </select>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Mã nhóm:</span>
+                                            <input type="text" class="form-control col-7"
+                                                   name="maNhomSearch" id="maNhomSearch"
+                                                   value="">
                                         </div>
-                                        <br/>
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Môn chương trình:</span>
@@ -89,7 +84,6 @@
                                                         th:text="${item.getMaMonDatn() + ' - ' + item.getTenMonDatn}"></option>
                                             </select>
                                         </div>
-                                        <br/>
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Môn Datn:</span>
@@ -100,23 +94,6 @@
                                                         th:text="${item.getMaMonDatn() + ' - ' + item.getTenMonDatn}"></option>
                                             </select>
                                         </div>
-                                        <br/>
-                                        <div
-                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">GVHD:</span>
-                                            <input type="text" class="form-control col-7"
-                                                   name="tenGvhd" id="tenGvhd"
-                                                   value="">
-                                        </div>
-                                        <br/>
-                                        <div
-                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Mã nhóm:</span>
-                                            <input type="text" class="form-control col-7"
-                                                   name="maNhomSearch" id="maNhomSearch"
-                                                   value="">
-                                        </div>
-                                        <br>
                                         <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
                                         >
                                             <span for="" class="fillter-name col-4 text-center">Trạng thái:</span>
@@ -127,7 +104,34 @@
                                                 <option value="1">Chưa có nhóm</option>
                                             </select>
                                         </div>
-                                        <br>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">GVHD:</span>
+                                            <input type="text" class="form-control col-7"
+                                                   name="tenGvhd" id="tenGvhd"
+                                                   value="">
+                                        </div>
+                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
+                                        >
+                                            <span for="" class="fillter-name col-4 text-center">Chuyên ngành:</span>
+                                            <select class="form-control col-7"
+                                                    id="chuyenNganhId" name="chuyenNganhId">
+                                                <option value="">Tất cả</option>
+                                                <option th:each="item : ${listChuyenNganh}"
+                                                        th:value="${item.getId()}"
+                                                        th:text="${item.getName()}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
+                                        >
+                                            <span for="" class="fillter-name col-4 text-center">Đợt đăng ký:</span>
+                                            <select class="form-control col-7"
+                                                    id="dotDangKyId" name="dotDangKyId">
+                                                <option value="" hidden>Chọn đợt đăng ký</option>
+                                                <option th:each="item : ${listDotDangKy}"
+                                                        th:value="${item.getId()}" th:text="${item.getName()}"></option>
+                                            </select>
+                                        </div>
                                         <div class="row justify-content-center pt-2">
                                             <div class="col-sm-1 col-12 text-center mt-2">
                                                 <button type="button" th:attr="onclick=|loadDataToTable(0)|"
@@ -249,15 +253,15 @@
                                                    style="text-align: center"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead class="table-primary">
-                                                <th width="50px">STT</th>
-                                                <th>Mã SV</th>
-                                                <th>Họ và tên</th>
-                                                <th>Chuyên ngành</th>
-                                                <th>Môn chương trình</th>
-                                                <th>Môn dự án</th>
-                                                <th>Mã nhóm</th>
-                                                <th>Tên đề tài</th>
-                                                <th>GVHD</th>
+                                                <th class="text-center align-middle" width="50px">STT</th>
+                                                <th class="text-center align-middle">Mã SV</th>
+                                                <th class="text-center align-middle">Họ và tên</th>
+                                                <th class="text-center align-middle">Chuyên ngành</th>
+                                                <th class="text-center align-middle">Môn chương trình</th>
+                                                <th class="text-center align-middle">Môn dự án</th>
+                                                <th class="text-center align-middle">Mã nhóm</th>
+                                                <th class="text-center align-middle">Tên đề tài</th>
+                                                <th class="text-center align-middle">GVHD</th>
                                                 </thead>
                                                 <tbody id="listSV">
                                                 <th:block th:each="sinhVien,i : ${page.data}">

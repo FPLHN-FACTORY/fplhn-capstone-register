@@ -27,26 +27,55 @@ public class CnDashboardServiceImpl implements CnDashboardService {
     public CnDashboardResponse dashboard(final CnFindDashboardRequest request) {
         CnDashboardResponse cnDashboardResponse = new CnDashboardResponse();
         String tenChuyenNganh = cnDashboardRepository.getTenChuyenNganhByIdChuNhiem(request.getIdChuNhiem(), request.getCoSoId());
+
         cnDashboardResponse.setTenChuyenNganh(tenChuyenNganh);
         Integer tongSLSinhVien = cnDashboardRepository.getTongSoSinhVien(request);
+
         cnDashboardResponse.setTongSLSinhVien(tongSLSinhVien);
         Integer tongSoNhom = cnDashboardRepository.getTongSoNhom(request);
+
         cnDashboardResponse.setTongSoNhom(tongSoNhom);
         Integer tongSoNhomDaChotDeTai = cnDashboardRepository.getTongSoNhomDaChotDeTai(request);
+
         cnDashboardResponse.setTongSoNhomDaChotDeTai(tongSoNhomDaChotDeTai);
         cnDashboardResponse.setTongSoNhomChuaChotDeTai(tongSoNhom - tongSoNhomDaChotDeTai);
+
         Integer tongSoGvhd = cnDashboardRepository.tongSoGvhd(request);
         cnDashboardResponse.setTongSoGvhd(tongSoGvhd);
+
         Integer tongSoGvhdDangCoNhom = cnDashboardRepository.tongSoGvhdDangCoNhom(request);
         cnDashboardResponse.setTongSoGvhdDangCoNhom(tongSoGvhdDangCoNhom);
+
         Integer tongSoGvhdChuaCoNhom = tongSoGvhd - tongSoGvhdDangCoNhom;
         cnDashboardResponse.setTongSoGvhdChuaCoNhomNao(tongSoGvhdChuaCoNhom);
+
+        Integer tongSinhVienDaCoNhomHopLe = cnDashboardRepository.getTongSinhVienDaCoNhomHopLe(request);
+        if(tongSinhVienDaCoNhomHopLe == null) {
+            tongSinhVienDaCoNhomHopLe = 0;
+        }
+        cnDashboardResponse.setTongSinhVienDaCoNhomHopLe(tongSinhVienDaCoNhomHopLe);
+
+        Integer tongSinhVienChuaCoNhomHopLe = cnDashboardRepository.getTongSinhVienChuaCoNhomHopLe(request);
+        if(tongSinhVienChuaCoNhomHopLe == null) {
+            tongSinhVienChuaCoNhomHopLe = 0;
+        }
+        cnDashboardResponse.setTongSinhVienChuaCoNhomHopLe(tongSinhVienChuaCoNhomHopLe);
+        cnDashboardResponse.setTongSinhVienChuaCoNhom(tongSLSinhVien - tongSinhVienDaCoNhomHopLe - tongSinhVienChuaCoNhomHopLe);
+
+        Integer tongSLSinhVienKhongDuDieuKien = cnDashboardRepository.getTongSoSinhVienKhongDuDieuKien(request);
+        cnDashboardResponse.setTongSLSinhVienKhongDuDieuKien(tongSLSinhVienKhongDuDieuKien);
+
+        cnDashboardResponse.setTongSLSinhVienDuDieuKien(tongSLSinhVien - tongSLSinhVienKhongDuDieuKien);
+
+        Integer tongSoNhomChuaCoGvhd = cnDashboardRepository.getTongSoNhomChuaCoGvhd(request);
+        cnDashboardResponse.setTongSLNhomChuaCoGvhd(tongSoNhomChuaCoGvhd);
 
         List<CnDashboardGvhdResponse> gvhdResponseList = new ArrayList<>();
         List<CnSimpleDashboardGvhdResponse> listGvhd = cnDashboardRepository.getGvhd(request);
         for (CnSimpleDashboardGvhdResponse xx : listGvhd) {
             CnDashboardGvhdResponse cnDashboardGvhdResponse = new CnDashboardGvhdResponse();
             cnDashboardGvhdResponse.setGvhd(xx.getName());
+            cnDashboardGvhdResponse.setMonDatn(xx.getMonDatn());
             List<CnDashboardNhomDatnResponse> listNhomDatn = cnDashboardRepository.getNhomDatnByIdGiangVien(xx.getId(), request.getDotDangKyId(), request.getCoSoId());
             cnDashboardGvhdResponse.setListNhomDatn(listNhomDatn);
             cnDashboardGvhdResponse.setSoNhomDangHuongDan(listNhomDatn.size() + "/" + xx.getSoNhomHuongDanToiDa());
@@ -57,7 +86,28 @@ public class CnDashboardServiceImpl implements CnDashboardService {
     }
 
     @Override
+    public List<CnDashboardGvhdResponse> dashboardGvhd(final CnFindDashboardRequest request) {
+        List<CnDashboardGvhdResponse> gvhdResponseList = new ArrayList<>();
+        List<CnSimpleDashboardGvhdResponse> listGvhd = cnDashboardRepository.getGvhd(request);
+        for (CnSimpleDashboardGvhdResponse xx : listGvhd) {
+            CnDashboardGvhdResponse cnDashboardGvhdResponse = new CnDashboardGvhdResponse();
+            cnDashboardGvhdResponse.setGvhd(xx.getName());
+            cnDashboardGvhdResponse.setMonDatn(xx.getMonDatn());
+            List<CnDashboardNhomDatnResponse> listNhomDatn = cnDashboardRepository.getNhomDatnByIdGiangVien(xx.getId(), request.getDotDangKyId(), request.getCoSoId());
+            cnDashboardGvhdResponse.setListNhomDatn(listNhomDatn);
+            cnDashboardGvhdResponse.setSoNhomDangHuongDan(listNhomDatn.size() + "/" + xx.getSoNhomHuongDanToiDa());
+            gvhdResponseList.add(cnDashboardGvhdResponse);
+        }
+        return gvhdResponseList;
+    }
+
+    @Override
     public List<SimpleEntityProj> getAllChuyenNganhByIdChuNhiem(final CnFindDashboardRequest request) {
         return cnDashboardRepository.getAllChuyenNganhByIdChuNhiem(request);
+    }
+
+    @Override
+    public List<SimpleEntityProj> getAllMonDatnByIdChuNhiem(final CnFindDashboardRequest request) {
+        return cnDashboardRepository.getAllMonDatnByIdChuNhiem(request);
     }
 }

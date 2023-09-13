@@ -32,6 +32,8 @@ public final class CnFindNhomDatnRequest extends PageableRequest {
 
     private String dotDangKyId;
 
+    private String chuyenNganhId;
+
     private String coSoId;
 
     private Long currentTime = Calendar.getInstance().getTimeInMillis();

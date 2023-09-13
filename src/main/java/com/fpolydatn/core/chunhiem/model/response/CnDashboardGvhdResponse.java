@@ -16,5 +16,7 @@ public class CnDashboardGvhdResponse {
 
     private String soNhomDangHuongDan;
 
+    private String monDatn;
+
     private List<CnDashboardNhomDatnResponse> listNhomDatn;
 }

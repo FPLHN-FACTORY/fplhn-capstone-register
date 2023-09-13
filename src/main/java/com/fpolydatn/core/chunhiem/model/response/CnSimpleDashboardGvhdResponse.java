@@ -13,4 +13,7 @@ public interface CnSimpleDashboardGvhdResponse extends IsIdentified {
 
     @Value("#{target.so_nhom_huong_dan_toi_da}")
     Integer getSoNhomHuongDanToiDa();
+
+    @Value("#{target.mon_datn}")
+    String getMonDatn();
 }
