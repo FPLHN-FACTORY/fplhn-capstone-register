@@ -3,6 +3,13 @@ const svNhomDatnView = '/sinh-vien';
 
 var detailTenNhom = $("#detailTenNhom").val() == "Chưa có" ? "" :  $("#detailTenNhom").val();
 var detailTenDeTai = $("#detailTenDeTai").val() == "Chưa có" ? "" : $("#detailTenDeTai").val();
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$.ajaxSetup({
+    header: function(xhr) {
+        xhr.setRequestHeader(header, token);
+    }
+});
 
 function openModalDoiDeTai() {
     $("#inputTenDeTai").val(detailTenDeTai);

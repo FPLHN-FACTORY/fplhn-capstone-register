@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
+    <meta name="_csrf" content="4bfd1575-3ad1-4d21-76yh-5ygfuyd9f86721"/>
+    <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
     <title>Xem chi tiết nhóm DATN | FCR FPT Polytechnic</title>
     <meta name="description" content="Static table examples">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
@@ -22,7 +25,8 @@
 
 <!-- begin::Body -->
 <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
-
+<input type="hidden" id="csrfz" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+<span  th:text="${_csrf.token}" hidden></span>
 <!-- begin:: Page -->
 <div class="m-grid m-grid--hor m-grid--root m-page">
 
@@ -54,7 +58,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form
+                                <div
                                         class="m-portlet__body">
                                     <div class="form-group row">
                                         <label class="col-xl-3 col-lg-3 col-form-label">Mã
@@ -173,7 +177,7 @@
                                             Export mẫu phiếu
                                         </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </section>
 
@@ -265,7 +269,7 @@
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="form_chon_giang_vien">
+            <div id="form_chon_giang_vien">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
                         Đăng ký nhóm Dự án tốt nghiệp</h5>
@@ -298,7 +302,7 @@
                         Đồng ý
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -313,7 +317,7 @@
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
-            <form id="form_doi_ten_de_tai">
+            <div id="form_doi_ten_de_tai">
                 <div class="modal-header">
                     <h5 class="modal-title">Đổi tên đề tài</h5>
                     <button type="button" class="close"
@@ -344,7 +348,7 @@
                     >Đổi tên đề tài
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -359,7 +363,7 @@
     <div class="modal-dialog modal-lg modal-lg"
          role="document">
         <div class="modal-content">
-            <form id="form_doi_ten_nhom">
+            <div id="form_doi_ten_nhom">
                 <div class="modal-header">
                     <h5 class="modal-title">Đổi tên nhóm</h5>
                     <button type="button" class="close"
@@ -389,7 +393,7 @@
                         Đổi tên nhóm
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import java.util.Objects;
 
@@ -26,7 +27,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.cors().and()
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
+                .authorizeRequests()
                 .antMatchers("/authentication/*", "/").permitAll()
                 .antMatchers("/chu-nhiem/**").hasAuthority(ActorConstant.CHU_NHIEM)
                 .antMatchers("/dao-tao/**").hasAuthority(ActorConstant.DAO_TAO)

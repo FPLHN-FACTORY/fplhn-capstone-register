@@ -14,6 +14,7 @@ import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +48,9 @@ public class SvNhomDatnController extends BaseController {
 
 
     @GetMapping
-    public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
+    public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req, CsrfToken csrf) {
+
+
         String coSoId = session.getCoSoId();
         String idUSer = session.getUserId();
         String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
@@ -83,6 +86,7 @@ public class SvNhomDatnController extends BaseController {
             model.addAttribute("listGiangVien", listGiangVien);
             model.addAttribute("checkTruongNhom", checkTruongNhom);
             model.addAttribute("nhomDatnThamGia", svDetailNhomDatnResponse);
+//            model.addAttribute("_csrf", csrf);
             return "sinhvien/sv-nhom-datn";
         }
     }
