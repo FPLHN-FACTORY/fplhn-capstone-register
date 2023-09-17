@@ -19,5 +19,6 @@ public interface DtNhomDatnTheoDotService {
 
     void DTNhomDatnSinhVienExport(HttpServletResponse response, final FindDtNhomDatnTheoDotRequest request) throws IOException;
 
+    Boolean deleteNhomDatn(List<String>listIdNhom);
 }
 

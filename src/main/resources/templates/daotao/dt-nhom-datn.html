@@ -95,6 +95,13 @@
                                                 </option>
                                             </select>
                                         </div>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-10 d-flex justify-content-around align-items-center">
+                                            <span class="fillter-name col-5 text-center" for="">Số thành viên:</span>
+                                            <input class="form-control col-6" id="soThanhVien" name="soThanhVien"
+                                                   type="text"
+                                            >
+                                        </div>
                                     </div>
 
                                     <div class="row justify-content-center pt-2">
@@ -127,6 +134,15 @@
                                                     th:attr="onclick=|exportFileExcelSinhVien()|"
                                                     type="button">Export SV theo nhóm
                                             </button>
+                                            <button class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    id="idButtonChotDeTai"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
+                                                    title="Xóa nhóm"
+                                                    th:attr="onclick=|xoaNhom('${page.currentPage}')|"
+                                            >
+                                                Xóa nhóm
+                                            </button>
                                             <div aria-hidden="true"
                                                  aria-labelledby="exampleModalLabel"
                                                  class="modal fade "
@@ -151,7 +167,7 @@
                                                                         <option value="">Chọn kiểu file excel:</option>
                                                                         <option value="xls">.xls</option>
                                                                         <option value="xlsx">.xlsx</option>
-                                                                  </select>
+                                                                    </select>
                                                                     <span class="text-danger"
                                                                           id="type_excel_error"></span>
                                                                 </div>
@@ -193,8 +209,12 @@
                                                                         <!-- hear-->
                                                                         <thead>
                                                                         <th class="text-center align-middle">STT</th>
-                                                                        <th class="text-center align-middle">Mã sinh viên</th>
-                                                                        <th class="text-center align-middle">Tên sinh viên</th>
+                                                                        <th class="text-center align-middle">Mã sinh
+                                                                            viên
+                                                                        </th>
+                                                                        <th class="text-center align-middle">Tên sinh
+                                                                            viên
+                                                                        </th>
                                                                         </thead>
                                                                         <!-- body-->
                                                                         <tbody id="show_Dssv">
@@ -215,6 +235,11 @@
                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary"
                                                id="custom-table1">
                                             <thead class="table-primary">
+                                            <th class="text-center align-middle" width="20px"><input
+                                                    data-toggle="tooltip"
+                                                    title="Chọn tất cả" type="checkbox"
+                                                    id="checkbox_father">
+                                            </th>
                                             <th class="text-center align-middle" width="40px">STT</th>
                                             <th class="text-center align-middle" width="70px">Mã nhóm</th>
                                             <th class="text-center align-middle">Môn đăng ký</th>
@@ -229,6 +254,22 @@
                                             <tbody id="listNhomDatn">
                                             <th:block th:each="nhomDatn : ${page.data}">
                                                 <tr class="table-light">
+                                                    <td class="text-center align-middle">
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <div class="form-check">
+                                                                <input
+                                                                        th:disabled="${nhomDatn.getTrangThai()}==4 or ${nhomDatn.getTrangThai()}==0?'false':'true'"
+                                                                        type="checkbox" class="form-check-input"
+                                                                        data-toggle="tooltip"
+                                                                        title="Chọn một"
+                                                                        id="checkbox_son"
+                                                                        th:value="${nhomDatn.getId()}"
+                                                                        onchange="checkBoxSonListener()"/>
+                                                                <input hidden id="check-trang-thai"
+                                                                       th:value="${nhomDatn.getTrangThai()}">
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     <td class="text-center align-middle"
                                                         th:text="${nhomDatn.getStt()}"></td>
                                                     <td class="text-center align-middle"
@@ -269,6 +310,26 @@
                                         </table>
 
                                         <!-- Paging-->
+                                        <nav
+                                                aria-label="Page navigation">
+                                            <div class="justify-content-end"
+                                                 style="display: flex;">
+                                                <select id="sizeNhomDatn"
+                                                        th:attr="onchange=|loadDataNhomDatn(0)|"
+                                                        class="form-control-sm"
+                                                        style="margin-right: 10px">
+                                                    <option value="10">10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                    <option value="250">250</option>
+                                                    <option value="500">500</option>
+                                                    <option value="1000">1000</option>
+                                                </select>
+                                                <ul class="pagination" id="page">
+                                                </ul>
+                                            </div>
+                                        </nav>
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination justify-content-end" id="page">
                                             </ul>

@@ -9,11 +9,18 @@ import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
+import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.repository.DotDangKyRepository;
+import com.fpolydatn.repository.NhomDatnRepository;
+import com.fpolydatn.repository.SinhVienRepository;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +45,22 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     private DtSinhVienTheoDotRepository sinhVienTheoDotRepository;
 
     @Autowired
+    @Qualifier(SinhVienRepository.NAME)
+    private SinhVienRepository sinhVienRepository;
+
+    @Autowired
+    @Qualifier(NhomDatnRepository.NAME)
+    private NhomDatnRepository nhomDatnRepository;
+
+    @Autowired
+    @Qualifier(DotDangKyRepository.NAME)
+    private DotDangKyRepository dotDangKyRepository;
+
+    @Autowired
     private CommonHelper commonHelper;
+
+    @Autowired
+    private EmailSender emailSender;
 
     private List<DtNhomDatnTheoDotResponse> listNhomDatn;
 
@@ -93,5 +117,51 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         response.setHeader(headerKey, headerValue);
         DtNhomDatnExportExcel mau = new DtNhomDatnExportExcel(sinhVienTheoDotRepository.getSinhVienNhomDatnExportExcel(request), sinhVienTheoDotRepository.getNhomDatnExportExcel(request));
         mau.exportData(response);
+    }
+
+    private Boolean checkDotDangKyHienTai(String dotDangKyId) {
+        Optional<DotDangKy> dotDangKyFind = dotDangKyRepository.findById(dotDangKyId);
+        if (!dotDangKyFind.isPresent()) {
+            throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
+        }
+        Long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (currentTime >= dotDangKyFind.get().getNgayBatDau() && currentTime <= dotDangKyFind.get().getNgayKetThuc()) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean deleteNhomDatn(List<String> listIdNhom) {
+        List<NhomDatn> listNhomDatn = dtNhomDatnTheoDotRepository.findAllById(listIdNhom);
+        if (listNhomDatn.size() == 0) {
+            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
+        }
+        if (checkDotDangKyHienTai(listNhomDatn.get(0).getDotDangKyId())) {
+            throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
+        }
+        List<SinhVien>listSinhVienAll = new ArrayList<>();
+        for (NhomDatn nhomDatn : listNhomDatn) {
+            List<SinhVien> listSinhVien = sinhVienTheoDotRepository.getAllSinhVien(nhomDatn.getId(), commonHelper.getDotDangKyHienTai());
+            listSinhVienAll.addAll(listSinhVien);
+        }
+        for (SinhVien yy : listSinhVienAll) {
+            yy.setMonDatnId(null);
+            yy.setNhomId(null);
+        }
+        sinhVienRepository.saveAll(listSinhVienAll);
+        nhomDatnRepository.deleteAllById(listIdNhom);
+        int soThanhvien = listSinhVienAll.size();
+        String[] email = new String[soThanhvien];
+        for (int i = 0; i < soThanhvien; i++) {
+            email[i] = listSinhVienAll.get(i).getEmail();
+        }
+        String[] message = new String[]{"Phòng dào tạo đã xóa nhóm của bạn"};
+        Thread newThread = new Thread(() ->
+                emailSender.sendEmail(email, "[FCR] Phòng dào tạo xóa nhóm",
+                        "Nhóm đã bị xóa", message)
+        );
+        newThread.start();
+        return true;
     }
 }

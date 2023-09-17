@@ -20,7 +20,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
                 FROM sinh_vien
                 GROUP BY nhom_id
             )
-            
+                        
             SELECT
                 b.id,
                 ROW_NUMBER() OVER (ORDER BY b.created_date DESC) AS stt,
@@ -54,8 +54,9 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
                         OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
                         AND b.co_so_id = :#{#req.coSoId}
                         GROUP BY b.id
+                        HAVING :#{#req.soThanhVien} IS NULL OR :#{#req.soThanhVien} LIKE '' OR COUNT(d.ma_sinh_vien) LIKE :#{#req.soThanhVien}
                         ORDER BY b.created_date DESC
-            
+                        
             """, countQuery = """
             SELECT count(b.id)
             FROM nhom_datn b
@@ -68,13 +69,14 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
                                     LEFT JOIN mon_datn i ON i.id = d.mon_datn_id
                         WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
                         OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
-                        AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
+                        AND (:#{#req.soThanhVien} IS NULL OR :#{#req.soThanhVien} LIKE ''
                         OR f.id = :#{#req.chuyenNganhId})
                         AND g.id = :#{#req.dotDangKyId}
                         AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
                         OR b.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
                         AND b.co_so_id = :#{#req.coSoId}
                         GROUP BY b.id
+                        HAVING :#{#req.soThanhVien} IS NULL OR :#{#req.soThanhVien} LIKE '' OR COUNT(d.ma_sinh_vien) LIKE :#{#req.soThanhVien}
                         ORDER BY b.created_date DESC
             """, nativeQuery = true)
     Page<DtNhomDatnTheoDotResponse> findAllNhomDatn(Pageable page, @Param("req") final FindDtNhomDatnTheoDotRequest req);
@@ -100,7 +102,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
                 FROM sinh_vien
                 GROUP BY nhom_id
             )
-            
+                        
             SELECT
                 b.id,
                 ROW_NUMBER() OVER (ORDER BY b.created_date DESC) AS stt,

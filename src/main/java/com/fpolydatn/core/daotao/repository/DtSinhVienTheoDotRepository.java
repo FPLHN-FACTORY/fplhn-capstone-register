@@ -11,9 +11,11 @@ import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -238,21 +240,24 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
         SELECT
         	n.id,
             n.ma_nhom,
-             n.ten_nhom,
-             COALESCE(n.ten_de_tai, 'Chưa có') AS ten_de_tai,
-             COALESCE(gv.ten_gvhd, 'Chưa có') AS ten_gvhd,
-             COALESCE(gv.ten_tai_khoan, 'Chưa có') AS ten_tai_khoan,
-             n.trang_thai,
-             n.truong_nhom_id
+            n.ten_nhom,
+            COALESCE(n.ten_de_tai, 'Chưa có') AS ten_de_tai,
+            COALESCE(gv.ten_gvhd, 'Chưa có') AS ten_gvhd,
+            COALESCE(gv.ten_tai_khoan, 'Chưa có') AS ten_tai_khoan,
+            n.trang_thai,
+            n.truong_nhom_id
         FROM  do_an_tot_nghiep.nhom_datn n 
         LEFT JOIN do_an_tot_nghiep.giang_vien_huong_dan gv
              ON n.giang_vien_id = gv.id
+        LEFT JOIN sinh_vien d ON d.nhom_id = n.id
         WHERE n.truong_nhom_id IS NOT NULL AND n.dot_dang_ky_id = :#{#req.dotDangKyId}
-             AND n.co_so_id = :#{#req.coSoId}
-             AND (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
+            AND n.co_so_id = :#{#req.coSoId}
+            AND (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
             OR n.ma_nhom LIKE %:#{#req.maNhom}%) 
-             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
+            AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
             OR n.trang_thai = CONVERT(:#{#req.trangThai} , UNSIGNED))
+            GROUP BY n.id
+            HAVING :#{#req.soThanhVien} IS NULL OR :#{#req.soThanhVien} LIKE '' OR COUNT(d.ma_sinh_vien) LIKE :#{#req.soThanhVien}
     """, nativeQuery = true)
     List<DtNhomDatnExportResponse> getNhomDatnExportExcel(@Param("req") final FindDtNhomDatnTheoDotRequest req);
 
@@ -276,4 +281,16 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
              ORDER BY nda.ma_nhom
     """, nativeQuery = true)
     List<DtNhomDatnSinhVienExportExcelReponse> getSinhVienNhomDatnExportExcel(@Param("req") final FindDtNhomDatnTheoDotRequest req);
+
+    @Query(value = "SELECT * FROM sinh_vien WHERE nhom_id = :idNhom AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
+    List<SinhVien> getAllSinhVien(@Param("idNhom") String idNhom, @Param("dotDangKyId") String dotDangKyId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE sinh_vien SET nhom_id = NULL , mon_datn_id  = NULL WHERE ma_sinh_vien = :maSinhVien AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
+    void deleteSinhVienOutGroup(@Param("maSinhVien") String maSinhVien, @Param("dotDangKyId") String dotDangKyId);
+
 }
+
+
+
