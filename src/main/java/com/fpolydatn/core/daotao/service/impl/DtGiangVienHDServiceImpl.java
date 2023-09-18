@@ -16,10 +16,13 @@ import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +46,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -66,6 +70,9 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Autowired
     private CommonHelper commonHelper;
 
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
     private FormUtils formUtils = new FormUtils();
 
     @Override
@@ -83,6 +90,14 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
         GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class, command);
+        try {
+            String tenDotDangKy = writerFileCSV.findDotDangKyById(command.getDotDangKyId()).getTenDotDangKy();
+            writerFileCSV.writerFileCSV("Giảng viên: " + command.getTenTaiKhoan() + ", Đã được thêm vào đợt ký: " + tenDotDangKy,
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return dtGiangVienHDRepository.save(gvhd);
     }
 
@@ -128,6 +143,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         giangVien.setEmailFpt(command.getEmailFpt());
         giangVien.setEmailFe(command.getEmailFe());
         giangVien.setDotDangKyId(command.getDotDangKyId());
+        // update giảng viên update sau
         return dtGiangVienHDRepository.save(giangVien);
     }
 
@@ -167,12 +183,14 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
-    public List<GiangVienHuongDan> checkValidFile(List<DtGiagVienHDImportResquest> list, String coSoId) {
+    public List<GiangVienHuongDan> checkValidFile(List<DtGiagVienHDImportResquest> list, String coSoId, String doDangKyId) {
         List<GiangVienHuongDan> listGVHD = new ArrayList<>();
         Map<String, GiangVienHuongDan> mapGiangVien = new HashMap<>();
         if (list == null) {
             throw new RestApiException(Message.FILE_EMPTY);
         }
+        String tenDotDangKy = writerFileCSV.findDotDangKyById(doDangKyId).getTenDotDangKy();
+        CopyOnWriteArrayList<LoggerObject> loggerObjectList = new CopyOnWriteArrayList<>();
         for (DtGiagVienHDImportResquest gvhd : list) {
             GiangVienHuongDan giangVien = new GiangVienHuongDan();
             giangVien.setTenGvhd(gvhd.getTenGvhd());
@@ -185,6 +203,10 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             giangVien.setCoSoId(gvhd.getCoSoId());
             listGVHD.add(giangVien);
             mapGiangVien.put(giangVien.getTenTaiKhoan(), giangVien);
+            LoggerObject loggerObject = new LoggerObject();
+            loggerObject.setContent("Giảng viên: " + gvhd.getTenTaiKhoan() + ", Đã được thêm vào đợt ký: " + tenDotDangKy);
+            loggerObject.setStatus(ConfigurationsConstant.TRUE);
+            loggerObjectList.add(loggerObject);
         }
         dtGiangVienHDRepository.saveAll(listGVHD);
         List<PhanCongHuongDan> listPhanCong = new ArrayList<>();
@@ -199,10 +221,22 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 if (monDatn != null) {
                     phanCongHuongDan.setMonDatnId(monDatn.getId());
                     listPhanCong.add(phanCongHuongDan);
-                }
 
+                    LoggerObject loggerObject = new LoggerObject();
+                    loggerObject.setContent("Giảng viên: " + giangVienHuongDan.getTenTaiKhoan()
+                            + ", Đã được phân công vào môn: " + monDatn.getTenMonDatn());
+                    loggerObject.setStatus(ConfigurationsConstant.TRUE);
+                    loggerObjectList.add(loggerObject);
+                }
             }
         });
+
+        try {
+            writerFileCSV.writerAllObjectFileCSV(loggerObjectList,
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         dtPhanCongHuongDanRepository.saveAll(listPhanCong);
         return listGVHD;
     }
@@ -333,7 +367,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
                 listGiangVien.put(giangVien.getEmailFpt(), giangVien);
             });
             if (dtGiangVienHDResponseMessage.getStatus() == true) {
-                checkValidFile(listGiangVien.values().stream().toList(), coSoId);
+                checkValidFile(listGiangVien.values().stream().toList(), coSoId, doDangKyId);
             }
         } catch (Exception e) {
             e.printStackTrace();

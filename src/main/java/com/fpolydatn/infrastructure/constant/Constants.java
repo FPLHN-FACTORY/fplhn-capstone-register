@@ -15,6 +15,7 @@ public final class Constants {
 
         public static final String PROPERTIES_APPLICATION = "application.properties";
         public static final String PROPERTIES_VALIDATION = "messages.properties";
+        public static final String PROPERTIES_CONFIGURATIONS = "configurations.properties";
     }
 
     public static final String REGEX_EMAIL_FE = "\\w+@fe.edu.vn";

@@ -8,10 +8,12 @@ import com.fpolydatn.core.giangvien.model.response.GvNhomDatnResponse;
 import com.fpolydatn.core.giangvien.repository.GvNhomDatnRepository;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.MocThoiGianCommon;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +36,9 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
 
     @Autowired
     private MocThoiGianCommon mocThoiGianCommon;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @Override
     public PageableObject<GvNhomDatnResponse> fillAllNhomDatn(final GvFindNhomDatnRequest request) {
@@ -61,6 +66,15 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
             throw new RestApiException(Message.DONT_UPDATE_TEN_DE_TAI);
         }
         nhomDatnCheck.get().setTenDeTai(request.getTenDeTai());
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("GVHD đã đổi tên đề tài: " + nhomDatnCheck.get().getMaNhom() + " thành '"
+                    + request.getTenDeTai() + "'",
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
@@ -74,6 +88,14 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
             throw new RestApiException(Message.DONT_PHE_DUYET_NHOM_DATN);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GIANG_VIEN_DA_LIEN_HE);
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Giảng viên đã liên hệ nhóm '" + nhomDatnCheck.get().getMaNhom()  + "'",
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 
@@ -87,6 +109,14 @@ public class GvNhomDatnServiceImpl implements GvNhomDatnService {
             throw new RestApiException(Message.DONT_CHOT_DE_TAI_NHOM_DATN);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.GVHD_CHOT);
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Giảng viên đã chốt đề tài nhóm '" + nhomDatnCheck.get().getMaNhom()  + "'",
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return nhomDatnRepository.save(nhomDatnCheck.get());
     }
 

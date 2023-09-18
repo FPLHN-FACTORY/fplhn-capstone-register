@@ -19,12 +19,15 @@ import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.WriterFileCSV;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -52,6 +55,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author thepvph20110
@@ -77,6 +81,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Autowired
     private CommonHelper commonHelper;
 
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     private ConcurrentHashMap<String, String> map;
 
@@ -158,7 +164,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Override
     public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId, String dotDangKyId) throws IOException {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
-
+        CopyOnWriteArrayList<LoggerObject> arrayList = new CopyOnWriteArrayList<>();
+        String tenDotDangKy = writerFileCSV.findDotDangKyById(dotDangKyId).getTenDotDangKy();
         try {
             response.setStatus(true);
             DtSinhVienTheoDotImport sinhVienTheoDotImport = new DtSinhVienTheoDotImport();
@@ -236,9 +243,19 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 map.put(sinhVien.getMaSinhVien(), sinhVien.getMaSinhVien());
                 map.put(sinhVien.getEmail(), sinhVien.getEmail());
                 listSinhVienEntity.put(sinhVienEntity.getMaSinhVien(), sinhVienEntity);
+                LoggerObject loggerObject = new LoggerObject();
+                loggerObject.setContent("Sinh viên: " + sinhVien.getMaSinhVien() + " đã được thêm vào đợt " + tenDotDangKy);
+                loggerObject.setStatus(ConfigurationsConstant.TRUE);
+                arrayList.add(loggerObject);
             });
             if (response.getStatus()) {
                 sinhVienRepository.saveAll(listSinhVienEntity.values());
+                try {
+                    writerFileCSV.writerAllObjectFileCSV(arrayList,
+                            writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN));
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -508,6 +525,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         sinhVien = formUtils.convertToObject(SinhVien.class, command);
         sinhVien.setSoDienThoai(command.getSdt());
         sinhVien.setMonChuongTrinhId(command.getMonChuongTrinh());
+
+        String tenDotDangKy = writerFileCSV.findDotDangKyById(command.getDotDangKyId()).getTenDotDangKy();
+        writerFileCSV.writerFileCSV("Sinh viên: " + sinhVien.getMaSinhVien() + " đã được thêm vào đợt " + tenDotDangKy,
+                writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                ConfigurationsConstant.TRUE);
         return sinhVienRepository.save(sinhVien);
     }
 

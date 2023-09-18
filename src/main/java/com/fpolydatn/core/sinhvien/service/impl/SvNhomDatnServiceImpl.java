@@ -18,6 +18,7 @@ import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.PropertyKeys;
@@ -28,6 +29,7 @@ import com.fpolydatn.util.EmailSender;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
 import com.fpolydatn.util.PropertiesReader;
+import com.fpolydatn.util.WriterFileCSV;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -72,6 +74,9 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Autowired
     private EmailSender emailSender;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @Override
     public List<SvDetailNhomDatnResponse> getDetailNhomDatnById(String id, String coSoId, String dotDangKyId) {
@@ -138,6 +143,14 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         sinhVien.get().setNhomId(nhomDatn.get().getId());
         sinhVien.get().setThoiDiemJoinNhomGanNhat(Calendar.getInstance().getTimeInMillis());
         svSinhVienRepository.save(sinhVien.get());
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Sinh viên: " + sinhVien.get().getMaSinhVien() + " đã tham gia nhóm " + nhomDatn.get().getMaNhom(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -228,6 +241,16 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());
         sinhVien.get().setThoiDiemJoinNhomGanNhat(Calendar.getInstance().getTimeInMillis());
         svSinhVienRepository.save(sinhVien.get());
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Sinh viên: " + sinhVien.get().getMaSinhVien() + " đã tạo nhóm " + nhomDatn.getMaNhom(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
         if (nhomDatn.getMatKhau() != null) {
             String[] email = new String[]{sinhVien.get().getEmail()};
             String[] message = new String[]{"Mật khẩu nhóm DATN của bạn là: " + nhomDatn.getMatKhau()};
@@ -269,6 +292,17 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             }
         }
         svNhomDatnRepository.save(nhomDatn.get());
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Sinh viên: " + sinhVien.get().getMaSinhVien() + " đã đổi tên đề tài của nhóm "
+                            + nhomDatn.get().getMaNhom() + " thành " + nhomDatn.get().getTenDeTai() == null ? "" : ( "'" + nhomDatn.get().getTenDeTai() + "'"),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
         return svUpdateTenDeTaiRequest.getTenDeTai();
     }
 
@@ -311,6 +345,16 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         sinhVien.get().setThoiDiemRoiNhomGanNhat(Calendar.getInstance().getTimeInMillis());
         sinhVien.get().setMonDatnId(null);
         svSinhVienRepository.save(sinhVien.get());
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Sinh viên: " + sinhVien.get().getMaSinhVien() + " đã rời nhóm "
+                            + nhomDatn.get().getMaNhom(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -354,6 +398,16 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
                 "Chuyển quyền trưởng nhóm",
                 message);
         svNhomDatnRepository.save(nhomDatn.get());
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Sinh viên: " + truongNhom.get().getMaSinhVien() + " đã đổi quyền trưởng nhóm "
+                            + nhomDatn.get().getMaNhom() + " cho sinh viên:  " + truongNhomMoi.get().getMaSinhVien(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -380,6 +434,15 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         }
         nhomDatn.setGiangVienId(idGiangVien);
         svNhomDatnRepository.save(nhomDatn);
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Giảng viên: " + giangVienHuongDan.get().getTenTaiKhoan() + " đã được chọn làm gvhd nhóm " + nhomDatn.getMaNhom(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
         return giangVienHuongDan.get().getTenGvhd() + " - " + giangVienHuongDan.get().getTenTaiKhoan();
     }
 
@@ -422,6 +485,15 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             }
         }
         svNhomDatnRepository.save(nhomDatn);
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Nhóm: " + nhomDatn.getMaNhom() + " đã đổi tên nhóm thành '" + request.getTenNhom() + "'",
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return request.getTenNhom();
     }
 

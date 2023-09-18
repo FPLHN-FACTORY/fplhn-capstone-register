@@ -12,9 +12,12 @@ import com.fpolydatn.core.daotao.repository.DtHocKyRepository;
 import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.HocKy;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +25,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,6 +48,9 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
 
     @Autowired
     private DtHocKyRepository dtHocKyRepository;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @Override
     public PageableObject<DtDotDangKyResponse> findByCoSo(DtFindDotDangKyRequest request) {
@@ -74,6 +82,16 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         dotDangKy.setHanChuNhiemBoMon(result.getHanChuNhiemBoMon());
         dotDangKy.setCoSoId(createDotDangKyRequest.getCoSoId());
         dotDangKy.setHocKyId(createDotDangKyRequest.getHocKyId());
+
+        try {
+            writerFileCSV.genFolderLogger(dotDangKy.getTenDotDangKy());
+            writerFileCSV.writerFileCSV("Đợt đăng ký: " + dotDangKy.getTenDotDangKy() + " được tạo.",
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKy.getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
         return dtDotDangKyRepository.save(dotDangKy);
     }
 
@@ -90,6 +108,17 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         request.setHanSinhVien(dtUpdateDotDangKyRequest.getHanSinhVien());
         request.setHanGiangVien(dtUpdateDotDangKyRequest.getHanGiangVien());
         request.setHanChuNhiemBoMon(dtUpdateDotDangKyRequest.getHanChuNhiemBoMon());
+
+        if (!dtUpdateDotDangKyRequest.getTenDotDangKy().equalsIgnoreCase(dotDangKyCheck.get().getTenDotDangKy())) {
+            try {
+                writerFileCSV.updateFolder(writerFileCSV.covertFileName(dotDangKyCheck.get().getTenDotDangKy()), writerFileCSV.covertFileName(dtUpdateDotDangKyRequest.getTenDotDangKy()));
+                writerFileCSV.writerFileCSV("Đợt đăng ký: " + dotDangKyCheck.get().getTenDotDangKy() + " đã được đổi thành: " + dtUpdateDotDangKyRequest.getTenDotDangKy(),
+                        writerFileCSV.getPathFileByDotDangKyAndCoSo(dtUpdateDotDangKyRequest.getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                        ConfigurationsConstant.TRUE);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
 
         DotDangKy result = checkDateDotDangKy(request, dtUpdateDotDangKyRequest.getId(), dtUpdateDotDangKyRequest.getCoSoId());
         DotDangKy dotDangKy = dotDangKyCheck.get();
