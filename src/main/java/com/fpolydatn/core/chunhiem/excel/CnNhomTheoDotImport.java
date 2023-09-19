@@ -38,7 +38,7 @@ public class CnNhomTheoDotImport {
             CnNhomTheoDotResponse nhomDatn = new CnNhomTheoDotResponse();
             nhomDatn.setMaNhom(String.valueOf(getCellValue(row.getCell(1))).trim());
             nhomDatn.setTenDeTai(String.valueOf(getCellValue(row.getCell(2))).trim());
-            nhomDatn.setGvhd(String.valueOf(getCellValue(row.getCell(3))).trim().toLowerCase());
+            nhomDatn.setGvhd(String.valueOf(getCellValue(row.getCell(4))).trim().toLowerCase());
             listNhom.add(nhomDatn);
         }
         return listNhom;

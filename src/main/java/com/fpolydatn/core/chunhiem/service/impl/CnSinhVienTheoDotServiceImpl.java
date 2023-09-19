@@ -320,6 +320,8 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
                     nhomDatnUpdate = mapNhomDatn.get(nhomDatn.getMaNhom());
                     if (giangVien != null) {
                         nhomDatnUpdate.setGiangVienId(giangVien.getId());
+                    } else {
+                        nhomDatnUpdate.setGiangVienId(null);
                     }
                     listNhomDatnUpdate.add(nhomDatnUpdate);
                 }

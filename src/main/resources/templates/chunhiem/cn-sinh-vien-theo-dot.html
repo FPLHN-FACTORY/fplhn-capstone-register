@@ -468,7 +468,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <p class="col-form-label">Định dạng file excel </p>
+                    <p class="col-form-label">Định dạng file excel: </p>
                     <select id="type_excel" class="form-control">
                         <option value="">Chọn kiểu file excel</option>
                         <option value="xls">.xls</option>
@@ -476,6 +476,15 @@
                     </select>
                     <span class="text-danger"
                           id="type_excel_error"></span>
+                </div>
+                <div class="form-group">
+                    <p class="col-form-label">Chuyên ngành: </p>
+                    <select class="form-control"
+                            id="chuyenNganhIdExportExcel" name="chuyenNganhIdExportExcel">
+                        <option th:each="item : ${listChuyenNganh}"
+                                th:value="${item.getId()}"
+                                th:text="${item.getName()}"></option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -559,6 +568,15 @@
                     </select>
                     <span class="text-danger"
                           id="type_excel_sap_gvhd_error"></span>
+                </div>
+                <div class="form-group">
+                    <p class="col-form-label">Chuyên ngành: </p>
+                    <select class="form-control"
+                            id="chuyenNganhIdExportExcelSapGvhd" name="chuyenNganhIdExportExcelSapGvhd">
+                        <option th:each="item : ${listChuyenNganh}"
+                                th:value="${item.getId()}"
+                                th:text="${item.getName()}"></option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">

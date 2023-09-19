@@ -23,6 +23,7 @@ function clearBoLoc() {
     $("#monDatn").val("")
     $("#tenGvhd").val("")
     $("#maNhomSearch").val("")
+    $("#chuyenNganhId").val("");
     $("#trangThai").val("")
 }
 
@@ -286,25 +287,25 @@ function exportFile() {
     let typeExcel = $("#type_excel").val()
     let tenSinhVien = $("#tenSinhVien").val().trim();
     let dotDangKyId = $("#dotDangKyId").val().trim();
+    let chuyenNganhId = $("#chuyenNganhIdExportExcel").val().trim();
     let monChuongTrinh = $("#monChuongTrinh").val().trim();
     let monDatn = $("#monDatn").val().trim();
     let tenGvhd = $("#tenGvhd").val().trim();
     let maNhomSearch = $("#maNhomSearch").val().trim();
     let trangThai = $("#trangThai").val().trim();
-
     if (typeExcel == '') {
         $("#type_excel_error").text("Chọn định dạng file download");
     } else {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: CNNhomDatnApi + "/export?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId
+            url: CNNhomDatnApi + "/export?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                 + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
                 + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
                 + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
             ,
             success: function () {
-                window.open(CNNhomDatnApi + "/export?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId
+                window.open(CNNhomDatnApi + "/export?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                     + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&tenGvhd=" + tenGvhd
                     + "&monChuongTrinh=" + monChuongTrinh
                     + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
@@ -411,6 +412,7 @@ function exportFileExcelSapGvhd() {
     let typeExcel = $("#type_excel_sap_gvhd").val();
     let tenSinhVien = $("#tenSinhVien").val().trim();
     let dotDangKyId = $("#dotDangKyId").val().trim();
+    let chuyenNganhId = $("#chuyenNganhIdExportExcelSapGvhd").val()
     let monChuongTrinh = $("#monChuongTrinh").val().trim();
     let monDatn = $("#monDatn").val().trim();
     let tenGvhd = $("#tenGvhd").val().trim();
@@ -423,13 +425,13 @@ function exportFileExcelSapGvhd() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: sinhVienApi + "/export-sap-gvhd?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId
+            url: sinhVienApi + "/export-sap-gvhd?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                 + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
                 + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
                 + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
             ,
             success: function () {
-                window.open(sinhVienApi + "/export-sap-gvhd?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId
+                window.open(sinhVienApi + "/export-sap-gvhd?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                     + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&tenGvhd=" + tenGvhd
                     + "&monChuongTrinh=" + monChuongTrinh
                     + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai

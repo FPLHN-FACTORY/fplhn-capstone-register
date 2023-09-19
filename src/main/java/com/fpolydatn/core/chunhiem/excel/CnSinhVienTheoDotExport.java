@@ -117,23 +117,35 @@ public class CnSinhVienTheoDotExport {
             cell3.setCellValue("Email");
             cell3.setCellStyle(cellStyle);
 
-            Cell cell4 = row.createCell(4);
+            Cell cellSoThanhVien = row.createCell(4);
+            cellSoThanhVien.setCellValue("Số thành viên");
+            cellSoThanhVien.setCellStyle(cellStyle);
+
+            Cell cell4 = row.createCell(5);
             cell4.setCellValue("Mã nhóm");
             cell4.setCellStyle(cellStyle);
 
-            Cell cell5 = row.createCell(5);
+            Cell cellMonDatn = row.createCell(6);
+            cellMonDatn.setCellValue("Môn Datn");
+            cellMonDatn.setCellStyle(cellStyle);
+
+            Cell cell5 = row.createCell(7);
             cell5.setCellValue("Trưởng nhóm");
             cell5.setCellStyle(cellStyle);
 
-            Cell cell6 = row.createCell(6);
+            Cell cell6 = row.createCell(8);
             cell6.setCellValue("Tên đề tài");
             cell6.setCellStyle(cellStyle);
 
-            Cell cell7 = row.createCell(7);
+            Cell cell7 = row.createCell(9);
             cell7.setCellValue("Giảng viên hướng dẫn");
             cell7.setCellStyle(cellStyle);
 
-            Cell cell8 = row.createCell(8);
+            Cell cellSoNhomDangHuongDan = row.createCell(10);
+            cellSoNhomDangHuongDan.setCellValue("Số nhóm đang hướng dẫn");
+            cellSoNhomDangHuongDan.setCellStyle(cellStyle);
+
+            Cell cell8 = row.createCell(11);
             cell8.setCellValue("Đợt đăng ký");
             cell8.setCellStyle(cellStyle);
 
@@ -158,23 +170,35 @@ public class CnSinhVienTheoDotExport {
                 empEmailCell.setCellStyle(cellStyle);
                 empEmailCell.setCellValue(sinhVien.getEmail());
 
-                Cell empMaNhomCell = empDataRow.createCell(4);
+                Cell empSoThanhVienCell = empDataRow.createCell(4);
+                empSoThanhVienCell.setCellStyle(cellStyle);
+                empSoThanhVienCell.setCellValue(sinhVien.getSoLuongThanhVien());
+
+                Cell empMaNhomCell = empDataRow.createCell(5);
                 empMaNhomCell.setCellStyle(cellStyle);
                 empMaNhomCell.setCellValue(sinhVien.getMaNhom());
 
-                Cell empChucVuCell = empDataRow.createCell(5);
+                Cell empMonDatnCell = empDataRow.createCell(6);
+                empMonDatnCell.setCellStyle(cellStyle);
+                empMonDatnCell.setCellValue(sinhVien.getMonDatn());
+
+                Cell empChucVuCell = empDataRow.createCell(7);
                 empChucVuCell.setCellStyle(cellStyle);
                 empChucVuCell.setCellValue(sinhVien.getChucVu());
 
-                Cell empTenDeTaiCell = empDataRow.createCell(6);
+                Cell empTenDeTaiCell = empDataRow.createCell(8);
                 empTenDeTaiCell.setCellStyle(cellStyle);
                 empTenDeTaiCell.setCellValue(sinhVien.getTenDeTai() == null ? "Chưa có" : sinhVien.getTenDeTai());
 
-                Cell empGVHDCell = empDataRow.createCell(7);
+                Cell empGVHDCell = empDataRow.createCell(9);
                 empGVHDCell.setCellStyle(cellStyle);
                 empGVHDCell.setCellValue(sinhVien.getGvhd());
 
-                Cell empDotDangKyCell = empDataRow.createCell(8);
+                Cell empSoNhomDangHuongDanCell = empDataRow.createCell(10);
+                empSoNhomDangHuongDanCell.setCellStyle(cellStyle);
+                empSoNhomDangHuongDanCell.setCellValue(sinhVien.getSoNhomDangHuongDan());
+
+                Cell empDotDangKyCell = empDataRow.createCell(11);
                 empDotDangKyCell.setCellStyle(cellStyle);
                 empDotDangKyCell.setCellValue(sinhVien.getTenDotDangKy());
             }

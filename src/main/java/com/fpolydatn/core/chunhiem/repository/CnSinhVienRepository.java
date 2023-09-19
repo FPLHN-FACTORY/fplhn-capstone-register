@@ -278,13 +278,18 @@ public interface CnSinhVienRepository extends SinhVienRepository {
                                             @Param("coSoId") String coSoId);
 
     @Query(value = """
-            SELECT a.id, ROW_NUMBER() OVER(ORDER BY e.ten_tai_khoan) AS STT, a.ma_nhom, a.ten_de_tai, e.ten_tai_khoan
+            SELECT a.id, ROW_NUMBER() OVER(ORDER BY e.ten_tai_khoan) AS STT, a.ma_nhom, a.ten_de_tai, e.ten_tai_khoan,
+            COUNT(s.id) AS so_thanh_vien
             FROM nhom_datn a JOIN sinh_vien b ON a.truong_nhom_id = b.id
+            JOIN sinh_vien s ON s.nhom_id = a.id
             LEFT JOIN giang_vien_huong_dan e ON a.giang_vien_id = e.id
             JOIN chuyen_nganh c ON b.chuyen_nganh_id = c.id
             JOIN can_bo d ON c.chu_nhiem_bo_mon = d.id
             WHERE a.dot_dang_ky_id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId}
-            AND d.id = :idChuNhiem ORDER BY e.ten_tai_khoan
+            AND c.id = :#{#req.chuyenNganhId}
+            AND d.id = :idChuNhiem
+            GROUP BY a.id
+            ORDER BY e.ten_tai_khoan
             """, nativeQuery = true)
     List<CnNhomTheoDotExcel> findNhomDatnExport(@Param("req") CnFindSinhVienTheoDotRequest req, @Param("idChuNhiem") String idChuNhiem);
 }

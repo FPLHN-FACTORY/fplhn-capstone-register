@@ -25,8 +25,14 @@ public interface CnSinhVienTheoDotExcel {
     @Value("#{target.email}")
     String getEmail();
 
+    @Value("#{target.so_luong_thanh_vien}")
+    String getSoLuongThanhVien();
+
     @Value("#{target.ma_nhom}")
     String getMaNhom();
+
+    @Value("#{target.mon_datn}")
+    String getMonDatn();
 
     @Value("#{target.chuc_vu}")
     String getChucVu();
@@ -36,6 +42,9 @@ public interface CnSinhVienTheoDotExcel {
 
     @Value("#{target.gvhd}")
     String getGvhd();
+
+    @Value("#{target.so_nhom_dang_huong_dan}")
+    String getSoNhomDangHuongDan();
 
     @Value("#{target.ten_dot_dang_ky}")
     String getTenDotDangKy();

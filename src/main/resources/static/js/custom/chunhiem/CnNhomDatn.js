@@ -23,6 +23,7 @@ function clearData() {
     $("#dotDangKyId").val("");
     $("#monDatnId").val("");
     $("#soThanhVien").val("");
+    $("#chuyenNganhId").val("");
 }
 
 function CNChotDuLieu(id, count) {

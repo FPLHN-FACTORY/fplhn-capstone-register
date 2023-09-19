@@ -55,8 +55,12 @@ public class CnNhomTheoDotExport {
             cell2.setCellStyle(cellStyle);
 
             Cell cell3 = row.createCell(3);
-            cell3.setCellValue("Giảng viên hướng dẫn");
+            cell3.setCellValue("Số thành viên");
             cell3.setCellStyle(cellStyle);
+
+            Cell cell4 = row.createCell(4);
+            cell4.setCellValue("Giảng viên hướng dẫn");
+            cell4.setCellStyle(cellStyle);
 
             //Set data
             int rowNum = 1;
@@ -75,7 +79,11 @@ public class CnNhomTheoDotExport {
                 empTenDeTaiCell.setCellStyle(cellStyle);
                 empTenDeTaiCell.setCellValue(xx.getTenDeTai());
 
-                Cell empGVHDCell = empDataRow.createCell(3);
+                Cell empSoThanhVienCell = empDataRow.createCell(3);
+                empSoThanhVienCell.setCellStyle(cellStyle);
+                empSoThanhVienCell.setCellValue(xx.getSoThanhVien() + "/7");
+
+                Cell empGVHDCell = empDataRow.createCell(4);
                 empGVHDCell.setCellStyle(cellStyle);
                 empGVHDCell.setCellValue(xx.getGvhd());
             }
