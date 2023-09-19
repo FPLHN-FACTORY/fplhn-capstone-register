@@ -120,7 +120,7 @@ public interface CnDashboardRepository extends NhomDatnRepository {
 
     @Query(value = """
             WITH gvhdNhomDatn AS (
-                SELECT DISTINCT b.id, COUNT(a.id) AS so_nhom_dang_huong_dan
+                SELECT b.id, COUNT(DISTINCT a.id) AS so_nhom_dang_huong_dan
                 FROM nhom_datn a RIGHT JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
                 JOIN phan_cong_huong_dan c ON b.id = c.giang_vien_id
                 JOIN mon_datn d ON c.mon_datn_id = d.id JOIN chuyen_nganh e ON e.id = d.chuyen_nganh_id
