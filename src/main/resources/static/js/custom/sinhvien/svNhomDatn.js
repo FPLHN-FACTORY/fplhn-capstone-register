@@ -3,13 +3,14 @@ const svNhomDatnView = '/sinh-vien';
 
 var detailTenNhom = $("#detailTenNhom").val() == "Chưa có" ? "" :  $("#detailTenNhom").val();
 var detailTenDeTai = $("#detailTenDeTai").val() == "Chưa có" ? "" : $("#detailTenDeTai").val();
-var token = $("meta[name='_csrf']").attr("content");
+// var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
-$.ajaxSetup({
-    header: function(xhr) {
-        xhr.setRequestHeader(header, token);
-    }
-});
+const csrfToken = getCookie(header);
+// $.ajaxSetup({
+//     headers: {
+//         header: csrfToken
+//     }
+// });
 
 function openModalDoiDeTai() {
     $("#inputTenDeTai").val(detailTenDeTai);
@@ -21,6 +22,7 @@ function openModalChonGVHD() {
 }
 
 function doiTenDeTai() {
+
     $("#modal_doi_ten_de_Tai").modal('hide');
     let inputTenDeTai = $("#inputTenDeTai").val().trim();
     let updateTenDeTaiRequest = {};
@@ -106,6 +108,12 @@ function openModalDoiTenNhom() {
     $("#modal_doi_ten_nhom").modal('show');
 }
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 function doiTenNhom() {
     $("#modal_doi_ten_nhom").modal('hide');
     let inputTenNhom = $("#inputTenNhom").val().trim();
@@ -136,6 +144,10 @@ function doiTenNhom() {
                     contentType: "application/json",
                     url: svNhomDatnApi + "/update-ten-nhom?tenNhom=" + inputTenNhom,
                     datatype: 'json',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-XSRF-TOKEN": csrfToken, // Gửi token CSRF trong tiêu đề
+                    },
                     data: JSON.stringify(updateTenNhomRequest),
                     success: function (responseData) {
                         bootbox.alert({

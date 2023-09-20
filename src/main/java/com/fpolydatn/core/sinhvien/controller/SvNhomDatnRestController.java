@@ -135,15 +135,17 @@ public class SvNhomDatnRestController extends BaseController {
     @PutMapping("/update-ten-nhom")
     public ResponseObject doiTenNhom(HttpServletRequest requests,
                                      @RequestBody SvUpdateTenNhomRequest request) {
-        CsrfToken csrfToken = csrfTokenRepository.loadToken(requests);
+          CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
 
         // Kiểm tra CSRF token ở đây
-        if (csrfToken == null || !csrfToken.getToken().equals(csrfToken)) {
-            throw new RestApiException("Không có quyền");
+//        if (csrfToken == null || !csrfToken.getToken().equals(requests.getHeader("X-XSRF-TOKEN"))) {
+//            throw new RestApiException("Không có quyền");
             // Token hợp lệ, tiếp tục xử lý yêu cầu
-//            return ResponseEntity.ok("Yêu cầu hợp lệ!");
+            // return ResponseEntity.ok("Yêu cầu hợp lệ!");
+//        }
+        if (csrfToken == null) {
+            throw new RestApiException("Không có quyền");
         }
-
         request.setUserId(session.getUserId());
         request.setCoSoId(session.getCoSoId());
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
