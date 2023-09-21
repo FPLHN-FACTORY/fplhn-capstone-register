@@ -3,9 +3,13 @@ const svNhomDatnView = '/sinh-vien';
 
 var detailTenNhom = $("#detailTenNhom").val() == "Chưa có" ? "" :  $("#detailTenNhom").val();
 var detailTenDeTai = $("#detailTenDeTai").val() == "Chưa có" ? "" : $("#detailTenDeTai").val();
-// var token = $("meta[name='_csrf']").attr("content");
-var header = $("meta[name='_csrf_header']").attr("content");
-const csrfToken = getCookie(header);
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+const csrfToken = getCookie("XSRF-TOKEN");
 // $.ajaxSetup({
 //     headers: {
 //         header: csrfToken
@@ -53,6 +57,10 @@ function doiTenDeTai() {
                     contentType: "application/json",
                     url: svNhomDatnApi + "/update-ten-de-tai",
                     data: JSON.stringify(updateTenDeTaiRequest),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-XSRF-TOKEN": csrfToken, // Gửi token CSRF trong tiêu đề
+                    },
                     datatype: 'json',
                     success: function (responseData) {
                         console.log(responseData)
@@ -106,12 +114,6 @@ function doiTenDeTai() {
 function openModalDoiTenNhom() {
     $("#inputTenNhom").val(detailTenNhom);
     $("#modal_doi_ten_nhom").modal('show');
-}
-
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
 function doiTenNhom() {
@@ -223,6 +225,10 @@ function roiNhom() {
         type: "PUT",
         contentType: "application/json",
         url: svNhomDatnApi + "/roi-nhom",
+        headers: {
+            "Content-Type": "application/json",
+            "X-XSRF-TOKEN": csrfToken, // Gửi token CSRF trong tiêu đề
+        },
         success: function (responseData) {
             bootbox.alert('Rời nhóm thành công', function () {
                     window.open(svNhomDatnView, '_self');
@@ -283,6 +289,10 @@ function chuyenQuyenTruongNhom(idTruongNhomMoi, tenTruongNhomMoi) {
                     type: "PUT",
                     contentType: "application/json",
                     url: svNhomDatnApi + "/chuyen-quyen-truong-nhom?idTruongNhomMoi=" + idTruongNhomMoi,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-XSRF-TOKEN": csrfToken, // Gửi token CSRF trong tiêu đề
+                    },
                     success: function (responseData) {
                         bootbox.alert({
                             message: 'Bạn đã chuyển quyền trưởng nhóm cho ' + tenTruongNhomMoi,
@@ -357,6 +367,10 @@ function chonGiangVienHuongDan() {
                     type: "PUT",
                     contentType: "application/json",
                     url: svNhomDatnApi + "/chon-giang-vien?idGiangVien=" + idGiangVien,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-XSRF-TOKEN": csrfToken, // Gửi token CSRF trong tiêu đề
+                    },
                     success: function (responseData) {
                         bootbox.alert({
                             message: 'Đã cập nhật giảng viên',
@@ -409,6 +423,10 @@ function exportWord() {
         type: "GET",
         contentType: "application/json",
         url: svNhomDatnApi + "/export-word",
+        headers: {
+            "Content-Type": "application/json",
+            "X-XSRF-TOKEN": csrfToken, // Gửi token CSRF trong tiêu đề
+        },
         success: function (responseData) {
             window.open(svNhomDatnApi + "/export-word",'_self');
         },

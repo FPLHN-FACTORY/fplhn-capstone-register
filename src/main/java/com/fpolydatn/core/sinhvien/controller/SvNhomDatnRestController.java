@@ -76,51 +76,79 @@ public class SvNhomDatnRestController extends BaseController {
     }
 
     @PostMapping("/add")
-    public ResponseObject addSinhVien(@RequestBody SvAddSinhVienRequest req) {
+    public ResponseObject addSinhVien(HttpServletRequest requests, @RequestBody SvAddSinhVienRequest req) {
         req.setIdUser(session.getUserId());
         req.setCoSoId(session.getCoSoId());
         req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
+        if (csrfToken == null) {
+            throw new RestApiException("Không có quyền");
+        }
         return new ResponseObject(svNhomDatnService.addSinhVienTheoNhom(req));
     }
 
     @PostMapping
-    public ResponseObject createNhomDatn(@RequestBody SvCreateNhomDatnRequest svNhomDatnRequest) {
+    public ResponseObject createNhomDatn(HttpServletRequest requests, @RequestBody SvCreateNhomDatnRequest svNhomDatnRequest) {
         String coSoid = session.getCoSoId();
         svNhomDatnRequest.setCoSoId(coSoid);
         svNhomDatnRequest.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
+        if (csrfToken == null) {
+            throw new RestApiException("Không có quyền");
+        }
         return new ResponseObject(svNhomDatnService.createNhomDatn(svNhomDatnRequest, session.getUserId()));
     }
 
     @PutMapping("/update-ten-de-tai")
-    public ResponseObject updateTenDeTai(@RequestBody SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
+    public ResponseObject updateTenDeTai(HttpServletRequest requests, @RequestBody SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
         svUpdateTenDeTaiRequest.setIdUser(session.getUserId());
+        CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
+        if (csrfToken == null) {
+            throw new RestApiException("Không có quyền");
+        }
         return new ResponseObject(svNhomDatnService.updateTenDeTai(svUpdateTenDeTaiRequest));
     }
 
     @PutMapping("/roi-nhom")
-    public ResponseObject roiNhom() {
+    public ResponseObject roiNhom(HttpServletRequest requests) {
         String idUser = session.getUserId();
         String coSoid = session.getCoSoId();
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
+        if (csrfToken == null) {
+            throw new RestApiException("Không có quyền");
+        }
         return new ResponseObject(svNhomDatnService.roiNhom(idUser, coSoid, dotDangKyId));
     }
 
     @PutMapping("/chuyen-quyen-truong-nhom")
-    public ResponseObject chuyenQuyenTruongNhom(@RequestParam("idTruongNhomMoi") String idTruongNhomMoi) {
+    public ResponseObject chuyenQuyenTruongNhom(HttpServletRequest requests, @RequestParam("idTruongNhomMoi") String idTruongNhomMoi) {
+        CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
+        if (csrfToken == null) {
+            throw new RestApiException("Không có quyền");
+        }
         return new ResponseObject(svNhomDatnService.chuyenQuyenTruongNhom(session.getUserId(), idTruongNhomMoi));
     }
 
     @PutMapping("/chon-giang-vien")
-    public ResponseObject chonGvhd(@RequestParam String idGiangVien) {
+    public ResponseObject chonGvhd(HttpServletRequest requests, @RequestParam String idGiangVien) {
         String userId = session.getUserId();
         String coSoId = session.getCoSoId();
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
+        if (csrfToken == null) {
+            throw new RestApiException("Không có quyền");
+        }
         return new ResponseObject(svNhomDatnService.chonGvhd(userId, idGiangVien, coSoId, dotDangKyId));
     }
 
     @GetMapping("/export-word")
-    public ResponseEntity<ByteArrayResource> exportWord() throws IOException {
+    public ResponseEntity<ByteArrayResource> exportWord(HttpServletRequest requests) throws IOException {
         String idUser = session.getUserId();
+        CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
+        if (csrfToken == null) {
+            throw new RestApiException("Không có quyền");
+        }
         byte[] fileBytes = svExportFileWordService.exportWord(idUser);
 
         ByteArrayResource resource = new ByteArrayResource(fileBytes);
@@ -135,13 +163,13 @@ public class SvNhomDatnRestController extends BaseController {
     @PutMapping("/update-ten-nhom")
     public ResponseObject doiTenNhom(HttpServletRequest requests,
                                      @RequestBody SvUpdateTenNhomRequest request) {
-          CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
+        CsrfToken csrfToken = (CsrfToken) requests.getAttribute(CsrfToken.class.getName());
 
         // Kiểm tra CSRF token ở đây
 //        if (csrfToken == null || !csrfToken.getToken().equals(requests.getHeader("X-XSRF-TOKEN"))) {
 //            throw new RestApiException("Không có quyền");
-            // Token hợp lệ, tiếp tục xử lý yêu cầu
-            // return ResponseEntity.ok("Yêu cầu hợp lệ!");
+        // Token hợp lệ, tiếp tục xử lý yêu cầu
+        // return ResponseEntity.ok("Yêu cầu hợp lệ!");
 //        }
         if (csrfToken == null) {
             throw new RestApiException("Không có quyền");

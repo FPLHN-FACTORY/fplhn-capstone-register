@@ -5,6 +5,13 @@ const checkHanSV = $("#check_han_sv").text();
 let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+const csrfToken = getCookie("XSRF-TOKEN");
+
 function clearform() {
     $("#tenDeTai").val("");
     $("#truongNhom").val("");
@@ -85,6 +92,10 @@ function openModalAddSinhVienJoinNhom(matKhauTonTai, idNhom) {
                         contentType: "application/json",
                         url: SVNhomDatnApi + "/add",
                         data: JSON.stringify(addSinhVienRequest),
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-XSRF-TOKEN": csrfToken, // Gửi token CSRF trong tiêu đề
+                        },
                         datatype: 'json',
                         success: function () {
                             bootbox.alert('Tham gia thành công', function () {
@@ -140,6 +151,10 @@ function addSinhVienHasPassword() {
         contentType: "application/json",
         url: SVNhomDatnApi + "/add",
         data: JSON.stringify(addSinhVienRequest),
+        headers: {
+            "Content-Type": "application/json",
+            "X-XSRF-TOKEN": csrfToken, // Gửi token CSRF trong tiêu đề
+        },
         datatype: 'json',
         success: function (responseData) {
             $("#modal_add_sinh_vien").modal('hide');
@@ -225,6 +240,10 @@ function createNhomDatn() {
             contentType: "application/json",
             url: SVNhomDatnApi,
             data: JSON.stringify(nhomDatnRequest),
+            headers: {
+                "Content-Type": "application/json",
+                "X-XSRF-TOKEN": csrfToken, // Gửi token CSRF trong tiêu đề
+            },
             dataType: 'json',
             success: function (responseData) {
                 $("#modal_create").modal("hide");
