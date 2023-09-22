@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -53,5 +54,19 @@ public final class DtDotDangKyRestController extends BaseController {
         String coSoId = session.getCoSoId();
         return new ResponseObject(dotDangKyService.detail(id, coSoId));
     }
+
+    @GetMapping("/create-file-log")
+    public ResponseObject createFileLog(@RequestParam(name = "tenDotDangKy", defaultValue = "") String tenDotDangKy) {
+        return new ResponseObject(dotDangKyService.createFileLog(tenDotDangKy));
+    }
+
+//    @GetMapping("/download-log")
+//    public ResponseEntity<FileSystemResource> downloadFileLog(@RequestParam(name = "tenDotDangKy", defaultValue = "") String tenDotDangKy) throws ZipException {
+//        File file = dotDangKyService.downloadFileLog(tenDotDangKy);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+//        return new ResponseEntity<>(new FileSystemResource(file), headers, HttpStatus.OK);
+//
+//    }
 
 }

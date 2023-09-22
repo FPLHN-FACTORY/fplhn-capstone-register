@@ -408,3 +408,60 @@ function detail(dotDangKyid) {
     });
 }
 
+function createFileLog(tenDotDangKy) {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: dotDangKyApi + "/create-file-log?tenDotDangKy=" + tenDotDangKy,
+        dataType: 'json',
+        success: function (responseData) {
+            console.log(responseData.data)
+            if (responseData.data) {
+                bootbox.alert({
+                    message: 'Tạo file log thành công',
+                    backdrop: true
+                });
+            } else {
+                bootbox.alert({
+                    message: 'Tạo file log thất bại',
+                    backdrop: true
+                });
+            }
+
+        },
+        error: function (e) {
+            bootbox.alert({
+                message: 'Lỗi ' + e.responseJSON.message,
+                backdrop: true
+            });
+        }
+    });
+}
+
+// function downloadFileLog(tenDotDangKy) {
+//     $.ajax({
+//         type: "GET",
+//         contentType: "application/json",
+//         url: dotDangKyApi + "/download-log?tenDotDangKy=" + tenDotDangKy,
+//         success: function (blob) {
+//             const url = window.URL.createObjectURL(blob);
+//             const a = document.createElement('a');
+//             a.href = url;
+//             a.download = 'file.zip';
+//             document.body.appendChild(a);
+//             a.click();
+//             // window.open(dotDangKyApi + "/download-log?tenDotDangKy=" + tenDotDangKy, '_self');
+//             bootbox.alert({
+//                 message: 'Tải xuống thành công',
+//                 backdrop: true
+//             });
+//         },
+//         error: function (e) {
+//             bootbox.alert({
+//                 message: 'File log chưa được khởi tạo',
+//                 backdrop: true
+//             });
+//         }
+//     });
+// }
+

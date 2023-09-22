@@ -37,4 +37,7 @@ public interface DtDotDangKyService {
 
     DotDangKy checkDateDotDangKy(DtBaseDotDangKyRequest request, String id, String coSoId);
 
+    Boolean createFileLog(String tenDotDangKy);
+
+//    File downloadFileLog(String tenDotDangKy) throws ZipException;
 }

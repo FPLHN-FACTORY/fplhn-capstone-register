@@ -56,6 +56,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
     implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.5'
 
+//    // https://mvnrepository.com/artifact/net.lingala.zip4j/zip4j
+//    implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.11.5'
+
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: '2.7.8'
 

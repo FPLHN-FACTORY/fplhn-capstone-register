@@ -10,7 +10,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,6 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -33,8 +31,6 @@ import java.util.List;
 
 @Service
 public class WriterFileCSV {
-
-    private static final Logger logger = Logger.getLogger(WriterFileCSV.class);
 
     @Autowired
     private HttpSession session;
@@ -49,8 +45,7 @@ public class WriterFileCSV {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
              CSVPrinter csvPrinter = new CSVPrinter(writer,
                      CSVFormat.DEFAULT.withHeader("Mail người thao tác", "Địa chỉ IP", "Ngày thực hiện", "Method", "Nội dung thực hiện", "Actor", "Trạng thái"))) {
-            System.out.println("______ File CSV đã được tạo ______");
-            logger.info("______ File CSV đã được tạo ______");
+            System.out.println("______ File CSV đã được tạo với path: " + pathFile);
             csvPrinter.flush();
             csvPrinter.close();
             writer.close();
@@ -63,15 +58,16 @@ public class WriterFileCSV {
         return dotDangKyRepository.findById(id).get();
     }
 
-    public String tenDotDangKyHienTai() { return session.getAttribute(SessionConstant.TEN_DOT_DANG_KY).toString(); }
+    public String tenDotDangKyHienTai() {
+        return session.getAttribute(SessionConstant.TEN_DOT_DANG_KY).toString();
+    }
 
     public void writerFileCSV(String content, String pathFile, String status) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             csvPrinter.printRecord(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString(),
                     httpServletRequest.getRemoteAddr(), new Date().toString(), httpServletRequest.getMethod(), content, switchAuthor(httpServletRequest.getRequestURI()), status);
-            System.out.println("================= Nội dung file: "+ content +" ====================");
-            logger.info("================= Nội dung file: "+ content +" ====================");
+            System.out.println("================= Nội dung file: " + content);
             csvPrinter.flush();
             csvPrinter.close();
             writer.close();
@@ -84,10 +80,12 @@ public class WriterFileCSV {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(loggerObject.getPathFile(), true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             csvPrinter.printRecord(loggerObject.getMail(),
-                    loggerObject.getIP(),loggerObject.getCreateDate(), loggerObject.getMethod(), loggerObject.getContent()
-                    ,loggerObject.getAuthor() , loggerObject.getStatus());
-            System.out.println("================= Nội dung file: "+ loggerObject.getContent() +" ====================");
-            logger.info("================= Nội dung file: "+ loggerObject.getContent() +" ====================");
+                    loggerObject.getIP(), loggerObject.getCreateDate(), loggerObject.getMethod(), loggerObject.getContent()
+                    , loggerObject.getAuthor(), loggerObject.getStatus());
+            System.out.println("======================================================");
+            System.out.println("================= Path file: " + loggerObject.getPathFile());
+            System.out.println("================= Nội dung file: " + loggerObject.getContent());
+            System.out.println("======================================================");
             csvPrinter.flush();
             csvPrinter.close();
             writer.close();
@@ -106,19 +104,16 @@ public class WriterFileCSV {
         loggerObject.setCreateDate(new Date().toString());
         loggerObject.setMethod(httpServletRequest.getMethod());
         loggerObject.setAuthor(switchAuthor(httpServletRequest.getRequestURI()));
-        System.out.println("================= Tạo mới một đối tượng LoggerObject ====================");
-        logger.info("================= Tạo mới một đối tượng LoggerObject ====================");
         return loggerObject;
     }
 
     public void writerAllObjectFileCSV(List<LoggerObject> loggerObject, String pathFile) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-            for (LoggerObject el: loggerObject) {
+            for (LoggerObject el : loggerObject) {
                 csvPrinter.printRecord(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString(),
                         httpServletRequest.getRemoteAddr(), new Date().toString(), httpServletRequest.getMethod(), el.getContent(), switchAuthor(httpServletRequest.getRequestURI()), el.getStatus());
-                System.out.println("================= Nội dung file: "+ el.getContent() +" ====================");
-                logger.info("================= Nội dung file: "+ el.getContent() +" ====================");
+                System.out.println("================= Nội dung file: " + el.getContent());
             }
             csvPrinter.flush();
             csvPrinter.close();
@@ -168,12 +163,30 @@ public class WriterFileCSV {
     }
 
     public String covertFileName(String fileOld) {
-        String chuoiKhongDau = Normalizer.normalize(fileOld, Normalizer.Form.NFD)
-                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        String chuoiKhongDau = removeDiacritics(fileOld);
         String chuoiChuThuong = chuoiKhongDau.toLowerCase();
-        String fileNew = chuoiChuThuong.replace(" ", "_");
+        String output = chuoiChuThuong.replaceAll("[^a-zA-Z0-9]", "_");
+        String fileNew = output.replace(" ", "_");
 
         return fileNew;
+    }
+
+    public static String removeDiacritics(String text) {
+        text = text.replaceAll("[àáạảãâầấậẩẫăằắặẳẵ]", "a")
+                .replaceAll("[èéẹẻẽêềếệểễ]", "e")
+                .replaceAll("[ìíịỉĩ]", "i")
+                .replaceAll("[òóọỏõôồốộổỗơờớợởỡ]", "o")
+                .replaceAll("[ùúụủũưừứựửữ]", "u")
+                .replaceAll("[ỳýỵỷỹ]", "y")
+                .replaceAll("[đ]", "d")
+                .replaceAll("[ÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴ]", "A")
+                .replaceAll("[ÈÉẸẺẼÊỀẾỆỂỄ]", "E")
+                .replaceAll("[ÌÍỊỈĨ]", "I")
+                .replaceAll("[ÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠ]", "O")
+                .replaceAll("[ÙÚỤỦŨƯỪỨỰỬỮ]", "U")
+                .replaceAll("[ỲÝỴỶỸ]", "Y")
+                .replaceAll("[Đ]", "D");
+        return text;
     }
 
     // trỏ đến đường dẫn folder /cơ sở/đợt đăng ký
@@ -187,6 +200,11 @@ public class WriterFileCSV {
         }
         String path = getSwitchCoSo(tenCoSo) + covertFileName(tenDotDangKy) + "/";
         return path;
+    }
+
+    // trỏ đến file ghi luông nhóm datn
+    public String getPathFileLuongNhomDatn(String tenDotDangKy) {
+        return getPathFileByDotDangKyAndCoSo(tenDotDangKy) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN);
     }
 
     public String getPropertiesRead(String constant) {
@@ -221,8 +239,7 @@ public class WriterFileCSV {
         if (!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
-                System.out.println("================= Tạo mới folder thành công ====================");
-                logger.info("================= Tạo mới folder thất bại ====================");
+                System.out.println("================= Tạo mới folder thành công với path: " + path);
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -284,7 +301,7 @@ public class WriterFileCSV {
         if (api.startsWith("/api/dao-tao")) {
             folder = getPathFileByDotDangKyAndCoSo(tenDotDangKy) + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO);
             if (api.contains("/can-bo")) {
-                pathFile =  folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CAN_BO);
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CAN_BO);
             }
 
             if (api.contains("/chuyen-nganh")) {
@@ -336,14 +353,20 @@ public class WriterFileCSV {
 
         }
 
-        if (api.startsWith("/api/sinh-vien")){
+        if (api.startsWith("/api/sinh-vien")) {
             folder = getPathFileByDotDangKyAndCoSo(tenDotDangKy) + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_SINH_VIEN);
             pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
         }
 
 
         System.out.println("========= pathFile: " + pathFile);
-        logger.info("======== pathFile: " + pathFile);
         return pathFile;
     }
+
+//    public File downloadFileLog(String pathFile) throws ZipException {
+//        ZipFile zipFile = new ZipFile(pathFile + "download_log.zip");
+//        zipFile.addFolder(new File(pathFile));
+//        File file = new File(pathFile + "download_log.zip");
+//        return file;
+//    }
 }
