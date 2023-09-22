@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoggerObject {
+public class LoggerObject implements Serializable {
 
     private String content;
 
@@ -28,4 +30,6 @@ public class LoggerObject {
     private String tenDotDangKy;
 
     private String status;
+
+    private String pathFile;
 }

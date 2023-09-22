@@ -26,16 +26,19 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.EmailSender;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -94,6 +97,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Autowired
     private EmailSender emailSender;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     private List<CnSinhVienTheoDotExcel> list;
 
@@ -158,6 +164,15 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CNBM_CHOT);
         cnNhomDatnRepository.save(nhomDatnCheck.get());
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Chủ nhiệm đã chốt đề tài nhóm: " + nhomDatnCheck.get().getMaNhom(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -167,6 +182,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         if (listIdNhom.size() != listNhomDatn.size()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
+        List<LoggerObject> loggerObjectList = new ArrayList<>();
         for (NhomDatn nhomDatn : listNhomDatn) {
             if (nhomDatn.getTrangThai() != TrangThaiNhom.GVHD_CHOT) {
                 throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
@@ -175,8 +191,20 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
             }
             nhomDatn.setTrangThai(TrangThaiNhom.CNBM_CHOT);
+            LoggerObject loggerObject = new LoggerObject();
+            loggerObject.setContent("Chủ nhiệm đã chốt đề tài nhóm: " + nhomDatn.getMaNhom());
+            loggerObject.setStatus(ConfigurationsConstant.TRUE);
+            loggerObjectList.add(loggerObject);
         }
         cnNhomDatnRepository.saveAll(listNhomDatn);
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerAllObjectFileCSV(loggerObjectList,
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -232,6 +260,15 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
                 "Xác nhận nhóm thành lập", messageSV);
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Chủ nhiệm đã xác nhận nhóm: " + nhomDatnCheck.get().getMaNhom(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -241,6 +278,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         if (listIdNhom.size() != listNhomDatn.size()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
+        List<LoggerObject> list = new ArrayList<>();
         for (NhomDatn nhomDatn : listNhomDatn) {
             if (nhomDatn.getTrangThai() != TrangThaiNhom.MOI_THANH_LAP) {
                 throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
@@ -249,6 +287,18 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
             }
             nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
+            LoggerObject loggerObject = new LoggerObject();
+            loggerObject.setContent("Chủ nhiệm đã xác nhận nhóm: " + nhomDatn.getMaNhom());
+            loggerObject.setStatus(ConfigurationsConstant.TRUE);
+            list.add(loggerObject);
+        }
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerAllObjectFileCSV(list,
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN));
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         cnNhomDatnRepository.saveAll(listNhomDatn);
         return true;
@@ -269,6 +319,15 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CAN_SUA);
         nhomDatnCheck.get().setNhanXet(nhanXet);
         cnNhomDatnRepository.save(nhomDatnCheck.get());
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Chủ nhiệm đã từ chối chốt đề tài nhóm: " + nhomDatnCheck.get().getMaNhom(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -297,6 +356,15 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         "Nhóm đã bị xóa", message)
         );
         newThread.start();
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Chủ nhiệm đã xóa nhóm: " + nhomDatnCheck.get().getMaNhom(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -361,6 +429,15 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         nhomDatn.setDotDangKyId(cnCreateNhomDatnRequest.getDotDangKyId());
         nhomDatn.setId(cnNhomDatnRepository.save(nhomDatn).getId());
         cnNhomDatnRepository.setNhomForTruongNhom(nhomDatn.getId(), monDatnId, idTruongNhom, commonHelper.getDotDangKyHienTai());
+
+        try {
+            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
+            writerFileCSV.writerFileCSV("Chủ nhiệm đã tạo nhóm: " + nhomDatn.getMaNhom(),
+                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
+                    ConfigurationsConstant.TRUE);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 

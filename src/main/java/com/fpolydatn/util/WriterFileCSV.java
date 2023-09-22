@@ -10,6 +10,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,8 @@ import java.util.List;
 @Service
 public class WriterFileCSV {
 
+    private static final Logger logger = Logger.getLogger(WriterFileCSV.class);
+
     @Autowired
     private HttpSession session;
 
@@ -47,6 +50,7 @@ public class WriterFileCSV {
              CSVPrinter csvPrinter = new CSVPrinter(writer,
                      CSVFormat.DEFAULT.withHeader("Mail người thao tác", "Địa chỉ IP", "Ngày thực hiện", "Method", "Nội dung thực hiện", "Actor", "Trạng thái"))) {
             System.out.println("______ File CSV đã được tạo ______");
+            logger.info("______ File CSV đã được tạo ______");
             csvPrinter.flush();
             csvPrinter.close();
             writer.close();
@@ -66,7 +70,8 @@ public class WriterFileCSV {
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             csvPrinter.printRecord(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString(),
                     httpServletRequest.getRemoteAddr(), new Date().toString(), httpServletRequest.getMethod(), content, switchAuthor(httpServletRequest.getRequestURI()), status);
-            System.out.println("Nội dung file CSV: " + content);
+            System.out.println("================= Nội dung file: "+ content +" ====================");
+            logger.info("================= Nội dung file: "+ content +" ====================");
             csvPrinter.flush();
             csvPrinter.close();
             writer.close();
@@ -75,13 +80,45 @@ public class WriterFileCSV {
         }
     }
 
+    public void writerFileCSV(LoggerObject loggerObject) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(loggerObject.getPathFile(), true));
+             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+            csvPrinter.printRecord(loggerObject.getMail(),
+                    loggerObject.getIP(),loggerObject.getCreateDate(), loggerObject.getMethod(), loggerObject.getContent()
+                    ,loggerObject.getAuthor() , loggerObject.getStatus());
+            System.out.println("================= Nội dung file: "+ loggerObject.getContent() +" ====================");
+            logger.info("================= Nội dung file: "+ loggerObject.getContent() +" ====================");
+            csvPrinter.flush();
+            csvPrinter.close();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public LoggerObject createLoggerObject(String content, String pathFile, String status) {
+        LoggerObject loggerObject = new LoggerObject();
+        loggerObject.setPathFile(pathFile);
+        loggerObject.setContent(content);
+        loggerObject.setStatus(status);
+        loggerObject.setIP(httpServletRequest.getRemoteAddr());
+        loggerObject.setMail(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString());
+        loggerObject.setCreateDate(new Date().toString());
+        loggerObject.setMethod(httpServletRequest.getMethod());
+        loggerObject.setAuthor(switchAuthor(httpServletRequest.getRequestURI()));
+        System.out.println("================= Tạo mới một đối tượng LoggerObject ====================");
+        logger.info("================= Tạo mới một đối tượng LoggerObject ====================");
+        return loggerObject;
+    }
+
     public void writerAllObjectFileCSV(List<LoggerObject> loggerObject, String pathFile) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             for (LoggerObject el: loggerObject) {
                 csvPrinter.printRecord(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString(),
                         httpServletRequest.getRemoteAddr(), new Date().toString(), httpServletRequest.getMethod(), el.getContent(), switchAuthor(httpServletRequest.getRequestURI()), el.getStatus());
-                System.out.println("Nội dung file CSV: " + el.getContent());
+                System.out.println("================= Nội dung file: "+ el.getContent() +" ====================");
+                logger.info("================= Nội dung file: "+ el.getContent() +" ====================");
             }
             csvPrinter.flush();
             csvPrinter.close();
@@ -108,6 +145,7 @@ public class WriterFileCSV {
         return "";
     }
 
+    // Đọc file csv
     public List<LoggerObject> readFileCSV(String pathFile) {
         List<LoggerObject> list = new ArrayList<>();
         try (Reader reader = new FileReader(pathFile);
@@ -138,6 +176,7 @@ public class WriterFileCSV {
         return fileNew;
     }
 
+    // trỏ đến đường dẫn folder /cơ sở/đợt đăng ký
     public String getPathFileByDotDangKyAndCoSo(String tenDotDangKy) {
         List<SimpleEntityProj> listCoSo = (List<SimpleEntityProj>) session.getAttribute("listCoSo");
         String idCoSo = session.getAttribute(SessionConstant.CO_SO_ID).toString();
@@ -155,6 +194,7 @@ public class WriterFileCSV {
         return po.getPropertyConfig(constant);
     }
 
+    // trỏ đến đường dẫn đến folder /cơ sở
     public String getSwitchCoSo(String coSo) {
         if (coSo.equalsIgnoreCase("Hà Nội")) {
             return getPropertiesRead(ConfigurationsConstant.PATH_FILE_CO_SO_HA_NOI);
@@ -174,12 +214,15 @@ public class WriterFileCSV {
         return getPropertiesRead(ConfigurationsConstant.PATH_FILE_CO_SO_KHAC);
     }
 
+    // tạo mới một folder lưu
     public boolean createFolder(String folderPath) {
         Path path = Paths.get(folderPath);
 
         if (!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
+                System.out.println("================= Tạo mới folder thành công ====================");
+                logger.info("================= Tạo mới folder thất bại ====================");
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -234,5 +277,73 @@ public class WriterFileCSV {
         }
     }
 
-//    public static String swit
+    public String getPathFileActiveWithApi(String tenDotDangKy) {
+        String api = httpServletRequest.getRequestURI();
+        String folder = "";
+        String pathFile = "";
+        if (api.startsWith("/api/dao-tao")) {
+            folder = getPathFileByDotDangKyAndCoSo(tenDotDangKy) + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO);
+            if (api.contains("/can-bo")) {
+                pathFile =  folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CAN_BO);
+            }
+
+            if (api.contains("/chuyen-nganh")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CHUYEN_NGANH);
+            }
+
+            if (api.contains("/dot-dang-ky")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_DOT_DANG_KY);
+            }
+
+            if (api.contains("/giang-vien-huong-dan")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_GIANG_VIEN_HUONG_DAN);
+            }
+
+            if (api.contains("/hoc-ky")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_HOC_KY);
+            }
+
+            if (api.contains("/mon-datn")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_MON_DATN);
+            }
+
+            if (api.contains("/nhom-datn")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+            }
+
+            if (api.contains("/sinh-vien")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN);
+            }
+
+        }
+
+        if (api.startsWith("/api/giang-vien")) {
+            folder = getPathFileByDotDangKyAndCoSo(tenDotDangKy) + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_GIANG_VIEN);
+            if (api.contains("/nhom-datn")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+            }
+        }
+
+        if (api.startsWith("/api/chu-nhiem")) {
+            folder = getPathFileByDotDangKyAndCoSo(tenDotDangKy) + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM);
+            if (api.contains("/sinh-vien")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN);
+            }
+
+            if (api.contains("/nhom-datn")) {
+                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+            }
+
+        }
+
+        if (api.startsWith("/api/sinh-vien")){
+            folder = getPathFileByDotDangKyAndCoSo(tenDotDangKy) + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_SINH_VIEN);
+            pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+        }
+
+
+        System.out.println("========= pathFile: " + pathFile);
+        logger.info("======== pathFile: " + pathFile);
+        return pathFile;
+    }
 }

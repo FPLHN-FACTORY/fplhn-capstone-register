@@ -16,6 +16,8 @@ import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,9 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Autowired
     private WriterFileCSV writerFileCSV;
 
+    @Autowired
+    private LogService logService;
+
     @Override
     public PageableObject<DtDotDangKyResponse> findByCoSo(DtFindDotDangKyRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
@@ -85,14 +90,14 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
 
         try {
             writerFileCSV.genFolderLogger(dotDangKy.getTenDotDangKy());
-            writerFileCSV.writerFileCSV("Đợt đăng ký: " + dotDangKy.getTenDotDangKy() + " được tạo.",
-                    writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKy.getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
-                    ConfigurationsConstant.TRUE);
+            String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKy.getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN);
+            LoggerObject loggerObject = writerFileCSV.createLoggerObject("Test Rabbit nhé !!!", pathFile, "Thành công");
+            logService.sendLogMessage(loggerObject);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-
-        return dtDotDangKyRepository.save(dotDangKy);
+        return dotDangKy;
+//        return dtDotDangKyRepository.save(dotDangKy);
     }
 
     @Override
