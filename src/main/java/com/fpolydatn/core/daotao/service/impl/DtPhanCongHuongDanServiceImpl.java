@@ -7,24 +7,18 @@ import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanMonDatnChoGiangVienHuongDanResponse;
-import com.fpolydatn.core.daotao.repository.DtGiangVienHDRepository;
-import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtPhanCongHuongDanRepository;
 import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.entity.PhanCongHuongDanId;
-import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
-import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,15 +31,6 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
 
     @Autowired
     private DtPhanCongHuongDanRepository phanCongHuongDanRepository;
-
-    @Autowired
-    private WriterFileCSV writerFileCSV;
-
-    @Autowired
-    private DtMonDatnRepository monDatnRepository;
-
-    @Autowired
-    private DtGiangVienHDRepository giangVienHDRepository;
 
     @Override
     public PageableObject<DtPhanCongHuongDanResponse> search(String id, final DtFindPhanCongHuongDanRequest req, int page) {
@@ -77,15 +62,6 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
         if (Objects.isNull(phanCongHuongDan)) {
             throw new RestApiException(Message.PHAN_CONG_HUONG_DAN_NOT_EXIST);
         }
-        try {
-            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
-            writerFileCSV.writerFileCSV("Giảng viên: " + giangVienHDRepository.findById(phanCongHuongDan.getGiangVienId()).get().getTenTaiKhoan() +
-                            " đã bị xóa khỏi môn " + monDatnRepository.findById(phanCongHuongDan.getMonDatnId()).get().getTenMonDatn(),
-                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN),
-                    ConfigurationsConstant.TRUE);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
         phanCongHuongDanRepository.delete(phanCongHuongDan);
         return true;
     }
@@ -97,21 +73,6 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
 
     @Override
     public List<PhanCongHuongDan> addAll(List<PhanCongHuongDan> list) {
-        List<LoggerObject> listLoggerObjects = new ArrayList<>();
-        for (PhanCongHuongDan el: list) {
-            LoggerObject loggerObject = new LoggerObject();
-            loggerObject.setContent("Giảng viên: " + giangVienHDRepository.findById(el.getGiangVienId()).get().getTenTaiKhoan()
-            + " đã được phân công vào môn: " + monDatnRepository.findById(el.getMonDatnId()).get().getTenMonDatn());
-            loggerObject.setStatus(ConfigurationsConstant.TRUE);
-            listLoggerObjects.add(loggerObject);
-        }
-        try {
-            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
-            writerFileCSV.writerAllObjectFileCSV(listLoggerObjects,
-                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN));
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
         return phanCongHuongDanRepository.saveAll(list);
     }
 

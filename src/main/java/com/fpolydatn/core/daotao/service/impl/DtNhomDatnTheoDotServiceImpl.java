@@ -12,16 +12,13 @@ import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
 import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
-import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.NhomDatnRepository;
 import com.fpolydatn.repository.SinhVienRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.EmailSender;
-import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -64,9 +61,6 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
 
     @Autowired
     private EmailSender emailSender;
-
-    @Autowired
-    private WriterFileCSV writerFileCSV;
 
     private List<DtNhomDatnTheoDotResponse> listNhomDatn;
 
@@ -140,7 +134,6 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     @Override
     public Boolean deleteNhomDatn(List<String> listIdNhom) {
         List<NhomDatn> listNhomDatn = dtNhomDatnTheoDotRepository.findAllById(listIdNhom);
-        List<LoggerObject> list = new ArrayList<>();
         if (listNhomDatn.size() == 0) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
@@ -151,10 +144,6 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         for (NhomDatn nhomDatn : listNhomDatn) {
             List<SinhVien> listSinhVien = sinhVienTheoDotRepository.getAllSinhVien(nhomDatn.getId(), commonHelper.getDotDangKyHienTai());
             listSinhVienAll.addAll(listSinhVien);
-            LoggerObject loggerObject = new LoggerObject();
-            loggerObject.setContent("Đào tạo đã xóa nhóm: " + nhomDatn.getMaNhom());
-            loggerObject.setStatus(ConfigurationsConstant.TRUE);
-            list.add(loggerObject);
         }
         for (SinhVien yy : listSinhVienAll) {
             yy.setMonDatnId(null);
@@ -173,14 +162,6 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
                         "Nhóm đã bị xóa", message)
         );
         newThread.start();
-
-        try {
-            String tenDotDangKy = writerFileCSV.tenDotDangKyHienTai();
-            writerFileCSV.writerAllObjectFileCSV(list,
-                    writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN));
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
         return true;
     }
 }

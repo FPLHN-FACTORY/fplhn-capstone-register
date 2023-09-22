@@ -17,7 +17,6 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
-import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,9 +59,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     private DTMonDatnImport monDatnImport;
 
-    @Autowired
-    private WriterFileCSV writerFileCSV;
-
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
@@ -81,8 +77,6 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         }
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
         Page<DtMonDatnResponse> res = monDatnRepository.getAllByCoSo(req, pageable);
-
-        System.out.println(writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai()));
         return new PageableObject(res);
     }
 
