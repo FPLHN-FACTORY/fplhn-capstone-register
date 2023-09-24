@@ -6,14 +6,28 @@ import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class LogConsumer {
 
+    public List<LoggerObject> objects(List<LoggerObject> list) {
+        return list;
+    }
+
     @RabbitListener(queues = RabbitConstant.NAME_LOG_QUEUE)
     public void processLogMessage(LoggerObject object) {
-        System.out.println("Connect !!!");
-        System.out.println(object.getContent());
-        WriterFileCSV writerFileCSV = new WriterFileCSV();
-        writerFileCSV.writerFileCSV(object);
+        try {
+            System.out.println("Connect !!!");
+            WriterFileCSV writerFileCSV = new WriterFileCSV();
+            if (object.getTenNhom() == null) {
+                writerFileCSV.writerFileCSV(object);
+            } else {
+                writerFileCSV.writerFileCSVLuong(object);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

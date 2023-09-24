@@ -14,11 +14,14 @@ import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.NhomDatnRepository;
 import com.fpolydatn.repository.SinhVienRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.EmailSender;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -61,6 +64,12 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
 
     @Autowired
     private EmailSender emailSender;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
+    @Autowired
+    private LogService logService;
 
     private List<DtNhomDatnTheoDotResponse> listNhomDatn;
 
@@ -162,6 +171,26 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
                         "Nhóm đã bị xóa", message)
         );
         newThread.start();
+
+        listNhomDatn.forEach(el -> {
+            try {
+                String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                LoggerObject loggerObjectActive = writerFileCSV.
+                        createLoggerObject("Đào tạo đã xóa nhóm '" + el.getMaNhom() + "'",
+                                pathFileLogActive, "Thành công");
+                logService.sendLogMessage(loggerObjectActive);
+
+                String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                LoggerObject loggerObject = writerFileCSV.
+                        createLoggerObject("Đào tạo đã xóa nhóm '" + el.getMaNhom() + "'",
+                                pathFile, "Thành công");
+                loggerObject.setTenNhom(el.getMaNhom());
+                logService.sendLogMessage(loggerObject);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
+
         return true;
     }
 }

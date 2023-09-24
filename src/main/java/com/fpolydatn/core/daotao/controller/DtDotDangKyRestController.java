@@ -5,6 +5,8 @@ import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.DtCreateDotDangKyRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateDotDangKyRequest;
 import com.fpolydatn.core.daotao.service.DtDotDangKyService;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,9 @@ public final class DtDotDangKyRestController extends BaseController {
 
     @Autowired
     private DtDotDangKyService dotDangKyService;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @PostMapping
     public ResponseObject add(@RequestBody DtCreateDotDangKyRequest createDotDangKyRequest) {
@@ -58,6 +63,12 @@ public final class DtDotDangKyRestController extends BaseController {
     @GetMapping("/create-file-log")
     public ResponseObject createFileLog(@RequestParam(name = "tenDotDangKy", defaultValue = "") String tenDotDangKy) {
         return new ResponseObject(dotDangKyService.createFileLog(tenDotDangKy));
+    }
+
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+        String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_DOT_DANG_KY);
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFileLogActive));
     }
 
 //    @GetMapping("/download-log")

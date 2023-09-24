@@ -52,7 +52,8 @@ function doiTenDeTai() {
                             backdrop: true,
                             callback: function () {
                                 detailTenDeTai = responseData.data;
-                                $("#detailTenDeTai").val(detailTenDeTai == "" ? 'Chưa có' : responseData.data);
+                                // $("#detailTenDeTai").val(detailTenDeTai == "" ? 'Chưa có' : responseData.data);
+                                window.open(svNhomDatnView, '_self');
                             }
                         });
                     },
@@ -136,8 +137,8 @@ function doiTenNhom() {
                             backdrop: true,
                             callback: function () {
                                 detailTenNhom = responseData.data;
-                                $("#detailTenNhom").val(detailTenNhom == "" ? 'Chưa có' : responseData.data);
-                                // window.open(svNhomDatnView, '_self');
+                                // $("#detailTenNhom").val(detailTenNhom == "" ? 'Chưa có' : responseData.data);
+                                window.open(svNhomDatnView, '_self');
                             }
                         });
                     },

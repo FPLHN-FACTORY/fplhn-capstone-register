@@ -9,7 +9,11 @@ import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -38,6 +44,9 @@ public class DtGiangVienRestController extends BaseController {
 
     @Autowired
     private CommonHelper commonHelper;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @PostMapping
     public ResponseObject add(@RequestBody DtCreateGiangVienHDRequest cmd) {
@@ -95,4 +104,13 @@ public class DtGiangVienRestController extends BaseController {
         request.setCoSoId(session.getCoSoId());
         giangVienHDService.DtGiangVienHDMauExportExcel(response, typeExcel, request);
     }
+
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+            String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_GIANG_VIEN_HUONG_DAN);
+
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFile));
+    }
+
+
 }

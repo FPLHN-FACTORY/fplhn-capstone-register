@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -45,6 +46,19 @@ public class WriterFileCSV {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
              CSVPrinter csvPrinter = new CSVPrinter(writer,
                      CSVFormat.DEFAULT.withHeader("Mail người thao tác", "Địa chỉ IP", "Ngày thực hiện", "Method", "Nội dung thực hiện", "Actor", "Trạng thái"))) {
+            System.out.println("______ File CSV đã được tạo với path: " + pathFile);
+            csvPrinter.flush();
+            csvPrinter.close();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createFileCSVLuong(String pathFile) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
+             CSVPrinter csvPrinter = new CSVPrinter(writer,
+                     CSVFormat.DEFAULT.withHeader("Mail người thao tác", "Địa chỉ IP", "Ngày thực hiện", "Method", "Nội dung thực hiện", "Actor", "Trạng thái", "Mã nhóm"))) {
             System.out.println("______ File CSV đã được tạo với path: " + pathFile);
             csvPrinter.flush();
             csvPrinter.close();
@@ -82,6 +96,24 @@ public class WriterFileCSV {
             csvPrinter.printRecord(loggerObject.getMail(),
                     loggerObject.getIP(), loggerObject.getCreateDate(), loggerObject.getMethod(), loggerObject.getContent()
                     , loggerObject.getAuthor(), loggerObject.getStatus());
+            System.out.println("======================================================");
+            System.out.println("================= Path file: " + loggerObject.getPathFile());
+            System.out.println("================= Nội dung file: " + loggerObject.getContent());
+            System.out.println("======================================================");
+            csvPrinter.flush();
+            csvPrinter.close();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writerFileCSVLuong(LoggerObject loggerObject) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(loggerObject.getPathFile(), true));
+             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+            csvPrinter.printRecord(loggerObject.getMail(),
+                    loggerObject.getIP(), loggerObject.getCreateDate(), loggerObject.getMethod(), loggerObject.getContent()
+                    , loggerObject.getAuthor(), loggerObject.getStatus(), loggerObject.getTenNhom());
             System.out.println("======================================================");
             System.out.println("================= Path file: " + loggerObject.getPathFile());
             System.out.println("================= Nội dung file: " + loggerObject.getContent());
@@ -147,14 +179,57 @@ public class WriterFileCSV {
              CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);) {
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+            boolean isFirstLine = true;
             for (CSVRecord csvRecord : csvRecords) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue; // Bỏ qua dòng đầu tiên
+                }
                 LoggerObject loggerObject = new LoggerObject();
                 loggerObject.setMail(csvRecord.get(0));
                 loggerObject.setIP(csvRecord.get(1));
                 loggerObject.setCreateDate(csvRecord.get(2));
-                loggerObject.setCreateDate(csvRecord.get(3));
+                loggerObject.setMethod(csvRecord.get(3));
                 loggerObject.setContent(csvRecord.get(4));
+                loggerObject.setAuthor(csvRecord.get(5));
+                loggerObject.setStatus(csvRecord.get(6));
                 list.add(loggerObject);
+            }
+            Collections.reverse(list);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Đọc file csv
+    public List<LoggerObject> readFileCSVLuong(LoggerObject object) {
+        List<LoggerObject> list = new ArrayList<>();
+
+        try (Reader reader = new FileReader(object.getPathFile());
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);) {
+
+            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+            boolean isFirstLine = true;
+
+            for (CSVRecord csvRecord : csvRecords) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue; // Bỏ qua dòng đầu tiên
+                }
+
+                LoggerObject loggerObject = new LoggerObject();
+                loggerObject.setMail(csvRecord.get(0));
+                loggerObject.setIP(csvRecord.get(1));
+                loggerObject.setCreateDate(csvRecord.get(2));
+                loggerObject.setMethod(csvRecord.get(3));
+                loggerObject.setContent(csvRecord.get(4));
+                loggerObject.setAuthor(csvRecord.get(5));
+                loggerObject.setStatus(csvRecord.get(6));
+                loggerObject.setTenNhom(csvRecord.get(7));
+                if (object.getTenNhom().equals(loggerObject.getTenNhom())) {
+                    list.add(loggerObject);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -191,14 +266,7 @@ public class WriterFileCSV {
 
     // trỏ đến đường dẫn folder /cơ sở/đợt đăng ký
     public String getPathFileByDotDangKyAndCoSo(String tenDotDangKy) {
-        List<SimpleEntityProj> listCoSo = (List<SimpleEntityProj>) session.getAttribute("listCoSo");
-        String idCoSo = session.getAttribute(SessionConstant.CO_SO_ID).toString();
-        String tenCoSo = "";
-        Iterator<SimpleEntityProj> iterator = listCoSo.stream().filter(el -> el.getId().equals(idCoSo)).iterator();
-        if (iterator.hasNext()) {
-            tenCoSo = iterator.next().getName();
-        }
-        String path = getSwitchCoSo(tenCoSo) + covertFileName(tenDotDangKy) + "/";
+        String path = getSwitchCoSo() + covertFileName(tenDotDangKy) + "/";
         return path;
     }
 
@@ -213,7 +281,16 @@ public class WriterFileCSV {
     }
 
     // trỏ đến đường dẫn đến folder /cơ sở
-    public String getSwitchCoSo(String coSo) {
+    public String getSwitchCoSo() {
+        List<SimpleEntityProj> listCoSo = (List<SimpleEntityProj>) session.getAttribute("listCoSo");
+
+        String idCoSo = session.getAttribute(SessionConstant.CO_SO_ID).toString();
+        String coSo = "";
+        Iterator<SimpleEntityProj> iterator = listCoSo.stream().filter(el -> el.getId().equals(idCoSo)).iterator();
+        if (iterator.hasNext()) {
+            coSo = iterator.next().getName();
+        }
+
         if (coSo.equalsIgnoreCase("Hà Nội")) {
             return getPropertiesRead(ConfigurationsConstant.PATH_FILE_CO_SO_HA_NOI);
         }
@@ -270,16 +347,12 @@ public class WriterFileCSV {
         session.setAttribute(SessionConstant.TEN_DOT_DANG_KY, tenDoDangKy);
         String pathFile = getPathFileByDotDangKyAndCoSo(tenDoDangKy);
         if (createFolder(pathFile)) {
-            createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN));
+            createFileCSVLuong(pathFile + getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN));
             if (createFolder(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO))) {
-                createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CAN_BO));
-                createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CHUYEN_NGANH));
-                createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_DOT_DANG_KY));
                 createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_GIANG_VIEN_HUONG_DAN));
-                createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_HOC_KY));
-                createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_MON_DATN));
                 createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN));
                 createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN));
+                createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_PHAN_CONG_HUONG_DAN));
             }
             if (createFolder(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM))) {
                 createFileCSV(pathFile + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN));
@@ -301,15 +374,19 @@ public class WriterFileCSV {
         if (api.startsWith("/api/dao-tao")) {
             folder = getPathFileByDotDangKyAndCoSo(tenDotDangKy) + getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO);
             if (api.contains("/can-bo")) {
-                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CAN_BO);
+                pathFile = getSwitchCoSo() + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CAN_BO);
             }
 
             if (api.contains("/chuyen-nganh")) {
-                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CHUYEN_NGANH);
+                pathFile = getSwitchCoSo() + getPropertiesRead(ConfigurationsConstant.NAME_FILE_CHUYEN_NGANH);
             }
 
             if (api.contains("/dot-dang-ky")) {
-                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_DOT_DANG_KY);
+                pathFile = getSwitchCoSo() + getPropertiesRead(ConfigurationsConstant.NAME_FILE_DOT_DANG_KY);
+            }
+
+            if (api.contains("/nhom-mon-datn")) {
+                pathFile = getSwitchCoSo() + getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_MON_DATN);
             }
 
             if (api.contains("/giang-vien-huong-dan")) {
@@ -317,11 +394,11 @@ public class WriterFileCSV {
             }
 
             if (api.contains("/hoc-ky")) {
-                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_HOC_KY);
+                pathFile = getSwitchCoSo() + getPropertiesRead(ConfigurationsConstant.NAME_FILE_HOC_KY);
             }
 
             if (api.contains("/mon-datn")) {
-                pathFile = folder + getPropertiesRead(ConfigurationsConstant.NAME_FILE_MON_DATN);
+                pathFile = getSwitchCoSo() + getPropertiesRead(ConfigurationsConstant.NAME_FILE_MON_DATN);
             }
 
             if (api.contains("/nhom-datn")) {

@@ -10,9 +10,15 @@ import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvMonDatnService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
+import com.fpolydatn.infrastructure.constant.RabbitConstant;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.infrastructure.rabbit.LogConsumer;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
+import com.fpolydatn.util.WriterFileCSV;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +50,8 @@ public class SvNhomDatnController extends BaseController {
     @Autowired
     MocThoiGianCommon mocThoiGianCommon;
 
-
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
@@ -78,11 +85,17 @@ public class SvNhomDatnController extends BaseController {
                 listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
             }
             Boolean checkThoiDiemJoinNhom = svNhomDatnService.checkThoiDiemJoinNhomGanNhat(idUSer);
+            LoggerObject object = new LoggerObject();
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            object.setTenNhom(svDetailNhomDatnResponse.get(0).getMaNhom());
+            object.setPathFile(pathFile);
+
             model.addAttribute("checkThoiDiemJoinNhom", checkThoiDiemJoinNhom);
             model.addAttribute("soThanhVien", soThanhVien);
             model.addAttribute("listGiangVien", listGiangVien);
             model.addAttribute("checkTruongNhom", checkTruongNhom);
             model.addAttribute("nhomDatnThamGia", svDetailNhomDatnResponse);
+            model.addAttribute("loggerShowHistory", writerFileCSV.readFileCSVLuong(object));
             return "sinhvien/sv-nhom-datn";
         }
     }

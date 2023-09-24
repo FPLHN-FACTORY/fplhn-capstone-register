@@ -13,6 +13,36 @@ $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 })
 
+function openModalHistory() {
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: giangVienHuongDanApi + "/history",
+        dataType: 'json',
+        success: function (responseData) {
+            if (responseData.data.length == 0) {
+                $("#listHistory").html(``);
+            } else {
+                $("#listHistory").html(responseData.data.map(function (element, index) {
+                    return `
+                <tr class="table-light">                 
+                      <td class="text-center align-middle">${index + 1}</td>
+                      <td class="text-center align-middle">${element.mail}</td>
+                      <td class="text-center align-middle">${element.createDate}</td>
+                      <td class="text-center align-middle">${element.content}</td>
+                      <td class="text-center align-middle">${element.author}</td>
+                      
+                </tr>
+               `
+                }));
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
 function clearData() {
     $("#ten_tai_khoan").val("");
     $("#chuyenNganh").val("");

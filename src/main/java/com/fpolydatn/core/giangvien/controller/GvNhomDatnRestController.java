@@ -11,6 +11,8 @@ import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.core.giangvien.service.GvSinhVienService;
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
 import com.fpolydatn.entity.NhomDatn;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,9 @@ public class GvNhomDatnRestController extends BaseController {
 
     @Autowired
     private GvSinhVienService sinhVienService;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @GetMapping()
     public ResponseObject detailToTalSinhVien(final SvFindSinhVienRequest request) {
@@ -72,4 +77,9 @@ public class GvNhomDatnRestController extends BaseController {
         return new ResponseObject(nhomDatnResponse);
     }
 
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_GIANG_VIEN) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFile));
+    }
 }

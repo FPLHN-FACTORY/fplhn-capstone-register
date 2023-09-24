@@ -4,7 +4,10 @@ import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.CanBo;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fpolydatn.core.common.base.PageableObject;
@@ -38,6 +41,12 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     @Autowired
     private DtCanBoRepository dtCanBoRepository;
 
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
+    @Autowired
+    private LogService logService;
+
     @Override
     public List<SimpleEntityProj> findAllSimpleEntityByCoSo(String id) {
         return dtChuyenNganhRepository.findAllSimpleEntityByCoSo(id);
@@ -61,6 +70,15 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         ChuyenNganh chuyenNganhUpdate = chuyenNganhById.get();
         chuyenNganhUpdate.setTenChuyenNganh(req.getTenChuyenNganh());
         chuyenNganhUpdate.setChuNhiemBoMon(req.getChuNhiemBoMon());
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chuyên ngành '" + chuyenNganhUpdate.getTenChuyenNganh() + "' đã được sửa.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return dtChuyenNganhRepository.save(chuyenNganhUpdate);
     }
 
@@ -76,6 +94,15 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
             if (!chuNhiemBoMonCheck.isPresent()) {
                 throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
             }
+        }
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chuyên ngành '" + chuyenNganh.getTenChuyenNganh() + "' đã được thêm vào hệ thống.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         return dtChuyenNganhRepository.save(chuyenNganh);
     }
@@ -93,6 +120,15 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         }
         if (countInMonDatn != 0) {
             throw new RestApiException(Message.CHUYEN_NGANH_KHONG_DUOC_XOA);
+        }
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chuyên ngành '" + chuyenNganhCheck.get().getTenChuyenNganh() + "' đã bị xóa khỏi hệ thống.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         dtChuyenNganhRepository.delete(chuyenNganhCheck.get());
         return true;

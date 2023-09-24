@@ -18,8 +18,11 @@ import com.fpolydatn.infrastructure.constant.Constants;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,6 +58,12 @@ public class DtCanBoServiceImpl implements DtCanBoService {
 
     private FormUtils formUtils = new FormUtils();
 
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
+    @Autowired
+    private LogService logService;
+
     @Override
     public PageableObject<DtCanBoResponse> search(final DtFindCanBoRequest canBoRequest) {
         Pageable pageable = PageRequest.of(canBoRequest.getPage(), canBoRequest.getSize());
@@ -78,6 +87,15 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         }
         CanBo canBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         dtCanBoRepository.save(canBo);
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Cán bộ '" + canBo.getTenTaiKhoan() + "' đã được thêm vào hệ thống.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -93,6 +111,15 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         }
         if(check == null || check == 0) {
             dtCanBoRepository.delete(canBoCheck.get());
+        }
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Cán bộ '" + canBoCheck.get().getTenTaiKhoan() + "' đã bị xóa khỏi hệ thống.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         return true;
     }
@@ -129,6 +156,15 @@ public class DtCanBoServiceImpl implements DtCanBoService {
             throw new RestApiException(Message.TEN_TAI_KHOAN_CAN_BO_EXIST);
         }
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Cán bộ '" + updateCanBo.getTenTaiKhoan() + "' đã được sửa.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return dtCanBoRepository.save(updateCanBo);
     }
 
@@ -208,6 +244,17 @@ public class DtCanBoServiceImpl implements DtCanBoService {
             });
             if (dtCanBoResponseMessage.getStatus() == true) {
                 dtCanBoRepository.saveAll(listCanBo.values());
+                listCanBo.values().forEach(el -> {
+                    try {
+                        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+                        LoggerObject loggerObjectActive = writerFileCSV.
+                                createLoggerObject("Cán bộ '" + el.getTenTaiKhoan() + "' đã được thêm vào hệ thống.",
+                                        pathFileLogActive, "Thành công");
+                        logService.sendLogMessage(loggerObjectActive);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -11,7 +11,9 @@ import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtMessMonDatnReponse;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.service.DtMonDatnService;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +38,9 @@ public class DtMonDatnRestController extends BaseController {
 
     @Autowired
     private CommonHelper commonHelper;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
@@ -82,4 +87,10 @@ public class DtMonDatnRestController extends BaseController {
         return new ResponseObject(listMon);
     }
 
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+        String pathFile = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_MON_DATN);
+
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFile));
+    }
 }

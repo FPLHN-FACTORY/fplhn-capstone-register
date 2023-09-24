@@ -88,14 +88,6 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         try {
             // gen file tự động
             writerFileCSV.genFolderLogger(dotDangKy.getTenDotDangKy());
-            // ghi log vào trong file luồng
-            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(dotDangKy.getTenDotDangKy());
-            LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Đợt đăng ký '" + dotDangKy.getTenDotDangKy() + "' đã được tạo",
-                            pathFile, "Thành công");
-            logService.sendLogMessage(loggerObject);
-
-            // ghi log vào trong file chức năng từng màn
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKy.getTenDotDangKy());
             LoggerObject loggerObjectActive = writerFileCSV.
                     createLoggerObject("Đợt đăng ký '" + dotDangKy.getTenDotDangKy() + "' đã được tạo",
@@ -121,28 +113,6 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         request.setHanGiangVien(dtUpdateDotDangKyRequest.getHanGiangVien());
         request.setHanChuNhiemBoMon(dtUpdateDotDangKyRequest.getHanChuNhiemBoMon());
 
-        if (!dtUpdateDotDangKyRequest.getTenDotDangKy().equalsIgnoreCase(dotDangKyCheck.get().getTenDotDangKy())) {
-            try {
-                writerFileCSV.updateFolder(writerFileCSV.covertFileName(dotDangKyCheck.get().getTenDotDangKy()), writerFileCSV.covertFileName(dtUpdateDotDangKyRequest.getTenDotDangKy()));
-
-                // ghi log vào trong file luồng
-                String pathFile = writerFileCSV.getPathFileLuongNhomDatn(dtUpdateDotDangKyRequest.getTenDotDangKy());
-                LoggerObject loggerObject = writerFileCSV.
-                        createLoggerObject("Đợt đăng ký '" + dotDangKyCheck.get().getTenDotDangKy() + "' đã được đổi thành '" + dtUpdateDotDangKyRequest.getTenDotDangKy() + "'",
-                                pathFile, "Thành công");
-                logService.sendLogMessage(loggerObject);
-
-                // ghi log vào trong file chức năng từng màn
-                String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dtUpdateDotDangKyRequest.getTenDotDangKy());
-                LoggerObject loggerObjectActive = writerFileCSV.
-                        createLoggerObject("Đợt đăng ký '" + dotDangKyCheck.get().getTenDotDangKy() + "' đã được đổi thành '" + dtUpdateDotDangKyRequest.getTenDotDangKy() + "'",
-                                pathFileLogActive, "Thành công");
-                logService.sendLogMessage(loggerObjectActive);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        }
-
         DotDangKy result = checkDateDotDangKy(request, dtUpdateDotDangKyRequest.getId(), dtUpdateDotDangKyRequest.getCoSoId());
         DotDangKy dotDangKy = dotDangKyCheck.get();
         dotDangKy.setTenDotDangKy(dtUpdateDotDangKyRequest.getTenDotDangKy());
@@ -151,6 +121,18 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         dotDangKy.setHanSinhVien(result.getHanSinhVien());
         dotDangKy.setHanGiangVien(result.getHanGiangVien());
         dotDangKy.setHanChuNhiemBoMon(result.getHanChuNhiemBoMon());
+
+        try {
+            writerFileCSV.updateFolder(writerFileCSV.covertFileName(dotDangKyCheck.get().getTenDotDangKy()), writerFileCSV.covertFileName(dtUpdateDotDangKyRequest.getTenDotDangKy()));
+            // ghi log vào trong file chức năng từng màn
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dtUpdateDotDangKyRequest.getTenDotDangKy());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Đợt đăng ký '" + dotDangKyCheck.get().getTenDotDangKy() + "' đã được sửa.'",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return dtDotDangKyRepository.save(dotDangKy);
     }
 

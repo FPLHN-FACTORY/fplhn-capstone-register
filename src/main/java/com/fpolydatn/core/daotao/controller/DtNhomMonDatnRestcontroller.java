@@ -11,6 +11,8 @@ import com.fpolydatn.core.daotao.model.response.DtDetailNhomMonResponse;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
 import com.fpolydatn.core.daotao.service.DtNhomMonDatnService;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,9 @@ import java.util.List;
 public class DtNhomMonDatnRestcontroller extends BaseController {
     @Autowired
     private DtNhomMonDatnService dtNhomMonDatnService;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @GetMapping("/{id}")
     public ResponseObject detail(@PathVariable("id") String id) {
@@ -67,5 +72,12 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
         req.setCoSoId(session.getCoSoId());
         PageableObject<DtNhomMonDatnResponse> listMon = dtNhomMonDatnService.findAllByCoSo(req);
         return new ResponseObject(listMon);
+    }
+
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+        String pathFile = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_MON_DATN);
+
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFile));
     }
 }

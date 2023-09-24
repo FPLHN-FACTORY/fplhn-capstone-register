@@ -18,7 +18,7 @@ public class LogService {
 
     // Gửi log thông điệp vào RabbitMQ
     public void sendLogMessage(LoggerObject loggerObject) {
-        amqpTemplate.convertAndSend(RabbitConstant.NAME_LOG_TOPIC_EXCHANGE, RabbitConstant.NAME_LOG_ROUTE_KEY_INFO, loggerObject, messagePostProcessor -> {
+        amqpTemplate.convertAndSend(RabbitConstant.NAME_LOG_TOPIC_EXCHANGE, RabbitConstant.NAME_LOG_ROUTE_KEY_WRITE, loggerObject, messagePostProcessor -> {
             messagePostProcessor.getMessageProperties().setDelay(RabbitConstant.RABBIT_L0G_DEPLAY);
             return messagePostProcessor;
         });

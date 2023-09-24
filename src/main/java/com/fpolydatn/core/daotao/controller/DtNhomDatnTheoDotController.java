@@ -39,7 +39,7 @@ public class DtNhomDatnTheoDotController extends BaseController {
         String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
         req.setDotDangKyId(dotDangKyHienTai);
         Boolean checkDotDangKyHienTai = false;
-        if(dotDangKyHienTai != null) {
+        if (dotDangKyHienTai != null) {
             checkDotDangKyHienTai = true;
         }
         PageableObject<DtNhomDatnTheoDotResponse> listNhomDatn = dtNhomDatnTheoDotService.findAllNhomDatn(req);

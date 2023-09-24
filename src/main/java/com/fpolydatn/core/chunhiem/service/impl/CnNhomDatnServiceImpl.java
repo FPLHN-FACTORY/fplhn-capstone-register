@@ -30,12 +30,15 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.EmailSender;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -94,6 +97,12 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Autowired
     private EmailSender emailSender;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
+    @Autowired
+    private LogService logService;
 
     private List<CnSinhVienTheoDotExcel> list;
 
@@ -158,6 +167,24 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CNBM_CHOT);
         cnNhomDatnRepository.save(nhomDatnCheck.get());
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã chốt tên đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "' thành '"
+                                    + nhomDatnCheck.get().getTenDeTai() + "'",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã chốt tên đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "' thành '"
+                                    + nhomDatnCheck.get().getTenDeTai() + "'",
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatnCheck.get().getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -175,6 +202,24 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
             }
             nhomDatn.setTrangThai(TrangThaiNhom.CNBM_CHOT);
+            try {
+                String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                LoggerObject loggerObjectActive = writerFileCSV.
+                        createLoggerObject("Chủ nhiệm bộ môn đã chốt tên đề tài nhóm '" + nhomDatn.getMaNhom() + "' thành '"
+                                        + nhomDatn.getTenDeTai() + "'",
+                                pathFileLogActive, "Thành công");
+                logService.sendLogMessage(loggerObjectActive);
+
+                String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                LoggerObject loggerObject = writerFileCSV.
+                        createLoggerObject("Chủ nhiệm bộ môn đã chốt tên đề tài nhóm '" + nhomDatn.getMaNhom() + "' thành '"
+                                        + nhomDatn.getTenDeTai() + "'",
+                                pathFile, "Thành công");
+                loggerObject.setTenNhom(nhomDatn.getMaNhom());
+                logService.sendLogMessage(loggerObject);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
         cnNhomDatnRepository.saveAll(listNhomDatn);
         return true;
@@ -232,6 +277,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
                 "Xác nhận nhóm thành lập", messageSV);
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã xác nhận thành lập nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã xác nhận thành lập nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatnCheck.get().getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -249,6 +310,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
             }
             nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
+            try {
+                String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                LoggerObject loggerObjectActive = writerFileCSV.
+                        createLoggerObject("Chủ nhiệm bộ môn đã xác nhận thành lập nhóm '" + nhomDatn.getMaNhom() + "'",
+                                pathFileLogActive, "Thành công");
+                logService.sendLogMessage(loggerObjectActive);
+
+                String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                LoggerObject loggerObject = writerFileCSV.
+                        createLoggerObject("Chủ nhiệm bộ môn đã xác nhận thành lập nhóm '" + nhomDatn.getMaNhom() + "'",
+                                pathFile, "Thành công");
+                loggerObject.setTenNhom(nhomDatn.getMaNhom());
+                logService.sendLogMessage(loggerObject);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
         cnNhomDatnRepository.saveAll(listNhomDatn);
         return true;
@@ -269,6 +346,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CAN_SUA);
         nhomDatnCheck.get().setNhanXet(nhanXet);
         cnNhomDatnRepository.save(nhomDatnCheck.get());
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatnCheck.get().getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -285,6 +378,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         List<SinhVien> listSinhVien = cnSinhVienRepository.getAllSinhVien(id, commonHelper.getDotDangKyHienTai());
         for (SinhVien xx : listSinhVien) {
             cnSinhVienRepository.deleteSinhVienOutGroup(xx.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
+        }
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã xóa nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã xóa nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatnCheck.get().getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         int soThanhvien = listSinhVien.size();
         String[] email = new String[soThanhvien];
@@ -360,6 +469,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         nhomDatn.setCoSoId(cnCreateNhomDatnRequest.getCoSoId());
         nhomDatn.setDotDangKyId(cnCreateNhomDatnRequest.getDotDangKyId());
         nhomDatn.setId(cnNhomDatnRepository.save(nhomDatn).getId());
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã tạo nhóm '" + nhomDatn.getMaNhom() + "'",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã tạo nhóm '" + nhomDatn.getMaNhom() + "'",
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatn.getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         cnNhomDatnRepository.setNhomForTruongNhom(nhomDatn.getId(), monDatnId, idTruongNhom, commonHelper.getDotDangKyHienTai());
         return true;
     }
@@ -615,6 +740,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         }
                     }
                     listNhomDatnCreate.put(nhomDatn.getTruongNhomId(), nhomDatn);
+                    try {
+                        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                        LoggerObject loggerObjectActive = writerFileCSV.
+                                createLoggerObject("Chủ nhiệm bộ môn đã từ tạo nhóm '" + nhomDatn.getMaNhom() + "'",
+                                        pathFileLogActive, "Thành công");
+                        logService.sendLogMessage(loggerObjectActive);
+
+                        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                        LoggerObject loggerObject = writerFileCSV.
+                                createLoggerObject("Chủ nhiệm bộ môn đã từ tạo nhóm '" + nhomDatn.getMaNhom() + "'",
+                                        pathFile, "Thành công");
+                        loggerObject.setTenNhom(nhomDatn.getMaNhom());
+                        logService.sendLogMessage(loggerObject);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
                 cnNhomDatnRepository.saveAll(listNhomDatnCreate.values());
                 for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()) {
