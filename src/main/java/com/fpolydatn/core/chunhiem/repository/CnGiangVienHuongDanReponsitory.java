@@ -1,11 +1,18 @@
 package com.fpolydatn.core.chunhiem.repository;
 
+import com.fpolydatn.core.chunhiem.model.request.CnFindDashboardRequest;
 import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnFindListGvhdRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanDanhSachNhomResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnGvhdSearchResponse;
+import com.fpolydatn.core.chunhiem.model.response.CnSimpleDashboardGvhdResponse;
+import com.fpolydatn.core.chunhiem.model.response.CnSimpleListGvhdResponse;
 import com.fpolydatn.entity.GiangVienHuongDan;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -60,9 +67,15 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
                                                                       @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
-            SELECT * FROM giang_vien_huong_dan WHERE co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
+            SELECT distinct * FROM giang_vien_huong_dan a 
+            LEFT JOIN phan_cong_huong_dan b ON a.id = b.giang_vien_id
+            LEFT JOIN mon_datn c ON b.mon_datn_id = c.id
+            LEFT JOIN chuyen_nganh d ON d.id = c.chuyen_nganh_id
+            LEFT JOIN can_bo e ON d.chu_nhiem_bo_mon = e.id
+            WHERE a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId 
+            AND e.id = :idChuNhiem
             """, nativeQuery = true)
-    List<GiangVienHuongDan> getAllGiangVienByIdCoSoAndByIdDotDangKy(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
+    List<GiangVienHuongDan> getAllGiangVienByIdCoSoAndByIdDotDangKy(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = """
             WITH DanhSachNhom AS (
@@ -77,4 +90,94 @@ public interface CnGiangVienHuongDanReponsitory extends GiangVienHuongDanReposit
     List<CnGiangVienHuongDanDanhSachNhomResponse> getGiangVienAndDanhSachNhomDangHuongDan(@Param("dotDangKyId") String dotDangKyId,
                                                                                           @Param("coSoId") String coSoId);
 
+    @Query(value = """
+            WITH gvhdNhomDatn AS (
+                SELECT b.id, COUNT(DISTINCT a.id) AS so_nhom_dang_huong_dan
+                FROM nhom_datn a RIGHT JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
+                JOIN phan_cong_huong_dan c ON b.id = c.giang_vien_id
+                JOIN mon_datn d ON c.mon_datn_id = d.id JOIN chuyen_nganh e ON e.id = d.chuyen_nganh_id
+                JOIN can_bo f ON f.id = e.chu_nhiem_bo_mon
+                WHERE b.dot_dang_ky_id = :#{#req.dotDangKyId}
+                AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR e.id = :#{#req.chuyenNganhId})
+                AND f.id = :#{#req.idChuNhiem} AND b.co_so_id = :#{#req.coSoId}
+                AND (:#{#req.maGvhd} IS NULL OR :#{#req.maGvhd} LIKE '' OR b.ten_tai_khoan LIKE %:#{#req.maGvhd}% OR b.ten_gvhd LIKE %:#{#req.maGvhd}%)
+                GROUP BY b.id 
+            ), gvhdMonDatn AS (
+                SELECT DISTINCT a.id, GROUP_CONCAT(c.ma_mon SEPARATOR ', ') AS mon_datn
+                FROM giang_vien_huong_dan a JOIN phan_cong_huong_dan b ON a.id = b.giang_vien_id
+                LEFT JOIN mon_datn c ON c.id = b.mon_datn_id JOIN chuyen_nganh d ON d.id = c.chuyen_nganh_id
+                JOIN can_bo e ON e.id = d.chu_nhiem_bo_mon
+                LEFT JOIN gvhdNhomDatn gvhd ON gvhd.id = a.id
+                WHERE a.dot_dang_ky_id = :#{#req.dotDangKyId}
+                AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR d.id = :#{#req.chuyenNganhId})
+                AND e.id = :#{#req.idChuNhiem} AND a.co_so_id = :#{#req.coSoId}
+                AND (:#{#req.maGvhd} IS NULL OR :#{#req.maGvhd} LIKE '' OR a.ten_tai_khoan LIKE %:#{#req.maGvhd}% OR a.ten_gvhd LIKE %:#{#req.maGvhd}%)
+                AND (:#{#req.soNhomHuongDanToiDa} IS NULL OR :#{#req.soNhomHuongDanToiDa} LIKE '' OR gvhd.so_nhom_dang_huong_dan = :#{#req.soNhomHuongDanToiDa} OR a.so_nhom_huong_dan_toi_da = :#{#req.soNhomHuongDanToiDa})
+                GROUP BY a.id
+            )
+            SELECT DISTINCT ROW_NUMBER() OVER(ORDER BY gvhd.so_nhom_dang_huong_dan DESC) AS stt, a.id, CONCAT(a.ten_gvhd, ' - ', a.ten_tai_khoan) as name, 
+            a.email_fpt, a.so_dien_thoai, a.so_nhom_huong_dan_toi_da, gvhd.so_nhom_dang_huong_dan,
+            gvhdMon.mon_datn AS mon_datn
+            FROM giang_vien_huong_dan a JOIN phan_cong_huong_dan b ON a.id = b.giang_vien_id
+            LEFT JOIN mon_datn c ON c.id = b.mon_datn_id JOIN chuyen_nganh d ON d.id = c.chuyen_nganh_id
+            JOIN can_bo e ON e.id = d.chu_nhiem_bo_mon
+            LEFT JOIN gvhdNhomDatn gvhd ON gvhd.id = a.id
+            LEFT JOIN gvhdMonDatn gvhdMon ON gvhdMon.id = a.id
+            WHERE a.dot_dang_ky_id = :#{#req.dotDangKyId}
+            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR d.id = :#{#req.chuyenNganhId})
+            AND e.id = :#{#req.idChuNhiem} AND a.co_so_id = :#{#req.coSoId}
+            AND (:#{#req.maGvhd} IS NULL OR :#{#req.maGvhd} LIKE '' OR a.ten_tai_khoan LIKE %:#{#req.maGvhd}% OR a.ten_gvhd LIKE %:#{#req.maGvhd}%)
+            AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE '' OR c.id = :#{#req.monDatnId})
+            AND (:#{#req.soNhomHuongDanToiDa} IS NULL OR :#{#req.soNhomHuongDanToiDa} LIKE '' OR gvhd.so_nhom_dang_huong_dan = :#{#req.soNhomHuongDanToiDa} OR a.so_nhom_huong_dan_toi_da = :#{#req.soNhomHuongDanToiDa})
+            GROUP BY a.id
+            ORDER BY
+              CASE WHEN :#{#req.sort} = 'sortDesc' THEN gvhd.so_nhom_dang_huong_dan END DESC,
+              CASE WHEN :#{#req.sort} = 'sortAsc' THEN gvhd.so_nhom_dang_huong_dan END ASC,
+              CASE WHEN :#{#req.sort} = 'sortMaxDesc' THEN a.so_nhom_huong_dan_toi_da END DESC,
+              CASE WHEN :#{#req.sort} = 'sortMaxAsc' THEN a.so_nhom_huong_dan_toi_da END ASC
+            """, countQuery = """
+            WITH gvhdNhomDatn AS (
+                SELECT DISTINCT b.id, COUNT(DISTINCT a.id) AS so_nhom_dang_huong_dan
+                FROM nhom_datn a RIGHT JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
+                JOIN phan_cong_huong_dan c ON b.id = c.giang_vien_id
+                JOIN mon_datn d ON c.mon_datn_id = d.id JOIN chuyen_nganh e ON e.id = d.chuyen_nganh_id
+                JOIN can_bo f ON f.id = e.chu_nhiem_bo_mon
+                WHERE b.dot_dang_ky_id = :#{#req.dotDangKyId}
+                AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR e.id = :#{#req.chuyenNganhId})
+                AND f.id = :#{#req.idChuNhiem} AND b.co_so_id = :#{#req.coSoId}
+                AND (:#{#req.maGvhd} IS NULL OR :#{#req.maGvhd} LIKE '' OR b.ten_tai_khoan LIKE %:#{#req.maGvhd}% OR b.ten_gvhd LIKE %:#{#req.maGvhd}%)
+                GROUP BY b.id 
+            ), gvhdMonDatn AS (
+                SELECT DISTINCT a.id, GROUP_CONCAT(c.ma_mon SEPARATOR ', ') AS mon_datn
+                FROM giang_vien_huong_dan a JOIN phan_cong_huong_dan b ON a.id = b.giang_vien_id
+                LEFT JOIN mon_datn c ON c.id = b.mon_datn_id JOIN chuyen_nganh d ON d.id = c.chuyen_nganh_id
+                JOIN can_bo e ON e.id = d.chu_nhiem_bo_mon
+                LEFT JOIN gvhdNhomDatn gvhd ON gvhd.id = a.id
+                WHERE a.dot_dang_ky_id = :#{#req.dotDangKyId}
+                AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR d.id = :#{#req.chuyenNganhId})
+                AND e.id = :#{#req.idChuNhiem} AND a.co_so_id = :#{#req.coSoId}
+                AND (:#{#req.maGvhd} IS NULL OR :#{#req.maGvhd} LIKE '' OR a.ten_tai_khoan LIKE %:#{#req.maGvhd}% OR a.ten_gvhd LIKE %:#{#req.maGvhd}%)
+                AND (:#{#req.soNhomHuongDanToiDa} IS NULL OR :#{#req.soNhomHuongDanToiDa} LIKE '' OR gvhd.so_nhom_dang_huong_dan = :#{#req.soNhomHuongDanToiDa} OR a.so_nhom_huong_dan_toi_da = :#{#req.soNhomHuongDanToiDa})
+                GROUP BY a.id
+            )
+            SELECT COUNT(1)
+            FROM giang_vien_huong_dan a JOIN phan_cong_huong_dan b ON a.id = b.giang_vien_id
+            LEFT JOIN mon_datn c ON c.id = b.mon_datn_id JOIN chuyen_nganh d ON d.id = c.chuyen_nganh_id
+            JOIN can_bo e ON e.id = d.chu_nhiem_bo_mon
+            LEFT JOIN gvhdNhomDatn gvhd ON gvhd.id = a.id
+            LEFT JOIN gvhdMonDatn gvhdMon ON gvhdMon.id = a.id
+            WHERE a.dot_dang_ky_id = :#{#req.dotDangKyId}
+            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR d.id = :#{#req.chuyenNganhId})
+            AND e.id = :#{#req.idChuNhiem} AND a.co_so_id = :#{#req.coSoId}
+            AND (:#{#req.maGvhd} IS NULL OR :#{#req.maGvhd} LIKE '' OR a.ten_tai_khoan LIKE %:#{#req.maGvhd}% OR a.ten_gvhd LIKE %:#{#req.maGvhd}%)
+            AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE '' OR c.id = :#{#req.monDatnId})
+            AND (:#{#req.soNhomHuongDanToiDa} IS NULL OR :#{#req.soNhomHuongDanToiDa} LIKE '' OR gvhd.so_nhom_dang_huong_dan = :#{#req.soNhomHuongDanToiDa} OR a.so_nhom_huong_dan_toi_da = :#{#req.soNhomHuongDanToiDa})
+            GROUP BY a.id
+            ORDER BY
+              CASE WHEN :#{#req.sort} = 'sortDesc' THEN gvhd.so_nhom_dang_huong_dan END DESC,
+              CASE WHEN :#{#req.sort} = 'sortAsc' THEN gvhd.so_nhom_dang_huong_dan END ASC,
+              CASE WHEN :#{#req.sort} = 'sortMaxDesc' THEN a.so_nhom_huong_dan_toi_da END DESC,
+              CASE WHEN :#{#req.sort} = 'sortMaxAsc' THEN a.so_nhom_huong_dan_toi_da END ASC
+            """, nativeQuery = true)
+    Page<CnSimpleListGvhdResponse> getGvhd(Pageable pageable, @Param("req") CnFindListGvhdRequest req);
 }

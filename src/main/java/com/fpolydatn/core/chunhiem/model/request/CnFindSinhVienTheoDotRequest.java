@@ -15,6 +15,8 @@ public class CnFindSinhVienTheoDotRequest extends PageableRequest {
 
     private String idDotDangKy;
 
+    private String chuyenNganhId;
+
     private String tenSinhVien;
 
     private String typeExcel;

@@ -21,4 +21,14 @@ public class CnChuyenNganhServiceImpl implements CnChuyenNganhService {
     public List<SimpleEntityProj> listTenChuyenNganh(String coSoId) {
         return chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
     }
+
+    @Override
+    public List<SimpleEntityProj> getAllChuyenNganhByIdChuNhiem(String coSoId, String idChuNhiem) {
+        return chuyenNganhRepository.getAllChuyenNganhByIdChuNhiem(coSoId, idChuNhiem);
+    }
+
+    @Override
+    public List<SimpleEntityProj> getAllMonDatnByIdChuNhiem(String coSoId, String idChuNhiem) {
+        return chuyenNganhRepository.getAllMonDatnByIdChuNhiem(coSoId, idChuNhiem);
+    }
 }

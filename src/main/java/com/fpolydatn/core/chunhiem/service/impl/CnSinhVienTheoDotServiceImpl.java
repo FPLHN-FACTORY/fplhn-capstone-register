@@ -1,13 +1,22 @@
 package com.fpolydatn.core.chunhiem.service.impl;
 
+import com.fpolydatn.core.chunhiem.excel.CnNhomTheoDotExport;
+import com.fpolydatn.core.chunhiem.excel.CnNhomTheoDotImport;
+import com.fpolydatn.core.chunhiem.excel.CnSinhVienTheoDotImport;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
+import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnImport;
+import com.fpolydatn.core.chunhiem.model.response.CnNhomTheoDotExcel;
+import com.fpolydatn.core.chunhiem.model.response.CnNhomTheoDotResponse;
+import com.fpolydatn.core.chunhiem.model.response.CnSinhVienImport;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnTruongNhomRandomResponse;
+import com.fpolydatn.core.chunhiem.repository.CnGiangVienHuongDanReponsitory;
 import com.fpolydatn.core.chunhiem.repository.CnNhomDatnRepository;
 import com.fpolydatn.core.chunhiem.repository.CnSinhVienRepository;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoDotService;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.DotDangKy;
+import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
@@ -27,12 +36,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
@@ -53,11 +70,23 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
     private NhomDatnHelper nhomDatnHelper;
 
     @Autowired
+    private CnSinhVienRepository cnSinhVienRepository;
+
+    @Autowired
     private MocThoiGianCommon mocThoiGianCommon;
+
+    @Autowired
+    private CnGiangVienHuongDanReponsitory cnGiangVienHuongDanReponsitory;
 
     @Autowired
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
+
+    private ConcurrentHashMap<String, GiangVienHuongDan> mapGiangVien;
+
+    private ConcurrentHashMap<String, NhomDatn> mapNhomDatn;
+
+    private List<CnNhomTheoDotResponse> nhomList;
 
     @Autowired
     private WriterFileCSV writerFileCSV;
@@ -241,6 +270,136 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
             throw new RestApiException("Lỗi hệ thống");
         }
         return true;
+    }
+
+    @Override
+    public void CnExportSapGvhd(HttpServletResponse response, CnFindSinhVienTheoDotRequest request, String idChuNhiem) throws IOException {
+        try {
+            response.setContentType("application/octet-stream");
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+            String currentDateTime = dateFormatter.format(new Date());
+
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=NhomTheoDot" + currentDateTime + "." + request.getTypeExcel();
+            response.setHeader(headerKey, headerValue);
+            CnNhomTheoDotExport cnNhomTheoDotExport = new CnNhomTheoDotExport();
+            String dotDangKyId = commonHelper.getDotDangKyHienTai();
+            if (request.getIdDotDangKy() == null) {
+                if (dotDangKyId != null) {
+                    request.setIdDotDangKy(dotDangKyId);
+                } else {
+                    request.setIdDotDangKy("");
+                }
+            } else if (request.getIdDotDangKy().equalsIgnoreCase("")) {
+                if (dotDangKyId != null) {
+                    request.setIdDotDangKy(dotDangKyId);
+                } else {
+                    request.setIdDotDangKy("");
+                }
+            }
+            if (!checkDotDangKy(request.getIdDotDangKy())) {
+                throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
+            }
+            List<CnNhomTheoDotExcel> list = cnSinhVienRepository.findNhomDatnExport(request, idChuNhiem);
+            cnNhomTheoDotExport.export(response, list);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public CnNhomDatnImport importSapGvhd(MultipartFile file, String dotDangKyId, String coSoId, String idChuNhiem) throws IOException {
+        CnNhomDatnImport response = new CnNhomDatnImport();
+        try {
+            if (!checkDotDangKy(dotDangKyId)) {
+                throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
+            }
+            response.setStatus(true);
+            CnNhomTheoDotImport cnNhomTheoDotImport = new CnNhomTheoDotImport();
+            List<NhomDatn> listNhomDatnUpdate = new ArrayList<>();
+            nhomList = new ArrayList<>();
+            nhomList = cnNhomTheoDotImport.importData(file);
+            mapGiangVien = new ConcurrentHashMap<>();
+            mapNhomDatn = new ConcurrentHashMap<>();
+            addDataInMapGiangVien(mapGiangVien, dotDangKyId, coSoId, idChuNhiem);
+            addDataInMapNhomDatn(mapNhomDatn, dotDangKyId, coSoId, idChuNhiem);
+            nhomList.parallelStream().forEach(nhomDatn -> {
+                GiangVienHuongDan giangVien = null;
+                if (!nhomDatn.getGvhd().isEmpty()) {
+                    giangVien = mapGiangVien.get(nhomDatn.getGvhd());
+                    if (giangVien == null) {
+                        response.setStatus(false);
+                        response.setMessage("Giảng viên " + nhomDatn.getGvhd() + " không tồn tại");
+                        return;
+                    }
+                }
+                if (giangVien != null) {
+                    if (countSoNhomGiangVienDangHuongDan(giangVien.getTenTaiKhoan().toLowerCase())) {
+                        response.setStatus(false);
+                        response.setMessage("Giảng viên " + giangVien.getTenTaiKhoan() + " đang hướng dẫn số nhóm nhiều hơn đăng ký");
+                        return;
+                    }
+                }
+                NhomDatn nhomDatnUpdate = new NhomDatn();
+                if (!nhomDatn.getMaNhom().isEmpty()) {
+                    nhomDatnUpdate = mapNhomDatn.get(nhomDatn.getMaNhom());
+                    if (giangVien != null) {
+                        nhomDatnUpdate.setGiangVienId(giangVien.getId());
+                    } else {
+                        nhomDatnUpdate.setGiangVienId(null);
+                    }
+                    listNhomDatnUpdate.add(nhomDatnUpdate);
+                }
+            });
+            if (response.getStatus() == true) {
+                cnNhomDatnRepository.saveAll(listNhomDatnUpdate);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            response.setStatus(false);
+            response.setMessage("Lỗi hệ thống");
+            return response;
+        }
+        return response;
+    }
+
+    public boolean countSoNhomGiangVienDangHuongDan(String tenTaiKhoan) {
+        AtomicInteger count = new AtomicInteger(0);
+        nhomList.parallelStream().forEach(nhomDatn -> {
+            if (nhomDatn.getGvhd().equals(tenTaiKhoan)) {
+                count.set(count.get() + 1);
+            }
+        });
+        if (count.get() > mapGiangVien.get(tenTaiKhoan).getSoNhomHuongDanToiDa()) {
+            return true;
+        }
+        return false;
+    }
+
+    public void addDataInMapGiangVien(ConcurrentHashMap<String, GiangVienHuongDan> mapAll, String
+            dotDangKyId, String coSoId, String idChuNhiem) {
+        List<GiangVienHuongDan> giangVienHuongDanList = cnGiangVienHuongDanReponsitory.getAllGiangVienByIdCoSoAndByIdDotDangKy(dotDangKyId, coSoId, idChuNhiem);
+        getALlPutMapGiangVien(mapAll, giangVienHuongDanList);
+    }
+
+    public void getALlPutMapGiangVien
+            (ConcurrentHashMap<String, GiangVienHuongDan> mapSimple, List<GiangVienHuongDan> listGiangVien) {
+        for (GiangVienHuongDan xx : listGiangVien) {
+            mapSimple.put(xx.getTenTaiKhoan().toLowerCase(), xx);
+        }
+    }
+
+    public void addDataInMapNhomDatn(ConcurrentHashMap<String, NhomDatn> mapAll, String
+            dotDangKyId, String coSoId, String idChuNhiem) {
+        List<NhomDatn> nhomDatnList = cnNhomDatnRepository.getAllNhomDatnByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
+        getALlPutMapNhomDatn(mapAll, nhomDatnList);
+    }
+
+    public void getALlPutMapNhomDatn
+            (ConcurrentHashMap<String, NhomDatn> mapSimple, List<NhomDatn> listNhomDatn) {
+        for (NhomDatn xx : listNhomDatn) {
+            mapSimple.put(xx.getMaNhom(), xx);
+        }
     }
 
     public Boolean checkDotDangKy(String dotDangKyId) {

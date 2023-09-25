@@ -1,8 +1,11 @@
 package com.fpolydatn.core.chunhiem.service;
 
 import com.fpolydatn.core.chunhiem.model.request.CnFindGvhdRequest;
+import com.fpolydatn.core.chunhiem.model.request.CnFindListGvhdRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnGiangVienHuongDanResponse;
 import com.fpolydatn.core.chunhiem.model.response.CnGvhdSearchResponse;
+import com.fpolydatn.core.chunhiem.model.response.CnSimpleListGvhdResponse;
+import com.fpolydatn.core.common.base.PageableObject;
 
 import java.util.List;
 
@@ -14,4 +17,6 @@ public interface CnGiangVienHuongDanService {
     List<CnGvhdSearchResponse> getListGvhd(final CnFindGvhdRequest request);
 
     List<CnGiangVienHuongDanResponse> getGiangVienHuongDanByIdMonDatn(String idMon, String coSoId, String dotDangKyId);
+
+    PageableObject<CnSimpleListGvhdResponse> getPageGvhd(final CnFindListGvhdRequest request);
 }

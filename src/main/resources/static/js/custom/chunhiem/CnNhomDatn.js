@@ -53,6 +53,7 @@ function clearData() {
     $("#dotDangKyId").val("");
     $("#monDatnId").val("");
     $("#soThanhVien").val("");
+    $("#chuyenNganhId").val("");
 }
 
 function CNChotDuLieu(id, count) {
@@ -738,6 +739,7 @@ function loadDataNhomDatn(count) {
     let monDatnId = $("#monDatnId").val()
     let trangThai = $("#trangThai").val()
     let dotDangKyId = $("#dotDangKyId").val()
+    let chuyenNganhId = $("#chuyenNganhId").val()
     let soThanhVien = $("#soThanhVien").val()
     let sortNhomDatn = $("#sortNhomDatn").val()
     let sizeNhomDatn = parseInt($("#sizeNhomDatn").val())
@@ -748,7 +750,8 @@ function loadDataNhomDatn(count) {
         type: "GET",
         contentType: "application/json",
         url: CNNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&tenDeTai=" + tenDeTai + "&monDatnId=" + monDatnId + "&maTruongNhom=" + maTruongNhom
-            + "&tenTaiKhoan=" + tenTaiKhoan + "&trangThai=" + trangThai + "&sortNhomDatn=" + sortNhomDatn + "&soThanhVien=" + soThanhVien + "&dotDangKyId=" + dotDangKyId + "&page=" + count + "&size=" + sizeNhomDatn,
+            + "&tenTaiKhoan=" + tenTaiKhoan + "&trangThai=" + trangThai + "&sortNhomDatn=" + sortNhomDatn + "&soThanhVien=" + soThanhVien + "&dotDangKyId=" + dotDangKyId
+            + "&chuyenNganhId=" + chuyenNganhId + "&page=" + count + "&size=" + sizeNhomDatn,
         dataType: 'json',
         success: function (responseData) {
             let array = responseData.data.data

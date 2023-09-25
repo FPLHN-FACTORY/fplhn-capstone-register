@@ -10,4 +10,8 @@ import java.util.List;
 public interface CnChuyenNganhService {
 
     List<SimpleEntityProj> listTenChuyenNganh(String coSoId);
+
+    List<SimpleEntityProj> getAllChuyenNganhByIdChuNhiem(String coSoId, String idChuNhiem);
+
+    List<SimpleEntityProj> getAllMonDatnByIdChuNhiem(String coSoId, String idChuNhiem);
 }

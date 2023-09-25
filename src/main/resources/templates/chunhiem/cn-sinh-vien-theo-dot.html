@@ -67,18 +67,13 @@
                                                    name="tenSinhVien" id="tenSinhVien"
                                                    value="">
                                         </div>
-                                        <br>
-                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
-                                        >
-                                            <span for="" class="fillter-name col-4 text-center">Đợt đăng ký:</span>
-                                            <select class="form-control col-7"
-                                                    id="dotDangKyId" name="dotDangKyId">
-                                                <option value="" hidden>Chọn đợt đăng ký</option>
-                                                <option th:each="item : ${listDotDangKy}"
-                                                        th:value="${item.getId()}" th:text="${item.getName()}"></option>
-                                            </select>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">Mã nhóm:</span>
+                                            <input type="text" class="form-control col-7"
+                                                   name="maNhomSearch" id="maNhomSearch"
+                                                   value="">
                                         </div>
-                                        <br/>
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Môn chương trình:</span>
@@ -89,7 +84,6 @@
                                                         th:text="${item.getMaMonDatn() + ' - ' + item.getTenMonDatn}"></option>
                                             </select>
                                         </div>
-                                        <br/>
                                         <div
                                                 class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
                                             <span for="" class="fillter-name col-4 text-center">Môn Datn:</span>
@@ -100,23 +94,6 @@
                                                         th:text="${item.getMaMonDatn() + ' - ' + item.getTenMonDatn}"></option>
                                             </select>
                                         </div>
-                                        <br/>
-                                        <div
-                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">GVHD:</span>
-                                            <input type="text" class="form-control col-7"
-                                                   name="tenGvhd" id="tenGvhd"
-                                                   value="">
-                                        </div>
-                                        <br/>
-                                        <div
-                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
-                                            <span for="" class="fillter-name col-4 text-center">Mã nhóm:</span>
-                                            <input type="text" class="form-control col-7"
-                                                   name="maNhomSearch" id="maNhomSearch"
-                                                   value="">
-                                        </div>
-                                        <br>
                                         <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
                                         >
                                             <span for="" class="fillter-name col-4 text-center">Trạng thái:</span>
@@ -127,7 +104,34 @@
                                                 <option value="1">Chưa có nhóm</option>
                                             </select>
                                         </div>
-                                        <br>
+                                        <div
+                                                class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center">
+                                            <span for="" class="fillter-name col-4 text-center">GVHD:</span>
+                                            <input type="text" class="form-control col-7"
+                                                   name="tenGvhd" id="tenGvhd"
+                                                   value="">
+                                        </div>
+                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
+                                        >
+                                            <span for="" class="fillter-name col-4 text-center">Chuyên ngành:</span>
+                                            <select class="form-control col-7"
+                                                    id="chuyenNganhId" name="chuyenNganhId">
+                                                <option value="">Tất cả</option>
+                                                <option th:each="item : ${listChuyenNganh}"
+                                                        th:value="${item.getId()}"
+                                                        th:text="${item.getName()}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
+                                        >
+                                            <span for="" class="fillter-name col-4 text-center">Đợt đăng ký:</span>
+                                            <select class="form-control col-7"
+                                                    id="dotDangKyId" name="dotDangKyId">
+                                                <option value="" hidden>Chọn đợt đăng ký</option>
+                                                <option th:each="item : ${listDotDangKy}"
+                                                        th:value="${item.getId()}" th:text="${item.getName()}"></option>
+                                            </select>
+                                        </div>
                                         <div class="row justify-content-center pt-2">
                                             <div class="col-sm-1 col-12 text-center mt-2">
                                                 <button type="button" th:attr="onclick=|loadDataToTable(0)|"
@@ -150,7 +154,7 @@
                                 <div class="m-portlet__body">
 
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-8">
                                             <button class="btn btn-success"
                                                     th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     id="idButtonExportSapNhom"
@@ -164,18 +168,32 @@
                                                     class="btn btn-success">
                                                 Import sắp nhóm
                                             </button>
-                                            <button class="btn btn-success"
-                                                    th:attr="onclick=|openModalExportThongTinSinhVien()|">
-                                                Export sinh viên
+                                            <button class="btn btn-primary"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
+                                                    th:attr="onclick=|openModalExportSapGvhd()|"
+                                                    id="idButtonExportSapGVHD">
+                                                Export sắp GVHD
+                                            </button>
+                                            <button
+                                                    id="idButtonImportSapGVHD"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
+                                                    th:attr="onclick=|openModalImportSapGvhd()|"
+                                                    class="btn btn-primary"
+                                            >
+                                                Import sắp GVHD
                                             </button>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <button style="float: right"
                                                     id="idButtonRandom"
                                                     th:if="${checkDotDangKyHienTai}"
                                                     class="btn btn-success"
                                                     th:attr="onclick=|openModalRandomNhomDatn()|">
                                                 Random nhóm
+                                            </button>
+                                            <button style="float: right; margin-right: 4px" class="btn btn-success"
+                                                    th:attr="onclick=|openModalExportThongTinSinhVien()|">
+                                                Export thông tin SV
                                             </button>
                                             <div
                                                     class="modal fade"
@@ -235,15 +253,15 @@
                                                    style="text-align: center"
                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                 <thead class="table-primary">
-                                                <th width="50px">STT</th>
-                                                <th>Mã SV</th>
-                                                <th>Họ và tên</th>
-                                                <th>Chuyên ngành</th>
-                                                <th>Môn chương trình</th>
-                                                <th>Môn dự án</th>
-                                                <th>Mã nhóm</th>
-                                                <th>Tên đề tài</th>
-                                                <th>GVHD</th>
+                                                <th class="text-center align-middle" width="50px">STT</th>
+                                                <th class="text-center align-middle">Mã SV</th>
+                                                <th class="text-center align-middle">Họ và tên</th>
+                                                <th class="text-center align-middle">Chuyên ngành</th>
+                                                <th class="text-center align-middle">Môn chương trình</th>
+                                                <th class="text-center align-middle">Môn dự án</th>
+                                                <th class="text-center align-middle">Mã nhóm</th>
+                                                <th class="text-center align-middle">Tên đề tài</th>
+                                                <th class="text-center align-middle">GVHD</th>
                                                 </thead>
                                                 <tbody id="listSV">
                                                 <th:block th:each="sinhVien,i : ${page.data}">
@@ -374,6 +392,63 @@
         </div>
     </div>
 </div>
+<!---->
+<div class="modal fade"
+     id="modal_import_excel_sap_gvhd"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="form_import_excel_sap_gvhd" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Import file excel
+                    </h5>
+                    <button type="button" class="close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text"
+                                  id="inputGroupFileAddon01_sap_gvhd">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input"
+                                       id="inputGroupFile01SapGvhd"
+                                       aria-describedby="inputGroupFileAddon01"
+                                       name="file">
+                                <label class="custom-file-label"
+                                       id="labelFileSapGvhd"
+                                       for="inputGroupFile01">Choose
+                                    file</label>
+                            </div>
+                        </div>
+                        <span class="text-danger"
+                              id="import_excel_sap_gvhd_error"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-outline-secondary btn btn-light"
+                            data-bs-dismiss="modal">Hủy
+                    </button>
+                    <button
+                            th:attr="onclick=|importExcelSapGvhd()|"
+                            type="button" class="btn btn-primary">
+                        Upload
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!---->
 <!--  end modal import -->
 <!--                                            modal export-->
 <div class="modal fade"
@@ -393,7 +468,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <p class="col-form-label">Định dạng file excel </p>
+                    <p class="col-form-label">Định dạng file excel: </p>
                     <select id="type_excel" class="form-control">
                         <option value="">Chọn kiểu file excel</option>
                         <option value="xls">.xls</option>
@@ -401,6 +476,15 @@
                     </select>
                     <span class="text-danger"
                           id="type_excel_error"></span>
+                </div>
+                <div class="form-group">
+                    <p class="col-form-label">Chuyên ngành: </p>
+                    <select class="form-control"
+                            id="chuyenNganhIdExportExcel" name="chuyenNganhIdExportExcel">
+                        <option th:each="item : ${listChuyenNganh}"
+                                th:value="${item.getId()}"
+                                th:text="${item.getName()}"></option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -452,6 +536,56 @@
                 </button>
                 <button class="btn btn-primary"
                         th:attr="onclick=|exportFileThongTinSinhVien()|">Download
+                    excel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!---->
+<div class="modal fade"
+     id="modal_excel_sap_gvhd"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalExcelLabel">Export
+                    Excel</h5>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <p class="col-form-label">Định dạng file excel:</p>
+                    <select id="type_excel_sap_gvhd" class="form-control">
+                        <option value="">Chọn kiểu file excel</option>
+                        <option value="xls">.xls</option>
+                        <option value="xlsx">.xlsx</option>
+                    </select>
+                    <span class="text-danger"
+                          id="type_excel_sap_gvhd_error"></span>
+                </div>
+                <div class="form-group">
+                    <p class="col-form-label">Chuyên ngành: </p>
+                    <select class="form-control"
+                            id="chuyenNganhIdExportExcelSapGvhd" name="chuyenNganhIdExportExcelSapGvhd">
+                        <option th:each="item : ${listChuyenNganh}"
+                                th:value="${item.getId()}"
+                                th:text="${item.getName()}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-outline-secondary btn btn-light"
+                        data-bs-dismiss="modal">Hủy
+                </button>
+                <button class="btn btn-primary"
+                        th:attr="onclick=|exportFileExcelSapGvhd()|">Download
                     excel
                 </button>
             </div>

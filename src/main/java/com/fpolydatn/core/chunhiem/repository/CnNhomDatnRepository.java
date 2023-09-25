@@ -27,15 +27,19 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
 
     @Query(value = """
             WITH CheckDotDangKy AS (
-            SELECT a.id, IF(:#{#req.currentTime} BETWEEN a.ngay_bat_dau AND a.ngay_ket_thuc, 1, 0) 
-            AS check_dot_dang_ky FROM dot_dang_ky a WHERE a.id = :#{#req.dotDangKyId}
+                SELECT a.id, IF(:#{#req.currentTime} BETWEEN a.ngay_bat_dau AND a.ngay_ket_thuc, 1, 0) 
+                AS check_dot_dang_ky FROM dot_dang_ky a WHERE a.id = :#{#req.dotDangKyId}
+            ), gvhdNhomDatn AS (
+                SELECT DISTINCT COUNT(a.id) as so_nhom_dang_huong_dan, b.id FROM nhom_datn a JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
+                WHERE b.dot_dang_ky_id = :#{#req.dotDangKyId} AND b.co_so_id = :#{#req.coSoId}
+                GROUP BY b.id
             )
             SELECT b.id, ROW_NUMBER() OVER(
             ORDER BY b.last_modified_date DESC
             ) AS stt, b.ma_nhom
             ,b.ten_de_tai, k.ma_mon AS ma_mon_datn, COUNT(d.ma_sinh_vien)
             AS total_ma_sinh_vien, CONCAT(c.ma_sinh_vien, '_', c.ten_sinh_vien) as truong_nhom,e.ten_gvhd, e.ten_tai_khoan,
-            (SELECT COUNT(i.id) FROM nhom_datn i WHERE i.giang_vien_id = e.id) AS so_nhom_dang_huong_dan,
+            gvhdNhom.so_nhom_dang_huong_dan AS so_nhom_dang_huong_dan,
             e.so_nhom_huong_dan_toi_da,
             g.ten_dot_dang_ky, b.trang_thai, cddk.check_dot_dang_ky
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
@@ -46,12 +50,15 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             LEFT JOIN CheckDotDangKy cddk ON cddk.id = g.id
+            LEFT JOIN gvhdNhomDatn gvhdNhom ON gvhdNhom.id = e.id
             WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
             OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%)
             AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE ''
             OR k.id = :#{#req.monDatnId})
+            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
+            OR f.id = :#{#req.chuyenNganhId})
             AND (:#{#req.tenTaiKhoan} IS NULL OR :#{#req.tenTaiKhoan} LIKE ''
             OR e.ten_gvhd LIKE %:#{#req.tenTaiKhoan}% OR e.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
@@ -75,6 +82,10 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             WITH CheckDotDangKy AS (
             SELECT a.id, IF(:#{#req.currentTime} BETWEEN a.ngay_bat_dau AND a.ngay_ket_thuc, 1, 0) 
             AS check_dot_dang_ky FROM dot_dang_ky a WHERE a.id = :#{#req.dotDangKyId}
+            ), gvhdNhomDatn AS (
+                SELECT DISTINCT COUNT(a.id) as so_nhom_dang_huong_dan, b.id FROM nhom_datn a JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
+                WHERE b.dot_dang_ky_id = :#{#req.dotDangKyId} AND b.co_so_id = :#{#req.coSoId}
+                GROUP BY b.id
             )
             SELECT COUNT(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
@@ -85,12 +96,15 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
             LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             LEFT JOIN CheckDotDangKy cddk ON cddk.id = g.id
+            LEFT JOIN gvhdNhomDatn gvhdNhom ON gvhdNhom.id = e.id
             WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
             OR b.ten_de_tai LIKE %:#{#req.tenDeTai}%)
             AND (:#{#req.monDatnId} IS NULL OR :#{#req.monDatnId} LIKE ''
             OR k.id = :#{#req.monDatnId})
+            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE ''
+            OR f.id = :#{#req.chuyenNganhId})
             AND (:#{#req.tenTaiKhoan} IS NULL OR :#{#req.tenTaiKhoan} LIKE ''
             OR e.ten_gvhd LIKE %:#{#req.tenTaiKhoan}% OR e.ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}%)
             AND (:#{#req.trangThai} IS NULL OR :#{#req.trangThai} LIKE ''
@@ -114,19 +128,37 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
     Page<CnNhomDatnResponse> findNhomDatn(@Param("req") CnFindNhomDatnRequest req, Pageable page, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = """
+            WITH CountSinhVien AS (
+                SELECT y.id AS nhom_id, COUNT(x.id) AS so_thanh_vien
+                FROM sinh_vien x
+                JOIN nhom_datn y ON x.nhom_id = y.id
+                WHERE x.dot_dang_ky_id = :#{#req.idDotDangKy} AND x.co_so_id = :#{#req.coSoId}
+                AND x.chuyen_nganh_id = :#{#req.chuyenNganhId}
+                GROUP BY y.id
+            ), gvhdNhomDatn AS (
+                SELECT DISTINCT COUNT(a.id) as so_nhom_dang_huong_dan, b.id FROM nhom_datn a JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
+                WHERE b.dot_dang_ky_id = :dotDangKyId AND b.co_so_id = :#{#req.coSoId}
+                GROUP BY b.id
+            )
             SELECT ROW_NUMBER() OVER(ORDER BY e.ma_nhom) AS STT, ma_sinh_vien,
-            a.ten_sinh_vien as ten_sinh_vien, a.email, e.ma_nhom,
+            a.ten_sinh_vien as ten_sinh_vien, a.email, CONCAT(countSV.so_thanh_vien, '/7') AS so_luong_thanh_vien, e.ma_nhom,
+            CONCAT(c.ma_mon, ' - ', c.ten_mon_datn) AS mon_datn,
             if(a.id = e.truong_nhom_id, 'x', '') as chuc_vu
-            , e.ten_de_tai, f.ten_tai_khoan AS 'gvhd', d.ten_dot_dang_ky
+            , e.ten_de_tai, f.ten_tai_khoan AS 'gvhd', CONCAT(gvhdNhom.so_nhom_dang_huong_dan, '/7') AS so_nhom_dang_huong_dan,
+            d.ten_dot_dang_ky
             FROM sinh_vien a
-            LEFT JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
+            JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
             LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
             LEFT JOIN mon_datn c ON c.id = a.mon_datn_id
             LEFT JOIN mon_datn m ON m.id = a.mon_chuong_trinh_id
             LEFT JOIN dot_dang_ky d ON d.id = a.dot_dang_ky_id
             LEFT JOIN nhom_datn e ON e.id= a.nhom_id
             LEFT JOIN giang_vien_huong_dan f ON f.id  = e.giang_vien_id
-            WHERE d.id = :dotDangKyId AND a.co_so_id = :#{#req.coSoId} AND g.id = :idChuNhiem
+            LEFT JOIN CountSinhVien countSV ON countSV.nhom_id = e.id
+            LEFT JOIN gvhdNhomDatn gvhdNhom ON gvhdNhom.id = f.id
+            WHERE d.id = :dotDangKyId AND a.co_so_id = :#{#req.coSoId}
+            AND g.id = :idChuNhiem
+            AND b.id = :#{#req.chuyenNganhId}
             AND a.trang_thai = :trangThai
             """, nativeQuery = true)
     List<CnSinhVienTheoDotExcel> findNhomDatnExport(@Param("req") CnFindSinhVienTheoDotRequest req, @Param("dotDangKyId") String dotDangKyId, @Param("idChuNhiem") String idChuNhiem, @Param("trangThai") int trangThai);
