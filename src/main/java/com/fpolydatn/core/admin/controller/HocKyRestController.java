@@ -5,6 +5,8 @@ import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.admin.model.request.CreateHocKyRequest;
 import com.fpolydatn.core.admin.model.request.UpdateHocKyRequest;
 import com.fpolydatn.core.admin.service.HocKyService;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,9 @@ public final class HocKyRestController extends BaseController {
 
     @Autowired
     private HocKyService hocKyService;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @PostMapping
     public ResponseObject add(@RequestBody CreateHocKyRequest cmd) {
@@ -51,6 +56,12 @@ public final class HocKyRestController extends BaseController {
     @GetMapping
     public ResponseObject getAll() {
         return new ResponseObject(hocKyService.getAll());
+    }
+
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+        String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_HOC_KY);
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFileLogActive));
     }
 
 }

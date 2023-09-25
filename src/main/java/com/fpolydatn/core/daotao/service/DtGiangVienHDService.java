@@ -39,5 +39,5 @@ public interface DtGiangVienHDService {
 
     void DtGiangVienHDMauExportExcel(HttpServletResponse response, String typeExcel, final DtFindGiangVienHDRequest request) throws IOException;
 
-     DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId, String dotDangKyId);
+    DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId, String dotDangKyId);
 }

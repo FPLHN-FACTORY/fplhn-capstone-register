@@ -9,6 +9,7 @@ import com.fpolydatn.core.daotao.model.request.DtGiagVienHDImportResquest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
+import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
 import com.fpolydatn.core.daotao.repository.DtGiangVienHDRepository;
 import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtPhanCongHuongDanRepository;
@@ -18,8 +19,11 @@ import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -68,6 +72,15 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     private FormUtils formUtils = new FormUtils();
 
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
+    @Autowired
+    private LogService logService;
+
+    @Autowired
+    private DtDotDangKyRepository dotDangKyRepository;
+
     @Override
     public GiangVienHuongDan create(@Valid DtCreateGiangVienHDRequest command) {
         String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim(), command.getCoSoId(), command.getDotDangKyId());
@@ -83,6 +96,15 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             throw new RestApiException(Message.TEN_TAI_KHOAN_GIANG_VIEN_HUONG_DAN_EXIST);
         }
         GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class, command);
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(gvhd.getDotDangKyId()).get().getTenDotDangKy());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Giảng viên '" + gvhd.getTenTaiKhoan() + "' đã được thêm vào hệ thống.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return dtGiangVienHDRepository.save(gvhd);
     }
 
@@ -97,6 +119,15 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
             throw new RestApiException(Message.GIANG_VIEN_DANG_CO_NHOM_HUONG_DAN);
         }
         dtGiangVienHDRepository.delete(gvhdCheck.get());
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(gvhdCheck.get().getDotDangKyId()).get().getTenDotDangKy());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Giảng viên '" + gvhdCheck.get().getTenTaiKhoan() + "' đã bị xóa khỏi hệ thống.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -128,6 +159,15 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         giangVien.setEmailFpt(command.getEmailFpt());
         giangVien.setEmailFe(command.getEmailFe());
         giangVien.setDotDangKyId(command.getDotDangKyId());
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(giangVien.getDotDangKyId()).get().getTenDotDangKy());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Giảng viên '" + giangVien.getTenTaiKhoan() + "' đã được sửa.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return dtGiangVienHDRepository.save(giangVien);
     }
 

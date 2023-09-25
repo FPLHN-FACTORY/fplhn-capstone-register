@@ -207,6 +207,51 @@
                                                             th:attr="onclick=|xacNhanNhieuNhom('${page.currentPage}')|">
                                                         Xác nhận
                                                     </button>
+                                                    <button data-bs-toggle="modal" data-bs-target="#history"
+                                                            th:attr="onclick=|openModalHistory()|"
+                                                            class="btn btn-success">
+                                                        Lịch sử
+                                                    </button>
+                                                    <div class="modal fade" id="history" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="historyLabel">Lịch sử</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <table
+                                                                                style="text-align: center"
+                                                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                                                            <thead>
+                                                                            <th class="text-center align-middle" width="50px">STT</th>
+                                                                            <th class="text-center align-middle">Email người thực hiện</th>
+                                                                            <th class="text-center align-middle">Ngày thực hiện</th>
+                                                                            <th class="text-center align-middle">Nội dung</th>
+                                                                            <th class="text-center align-middle">Chức Vụ</th>
+                                                                            </thead>
+                                                                            <tbody id="listHistory">
+                                                                            <th:block th:each="logger, stat : ${loggerShowHistory}">
+                                                                                <tr class="table-light">
+                                                                                    <td class="text-center align-middle" th:text="${stat.index + 1}"></td>
+                                                                                    <td class="text-center align-middle" th:text="${logger.getMail()}"></td>
+                                                                                    <td class="text-center align-middle" th:text="${logger.getCreateDate()}"></td>
+                                                                                    <td class="text-center align-middle" th:text="${logger.getContent()}"></td>
+                                                                                    <td class="text-center align-middle" th:text="${logger.getAuthor()}"></td>
+                                                                                </tr>
+                                                                            </th:block>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                                 <div style="float: right">
                                                     <select style="width: 205px; float: right; cursor: pointer"

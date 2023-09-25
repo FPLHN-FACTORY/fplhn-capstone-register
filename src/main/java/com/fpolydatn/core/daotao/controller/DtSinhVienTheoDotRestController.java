@@ -10,7 +10,9 @@ import com.fpolydatn.core.daotao.model.request.FindDtSinhVienTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtLoaiSinhVienResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienTheoDotResponse;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,9 @@ public class DtSinhVienTheoDotRestController extends BaseController {
 
     @Autowired
     private CommonHelper commonHelper;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @GetMapping
     public ResponseObject searchStudent(final FindDtSinhVienTheoDotRequest req) {
@@ -115,5 +120,12 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     public ResponseObject getAllMonDatnByChuyenNganhId(@PathVariable("chuyenNganhId") String chuyenNganhId) {
         String coSoId = session.getCoSoId();
         return new ResponseObject(sinhVienService.getAllMonDatnByChuyenNganhId(chuyenNganhId, coSoId));
+    }
+
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN);
+
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFile));
     }
 }

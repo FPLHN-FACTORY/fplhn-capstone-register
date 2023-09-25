@@ -6,7 +6,9 @@ import com.fpolydatn.core.daotao.model.request.DtCreateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.ChuyenNganh;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,9 @@ public class DtChuyenNganhRestController extends BaseController {
 
     @Autowired
     private CommonHelper commonHelper;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @GetMapping("/{id}")
     public ResponseObject detail(@PathVariable("id") String id) {
@@ -56,5 +61,11 @@ public class DtChuyenNganhRestController extends BaseController {
         String coSoId = session.getCoSoId();
         request.setCoSoId(coSoId);
         return new ResponseObject(chuyenNganhService.update(request));
+    }
+
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+        String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_CHUYEN_NGANH);
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFileLogActive));
     }
 }

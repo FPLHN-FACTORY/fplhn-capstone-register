@@ -36,12 +36,19 @@ public class DtNhomDatnTheoDotController extends BaseController {
     public String findAllNhomDatn(Model model, final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
+        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+        req.setDotDangKyId(dotDangKyHienTai);
+        Boolean checkDotDangKyHienTai = false;
+        if (dotDangKyHienTai != null) {
+            checkDotDangKyHienTai = true;
+        }
         PageableObject<DtNhomDatnTheoDotResponse> listNhomDatn = dtNhomDatnTheoDotService.findAllNhomDatn(req);
         List<SimpleEntityProj> listChuyenNganh = dtChuyenNganhService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         List<SimpleEntityProj> listDotDangKy = dtDotDangKyService.findAllSimpleEntityByCoSo(coSoId);
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("page", listNhomDatn);
+        model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
         return "daotao/dt-nhom-datn";
     }
 

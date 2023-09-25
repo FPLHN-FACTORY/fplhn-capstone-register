@@ -6,6 +6,7 @@ import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.CanBoRepository;
+import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import com.fpolydatn.repository.SinhVienRepository;
 import com.fpolydatn.util.CommonHelper;
@@ -40,13 +41,19 @@ public class UserService {
     private CanBoRepository canBoRepository;
 
     @Autowired
+    @Qualifier(DotDangKyRepository.NAME)
+    private DotDangKyRepository dotDangKyRepository;
+
+    @Autowired
     private CommonHelper commonHelper;
 
     public void processOAuthPostLogin(HttpServletResponse response,
                                       String coSoID, String email, String role) throws IOException {
 
         String dotDangKyID = commonHelper.getDotDangKyHienTai();
-
+        if (dotDangKyID != null) {
+            session.setAttribute(SessionConstant.TEN_DOT_DANG_KY, dotDangKyRepository.findById(dotDangKyID).get().getTenDotDangKy());
+        }
         SimpleEntityProj account = null;
         switch (role.toLowerCase()) {
             case ActorConstant.GIANG_VIEN: {

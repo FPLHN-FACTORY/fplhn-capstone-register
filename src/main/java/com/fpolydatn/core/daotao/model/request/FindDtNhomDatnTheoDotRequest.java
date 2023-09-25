@@ -20,4 +20,6 @@ public class FindDtNhomDatnTheoDotRequest extends PageableRequest {
 
     private String coSoId;
 
+    private String soThanhVien;
+
 }

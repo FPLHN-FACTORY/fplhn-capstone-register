@@ -11,6 +11,8 @@ import com.fpolydatn.core.daotao.model.response.DtCanBoResponse;
 import com.fpolydatn.core.daotao.model.response.DtCanBoResponseMessage;
 import com.fpolydatn.core.daotao.model.response.DtMonDatnResponse;
 import com.fpolydatn.core.daotao.service.DtCanBoService;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +38,9 @@ public final class DtCanBoRestController extends BaseController {
 
     @Autowired
     private DtCanBoService canBoService;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @GetMapping("/{id}")
     public ResponseObject detail(@PathVariable("id") String id) {
@@ -78,5 +83,11 @@ public final class DtCanBoRestController extends BaseController {
         req.setCoSoId(session.getCoSoId());
         PageableObject<DtCanBoResponse> listCanBo = canBoService.search(req);
         return new ResponseObject(listCanBo);
+    }
+
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+        String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_CAN_BO);
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFileLogActive));
     }
 }

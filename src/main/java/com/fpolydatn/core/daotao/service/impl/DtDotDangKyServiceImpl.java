@@ -14,7 +14,10 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.HocKy;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,10 +48,16 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Autowired
     private DtHocKyRepository dtHocKyRepository;
 
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
+    @Autowired
+    private LogService logService;
+
     @Override
     public PageableObject<DtDotDangKyResponse> findByCoSo(DtFindDotDangKyRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<DtDotDangKyResponse> response = dtDotDangKyRepository.findByCoSo(request,  new Date().getTime(),pageable);
+        Page<DtDotDangKyResponse> response = dtDotDangKyRepository.findByCoSo(request, new Date().getTime(), pageable);
         return new PageableObject(response);
     }
 
@@ -74,6 +84,18 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         dotDangKy.setHanChuNhiemBoMon(result.getHanChuNhiemBoMon());
         dotDangKy.setCoSoId(createDotDangKyRequest.getCoSoId());
         dotDangKy.setHocKyId(createDotDangKyRequest.getHocKyId());
+
+        try {
+            // gen file tự động
+            writerFileCSV.genFolderLogger(dotDangKy.getTenDotDangKy());
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKy.getTenDotDangKy());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Đợt đăng ký '" + dotDangKy.getTenDotDangKy() + "' đã được tạo",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return dtDotDangKyRepository.save(dotDangKy);
     }
 
@@ -99,6 +121,18 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         dotDangKy.setHanSinhVien(result.getHanSinhVien());
         dotDangKy.setHanGiangVien(result.getHanGiangVien());
         dotDangKy.setHanChuNhiemBoMon(result.getHanChuNhiemBoMon());
+
+        try {
+            writerFileCSV.updateFolder(writerFileCSV.covertFileName(dotDangKyCheck.get().getTenDotDangKy()), writerFileCSV.covertFileName(dtUpdateDotDangKyRequest.getTenDotDangKy()));
+            // ghi log vào trong file chức năng từng màn
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dtUpdateDotDangKyRequest.getTenDotDangKy());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Đợt đăng ký '" + dotDangKyCheck.get().getTenDotDangKy() + "' đã được sửa.'",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return dtDotDangKyRepository.save(dotDangKy);
     }
 
@@ -190,5 +224,25 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         result.setHanChuNhiemBoMon(hanChuNhiemBoMonLong);
         return result;
     }
+
+    @Override
+    public Boolean createFileLog(String tenDotDangKy) {
+        if (tenDotDangKy != null && tenDotDangKy.trim().length() != 0) {
+            String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy);
+            File checkFile = new File(pathFile);
+            if (checkFile.exists()) {
+                throw new RestApiException(Message.FILE_LOG_IS_EXIST);
+            }
+            writerFileCSV.genFolderLogger(tenDotDangKy);
+            return true;
+        }
+        return false;
+    }
+
+//    @Override
+//    public File downloadFileLog(String tenDotDangKy) throws ZipException {
+//        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(tenDotDangKy);
+//        return writerFileCSV.downloadFileLog(pathFile);
+//    }
 
 }

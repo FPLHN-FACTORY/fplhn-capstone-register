@@ -149,7 +149,36 @@ function openModalCreateHocKy() {
     $("#ngay_bat_dau_add_error").text("")
     $("#ngay_ket_thuc_add_error").text("")
 }
+function openModalHistory() {
 
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: hocKyApi + "/history",
+        dataType: 'json',
+        success: function (responseData) {
+            if (responseData.data.length == 0) {
+                $("#listHistory").html(``);
+            } else {
+                $("#listHistory").html(responseData.data.map(function (element, index) {
+                    return `
+                <tr class="table-light">                 
+                      <td class="text-center align-middle">${index + 1}</td>
+                      <td class="text-center align-middle">${element.mail}</td>
+                      <td class="text-center align-middle">${element.createDate}</td>
+                      <td class="text-center align-middle">${element.content}</td>
+                      <td class="text-center align-middle">${element.author}</td>
+                      
+                </tr>
+               `
+                }));
+            }
+        },
+        error: function (e) {
+            console.log("ERROR : ", e);
+        }
+    });
+}
 $("#form_hoc_ky_update").submit(function (event) {
     event.preventDefault();
     let tenHocKy = $("#ten_hoc_ky_update").val().trim();

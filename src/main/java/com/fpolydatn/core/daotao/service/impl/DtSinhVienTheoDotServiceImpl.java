@@ -22,9 +22,12 @@ import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.FormUtils;
+import com.fpolydatn.util.WriterFileCSV;
 import com.github.pjfanning.xlsx.StreamingReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -77,6 +80,11 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Autowired
     private CommonHelper commonHelper;
 
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
+    @Autowired
+    private LogService logService;
 
     private ConcurrentHashMap<String, String> map;
 
@@ -448,6 +456,16 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             throw new RestApiException(Message.SINH_VIEN_NOT_EXISTS);
         }
         sinhVienRepository.delete(checkSV.get());
+
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(checkSV.get().getDotDangKyId()).get().getTenDotDangKy());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Sinh viên '" + checkSV.get().getMaSinhVien() + "' đã được xóa trong hệ thống.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
@@ -482,6 +500,16 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         } else {
             sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
         }
+
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(sinhVien.getDotDangKyId()).get().getTenDotDangKy());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Sinh viên '" + sinhVien.getMaSinhVien() + "' đã được sửa.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return sinhVienRepository.save(sinhVien);
     }
 
@@ -508,6 +536,15 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         sinhVien = formUtils.convertToObject(SinhVien.class, command);
         sinhVien.setSoDienThoai(command.getSdt());
         sinhVien.setMonChuongTrinhId(command.getMonChuongTrinh());
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(sinhVien.getDotDangKyId()).get().getTenDotDangKy());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Sinh viên '" + sinhVien.getMaSinhVien() + "' đã được thêm vào hệ thống.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return sinhVienRepository.save(sinhVien);
     }
 

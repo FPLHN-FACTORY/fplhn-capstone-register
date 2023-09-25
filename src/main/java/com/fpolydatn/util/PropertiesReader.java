@@ -15,11 +15,12 @@ import java.util.Properties;
 @Slf4j
 public class PropertiesReader {
 
-    private PropertiesReader() {
+    PropertiesReader() {
     }
 
     private static Properties applicationProperties = new Properties();
     private static Properties validationProperties = new Properties();
+    private static Properties configurationsProperties = new Properties();
     private static Logger logger = Logger.getLogger(PropertiesReader.class);
 
 
@@ -41,6 +42,15 @@ public class PropertiesReader {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
+        // Load path file properties file
+        try (
+                InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(Constants.FileProperties.PROPERTIES_CONFIGURATIONS);
+                InputStreamReader reader = new InputStreamReader(is, Constants.ENCODING_UTF8);
+        ) {
+            configurationsProperties.load(reader);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
     }
 
     /**
@@ -54,12 +64,19 @@ public class PropertiesReader {
         return getProperty(propertyName, Constants.FileProperties.PROPERTIES_VALIDATION);
     }
 
+
+    public String getPropertyConfig(String propertyName) {
+        return getProperty(propertyName, Constants.FileProperties.PROPERTIES_CONFIGURATIONS);
+    }
+
     public static String getProperty(String propertyName, String propertiesType) {
         switch (propertiesType) {
             case Constants.FileProperties.PROPERTIES_APPLICATION:
                 return applicationProperties.getProperty(propertyName);
             case Constants.FileProperties.PROPERTIES_VALIDATION:
                 return validationProperties.getProperty(propertyName);
+            case Constants.FileProperties.PROPERTIES_CONFIGURATIONS:
+                return configurationsProperties.getProperty(propertyName);
             default:
                 return null;
         }

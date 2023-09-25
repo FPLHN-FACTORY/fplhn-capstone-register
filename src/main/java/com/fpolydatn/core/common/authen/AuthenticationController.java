@@ -55,6 +55,7 @@ public final class AuthenticationController {
 
     private String getCoSo(Model model, HttpSession session, String role) {
         List<SimpleEntityProj> listCoSo = coSoRepository.findAllSimpleEntity();
+        session.setAttribute("listCoSo", listCoSo);
         model.addAttribute("listCoSo", listCoSo);
         session.setAttribute("role", role);
         return "authen/chon-co-so";

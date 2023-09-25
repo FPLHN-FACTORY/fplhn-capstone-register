@@ -12,4 +12,8 @@ public class SessionConstant {
     public static String ROLE = "role";
 
     public static String AVATAR = "avatar";
+
+    public static String EMAIL = "email";
+
+    public static String TEN_DOT_DANG_KY = "doDangKy";
 }

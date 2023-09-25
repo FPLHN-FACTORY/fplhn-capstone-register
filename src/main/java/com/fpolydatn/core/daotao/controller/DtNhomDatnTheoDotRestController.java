@@ -7,9 +7,13 @@ import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +31,9 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     @Autowired
     private CommonHelper commonHelper;
 
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
     @GetMapping("")
     public ResponseObject showDanhSachSinhVien(@RequestParam("keyword") String id) {
         String coSoId = session.getCoSoId();
@@ -40,6 +47,11 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         req.setCoSoId(coSoId);
         PageableObject<DtNhomDatnTheoDotResponse> listNhomDatn = dtNhomDatnTheoDotService.findAllNhomDatn(req);
         return new ResponseObject(listNhomDatn);
+    }
+
+    @DeleteMapping("/xoa-nhom")
+    public ResponseObject deleteNhomDatn(@RequestBody List<String> listIdNhom) {
+        return new ResponseObject(dtNhomDatnTheoDotService.deleteNhomDatn(listIdNhom));
     }
 
     @GetMapping("/export")
@@ -58,5 +70,12 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
             request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         }
         dtNhomDatnTheoDotService.DTNhomDatnSinhVienExport(response, request);
+    }
+
+    @GetMapping("/history")
+    public ResponseObject getAllHistory() {
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+
+        return new ResponseObject(writerFileCSV.readFileCSV(pathFile));
     }
 }
