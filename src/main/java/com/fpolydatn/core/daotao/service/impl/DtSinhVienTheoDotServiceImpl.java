@@ -55,6 +55,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author thepvph20110
@@ -288,6 +289,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
         response.setStatus(true);
         ConcurrentMap<String, String> mapMsvLoai = new ConcurrentHashMap<>();
+        CopyOnWriteArrayList<LoggerObject> loggerObjects = new CopyOnWriteArrayList<>();
+        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+
         int columnIndex = -1;
         try {
             Workbook workbook = StreamingReader.builder()
@@ -358,23 +363,79 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             }
             if (sv.getNhomId() != null) {
                 NhomDatn nhomDatn = mapNhomDatn.get(sv.getId());
+
+                LoggerObject loggerObject = writerFileCSV.
+                        createLoggerObject("Đào tạo đã loại sinh viên '" + sv.getMaSinhVien()
+                                        + "' ra khỏi nhóm '" + nhomDatn.getMaNhom() + "' do không đủ điều kiện",
+                                pathFile, "Thành công");
+                loggerObject.setTenNhom(nhomDatn.getMaNhom());
+                loggerObjects.add(loggerObject);
+
+                LoggerObject loggerObjectActive = writerFileCSV.
+                        createLoggerObject("Đào tạo đã loại sinh viên '" + sv.getMaSinhVien()
+                                        + "' ra khỏi nhóm '" + nhomDatn.getMaNhom() + "' do không đủ điều kiện",
+                                pathFileLogActive, "Thành công");
+                loggerObjects.add(loggerObjectActive);
                 if (nhomDatn != null) {
                     boolean check = true;
                     for (SinhVien sinhVien : listSinhVien) {
                         if (nhomDatn.getId().equals(sinhVien.getNhomId()) && !sinhVien.getId().equals(sv.getId())) {
                             nhomDatn.setTruongNhomId(sinhVien.getId());
                             check = false;
+                            try {
+                                LoggerObject loggerObjectOutNhom = writerFileCSV.
+                                        createLoggerObject("Đào tạo đổi quyền trưởng nhóm '" + nhomDatn.getMaNhom() + "' " +
+                                                        "cho sinh viên '" + sinhVien.getMaSinhVien() + "' do sinh viên '"
+                                                        + sv.getMaSinhVien() + "' đã bị loại do không đủ kiều kiện",
+                                                pathFile, "Thành công");
+                                loggerObjectOutNhom.setTenNhom(nhomDatn.getMaNhom());
+                                loggerObjects.add(loggerObjectOutNhom);
+
+                                LoggerObject loggerObjectActiveOutNhom = writerFileCSV.
+                                        createLoggerObject("Đào tạo đổi quyền trưởng nhóm '" + nhomDatn.getMaNhom() + "' " +
+                                                        "cho sinh viên '" + sinhVien.getMaSinhVien() + "' do sinh viên '"
+                                                        + sv.getMaSinhVien() + "' đã bị loại do không đủ kiều kiện",
+                                                pathFileLogActive, "Thành công");
+                                loggerObjects.add(loggerObjectActiveOutNhom);
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                            }
                             break;
                         }
                     }
                     if (check) {
                         listNhomDatnDelete.put(nhomDatn.getId(), nhomDatn);
+                        try {
+                            LoggerObject loggerObjectActiveDelete = writerFileCSV.
+                                    createLoggerObject("Đào tạo đã xóa nhóm '" + nhomDatn.getMaNhom() + "'" +
+                                                    " do không có thành viên nào trong nhóm",
+                                            pathFileLogActive, "Thành công");
+                            logService.sendLogMessage(loggerObjectActiveDelete);
+
+                            LoggerObject loggerObjectDelete = writerFileCSV.
+                                    createLoggerObject("Đào tạo đã xóa nhóm '" + nhomDatn.getMaNhom() + "'" +
+                                                    " do không có thành viên nào trong nhóm",
+                                            pathFile, "Thành công");
+                            loggerObjectDelete.setTenNhom(nhomDatn.getMaNhom());
+                            logService.sendLogMessage(loggerObjectDelete);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
                     } else {
                         listNhomDatnDoiTruongNhom.put(nhomDatn.getId(), nhomDatn);
                     }
                 }
                 sv.setNhomId(null);
                 sv.setMonDatnId(null);
+            }
+
+            try {
+                LoggerObject loggerObjectActive = writerFileCSV.
+                        createLoggerObject("Sinh viên '" + sv.getMaSinhVien() + "' bị loại vì không đủ điều kiện.",
+                                pathFileLogActive, "Thành công");
+                loggerObjects.add(loggerObjectActive);
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
         if (response.getStatus() == false) {
@@ -394,6 +455,9 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             try {
                 sinhVienRepository.saveAll(listSvKhongDat.values());
                 response.setMessage("Đã loại sinh viên không đủ điều kiện");
+                loggerObjects.forEach(el -> {
+                    logService.sendLogMessage(el);
+                });
             } catch (Exception e) {
                 response.setStatus(false);
                 response.setMessage("Lỗi hệ thống");
@@ -421,7 +485,24 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
         } else {
             Optional<NhomDatn> nhomDatn = nhomDatnTheoDotRepository.findById(sinhVien.getNhomId());
+            try {
+                String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                LoggerObject loggerObject = writerFileCSV.
+                        createLoggerObject("Đào tạo đã xóa sinh viên '" + sinhVien.getMaSinhVien()
+                                        + "' ra khỏi nhóm '" + nhomDatn.get().getMaNhom() + "' do không đủ điều kiện",
+                                pathFile, "Thành công");
+                loggerObject.setTenNhom(nhomDatn.get().getMaNhom());
+                logService.sendLogMessage(loggerObject);
 
+                String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                LoggerObject loggerObjectActive = writerFileCSV.
+                        createLoggerObject("Đào tạo đã xóa sinh viên '" + sinhVien.getMaSinhVien()
+                                        + "' ra khỏi nhóm '" + nhomDatn.get().getMaNhom() + "' do không đủ điều kiện",
+                                pathFileLogActive, "Thành công");
+                logService.sendLogMessage(loggerObjectActive);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
             if (!nhomDatn.get().getTruongNhomId().equals(sinhVien.getId())) {
                 sinhVien.setNhomId(null);
                 sinhVien.setMonDatnId(null);
@@ -436,16 +517,63 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                     sinhVien.setNhomId(null);
                     sinhVien.setMonDatnId(null);
                     sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                    try {
+                        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                        LoggerObject loggerObjectActive = writerFileCSV.
+                                createLoggerObject("Đào tạo đã xóa nhóm '" + nhomDatn.get().getMaNhom() + "'" +
+                                                " do không có thành viên nào trong nhóm",
+                                        pathFileLogActive, "Thành công");
+                        logService.sendLogMessage(loggerObjectActive);
+
+                        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                        LoggerObject loggerObject = writerFileCSV.
+                                createLoggerObject("Đào tạo đã xóa nhóm '" + nhomDatn.get().getMaNhom() + "'" +
+                                                " do không có thành viên nào trong nhóm",
+                                        pathFile, "Thành công");
+                        loggerObject.setTenNhom(nhomDatn.get().getMaNhom());
+                        logService.sendLogMessage(loggerObject);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 } else {
                     nhomDatn.get().setTruongNhomId(motSVtrongNhom.getId());
                     nhomDatnTheoDotRepository.save(nhomDatn.get());
                     sinhVien.setNhomId(null);
                     sinhVien.setMonDatnId(null);
                     sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
+                    try {
+                        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                        LoggerObject loggerObjectActive = writerFileCSV.
+                                createLoggerObject("Đào tạo đổi quyền trưởng nhóm '" + nhomDatn.get().getMaNhom() + "' " +
+                                                "cho sinh viên '" + motSVtrongNhom.getMaSinhVien() + "' do sinh viên '"
+                                        + sinhVien.getMaSinhVien() + "' đã bị loại do không đủ kiều kiện",
+                                        pathFileLogActive, "Thành công");
+                        logService.sendLogMessage(loggerObjectActive);
+
+                        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                        LoggerObject loggerObject = writerFileCSV.
+                                createLoggerObject("Đào tạo đổi quyền trưởng nhóm '" + nhomDatn.get().getMaNhom() + "' " +
+                                                "cho sinh viên '" + motSVtrongNhom.getMaSinhVien() + "' do sinh viên '"
+                                                + sinhVien.getMaSinhVien() + "' đã bị loại do không đủ kiều kiện",
+                                        pathFile, "Thành công");
+                        loggerObject.setTenNhom(nhomDatn.get().getMaNhom());
+                        logService.sendLogMessage(loggerObject);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
             }
         }
         SinhVien svKhongDuDK = sinhVienRepository.save(sinhVien);
+        try {
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Sinh viên '" + sinhVien.getMaSinhVien() + "' bị loại vì không đủ điều kiện.",
+                            pathFileLogActive, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return svKhongDuDK;
     }
 

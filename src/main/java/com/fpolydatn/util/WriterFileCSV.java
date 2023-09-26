@@ -24,6 +24,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -44,8 +45,7 @@ public class WriterFileCSV {
 
     public void createFileCSV(String pathFile) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
-             CSVPrinter csvPrinter = new CSVPrinter(writer,
-                     CSVFormat.DEFAULT.withHeader("Mail người thao tác", "Địa chỉ IP", "Ngày thực hiện", "Method", "Nội dung thực hiện", "Actor", "Trạng thái"))) {
+             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             System.out.println("______ File CSV đã được tạo với path: " + pathFile);
             csvPrinter.flush();
             csvPrinter.close();
@@ -58,7 +58,7 @@ public class WriterFileCSV {
     public void createFileCSVLuong(String pathFile) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
              CSVPrinter csvPrinter = new CSVPrinter(writer,
-                     CSVFormat.DEFAULT.withHeader("Mail người thao tác", "Địa chỉ IP", "Ngày thực hiện", "Method", "Nội dung thực hiện", "Actor", "Trạng thái", "Mã nhóm"))) {
+                     CSVFormat.DEFAULT)) {
             System.out.println("______ File CSV đã được tạo với path: " + pathFile);
             csvPrinter.flush();
             csvPrinter.close();
@@ -127,13 +127,17 @@ public class WriterFileCSV {
     }
 
     public LoggerObject createLoggerObject(String content, String pathFile, String status) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date currentDate = new Date();
+        String formattedDate = simpleDateFormat.format(currentDate);
+
         LoggerObject loggerObject = new LoggerObject();
         loggerObject.setPathFile(pathFile);
         loggerObject.setContent(content);
         loggerObject.setStatus(status);
         loggerObject.setIP(httpServletRequest.getRemoteAddr());
         loggerObject.setMail(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString());
-        loggerObject.setCreateDate(new Date().toString());
+        loggerObject.setCreateDate(formattedDate);
         loggerObject.setMethod(httpServletRequest.getMethod());
         loggerObject.setAuthor(switchAuthor(httpServletRequest.getRequestURI()));
         return loggerObject;
@@ -178,14 +182,11 @@ public class WriterFileCSV {
         try (Reader reader = new FileReader(pathFile);
              CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);) {
 
-            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
-            boolean isFirstLine = true;
+            List<CSVRecord> csvRecords = csvParser.getRecords();
+            int dem = csvRecords.size();
             for (CSVRecord csvRecord : csvRecords) {
-                if (isFirstLine) {
-                    isFirstLine = false;
-                    continue; // Bỏ qua dòng đầu tiên
-                }
                 LoggerObject loggerObject = new LoggerObject();
+                loggerObject.setStt(dem);
                 loggerObject.setMail(csvRecord.get(0));
                 loggerObject.setIP(csvRecord.get(1));
                 loggerObject.setCreateDate(csvRecord.get(2));
@@ -194,6 +195,7 @@ public class WriterFileCSV {
                 loggerObject.setAuthor(csvRecord.get(5));
                 loggerObject.setStatus(csvRecord.get(6));
                 list.add(loggerObject);
+                dem --;
             }
             Collections.reverse(list);
         } catch (IOException e) {
@@ -209,14 +211,9 @@ public class WriterFileCSV {
         try (Reader reader = new FileReader(object.getPathFile());
              CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);) {
 
-            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
-            boolean isFirstLine = true;
-
+            List<CSVRecord> csvRecords = csvParser.getRecords();
+            int dem = 0;
             for (CSVRecord csvRecord : csvRecords) {
-                if (isFirstLine) {
-                    isFirstLine = false;
-                    continue; // Bỏ qua dòng đầu tiên
-                }
 
                 LoggerObject loggerObject = new LoggerObject();
                 loggerObject.setMail(csvRecord.get(0));
@@ -228,6 +225,8 @@ public class WriterFileCSV {
                 loggerObject.setStatus(csvRecord.get(6));
                 loggerObject.setTenNhom(csvRecord.get(7));
                 if (object.getTenNhom().equals(loggerObject.getTenNhom())) {
+                    dem ++ ;
+                    loggerObject.setStt(dem);
                     list.add(loggerObject);
                 }
             }

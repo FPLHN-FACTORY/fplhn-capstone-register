@@ -15,6 +15,8 @@ import java.io.Serializable;
 @Builder
 public class LoggerObject implements Serializable {
 
+    private int stt;
+
     private String content;
 
     private String IP;

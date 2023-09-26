@@ -13,9 +13,14 @@ import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse
 import com.fpolydatn.core.sinhvien.service.SvExportFileWordService;
 import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +33,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author SonPT
@@ -49,6 +56,9 @@ public class SvNhomDatnRestController extends BaseController {
 
     @Autowired
     private SvExportFileWordService svExportFileWordService;
+
+    @Autowired
+    private WriterFileCSV writerFileCSV;
 
     @GetMapping("/search-giang-vien")
     public ResponseObject getGiangVienHuongDan(@RequestParam(defaultValue = "", required = true) String idMonDatn) {
@@ -138,6 +148,28 @@ public class SvNhomDatnRestController extends BaseController {
         request.setCoSoId(session.getCoSoId());
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         return new ResponseObject(svNhomDatnService.doiTenNhom(request));
+    }
+
+    @GetMapping("/history")
+    public ResponseObject getAllHistory(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size,
+            @RequestParam(name = "maNhom", defaultValue = "") String maNhom
+    ) {
+        List<LoggerObject> list = new ArrayList<>();
+        if (maNhom != null && maNhom.trim().length() != 0) {
+            LoggerObject object = new LoggerObject();
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            object.setTenNhom(maNhom);
+            object.setPathFile(pathFile);
+            list = writerFileCSV.readFileCSVLuong(object);
+            List<LoggerObject> pagedSanPhamList = list.stream()
+                    .skip(page * size)
+                    .limit(size)
+                    .collect(Collectors.toList());
+            return new ResponseObject(new PageImpl<>(pagedSanPhamList, PageRequest.of(page, size), list.size()));
+        }
+        return new ResponseObject(new PageImpl<>(list, PageRequest.of(page, size), list.size()));
     }
 
 }
