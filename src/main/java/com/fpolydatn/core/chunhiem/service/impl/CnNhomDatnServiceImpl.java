@@ -26,6 +26,7 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.GiangVienHuongDan;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.TrangThaiNhom;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
@@ -36,6 +37,7 @@ import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.EmailSender;
+import com.fpolydatn.util.FormUtils;
 import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.NhomDatnHelper;
 import com.fpolydatn.util.WriterFileCSV;
@@ -61,7 +63,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -112,13 +113,25 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     ConcurrentHashMap<String, SinhVien> mapSinhVien;
 
+    ConcurrentHashMap<String, SinhVien> mapSinhVienKeyId;
+
+    ConcurrentHashMap<String, SinhVien> mapSinhVienBefore;
+
     ConcurrentHashMap<String, SinhVien> mapTruongNhom;
 
     ConcurrentHashMap<String, NhomDatn> mapNhomDatn;
 
+    ConcurrentHashMap<String, NhomDatn> mapNhomDatnBefore;
+
+    ConcurrentHashMap<String, NhomDatn> mapNhomDatnKeyId;
+
     ConcurrentHashMap<String, GiangVienHuongDan> mapGiangVien;
 
+    ConcurrentHashMap<String, GiangVienHuongDan> mapGiangVienKeyId;
+
     ConcurrentHashMap<String, CnGvhdAndDanhSachNhomResponse> mapGiangVienAndDanhSachNhom;
+
+    FormUtils formUtils = new FormUtils();
 
     @Override
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
@@ -604,8 +617,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         CnSinhVienImport response = new CnSinhVienImport();
         List<LoggerObject> loggerObjectList = new ArrayList<>();
         String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
-
+        String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN);
         try {
             if (checkDotDangKyHienTai(dotDangKyId)) {
                 throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
@@ -614,22 +626,25 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             CnSinhVienTheoDotImport sinhVienTheoDotImport = new CnSinhVienTheoDotImport();
             sinhVienList = new ArrayList<>();
             sinhVienList = sinhVienTheoDotImport.importData(file);
-            ConcurrentMap<String, SinhVien> listSinhVienEntity = new ConcurrentHashMap();
-            ConcurrentMap<String, NhomDatn> listNhomDatnEntity = new ConcurrentHashMap<>();
-            ConcurrentMap<String, String> listMaNhomCreate = new ConcurrentHashMap<>();
-            ConcurrentMap<String, CnCreateSinhVienTheoDotRequest> mapTruongNhomCreate = new ConcurrentHashMap<>();
+            ConcurrentHashMap<String, SinhVien> listSinhVienEntity = new ConcurrentHashMap();
+            ConcurrentHashMap<String, NhomDatn> listNhomDatnEntity = new ConcurrentHashMap<>();
+            ConcurrentHashMap<String, String> listMaNhomCreate = new ConcurrentHashMap<>();
+            ConcurrentHashMap<String, CnCreateSinhVienTheoDotRequest> mapTruongNhomCreate = new ConcurrentHashMap<>();
             mapSinhVien = new ConcurrentHashMap<>();
+            mapSinhVienKeyId = new ConcurrentHashMap<>();
+            mapSinhVienBefore = new ConcurrentHashMap<>();
             mapNhomDatn = new ConcurrentHashMap<>();
+            mapNhomDatnBefore = new ConcurrentHashMap<>();
+            mapNhomDatnKeyId = new ConcurrentHashMap<>();
             mapGiangVien = new ConcurrentHashMap<>();
+            mapGiangVienKeyId = new ConcurrentHashMap<>();
             mapTruongNhom = new ConcurrentHashMap<>();
             mapGiangVienAndDanhSachNhom = new ConcurrentHashMap<>();
             ConcurrentHashMap<String, CnCreateSinhVienTheoDotRequest> mapSinhVienTaoNhom = new ConcurrentHashMap<>();
-            addDataInMapSinhVien(mapSinhVien, dotDangKyId, coSoId, idChuNhiem);
-            addDataInMapNhomDatn(mapNhomDatn, dotDangKyId, coSoId, idChuNhiem);
-            addDataInMapGiangVien(mapGiangVien, dotDangKyId, coSoId, idChuNhiem);
+            addDataInMapSinhVien(mapSinhVien, mapSinhVienBefore, mapSinhVienKeyId, dotDangKyId, coSoId, idChuNhiem);
+            addDataInMapNhomDatn(mapNhomDatn, mapNhomDatnKeyId, mapNhomDatnBefore, dotDangKyId, coSoId, idChuNhiem);
+            addDataInMapGiangVien(mapGiangVien, mapGiangVienKeyId, dotDangKyId, coSoId, idChuNhiem);
             addDataInMapTruongNhomCu(mapTruongNhom, dotDangKyId, coSoId, idChuNhiem);
-//            addDataInMapGiangVienAndDanhSachNhom(mapGiangVienAndDanhSachNhom, dotDangKyId, coSoId);
-
             sinhVienList.parallelStream().forEach(sinhVien -> {
                 SinhVien sv = mapSinhVien.get(sinhVien.getMaSinhVien());
                 NhomDatn nhomDatn = mapNhomDatn.get(sinhVien.getMaNhom());
@@ -727,8 +742,157 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     if (sinhVien.getNhomId() == null) {
                         sinhVien.setMonDatnId(null);
                     }
+                    SinhVien sinhVienBefore = mapSinhVienBefore.get(sinhVien.getMaSinhVien());
+                    String maNhomCu = sinhVienBefore.getNhomId();
+                    String maNhomMoi = sinhVien.getNhomId();
+                    if (maNhomCu != null && maNhomMoi != null && !maNhomCu.equals(maNhomMoi)) {
+                        NhomDatn nhomDatnMoi = mapNhomDatnKeyId.get(maNhomMoi);
+                        NhomDatn nhomDatnCu = mapNhomDatnKeyId.get(maNhomCu);
+                        try {
+                            LoggerObject loggerObjectActive = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã chuyển sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' từ nhóm " + nhomDatnCu.getMaNhom() + " đến nhóm " + nhomDatnMoi.getMaNhom(),
+                                            fileSinhVienCsv, "Thành công");
+                            loggerObjectList.add(loggerObjectActive);
+
+                            LoggerObject loggerObject = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã chuyển sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' từ nhóm " + nhomDatnCu.getMaNhom() + " đến nhóm " + nhomDatnMoi.getMaNhom(),
+                                            pathFile, "Thành công");
+                            loggerObject.setTenNhom(nhomDatnMoi.getMaNhom());
+                            loggerObjectList.add(loggerObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (maNhomCu != null && maNhomMoi == null) {
+                        NhomDatn nhomDatnCu = mapNhomDatnKeyId.get(maNhomCu);
+                        try {
+                            LoggerObject loggerObjectActive = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã xóa sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' ra khỏi nhóm " + nhomDatnCu.getMaNhom(),
+                                            fileSinhVienCsv, "Thành công");
+                            loggerObjectList.add(loggerObjectActive);
+
+                            LoggerObject loggerObject = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã xóa sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' ra khỏi nhóm " + nhomDatnCu.getMaNhom(),
+                                            pathFile, "Thành công");
+                            loggerObject.setTenNhom(nhomDatnCu.getMaNhom());
+                            loggerObjectList.add(loggerObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (maNhomCu == null && maNhomMoi != null) {
+                        NhomDatn nhomDatnMoi = mapNhomDatnKeyId.get(maNhomMoi);
+                        try {
+                            LoggerObject loggerObjectActive = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã thêm sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' vào nhóm " + nhomDatnMoi.getMaNhom(),
+                                            fileSinhVienCsv, "Thành công");
+                            loggerObjectList.add(loggerObjectActive);
+
+                            LoggerObject loggerObject = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã thêm sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' vào nhóm " + nhomDatnMoi.getMaNhom(),
+                                            pathFile, "Thành công");
+                            loggerObject.setTenNhom(nhomDatnMoi.getMaNhom());
+                            loggerObjectList.add(loggerObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-                ConcurrentMap<String, NhomDatn> listNhomDatnCreate = new ConcurrentHashMap<>();
+                for (Map.Entry<String, NhomDatn> item : listNhomDatnEntity.entrySet()) {
+                    String maGiangVienMoi = item.getValue().getGiangVienId();
+                    String maGiangVienCu = mapNhomDatnBefore.get(item.getValue().getId()).getGiangVienId();
+                    if (maGiangVienCu == null && maGiangVienMoi != null) {
+                        GiangVienHuongDan giangVienMoi = mapGiangVienKeyId.get(maGiangVienMoi);
+                        try {
+                            LoggerObject loggerObjectActive = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã phân cho giảng viên '" + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + "' hướng dẫn nhóm " + item.getValue().getMaNhom(),
+                                            fileSinhVienCsv, "Thành công");
+                            loggerObjectList.add(loggerObjectActive);
+
+                            LoggerObject loggerObject = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã phân cho giảng viên '" + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + "' hướng dẫn nhóm " + item.getValue().getMaNhom(),
+                                            pathFile, "Thành công");
+                            loggerObject.setTenNhom(item.getValue().getMaNhom());
+                            loggerObjectList.add(loggerObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (maGiangVienCu != null && maGiangVienMoi == null) {
+                        GiangVienHuongDan giangVienCu = mapGiangVienKeyId.get(maGiangVienCu);
+                        try {
+                            LoggerObject loggerObjectActive = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã xóa giảng viên '" + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + "' ra khỏi nhóm " + item.getValue().getMaNhom(),
+                                            fileSinhVienCsv, "Thành công");
+                            loggerObjectList.add(loggerObjectActive);
+
+                            LoggerObject loggerObject = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã xóa giảng viên '" + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + "' ra khỏi nhóm " + item.getValue().getMaNhom(),
+                                            pathFile, "Thành công");
+                            loggerObject.setTenNhom(item.getValue().getMaNhom());
+                            loggerObjectList.add(loggerObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (maGiangVienCu != null && maGiangVienMoi != null && !maGiangVienCu.equals(maGiangVienMoi)) {
+                        GiangVienHuongDan giangVienCu = mapGiangVienKeyId.get(maGiangVienCu);
+                        GiangVienHuongDan giangVienMoi = mapGiangVienKeyId.get(maGiangVienMoi);
+                        try {
+                            LoggerObject loggerObjectActive = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã chuyển giảng viên của nhóm '" + item.getValue().getMaNhom() + "' từ " + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + " sang " + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan(),
+                                            fileSinhVienCsv, "Thành công");
+                            loggerObjectList.add(loggerObjectActive);
+
+                            LoggerObject loggerObject = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã chuyển giảng viên của nhóm '" + item.getValue().getMaNhom() + "' từ " + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + " sang " + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan(),
+                                            pathFile, "Thành công");
+                            loggerObject.setTenNhom(item.getValue().getMaNhom());
+                            loggerObjectList.add(loggerObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    String maTruongNhomMoi = item.getValue().getTruongNhomId();
+                    String maTruongNhomCu = mapNhomDatnBefore.get(item.getValue().getId()).getTruongNhomId();
+                    if (maTruongNhomMoi != null && maTruongNhomCu != null && !maTruongNhomMoi.equals(maTruongNhomCu)) {
+                        SinhVien truongNhomCu = mapSinhVienKeyId.get(maTruongNhomCu);
+                        SinhVien truongNhomMoi = mapSinhVienKeyId.get(maTruongNhomMoi);
+                        try {
+                            LoggerObject loggerObjectActive = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã chuyển trường nhóm của nhóm '" + item.getValue().getMaNhom() + "' từ " + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + " sang " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getMaSinhVien(),
+                                            fileSinhVienCsv, "Thành công");
+                            loggerObjectList.add(loggerObjectActive);
+
+                            LoggerObject loggerObject = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã chuyển trường nhóm của nhóm '" + item.getValue().getMaNhom() + "' từ " + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + " sang " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getMaSinhVien(),
+                                            pathFile, "Thành công");
+                            loggerObject.setTenNhom(item.getValue().getMaNhom());
+                            loggerObjectList.add(loggerObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    TrangThaiNhom trangThaiNhomMoi = item.getValue().getTrangThai();
+                    TrangThaiNhom trangThaiNhomCu = mapNhomDatnBefore.get(item.getValue().getId()).getTrangThai();
+                    if (trangThaiNhomMoi != trangThaiNhomCu) {
+                        try {
+                            LoggerObject loggerObjectActive = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã cập nhật trạng thái nhóm của nhóm '" + item.getValue().getMaNhom() + "' từ 'Mới thành lập' sang 'Chủ nhiệm bộ môn đã xác nhận'",
+                                            fileSinhVienCsv, "Thành công");
+                            loggerObjectList.add(loggerObjectActive);
+
+                            LoggerObject loggerObject = writerFileCSV.
+                                    createLoggerObject("Chủ nhiệm bộ môn đã cập nhật trạng thái nhóm của nhóm '" + item.getValue().getMaNhom() + "' từ 'Mới thành lập' sang 'Chủ nhiệm bộ môn đã xác nhận'",
+                                            pathFile, "Thành công");
+                            loggerObject.setTenNhom(item.getValue().getMaNhom());
+                            loggerObjectList.add(loggerObject);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                ConcurrentHashMap<String, NhomDatn> listNhomDatnCreate = new ConcurrentHashMap<>();
 
                 String maNhom = nhomDatnHelper.genMaNhomTuDong();
                 if (maNhom == null) {
@@ -738,10 +902,12 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 }
                 String array[] = maNhom.split("_");
                 Long count = Long.parseLong(array[1]);
+
                 for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()) {
                     String maNhomCreate = item.getValue();
                     NhomDatn nhomDatn = new NhomDatn();
-                    nhomDatn.setMaNhom(array[0] + "_" + count++);
+                    String maNhomCreateAuto = array[0] + "_" + count++;
+                    nhomDatn.setMaNhom(maNhomCreateAuto);
                     nhomDatn.setCoSoId(coSoId);
                     nhomDatn.setDotDangKyId(dotDangKyId);
                     nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
@@ -751,6 +917,20 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                             nhomDatn.setTruongNhomId(mapSinhVien.get(mapTruongNhomCreate.get(maNhomCreate).getMaSinhVien()).getId());
                             if (giangVien != null) {
                                 nhomDatn.setGiangVienId(giangVien.getId());
+                                try {
+                                    LoggerObject loggerObjectActive = writerFileCSV.
+                                            createLoggerObject("Chủ nhiệm bộ môn đã phân cho giảng viên '" + giangVien.getTenGvhd() + "-" + giangVien.getTenTaiKhoan() + "' hướng dẫn nhóm " + maNhomCreateAuto,
+                                                    fileSinhVienCsv, "Thành công");
+                                    loggerObjectList.add(loggerObjectActive);
+
+                                    LoggerObject loggerObject = writerFileCSV.
+                                            createLoggerObject("Chủ nhiệm bộ môn đã phân cho giảng viên '" + giangVien.getTenGvhd() + "-" + giangVien.getTenTaiKhoan() + "' hướng dẫn nhóm " + maNhomCreateAuto,
+                                                    pathFile, "Thành công");
+                                    loggerObject.setTenNhom(maNhomCreateAuto);
+                                    loggerObjectList.add(loggerObject);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             } else {
                                 nhomDatn.setGiangVienId(null);
                             }
@@ -760,7 +940,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     try {
                         LoggerObject loggerObjectActive = writerFileCSV.
                                 createLoggerObject("Chủ nhiệm bộ môn đã tạo nhóm '" + nhomDatn.getMaNhom() + "'",
-                                        pathFileLogActive, "Thành công");
+                                        fileSinhVienCsv, "Thành công");
                         loggerObjectList.add(loggerObjectActive);
 
                         LoggerObject loggerObject = writerFileCSV.
@@ -773,6 +953,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     }
                 }
                 cnNhomDatnRepository.saveAll(listNhomDatnCreate.values());
+                addDataInMapNhomDatn(mapNhomDatn, mapNhomDatnKeyId, mapNhomDatnBefore, dotDangKyId, coSoId, idChuNhiem);
                 for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()) {
                     String maNhomCreate = item.getValue();
                     for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapSinhVienTaoNhom.entrySet()) {
@@ -780,14 +961,33 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         truongNhomCreate.setMonDatnId(truongNhomCreate.getMonChuongTrinhId());
                         truongNhomCreate.setNhomId(listNhomDatnCreate.get(truongNhomCreate.getId()).getId());
                         if (xx.getValue().getMaNhom().equals(mapTruongNhomCreate.get(maNhomCreate).getMaNhom())) {
-                            mapSinhVien.get(xx.getValue().getMaSinhVien()).setNhomId(truongNhomCreate.getNhomId());
-                            mapSinhVien.get(xx.getValue().getMaSinhVien()).setMonDatnId(truongNhomCreate.getMonDatnId());
-                            listSinhVienEntity.put(mapSinhVien.get(xx.getValue().getMaSinhVien()).getId(), mapSinhVien.get(xx.getValue().getMaSinhVien()));
+                            SinhVien sinhVienCurrent = mapSinhVien.get(xx.getValue().getMaSinhVien());
+                            sinhVienCurrent.setNhomId(truongNhomCreate.getNhomId());
+                            sinhVienCurrent.setMonDatnId(truongNhomCreate.getMonDatnId());
+                            listSinhVienEntity.put(sinhVienCurrent.getId(), sinhVienCurrent);
+                            NhomDatn nhomDatnMoi = mapNhomDatnKeyId.get(truongNhomCreate.getNhomId());
+                            try {
+                                LoggerObject loggerObjectActive = writerFileCSV.
+                                        createLoggerObject("Chủ nhiệm bộ môn đã thêm sinh viên '" + sinhVienCurrent.getTenSinhVien() + "-" + sinhVienCurrent.getMaSinhVien() + "' vào nhóm " + nhomDatnMoi.getMaNhom(),
+                                                fileSinhVienCsv, "Thành công");
+                                loggerObjectList.add(loggerObjectActive);
+
+                                LoggerObject loggerObject = writerFileCSV.
+                                        createLoggerObject("Chủ nhiệm bộ môn đã thêm sinh viên '" + sinhVienCurrent.getTenSinhVien() + "-" + sinhVienCurrent.getMaSinhVien() + "' vào nhóm " + nhomDatnMoi.getMaNhom(),
+                                                pathFile, "Thành công");
+                                loggerObject.setTenNhom(nhomDatnMoi.getMaNhom());
+                                loggerObjectList.add(loggerObject);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                         listSinhVienEntity.put(truongNhomCreate.getId(), truongNhomCreate);
                     }
                 }
                 cnSinhVienRepository.saveAll(listSinhVienEntity.values());
+                loggerObjectList.forEach(el -> {
+                    logService.sendLogMessage(el);
+                });
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -851,12 +1051,12 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         return false;
     }
 
-    public void addDataInMapSinhVien(ConcurrentHashMap<String, SinhVien> mapAll, String dotDangKyId, String
+    public void addDataInMapSinhVien(ConcurrentHashMap<String, SinhVien> mapAll, ConcurrentHashMap<String, SinhVien> mapAllBefore, ConcurrentHashMap<String, SinhVien> mapAllKeyId, String dotDangKyId, String
             coSoId, String idChuNhiem) {
         List<SinhVien> sinhVienList = cnSinhVienRepository.getALlSinhVienByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
         List<SinhVien> truongNhomList = cnSinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
         List<SinhVien> truongNhomCuList = cnSinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
-        getAllPutMapSinhVien(mapAll, sinhVienList);
+        getAllPutMapSinhVien(mapAll, mapAllBefore, mapAllKeyId, sinhVienList);
         getTruongNhomPutMapSinhVien(mapAll, truongNhomList);
         getTruongNhomCuPutMapSinhVien(mapAll, truongNhomCuList);
     }
@@ -867,16 +1067,16 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         getTruongNhomCuPutMapSinhVien(mapAll, truongNhomCuList);
     }
 
-    public void addDataInMapNhomDatn(ConcurrentHashMap<String, NhomDatn> mapAll, String dotDangKyId, String
+    public void addDataInMapNhomDatn(ConcurrentHashMap<String, NhomDatn> mapAll, ConcurrentHashMap<String, NhomDatn> mapAllKeyId, ConcurrentHashMap<String, NhomDatn> mapAllBefore, String dotDangKyId, String
             coSoId, String idChuNhiem) {
         List<NhomDatn> nhomDatnList = cnNhomDatnRepository.getAllNhomDatnByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
-        getALlPutMapNhomDatn(mapAll, nhomDatnList);
+        getALlPutMapNhomDatn(mapAll, mapAllKeyId, mapAllBefore, nhomDatnList);
     }
 
-    public void addDataInMapGiangVien(ConcurrentHashMap<String, GiangVienHuongDan> mapAll, String
+    public void addDataInMapGiangVien(ConcurrentHashMap<String, GiangVienHuongDan> mapAll, ConcurrentHashMap<String, GiangVienHuongDan> mapAllBefore, String
             dotDangKyId, String coSoId, String idChuNhiem) {
         List<GiangVienHuongDan> giangVienHuongDanList = cnGiangVienHuongDanReponsitory.getAllGiangVienByIdCoSoAndByIdDotDangKy(dotDangKyId, coSoId, idChuNhiem);
-        getALlPutMapGiangVien(mapAll, giangVienHuongDanList);
+        getALlPutMapGiangVien(mapAll, mapAllBefore, giangVienHuongDanList);
     }
 
     public void addDataInMapGiangVienAndDanhSachNhom(ConcurrentHashMap<String, CnGvhdAndDanhSachNhomResponse> mapAll, String
@@ -893,9 +1093,12 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     }
 
     public void getAllPutMapSinhVien
-            (ConcurrentHashMap<String, SinhVien> mapSimple, List<SinhVien> listSinhVien) {
+            (ConcurrentHashMap<String, SinhVien> mapSimple, ConcurrentHashMap<String, SinhVien> mapSimpleBefore, ConcurrentHashMap<String, SinhVien> mapSimpleKeyId, List<SinhVien> listSinhVien) {
         for (SinhVien xx : listSinhVien) {
             mapSimple.put(xx.getMaSinhVien(), xx);
+            mapSimpleKeyId.put(xx.getId(), xx);
+            SinhVien sinhVienNew = formUtils.convertToObject(SinhVien.class, xx);
+            mapSimpleBefore.put(sinhVienNew.getMaSinhVien(), sinhVienNew);
         }
     }
 
@@ -914,16 +1117,21 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     }
 
     public void getALlPutMapNhomDatn
-            (ConcurrentHashMap<String, NhomDatn> mapSimple, List<NhomDatn> listNhomDatn) {
+            (ConcurrentHashMap<String, NhomDatn> mapSimple, ConcurrentHashMap<String, NhomDatn> mapSimplekeyId, ConcurrentHashMap<String, NhomDatn> mapSimpleBefore, List<NhomDatn> listNhomDatn) {
         for (NhomDatn xx : listNhomDatn) {
             mapSimple.put(xx.getMaNhom(), xx);
+            mapSimplekeyId.put(xx.getId(), xx);
+            NhomDatn nhomDatnNew = formUtils.convertToObject(NhomDatn.class, xx);
+            mapSimpleBefore.put(nhomDatnNew.getId(), nhomDatnNew);
         }
     }
 
     public void getALlPutMapGiangVien
-            (ConcurrentHashMap<String, GiangVienHuongDan> mapSimple, List<GiangVienHuongDan> listGiangVien) {
+            (ConcurrentHashMap<String, GiangVienHuongDan> mapSimple, ConcurrentHashMap<String, GiangVienHuongDan> mapSimpleBefore, List<GiangVienHuongDan> listGiangVien) {
         for (GiangVienHuongDan xx : listGiangVien) {
             mapSimple.put(xx.getTenTaiKhoan().toLowerCase(), xx);
+            GiangVienHuongDan giangVienHuongDanNew = formUtils.convertToObject(GiangVienHuongDan.class, xx);
+            mapSimpleBefore.put(giangVienHuongDanNew.getId(), giangVienHuongDanNew);
         }
     }
 

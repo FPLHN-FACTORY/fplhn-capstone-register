@@ -411,7 +411,7 @@ function chotNhieuDeTai(count) {
             message: 'Chọn nhóm muốn chốt đề tài',
             backdrop: true,
             callback: function () {
-                loadDataNhomDatn(0);
+
             }
         });
     } else {
@@ -427,7 +427,6 @@ function chotNhieuDeTai(count) {
                 message: 'Trạng thái của nhóm không thỏa mãn để thực hiện chức năng chốt',
                 backdrop: true,
                 callback: function () {
-                    loadDataNhomDatn(0);
                 }
             });
             return;
@@ -515,7 +514,7 @@ function xacNhanNhieuNhom(count) {
             message: 'Chọn nhóm muốn xác nhận',
             backdrop: true,
             callback: function () {
-                loadDataNhomDatn(0);
+
             }
         });
     } else {
@@ -531,7 +530,7 @@ function xacNhanNhieuNhom(count) {
                 message: 'Trạng thái của nhóm không thỏa mãn để thực hiện chức năng xác nhận',
                 backdrop: true,
                 callback: function () {
-                    loadDataNhomDatn(0);
+
                 }
             });
             return;
@@ -821,6 +820,9 @@ function loadDataNhomDatn(count) {
                     loadDataNhomDatn(count - 1);
                     return;
                 }
+                $("#idButtonTaoNhom").attr('style', 'display: none');
+                $("#idButtonChotDeTai").attr('style', 'display: none');
+                $("#idButtonXacnhan").attr('style', 'display: none');
             } else {
                 if (array[0].checkDotDangKy == 0) {
                     $("#idButtonTaoNhom").attr('style', 'display: none');
