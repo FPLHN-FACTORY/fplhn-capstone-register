@@ -13,6 +13,7 @@ import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
+import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.util.CommonHelper;
@@ -64,6 +65,9 @@ public class CnNhomDatnRestController extends BaseController {
 
     @Autowired
     private WriterFileCSV writerFileCSV;
+
+    @Autowired
+    private DtDotDangKyService dotDangKyService;
 
     @GetMapping("/search")
     public ResponseObject viewNhomDatn(final CnFindNhomDatnRequest req) {
@@ -177,8 +181,10 @@ public class CnNhomDatnRestController extends BaseController {
 
 
     @GetMapping("/download-log")
-    public ResponseEntity<Resource> downloadCsv() throws IOException {
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+    public ResponseEntity<Resource> downloadCsv(
+            @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy
+    ) throws IOException {
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
 
         File file = new File(pathFile);
 
