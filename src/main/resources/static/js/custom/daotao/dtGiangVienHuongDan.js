@@ -68,10 +68,18 @@ function openModalHistory(page, size) {
 }
 
 function openModalHistoryDownload() {
+    var dotDangKy = $("#search_dot_dang_ky").val();
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: giangVienHuongDanApi + "/download-log",
+        url: giangVienHuongDanApi + "/download-log?dotDangKy=" + dotDangKy,
         success: function (responseData) {
             var blob = new Blob([responseData], { type: "text/csv" });
             var url = window.URL.createObjectURL(blob);

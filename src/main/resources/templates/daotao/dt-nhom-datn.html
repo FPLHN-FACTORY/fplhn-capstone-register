@@ -227,6 +227,16 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <button
+                                                th:attr="onclick=|openModalHistoryDownload()|"
+                                                class="btn btn-success">
+                                                Tải file log
+                                            </button>
+                                            <button
+                                                    th:attr="onclick=|openModalHistoryDownloadDetail()|"
+                                                    class="btn btn-success">
+                                                Tải luồng log
+                                            </button>
                                             <div class="modal fade" id="historyDetail" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
@@ -263,16 +273,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button
-                                                    th:attr="onclick=|openModalHistoryDownload()|"
-                                                    class="btn btn-success">
-                                                Tải file log
-                                            </button>
-                                            <button
-                                                    th:attr="onclick=|openModalHistoryDownloadDetail()|"
-                                                    class="btn btn-success">
-                                                Tải luồng log
-                                            </button>
+
                                         </div>
 
                                         <!--   hiển thị danh sách chi tiết-->

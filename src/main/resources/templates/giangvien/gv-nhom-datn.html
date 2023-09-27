@@ -123,10 +123,18 @@
                                         </div>
 
                                         <div class="col-sm-1 col-12 text-center mt-2">
-                                            <button data-bs-toggle="modal" data-bs-target="#history"
+                                            <button data-bs-toggle="modal"
+                                                    data-bs-target="#history"
+                                                    type="button"
                                                     th:attr="onclick=|openModalHistory(0, 20)|"
                                                     class="btn btn-success">
                                                 Lịch sử
+                                            </button>
+                                            <button
+                                                type="button"
+                                                th:attr="onclick=|openModalHistoryDownload()|"
+                                                class="btn btn-success">
+                                                Tải file log
                                             </button>
                                             <div class="modal fade" id="history" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
@@ -164,11 +172,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button
-                                                    th:attr="onclick=|openModalHistoryDownload()|"
-                                                    class="btn btn-success">
-                                                Tải file log
-                                            </button>
+
                                         </div>
                                     </div>
                                 </form>

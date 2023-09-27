@@ -6,6 +6,7 @@ import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
+import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
@@ -42,6 +43,9 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
 
     @Autowired
     private CommonHelper commonHelper;
+
+    @Autowired
+    private DtDotDangKyService dotDangKyService;
 
     @Autowired
     private WriterFileCSV writerFileCSV;
@@ -124,8 +128,10 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     }
 
     @GetMapping("/download-log")
-    public ResponseEntity<Resource> downloadCsv() throws IOException {
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+    public ResponseEntity<Resource> downloadCsv(
+            @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy
+    ) throws IOException {
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
 
         File file = new File(pathFile);
 
@@ -145,8 +151,10 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     }
 
     @GetMapping("/download-log-luong")
-    public ResponseEntity<Resource> downloadCsvLuong() throws IOException {
-        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+    public ResponseEntity<Resource> downloadCsvLuong(
+            @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy
+    ) throws IOException {
+        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(dotDangKyService.findById(idDotDangKy).getTenDotDangKy());
 
         File file = new File(pathFile);
 

@@ -8,6 +8,7 @@ import com.fpolydatn.core.daotao.model.request.DtFindGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.request.DtUpdateGiangVienHDRequest;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponseMessage;
+import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
@@ -51,6 +52,9 @@ public class DtGiangVienRestController extends BaseController {
 
     @Autowired
     private DtGiangVienHDService giangVienHDService;
+
+    @Autowired
+    private DtDotDangKyService dotDangKyService;
 
     @Autowired
     private CommonHelper commonHelper;
@@ -131,8 +135,10 @@ public class DtGiangVienRestController extends BaseController {
 
 
     @GetMapping("/download-log")
-    public ResponseEntity<Resource> downloadCsv() throws IOException {
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_GIANG_VIEN_HUONG_DAN);
+    public ResponseEntity<Resource> downloadCsv(
+            @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy
+    ) throws IOException {
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_GIANG_VIEN_HUONG_DAN);
 
         File file = new File(pathFile);
 

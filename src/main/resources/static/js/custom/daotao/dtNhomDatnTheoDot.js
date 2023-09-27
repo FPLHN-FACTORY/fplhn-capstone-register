@@ -62,10 +62,19 @@ function openModalHistory(page, size) {
 }
 
 function openModalHistoryDownload() {
+
+    let dotDangKy = $("#dotDangKy").val();
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: DTNhomDatnApi + "/download-log",
+        url: DTNhomDatnApi + "/download-log?dotDangKy=" + dotDangKy,
         success: function (responseData) {
             var blob = new Blob([responseData], { type: "text/csv" });
             var url = window.URL.createObjectURL(blob);
@@ -145,10 +154,18 @@ function openModalHistoryDetail(page, size, maNhom) {
 }
 
 function openModalHistoryDownloadDetail() {
+    let dotDangKy = $("#dotDangKy").val()
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: DTNhomDatnApi + "/download-log-luong",
+        url: DTNhomDatnApi + "/download-log-luong?dotDangKy=" + dotDangKy,
         success: function (responseData) {
             var blob = new Blob([responseData], { type: "text/csv" });
             var url = window.URL.createObjectURL(blob);

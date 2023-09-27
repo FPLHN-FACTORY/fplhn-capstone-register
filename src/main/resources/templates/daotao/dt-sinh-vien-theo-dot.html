@@ -183,6 +183,11 @@
                                                     class="btn btn-success">
                                                 Lịch sử
                                             </button>
+                                            <button
+                                                th:attr="onclick=|openModalHistoryDownload()|"
+                                                class="btn btn-success">
+                                                Tải file log
+                                            </button>
                                             <div class="modal fade" id="history" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
@@ -219,11 +224,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button
-                                                    th:attr="onclick=|openModalHistoryDownload()|"
-                                                    class="btn btn-success">
-                                                Tải file log
-                                            </button>
+
                                             <div class="modal fade "
                                                  id="modal_excel"
                                                  tabindex="-1"
