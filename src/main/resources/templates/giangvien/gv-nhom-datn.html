@@ -122,58 +122,7 @@
                                             </button>
                                         </div>
 
-                                        <div class="col-sm-1 col-12 text-center mt-2">
-                                            <button data-bs-toggle="modal"
-                                                    data-bs-target="#history"
-                                                    type="button"
-                                                    th:attr="onclick=|openModalHistory(0, 20)|"
-                                                    class="btn btn-success">
-                                                Lịch sử
-                                            </button>
-                                            <button
-                                                type="button"
-                                                th:attr="onclick=|openModalHistoryDownload()|"
-                                                class="btn btn-success">
-                                                Tải file log
-                                            </button>
-                                            <div class="modal fade" id="history" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="historyLabel">Lịch sử</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <table
-                                                                        style="text-align: center"
-                                                                        class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
-                                                                    <thead>
-                                                                    <th class="text-center align-middle" width="50px">STT</th>
-                                                                    <th class="text-center align-middle">Email người thực hiện</th>
-                                                                    <th class="text-center align-middle">Ngày thực hiện</th>
-                                                                    <th class="text-center align-middle">Nội dung</th>
-                                                                    <th class="text-center align-middle">Chức Vụ</th>
-                                                                    </thead>
-                                                                    <tbody id="listHistory">
 
-                                                                    </tbody>
-                                                                </table>
-
-                                                                <div id="pageHistory">
-                                                                </div>
-                                                                <div id="emptyHistory">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
                                     </div>
                                 </form>
                                 <br>
@@ -182,6 +131,64 @@
                         <div class="m-portlet">
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
+                                    <div>
+                                        <button data-bs-toggle="modal"
+                                                data-bs-target="#history"
+                                                type="button"
+                                                th:attr="onclick=|openModalHistory(0, 20)|"
+                                                class="btn btn-success">
+                                            Lịch sử
+                                        </button>
+                                        <button
+                                                type="button"
+                                                th:attr="onclick=|openModalHistoryDownload()|"
+                                                class="btn btn-success">
+                                            Tải file log
+                                        </button>
+                                        <div class="modal fade" id="history" tabindex="-1"
+                                             aria-labelledby="historyLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="historyLabel">Lịch sử</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <table
+                                                                    style="text-align: center"
+                                                                    class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                                                <thead>
+                                                                <th class="text-center align-middle" width="50px">STT
+                                                                </th>
+                                                                <th class="text-center align-middle">Email người thực
+                                                                    hiện
+                                                                </th>
+                                                                <th class="text-center align-middle">Ngày thực hiện</th>
+                                                                <th class="text-center align-middle">Nội dung</th>
+                                                                <th class="text-center align-middle">Chức Vụ</th>
+                                                                </thead>
+                                                                <tbody id="listHistory">
+
+                                                                </tbody>
+                                                            </table>
+
+                                                            <div id="pageHistory">
+                                                            </div>
+                                                            <div id="emptyHistory">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary"
+                                                                data-bs-dismiss="modal">Đóng
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="table-responsive mt-3">
                                         <table id="custom-table"
                                                style="text-align: center"
@@ -201,18 +208,24 @@
                                             <tbody id="list_nhom_datn">
                                             <th:block th:each="nhomDatn : ${page.data}">
                                                 <tr class="table-light">
-                                                    <td class="text-center align-middle" th:text="${nhomDatn.getStt()}"></td>
-                                                    <td class="text-center align-middle" th:text="${nhomDatn.getMaNhom()}"></td>
-                                                    <td class="text-center align-middle" th:text="${nhomDatn.getTenDeTai() == null || nhomDatn.getTenDeTai() == '' ? 'Chưa có' : nhomDatn.getTenDeTai()}"></td>
-                                                    <td class="text-center align-middle" th:text="${nhomDatn.getTotalMaSinhVien()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.getStt()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.getMaNhom()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.getTenDeTai() == null || nhomDatn.getTenDeTai() == '' ? 'Chưa có' : nhomDatn.getTenDeTai()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.getTotalMaSinhVien()}"></td>
                                                     <td class="text-center align-middle">
                                                             <span th:each="value, iterStat : ${#strings.arraySplit(nhomDatn.getDanhSachThanhVien(), ', ')}"
                                                                   th:text="${value} + (${iterStat.last} ? '' : ', ')"
                                                                   th:style="${value == nhomDatn.truongNhom} ? 'font-weight: bold; text-decoration: underline;' : ''">
                                                             </span>
                                                     </td>
-                                                    <td class="text-center align-middle" th:text="${nhomDatn.getMaMon()}"></td>
-                                                    <td class="text-center align-middle" th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${nhomDatn.getMaMon()}"></td>
+                                                    <td class="text-center align-middle"
+                                                        th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-center align-items-center">
                                                             <button type="button"
