@@ -87,10 +87,11 @@ public class CnSinhVienTheoDotRestController extends BaseController {
 
     @GetMapping("/history")
     public ResponseObject getAllHistory(
+            @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN);
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN);
         List<LoggerObject> list = writerFileCSV.readFileCSV(pathFile);
         List<LoggerObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
@@ -98,7 +99,6 @@ public class CnSinhVienTheoDotRestController extends BaseController {
                 .collect(Collectors.toList());
         return new ResponseObject(new PageImpl<>(pagedSanPhamList, PageRequest.of(page, size), list.size()));
     }
-
 
     @GetMapping("/download-log")
     public ResponseEntity<Resource> downloadCsv(

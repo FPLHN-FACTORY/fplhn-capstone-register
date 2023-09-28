@@ -12,12 +12,21 @@ function clearform() {
 
 
 function openModalHistory(page, size) {
+    let dotDangKy = $("#dotDangKy").val();
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: apiDtSinhVien + "/history?page=" + page + "&size=" + size,
+        url: apiDtSinhVien + "/history?page=" + page + "&size=" + size + "&dotDangKy=" + dotDangKy,
         dataType: 'json',
         success: function (responseData) {
+            $("#history").modal('show')
             if (responseData.data.content.length == 0) {
                 $("#listHistory").html(``);
                 $("#pageHistory").html('');
@@ -48,7 +57,7 @@ function openModalHistory(page, size) {
                 `;
                     templatePageMid = `
                              <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
-                    let templatePageAfter = page === Number(count) - 1 ? "" :  `
+                    let templatePageAfter = page === Number(count) - 1 ? "" : `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="border: none" class="page-link" onclick="openModalHistory(${page + 1}, ${size})"><img src="/img/next.svg"></a>
                 </li>
@@ -57,10 +66,19 @@ function openModalHistory(page, size) {
                     templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
                     $("#pageHistory").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
                 }
-            };
+            }
+            ;
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            if (e.responseJSON.message === 'File log khong ton tai') {
+                bootbox.alert({
+                    message: 'File log không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }
@@ -79,7 +97,7 @@ function openModalHistoryDownload() {
         contentType: "application/json",
         url: apiDtSinhVien + "/download-log?dotDangKy=" + dotDangKy,
         success: function (responseData) {
-            var blob = new Blob([responseData], { type: "text/csv" });
+            var blob = new Blob([responseData], {type: "text/csv"});
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement("a");
             a.href = url;

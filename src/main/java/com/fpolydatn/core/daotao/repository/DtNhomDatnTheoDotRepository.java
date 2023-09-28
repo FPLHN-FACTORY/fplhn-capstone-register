@@ -35,6 +35,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
                 e.ten_gvhd,
                 e.ten_tai_khoan,
                 b.trang_thai,
+                g.id AS dot_dang_ky_id,
                 b.last_modified_date
             FROM nhom_datn b
             LEFT JOIN sinh_vien d ON d.nhom_id = b.id
@@ -117,6 +118,7 @@ public interface DtNhomDatnTheoDotRepository extends NhomDatnRepository {
                 e.ten_gvhd,
                 e.ten_tai_khoan,
                 b.trang_thai,
+                g.id AS dot_dang_ky_id,
                 b.last_modified_date
             FROM nhom_datn b
             LEFT JOIN sinh_vien d ON d.nhom_id = b.id

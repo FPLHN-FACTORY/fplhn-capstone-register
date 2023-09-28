@@ -128,7 +128,7 @@
                                         <div class="col-10 d-inline float-left">
                                             <button class="btn btn-success" type="button"
                                                     th:attr="onclick=|openModalExportExcel()|">
-                                                Export
+                                                Export nhóm
                                             </button>
                                             <button class="btn btn-success"
                                                     th:attr="onclick=|exportFileExcelSinhVien()|"
@@ -186,7 +186,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button data-bs-toggle="modal" data-bs-target="#history"
+                                            <button
                                                     th:attr="onclick=|openModalHistory(0, 20)|"
                                                     class="btn btn-success">
                                                 Lịch sử
@@ -391,12 +391,11 @@
                                                                 <img th:src="@{/img/eye-fill.svg}">
                                                             </button>
                                                             <button class="btn_eye"
-                                                                    th:attr="onclick=|openModalHistoryDetail(0, 20, '${nhomDatn.maNhom}')|"
+                                                                    th:attr="onclick=|openModalHistoryDetail(0, 20, '${nhomDatn.maNhom}', '${nhomDatn.dotDangKyId}')|"
                                                                     data-toggle="tooltip"
-                                                                    data-bs-toggle="modal" data-bs-target="#historyDetail"
                                                                     title="Xem log nhóm"
                                                                     type="button">
-                                                                <img th:src="@{/img/eye-fill.svg}">
+                                                                <img th:src="@{/img/history.svg}">
                                                             </button>
                                                         </div>
                                                     </td>
@@ -456,6 +455,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+<script th:src="@{/js/custom/common/loadding.js}" type="text/javascript"></script>
 <script th:src="@{/js/custom/daotao/dtNhomDatnTheoDot.js}" type="text/javascript"></script>
 <script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
 <script th:src="@{/js/plugin/bootbox.min.js}"></script>

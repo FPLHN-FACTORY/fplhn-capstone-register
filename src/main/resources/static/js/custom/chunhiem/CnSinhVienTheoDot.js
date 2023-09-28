@@ -492,12 +492,21 @@ function importExcelSapGvhd() {
 }
 
 function openModalHistory(page, size) {
+    let dotDangKy = $("#dotDangKyId").val();
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: sinhVienApi + "/history?page=" + page + "&size=" + size,
+        url: sinhVienApi + "/history?page=" + page + "&size=" + size + "&dotDangKy=" + dotDangKy,
         dataType: 'json',
         success: function (responseData) {
+            $("#history").modal('show')
             if (responseData.data.content.length == 0) {
                 $("#listHistory").html(``);
                 $("#pageHistory").html('');
@@ -540,7 +549,15 @@ function openModalHistory(page, size) {
             };
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            if (e.responseJSON.message === 'File log khong ton tai') {
+                bootbox.alert({
+                    message: 'File log không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }

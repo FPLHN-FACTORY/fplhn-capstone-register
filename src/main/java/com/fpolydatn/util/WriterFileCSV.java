@@ -3,7 +3,9 @@ package com.fpolydatn.util;
 import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
 import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.SessionConstant;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.apache.commons.csv.CSVFormat;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -195,10 +198,12 @@ public class WriterFileCSV {
                 loggerObject.setAuthor(csvRecord.get(5));
                 loggerObject.setStatus(csvRecord.get(6));
                 list.add(loggerObject);
-                dem --;
+                dem--;
             }
             Collections.reverse(list);
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            throw new RestApiException(Message.FILE_LOG_NOT_EXISTS);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
@@ -225,12 +230,14 @@ public class WriterFileCSV {
                 loggerObject.setStatus(csvRecord.get(6));
                 loggerObject.setTenNhom(csvRecord.get(7));
                 if (object.getTenNhom().equals(loggerObject.getTenNhom())) {
-                    dem ++ ;
+                    dem++;
                     loggerObject.setStt(dem);
                     list.add(loggerObject);
                 }
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            throw new RestApiException(Message.FILE_LOG_NOT_EXISTS);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return list;

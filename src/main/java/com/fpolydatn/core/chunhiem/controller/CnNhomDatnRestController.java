@@ -167,10 +167,11 @@ public class CnNhomDatnRestController extends BaseController {
 
     @GetMapping("/history")
     public ResponseObject getAllHistory(
+            @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
         List<LoggerObject> list = writerFileCSV.readFileCSV(pathFile);
         List<LoggerObject> pagedSanPhamList = list.stream()
                 .skip(page * size)

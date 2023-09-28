@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,12 +91,14 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
 
     @GetMapping("/history")
     public ResponseObject getAllHistory(
+            @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
 
         List<LoggerObject> list = writerFileCSV.readFileCSV(pathFile);
+        Collections.reverse(list);
         List<LoggerObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)
@@ -107,17 +110,18 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
     public ResponseObject getAllHistoryDetail(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size,
-            @RequestParam(name = "maNhom", defaultValue = "") String maNhom
+            @RequestParam(name = "maNhom", defaultValue = "") String maNhom,
+            @RequestParam(name = "dotDangKyId", defaultValue = "") String dotDangKyId
     ) {
         List<LoggerObject> list = new ArrayList<>();
         if (maNhom != null && maNhom.trim().length() != 0) {
             LoggerObject object = new LoggerObject();
-            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(dotDangKyService.findById(dotDangKyId).getTenDotDangKy());
 
             object.setTenNhom(maNhom);
             object.setPathFile(pathFile);
             list = writerFileCSV.readFileCSVLuong(object);
-
+            Collections.reverse(list);
             List<LoggerObject> pagedSanPhamList = list.stream()
                     .skip(page * size)
                     .limit(size)
