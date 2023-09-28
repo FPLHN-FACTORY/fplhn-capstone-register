@@ -408,6 +408,11 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
                     } else {
                         nhomDatnUpdate.setGiangVienId(null);
                     }
+                    if (nhomDatn.getTenDeTai().equals("")) {
+                        nhomDatnUpdate.setTenDeTai(null);
+                    } else {
+                        nhomDatnUpdate.setTenDeTai(nhomDatn.getTenDeTai());
+                    }
                     listNhomDatnUpdate.put(nhomDatnUpdate.getId(), nhomDatnUpdate);
                 }
             });
@@ -459,6 +464,56 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
 
                         LoggerObject loggerObject = writerFileCSV.
                                 createLoggerObject("Chủ nhiệm bộ môn đã chuyển giảng viên của nhóm '" + item.getValue().getMaNhom() + "' từ " + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + " sang " + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan(),
+                                        pathFile, "Thành công");
+                        loggerObject.setTenNhom(item.getValue().getMaNhom());
+                        loggerObjectList.add(loggerObject);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                String tenDetaiMoi = item.getValue().getTenDeTai();
+                String tenDetaiCu = mapNhomDatnBefore.get(item.getValue().getId()).getTenDeTai();
+                if (tenDetaiCu != null && tenDetaiMoi != null && !tenDetaiCu.trim().equals(tenDetaiMoi.trim())) {
+                    try {
+                        LoggerObject loggerObjectActive = writerFileCSV.
+                                createLoggerObject("Chủ nhiệm bộ môn đã đổi tên đề tài của nhóm '" + item.getValue().getMaNhom() + "' từ '" + tenDetaiCu + "' sang '" + tenDetaiMoi + "'",
+                                        fileSinhVienCsv, "Thành công");
+                        loggerObjectList.add(loggerObjectActive);
+
+                        LoggerObject loggerObject = writerFileCSV.
+                                createLoggerObject("Chủ nhiệm bộ môn đã đổi tên đề tài của nhóm '" + item.getValue().getMaNhom() + "' từ '" + tenDetaiCu + "' sang '" + tenDetaiMoi + "'",
+                                        pathFile, "Thành công");
+                        loggerObject.setTenNhom(item.getValue().getMaNhom());
+                        loggerObjectList.add(loggerObject);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (tenDetaiCu == null && tenDetaiMoi != null) {
+                    try {
+                        LoggerObject loggerObjectActive = writerFileCSV.
+                                createLoggerObject("Chủ nhiệm bộ môn đã đặt đề tài của nhóm '" + item.getValue().getMaNhom() + "' là: " + tenDetaiMoi,
+                                        fileSinhVienCsv, "Thành công");
+                        loggerObjectList.add(loggerObjectActive);
+
+                        LoggerObject loggerObject = writerFileCSV.
+                                createLoggerObject("Chủ nhiệm bộ môn đã đặt đề tài của nhóm '" + item.getValue().getMaNhom() + "' là: " + tenDetaiMoi,
+                                        pathFile, "Thành công");
+                        loggerObject.setTenNhom(item.getValue().getMaNhom());
+                        loggerObjectList.add(loggerObject);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (tenDetaiCu != null && tenDetaiMoi == null) {
+                    try {
+                        LoggerObject loggerObjectActive = writerFileCSV.
+                                createLoggerObject("Chủ nhiệm bộ môn đã xóa tên đề tài của nhóm '" + item.getValue().getMaNhom() + "'",
+                                        fileSinhVienCsv, "Thành công");
+                        loggerObjectList.add(loggerObjectActive);
+
+                        LoggerObject loggerObject = writerFileCSV.
+                                createLoggerObject("Chủ nhiệm bộ môn đã xóa tên đề tài của nhóm '" + item.getValue().getMaNhom() + "'",
                                         pathFile, "Thành công");
                         loggerObject.setTenNhom(item.getValue().getMaNhom());
                         loggerObjectList.add(loggerObject);
