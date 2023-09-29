@@ -120,6 +120,11 @@ function create() {
     if (tenChuyenNganh.trim().length === 0) {
         $("#chuyen_nganh_add_error").text("Tên chuyên ngành không được để trống");
         index++;
+    } else if (tenChuyenNganh.trim().length > 100) {
+        $("#chuyen_nganh_add_error").text("Tên chuyên ngành không được quá 100 ký tự");
+        index++;
+    } else {
+        $("#chuyen_nganh_add_error").text("");
     }
 
     if (index == 0) {
@@ -180,8 +185,13 @@ function update() {
     chuyenNganhrequest["chuNhiemBoMon"] = tenCNBM;
     let index = 0;
     if (tenChuyenNganh.trim().length === 0) {
-        $("#chuyennganh_Update_error").text("Tên chuyên ngành không được để trống");
+         $("#chuyennganh_Update_error").text("Tên chuyên ngành không được để trống");
         index++;
+    } else if (tenChuyenNganh.trim().length > 100) {
+        $("#chuyennganh_Update_error").text("Tên chuyên ngành không được quá 100 ký tự");
+        index++;
+    } else {
+        $("#chuyennganh_Update_error").text("");
     }
 
     if (index == 0) {

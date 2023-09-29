@@ -99,6 +99,7 @@ let currentPage = $("#currentPage").val();
 function clearData() {
     $("#search_ma_mon").val("");
     $("#search_dot_dang_ky").val("");
+    $("#chuyenNganh").val("");
 }
 
 function genPaging() {
@@ -221,11 +222,17 @@ function create() {
     if (maMon.trim().length === 0) {
         $("#ma_mon_datn_error").text("Mã môn không được để trống");
         index++;
-    } else {
+    } else if (maMon.trim().length > 20) {
+        $("#ma_mon_datn_error").text("Mã môn không được quá 20 ký tự");
+        index++;
+    }  else {
         $("#ma_mon_datn_error").text("");
     }
     if (tenMonDatn.trim().length === 0) {
         $("#ten_mon_datn_error").text("Tên môn không được để trống");
+        index++;
+    } else if (tenMonDatn.trim().length > 100) {
+        $("#ten_mon_datn_error").text("Tên môn không được quá 100 ký tự");
         index++;
     } else {
         $("#ten_mon_datn_error").text("");
@@ -300,13 +307,19 @@ function update() {
     if (maMon.trim().length === 0) {
         $("#errorMaMonUpdate").text("Mã môn không được để trống");
         index++;
+    } else if (maMon.trim().length > 20) {
+        $("#errorMaMonUpdate").text("Mã môn không được quá 20 ký tự");
+        index++;
     } else {
         $("#errorMaMonUpdate").text("");
     }
     if (tenMonDatn.trim().length === 0) {
         $("#errorTenMonUpdate").text("Tên môn không được để trống");
         index++;
-    } else {
+    } else if (tenMonDatn.trim().length > 100) {
+        $("#errorTenMonUpdate").text("Tên môn không được quá 100 ký tự");
+        index++;
+    }  else {
         $("#errorTenMonUpdate").text("");
     }
     if (index == 0) {

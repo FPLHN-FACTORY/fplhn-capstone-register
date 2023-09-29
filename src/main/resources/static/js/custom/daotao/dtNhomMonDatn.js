@@ -226,11 +226,17 @@ function createNhomMonDatn() {
     if (maMon.trim().length === 0) {
         $("#ma_mon_datn_error").text("Mã nhóm môn không được để trống");
         index++;
+    } else if (maMon.trim().length > 20) {
+        $("#ma_mon_datn_error").text("Mã nhóm môn không được quá 20 ký tự");
+        index++;
     } else {
         $("#ma_mon_datn_error").text("");
     }
     if (tenMonDatn.trim().length === 0) {
         $("#ten_mon_datn_error").text("Tên nhóm môn không được để trống");
+        index++;
+    } else if (tenMonDatn.trim().length > 100) {
+        $("#ten_mon_datn_error").text("Tên nhóm môn không được quá 100 ký tự");
         index++;
     } else {
         $("#ten_mon_datn_error").text("");
@@ -296,11 +302,17 @@ function updateNhomMonDatn() {
     if (maNhomMon.trim().length === 0) {
         $("#errorMaMonUpdate").text("Mã nhóm môn không được để trống");
         index++;
+    } else if (maNhomMon.trim().length > 20) {
+        $("#errorMaMonUpdate").text("Mã nhóm môn không được quá 20 ký tự");
+        index++;
     } else {
         $("#errorMaMonUpdate").text("");
     }
     if (tenNhomMonDatn.trim().length === 0) {
         $("#errorTenMonUpdate").text("Tên nhóm môn không được để trống");
+        index++;
+    } else if (tenNhomMonDatn.trim().length > 100) {
+        $("#errorTenMonUpdate").text("Tên nhóm môn không được quá 100 ký tự");
         index++;
     } else {
         $("#errorTenMonUpdate").text("");
