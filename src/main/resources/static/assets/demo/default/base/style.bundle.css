@@ -1773,7 +1773,8 @@ pre code {
 .table td {
     padding: .75rem;
     vertical-align: top;
-    border-top: 1px solid #f4f5f8
+    border-top: 1px solid #f4f5f8;
+    word-break: break-word;
 }
 
 .table thead th {
