@@ -104,7 +104,9 @@ public final class DtCanBoRestController extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_CAN_BO);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(pathFileLogActive);
+        LoggerObject loggerObject = new LoggerObject();
+        loggerObject.setPathFile(pathFileLogActive);
+        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
         List<LoggerObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)

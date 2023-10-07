@@ -1,6 +1,7 @@
 package com.fpolydatn.util;
 
 import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
+import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
@@ -8,6 +9,7 @@ import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.repository.ChuyenNganhRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
@@ -45,6 +47,13 @@ public class WriterFileCSV {
 
     @Autowired
     private DtDotDangKyRepository dotDangKyRepository;
+
+    @Autowired
+    private ChuyenNganhRepository chuyenNganhRepository;
+
+    public ChuyenNganh findChuyenNganhById(String idChuyenNganh) {
+        return chuyenNganhRepository.findById(idChuyenNganh).get();
+    }
 
     public void createFileCSV(String pathFile) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
@@ -96,9 +105,10 @@ public class WriterFileCSV {
     public void writerFileCSV(LoggerObject loggerObject) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(loggerObject.getPathFile(), true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+            writerLoggerObjectIsNotData(loggerObject);
             csvPrinter.printRecord(loggerObject.getMail(),
                     loggerObject.getIP(), loggerObject.getCreateDate(), loggerObject.getMethod(), loggerObject.getContent()
-                    , loggerObject.getAuthor(), loggerObject.getStatus());
+                    , loggerObject.getAuthor(), loggerObject.getStatus(), loggerObject.getIdChuyenNganh(), loggerObject.getTenChuyenNganh());
             System.out.println("======================================================");
             System.out.println("================= Path file: " + loggerObject.getPathFile());
             System.out.println("================= Nội dung file: " + loggerObject.getContent());
@@ -114,9 +124,10 @@ public class WriterFileCSV {
     public void writerFileCSVLuong(LoggerObject loggerObject) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(loggerObject.getPathFile(), true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+            writerLoggerObjectIsNotData(loggerObject);
             csvPrinter.printRecord(loggerObject.getMail(),
                     loggerObject.getIP(), loggerObject.getCreateDate(), loggerObject.getMethod(), loggerObject.getContent()
-                    , loggerObject.getAuthor(), loggerObject.getStatus(), loggerObject.getTenNhom());
+                    , loggerObject.getAuthor(), loggerObject.getStatus(), loggerObject.getTenNhom(), loggerObject.getIdChuyenNganh(), loggerObject.getTenChuyenNganh());
             System.out.println("======================================================");
             System.out.println("================= Path file: " + loggerObject.getPathFile());
             System.out.println("================= Nội dung file: " + loggerObject.getContent());
@@ -146,10 +157,43 @@ public class WriterFileCSV {
         return loggerObject;
     }
 
+    public LoggerObject writerLoggerObjectIsNotData(LoggerObject loggerObject) {
+
+        if (loggerObject.getIdChuyenNganh() == null) {
+            loggerObject.setIdChuyenNganh(ConfigurationsConstant.KHONG_CO_DU_LIEU);
+        }
+        if (loggerObject.getTenChuyenNganh() == null) {
+            loggerObject.setTenChuyenNganh(ConfigurationsConstant.KHONG_CO_DU_LIEU);
+        }
+        if (loggerObject.getMail() == null) {
+            loggerObject.setMail(ConfigurationsConstant.KHONG_CO_DU_LIEU);
+        }
+        if (loggerObject.getIP() == null) {
+            loggerObject.setIP(ConfigurationsConstant.KHONG_CO_DU_LIEU);
+        }
+        if (loggerObject.getCreateDate() == null) {
+            loggerObject.setCreateDate(ConfigurationsConstant.KHONG_CO_DU_LIEU);
+        }
+        if (loggerObject.getMethod() == null) {
+            loggerObject.setMethod(ConfigurationsConstant.KHONG_CO_DU_LIEU);
+        }
+        if (loggerObject.getContent() == null) {
+            loggerObject.setContent(ConfigurationsConstant.KHONG_CO_DU_LIEU);
+        }
+        if (loggerObject.getAuthor() == null) {
+            loggerObject.setAuthor(ConfigurationsConstant.KHONG_CO_DU_LIEU);
+        }
+        if (loggerObject.getTenNhom() == null) {
+            loggerObject.setTenNhom(ConfigurationsConstant.KHONG_CO_DU_LIEU);
+        }
+        return loggerObject;
+    }
+
     public void writerAllObjectFileCSV(List<LoggerObject> loggerObject, String pathFile) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathFile, true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             for (LoggerObject el : loggerObject) {
+                writerLoggerObjectIsNotData(el);
                 csvPrinter.printRecord(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString(),
                         httpServletRequest.getRemoteAddr(), new Date().toString(), httpServletRequest.getMethod(), el.getContent(), switchAuthor(httpServletRequest.getRequestURI()), el.getStatus());
                 System.out.println("================= Nội dung file: " + el.getContent());
@@ -180,16 +224,15 @@ public class WriterFileCSV {
     }
 
     // Đọc file csv
-    public List<LoggerObject> readFileCSV(String pathFile) {
+    public List<LoggerObject> readFileCSV(LoggerObject object) {
         List<LoggerObject> list = new ArrayList<>();
-        try (Reader reader = new FileReader(pathFile);
+        try (Reader reader = new FileReader(object.getPathFile());
              CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);) {
 
             List<CSVRecord> csvRecords = csvParser.getRecords();
             int dem = csvRecords.size();
             for (CSVRecord csvRecord : csvRecords) {
                 LoggerObject loggerObject = new LoggerObject();
-                loggerObject.setStt(dem);
                 loggerObject.setMail(csvRecord.get(0));
                 loggerObject.setIP(csvRecord.get(1));
                 loggerObject.setCreateDate(csvRecord.get(2));
@@ -197,6 +240,12 @@ public class WriterFileCSV {
                 loggerObject.setContent(csvRecord.get(4));
                 loggerObject.setAuthor(csvRecord.get(5));
                 loggerObject.setStatus(csvRecord.get(6));
+                if (object.getIdChuyenNganh() != null) {
+                    if (!csvRecord.get(7).equals(object.getIdChuyenNganh())) {
+                        continue;
+                    }
+                }
+                loggerObject.setStt(dem);
                 list.add(loggerObject);
                 dem--;
             }
@@ -229,11 +278,17 @@ public class WriterFileCSV {
                 loggerObject.setAuthor(csvRecord.get(5));
                 loggerObject.setStatus(csvRecord.get(6));
                 loggerObject.setTenNhom(csvRecord.get(7));
-                if (object.getTenNhom().equals(loggerObject.getTenNhom())) {
-                    dem++;
-                    loggerObject.setStt(dem);
-                    list.add(loggerObject);
+                if (!object.getTenNhom().equals(loggerObject.getTenNhom())) {
+                    continue;
                 }
+                if (object.getIdChuyenNganh() != null) {
+                    if (!csvRecord.get(8).equals(object.getIdChuyenNganh())) {
+                        continue;
+                    }
+                }
+                dem++;
+                loggerObject.setStt(dem);
+                list.add(loggerObject);
             }
         } catch (FileNotFoundException e) {
             throw new RestApiException(Message.FILE_LOG_NOT_EXISTS);

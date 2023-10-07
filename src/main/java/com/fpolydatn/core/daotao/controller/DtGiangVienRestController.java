@@ -125,7 +125,9 @@ public class DtGiangVienRestController extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_GIANG_VIEN_HUONG_DAN);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(pathFile);
+        LoggerObject loggerObject = new LoggerObject();
+        loggerObject.setPathFile(pathFile);
+        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
         Collections.reverse(list);
         List<LoggerObject> pagedSanPhamList = list.stream()
                 .skip(page * size)

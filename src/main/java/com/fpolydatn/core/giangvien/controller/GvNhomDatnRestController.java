@@ -98,7 +98,9 @@ public class GvNhomDatnRestController extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_GIANG_VIEN) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(pathFile);
+        LoggerObject loggerObject = new LoggerObject();
+        loggerObject.setPathFile(pathFile);
+        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
         List<LoggerObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)

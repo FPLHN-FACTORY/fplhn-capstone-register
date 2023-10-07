@@ -36,4 +36,8 @@ public class LoggerObject implements Serializable {
     private String pathFile;
 
     private String tenNhom;
+
+    private String idChuyenNganh;
+
+    private String tenChuyenNganh;
 }

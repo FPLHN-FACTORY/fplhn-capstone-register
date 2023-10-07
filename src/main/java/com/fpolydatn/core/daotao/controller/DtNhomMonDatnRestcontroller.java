@@ -93,8 +93,9 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         String pathFile = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_MON_DATN);
-
-        List<LoggerObject> list = writerFileCSV.readFileCSV(pathFile);
+        LoggerObject loggerObject = new LoggerObject();
+        loggerObject.setPathFile(pathFile);
+        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
         List<LoggerObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)

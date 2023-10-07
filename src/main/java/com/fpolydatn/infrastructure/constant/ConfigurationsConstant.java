@@ -73,4 +73,6 @@ public final class ConfigurationsConstant {
     public static final String TRUE = "Thành công";
     public static final String FALSE = "Thất bại";
 
+    public static final String KHONG_CO_DU_LIEU = "Không có dữ liệu";
+
 }
