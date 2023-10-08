@@ -1,5 +1,6 @@
 package com.fpolydatn.util;
 
+import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
 import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.DotDangKy;
@@ -9,7 +10,6 @@ import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import com.fpolydatn.repository.ChuyenNganhRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
@@ -49,7 +49,7 @@ public class WriterFileCSV {
     private DtDotDangKyRepository dotDangKyRepository;
 
     @Autowired
-    private ChuyenNganhRepository chuyenNganhRepository;
+    private DtChuyenNganhRepository chuyenNganhRepository;
 
     public ChuyenNganh findChuyenNganhById(String idChuyenNganh) {
         return chuyenNganhRepository.findById(idChuyenNganh).get();
