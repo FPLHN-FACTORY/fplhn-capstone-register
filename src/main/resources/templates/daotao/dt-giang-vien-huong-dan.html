@@ -271,7 +271,6 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-6 d-inline">
-                                            <br>
                                             <button
                                                     type="button"
                                                     th:attr="onclick=|openModalAddGVHD()|"
@@ -384,8 +383,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button data-bs-toggle="modal" data-bs-target="#history"
-                                                    th:attr="onclick=|openModalHistory()|"
+                                            <button
+                                                    th:attr="onclick=|openModalHistory(0, 20)|"
                                                     class="btn btn-success">
                                                 Lịch sử
                                             </button>
@@ -409,17 +408,14 @@
                                                                     <th class="text-center align-middle">Chức Vụ</th>
                                                                     </thead>
                                                                     <tbody id="listHistory">
-                                                                    <th:block th:each="logger, stat : ${loggerShowHistory}">
-                                                                        <tr class="table-light">
-                                                                            <td class="text-center align-middle" th:text="${stat.index + 1}"></td>
-                                                                            <td class="text-center align-middle" th:text="${logger.getMail()}"></td>
-                                                                            <td class="text-center align-middle" th:text="${logger.getCreateDate()}"></td>
-                                                                            <td class="text-center align-middle" th:text="${logger.getContent()}"></td>
-                                                                            <td class="text-center align-middle" th:text="${logger.getAuthor()}"></td>
-                                                                        </tr>
-                                                                    </th:block>
+
                                                                     </tbody>
                                                                 </table>
+
+                                                                <div id="pageHistory">
+                                                                </div>
+                                                                <div id="emptyHistory">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -428,7 +424,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <button
+                                                    th:attr="onclick=|openModalHistoryDownload()|"
+                                                    class="btn btn-success">
+                                                Tải file log
+                                            </button>
                                         </div>
                                     </div>
 

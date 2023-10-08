@@ -7,36 +7,217 @@ $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 });
 
-function openModalHistory() {
-
+function openModalHistory(page, size) {
+    let dotDangKy = $("#dotDangKy").val()
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: DTNhomDatnApi + "/history",
+        url: DTNhomDatnApi + "/history?page=" + page + "&size=" + size + "&dotDangKy=" + dotDangKy,
         dataType: 'json',
         success: function (responseData) {
-            if (responseData.data.length == 0) {
+            $("#history").modal('show')
+            if (responseData.data.content.length == 0) {
                 $("#listHistory").html(``);
+                $("#pageHistory").html('');
+                $("#emptyHistory").html(`<h3>Không có dữ liệu</h3>`);
             } else {
-                $("#listHistory").html(responseData.data.map(function (element, index) {
+                $("#emptyHistory").html(``);
+                $("#listHistory").html(responseData.data.content.map(function (element, index) {
                     return `
                 <tr class="table-light">                 
-                      <td class="text-center align-middle">${index + 1}</td>
+                      <td class="text-center align-middle">${element.stt}</td>
                       <td class="text-center align-middle">${element.mail}</td>
                       <td class="text-center align-middle">${element.createDate}</td>
                       <td class="text-center align-middle">${element.content}</td>
                       <td class="text-center align-middle">${element.author}</td>
-                      
                 </tr>
                `
                 }));
+
+                var count = responseData.data.totalPages;
+                if (responseData.data.totalPages <= 1) {
+                    $("#pageHistory").html('');
+                } else {
+                    let templatePageMid = ``;
+                    let templatePageBefore = page === 0 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistory(${page - 1}, ${size})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+                    templatePageMid = `
+                             <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
+                    let templatePageAfter = page === Number(count) - 1 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistory(${page + 1}, ${size})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+                    let templateHtml = ``;
+                    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+                    $("#pageHistory").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+                }
             }
+            ;
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            if (e.responseJSON.message === 'File log khong ton tai') {
+                bootbox.alert({
+                    message: 'File log không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }
+
+function openModalHistoryDownload() {
+
+    let dotDangKy = $("#dotDangKy").val();
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: DTNhomDatnApi + "/download-log?dotDangKy=" + dotDangKy,
+        success: function (responseData) {
+            var blob = new Blob([responseData], {type: "text/csv"});
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "nhom_datn_theo_dot.csv";
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        },
+        error: function (e) {
+            if (e.status === 404) {
+                bootbox.alert({
+                    message: "Không tìm thấy file trong hệ thống",
+                    backdrop: true
+                });
+            } else {
+                console.error("Lỗi khi tải file CSV: " + e.statusText);
+            }
+        }
+    });
+}
+
+function openModalHistoryDetail(page, size, maNhom, dotDangKyId) {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: DTNhomDatnApi + "/history-detail?page=" + page + "&size=" + size + "&maNhom=" + maNhom + "&dotDangKyId=" + dotDangKyId,
+        dataType: 'json',
+        success: function (responseData) {
+            $("#historyDetail").modal('show')
+            if (responseData.data.content.length == 0) {
+                $("#listHistoryDetail").html(``);
+                $("#pageHistoryDetail").html('');
+                $("#emptyHistoryDetail").html(`<h3>Không có dữ liệu</h3>`);
+            } else {
+                $("#emptyHistoryDetail").html(``);
+                $("#listHistoryDetail").html(responseData.data.content.map(function (element, index) {
+                    return `
+                <tr class="table-light">                 
+                      <td class="text-center align-middle">${element.stt}</td>
+                      <td class="text-center align-middle">${element.mail}</td>
+                      <td class="text-center align-middle">${element.createDate}</td>
+                      <td class="text-center align-middle">${element.content}</td>
+                      <td class="text-center align-middle">${element.author}</td>
+                </tr>
+               `
+                }));
+
+                var count = responseData.data.totalPages;
+                if (responseData.data.totalPages <= 1) {
+                    $("#pageHistoryDetail").html('');
+                } else {
+                    let templatePageMid = ``;
+                    let templatePageBefore = page === 0 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page - 1}, ${size}, ${maNhom})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+                    templatePageMid = `
+                             <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
+                    let templatePageAfter = page === Number(count) - 1 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page + 1}, ${size}, ${maNhom})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+                    let templateHtml = ``;
+                    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+                    $("#pageHistoryDetail").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+                }
+            }
+            ;
+        },
+        error: function (e) {
+            if (e.responseJSON.message === 'File log khong ton tai') {
+                bootbox.alert({
+                    message: 'File log không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
+        }
+    });
+}
+
+function openModalHistoryDownloadDetail() {
+    let dotDangKy = $("#dotDangKy").val()
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: DTNhomDatnApi + "/download-log-luong?dotDangKy=" + dotDangKy,
+        success: function (responseData) {
+            var blob = new Blob([responseData], {type: "text/csv"});
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "danh_sach_nhom_datn.csv";
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        },
+        error: function (e) {
+            if (e.status === 404) {
+                bootbox.alert({
+                    message: "Không tìm thấy file trong hệ thống",
+                    backdrop: true
+                });
+            } else {
+                console.error("Lỗi khi tải file CSV: " + e.statusText);
+            }
+        }
+    });
+}
+
 function openModalExportExcel() {
     $("#type_excel_error").text('');
     $("#modal_excel").modal('show');
@@ -343,6 +524,14 @@ function loadDataNhomDatn(count) {
                         onclick="openModalDanhSachSinhVien('${item.id}')"
                          >
                             <img src="/img/eye-fill.svg">
+                        </button>
+                        <button type="button"
+                        class="btn_eye"
+                        data-toggle="tooltip"
+                        title="Xem log nhóm"
+                        onclick="openModalHistoryDetail(0, 20, '${item.maNhom}', '${item.dotDangKyId}')"
+                         >
+                            <img src="/img/history.svg">
                         </button>
                     </div>
                 </td>

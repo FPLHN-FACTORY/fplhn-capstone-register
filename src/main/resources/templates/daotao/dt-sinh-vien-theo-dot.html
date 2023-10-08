@@ -161,7 +161,7 @@
                                 <div class="m-portlet__body">
 
                                     <div class="row">
-                                        <div class="col-4 d-inline float-left">
+                                        <div class="col-6 d-inline float-left">
                                             <button
                                                     type="button"
                                                     th:attr="onclick=|openModalThemSinhVien()|"
@@ -178,10 +178,15 @@
                                                     class="btn btn-success">
                                                 Import
                                             </button>
-                                            <button data-bs-toggle="modal" data-bs-target="#history"
-                                                    th:attr="onclick=|openModalHistory()|"
+                                            <button
+                                                    th:attr="onclick=|openModalHistory(0, 20)|"
                                                     class="btn btn-success">
                                                 Lịch sử
+                                            </button>
+                                            <button
+                                                th:attr="onclick=|openModalHistoryDownload()|"
+                                                class="btn btn-success">
+                                                Tải file log
                                             </button>
                                             <div class="modal fade" id="history" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
@@ -203,17 +208,14 @@
                                                                     <th class="text-center align-middle">Chức Vụ</th>
                                                                     </thead>
                                                                     <tbody id="listHistory">
-                                                                    <th:block th:each="logger, stat : ${loggerShowHistory}">
-                                                                        <tr class="table-light">
-                                                                            <td class="text-center align-middle" th:text="${stat.index + 1}"></td>
-                                                                            <td class="text-center align-middle" th:text="${logger.getMail()}"></td>
-                                                                            <td class="text-center align-middle" th:text="${logger.getCreateDate()}"></td>
-                                                                            <td class="text-center align-middle" th:text="${logger.getContent()}"></td>
-                                                                            <td class="text-center align-middle" th:text="${logger.getAuthor()}"></td>
-                                                                        </tr>
-                                                                    </th:block>
+
                                                                     </tbody>
                                                                 </table>
+
+                                                                <div id="pageHistory">
+                                                                </div>
+                                                                <div id="emptyHistory">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -333,7 +335,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-8 d-inline text-right">
+                                        <div class="col-6 d-inline text-right">
                                             <button
                                                     style="margin-right: 8px"
                                                     th:attr="onclick=|openModalLoaiSinhVien()|"

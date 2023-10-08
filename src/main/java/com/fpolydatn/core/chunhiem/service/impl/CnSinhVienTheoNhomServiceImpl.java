@@ -15,11 +15,15 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
+import com.fpolydatn.infrastructure.logger.LogService;
+import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
+import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -27,6 +31,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +61,12 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     private MocThoiGianCommon mocThoiGianCommon;
 
     @Autowired
+    private WriterFileCSV writerFileCSV;
+
+    @Autowired
+    private LogService logService;
+
+    @Autowired
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
 
@@ -68,11 +79,14 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean addSinhVienTheoNhom(String idNhom, String maSinhViens) {
+        List<LoggerObject> loggerObjectList = new ArrayList<>();
+        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+        String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         String listMaSinhVien[] = maSinhViens.split("-");
@@ -92,17 +106,34 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
             }
             String idSinhVien = cnSinhVienTheoNhomRepository.getIdSinhVienByMaSinhVien(maSinhVien, commonHelper.getDotDangKyHienTai());
             cnSinhVienTheoNhomRepository.addSinhVienInGroup(idNhom, maSinhVien, idMonDatn, commonHelper.getDotDangKyHienTai());
+            try {
+                LoggerObject loggerObjectActive = writerFileCSV.
+                        createLoggerObject("Chủ nhiệm bộ môn đã thêm sinh viên '" + maSinhVien + "' vào nhóm " + nhomDatnFind.get().getMaNhom(),
+                                fileSinhVienCsv, "Thành công");
+                loggerObjectList.add(loggerObjectActive);
+
+                LoggerObject loggerObject = writerFileCSV.
+                        createLoggerObject("Chủ nhiệm bộ môn đã thêm sinh viên '" + maSinhVien + "' vào nhóm " + nhomDatnFind.get().getMaNhom(),
+                                pathFile, "Thành công");
+                loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+                loggerObjectList.add(loggerObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        loggerObjectList.forEach(el -> {
+            logService.sendLogMessage(el);
+        });
         return true;
     }
 
     @Override
     public Integer getSizeListSinhVien(String idNhom, String coSoId) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             return null;
         }
         return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom, coSoId, commonHelper.getDotDangKyHienTai());
@@ -111,15 +142,31 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public boolean deleteFromIdSinhVien(String idNhom, String maSinhVien, String coSoId) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien, commonHelper.getDotDangKyHienTai());
         if (getSizeListSinhVien(idNhom, coSoId) == 0) {
             cnNhomDatnRepository.deleteById(idNhom);
+        }
+        try {
+            String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã xóa sinh viên '" + maSinhVien + "' ra khỏi nhóm " + nhomDatnFind.get().getMaNhom(),
+                            fileSinhVienCsv, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã xóa sinh viên '" + maSinhVien + "' ra khỏi nhóm " + nhomDatnFind.get().getMaNhom(),
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         return true;
     }
@@ -127,10 +174,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public boolean addGvhd(String tenTaiKhoan, String idNhom) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         String idGiangVien = cnGiangVienHuongDanReponsitory.getIdFromGiangVienId(tenTaiKhoan, commonHelper.getDotDangKyHienTai());
@@ -148,44 +195,93 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
             throw new RestApiException(Message.GIANG_VIEN_KHONG_DAY_MON_NAY);
         }
         cnNhomDatnRepository.addGvhd(idGiangVien, idNhom, commonHelper.getDotDangKyHienTai());
+        try {
+            String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã đổi giảng viên của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenTaiKhoan,
+                            fileSinhVienCsv, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã đổi giảng viên của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenTaiKhoan,
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
     @Override
     public boolean changeCaptain(String idCaptain, String idNhom) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
+        Optional<SinhVien> sinhVienFind = cnSinhVienTheoNhomRepository.findById(idCaptain);
         cnNhomDatnRepository.changeCaptainByTruongNhomId(idCaptain, idNhom, commonHelper.getDotDangKyHienTai());
+        try {
+            String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + sinhVienFind.get().getTenSinhVien() + "-" + sinhVienFind.get().getMaSinhVien(),
+                            fileSinhVienCsv, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + sinhVienFind.get().getTenSinhVien() + "-" + sinhVienFind.get().getMaSinhVien(),
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
     @Override
     public boolean changeCaptainToOther(String maSinhVien, String idNhom) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         String idCapTainOld = cnSinhVienTheoNhomRepository.getIdByMaSinhVienAndIdNhom(maSinhVien, idNhom, commonHelper.getDotDangKyHienTai());
         String idCapTainNew = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCapTainOld, idNhom, commonHelper.getDotDangKyHienTai()).get(0).getId();
         cnNhomDatnRepository.changeCaptainByTruongNhomId(idCapTainNew, idNhom, commonHelper.getDotDangKyHienTai());
+        try {
+            String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + maSinhVien,
+                            fileSinhVienCsv, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + maSinhVien,
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
     @Override
     public SinhVien getOldCaptain(String idGroup) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idGroup);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             return null;
         }
         String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup, commonHelper.getDotDangKyHienTai());
@@ -196,10 +292,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public List<SinhVien> getStudentNotCaptain(String idCaptain, String idGroup) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idGroup);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             return null;
         }
         List<SinhVien> listStudentNotCaptain = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCaptain, idGroup, commonHelper.getDotDangKyHienTai());
@@ -215,10 +311,10 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     public List<CnSinhVienSearchResponse> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem) {
         String idNhom = req.getIdNhom();
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             return null;
         }
         Optional<NhomDatn> nhomDatn = cnNhomDatnRepository.findById(idNhom);
@@ -231,16 +327,32 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public NhomDatn doiTenDeTai(String idNhom, String tenDeTai) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
-        if(!nhomDatnFind.isPresent()){
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if(!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())){
+        if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
-        if(tenDeTai.trim().length() > 255){
+        if (tenDeTai.trim().length() > 255) {
             throw new RestApiException(Message.DO_DAI_KHONG_QUA_255_KY_TU);
         }
         nhomDatnFind.get().setTenDeTai(tenDeTai);
+        try {
+            String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+            LoggerObject loggerObjectActive = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã đổi tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenDeTai,
+                            fileSinhVienCsv, "Thành công");
+            logService.sendLogMessage(loggerObjectActive);
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+            LoggerObject loggerObject = writerFileCSV.
+                    createLoggerObject("Chủ nhiệm bộ môn đã đổi tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenDeTai,
+                            pathFile, "Thành công");
+            loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+            logService.sendLogMessage(loggerObject);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return cnNhomDatnRepository.save(nhomDatnFind.get());
     }
 
@@ -259,7 +371,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     @Override
     public Boolean checkDotDangKyHienTai(String idNhom) {
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
-        if(!nhomDatnFind.isPresent()) {
+        if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
         return checkDotDangKy(nhomDatnFind.get().getDotDangKyId());

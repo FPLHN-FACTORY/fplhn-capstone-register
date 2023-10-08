@@ -139,7 +139,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Override
     public DotDangKy findById(String id) {
         Optional<DotDangKy> dotDangKyCheck = dtDotDangKyRepository.findById(id);
-        if (Objects.isNull(dotDangKyCheck)) {
+        if (dotDangKyCheck.isEmpty()) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
         return dotDangKyCheck.get();

@@ -70,6 +70,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         ChuyenNganh chuyenNganhUpdate = chuyenNganhById.get();
         chuyenNganhUpdate.setTenChuyenNganh(req.getTenChuyenNganh());
         chuyenNganhUpdate.setChuNhiemBoMon(req.getChuNhiemBoMon());
+        dtChuyenNganhRepository.save(chuyenNganhUpdate);
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
             LoggerObject loggerObjectActive = writerFileCSV.
@@ -79,7 +80,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        return dtChuyenNganhRepository.save(chuyenNganhUpdate);
+        return chuyenNganhUpdate;
     }
 
     @Override
@@ -95,6 +96,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
                 throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
             }
         }
+        dtChuyenNganhRepository.save(chuyenNganh);
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
             LoggerObject loggerObjectActive = writerFileCSV.
@@ -104,7 +106,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        return dtChuyenNganhRepository.save(chuyenNganh);
+        return chuyenNganh;
     }
 
     @Override
@@ -121,6 +123,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         if (countInMonDatn != 0) {
             throw new RestApiException(Message.CHUYEN_NGANH_KHONG_DUOC_XOA);
         }
+        dtChuyenNganhRepository.delete(chuyenNganhCheck.get());
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
             LoggerObject loggerObjectActive = writerFileCSV.
@@ -130,7 +133,6 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        dtChuyenNganhRepository.delete(chuyenNganhCheck.get());
         return true;
     }
 

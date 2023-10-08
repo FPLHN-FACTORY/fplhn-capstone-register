@@ -5,36 +5,89 @@ $(document).ready(function () {
     $("#mon_datn_error").text("");
 });
 
-function openModalHistory() {
-
+function openModalHistory(page, size) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: monDatnApi + "/history",
+        url: monDatnApi + "/history?page=" + page + "&size=" + size,
         dataType: 'json',
         success: function (responseData) {
-            if (responseData.data.length == 0) {
+            if (responseData.data.content.length == 0) {
                 $("#listHistory").html(``);
+                $("#pageHistory").html('');
+                $("#emptyHistory").html(`<h3>Không có dữ liệu</h3>`);
             } else {
-                $("#listHistory").html(responseData.data.map(function (element, index) {
+                $("#emptyHistory").html(``);
+                $("#listHistory").html(responseData.data.content.map(function (element, index) {
                     return `
                 <tr class="table-light">                 
-                      <td class="text-center align-middle">${index + 1}</td>
+                      <td class="text-center align-middle">${element.stt}</td>
                       <td class="text-center align-middle">${element.mail}</td>
                       <td class="text-center align-middle">${element.createDate}</td>
                       <td class="text-center align-middle">${element.content}</td>
                       <td class="text-center align-middle">${element.author}</td>
-                      
                 </tr>
                `
                 }));
-            }
+
+                var count = responseData.data.totalPages;
+                if (responseData.data.totalPages <= 1) {
+                    $("#pageHistory").html('');
+                } else {
+                    let templatePageMid = ``;
+                    let templatePageBefore = page === 0 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistory(${page - 1}, ${size})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+                    templatePageMid = `
+                             <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
+                    let templatePageAfter = page === Number(count) - 1 ? "" :  `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistory(${page + 1}, ${size})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+                    let templateHtml = ``;
+                    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+                    $("#pageHistory").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+                }
+            };
         },
         error: function (e) {
             console.log("ERROR : ", e);
         }
     });
 }
+
+function openModalHistoryDownload() {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: monDatnApi + "/download-log",
+        success: function (responseData) {
+            var blob = new Blob([responseData], { type: "text/csv" });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "mon_datn.csv";
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        },
+        error: function (e) {
+            if (e.status === 404) {
+                bootbox.alert({
+                    message: "Không tìm thấy file trong hệ thống",
+                    backdrop: true
+                });
+            } else {
+                console.error("Lỗi khi tải file CSV: " + e.statusText);
+            }
+        }
+    });
+}
+
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
     $("#targetLink").text(monDatnView);
@@ -46,6 +99,7 @@ let currentPage = $("#currentPage").val();
 function clearData() {
     $("#search_ma_mon").val("");
     $("#search_dot_dang_ky").val("");
+    $("#chuyenNganh").val("");
 }
 
 function genPaging() {
@@ -168,11 +222,17 @@ function create() {
     if (maMon.trim().length === 0) {
         $("#ma_mon_datn_error").text("Mã môn không được để trống");
         index++;
-    } else {
+    } else if (maMon.trim().length > 20) {
+        $("#ma_mon_datn_error").text("Mã môn không được quá 20 ký tự");
+        index++;
+    }  else {
         $("#ma_mon_datn_error").text("");
     }
     if (tenMonDatn.trim().length === 0) {
         $("#ten_mon_datn_error").text("Tên môn không được để trống");
+        index++;
+    } else if (tenMonDatn.trim().length > 100) {
+        $("#ten_mon_datn_error").text("Tên môn không được quá 100 ký tự");
         index++;
     } else {
         $("#ten_mon_datn_error").text("");
@@ -247,13 +307,19 @@ function update() {
     if (maMon.trim().length === 0) {
         $("#errorMaMonUpdate").text("Mã môn không được để trống");
         index++;
+    } else if (maMon.trim().length > 20) {
+        $("#errorMaMonUpdate").text("Mã môn không được quá 20 ký tự");
+        index++;
     } else {
         $("#errorMaMonUpdate").text("");
     }
     if (tenMonDatn.trim().length === 0) {
         $("#errorTenMonUpdate").text("Tên môn không được để trống");
         index++;
-    } else {
+    } else if (tenMonDatn.trim().length > 100) {
+        $("#errorTenMonUpdate").text("Tên môn không được quá 100 ký tự");
+        index++;
+    }  else {
         $("#errorTenMonUpdate").text("");
     }
     if (index == 0) {

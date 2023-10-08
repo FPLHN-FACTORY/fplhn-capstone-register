@@ -89,7 +89,8 @@ public enum Message {
     HOC_KY_OVERLAP(PropertiesReader.getProperty(PropertyKeys.HOC_KY_OVERLAP)),
     DO_DAI_KHONG_QUA_255_KY_TU(PropertiesReader.getProperty(PropertyKeys.DO_DAI_KHONG_QUA_255_KY_TU)),
     DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC(PropertiesReader.getProperty(PropertyKeys.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC)),
-    FILE_LOG_IS_EXIST(PropertiesReader.getProperty(PropertyKeys.FILE_LOG_IS_EXIST));
+    FILE_LOG_IS_EXIST(PropertiesReader.getProperty(PropertyKeys.FILE_LOG_IS_EXIST)),
+    FILE_LOG_NOT_EXISTS(PropertiesReader.getProperty(PropertyKeys.FILE_LOG_NOT_EXISTS));
 
     private String message;
 

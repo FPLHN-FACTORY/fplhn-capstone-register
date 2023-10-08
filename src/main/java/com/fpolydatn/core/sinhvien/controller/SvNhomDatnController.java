@@ -50,9 +50,6 @@ public class SvNhomDatnController extends BaseController {
     @Autowired
     MocThoiGianCommon mocThoiGianCommon;
 
-    @Autowired
-    private WriterFileCSV writerFileCSV;
-
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
@@ -85,17 +82,12 @@ public class SvNhomDatnController extends BaseController {
                 listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
             }
             Boolean checkThoiDiemJoinNhom = svNhomDatnService.checkThoiDiemJoinNhomGanNhat(idUSer);
-            LoggerObject object = new LoggerObject();
-            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-            object.setTenNhom(svDetailNhomDatnResponse.get(0).getMaNhom());
-            object.setPathFile(pathFile);
 
             model.addAttribute("checkThoiDiemJoinNhom", checkThoiDiemJoinNhom);
             model.addAttribute("soThanhVien", soThanhVien);
             model.addAttribute("listGiangVien", listGiangVien);
             model.addAttribute("checkTruongNhom", checkTruongNhom);
             model.addAttribute("nhomDatnThamGia", svDetailNhomDatnResponse);
-            model.addAttribute("loggerShowHistory", writerFileCSV.readFileCSVLuong(object));
             return "sinhvien/sv-nhom-datn";
         }
     }

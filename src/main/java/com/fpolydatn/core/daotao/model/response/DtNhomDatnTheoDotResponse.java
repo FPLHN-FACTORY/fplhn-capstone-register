@@ -45,4 +45,6 @@ public interface DtNhomDatnTheoDotResponse extends IsIdentified {
     @Value("#{target.trang_thai}")
     int getTrangThai();
 
+    @Value("#{target.dot_dang_ky_id}")
+    String getDotDangKyId();
 }

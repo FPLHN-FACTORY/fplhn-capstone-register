@@ -10,36 +10,116 @@ $("#form_list_nhom_datn").submit(function (event) {
     loadDataNhomDatn(0);
 })
 
-function openModalHistory() {
-
+function openModalHistory(page, size) {
+    let dotDangKy = $("#dotDangKyId").val();
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: CNNhomDatnApi + "/history",
+        url: CNNhomDatnApi + "/history?page=" + page + "&size=" + size + "&dotDangKy=" + dotDangKy,
         dataType: 'json',
         success: function (responseData) {
-            if (responseData.data.length == 0) {
+            $("#history").modal('show')
+            if (responseData.data.content.length == 0) {
                 $("#listHistory").html(``);
+                $("#pageHistory").html('');
+                $("#emptyHistory").html(`<h3>Không có dữ liệu</h3>`);
             } else {
-                $("#listHistory").html(responseData.data.map(function (element, index) {
+                $("#emptyHistory").html(``);
+                $("#listHistory").html(responseData.data.content.map(function (element, index) {
                     return `
                 <tr class="table-light">                 
-                      <td class="text-center align-middle">${index + 1}</td>
+                      <td class="text-center align-middle">${element.stt}</td>
                       <td class="text-center align-middle">${element.mail}</td>
                       <td class="text-center align-middle">${element.createDate}</td>
                       <td class="text-center align-middle">${element.content}</td>
                       <td class="text-center align-middle">${element.author}</td>
-                      
                 </tr>
                `
                 }));
+
+                var count = responseData.data.totalPages;
+                if (responseData.data.totalPages <= 1) {
+                    $("#pageHistory").html('');
+                } else {
+                    let templatePageMid = ``;
+                    let templatePageBefore = page === 0 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistory(${page - 1}, ${size})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+                    templatePageMid = `
+                             <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
+                    let templatePageAfter = page === Number(count) - 1 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistory(${page + 1}, ${size})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+                    let templateHtml = ``;
+                    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+                    $("#pageHistory").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+                }
             }
+            ;
         },
         error: function (e) {
-            console.log("ERROR : ", e);
+            if (e.responseJSON.message === 'File log khong ton tai') {
+                bootbox.alert({
+                    message: 'File log không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }
+
+function openModalHistoryDownload() {
+
+    var dotDangKy = $("#dotDangKyId").val();
+    if (dotDangKy.trim().length === 0) {
+        bootbox.alert({
+            message: "Bạn chưa chọn đợt đăng ký",
+            backdrop: true
+        });
+        return;
+    }
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: CNNhomDatnApi + "/download-log?dotDangKy=" + dotDangKy,
+        success: function (responseData) {
+            var blob = new Blob([responseData], {type: "text/csv"});
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "nhom_datn.csv";
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        },
+        error: function (e) {
+            if (e.status === 404) {
+                bootbox.alert({
+                    message: "Không tìm thấy file trong hệ thống",
+                    backdrop: true
+                });
+            } else {
+                console.error("Lỗi khi tải file CSV: " + e.statusText);
+            }
+        }
+    });
+}
+
 $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 });
@@ -358,7 +438,7 @@ function chotNhieuDeTai(count) {
             message: 'Chọn nhóm muốn chốt đề tài',
             backdrop: true,
             callback: function () {
-                loadDataNhomDatn(0);
+
             }
         });
     } else {
@@ -374,7 +454,6 @@ function chotNhieuDeTai(count) {
                 message: 'Trạng thái của nhóm không thỏa mãn để thực hiện chức năng chốt',
                 backdrop: true,
                 callback: function () {
-                    loadDataNhomDatn(0);
                 }
             });
             return;
@@ -462,7 +541,7 @@ function xacNhanNhieuNhom(count) {
             message: 'Chọn nhóm muốn xác nhận',
             backdrop: true,
             callback: function () {
-                loadDataNhomDatn(0);
+
             }
         });
     } else {
@@ -478,7 +557,7 @@ function xacNhanNhieuNhom(count) {
                 message: 'Trạng thái của nhóm không thỏa mãn để thực hiện chức năng xác nhận',
                 backdrop: true,
                 callback: function () {
-                    loadDataNhomDatn(0);
+
                 }
             });
             return;
@@ -768,6 +847,9 @@ function loadDataNhomDatn(count) {
                     loadDataNhomDatn(count - 1);
                     return;
                 }
+                $("#idButtonTaoNhom").attr('style', 'display: none');
+                $("#idButtonChotDeTai").attr('style', 'display: none');
+                $("#idButtonXacnhan").attr('style', 'display: none');
             } else {
                 if (array[0].checkDotDangKy == 0) {
                     $("#idButtonTaoNhom").attr('style', 'display: none');
