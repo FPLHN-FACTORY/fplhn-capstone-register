@@ -189,6 +189,44 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="modal fade" id="historyDetail" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="historyLabelDetail">Lịch sử</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <table
+                                                                style="text-align: center"
+                                                                class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                                            <thead>
+                                                            <th class="text-center align-middle" width="50px">STT</th>
+                                                            <th class="text-center align-middle">Email người thực hiện</th>
+                                                            <th class="text-center align-middle">Ngày thực hiện</th>
+                                                            <th class="text-center align-middle">Nội dung</th>
+                                                            <th class="text-center align-middle">Chức Vụ</th>
+                                                            </thead>
+                                                            <tbody id="listHistoryDetail">
+
+                                                            </tbody>
+                                                        </table>
+
+                                                        <div id="pageHistoryDetail">
+                                                        </div>
+                                                        <div id="emptyHistoryDetail">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="table-responsive mt-3">
                                         <table id="custom-table"
                                                style="text-align: center"
@@ -233,6 +271,13 @@
                                                                     class="btn_eye" data-toggle="tooltip"
                                                                     title="Xem chi tiết nhóm">
                                                                 <img th:src="@{/img/eye-fill.svg}">
+                                                            </button>
+                                                            <button class="btn_eye"
+                                                                    th:attr="onclick=|openModalHistoryDetail(0, 20, '${nhomDatn.maNhom}', '')|"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xem log nhóm"
+                                                                    type="button">
+                                                                <img th:src="@{/img/history.svg}">
                                                             </button>
                                                             <button type="button"
                                                                     th:style="${nhomDatn.getTrangThai()} == 1 ? 'display: block' : 'display: none'"

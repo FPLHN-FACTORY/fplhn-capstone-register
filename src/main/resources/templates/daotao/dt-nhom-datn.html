@@ -187,6 +187,11 @@
                                                 </div>
                                             </div>
                                             <button
+                                                    th:attr="onclick=|openModalHistoryDetail(0, 20, '', '')|"
+                                                    class="btn btn-success">
+                                                Lịch sử luồng
+                                            </button>
+                                            <button
                                                     th:attr="onclick=|openModalHistory(0, 20)|"
                                                     class="btn btn-success">
                                                 Lịch sử
@@ -263,7 +268,7 @@
 
                                                                 <div id="pageHistoryDetail">
                                                                 </div>
-                                                                <div id="emptyHistory">
+                                                                <div id="emptyHistoryDetail">
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -85,6 +85,9 @@ public class WriterFileCSV {
     }
 
     public String tenDotDangKyHienTai() {
+        if (session.getAttribute(SessionConstant.TEN_DOT_DANG_KY) == null) {
+            return "";
+        }
         return session.getAttribute(SessionConstant.TEN_DOT_DANG_KY).toString();
     }
 
@@ -240,9 +243,11 @@ public class WriterFileCSV {
                 loggerObject.setContent(csvRecord.get(4));
                 loggerObject.setAuthor(csvRecord.get(5));
                 loggerObject.setStatus(csvRecord.get(6));
+                loggerObject.setIdChuyenNganh(csvRecord.get(7));
+                loggerObject.setTenChuyenNganh(csvRecord.get(8));
                 if (object.getIdChuyenNganh() != null) {
-                    if (!csvRecord.get(7).equals(object.getIdChuyenNganh())) {
-                        continue;
+                    if (!loggerObject.getIdChuyenNganh().equals(object.getIdChuyenNganh())) {
+                        break;
                     }
                 }
                 loggerObject.setStt(dem);
@@ -313,11 +318,15 @@ public class WriterFileCSV {
                 loggerObject.setAuthor(csvRecord.get(5));
                 loggerObject.setStatus(csvRecord.get(6));
                 loggerObject.setTenNhom(csvRecord.get(7));
-                if (!object.getTenNhom().equals(loggerObject.getTenNhom())) {
-                    continue;
+                loggerObject.setIdChuyenNganh(csvRecord.get(8));
+                loggerObject.setTenChuyenNganh(csvRecord.get(9));
+                if (object.getTenNhom() != null && object.getTenNhom().trim().length() != 0) {
+                    if (!object.getTenNhom().equals(loggerObject.getTenNhom())) {
+                        continue;
+                    }
                 }
                 if (object.getIdChuyenNganh() != null) {
-                    if (!csvRecord.get(8).equals(object.getIdChuyenNganh())) {
+                    if (!loggerObject.getIdChuyenNganh().equals(object.getIdChuyenNganh())) {
                         continue;
                     }
                 }

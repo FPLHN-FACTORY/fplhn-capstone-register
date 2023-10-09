@@ -118,6 +118,9 @@ function openModalHistoryDownload() {
 }
 
 function openModalHistoryDetail(page, size, maNhom, dotDangKyId) {
+    if (dotDangKyId.trim().length === 0) {
+        dotDangKyId = $("#dotDangKy").val();
+    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -150,14 +153,14 @@ function openModalHistoryDetail(page, size, maNhom, dotDangKyId) {
                     let templatePageMid = ``;
                     let templatePageBefore = page === 0 ? "" : `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page - 1}, ${size}, ${maNhom})"><img src="/img/back.svg"></a>
+                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page - 1}, ${size}, ${maNhom}, ${dotDangKyId})"><img src="/img/back.svg"></a>
                 </li>
                 `;
                     templatePageMid = `
                              <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
                     let templatePageAfter = page === Number(count) - 1 ? "" : `
                 <li style="color: #0a8cf0" class="page-item">
-                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page + 1}, ${size}, ${maNhom})"><img src="/img/next.svg"></a>
+                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page + 1}, ${size}, ${maNhom}, ${dotDangKyId})"><img src="/img/next.svg"></a>
                 </li>
                 `;
                     let templateHtml = ``;
