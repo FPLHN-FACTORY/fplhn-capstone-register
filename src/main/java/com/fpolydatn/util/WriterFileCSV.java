@@ -287,12 +287,12 @@ public class WriterFileCSV {
                 loggerObject.setTenChuyenNganh(csvRecord.get(9));
                 if (object.getTenNhom() != null && object.getTenNhom().trim().length() != 0) {
                     if (!object.getTenNhom().equals(loggerObject.getTenNhom())) {
-                        break;
+                        continue;
                     }
                 }
                 if (object.getIdChuyenNganh() != null) {
                     if (!loggerObject.getIdChuyenNganh().equals(object.getIdChuyenNganh())) {
-                        break;
+                        continue;
                     }
                 }
                 dem++;
