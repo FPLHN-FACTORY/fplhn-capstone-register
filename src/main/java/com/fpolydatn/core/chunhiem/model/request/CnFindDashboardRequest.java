@@ -24,5 +24,7 @@ public class CnFindDashboardRequest {
 
     private Integer soNhomHuongDanToiDa;
 
+    private String tenDeTaiSearch = "";
+
     private String sort = "sortDesc";
 }

@@ -33,11 +33,22 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
                 SELECT DISTINCT COUNT(a.id) as so_nhom_dang_huong_dan, b.id FROM nhom_datn a JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
                 WHERE b.dot_dang_ky_id = :#{#req.dotDangKyId} AND b.co_so_id = :#{#req.coSoId}
                 GROUP BY b.id
+            ), nhomDatnSoThanhVien AS (
+                SELECT b.id, COUNT(d.id) as so_thanh_vien
+                FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+                LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+                LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+                LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+                LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+                WHERE g.id = :#{#req.dotDangKyId}
+                AND b.co_so_id = :#{#req.coSoId}
+                AND h.id = :idChuNhiem
+                GROUP BY b.id 
             )
             SELECT b.id, ROW_NUMBER() OVER(
             ORDER BY b.last_modified_date DESC
             ) AS stt, b.ma_nhom
-            ,b.ten_de_tai, k.ma_mon AS ma_mon_datn, COUNT(d.ma_sinh_vien)
+            ,b.ten_de_tai, k.ma_mon AS ma_mon_datn, ndaSTV.so_thanh_vien
             AS total_ma_sinh_vien, CONCAT(c.ma_sinh_vien, '_', c.ten_sinh_vien) as truong_nhom,e.ten_gvhd, e.ten_tai_khoan,
             gvhdNhom.so_nhom_dang_huong_dan AS so_nhom_dang_huong_dan,
             e.so_nhom_huong_dan_toi_da,
@@ -51,6 +62,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             LEFT JOIN CheckDotDangKy cddk ON cddk.id = g.id
             LEFT JOIN gvhdNhomDatn gvhdNhom ON gvhdNhom.id = e.id
+            LEFT JOIN nhomDatnSoThanhVien ndaSTV ON ndaSTV.id = b.id
             WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
@@ -65,6 +77,8 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR b.trang_thai = CONVERT(:#{#req.trangThai}, UNSIGNED))
             AND (:#{#req.maTruongNhom} IS NULL OR :#{#req.maTruongNhom} LIKE ''
             OR c.ma_sinh_vien LIKE %:#{#req.maTruongNhom}% OR c.ten_sinh_vien LIKE %:#{#req.maTruongNhom}%)
+            AND (:#{#req.maSinhVien} IS NULL OR :#{#req.maSinhVien} LIKE ''
+            OR d.ma_sinh_vien LIKE %:#{#req.maSinhVien}% OR d.ten_sinh_vien LIKE %:#{#req.maSinhVien}%)
             AND g.id = :#{#req.dotDangKyId}
             AND b.co_so_id = :#{#req.coSoId}
             AND h.id = :idChuNhiem
@@ -86,6 +100,17 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
                 SELECT DISTINCT COUNT(a.id) as so_nhom_dang_huong_dan, b.id FROM nhom_datn a JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
                 WHERE b.dot_dang_ky_id = :#{#req.dotDangKyId} AND b.co_so_id = :#{#req.coSoId}
                 GROUP BY b.id
+            ), nhomDatnSoThanhVien AS (
+                SELECT b.id, COUNT(d.id) as so_thanh_vien
+                FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
+                LEFT JOIN sinh_vien d ON d.nhom_id = b.id
+                LEFT JOIN chuyen_nganh f ON f.id = d.chuyen_nganh_id
+                LEFT JOIN dot_dang_ky g ON g.id = b.dot_dang_ky_id
+                LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
+                WHERE g.id = :#{#req.dotDangKyId}
+                AND b.co_so_id = :#{#req.coSoId}
+                AND h.id = :idChuNhiem
+                GROUP BY b.id 
             )
             SELECT COUNT(b.id)
             FROM nhom_datn b LEFT JOIN sinh_vien c ON b.truong_nhom_id = c.id
@@ -97,6 +122,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN can_bo h ON h.id = f.chu_nhiem_bo_mon
             LEFT JOIN CheckDotDangKy cddk ON cddk.id = g.id
             LEFT JOIN gvhdNhomDatn gvhdNhom ON gvhdNhom.id = e.id
+            LEFT JOIN nhomDatnSoThanhVien ndaSTV ON ndaSTV.id = b.id
             WHERE (:#{#req.maNhom} IS NULL OR :#{#req.maNhom} LIKE ''
             OR b.ma_nhom LIKE %:#{#req.maNhom}%) 
             AND (:#{#req.tenDeTai} IS NULL OR :#{#req.tenDeTai} LIKE ''
@@ -111,6 +137,8 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             OR b.trang_thai = CONVERT(:#{#req.trangThai}, UNSIGNED))
             AND (:#{#req.maTruongNhom} IS NULL OR :#{#req.maTruongNhom} LIKE ''
             OR c.ma_sinh_vien LIKE %:#{#req.maTruongNhom}% OR c.ten_sinh_vien LIKE %:#{#req.maTruongNhom}%)
+            AND (:#{#req.maSinhVien} IS NULL OR :#{#req.maSinhVien} LIKE ''
+            OR d.ma_sinh_vien LIKE %:#{#req.maSinhVien}% OR d.ten_sinh_vien LIKE %:#{#req.maSinhVien}%)
             AND g.id = :#{#req.dotDangKyId}
             AND b.co_so_id = :#{#req.coSoId}
             AND h.id = :idChuNhiem
@@ -244,7 +272,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
     @Query(value = """
             SELECT a.ma_nhom, a.ten_nhom, a.ten_de_tai,
             CONCAT(e.ten_tai_khoan, '_', e.ten_gvhd) as gvhd,
-            CONCAT(d.ma_mon, '_', d.ten_mon_datn) as mon_datn, a.trang_thai
+            CONCAT(d.ma_mon, '_', d.ten_mon_datn) as mon_datn, a.trang_thai, a.dot_dang_ky_id
             FROM nhom_datn a JOIN sinh_vien b ON a.truong_nhom_id = b.id
             JOIN sinh_vien c ON c.nhom_id = a.id
             JOIN mon_datn d ON b.mon_datn_id = d.id

@@ -42,5 +42,7 @@ public class CnDashboardResponse {
 
     private Integer tongSLSinhVienKhongDuDieuKien; //
 
+    private Integer tongSlNhomChuaDatTenDeTai; //
+
     private List<CnDashboardGvhdResponse> listGvhd;
 }

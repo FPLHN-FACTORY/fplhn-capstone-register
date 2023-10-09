@@ -14,4 +14,6 @@ public interface CnChuyenNganhService {
     List<SimpleEntityProj> getAllChuyenNganhByIdChuNhiem(String coSoId, String idChuNhiem);
 
     List<SimpleEntityProj> getAllMonDatnByIdChuNhiem(String coSoId, String idChuNhiem);
+
+    List<String> getAllIdChuyenNganhByIdChuNhiem(String coSoId, String idChuNhiem);
 }

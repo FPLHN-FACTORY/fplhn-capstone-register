@@ -24,4 +24,8 @@ public interface CnThongTinNhomResponse {
 
     @Value("#{target.trang_thai}")
     Integer getTrangThai();
+
+    @Value("#{target.dot_dang_ky_id}")
+    String getDotDangKyId();
+
 }

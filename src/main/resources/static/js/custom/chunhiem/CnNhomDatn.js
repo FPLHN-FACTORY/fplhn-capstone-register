@@ -10,14 +10,13 @@ $("#form_list_nhom_datn").submit(function (event) {
     loadDataNhomDatn(0);
 })
 
-function openModalHistory(page, size) {
+function openModalHistory(page, check) {
     let dotDangKy = $("#dotDangKyId").val();
-    if (dotDangKy.trim().length === 0) {
-        bootbox.alert({
-            message: "Bạn chưa chọn đợt đăng ký",
-            backdrop: true
-        });
-        return;
+    let size = check;
+    if (check === 0) {
+        size = parseInt($("#sizeHistory").val());
+    } else {
+        $("#sizeHistory").val("20");
     }
     $.ajax({
         type: "GET",
@@ -78,20 +77,22 @@ function openModalHistory(page, size) {
                     }
                 });
             }
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }
 
 function openModalHistoryDownload() {
+    let dotDangKy = $("#dotDangKyId").val();
 
-    var dotDangKy = $("#dotDangKyId").val();
-    if (dotDangKy.trim().length === 0) {
-        bootbox.alert({
-            message: "Bạn chưa chọn đợt đăng ký",
-            backdrop: true
-        });
-        return;
-    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -108,6 +109,15 @@ function openModalHistoryDownload() {
             window.URL.revokeObjectURL(url);
         },
         error: function (e) {
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
             if (e.status === 404) {
                 bootbox.alert({
                     message: "Không tìm thấy file trong hệ thống",
@@ -134,6 +144,7 @@ function clearData() {
     $("#monDatnId").val("");
     $("#soThanhVien").val("");
     $("#chuyenNganhId").val("");
+    $("#maSinhVien").val("");
 }
 
 function CNChotDuLieu(id, count) {
@@ -823,12 +834,13 @@ function loadDataNhomDatn(count) {
     let sortNhomDatn = $("#sortNhomDatn").val()
     let sizeNhomDatn = parseInt($("#sizeNhomDatn").val())
     let maTruongNhom = $("#maTruongNhom").val().trim()
+    let maSinhVien = $("#maSinhVien").val().trim()
     currentPage = count;
 
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: CNNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&tenDeTai=" + tenDeTai + "&monDatnId=" + monDatnId + "&maTruongNhom=" + maTruongNhom
+        url: CNNhomDatnApi + "/search" + "?maNhom=" + maNhom + "&tenDeTai=" + tenDeTai + "&monDatnId=" + monDatnId + "&maTruongNhom=" + maTruongNhom + "&maSinhVien=" + maSinhVien
             + "&tenTaiKhoan=" + tenTaiKhoan + "&trangThai=" + trangThai + "&sortNhomDatn=" + sortNhomDatn + "&soThanhVien=" + soThanhVien + "&dotDangKyId=" + dotDangKyId
             + "&chuyenNganhId=" + chuyenNganhId + "&page=" + count + "&size=" + sizeNhomDatn,
         dataType: 'json',

@@ -154,25 +154,25 @@
                                 <div class="m-portlet__body">
 
                                     <div class="row">
-                                        <div class="col-8">
+                                        <div class="col-9">
                                             <button class="btn btn-success"
                                                     th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     id="idButtonExportSapNhom"
                                                     th:attr="onclick=|openModalExport()|">
-                                                Export sắp nhóm
+                                                Export sắp nhóm (chi tiết)
                                             </button>
                                             <button
                                                     id="idButtonImportSapNhom"
                                                     th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     th:attr="onclick=|openModalImport()|"
                                                     class="btn btn-success">
-                                                Import sắp nhóm
+                                                Import sắp nhóm (chi tiết)
                                             </button>
                                             <button class="btn btn-primary"
                                                     th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     th:attr="onclick=|openModalExportSapGvhd()|"
                                                     id="idButtonExportSapGVHD">
-                                                Export sắp GVHD
+                                                Export sắp nhóm (nhanh)
                                             </button>
                                             <button
                                                     id="idButtonImportSapGVHD"
@@ -180,19 +180,21 @@
                                                     th:attr="onclick=|openModalImportSapGvhd()|"
                                                     class="btn btn-primary"
                                             >
-                                                Import sắp GVHD
+                                                Import sắp nhóm (nhanh)
                                             </button>
                                             <button
                                                     th:attr="onclick=|openModalHistory(0, 20)|"
                                                     class="btn btn-success">
                                                 Lịch sử
                                             </button>
-                                            <div class="modal fade" id="history" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
+                                            <div class="modal fade" id="history" tabindex="-1"
+                                                 aria-labelledby="historyLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-xl">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="historyLabel">Lịch sử</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="form-group">
@@ -200,9 +202,15 @@
                                                                         style="text-align: center"
                                                                         class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
                                                                     <thead>
-                                                                    <th class="text-center align-middle" width="50px">STT</th>
-                                                                    <th class="text-center align-middle">Email người thực hiện</th>
-                                                                    <th class="text-center align-middle">Ngày thực hiện</th>
+                                                                    <th class="text-center align-middle" width="50px">
+                                                                        STT
+                                                                    </th>
+                                                                    <th class="text-center align-middle">Email người
+                                                                        thực hiện
+                                                                    </th>
+                                                                    <th class="text-center align-middle">Ngày thực
+                                                                        hiện
+                                                                    </th>
                                                                     <th class="text-center align-middle">Nội dung</th>
                                                                     <th class="text-center align-middle">Chức Vụ</th>
                                                                     </thead>
@@ -210,15 +218,32 @@
 
                                                                     </tbody>
                                                                 </table>
-
-                                                                <div id="pageHistory">
+                                                                <div style="text-align: right">
+                                                                    <div id="pageHistory" style="float: right;">
+                                                                    </div>
+                                                                    <div style="float: right; margin-right: 20px">
+                                                                        <select id="sizeHistory"
+                                                                                th:attr="onchange=|openModalHistory(0, 0)|"
+                                                                                class="form-control-sm">
+                                                                            <option value="20">20</option>
+                                                                            <option value="50">50</option>
+                                                                            <option value="100">100</option>
+                                                                            <option value="500">500</option>
+                                                                            <option value="1000">1000</option>
+                                                                            <option value="2500">2500</option>
+                                                                            <option value="5000">5000</option>
+                                                                            <option value="10000">10000</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                                 <div id="emptyHistory">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-bs-dismiss="modal">Đóng
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -229,7 +254,7 @@
                                                 Tải file log
                                             </button>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <button style="float: right"
                                                     id="idButtonRandom"
                                                     th:if="${checkDotDangKyHienTai}"
@@ -238,7 +263,7 @@
                                                 Random nhóm
                                             </button>
                                             <button style="float: right; margin-right: 4px" class="btn btn-success"
-                                                    th:attr="onclick=|openModalExportThongTinSinhVien()|">
+                                                    th:attr="onclick=|exportFileThongTinSinhVien()|">
                                                 Export thông tin SV
                                             </button>
                                             <div
@@ -513,16 +538,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <p class="col-form-label">Định dạng file excel: </p>
-                    <select id="type_excel" class="form-control">
-                        <option value="">Chọn kiểu file excel</option>
-                        <option value="xls">.xls</option>
-                        <option value="xlsx">.xlsx</option>
-                    </select>
-                    <span class="text-danger"
-                          id="type_excel_error"></span>
-                </div>
+
                 <div class="form-group">
                     <p class="col-form-label">Chuyên ngành: </p>
                     <select class="form-control"
@@ -548,46 +564,7 @@
 </div>
 <!-- end modal export -->
 <!---->
-<div class="modal fade"
-     id="modal_excel_thong_tin_sinh_vien"
-     tabindex="-1"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabelThongTinSinhVien">Export
-                    Excel</h5>
-                <button type="button" class="close" data-bs-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <p class="col-form-label">Định dạng file excel </p>
-                    <select id="type_excel_thong_tin_sinh_vien" class="form-control">
-                        <option value="">Chọn kiểu file excel</option>
-                        <option value="xls">.xls</option>
-                        <option value="xlsx">.xlsx</option>
-                    </select>
-                    <span class="text-danger"
-                          id="type_excel_error_thong_tin_sinh_vien"></span>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button"
-                        class="btn btn-outline-secondary btn btn-light"
-                        data-bs-dismiss="modal">Hủy
-                </button>
-                <button class="btn btn-primary"
-                        th:attr="onclick=|exportFileThongTinSinhVien()|">Download
-                    excel
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!---->
 <div class="modal fade"
      id="modal_excel_sap_gvhd"
@@ -605,16 +582,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <p class="col-form-label">Định dạng file excel:</p>
-                    <select id="type_excel_sap_gvhd" class="form-control">
-                        <option value="">Chọn kiểu file excel</option>
-                        <option value="xls">.xls</option>
-                        <option value="xlsx">.xlsx</option>
-                    </select>
-                    <span class="text-danger"
-                          id="type_excel_sap_gvhd_error"></span>
-                </div>
+
                 <div class="form-group">
                     <p class="col-form-label">Chuyên ngành: </p>
                     <select class="form-control"

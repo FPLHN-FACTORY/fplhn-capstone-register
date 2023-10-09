@@ -258,6 +258,40 @@ public class WriterFileCSV {
         return list;
     }
 
+    public List<LoggerObject> readFileCSVByListChuyenNganh(LoggerObject object, List<String> listIdChuyenNganh) {
+        List<LoggerObject> list = new ArrayList<>();
+        try (Reader reader = new FileReader(object.getPathFile());
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);) {
+
+            List<CSVRecord> csvRecords = csvParser.getRecords();
+            int dem = csvRecords.size();
+            if (listIdChuyenNganh != null && listIdChuyenNganh.size() > 0) {
+                for (CSVRecord csvRecord : csvRecords) {
+                    LoggerObject loggerObject = new LoggerObject();
+                    loggerObject.setMail(csvRecord.get(0));
+                    loggerObject.setIP(csvRecord.get(1));
+                    loggerObject.setCreateDate(csvRecord.get(2));
+                    loggerObject.setMethod(csvRecord.get(3));
+                    loggerObject.setContent(csvRecord.get(4));
+                    loggerObject.setAuthor(csvRecord.get(5));
+                    loggerObject.setStatus(csvRecord.get(6));
+                    if (!listIdChuyenNganh.contains(csvRecord.get(7))) {
+                        continue;
+                    }
+                    loggerObject.setStt(dem);
+                    list.add(loggerObject);
+                    dem--;
+                }
+            }
+            Collections.reverse(list);
+        } catch (FileNotFoundException e) {
+            throw new RestApiException(Message.FILE_LOG_NOT_EXISTS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     // Đọc file csv
     public List<LoggerObject> readFileCSVLuong(LoggerObject object) {
         List<LoggerObject> list = new ArrayList<>();
@@ -267,6 +301,7 @@ public class WriterFileCSV {
 
             List<CSVRecord> csvRecords = csvParser.getRecords();
             int dem = 0;
+            Collections.reverse(csvRecords);
             for (CSVRecord csvRecord : csvRecords) {
 
                 LoggerObject loggerObject = new LoggerObject();

@@ -50,8 +50,8 @@ public interface CnSinhVienRepository extends SinhVienRepository {
     @Query(value = "SELECT IF(COUNT(1) IS NULL, 0, COUNT(1)) FROM sinh_vien a WHERE a.nhom_id = :id_nhom AND co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
     Integer countListSinhVien(@Param("id_nhom") String id_nhom, @Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 
-    @Query(value = "SELECT id FROM sinh_vien WHERE ma_sinh_vien LIKE :maSinhVien AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
-    String getIdSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien, @Param("dotDangKyId") String dotDangKyId);
+    @Query(value = "SELECT * FROM sinh_vien WHERE ma_sinh_vien LIKE :maSinhVien AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
+    SinhVien getIdSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien, @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = "SELECT * FROM sinh_vien WHERE ma_sinh_vien LIKE :maSinhVien AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
     SinhVien getSinhVienByMaSinhVien(@Param("maSinhVien") String maSinhVien, @Param("dotDangKyId") String dotDangKyId);

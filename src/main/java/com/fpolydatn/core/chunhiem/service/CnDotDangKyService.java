@@ -1,5 +1,6 @@
 package com.fpolydatn.core.chunhiem.service;
 
+import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 
 import java.util.List;
@@ -10,4 +11,6 @@ import java.util.List;
 public interface CnDotDangKyService {
 
     List<SimpleEntityProj> listDotDangKy(String coSoId);
+
+    DotDangKy findById(String id);
 }

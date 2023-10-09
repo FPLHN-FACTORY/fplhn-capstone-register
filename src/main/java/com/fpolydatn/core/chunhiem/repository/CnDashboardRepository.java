@@ -92,6 +92,18 @@ public interface CnDashboardRepository extends NhomDatnRepository {
             JOIN nhom_datn d ON c.id = d.truong_nhom_id
             WHERE d.dot_dang_ky_id = :#{#req.dotDangKyId}
             AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR a.id = :#{#req.chuyenNganhId})
+            AND b.id = :#{#req.idChuNhiem} AND a.co_so_id = :#{#req.coSoId}
+            AND d.ten_de_tai IS NULL
+            """, nativeQuery = true)
+    Integer getTongSoNhomChuaDatTenDeTai(@Param("req") CnFindDashboardRequest req);
+
+    @Query(value = """
+            SELECT COUNT(d.id)
+            FROM chuyen_nganh a JOIN can_bo b ON a.chu_nhiem_bo_mon = b.id
+            JOIN sinh_vien c ON c.chuyen_nganh_id = a.id
+            JOIN nhom_datn d ON c.id = d.truong_nhom_id
+            WHERE d.dot_dang_ky_id = :#{#req.dotDangKyId}
+            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR a.id = :#{#req.chuyenNganhId})
             AND b.id = :#{#req.idChuNhiem} AND a.co_so_id = :#{#req.coSoId} AND d.trang_thai = 5
             """, nativeQuery = true)
     Integer getTongSoNhomDaChotDeTai(@Param("req") CnFindDashboardRequest req);
@@ -171,9 +183,14 @@ public interface CnDashboardRepository extends NhomDatnRepository {
             FROM nhom_datn a JOIN sinh_vien b ON a.id = b.nhom_id
             JOIN mon_datn c ON b.mon_datn_id = c.id
             WHERE a.giang_vien_id = :idGiangVien AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId
+            AND (:tenDeTaiSearch IS NULL OR :tenDeTaiSearch LIKE '' OR IF(:tenDeTaiSearch = 'chuaCoTenDeTai', a.ten_de_tai IS NULL, a.ten_de_tai IS NOT NULL))
             GROUP BY a.id
             """, nativeQuery = true)
-    List<CnDashboardNhomDatnResponse> getNhomDatnByIdGiangVien(@Param("idGiangVien") String idGiangVien, @Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
+    List<CnDashboardNhomDatnResponse> getNhomDatnByIdGiangVien(@Param("idGiangVien") String idGiangVien,
+                                                               @Param("dotDangKyId") String dotDangKyId,
+                                                               @Param("coSoId") String coSoId,
+                                                               @Param("tenDeTaiSearch") String tenDeTaiSearch
+    );
 
     @Query(value = """
             SELECT a.id, a.ten_chuyen_nganh AS name 

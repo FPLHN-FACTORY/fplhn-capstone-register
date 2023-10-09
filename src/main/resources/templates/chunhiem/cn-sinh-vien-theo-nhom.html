@@ -126,8 +126,8 @@
                                     </div>
                                     <div class="row" style="margin-top: 10px">
                                         <h5>Danh sách thành viên:</h5>
-                                        <div class="d-inline"
-                                        >
+
+                                        <div class="col-8">
                                             <button type="button" th:attr="onclick=|openModalThemSinhVien()|"
                                                     th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''"
                                                     class=" btn btn-success">
@@ -153,7 +153,68 @@
                                                     class=" btn btn-success">
                                                 Thay đổi trưởng nhóm
                                             </button>
+                                        </div>
+                                        <div class="col-4">
+                                            <div style="float: right">
+                                                <button
+                                                        th:attr="onclick=|openModalHistoryDetail(0, 20, '${thongTinNhom.maNhom}', '${thongTinNhom.dotDangKyId}')|"
+                                                        class="btn btn-success">
+                                                    Lịch sử
+                                                </button>
+                                                <div class="modal fade" id="historyDetail" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xl">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="historyLabelDetail">Lịch sử</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <table
+                                                                            style="text-align: center"
+                                                                            class="table table-bordered m-table d-sm-table m-table--head-bg-primary">
+                                                                        <thead>
+                                                                        <th class="text-center align-middle" width="50px">STT</th>
+                                                                        <th class="text-center align-middle">Email người thực hiện</th>
+                                                                        <th class="text-center align-middle">Ngày thực hiện</th>
+                                                                        <th class="text-center align-middle">Nội dung</th>
+                                                                        <th class="text-center align-middle">Chức Vụ</th>
+                                                                        </thead>
+                                                                        <tbody id="listHistoryDetail">
 
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <div style="text-align: right">
+                                                                        <div id="pageHistoryDetail" style="float: right">
+                                                                        </div>
+                                                                        <div style="float: right; margin-right: 20px">
+                                                                            <select id="sizeHistory"
+                                                                                    th:attr="onclick=|openModalHistoryDetail(0, 0, '${thongTinNhom.maNhom}', '${thongTinNhom.dotDangKyId}')|"
+                                                                                    class="form-control-sm">
+                                                                                <option value="20">20</option>
+                                                                                <option value="50">50</option>
+                                                                                <option value="100">100</option>
+                                                                                <option value="500">500</option>
+                                                                                <option value="1000">1000</option>
+                                                                                <option value="2500">2500</option>
+                                                                                <option value="5000">5000</option>
+                                                                                <option value="10000">10000</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div id="emptyHistory">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="modal fade "
                                                  id="modal_create"
                                                  tabindex="-1"
@@ -221,7 +282,10 @@
                                                 <th class="text-center align-middle">Số điện thoại</th>
                                                 <th class="text-center align-middle">Khóa</th>
                                                 <th class="text-center align-middle">Môn chương trình</th>
-                                                <th class="text-center align-middle" width="80px" th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''">Chức năng</th>
+                                                <th class="text-center align-middle" width="80px"
+                                                    th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''">
+                                                    Chức năng
+                                                </th>
                                                 </thead>
                                                 <tbody>
                                                 <th:block th:each="sinhVienResponse,i : ${page.data}">
@@ -240,7 +304,8 @@
                                                             th:text="${sinhVienResponse.khoa}"></td>
                                                         <td class="text-center align-middle"
                                                             th:text="${sinhVienResponse.maMonChuongTrinh}"></td>
-                                                        <td class="text-center align-middle" th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''">
+                                                        <td class="text-center align-middle"
+                                                            th:style="${checkDotDangKyHienTai} == false ? 'display:none' : ''">
                                                             <div class="d-flex justify-content-center align-items-center">
                                                                 <button
                                                                         type="button" data-toggle="tooltip"

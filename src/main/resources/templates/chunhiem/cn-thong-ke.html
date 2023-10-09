@@ -176,10 +176,17 @@
                                                         class="span-custom"
                                                         id="tongSinhVienDaCoNhomHopLe"
                                                         th:text="${dashboard.tongSinhVienDaCoNhomHopLe}"></span></li>
-                                                <li class="li-custom">- Tổng số lượng sinh viên đủ điều kiện: <span
+                                                <li class="li-custom">- Tổng số lượng sinh viên dự kiến: <span
                                                         class="span-custom"
                                                         id="tongSLSinhVienDuDieuKien"
                                                         th:text="${dashboard.tongSLSinhVienDuDieuKien}"></span></li>
+                                                <li class="li-custom">- Tổng số lượng sinh
+                                                    viên
+                                                    không đủ điều kiện: <span
+                                                            class="span-custom"
+                                                            id="tongSLSinhVienKhongDuDieuKien"
+                                                            th:text="${dashboard.tongSLSinhVienKhongDuDieuKien}"></span>
+                                                </li>
                                             </ul>
                                         </div>
                                         <div class="col-6">
@@ -213,16 +220,16 @@
                                                             class="span-custom"
                                                             id="tongSLNhomChuaCoGvhd"
                                                             th:text="${dashboard.tongSLNhomChuaCoGvhd}"></span></li>
-                                                <li class="li-custom" style="font-weight: bold">- Tổng số lượng sinh
-                                                    viên
-                                                    không đủ điều kiện: <span
+                                                <li class="li-custom" style="font-weight: bold">- Tổng số lượng nhóm
+                                                    chưa
+                                                    đặt tên đề tài: <span
                                                             class="span-custom"
-                                                            id="tongSLSinhVienKhongDuDieuKien"
-                                                            th:text="${dashboard.tongSLSinhVienKhongDuDieuKien}"></span>
-                                                </li>
+                                                            id="tongSlNhomChuaDatTenDeTai"
+                                                            th:text="${dashboard.tongSlNhomChuaDatTenDeTai}"></span></li>
                                             </ul>
                                         </div>
                                     </div>
+                                    <div class="row"><span style="color: red; font-weight: bold">(*) Lưu ý: Nhóm hợp lệ là nhóm có từ 4 thành viên trở lên.</span></div>
                                 </div>
                             </div>
                         </section>
@@ -282,6 +289,19 @@
                                                     </option>
                                                 </select>
                                             </div>
+                                            <div class="form-group d-inline col-md-6 col-12 d-flex justify-content-around align-items-center"
+                                            >
+                                                <span for="" class="fillter-name col-4 text-center">Tên đề tài:</span>
+                                                <select class="form-control col-7"
+                                                        id="tenDeTaiSearch" name="tenDeTaiSearch">
+                                                    <option value="">Tất cả
+                                                    </option>
+                                                    <option value="daCoTenDeTai">Nhóm đã đặt tên đề tài
+                                                    </option>
+                                                    <option value="chuaCoTenDeTai">Nhóm chưa đặt tên đề tài
+                                                    </option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="row justify-content-center">
                                             <div class="col-sm-1 col-12 text-center mt-2">
@@ -335,7 +355,7 @@
                                                         </tbody>
                                                     </table>
                                                     <div th:unless="${not #lists.isEmpty(gvhd.listNhomDatn)}"
-                                                         style="text-align: center"><span style="color: red">Chưa hướng dẫn nhóm nào</span>
+                                                         style="text-align: center"><span style="color: red">Không có dữ liệu</span>
                                                     </div>
                                                 </div>
                                             </div>

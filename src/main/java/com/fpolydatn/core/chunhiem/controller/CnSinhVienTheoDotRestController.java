@@ -3,12 +3,15 @@ package com.fpolydatn.core.chunhiem.controller;
 import com.fpolydatn.core.chunhiem.model.request.CnFindSinhVienTheoDotRequest;
 import com.fpolydatn.core.chunhiem.model.response.CnNhomDatnImport;
 import com.fpolydatn.core.chunhiem.model.response.CnSinhVienTheoDotResponse;
+import com.fpolydatn.core.chunhiem.service.CnChuyenNganhService;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoDotService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.WriterFileCSV;
@@ -49,6 +52,9 @@ public class CnSinhVienTheoDotRestController extends BaseController {
 
     @Autowired
     private DtDotDangKyService dotDangKyService;
+
+    @Autowired
+    private CnChuyenNganhService cnChuyenNganhService;
 
     @GetMapping("/search")
     public ResponseObject searchSinhVienTheoDot(final CnFindSinhVienTheoDotRequest req) {
@@ -91,10 +97,19 @@ public class CnSinhVienTheoDotRestController extends BaseController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
+        if (idDotDangKy.equals("")) {
+            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            if (dotDangKyHienTai != null) {
+                idDotDangKy = dotDangKyHienTai;
+            } else {
+                throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
+            }
+        }
         String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN);
         LoggerObject loggerObject = new LoggerObject();
         loggerObject.setPathFile(pathFile);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
+        List<String> listIdChuyenNganh = cnChuyenNganhService.getAllIdChuyenNganhByIdChuNhiem(session.getCoSoId(), session.getUserId());
+        List<LoggerObject> list = writerFileCSV.readFileCSVByListChuyenNganh(loggerObject, listIdChuyenNganh);
         List<LoggerObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)
@@ -106,6 +121,14 @@ public class CnSinhVienTheoDotRestController extends BaseController {
     public ResponseEntity<Resource> downloadCsv(
             @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy
     ) throws IOException {
+        if (idDotDangKy.equals("")) {
+            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            if (dotDangKyHienTai != null) {
+                idDotDangKy = dotDangKyHienTai;
+            } else {
+                throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
+            }
+        }
         String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN);
 
         File file = new File(pathFile);
@@ -123,6 +146,8 @@ public class CnSinhVienTheoDotRestController extends BaseController {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
-    };
+    }
+
+    ;
 
 }

@@ -284,7 +284,6 @@ function openModalImportSapGvhd() {
 
 function exportFile() {
     $("#type_excel_error").text("");
-    let typeExcel = $("#type_excel").val()
     let tenSinhVien = $("#tenSinhVien").val().trim();
     let dotDangKyId = $("#dotDangKyId").val().trim();
     let chuyenNganhId = $("#chuyenNganhIdExportExcel").val().trim();
@@ -293,19 +292,17 @@ function exportFile() {
     let tenGvhd = $("#tenGvhd").val().trim();
     let maNhomSearch = $("#maNhomSearch").val().trim();
     let trangThai = $("#trangThai").val().trim();
-    if (typeExcel == '') {
-        $("#type_excel_error").text("Chọn định dạng file download");
-    } else {
+
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: CNNhomDatnApi + "/export?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+            url: CNNhomDatnApi + "/export?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                 + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
                 + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
                 + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
             ,
             success: function () {
-                window.open(CNNhomDatnApi + "/export?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+                window.open(CNNhomDatnApi + "/export?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                     + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&tenGvhd=" + tenGvhd
                     + "&monChuongTrinh=" + monChuongTrinh
                     + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
@@ -315,12 +312,11 @@ function exportFile() {
             error: function (e) {
             }
         });
-    }
+
 }
 
 function exportFileThongTinSinhVien() {
-    $("#type_excel_error_thong_tin_sinh_vien").text("");
-    let typeExcel = $("#type_excel_thong_tin_sinh_vien").val()
+
     let tenSinhVien = $("#tenSinhVien").val().trim();
     let dotDangKyId = $("#dotDangKyId").val().trim();
     let chuyenNganhId = $("#chuyenNganhId").val().trim();
@@ -330,28 +326,25 @@ function exportFileThongTinSinhVien() {
     let maNhomSearch = $("#maNhomSearch").val().trim();
     let trangThai = $("#trangThai").val().trim();
 
-    if (typeExcel == '') {
-        $("#type_excel_error_thong_tin_sinh_vien").text("Chọn định dạng file download");
-    } else {
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: CNNhomDatnApi + "/export/sinh-vien?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
-                + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&monChuongTrinh=" + monChuongTrinh
-                + "&tenGvhd=" + tenGvhd + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
-            ,
-            success: function () {
-                window.open(CNNhomDatnApi + "/export/sinh-vien?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
-                    + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
-                    + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
-                    + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
-                    , '_self');
-                $("#modal_excel_thong_tin_sinh_vien").modal('hide')
-            },
-            error: function (e) {
-            }
-        });
-    }
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: CNNhomDatnApi + "/export/sinh-vien?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+            + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&monChuongTrinh=" + monChuongTrinh
+            + "&tenGvhd=" + tenGvhd + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
+        ,
+        success: function () {
+            window.open(CNNhomDatnApi + "/export/sinh-vien?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+                + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
+                + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
+                + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
+                , '_self');
+            $("#modal_excel_thong_tin_sinh_vien").modal('hide')
+        },
+        error: function (e) {
+        }
+    });
 }
 
 function searchMaNhom() {
@@ -409,7 +402,7 @@ function randomNhomDatn() {
 
 function exportFileExcelSapGvhd() {
     $("#type_excel_sap_gvhd_error").text("");
-    let typeExcel = $("#type_excel_sap_gvhd").val();
+
     let tenSinhVien = $("#tenSinhVien").val().trim();
     let dotDangKyId = $("#dotDangKyId").val().trim();
     let chuyenNganhId = $("#chuyenNganhIdExportExcelSapGvhd").val()
@@ -419,19 +412,16 @@ function exportFileExcelSapGvhd() {
     let maNhomSearch = $("#maNhomSearch").val().trim();
     let trangThai = $("#trangThai").val().trim();
 
-    if (typeExcel === "") {
-        $("#type_excel_sap_gvhd_error").text("Chọn định dạng file download");
-    } else {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: sinhVienApi + "/export-sap-gvhd?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+            url: sinhVienApi + "/export-sap-gvhd?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                 + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
                 + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
                 + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
             ,
             success: function () {
-                window.open(sinhVienApi + "/export-sap-gvhd?typeExcel=" + typeExcel + "&idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+                window.open(sinhVienApi + "/export-sap-gvhd?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
                     + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&tenGvhd=" + tenGvhd
                     + "&monChuongTrinh=" + monChuongTrinh
                     + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
@@ -441,7 +431,7 @@ function exportFileExcelSapGvhd() {
             error: function (e) {
             }
         });
-    }
+
 }
 
 function importExcelSapGvhd() {
@@ -491,14 +481,13 @@ function importExcelSapGvhd() {
     }
 }
 
-function openModalHistory(page, size) {
+function openModalHistory(page, check) {
     let dotDangKy = $("#dotDangKyId").val();
-    if (dotDangKy.trim().length === 0) {
-        bootbox.alert({
-            message: "Bạn chưa chọn đợt đăng ký",
-            backdrop: true
-        });
-        return;
+    let size = check;
+    if (check === 0) {
+        size = parseInt($("#sizeHistory").val());
+    } else {
+        $("#sizeHistory").val("20");
     }
     $.ajax({
         type: "GET",
@@ -537,7 +526,7 @@ function openModalHistory(page, size) {
                 `;
                     templatePageMid = `
                              <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
-                    let templatePageAfter = page === Number(count) - 1 ? "" :  `
+                    let templatePageAfter = page === Number(count) - 1 ? "" : `
                 <li style="color: #0a8cf0" class="page-item">
                      <a style="border: none" class="page-link" onclick="openModalHistory(${page + 1}, ${size})"><img src="/img/next.svg"></a>
                 </li>
@@ -546,7 +535,8 @@ function openModalHistory(page, size) {
                     templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
                     $("#pageHistory").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
                 }
-            };
+            }
+            ;
         },
         error: function (e) {
             if (e.responseJSON.message === 'File log khong ton tai') {
@@ -558,26 +548,28 @@ function openModalHistory(page, size) {
                     }
                 });
             }
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }
 
 function openModalHistoryDownload() {
-
     var dotDangKy = $("#dotDangKyId").val()
-    if (dotDangKy.trim().length === 0) {
-        bootbox.alert({
-            message: "Bạn chưa chọn đợt đăng ký",
-            backdrop: true
-        });
-        return;
-    }
+
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: sinhVienApi + "/download-log?dotDangKy=" + dotDangKy,
         success: function (responseData) {
-            var blob = new Blob([responseData], { type: "text/csv" });
+            var blob = new Blob([responseData], {type: "text/csv"});
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement("a");
             a.href = url;
@@ -588,6 +580,15 @@ function openModalHistoryDownload() {
             window.URL.revokeObjectURL(url);
         },
         error: function (e) {
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
             if (e.status === 404) {
                 bootbox.alert({
                     message: "Không tìm thấy file trong hệ thống",

@@ -87,4 +87,5 @@ public class PropertyKeys {
     public static final String DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC = "dot.dang.ky.khong.phai.hien.tai.khong.duoc.thao.tac";
     public static final String FILE_LOG_IS_EXIST = "file.log.is.exists";
     public static final String FILE_LOG_NOT_EXISTS = "file.log.not.exists";
+    public static final String KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT = "khong.co.dot.hien.tai.vui.long.chon.dot";
 }

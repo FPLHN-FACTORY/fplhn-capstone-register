@@ -10,6 +10,8 @@ function clearDataGvhd() {
     $("#gvhd").val("")
     $("#monDatnId").val("")
     $("#sortGvhd").val("sortDesc")
+    $("#soNhomHuongDanToiDa").val("")
+    $("#tenDeTaiSearch").val("")
 }
 
 function loadDashBoard() {
@@ -37,6 +39,7 @@ function loadDashBoard() {
             $("#tongSinhVienChuaCoNhom").text(data.tongSinhVienChuaCoNhom);
             $("#tongSLNhomChuaCoGvhd").text(data.tongSLNhomChuaCoGvhd);
             $("#tongSLSinhVienKhongDuDieuKien").text(data.tongSLSinhVienKhongDuDieuKien);
+            $("#tongSlNhomChuaDatTenDeTai").text(data.tongSlNhomChuaDatTenDeTai);
 
             let template = data.listGvhd.map(function (item, index) {
                 let isListEmpty = item.listNhomDatn.length === 0;
@@ -80,7 +83,7 @@ function loadDashBoard() {
                                     </tbody>
                                 </table>
                                 <div 
-                                     style="text-align: center; display: ${messageDisplay}"><span style="color: red">Chưa hướng dẫn nhóm nào</span>
+                                     style="text-align: center; display: ${messageDisplay}"><span style="color: red">Không có dữ liệu</span>
                                 </div>
                             </div>
                         </div>
@@ -101,12 +104,14 @@ function loadDashBoardGvhd() {
     let monDatnId = $("#monDatnId").val()
     let soNhomHuongDanToiDa = $("#soNhomHuongDanToiDa").val()
     let sort = $("#sortGvhd").val()
+    let tenDeTaiSearch = $("#tenDeTaiSearch").val()
 
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: CnDashBoardAPI + "/search-gvhd?dotDangKyId=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
-            + "&maGvhd=" + maGvhd + "&monDatnId=" + monDatnId + "&soNhomHuongDanToiDa=" + soNhomHuongDanToiDa + "&sort=" + sort,
+            + "&maGvhd=" + maGvhd + "&monDatnId=" + monDatnId + "&soNhomHuongDanToiDa=" + soNhomHuongDanToiDa
+            + "&tenDeTaiSearch=" + tenDeTaiSearch + "&sort=" + sort,
         dataType: 'json',
         success: function (responseData) {
             let data = responseData.data;
@@ -153,7 +158,7 @@ function loadDashBoardGvhd() {
                                     </tbody>
                                 </table>
                                 <div 
-                                     style="text-align: center; display: ${messageDisplay}"><span style="color: red">Chưa hướng dẫn nhóm nào</span>
+                                     style="text-align: center; display: ${messageDisplay}"><span style="color: red">Không có dữ liệu</span>
                                 </div>
                             </div>
                         </div>

@@ -22,4 +22,10 @@ public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh, String
             WHERE co_so_id = :coSoId
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntityByCoSo(@Param("coSoId") String coSoId);
+
+    @Query(value = """
+            SELECT ten_chuyen_nganh AS 'name' FROM chuyen_nganh
+            WHERE id = :id
+            """, nativeQuery = true)
+    String getTenChuyenNganhById(@Param("id") String id);
 }

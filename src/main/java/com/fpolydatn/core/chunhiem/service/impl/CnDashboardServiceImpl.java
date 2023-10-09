@@ -70,13 +70,16 @@ public class CnDashboardServiceImpl implements CnDashboardService {
         Integer tongSoNhomChuaCoGvhd = cnDashboardRepository.getTongSoNhomChuaCoGvhd(request);
         cnDashboardResponse.setTongSLNhomChuaCoGvhd(tongSoNhomChuaCoGvhd);
 
+        Integer tongSlNhomChuaDatTenDeTai = cnDashboardRepository.getTongSoNhomChuaDatTenDeTai(request);
+        cnDashboardResponse.setTongSlNhomChuaDatTenDeTai(tongSlNhomChuaDatTenDeTai);
+
         List<CnDashboardGvhdResponse> gvhdResponseList = new ArrayList<>();
         List<CnSimpleDashboardGvhdResponse> listGvhd = cnDashboardRepository.getGvhd(request);
         for (CnSimpleDashboardGvhdResponse xx : listGvhd) {
             CnDashboardGvhdResponse cnDashboardGvhdResponse = new CnDashboardGvhdResponse();
             cnDashboardGvhdResponse.setGvhd(xx.getName());
             cnDashboardGvhdResponse.setMonDatn(xx.getMonDatn());
-            List<CnDashboardNhomDatnResponse> listNhomDatn = cnDashboardRepository.getNhomDatnByIdGiangVien(xx.getId(), request.getDotDangKyId(), request.getCoSoId());
+            List<CnDashboardNhomDatnResponse> listNhomDatn = cnDashboardRepository.getNhomDatnByIdGiangVien(xx.getId(), request.getDotDangKyId(), request.getCoSoId(), request.getTenDeTaiSearch());
             cnDashboardGvhdResponse.setListNhomDatn(listNhomDatn);
             cnDashboardGvhdResponse.setSoNhomDangHuongDan(listNhomDatn.size() + "/" + xx.getSoNhomHuongDanToiDa());
             gvhdResponseList.add(cnDashboardGvhdResponse);
@@ -93,7 +96,7 @@ public class CnDashboardServiceImpl implements CnDashboardService {
             CnDashboardGvhdResponse cnDashboardGvhdResponse = new CnDashboardGvhdResponse();
             cnDashboardGvhdResponse.setGvhd(xx.getName());
             cnDashboardGvhdResponse.setMonDatn(xx.getMonDatn());
-            List<CnDashboardNhomDatnResponse> listNhomDatn = cnDashboardRepository.getNhomDatnByIdGiangVien(xx.getId(), request.getDotDangKyId(), request.getCoSoId());
+            List<CnDashboardNhomDatnResponse> listNhomDatn = cnDashboardRepository.getNhomDatnByIdGiangVien(xx.getId(), request.getDotDangKyId(), request.getCoSoId(), request.getTenDeTaiSearch());
             cnDashboardGvhdResponse.setListNhomDatn(listNhomDatn);
             cnDashboardGvhdResponse.setSoNhomDangHuongDan(listNhomDatn.size() + "/" + xx.getSoNhomHuongDanToiDa());
             gvhdResponseList.add(cnDashboardGvhdResponse);
