@@ -66,6 +66,75 @@ function openModalHistory(page, size) {
     });
 }
 
+
+function openModalHistoryDetail(page, size, maNhom, dotDangKyId) {
+    if (dotDangKyId.trim().length === 0) {
+        dotDangKyId = $("#dotDangKy").val();
+    }
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: nhomDatnAPI + "/history-detail?page=" + page + "&size=" + size + "&maNhom=" + maNhom + "&dotDangKyId=" + dotDangKyId,
+        dataType: 'json',
+        success: function (responseData) {
+            $("#historyDetail").modal('show')
+            if (responseData.data.content.length == 0) {
+                $("#listHistoryDetail").html(``);
+                $("#pageHistoryDetail").html('');
+                $("#emptyHistoryDetail").html(`<h3>Không có dữ liệu</h3>`);
+            } else {
+                $("#emptyHistoryDetail").html(``);
+                $("#listHistoryDetail").html(responseData.data.content.map(function (element, index) {
+                    return `
+                <tr class="table-light">                 
+                      <td class="text-center align-middle">${element.stt}</td>
+                      <td class="text-center align-middle">${element.mail}</td>
+                      <td class="text-center align-middle">${element.createDate}</td>
+                      <td class="text-center align-middle">${element.content}</td>
+                      <td class="text-center align-middle">${element.author}</td>
+                </tr>
+               `
+                }));
+
+                var count = responseData.data.totalPages;
+                if (responseData.data.totalPages <= 1) {
+                    $("#pageHistoryDetail").html('');
+                } else {
+                    let templatePageMid = ``;
+                    let templatePageBefore = page === 0 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page - 1}, ${size}, ${maNhom}, ${dotDangKyId})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+                    templatePageMid = `
+                             <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
+                    let templatePageAfter = page === Number(count) - 1 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page + 1}, ${size}, ${maNhom}, ${dotDangKyId})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+                    let templateHtml = ``;
+                    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+                    $("#pageHistoryDetail").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+                }
+            }
+            ;
+        },
+        error: function (e) {
+            if (e.responseJSON.message === 'File log khong ton tai') {
+                bootbox.alert({
+                    message: 'File log không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
+        }
+    });
+}
+
+
 function openModalHistoryDownload() {
     $.ajax({
         type: "GET",
@@ -221,6 +290,14 @@ function seachNhomdatn(index) {
                  <div class="d-flex justify-content-center align-items-center">
                         <button type="button" onclick=showDetail('${item.id}') class="btn_eye" data-toggle="tooltip" title="Xem chi tiết nhóm">
                                     <img src="/img/eye-fill.svg">
+                        </button>
+                        <button type="button"
+                        class="btn_eye"
+                        data-toggle="tooltip"
+                        title="Xem log nhóm"
+                        onclick="openModalHistoryDetail(0, 20, '${item.maNhom}', '${item.dotDangKyId}')"
+                         >
+                            <img src="/img/history.svg">
                         </button>
                         <button type="button" onclick= "xacDaNhanLienHe('${item.id}', '${item.maNhom}')"
                                 style="${item.trangThai == 1 ? 'display: block' : 'display: none'}" 

@@ -95,7 +95,15 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+
+        String pathTenDot = "";
+        if (idDotDangKy.trim().length() == 0) {
+            String tenDotHienTai = writerFileCSV.tenDotDangKyHienTai();
+            pathTenDot = tenDotHienTai;
+        } else {
+            pathTenDot = writerFileCSV.findDotDangKyById(idDotDangKy).getTenDotDangKy();
+        }
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(pathTenDot) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
         LoggerObject loggerObject = new LoggerObject();
         loggerObject.setPathFile(pathFile);
         List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
@@ -115,9 +123,17 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
             @RequestParam(name = "dotDangKyId", defaultValue = "") String dotDangKyId
     ) {
         List<LoggerObject> list = new ArrayList<>();
-        if (maNhom != null && maNhom.trim().length() != 0) {
+        if (maNhom != null) {
             LoggerObject object = new LoggerObject();
-            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(dotDangKyService.findById(dotDangKyId).getTenDotDangKy());
+
+            String pathTenDot = "";
+            if (dotDangKyId.trim().length() == 0) {
+                String tenDotHienTai = writerFileCSV.tenDotDangKyHienTai();
+                pathTenDot = tenDotHienTai;
+            } else {
+                pathTenDot = writerFileCSV.findDotDangKyById(dotDangKyId).getTenDotDangKy();
+            }
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(pathTenDot);
 
             object.setTenNhom(maNhom);
             object.setPathFile(pathFile);

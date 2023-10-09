@@ -234,6 +234,13 @@
                                                                     title="Xem chi tiết nhóm">
                                                                 <img th:src="@{/img/eye-fill.svg}">
                                                             </button>
+                                                            <button class="btn_eye"
+                                                                    th:attr="onclick=|openModalHistoryDetail(0, 20, '${nhomDatn.maNhom}', '${nhomDatn.dotDangKyId}')|"
+                                                                    data-toggle="tooltip"
+                                                                    title="Xem log nhóm"
+                                                                    type="button">
+                                                                <img th:src="@{/img/history.svg}">
+                                                            </button>
                                                             <button type="button"
                                                                     th:style="${nhomDatn.getTrangThai()} == 1 ? 'display: block' : 'display: none'"
                                                                     th:attr="onclick=|xacDaNhanLienHe('${nhomDatn.getId()}', '${nhomDatn.getMaNhom()}')|"

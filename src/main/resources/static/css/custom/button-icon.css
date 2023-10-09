@@ -179,3 +179,11 @@ input::-webkit-inner-spin-button {
     justify-content: center;
     align-items: center;
 }
+
+div#history .modal-dialog {
+    max-width: 1400px !important;
+}
+
+div#historyDetail .modal-dialog {
+    max-width: 1400px !important;
+}

@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -107,7 +109,34 @@ public class GvNhomDatnRestController extends BaseController {
                 .collect(Collectors.toList());
         return new ResponseObject(new PageImpl<>(pagedSanPhamList, PageRequest.of(page, size), list.size()));
     }
+    @GetMapping("/history-detail")
+    public ResponseObject getAllHistoryDetail(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size,
+            @RequestParam(name = "maNhom", defaultValue = "") String maNhom,
+            @RequestParam(name = "dotDangKyId", defaultValue = "") String dotDangKyId
+    ) {
+        List<LoggerObject> list = new ArrayList<>();
+            LoggerObject object = new LoggerObject();
+            String tenDotHienTai = writerFileCSV.tenDotDangKyHienTai();
+            String pathTenDot = "";
+            if (dotDangKyId.trim().length() != 0) {
+                pathTenDot = tenDotHienTai;
+            } else {
+                pathTenDot = writerFileCSV.findDotDangKyById(dotDangKyId).getTenDotDangKy();
+            }
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(pathTenDot);
 
+            object.setTenNhom(maNhom);
+            object.setPathFile(pathFile);
+            list = writerFileCSV.readFileCSVLuong(object);
+            Collections.reverse(list);
+            List<LoggerObject> pagedSanPhamList = list.stream()
+                    .skip(page * size)
+                    .limit(size)
+                    .collect(Collectors.toList());
+            return new ResponseObject(new PageImpl<>(pagedSanPhamList, PageRequest.of(page, size), list.size()));
+    }
 
     @GetMapping("/download-log")
     public ResponseEntity<Resource> downloadCsv() throws IOException {
