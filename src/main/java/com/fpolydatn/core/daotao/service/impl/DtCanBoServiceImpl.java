@@ -136,6 +136,12 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     @Override
     public CanBo update(DtUpdateCanBoRequest canBoRequest) {
         Optional<CanBo> canBo = dtCanBoRepository.findById(canBoRequest.getId());
+        String tenTkCu = canBo.get().getTenTaiKhoan();
+        String tenCBCu = canBo.get().getTenCanBo();
+        String sdtCu = canBo.get().getSoDienThoai();
+        String mailFeCu = canBo.get().getEmailFe();
+        String mailFptCu = canBo.get().getEmailFpt();
+        VaiTro vaiTroCu = canBo.get().getVaiTro();
         if (Objects.isNull(canBo)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
@@ -156,10 +162,39 @@ public class DtCanBoServiceImpl implements DtCanBoService {
             throw new RestApiException(Message.TEN_TAI_KHOAN_CAN_BO_EXIST);
         }
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
+        StringBuilder logMessage = new StringBuilder();
+        if (!(updateCanBo.getTenTaiKhoan()).equals(tenTkCu)) {
+            logMessage.append("Đào tạo đã sửa tên tài khoản cán bộ từ '").append(tenTkCu)
+                    .append("' thành '").append(updateCanBo.getTenTaiKhoan()).append("'. ");
+        }
+        if (!(updateCanBo.getTenCanBo()).equals(tenCBCu)) {
+            logMessage.append("Đào tạo đã sửa tên cán bộ từ '").append(tenCBCu)
+                    .append("' thành '").append(updateCanBo.getTenCanBo()).append("'. ");
+        }
+        if (!(updateCanBo.getSoDienThoai()).equals(sdtCu)) {
+            logMessage.append("Đào tạo đã sửa số điện thoại của cán bộ'").append(updateCanBo.getTenCanBo())
+                    .append(" - ").append(updateCanBo.getTenTaiKhoan()).append("' từ '").append(sdtCu)
+                    .append("' thành '").append(updateCanBo.getSoDienThoai()).append("'. ");
+        }
+        if (!(updateCanBo.getEmailFe()).equals(mailFeCu)) {
+            logMessage.append("Đào tạo đã sửa mail FE của cán bộ'").append(updateCanBo.getTenCanBo())
+                    .append(" - ").append(updateCanBo.getTenTaiKhoan()).append("' từ '").append(mailFeCu)
+                    .append("' thành '").append(updateCanBo.getEmailFe()).append("'. ");
+        }
+        if (!(updateCanBo.getEmailFpt()).equals(mailFptCu)) {
+            logMessage.append("Đào tạo đã sửa mail FPT của cán bộ'").append(updateCanBo.getTenCanBo())
+                    .append(" - ").append(updateCanBo.getTenTaiKhoan()).append("' từ '").append(mailFptCu)
+                    .append("' thành '").append(updateCanBo.getEmailFpt()).append("'. ");
+        }
+        if (!(updateCanBo.getVaiTro()).equals(vaiTroCu)) {
+            logMessage.append("Đào tạo đã sửa vai trò của cán bộ'").append(updateCanBo.getTenCanBo())
+                    .append(" - ").append(updateCanBo.getTenTaiKhoan()).append("' từ '").append(vaiTroCu)
+                    .append("' thành '").append(updateCanBo.getVaiTro()).append("'. ");
+        }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Cán bộ '" + updateCanBo.getTenTaiKhoan() + "' đã được sửa.",
+                    createLoggerObject(logMessage.toString(),
                             pathFileLogActive, "Thành công");
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {

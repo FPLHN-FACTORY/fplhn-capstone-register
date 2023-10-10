@@ -4,6 +4,7 @@ import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.CanBo;
+import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.logger.LogService;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
@@ -55,6 +56,8 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     @Override
     public ChuyenNganh update(@Valid DtUpdateChuyenNganhRequest req) {
         Optional<ChuyenNganh> chuyenNganhById = dtChuyenNganhRepository.findById(req.getId());
+        String tenCu = chuyenNganhById.get().getTenChuyenNganh();
+        String idCNBM = chuyenNganhById.get().getChuNhiemBoMon();
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
         String chuyenNganhCheck = dtChuyenNganhRepository.checkChuyenNganhByName(chuyenNganh.getCoSoId(),
                 chuyenNganh.getTenChuyenNganh(), chuyenNganh.getId());
@@ -67,15 +70,31 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
                 throw new RestApiException(Message.CHU_NHIEM_NOT_EXISTS);
             }
         }
+
         ChuyenNganh chuyenNganhUpdate = chuyenNganhById.get();
         chuyenNganhUpdate.setTenChuyenNganh(req.getTenChuyenNganh());
         chuyenNganhUpdate.setChuNhiemBoMon(req.getChuNhiemBoMon());
         dtChuyenNganhRepository.save(chuyenNganhUpdate);
+        StringBuilder logMessage = new StringBuilder();
+        if (!(chuyenNganhUpdate.getTenChuyenNganh()).equals(tenCu)) {
+            logMessage.append("Đào tạo đã sửa tên chuyên ngành từ '").append(tenCu)
+                    .append("' thành '").append(chuyenNganhUpdate.getTenChuyenNganh()).append("'. ");
+        }
+        if (!(idCNBM == null)) {
+            Optional<CanBo> chuNhiemBoMon = dtCanBoRepository.findById(idCNBM);
+            logMessage.append("Đào tạo đã sửa tên chủ nhiệm bộ môn từ '").append(chuNhiemBoMon.get().getTenCanBo())
+                    .append("' thành '").append("Chưa có").append("'. ");
+        }
+        if (req.getChuNhiemBoMon() != null) {
+            Optional<CanBo> chuNhiemBoMon = dtCanBoRepository.findById(req.getChuNhiemBoMon());
+            logMessage.append("Đào tạo đã sửa tên chủ nhiệm bộ môn từ '").append("Chưa có")
+                    .append("' thành '").append(chuNhiemBoMon.get().getTenCanBo()).append("'. ");
+        }
+
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Chuyên ngành '" + chuyenNganhUpdate.getTenChuyenNganh() + "' đã được sửa.",
-                            pathFileLogActive, "Thành công");
+                    createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();

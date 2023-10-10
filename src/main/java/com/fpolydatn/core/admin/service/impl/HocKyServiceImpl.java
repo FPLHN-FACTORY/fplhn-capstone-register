@@ -122,6 +122,9 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     public HocKy update(@Valid final UpdateHocKyRequest request) {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(request.getId());
+        String tenCu = hocKyCheck.get().getTenHocKy();
+        Long ngayBatDauCu = hocKyCheck.get().getNgayBatDau();
+        Long ngayKetThucCu = hocKyCheck.get().getNgayKetThuc();
         if (!hocKyCheck.isPresent()) {
             throw new RestApiException(Message.HOC_KY_NOT_EXIST);
         }
@@ -134,6 +137,7 @@ public class HocKyServiceImpl implements HocKyService {
         try {
             ngayBatDau = sdf.parse(request.getNgayBatDau());
             ngayKetThuc = sdf.parse(request.getNgayKetThuc());
+
         } catch (ParseException e) {
             throw new RestApiException(Message.INVALID_DATE);
         }
@@ -154,10 +158,30 @@ public class HocKyServiceImpl implements HocKyService {
         }
         hocKy.setNgayBatDau(ngayBatDauLong);
         hocKy.setNgayKetThuc(ngayKetThucLong);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String ngayBatDauCuFormatted = dateFormat.format(new Date(ngayBatDauCu));
+        String ngayKetThucCuFormatted = dateFormat.format(new Date(ngayKetThucCu));
+        String ngayBatDauMoiFormatted = dateFormat.format(new Date(hocKy.getNgayBatDau()));
+        String ngayKetThucMoiFormatted = dateFormat.format(new Date(hocKy.getNgayKetThuc()));
+
+        StringBuilder logMessage = new StringBuilder();
+        if (!(hocKy.getTenHocKy()).equals(tenCu)) {
+            logMessage.append("Đào tạo đã sửa tên học kỳ từ '").append(tenCu)
+                    .append("' thành '").append(hocKy.getTenHocKy()).append("'. ");
+        }
+        if (!(hocKy.getNgayBatDau()).equals(ngayBatDauCu)) {
+            logMessage.append("Đào tạo đã sửa ngày bắt đầu học kỳ '").append(hocKy.getTenHocKy()).append("' từ ngày '")
+                    .append(ngayBatDauCuFormatted).append("' thành '").append(ngayBatDauMoiFormatted).append("'. ");
+        }
+        if (!(hocKy.getNgayKetThuc()).equals(ngayKetThucCu)) {
+            logMessage.append("Đào tạo đã sửa ngày bắt đầu học kỳ '").append(hocKy.getTenHocKy()).append("' từ ngày '")
+                    .append(ngayKetThucCuFormatted).append("' thành '").append(ngayKetThucMoiFormatted).append("'. ");
+        }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Học kỳ '" + hocKy.getTenHocKy() + "' đã được sửa",
+                    createLoggerObject(logMessage.toString(),
                             pathFileLogActive, "Thành công");
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {

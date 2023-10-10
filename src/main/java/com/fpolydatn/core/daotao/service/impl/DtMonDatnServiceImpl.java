@@ -137,8 +137,19 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     @Override
     public MonDatn update(@Valid final DtUpdateMonDatnRequest command) {
         Optional<MonDatn> monDatn = monDatnRepository.findById(command.getId());
+        MonDatn monDatnCu = monDatn.get();
+        String maMonCu = monDatnCu.getMaMon();
+        String tenMonDatnCu = monDatnCu.getTenMonDatn();
+        String idNhomMonCu = monDatnCu.getNhomMonDatnId();
+        String idChuyenNganhCu = monDatn.get().getChuyenNganhId();
+        Optional<MonDatn> nhomMonDatnCu = monDatnRepository.findById(idNhomMonCu);
+        Optional<ChuyenNganh> chuyenNganhCu = chuyenNganhRepository.findById(idChuyenNganhCu);
         if (!monDatn.isPresent()) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
+        }
+
+        if (!chuyenNganhCu.isPresent()) {
+            throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
         String maMonReq = command.getMaMon().toUpperCase();
         MonDatn monDatnCheck = monDatnRepository.findByMaMon(maMonReq, command.getCoSoId());
@@ -147,10 +158,12 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                 throw new RestApiException(Message.MON_DATN_ALREADY_EXIST);
             }
         }
-        Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(command.getChuyenNganhId());
-        if (!chuyenNganh.isPresent()) {
+        Optional<ChuyenNganh> chuyenNganhMoi = chuyenNganhRepository.findById(command.getChuyenNganhId());
+        if (!chuyenNganhMoi.isPresent()) {
             throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
         }
+        Optional<MonDatn> nhomMonDatnMoi = monDatnRepository.findById(command.getNhomMonDatnId());
+
         monDatn.get().setCoSoId(command.getCoSoId());
         monDatn.get().setMaMon(maMonReq);
         monDatn.get().setTenMonDatn(command.getTenMonDatn());
@@ -168,14 +181,44 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         monDatn.get().setChuyenNganhId(command.getChuyenNganhId());
         monDatnRepository.save(monDatn.get());
 
-        try {
-            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Môn '" + monDatn.get().getMaMon() + " - " + monDatn.get().getTenMonDatn() + "' đã được sửa.",
-                            pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        StringBuilder logMessage = new StringBuilder();
+
+        if (!(monDatn.get().getMaMon()).equals(maMonCu)) {
+            logMessage.append("Đào tạo đã sửa mã môn từ '").append(maMonCu)
+                    .append("' thành '").append(monDatn.get().getMaMon()).append("'. ");
+        }
+
+        if (!(monDatn.get().getTenMonDatn()).equals(tenMonDatnCu)) {
+            logMessage.append("Đào tạo đã sửa tên môn từ '").append(tenMonDatnCu)
+                    .append("' thành '").append(monDatn.get().getTenMonDatn()).append("'. ");
+        }
+
+        if (!chuyenNganhCu.get().getId().equals(chuyenNganhMoi.get().getId())) {
+            logMessage.append("Đào tạo đã sửa chuyên ngành của môn '")
+                    .append(monDatn.get().getMaMon()).append(" - ").append(monDatn.get().getTenMonDatn())
+                    .append("' từ chuyên ngành '").append(chuyenNganhCu.get().getTenChuyenNganh())
+                    .append("' sang chuyên ngành '").append(chuyenNganhMoi.get().getTenChuyenNganh()).append("'. ");
+        }
+
+        if (!(monDatn.get().getNhomMonDatnId()).equals(idNhomMonCu) && !(nhomMonId.length() == 0)) {
+            logMessage.append("Đào tạo đã sửa tên nhóm môn từ '").append("Môn độc lập")
+                    .append("' thành '").append(nhomMonDatnMoi.get().getTenMonDatn()).append("'. ");
+        }
+
+        if (!(monDatn.get().getNhomMonDatnId()).equals(idNhomMonCu) && nhomMonId.length() == 0) {
+            logMessage.append("Đào tạo đã sửa tên nhóm môn từ '").append(nhomMonDatnCu.get().getTenMonDatn())
+                    .append("' thành '").append("Môn độc lập").append("'. ");
+        }
+
+        if (logMessage.length() > 0) {
+            try {
+                String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+                LoggerObject loggerObjectActive = writerFileCSV.createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
+                logService.sendLogMessage(loggerObjectActive);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return monDatn.get();
     }

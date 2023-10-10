@@ -744,7 +744,7 @@
                             <small class="text-danger"
                                    id="mon_chuong_trinh_update_error"></small></br>
                             <span style="color: red">(*) </span><label class="col-form-label">Đợt đăng ký</label>
-                            <select type="text" class="form-control" id="dot_dang_ky_update">
+                            <select type="text" class="form-control" id="dot_dang_ky_update" disabled>
                                 <option value="">Chọn đợt đăng ký</option>
                                 <option th:each="dotDangKy : ${listDotDangKy}"
                                         th:value="${dotDangKy.getId}"

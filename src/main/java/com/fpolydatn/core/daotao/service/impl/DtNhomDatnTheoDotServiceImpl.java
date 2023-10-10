@@ -9,6 +9,7 @@ import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
+import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
@@ -38,6 +39,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
@@ -150,6 +152,10 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         List<SinhVien>listSinhVienAll = new ArrayList<>();
+//        List<String> listIdTruongNhom = listNhomDatn.stream()
+//                .map(NhomDatn::getTruongNhomId)
+//                .collect(Collectors.toList());
+//        List<ChuyenNganh>listChuyenNganh = new ArrayList<>();
         for (NhomDatn nhomDatn : listNhomDatn) {
             List<SinhVien> listSinhVien = sinhVienTheoDotRepository.getAllSinhVien(nhomDatn.getId(), commonHelper.getDotDangKyHienTai());
             listSinhVienAll.addAll(listSinhVien);
