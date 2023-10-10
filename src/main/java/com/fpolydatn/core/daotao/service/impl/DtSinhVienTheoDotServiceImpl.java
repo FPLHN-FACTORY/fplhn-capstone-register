@@ -17,6 +17,9 @@ import com.fpolydatn.core.daotao.repository.DtMonDatnRepository;
 import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
+import com.fpolydatn.entity.ChuyenNganh;
+import com.fpolydatn.entity.DotDangKy;
+import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
@@ -476,6 +479,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     public SinhVien loaiSinhVien(String id, String coSoId, String dotDangKyId) {
         Map<String, NhomDatn> map = new HashMap<>();
         Optional<SinhVien> sv = sinhVienRepository.findById(id);
+        Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(sv.get().getChuyenNganhId());
         if (!sv.isPresent()) {
             throw new RestApiException(Message.SINH_VIEN_NOT_EXISTS);
         }
@@ -492,6 +496,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                                         + "' ra khỏi nhóm '" + nhomDatn.get().getMaNhom() + "' do không đủ điều kiện",
                                 pathFile, "Thành công");
                 loggerObject.setTenNhom(nhomDatn.get().getMaNhom());
+                loggerObject.setIdChuyenNganh(chuyenNganh.get().getId());
+                loggerObject.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
                 logService.sendLogMessage(loggerObject);
 
                 String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
@@ -499,6 +505,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                         createLoggerObject("Đào tạo đã xóa sinh viên '" + sinhVien.getMaSinhVien()
                                         + "' ra khỏi nhóm '" + nhomDatn.get().getMaNhom() + "' do không đủ điều kiện",
                                 pathFileLogActive, "Thành công");
+                loggerObject.setIdChuyenNganh(chuyenNganh.get().getId());
+                loggerObject.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
                 logService.sendLogMessage(loggerObjectActive);
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -523,6 +531,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                                 createLoggerObject("Đào tạo đã xóa nhóm '" + nhomDatn.get().getMaNhom() + "'" +
                                                 " do không có thành viên nào trong nhóm",
                                         pathFileLogActive, "Thành công");
+                        loggerObjectActive.setIdChuyenNganh(chuyenNganh.get().getId());
+                        loggerObjectActive.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
                         logService.sendLogMessage(loggerObjectActive);
 
                         String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
@@ -531,6 +541,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                                                 " do không có thành viên nào trong nhóm",
                                         pathFile, "Thành công");
                         loggerObject.setTenNhom(nhomDatn.get().getMaNhom());
+                        loggerObjectActive.setIdChuyenNganh(chuyenNganh.get().getId());
+                        loggerObjectActive.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
                         logService.sendLogMessage(loggerObject);
                     } catch (Exception exception) {
                         exception.printStackTrace();
@@ -546,8 +558,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                         LoggerObject loggerObjectActive = writerFileCSV.
                                 createLoggerObject("Đào tạo đổi quyền trưởng nhóm '" + nhomDatn.get().getMaNhom() + "' " +
                                                 "cho sinh viên '" + motSVtrongNhom.getMaSinhVien() + "' do sinh viên '"
-                                        + sinhVien.getMaSinhVien() + "' đã bị loại do không đủ kiều kiện",
+                                                + sinhVien.getMaSinhVien() + "' đã bị loại do không đủ kiều kiện",
                                         pathFileLogActive, "Thành công");
+                        loggerObjectActive.setIdChuyenNganh(chuyenNganh.get().getId());
+                        loggerObjectActive.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
                         logService.sendLogMessage(loggerObjectActive);
 
                         String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
@@ -557,6 +571,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                                                 + sinhVien.getMaSinhVien() + "' đã bị loại do không đủ kiều kiện",
                                         pathFile, "Thành công");
                         loggerObject.setTenNhom(nhomDatn.get().getMaNhom());
+                        loggerObjectActive.setIdChuyenNganh(chuyenNganh.get().getId());
+                        loggerObjectActive.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
                         logService.sendLogMessage(loggerObject);
                     } catch (Exception exception) {
                         exception.printStackTrace();
@@ -570,6 +586,8 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             LoggerObject loggerObjectActive = writerFileCSV.
                     createLoggerObject("Sinh viên '" + sinhVien.getMaSinhVien() + "' bị loại vì không đủ điều kiện.",
                             pathFileLogActive, "Thành công");
+            loggerObjectActive.setIdChuyenNganh(chuyenNganh.get().getId());
+            loggerObjectActive.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -601,7 +619,16 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     public SinhVien update(DtUpdateSinhVienTheoDotRequest command) {
 
         Optional<SinhVien> checkSinhVien = sinhVienRepository.findById(command.getId());
+        Optional<ChuyenNganh> chuyenNganhCu = chuyenNganhRepository.findById(checkSinhVien.get().getChuyenNganhId());
+        Optional<MonDatn> monCu = monDatnRepository.findById(checkSinhVien.get().getMonChuongTrinhId());
 
+        SinhVien sinhVienCu = checkSinhVien.get();
+        String maSVCu = sinhVienCu.getMaSinhVien();
+        String tenSVCu = sinhVienCu.getTenSinhVien();
+        String sdtCu = sinhVienCu.getSoDienThoai();
+        String emailCu = sinhVienCu.getEmail();
+        String khoaCu = sinhVienCu.getKhoa();
+        TrangThaiSinhVien trangThaiCu = sinhVienCu.getTrangThai();
         String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSVUpdate(command.getMaSinhVien(),
                 command.getId(), command.getCoSoId(), command.getDotDangKyId());
         if (idSinhVienCheckMaSV != null) {
@@ -613,6 +640,9 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         if (idSinhVienCheckEmail != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
+
+        Optional<ChuyenNganh> chuyenNganhMoi = chuyenNganhRepository.findById(command.getChuyenNganhId());
+        Optional<MonDatn> monMoi = monDatnRepository.findById(command.getMonChuongTrinh());
 
         SinhVien sinhVien = checkSinhVien.get();
         sinhVien.setMaSinhVien(command.getMaSinhVien());
@@ -628,12 +658,48 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         } else {
             sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
         }
-
+        StringBuilder logMessage = new StringBuilder();
+        if (!(sinhVien.getMaSinhVien()).equals(maSVCu)) {
+            logMessage.append("Đào tạo đã sửa mã sinh viên từ '").append(maSVCu)
+                    .append("' thành '").append(sinhVien.getMaSinhVien()).append("'. ");
+        }
+        if (!(sinhVien.getTenSinhVien()).equals(tenSVCu)) {
+            logMessage.append("Đào tạo đã sửa tên sinh viên từ '").append(tenSVCu)
+                    .append("' thành '").append(sinhVien.getTenSinhVien()).append("'. ");
+        }
+        if (!(sinhVien.getSoDienThoai()).equals(sdtCu)) {
+            logMessage.append("Đào tạo đã sửa số điện thoại sinh viên '").append(sinhVien.getMaSinhVien())
+                    .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(sdtCu)
+                    .append("' thành '").append(sinhVien.getSoDienThoai()).append("'. ");
+        }
+        if (!(sinhVien.getEmail()).equals(emailCu)) {
+            logMessage.append("Đào tạo đã sửa email sinh viên '").append(sinhVien.getMaSinhVien())
+                    .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(emailCu)
+                    .append("' thành '").append(sinhVien.getEmail()).append("'. ");
+        }
+        if (!(sinhVien.getKhoa()).equals(khoaCu)) {
+            logMessage.append("Đào tạo đã sửa khóa của sinh viên '").append(sinhVien.getMaSinhVien())
+                    .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(khoaCu)
+                    .append("' thành '").append(sinhVien.getKhoa()).append("'. ");
+        }
+        if (!chuyenNganhCu.get().getId().equals(chuyenNganhMoi.get().getId())) {
+            logMessage.append("Đào tạo đã sửa chuyên ngành của sinh viên '").append(sinhVien.getMaSinhVien())
+                    .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(chuyenNganhCu.get().getTenChuyenNganh())
+                    .append("' thành '").append(chuyenNganhMoi.get().getTenChuyenNganh()).append("'. ");
+        }
+        if (!monCu.get().getId().equals(monMoi.get().getId())) {
+            logMessage.append("Đào tạo đã sửa môn chương trình của sinh viên '").append(sinhVien.getMaSinhVien())
+                    .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(monCu.get().getMaMon())
+                    .append("' thành '").append(monMoi.get().getMaMon()).append("'. ");
+        }
+        if (!trangThaiCu.equals(sinhVien.getTrangThai())) {
+            logMessage.append("Đào tạo đã sửa trạng thái của sinh viên '").append(sinhVien.getMaSinhVien())
+                    .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(trangThaiCu)
+                    .append("' thành '").append(sinhVien.getTrangThai()).append("'. ");
+        }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(sinhVien.getDotDangKyId()).get().getTenDotDangKy());
-            LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Sinh viên '" + sinhVien.getMaSinhVien() + "' đã được sửa.",
-                            pathFileLogActive, "Thành công");
+            LoggerObject loggerObjectActive = writerFileCSV.createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();

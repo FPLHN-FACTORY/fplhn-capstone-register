@@ -285,6 +285,9 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
     @Query(value = "SELECT * FROM sinh_vien WHERE nhom_id = :idNhom AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
     List<SinhVien> getAllSinhVien(@Param("idNhom") String idNhom, @Param("dotDangKyId") String dotDangKyId);
 
+    @Query(value = "SELECT  FROM sinh_vien WHERE nhom_id = :idNhom AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)
+    List<String> getAllIdTruongNhom(@Param("idNhom") String idNhom, @Param("dotDangKyId") String dotDangKyId);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE sinh_vien SET nhom_id = NULL , mon_datn_id  = NULL WHERE ma_sinh_vien = :maSinhVien AND dot_dang_ky_id = :dotDangKyId", nativeQuery = true)

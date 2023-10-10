@@ -102,7 +102,12 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     @Override
     public DotDangKy update(@Valid final DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest) {
         Optional<DotDangKy> dotDangKyCheck = dtDotDangKyRepository.findById(dtUpdateDotDangKyRequest.getId());
-
+        String tenDotCu = dotDangKyCheck.get().getTenDotDangKy();
+        Long ngayBatDauCu = dotDangKyCheck.get().getNgayBatDau();
+        Long ngayKetThucCu = dotDangKyCheck.get().getNgayKetThuc();
+        Long hanSvCu = dotDangKyCheck.get().getHanSinhVien();
+        Long hanGvCu = dotDangKyCheck.get().getHanGiangVien();
+        Long hanCnCu = dotDangKyCheck.get().getHanChuNhiemBoMon();
         if (!dotDangKyCheck.isPresent()) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
@@ -122,12 +127,48 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
         dotDangKy.setHanGiangVien(result.getHanGiangVien());
         dotDangKy.setHanChuNhiemBoMon(result.getHanChuNhiemBoMon());
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String ngayBatDauCuFormatted = dateFormat.format(new Date(ngayBatDauCu));
+        String ngayKetThucCuFormatted = dateFormat.format(new Date(ngayKetThucCu));
+        String hanSvCuFormatted = dateFormat.format(new Date(hanSvCu));
+        String hanGvCuFormatted = dateFormat.format(new Date(hanGvCu));
+        String hanCnCuFormatted = dateFormat.format(new Date(hanCnCu));
+        String ngayBatDauMoiFormatted = dateFormat.format(new Date(dotDangKy.getNgayBatDau()));
+        String ngayKetThucMoiFormatted = dateFormat.format(new Date(dotDangKy.getNgayKetThuc()));
+        String hanSvMoiFormatted = dateFormat.format(new Date(dotDangKy.getHanSinhVien()));
+        String hanGvMoiFormatted = dateFormat.format(new Date(dotDangKy.getHanGiangVien()));
+        String hanCnMoiFormatted = dateFormat.format(new Date(dotDangKy.getHanChuNhiemBoMon()));
+        StringBuilder logMessage = new StringBuilder();
+        if (!(dotDangKy.getTenDotDangKy()).equals(tenDotCu)) {
+            logMessage.append("Đào tạo đã sửa tên đợt đăng ký từ '").append(tenDotCu)
+                    .append("' thành '").append(dotDangKy.getTenDotDangKy()).append("'. ");
+        }
+        if (!(dotDangKy.getNgayBatDau()).equals(ngayBatDauCu)) {
+            logMessage.append("Đào tạo đã sửa ngày bắt đầu đợt đăng ký '").append(dotDangKy.getTenDotDangKy()).append("' từ ngày '")
+                    .append(ngayBatDauCuFormatted).append("' thành '").append(ngayBatDauMoiFormatted).append("'. ");
+        }
+        if (!(dotDangKy.getNgayKetThuc()).equals(ngayKetThucCu)) {
+            logMessage.append("Đào tạo đã sửa ngày bắt đầu đợt đăng ký '").append(dotDangKy.getTenDotDangKy()).append("' từ ngày '")
+                    .append(ngayKetThucCuFormatted).append("' thành '").append(ngayKetThucMoiFormatted).append("'. ");
+        }
+        if (!(dotDangKy.getHanSinhVien()).equals(hanSvCu)) {
+            logMessage.append("Đào tạo đã sửa ngày bắt đầu đợt đăng ký '").append(dotDangKy.getTenDotDangKy()).append("' từ ngày '")
+                    .append(hanSvCuFormatted).append("' thành '").append(hanSvMoiFormatted).append("'. ");
+        }
+        if (!(dotDangKy.getHanGiangVien()).equals(hanGvCu)) {
+            logMessage.append("Đào tạo đã sửa ngày bắt đầu đợt đăng ký '").append(dotDangKy.getTenDotDangKy()).append("' từ ngày '")
+                    .append(hanGvCuFormatted).append("' thành '").append(hanGvMoiFormatted).append("'. ");
+        }
+        if (!(dotDangKy.getHanChuNhiemBoMon()).equals(hanCnCu)) {
+            logMessage.append("Đào tạo đã sửa ngày bắt đầu đợt đăng ký '").append(dotDangKy.getTenDotDangKy()).append("' từ ngày '")
+                    .append(hanCnCuFormatted).append("' thành '").append(hanCnMoiFormatted).append("'. ");
+        }
         try {
             writerFileCSV.updateFolder(writerFileCSV.covertFileName(dotDangKyCheck.get().getTenDotDangKy()), writerFileCSV.covertFileName(dtUpdateDotDangKyRequest.getTenDotDangKy()));
             // ghi log vào trong file chức năng từng màn
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dtUpdateDotDangKyRequest.getTenDotDangKy());
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Đợt đăng ký '" + dotDangKyCheck.get().getTenDotDangKy() + "' đã được sửa.'",
+                    createLoggerObject(logMessage.toString(),
                             pathFileLogActive, "Thành công");
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {

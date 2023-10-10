@@ -64,6 +64,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
             LoggerObject loggerObjectActive = writerFileCSV.
                     createLoggerObject("Nhóm môn '" + nhomMonDatn.get().getMaMon() + " - " + nhomMonDatn.get().getTenMonDatn() + "' đã bị xóa trên hệ thống.",
                             pathFileLogActive, "Thành công");
+
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -74,6 +75,9 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     @Override
     public Boolean update(@Valid DtUpdateNhomMonDatnRequest command) {
         Optional<MonDatn> nhomMonDatnFind = dtNhomMonDatnRepository.findById(command.getId());
+        Optional<ChuyenNganh> chuyenNganhCu = dtChuyenNganhRepository.findById(nhomMonDatnFind.get().getChuyenNganhId());
+        String maNhomMonCu = nhomMonDatnFind.get().getMaMon();
+        String tenCu = nhomMonDatnFind.get().getTenMonDatn();
         if (Objects.isNull(nhomMonDatnFind)) {
             throw new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST);
         }
@@ -93,11 +97,26 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
         nhomMonDatn.get().setChuyenNganhId(command.getChuyenNganhId());
         nhomMonDatn.get().setTenMonDatn(command.getTenNhomMon());
         dtNhomMonDatnRepository.save(nhomMonDatn.get());
+
+        StringBuilder logMessage = new StringBuilder();
+        if (!(nhomMonDatn.get().getMaMon()).equals(maNhomMonCu)) {
+            logMessage.append("Đào tạo đã sửa mã nhóm môn từ '").append(maNhomMonCu)
+                    .append("' thành '").append(nhomMonDatn.get().getMaMon()).append("'. ");
+        }
+
+        if (!(nhomMonDatn.get().getTenMonDatn()).equals(tenCu)) {
+            logMessage.append("Đào tạo đã sửa tên nhóm môn từ '").append(tenCu)
+                    .append("' thành '").append(nhomMonDatn.get().getTenMonDatn()).append("'. ");
+        }
+        if (!chuyenNganhCu.get().getId().equals(chuyenNganh.get().getId())) {
+            logMessage.append("Đào tạo đã sửa chuyên ngành của môn '")
+                    .append(nhomMonDatn.get().getMaMon()).append(" - ").append(nhomMonDatn.get().getTenMonDatn())
+                    .append("' từ chuyên ngành '").append(chuyenNganhCu.get().getTenChuyenNganh())
+                    .append("' sang chuyên ngành '").append(chuyenNganh.get().getTenChuyenNganh()).append("'. ");
+        }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
-            LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Nhóm môn '" + nhomMonDatn.get().getMaMon() + " - " + nhomMonDatn.get().getTenMonDatn() + "' đã được sửa.",
-                            pathFileLogActive, "Thành công");
+            LoggerObject loggerObjectActive = writerFileCSV.createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();

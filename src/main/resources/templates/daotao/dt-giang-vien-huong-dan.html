@@ -544,7 +544,7 @@
 
                     <div class="form-group">
                         <label class="col-form-label">Đợt đăng ký <span style="color: red">*</span></label> <br>
-                        <select class="form-control" id="dot_dang_ky_update">
+                        <select class="form-control" id="dot_dang_ky_update" disabled>
                             <option value="" hidden>Chọn đợt đăng kí</option>
                             <option th:each="item : ${listDotDangKy}" th:value="${item.id}"
                                     th:text="${item.getName()}"></option>

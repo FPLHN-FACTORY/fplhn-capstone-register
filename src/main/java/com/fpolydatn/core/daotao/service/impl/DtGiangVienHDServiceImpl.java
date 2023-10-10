@@ -134,6 +134,12 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public GiangVienHuongDan update(DtUpdateGiangVienHDRequest command) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(command.getId());
+        String tenGvCu = gvhdCheck.get().getTenGvhd();
+        Short soNhomCu = gvhdCheck.get().getSoNhomHuongDanToiDa();
+        String tenTkCu = gvhdCheck.get().getTenTaiKhoan();
+        String sdtCu = gvhdCheck.get().getSoDienThoai();
+        String mailFeCu = gvhdCheck.get().getEmailFe();
+        String mailFptCu = gvhdCheck.get().getEmailFpt();
         if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }
@@ -159,10 +165,45 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         giangVien.setEmailFpt(command.getEmailFpt());
         giangVien.setEmailFe(command.getEmailFe());
         giangVien.setDotDangKyId(command.getDotDangKyId());
+        StringBuilder logMessage = new StringBuilder();
+
+        if (!(giangVien.getTenGvhd()).equals(tenGvCu)) {
+            logMessage.append("Đào tạo đã sửa tên giảng viên từ '").append(tenGvCu)
+                    .append("' thành '").append(giangVien.getTenGvhd()).append("'. ");
+        }
+        if (!(giangVien.getSoNhomHuongDanToiDa()).equals(soNhomCu)) {
+            logMessage.append("Đào tạo đã sửa số nhóm hướng dẫn của giảng viên '")
+                    .append(giangVien.getTenGvhd()).append(" - ").append(giangVien.getTenTaiKhoan())
+                    .append("' từ '").append(soNhomCu)
+                    .append("' thành '").append(giangVien.getSoNhomHuongDanToiDa()).append("'. ");
+        }
+        if (!(giangVien.getTenTaiKhoan()).equals(tenTkCu)) {
+            logMessage.append("Đào tạo đã sửa tên tài khoản của giảng viên '")
+                    .append(giangVien.getTenGvhd()).append("' từ '").append(tenTkCu)
+                    .append("' thành '").append(giangVien.getTenTaiKhoan()).append("'. ");
+        }
+        if (!(giangVien.getSoDienThoai()).equals(sdtCu)) {
+            logMessage.append("Đào tạo đã sửa số điện thoại của giảng viên '")
+                    .append(giangVien.getTenGvhd()).append(" - ").append(giangVien.getTenTaiKhoan())
+                    .append("' từ '").append(sdtCu)
+                    .append("' thành '").append(giangVien.getSoDienThoai()).append("'. ");
+        }
+        if (!(giangVien.getEmailFe()).equals(mailFeCu)) {
+            logMessage.append("Đào tạo đã sửa email FE của giảng viên '")
+                    .append(giangVien.getTenGvhd()).append(" - ").append(giangVien.getTenTaiKhoan())
+                    .append("' từ '").append(mailFeCu)
+                    .append("' thành '").append(giangVien.getEmailFe()).append("'. ");
+        }
+        if (!(giangVien.getEmailFpt()).equals(mailFptCu)) {
+            logMessage.append("Đào tạo đã sửa email FPT của giảng viên '")
+                    .append(giangVien.getTenGvhd()).append(" - ").append(giangVien.getTenTaiKhoan())
+                    .append("' từ '").append(mailFptCu)
+                    .append("' thành '").append(giangVien.getEmailFpt()).append("'. ");
+        }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(giangVien.getDotDangKyId()).get().getTenDotDangKy());
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Giảng viên '" + giangVien.getTenTaiKhoan() + "' đã được sửa.",
+                    createLoggerObject(logMessage.toString(),
                             pathFileLogActive, "Thành công");
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {
