@@ -17,6 +17,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LogService;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.NhomDatnRepository;
 import com.fpolydatn.repository.SinhVienRepository;
@@ -37,7 +38,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -60,6 +63,10 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     @Autowired
     @Qualifier(DotDangKyRepository.NAME)
     private DotDangKyRepository dotDangKyRepository;
+
+    @Autowired
+    @Qualifier(ChuyenNganhRepository.NAME)
+    private ChuyenNganhRepository chuyenNganhRepository;
 
     @Autowired
     private CommonHelper commonHelper;
@@ -151,6 +158,7 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         if (checkDotDangKyHienTai(listNhomDatn.get(0).getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
+        Map<String, ChuyenNganh> chuyenNganhMap = fillMapChuyenNganh();
         List<SinhVien>listSinhVienAll = new ArrayList<>();
 //        List<String> listIdTruongNhom = listNhomDatn.stream()
 //                .map(NhomDatn::getTruongNhomId)
@@ -180,6 +188,8 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
 
         listNhomDatn.forEach(el -> {
             try {
+                SinhVien truongNhom = sinhVienRepository.findById(el.getTruongNhomId()).get();
+                ChuyenNganh chuyenNganh = chuyenNganhMap.get(truongNhom.getChuyenNganhId());
                 String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObjectActive = writerFileCSV.
                         createLoggerObject("Đào tạo đã xóa nhóm '" + el.getMaNhom() + "'",
@@ -191,6 +201,8 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
                         createLoggerObject("Đào tạo đã xóa nhóm '" + el.getMaNhom() + "'",
                                 pathFile, "Thành công");
                 loggerObject.setTenNhom(el.getMaNhom());
+                loggerObject.setIdChuyenNganh(chuyenNganh.getId());
+                loggerObject.setTenChuyenNganh(chuyenNganh.getTenChuyenNganh());
                 logService.sendLogMessage(loggerObject);
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -198,5 +210,13 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         });
 
         return true;
+    }
+
+    public Map<String, ChuyenNganh> fillMapChuyenNganh() {
+        Map<String, ChuyenNganh> chuyenNganhMap = new HashMap<>();
+        chuyenNganhRepository.findAll().stream().forEach(el -> {
+            chuyenNganhMap.put(el.getId(), el);
+        });
+        return chuyenNganhMap;
     }
 }
