@@ -39,4 +39,7 @@ public interface GvNhomDatnResponse extends IsIdentified {
     @Value("#{target.truong_nhom}")
     String getTruongNhom();
 
+    @Value("#{target.nhan_xet}")
+    String getNhanXet();
+
 }

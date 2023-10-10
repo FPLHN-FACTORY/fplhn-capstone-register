@@ -410,7 +410,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                    createLoggerObject("Đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'" + " với lí do là: " + nhanXet + ".",
                             pathFileLogActive, "Thành công");
             loggerObjectActive.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
             loggerObjectActive.setTenChuyenNganh(tenChuyenNganh);
@@ -418,7 +418,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                    createLoggerObject("Đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'" + " với lí do là: " + nhanXet + ".",
                             pathFile, "Thành công");
             loggerObject.setTenNhom(nhomDatnCheck.get().getMaNhom());
             loggerObject.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());

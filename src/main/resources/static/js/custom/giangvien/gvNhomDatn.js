@@ -291,6 +291,7 @@ function seachNhomdatn(index) {
                 </td>
                 <td class="text-center align-middle">${item.maMon}</td>
                 <td class="text-center align-middle">${item.trangThai == 0 ? 'Mới thành lập' : (item.trangThai == 1 ? 'Chủ nhiệm bộ môn đã xác nhận' : (item.trangThai == 2 ? 'Giảng viên đã liên hệ' : (item.trangThai == 3 ? 'Cần sửa' : (item.trangThai == 4 ? 'Giảng viên đã chốt' : 'Chủ nhiệm bộ môn đã chốt'))))}</td>
+                 <td class="text-center align-middle">${item.nhanXet == null ? '-' : item.nhanXet}</td>
                  <td class="text-center align-middle">
                  <div class="d-flex justify-content-center align-items-center">
                         <button type="button" onclick=showDetail('${item.id}') class="btn_eye" data-toggle="tooltip" title="Xem chi tiết nhóm">
