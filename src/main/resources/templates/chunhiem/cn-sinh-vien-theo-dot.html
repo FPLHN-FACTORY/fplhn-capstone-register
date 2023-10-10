@@ -543,10 +543,12 @@
                     <p class="col-form-label">Chuyên ngành: </p>
                     <select class="form-control"
                             id="chuyenNganhIdExportExcel" name="chuyenNganhIdExportExcel">
+                        <option value="">Tất cả</option>
                         <option th:each="item : ${listChuyenNganh}"
                                 th:value="${item.getId()}"
                                 th:text="${item.getName()}"></option>
-                    </select>
+                    </select><br/>
+                    <span style="color: red">(*) Cảnh báo: Nếu chủ nhiệm đang chủ nhiệm từ 2 chuyên ngành trở lên thì nên thực hiện chức năng này trên từng chuyên ngành một, tránh trường hợp nhầm lẫn.</span>
                 </div>
             </div>
             <div class="modal-footer">
@@ -587,10 +589,12 @@
                     <p class="col-form-label">Chuyên ngành: </p>
                     <select class="form-control"
                             id="chuyenNganhIdExportExcelSapGvhd" name="chuyenNganhIdExportExcelSapGvhd">
+                        <option value="">Tất cả</option>
                         <option th:each="item : ${listChuyenNganh}"
                                 th:value="${item.getId()}"
                                 th:text="${item.getName()}"></option>
-                    </select>
+                    </select> <br/><span style="color: red">(*) Cảnh báo: Nếu chủ nhiệm đang chủ nhiệm từ 2 chuyên ngành trở lên thì nên thực hiện chức năng này trên từng chuyên ngành một, tránh trường hợp nhầm lẫn.</span>
+
                 </div>
             </div>
             <div class="modal-footer">

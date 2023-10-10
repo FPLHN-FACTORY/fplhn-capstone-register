@@ -49,4 +49,10 @@ public interface CnSinhVienTheoDotExcel {
     @Value("#{target.ten_dot_dang_ky}")
     String getTenDotDangKy();
 
+    @Value("#{target.mon_chuong_trinh}")
+    String getMonChuongTrinh();
+
+    @Value("#{target.ten_chuyen_nganh}")
+    String getChuyenNganh();
+
 }

@@ -55,13 +55,20 @@ public class CnNhomTheoDotExport {
             cell2.setCellStyle(cellStyle);
 
             Cell cell3 = row.createCell(3);
-            cell3.setCellValue("Số thành viên");
+            cell3.setCellValue("Chuyên ngành");
             cell3.setCellStyle(cellStyle);
 
             Cell cell4 = row.createCell(4);
-            cell4.setCellValue("Giảng viên hướng dẫn");
+            cell4.setCellValue("Số thành viên");
             cell4.setCellStyle(cellStyle);
 
+            Cell cell5 = row.createCell(5);
+            cell5.setCellValue("Giảng viên hướng dẫn");
+            cell5.setCellStyle(cellStyle);
+
+            Cell cell6 = row.createCell(6);
+            cell6.setCellValue("Số nhóm đang hướng dẫn");
+            cell6.setCellStyle(cellStyle);
             //Set data
             int rowNum = 1;
             for (CnNhomTheoDotExcel xx : listNhom) {
@@ -79,13 +86,21 @@ public class CnNhomTheoDotExport {
                 empTenDeTaiCell.setCellStyle(cellStyle);
                 empTenDeTaiCell.setCellValue(xx.getTenDeTai());
 
-                Cell empSoThanhVienCell = empDataRow.createCell(3);
+                Cell empChuyenNganhCell = empDataRow.createCell(3);
+                empChuyenNganhCell.setCellStyle(cellStyle);
+                empChuyenNganhCell.setCellValue(xx.getChuyenNganh());
+
+                Cell empSoThanhVienCell = empDataRow.createCell(4);
                 empSoThanhVienCell.setCellStyle(cellStyle);
                 empSoThanhVienCell.setCellValue(xx.getSoThanhVien() + "/7");
 
-                Cell empGVHDCell = empDataRow.createCell(4);
+                Cell empGVHDCell = empDataRow.createCell(5);
                 empGVHDCell.setCellStyle(cellStyle);
                 empGVHDCell.setCellValue(xx.getGvhd());
+
+                Cell empSoNhomDangHuongDanCell = empDataRow.createCell(6);
+                empSoNhomDangHuongDanCell.setCellStyle(cellStyle);
+                empSoNhomDangHuongDanCell.setCellValue(xx.getSoNhomDangHuongDan());
             }
 
             //write output to response

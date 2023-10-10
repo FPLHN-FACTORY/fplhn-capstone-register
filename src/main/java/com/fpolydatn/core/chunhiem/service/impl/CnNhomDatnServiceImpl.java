@@ -198,7 +198,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã chốt tên đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "' thành '"
+                    createLoggerObject("Đã chốt tên đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "' thành '"
                                     + nhomDatnCheck.get().getTenDeTai() + "'",
                             pathFileLogActive, "Thành công");
             loggerObjectActive.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
@@ -207,7 +207,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã chốt tên đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "' thành '"
+                    createLoggerObject("Đã chốt tên đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "' thành '"
                                     + nhomDatnCheck.get().getTenDeTai() + "'",
                             pathFile, "Thành công");
             loggerObject.setTenNhom(nhomDatnCheck.get().getMaNhom());
@@ -240,7 +240,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             try {
                 String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObjectActive = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã chốt tên đề tài nhóm '" + nhomDatn.getMaNhom() + "' thành '"
+                        createLoggerObject("Đã chốt tên đề tài nhóm '" + nhomDatn.getMaNhom() + "' thành '"
                                         + nhomDatn.getTenDeTai() + "'",
                                 pathFileLogActive, "Thành công");
                 loggerObjectActive.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
@@ -249,7 +249,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObject = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã chốt tên đề tài nhóm '" + nhomDatn.getMaNhom() + "' thành '"
+                        createLoggerObject("Đã chốt tên đề tài nhóm '" + nhomDatn.getMaNhom() + "' thành '"
                                         + nhomDatn.getTenDeTai() + "'",
                                 pathFile, "Thành công");
                 loggerObject.setTenNhom(nhomDatn.getMaNhom());
@@ -325,7 +325,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã xác nhận thành lập nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                    createLoggerObject("Đã xác nhận thành lập nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
                             pathFileLogActive, "Thành công");
             loggerObjectActive.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
             loggerObjectActive.setTenChuyenNganh(tenChuyenNganh);
@@ -333,7 +333,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã xác nhận thành lập nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                    createLoggerObject("Đã xác nhận thành lập nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
                             pathFile, "Thành công");
             loggerObject.setTenNhom(nhomDatnCheck.get().getMaNhom());
             loggerObject.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
@@ -365,7 +365,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             try {
                 String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObjectActive = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã xác nhận thành lập nhóm '" + nhomDatn.getMaNhom() + "'",
+                        createLoggerObject("Đã xác nhận thành lập nhóm '" + nhomDatn.getMaNhom() + "'",
                                 pathFileLogActive, "Thành công");
                 loggerObjectActive.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
                 loggerObjectActive.setTenChuyenNganh(tenChuyenNganh);
@@ -373,7 +373,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObject = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã xác nhận thành lập nhóm '" + nhomDatn.getMaNhom() + "'",
+                        createLoggerObject("Đã xác nhận thành lập nhóm '" + nhomDatn.getMaNhom() + "'",
                                 pathFile, "Thành công");
                 loggerObject.setTenNhom(nhomDatn.getMaNhom());
                 loggerObject.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
@@ -410,7 +410,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                    createLoggerObject("Đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
                             pathFileLogActive, "Thành công");
             loggerObjectActive.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
             loggerObjectActive.setTenChuyenNganh(tenChuyenNganh);
@@ -418,7 +418,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                    createLoggerObject("Đã từ chối đề tài nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
                             pathFile, "Thành công");
             loggerObject.setTenNhom(nhomDatnCheck.get().getMaNhom());
             loggerObject.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
@@ -449,7 +449,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã xóa nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                    createLoggerObject("Đã xóa nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
                             pathFileLogActive, "Thành công");
             loggerObjectActive.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
             loggerObjectActive.setTenChuyenNganh(tenChuyenNganh);
@@ -457,7 +457,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã xóa nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
+                    createLoggerObject("Đã xóa nhóm '" + nhomDatnCheck.get().getMaNhom() + "'",
                             pathFile, "Thành công");
             loggerObject.setTenNhom(nhomDatnCheck.get().getMaNhom());
             loggerObject.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
@@ -543,7 +543,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         SinhVien truongNhomFind = cnSinhVienRepository.findById(nhomDatn.getTruongNhomId()).get();
         String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("Chủ nhiệm bộ môn đã tạo nhóm " + nhomDatn.getMaNhom() + ".");
+        stringBuffer.append("Đã tạo nhóm " + nhomDatn.getMaNhom() + ".");
         if (nhomDatn.getGiangVienId() != null) {
             Optional<GiangVienHuongDan> giangVienHuongDan = cnGiangVienHuongDanReponsitory.findById(idGiangVien);
             stringBuffer.append(". Phân công giảng viên " + giangVienHuongDan.get().getTenGvhd() + " - " + giangVienHuongDan.get().getTenTaiKhoan() + " hướng dẫn nhóm");
@@ -694,6 +694,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             ConcurrentHashMap<String, NhomDatn> listNhomDatnEntity = new ConcurrentHashMap<>();
             ConcurrentHashMap<String, String> listMaNhomCreate = new ConcurrentHashMap<>();
             ConcurrentHashMap<String, CnCreateSinhVienTheoDotRequest> mapTruongNhomCreate = new ConcurrentHashMap<>();
+            ConcurrentHashMap<String, String> mapListMaNhomCreateTenDeTai = new ConcurrentHashMap<>();
             mapSinhVien = new ConcurrentHashMap<>();
             mapSinhVienKeyId = new ConcurrentHashMap<>();
             mapSinhVienBefore = new ConcurrentHashMap<>();
@@ -755,6 +756,11 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 //                            return;
 //                        }
                         nhomDatn.setTruongNhomId(sv.getId());
+                        if (!sinhVien.getTenDeTai().equals("")) {
+                            nhomDatn.setTenDeTai(sinhVien.getTenDeTai());
+                        } else {
+                            nhomDatn.setTenDeTai(null);
+                        }
                         if (giangVien != null) {
                             nhomDatn.setGiangVienId(giangVien.getId());
                         } else {
@@ -767,6 +773,11 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     sv.setNhomId(nhomDatn.getId());
                     SinhVien truongNhom = mapSinhVien.get(nhomDatn.getId());
                     if (!sv.getMaSinhVien().equals(truongNhom.getMaSinhVien())) {
+                        if (!sv.getChuyenNganhId().equals(truongNhom.getChuyenNganhId())) {
+                            response.setStatus(false);
+                            response.setMessage("Sinh viên " + sv.getMaSinhVien() + "-" + sv.getTenSinhVien() + " có chuyên ngành khác với các thành viên trong nhóm " + nhomDatn.getMaNhom() + ".");
+                            return;
+                        }
                         sv.setMonDatnId(truongNhom.getMonDatnId());
                     }
                 }
@@ -781,17 +792,18 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang nhiều hơn 1 trưởng nhóm");
                         return;
                     }
-                    if (!sinhVien.getChucVu().isEmpty()) {
+//                    if (!sinhVien.getChucVu().isEmpty()) {
 //                        if (sinhVien.getGvhd().isEmpty()) {
 //                            response.setStatus(false);
 //                            response.setMessage("Nhóm " + sinhVien.getMaNhom() + " đang không có giảng viên hướng dẫn");
 //                            return;
 //                        }
-                    }
+//                    }
                     mapSinhVienTaoNhom.put(sinhVien.getMaSinhVien(), sinhVien);
                     if (sinhVien.getChucVu().equalsIgnoreCase("x")) {
                         mapTruongNhomCreate.put(sinhVien.getMaNhom(), sinhVien);
                         listMaNhomCreate.put(sinhVien.getMaNhom(), sinhVien.getMaNhom());
+                        mapListMaNhomCreateTenDeTai.put(sinhVien.getMaNhom(), sinhVien.getTenDeTai());
                     }
                 }
                 if (sinhVien.getMaNhom().isEmpty()) {
@@ -802,6 +814,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     listNhomDatnEntity.put(nhomDatn.getId(), nhomDatn);
                 }
             });
+
+            for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()) {
+                String maNhomCreate = item.getValue();
+                for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapSinhVienTaoNhom.entrySet()) {
+                    SinhVien truongNhomCreate = mapSinhVien.get(mapTruongNhomCreate.get(maNhomCreate).getMaSinhVien());
+                    if (xx.getValue().getMaNhom().equals(mapTruongNhomCreate.get(maNhomCreate).getMaNhom())) {
+                        SinhVien sinhVienCurrent = mapSinhVien.get(xx.getValue().getMaSinhVien());
+                        if (!sinhVienCurrent.getChuyenNganhId().equals(truongNhomCreate.getChuyenNganhId())) {
+                            response.setStatus(false);
+                            response.setMessage("Nhóm " + xx.getValue().getMaNhom() + ": Các thành viên trong nhóm không cùng 1 chuyên ngành");
+                            return response;
+                        }
+                    }
+                }
+            }
+
             List<CnLoggerResponse> loggerResponseList = new ArrayList<>();
             if (response.getStatus() == true) {
                 for (Map.Entry<String, SinhVien> item : listSinhVienEntity.entrySet()) {
@@ -815,24 +843,30 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     if (maNhomCu != null && maNhomMoi != null && !maNhomCu.equals(maNhomMoi)) {
                         NhomDatn nhomDatnMoi = mapNhomDatnKeyId.get(maNhomMoi);
                         NhomDatn nhomDatnCu = mapNhomDatnKeyId.get(maNhomCu);
-                        CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
-                        cnLoggerResponse.setMaNhom(nhomDatnMoi.getMaNhom());
-                        cnLoggerResponse.setValue(" Chủ nhiệm bộ môn đã chuyển sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' từ nhóm " + nhomDatnCu.getMaNhom() + " đến nhóm " + nhomDatnMoi.getMaNhom() + ".");
-                        loggerResponseList.add(cnLoggerResponse);
+                        if (nhomDatnMoi != null) {
+                            CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
+                            cnLoggerResponse.setMaNhom(nhomDatnMoi.getMaNhom());
+                            cnLoggerResponse.setValue(" Đã chuyển sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' từ nhóm " + nhomDatnCu.getMaNhom() + " đến nhóm " + nhomDatnMoi.getMaNhom() + ".");
+                            loggerResponseList.add(cnLoggerResponse);
+                        }
                     }
                     if (maNhomCu != null && maNhomMoi == null) {
                         NhomDatn nhomDatnCu = mapNhomDatnKeyId.get(maNhomCu);
-                        CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
-                        cnLoggerResponse.setMaNhom(nhomDatnCu.getMaNhom());
-                        cnLoggerResponse.setValue(" Chủ nhiệm bộ môn đã xóa sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' ra khỏi nhóm " + nhomDatnCu.getMaNhom() + ".");
-                        loggerResponseList.add(cnLoggerResponse);
+                        if (nhomDatnCu != null) {
+                            CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
+                            cnLoggerResponse.setMaNhom(nhomDatnCu.getMaNhom());
+                            cnLoggerResponse.setValue(" Đã xóa sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' ra khỏi nhóm " + nhomDatnCu.getMaNhom() + ".");
+                            loggerResponseList.add(cnLoggerResponse);
+                        }
                     }
                     if (maNhomCu == null && maNhomMoi != null) {
                         NhomDatn nhomDatnMoi = mapNhomDatnKeyId.get(maNhomMoi);
-                        CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
-                        cnLoggerResponse.setMaNhom(nhomDatnMoi.getMaNhom());
-                        cnLoggerResponse.setValue(" Chủ nhiệm bộ môn đã thêm sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' vào nhóm " + nhomDatnMoi.getMaNhom() + ".");
-                        loggerResponseList.add(cnLoggerResponse);
+                        if (nhomDatnMoi != null) {
+                            CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
+                            cnLoggerResponse.setMaNhom(nhomDatnMoi.getMaNhom());
+                            cnLoggerResponse.setValue(" Đã thêm sinh viên '" + sinhVien.getTenSinhVien() + "-" + sinhVien.getMaSinhVien() + "' vào nhóm " + nhomDatnMoi.getMaNhom() + ".");
+                            loggerResponseList.add(cnLoggerResponse);
+                        }
                     }
                 }
                 for (Map.Entry<String, NhomDatn> item : listNhomDatnEntity.entrySet()) {
@@ -842,14 +876,14 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         GiangVienHuongDan giangVienMoi = mapGiangVienKeyId.get(maGiangVienMoi);
                         CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
                         cnLoggerResponse.setMaNhom(item.getValue().getMaNhom());
-                        cnLoggerResponse.setValue(" Chủ nhiệm bộ môn đã phân cho giảng viên '" + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + "' hướng dẫn nhóm " + item.getValue().getMaNhom() + ".");
+                        cnLoggerResponse.setValue(" Đã phân cho giảng viên '" + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + "' hướng dẫn nhóm " + item.getValue().getMaNhom() + ".");
                         loggerResponseList.add(cnLoggerResponse);
                     }
                     if (maGiangVienCu != null && maGiangVienMoi == null) {
                         GiangVienHuongDan giangVienCu = mapGiangVienKeyId.get(maGiangVienCu);
                         CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
                         cnLoggerResponse.setMaNhom(item.getValue().getMaNhom());
-                        cnLoggerResponse.setValue(" Chủ nhiệm bộ môn đã xóa giảng viên '" + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + "' ra khỏi nhóm " + item.getValue().getMaNhom() + ".");
+                        cnLoggerResponse.setValue(" Đã xóa giảng viên '" + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + "' ra khỏi nhóm " + item.getValue().getMaNhom() + ".");
                         loggerResponseList.add(cnLoggerResponse);
                     }
                     if (maGiangVienCu != null && maGiangVienMoi != null && !maGiangVienCu.equals(maGiangVienMoi)) {
@@ -857,7 +891,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         GiangVienHuongDan giangVienMoi = mapGiangVienKeyId.get(maGiangVienMoi);
                         CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
                         cnLoggerResponse.setMaNhom(item.getValue().getMaNhom());
-                        cnLoggerResponse.setValue(" Chủ nhiệm bộ môn đã chuyển giảng viên của nhóm '" + item.getValue().getMaNhom() + "' từ " + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + " sang " + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + ".");
+                        cnLoggerResponse.setValue(" Đã chuyển giảng viên của nhóm '" + item.getValue().getMaNhom() + "' từ " + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + " sang " + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + ".");
                         loggerResponseList.add(cnLoggerResponse);
                     }
                     String maTruongNhomMoi = item.getValue().getTruongNhomId();
@@ -867,7 +901,27 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         SinhVien truongNhomMoi = mapSinhVienKeyId.get(maTruongNhomMoi);
                         CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
                         cnLoggerResponse.setMaNhom(item.getValue().getMaNhom());
-                        cnLoggerResponse.setValue(" Chủ nhiệm bộ môn đã chuyển trường nhóm của nhóm '" + item.getValue().getMaNhom() + "' từ " + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + " sang " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getMaSinhVien() + ".");
+                        cnLoggerResponse.setValue(" Đã chuyển trường nhóm của nhóm '" + item.getValue().getMaNhom() + "' từ " + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + " sang " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getMaSinhVien() + ".");
+                        loggerResponseList.add(cnLoggerResponse);
+                    }
+                    String tenDeTaiMoi = item.getValue().getTenDeTai();
+                    String tenDeTaiCu = mapNhomDatnBefore.get(item.getValue().getId()).getTenDeTai();
+                    if (tenDeTaiCu == null && tenDeTaiMoi != null) {
+                        CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
+                        cnLoggerResponse.setMaNhom(item.getValue().getMaNhom());
+                        cnLoggerResponse.setValue(" Đã đổi tên đề tài của nhóm '" + item.getValue().getMaNhom() + "' thành " + tenDeTaiMoi + ".");
+                        loggerResponseList.add(cnLoggerResponse);
+                    }
+                    if (tenDeTaiCu != null && tenDeTaiMoi == null) {
+                        CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
+                        cnLoggerResponse.setMaNhom(item.getValue().getMaNhom());
+                        cnLoggerResponse.setValue(" Đã xóa tên đề tài của nhóm '" + item.getValue().getMaNhom() + ".");
+                        loggerResponseList.add(cnLoggerResponse);
+                    }
+                    if (tenDeTaiCu != null && tenDeTaiMoi != null && !tenDeTaiCu.trim().equals(tenDeTaiMoi.trim())) {
+                        CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
+                        cnLoggerResponse.setMaNhom(item.getValue().getMaNhom());
+                        cnLoggerResponse.setValue(" Đã đổi tên đề tài của nhóm '" + item.getValue().getMaNhom() + "' từ '" + tenDeTaiCu + "' sang '" + tenDeTaiMoi + "' " + ".");
                         loggerResponseList.add(cnLoggerResponse);
                     }
                     TrangThaiNhom trangThaiNhomMoi = item.getValue().getTrangThai();
@@ -875,7 +929,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     if (trangThaiNhomMoi != trangThaiNhomCu) {
                         CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
                         cnLoggerResponse.setMaNhom(item.getValue().getMaNhom());
-                        cnLoggerResponse.setValue(" Chủ nhiệm bộ môn đã cập nhật trạng thái nhóm của nhóm '" + item.getValue().getMaNhom() + "' từ 'Mới thành lập' sang 'Chủ nhiệm bộ môn đã xác nhận'" + ".");
+                        cnLoggerResponse.setValue(" Đã cập nhật trạng thái nhóm của nhóm '" + item.getValue().getMaNhom() + "' từ 'Mới thành lập' sang 'Chủ nhiệm bộ môn đã xác nhận'" + ".");
                         loggerResponseList.add(cnLoggerResponse);
                     }
                 }
@@ -892,6 +946,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
                 for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()) {
                     String maNhomCreate = item.getValue();
+                    String tenDeTai = mapListMaNhomCreateTenDeTai.get(maNhomCreate);
                     NhomDatn nhomDatn = new NhomDatn();
                     String maNhomCreateAuto = array[0] + "_" + count++;
                     nhomDatn.setMaNhom(maNhomCreateAuto);
@@ -900,22 +955,28 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
                     CnLoggerResponse cnLoggerResponseNew = new CnLoggerResponse();
                     cnLoggerResponseNew.setMaNhom(maNhomCreateAuto);
-                    cnLoggerResponseNew.setValue(" Chủ nhiệm bộ môn đã tạo nhóm '" + nhomDatn.getMaNhom() + "'" + ".");
+                    cnLoggerResponseNew.setValue(" Đã tạo nhóm '" + nhomDatn.getMaNhom() + "'" + ".");
                     loggerResponseList.add(cnLoggerResponseNew);
-
+                    if (!tenDeTai.equals("")) {
+                        nhomDatn.setTenDeTai(tenDeTai);
+                        CnLoggerResponse cnLoggerResponseTenDeTai = new CnLoggerResponse();
+                        cnLoggerResponseTenDeTai.setMaNhom(maNhomCreateAuto);
+                        cnLoggerResponseTenDeTai.setValue(" Đã đặt tên đề tài cho nhóm '" + nhomDatn.getMaNhom() + "' là " + tenDeTai + ".");
+                        loggerResponseList.add(cnLoggerResponseTenDeTai);
+                    }
 //                    for (Map.Entry<String, CnCreateSinhVienTheoDotRequest> xx : mapTruongNhomCreate.entrySet()) {
 //                        if (xx.getValue().getChucVu().equalsIgnoreCase("x")) {
                     GiangVienHuongDan giangVien = mapGiangVien.get(mapTruongNhomCreate.get(maNhomCreate).getGvhd());
                     nhomDatn.setTruongNhomId(mapSinhVien.get(mapTruongNhomCreate.get(maNhomCreate).getMaSinhVien()).getId());
                     CnLoggerResponse cnLoggerResponseTruongNhom = new CnLoggerResponse();
                     cnLoggerResponseTruongNhom.setMaNhom(maNhomCreateAuto);
-                    cnLoggerResponseTruongNhom.setValue(" Chủ nhiệm bộ môn đã phân sinh viên " + mapSinhVien.get(mapTruongNhomCreate.get(maNhomCreate).getMaSinhVien()).getTenSinhVien() + "-" + mapSinhVien.get(mapTruongNhomCreate.get(maNhomCreate).getMaSinhVien()).getMaSinhVien() + " làm trưởng nhóm" + ".");
+                    cnLoggerResponseTruongNhom.setValue(" Đã phân sinh viên " + mapSinhVien.get(mapTruongNhomCreate.get(maNhomCreate).getMaSinhVien()).getTenSinhVien() + "-" + mapSinhVien.get(mapTruongNhomCreate.get(maNhomCreate).getMaSinhVien()).getMaSinhVien() + " làm trưởng nhóm" + ".");
                     loggerResponseList.add(cnLoggerResponseTruongNhom);
                     if (giangVien != null) {
                         nhomDatn.setGiangVienId(giangVien.getId());
                         CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
                         cnLoggerResponse.setMaNhom(maNhomCreateAuto);
-                        cnLoggerResponse.setValue(" Chủ nhiệm bộ môn đã phân cho giảng viên '" + giangVien.getTenGvhd() + "-" + giangVien.getTenTaiKhoan() + "' hướng dẫn nhóm " + maNhomCreateAuto + ".");
+                        cnLoggerResponse.setValue(" Đã phân cho giảng viên '" + giangVien.getTenGvhd() + "-" + giangVien.getTenTaiKhoan() + "' hướng dẫn nhóm " + maNhomCreateAuto + ".");
                         loggerResponseList.add(cnLoggerResponse);
                     } else {
                         nhomDatn.setGiangVienId(null);
@@ -941,7 +1002,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                             NhomDatn nhomDatnMoi = mapNhomDatnKeyId.get(truongNhomCreate.getNhomId());
                             CnLoggerResponse cnLoggerResponseNew = new CnLoggerResponse();
                             cnLoggerResponseNew.setMaNhom(nhomDatnMoi.getMaNhom());
-                            cnLoggerResponseNew.setValue(" Chủ nhiệm bộ môn đã thêm sinh viên '" + sinhVienCurrent.getTenSinhVien() + "-" + sinhVienCurrent.getMaSinhVien() + "' vào nhóm " + nhomDatnMoi.getMaNhom() + ".");
+                            cnLoggerResponseNew.setValue(" Đã thêm sinh viên '" + sinhVienCurrent.getTenSinhVien() + "-" + sinhVienCurrent.getMaSinhVien() + "' vào nhóm " + nhomDatnMoi.getMaNhom() + ".");
                             loggerResponseList.add(cnLoggerResponseNew);
                         }
                         listSinhVienEntity.put(truongNhomCreate.getId(), truongNhomCreate);

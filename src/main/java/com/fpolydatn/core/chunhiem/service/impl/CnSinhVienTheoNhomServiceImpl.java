@@ -122,7 +122,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
         }
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("Chủ nhiệm bộ môn đã thêm những sinh viên sau vào nhóm: '");
+        stringBuffer.append("Đã thêm những sinh viên sau vào nhóm: '");
         loggerResponseList.forEach(logger -> {
             stringBuffer.append(logger.getValue());
         });
@@ -182,7 +182,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         try {
             String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã xóa sinh viên '" + sinhVienFind.getMaSinhVien() + "-" + sinhVienFind.getTenSinhVien() + "' ra khỏi nhóm " + nhomDatnFind.get().getMaNhom(),
+                    createLoggerObject("Đã xóa sinh viên '" + sinhVienFind.getMaSinhVien() + "-" + sinhVienFind.getTenSinhVien() + "' ra khỏi nhóm " + nhomDatnFind.get().getMaNhom(),
                             fileSinhVienCsv, "Thành công");
             loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
             loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
@@ -190,7 +190,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã xóa sinh viên '" + sinhVienFind.getMaSinhVien() + "-" + sinhVienFind.getTenSinhVien() + "' ra khỏi nhóm " + nhomDatnFind.get().getMaNhom(),
+                    createLoggerObject("Đã xóa sinh viên '" + sinhVienFind.getMaSinhVien() + "-" + sinhVienFind.getTenSinhVien() + "' ra khỏi nhóm " + nhomDatnFind.get().getMaNhom(),
                             pathFile, "Thành công");
             loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
             loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
@@ -237,7 +237,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
                 LoggerObject loggerObjectActive = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã phân công giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' là: " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
+                        createLoggerObject("Đã phân công giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' là: " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
                                 fileSinhVienCsv, "Thành công");
                 loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
                 loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
@@ -245,7 +245,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObject = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã phân công giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' là: " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
+                        createLoggerObject("Đã phân công giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' là: " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
                                 pathFile, "Thành công");
                 loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
                 loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
@@ -259,7 +259,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
                 LoggerObject loggerObjectActive = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã đổi giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + giangVienHuongDanCu.get().getTenTaiKhoan() + " - " + giangVienHuongDanCu.get().getTenGvhd() + " sang " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
+                        createLoggerObject("Đã đổi giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + giangVienHuongDanCu.get().getTenTaiKhoan() + " - " + giangVienHuongDanCu.get().getTenGvhd() + " sang " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
                                 fileSinhVienCsv, "Thành công");
                 loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
                 loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
@@ -267,7 +267,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObject = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã đổi giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + giangVienHuongDanCu.get().getTenTaiKhoan() + " - " + giangVienHuongDanCu.get().getTenGvhd() + " sang " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
+                        createLoggerObject("Đã đổi giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + giangVienHuongDanCu.get().getTenTaiKhoan() + " - " + giangVienHuongDanCu.get().getTenGvhd() + " sang " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
                                 pathFile, "Thành công");
                 loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
                 loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
@@ -298,7 +298,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
                 LoggerObject loggerObjectActive = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.get().getTenSinhVien() + "-" + truongNhomCu.get().getMaSinhVien() + "' thành " + truongNhomMoi.get().getTenSinhVien() + "-" + truongNhomMoi.get().getTenSinhVien(),
+                        createLoggerObject("Đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.get().getTenSinhVien() + "-" + truongNhomCu.get().getMaSinhVien() + "' thành " + truongNhomMoi.get().getTenSinhVien() + "-" + truongNhomMoi.get().getTenSinhVien(),
                                 fileSinhVienCsv, "Thành công");
                 loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
                 loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
@@ -306,7 +306,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObject = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.get().getTenSinhVien() + "-" + truongNhomCu.get().getMaSinhVien() + "' thành " + truongNhomMoi.get().getTenSinhVien() + "-" + truongNhomMoi.get().getTenSinhVien(),
+                        createLoggerObject("Đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.get().getTenSinhVien() + "-" + truongNhomCu.get().getMaSinhVien() + "' thành " + truongNhomMoi.get().getTenSinhVien() + "-" + truongNhomMoi.get().getTenSinhVien(),
                                 pathFile, "Thành công");
                 loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
                 loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
@@ -338,7 +338,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         try {
             String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + "' thành " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getTenSinhVien(),
+                    createLoggerObject("Đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + "' thành " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getTenSinhVien(),
                             fileSinhVienCsv, "Thành công");
             loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
             loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
@@ -346,7 +346,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + "' thành " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getTenSinhVien(),
+                    createLoggerObject("Đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + "' thành " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getTenSinhVien(),
                             pathFile, "Thành công");
             loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
             loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
@@ -427,7 +427,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
                 LoggerObject loggerObjectActive = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã đặt tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenDeTai,
+                        createLoggerObject("Đã đặt tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenDeTai,
                                 fileSinhVienCsv, "Thành công");
                 loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
                 loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
@@ -435,7 +435,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObject = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã đặt tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenDeTai,
+                        createLoggerObject("Đã đặt tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenDeTai,
                                 pathFile, "Thành công");
                 loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
                 loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
@@ -449,7 +449,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
                 LoggerObject loggerObjectActive = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã đổi tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + tenDeTaiCu + " thành " + tenDeTai,
+                        createLoggerObject("Đã đổi tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + tenDeTaiCu + " thành " + tenDeTai,
                                 fileSinhVienCsv, "Thành công");
                 loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
                 loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
@@ -457,7 +457,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObject = writerFileCSV.
-                        createLoggerObject("Chủ nhiệm bộ môn đã đổi tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + tenDeTaiCu + " thành " + tenDeTai,
+                        createLoggerObject("Đã đổi tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + tenDeTaiCu + " thành " + tenDeTai,
                                 pathFile, "Thành công");
                 loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
                 loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());

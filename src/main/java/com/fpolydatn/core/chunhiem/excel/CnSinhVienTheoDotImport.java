@@ -40,10 +40,10 @@ public class CnSinhVienTheoDotImport {
             sinhVien.setTenSinhVien(String.valueOf(getCellValue(row.getCell(2))).trim());
             sinhVien.setEmail(String.valueOf(getCellValue(row.getCell(3))).trim());
             sinhVien.setMaNhom(String.valueOf(getCellValue(row.getCell(5))).trim());
-            sinhVien.setChucVu(String.valueOf(getCellValue(row.getCell(7))).trim());
-            sinhVien.setTenDeTai(String.valueOf(getCellValue(row.getCell(8))).trim());
-            sinhVien.setGvhd(String.valueOf(getCellValue(row.getCell(9))).trim().toLowerCase());
-            sinhVien.setTenDotDangKy(String.valueOf(getCellValue(row.getCell(11))).trim());
+            sinhVien.setChucVu(String.valueOf(getCellValue(row.getCell(9))).trim());
+            sinhVien.setTenDeTai(String.valueOf(getCellValue(row.getCell(10))).trim());
+            sinhVien.setGvhd(String.valueOf(getCellValue(row.getCell(11))).trim().toLowerCase());
+            sinhVien.setTenDotDangKy(String.valueOf(getCellValue(row.getCell(13))).trim());
             listSinhVien.add(sinhVien);
         }
         return listSinhVien;

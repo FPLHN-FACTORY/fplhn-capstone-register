@@ -132,22 +132,22 @@
                             <div class="m-portlet">
                                 <div class="m-portlet__body">
                                     <div>
-                                        <button data-bs-toggle="modal"
-                                                data-bs-target="#history"
-                                                type="button"
-                                                th:attr="onclick=|openModalHistory(0, 20)|"
-                                                class="btn btn-success">
-                                            Lịch sử
-                                        </button>
-                                        <button
-                                                type="button"
-                                                th:attr="onclick=|openModalHistoryDownload()|"
-                                                class="btn btn-success">
-                                            Tải file log
-                                        </button>
+<!--                                        <button data-bs-toggle="modal"-->
+<!--                                                data-bs-target="#history"-->
+<!--                                                type="button"-->
+<!--                                                th:attr="onclick=|openModalHistory(0, 20)|"-->
+<!--                                                class="btn btn-success">-->
+<!--                                            Lịch sử-->
+<!--                                        </button>-->
+<!--                                        <button-->
+<!--                                                type="button"-->
+<!--                                                th:attr="onclick=|openModalHistoryDownload()|"-->
+<!--                                                class="btn btn-success">-->
+<!--                                            Tải file log-->
+<!--                                        </button>-->
                                         <div class="modal fade" id="history" tabindex="-1"
                                              aria-labelledby="historyLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
+                                            <div class="modal-dialog modal-xl">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="historyLabel">Lịch sử</h5>
@@ -174,7 +174,20 @@
                                                                 </tbody>
                                                             </table>
 
-                                                            <div id="pageHistory">
+                                                            <div style="text-align: right">
+                                                                <div id="pageHistory" style="float: right;">
+                                                                </div>
+                                                                <div style="float: right; margin-right: 20px">
+                                                                    <select id="sizeHistory"
+                                                                            th:attr="onchange=|openModalHistory(0, 0)|"
+                                                                            class="form-control-sm">
+                                                                        <option value="20">20</option>
+                                                                        <option value="50">50</option>
+                                                                        <option value="100">100</option>
+                                                                        <option value="500">500</option>
+                                                                        <option value="1000">1000</option>
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                             <div id="emptyHistory">
                                                             </div>
@@ -191,7 +204,7 @@
                                     </div>
 
                                     <div class="modal fade" id="historyDetail" tabindex="-1" aria-labelledby="historyLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
+                                        <div class="modal-dialog modal-xl">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="historyLabelDetail">Lịch sử</h5>

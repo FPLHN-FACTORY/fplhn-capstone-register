@@ -161,7 +161,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
                 FROM sinh_vien x
                 JOIN nhom_datn y ON x.nhom_id = y.id
                 WHERE x.dot_dang_ky_id = :#{#req.idDotDangKy} AND x.co_so_id = :#{#req.coSoId}
-                AND x.chuyen_nganh_id = :#{#req.chuyenNganhId}
+                AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR x.chuyen_nganh_id = :#{#req.chuyenNganhId})
                 GROUP BY y.id
             ), gvhdNhomDatn AS (
                 SELECT DISTINCT COUNT(a.id) as so_nhom_dang_huong_dan, b.id FROM nhom_datn a JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
@@ -173,7 +173,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             CONCAT(c.ma_mon, ' - ', c.ten_mon_datn) AS mon_datn,
             if(a.id = e.truong_nhom_id, 'x', '') as chuc_vu
             , e.ten_de_tai, f.ten_tai_khoan AS 'gvhd', CONCAT(gvhdNhom.so_nhom_dang_huong_dan, '/7') AS so_nhom_dang_huong_dan,
-            d.ten_dot_dang_ky
+            d.ten_dot_dang_ky, CONCAT(m.ma_mon, ' - ', m.ten_mon_datn) AS mon_chuong_trinh, b.ten_chuyen_nganh
             FROM sinh_vien a
             JOIN chuyen_nganh b  ON a.chuyen_nganh_id = b.id
             LEFT JOIN can_bo g ON b.chu_nhiem_bo_mon = g.id
@@ -184,9 +184,9 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN giang_vien_huong_dan f ON f.id  = e.giang_vien_id
             LEFT JOIN CountSinhVien countSV ON countSV.nhom_id = e.id
             LEFT JOIN gvhdNhomDatn gvhdNhom ON gvhdNhom.id = f.id
-            WHERE d.id = :dotDangKyId AND a.co_so_id = :#{#req.coSoId}
+            WHERE (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR b.id = :#{#req.chuyenNganhId})
+            AND d.id = :dotDangKyId AND a.co_so_id = :#{#req.coSoId}
             AND g.id = :idChuNhiem
-            AND b.id = :#{#req.chuyenNganhId}
             AND a.trang_thai = :trangThai
             """, nativeQuery = true)
     List<CnSinhVienTheoDotExcel> findNhomDatnExport(@Param("req") CnFindSinhVienTheoDotRequest req, @Param("dotDangKyId") String dotDangKyId, @Param("idChuNhiem") String idChuNhiem, @Param("trangThai") int trangThai);

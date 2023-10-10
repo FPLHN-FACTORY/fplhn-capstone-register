@@ -75,7 +75,7 @@ public class CnSinhVienTheoDotExport {
             createCell(row, countColum++, sinhVien.getTenSinhVien(), style);
             createCell(row, countColum++, sinhVien.getMaNhom(), style);
             createCell(row, countColum++, sinhVien.getChucVu(), style);
-            createCell(row, countColum++, sinhVien.getTenDeTai() == null ? "Chưa có" : sinhVien.getTenDeTai(), style);
+            createCell(row, countColum++, sinhVien.getTenDeTai() == null ? "" : sinhVien.getTenDeTai(), style);
             createCell(row, countColum++, sinhVien.getGvhd(), style);
             createCell(row, countColum++, sinhVien.getTenDotDangKy(), style);
         });
@@ -125,27 +125,35 @@ public class CnSinhVienTheoDotExport {
             cell4.setCellValue("Mã nhóm");
             cell4.setCellStyle(cellStyle);
 
-            Cell cellMonDatn = row.createCell(6);
+            Cell cellMonChuongTrinh = row.createCell(6);
+            cellMonChuongTrinh.setCellValue("Môn chương trình");
+            cellMonChuongTrinh.setCellStyle(cellStyle);
+
+            Cell cellMonDatn = row.createCell(7);
             cellMonDatn.setCellValue("Môn Datn");
             cellMonDatn.setCellStyle(cellStyle);
 
-            Cell cell5 = row.createCell(7);
+            Cell cellChuyenNganh = row.createCell(8);
+            cellChuyenNganh.setCellValue("Chuyên ngành");
+            cellChuyenNganh.setCellStyle(cellStyle);
+
+            Cell cell5 = row.createCell(9);
             cell5.setCellValue("Trưởng nhóm");
             cell5.setCellStyle(cellStyle);
 
-            Cell cell6 = row.createCell(8);
+            Cell cell6 = row.createCell(10);
             cell6.setCellValue("Tên đề tài");
             cell6.setCellStyle(cellStyle);
 
-            Cell cell7 = row.createCell(9);
+            Cell cell7 = row.createCell(11);
             cell7.setCellValue("Giảng viên hướng dẫn");
             cell7.setCellStyle(cellStyle);
 
-            Cell cellSoNhomDangHuongDan = row.createCell(10);
+            Cell cellSoNhomDangHuongDan = row.createCell(12);
             cellSoNhomDangHuongDan.setCellValue("Số nhóm đang hướng dẫn");
             cellSoNhomDangHuongDan.setCellStyle(cellStyle);
 
-            Cell cell8 = row.createCell(11);
+            Cell cell8 = row.createCell(13);
             cell8.setCellValue("Đợt đăng ký");
             cell8.setCellStyle(cellStyle);
 
@@ -178,27 +186,35 @@ public class CnSinhVienTheoDotExport {
                 empMaNhomCell.setCellStyle(cellStyle);
                 empMaNhomCell.setCellValue(sinhVien.getMaNhom());
 
-                Cell empMonDatnCell = empDataRow.createCell(6);
+                Cell empMonChuongTrinhCell = empDataRow.createCell(6);
+                empMonChuongTrinhCell.setCellStyle(cellStyle);
+                empMonChuongTrinhCell.setCellValue(sinhVien.getMonChuongTrinh());
+
+                Cell empMonDatnCell = empDataRow.createCell(7);
                 empMonDatnCell.setCellStyle(cellStyle);
                 empMonDatnCell.setCellValue(sinhVien.getMonDatn());
 
-                Cell empChucVuCell = empDataRow.createCell(7);
+                Cell empChuyenNganhCell = empDataRow.createCell(8);
+                empChuyenNganhCell.setCellStyle(cellStyle);
+                empChuyenNganhCell.setCellValue(sinhVien.getChuyenNganh());
+
+                Cell empChucVuCell = empDataRow.createCell(9);
                 empChucVuCell.setCellStyle(cellStyle);
                 empChucVuCell.setCellValue(sinhVien.getChucVu());
 
-                Cell empTenDeTaiCell = empDataRow.createCell(8);
+                Cell empTenDeTaiCell = empDataRow.createCell(10);
                 empTenDeTaiCell.setCellStyle(cellStyle);
-                empTenDeTaiCell.setCellValue(sinhVien.getTenDeTai() == null ? "Chưa có" : sinhVien.getTenDeTai());
+                empTenDeTaiCell.setCellValue(sinhVien.getTenDeTai() == null ? "" : sinhVien.getTenDeTai());
 
-                Cell empGVHDCell = empDataRow.createCell(9);
+                Cell empGVHDCell = empDataRow.createCell(11);
                 empGVHDCell.setCellStyle(cellStyle);
                 empGVHDCell.setCellValue(sinhVien.getGvhd());
 
-                Cell empSoNhomDangHuongDanCell = empDataRow.createCell(10);
+                Cell empSoNhomDangHuongDanCell = empDataRow.createCell(12);
                 empSoNhomDangHuongDanCell.setCellStyle(cellStyle);
                 empSoNhomDangHuongDanCell.setCellValue(sinhVien.getSoNhomDangHuongDan());
 
-                Cell empDotDangKyCell = empDataRow.createCell(11);
+                Cell empDotDangKyCell = empDataRow.createCell(13);
                 empDotDangKyCell.setCellStyle(cellStyle);
                 empDotDangKyCell.setCellValue(sinhVien.getTenDotDangKy());
             }

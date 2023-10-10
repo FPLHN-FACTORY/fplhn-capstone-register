@@ -278,15 +278,23 @@ public interface CnSinhVienRepository extends SinhVienRepository {
                                             @Param("coSoId") String coSoId);
 
     @Query(value = """
-            SELECT a.id, ROW_NUMBER() OVER(ORDER BY e.ten_tai_khoan) AS STT, a.ma_nhom, a.ten_de_tai, e.ten_tai_khoan,
-            COUNT(s.id) AS so_thanh_vien
+            WITH gvhdNhomDatn AS (
+                SELECT DISTINCT COUNT(a.id) as so_nhom_dang_huong_dan, b.so_nhom_huong_dan_toi_da, b.id 
+                FROM nhom_datn a JOIN giang_vien_huong_dan b ON a.giang_vien_id = b.id
+                WHERE b.dot_dang_ky_id = :#{#req.idDotDangKy} AND b.co_so_id = :#{#req.coSoId}
+                GROUP BY b.id
+            )
+            SELECT a.id, ROW_NUMBER() OVER(ORDER BY e.ten_tai_khoan) AS STT, a.ma_nhom, a.ten_de_tai, 
+            c.ten_chuyen_nganh AS chuyen_nganh, e.ten_tai_khoan,
+            COUNT(s.id) AS so_thanh_vien, CONCAT(gvNhom.so_nhom_dang_huong_dan, '/', gvNhom.so_nhom_huong_dan_toi_da) AS so_nhom_dang_huong_dan
             FROM nhom_datn a JOIN sinh_vien b ON a.truong_nhom_id = b.id
             JOIN sinh_vien s ON s.nhom_id = a.id
             LEFT JOIN giang_vien_huong_dan e ON a.giang_vien_id = e.id
             JOIN chuyen_nganh c ON b.chuyen_nganh_id = c.id
             JOIN can_bo d ON c.chu_nhiem_bo_mon = d.id
+            LEFT JOIN gvhdNhomDatn gvNhom ON gvNhom.id = e.id
             WHERE a.dot_dang_ky_id = :#{#req.idDotDangKy} AND a.co_so_id = :#{#req.coSoId}
-            AND c.id = :#{#req.chuyenNganhId}
+            AND (:#{#req.chuyenNganhId} IS NULL OR :#{#req.chuyenNganhId} LIKE '' OR c.id = :#{#req.chuyenNganhId})
             AND d.id = :idChuNhiem
             GROUP BY a.id
             ORDER BY e.ten_tai_khoan

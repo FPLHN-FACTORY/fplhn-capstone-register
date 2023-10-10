@@ -158,7 +158,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã thêm sinh viên '" + maSinhVien + "' vào nhóm '" + maNhom + "'",
+                    createLoggerObject("Đã thêm sinh viên '" + maSinhVien + "' vào nhóm '" + maNhom + "'",
                             pathFileLogActive, "Thành công");
             loggerObjectActive.setIdChuyenNganh(captain.get().getChuyenNganhId());
             loggerObjectActive.setTenChuyenNganh(tenChuyenNganh);
@@ -166,7 +166,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Chủ nhiệm bộ môn đã thêm sinh viên '" + maSinhVien + "' vào nhóm '" + maNhom + "'",
+                    createLoggerObject("Đã thêm sinh viên '" + maSinhVien + "' vào nhóm '" + maNhom + "'",
                             pathFile, "Thành công");
             loggerObject.setTenNhom(maNhom);
             loggerObject.setIdChuyenNganh(captain.get().getChuyenNganhId());
@@ -238,7 +238,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
             // thêm vào logger
             CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
             cnLoggerResponse.setMaNhom(maNhomAuto);
-            cnLoggerResponse.setValue("Chủ nhiệm bộ môn đã tạo nhóm '" + maNhomAuto + "'.");
+            cnLoggerResponse.setValue("Đã tạo nhóm '" + maNhomAuto + "'.");
             listLogger.add(cnLoggerResponse);
 
             // lưu lại thông tin trưởng nhóm đi kèm với nhóm
@@ -449,14 +449,14 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
                     GiangVienHuongDan giangVienMoi = mapGiangVienKeyId.get(maGiangVienMoi);
                     CnLoggerResponse cnLoggerResponseNew = new CnLoggerResponse();
                     cnLoggerResponseNew.setMaNhom(item.getValue().getMaNhom());
-                    cnLoggerResponseNew.setValue(" Chủ nhiệm bộ môn đã phân cho giảng viên '" + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + "' hướng dẫn nhóm " + item.getValue().getMaNhom() + ".");
+                    cnLoggerResponseNew.setValue(" Đã phân cho giảng viên '" + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + "' hướng dẫn nhóm " + item.getValue().getMaNhom() + ".");
                     loggerResponseList.add(cnLoggerResponseNew);
                 }
                 if (maGiangVienCu != null && maGiangVienMoi == null) {
                     GiangVienHuongDan giangVienCu = mapGiangVienKeyId.get(maGiangVienCu);
                     CnLoggerResponse cnLoggerResponseNew = new CnLoggerResponse();
                     cnLoggerResponseNew.setMaNhom(item.getValue().getMaNhom());
-                    cnLoggerResponseNew.setValue(" Chủ nhiệm bộ môn đã xóa giảng viên '" + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + "' ra khỏi nhóm " + item.getValue().getMaNhom() + ".");
+                    cnLoggerResponseNew.setValue(" Đã xóa giảng viên '" + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + "' ra khỏi nhóm " + item.getValue().getMaNhom() + ".");
                     loggerResponseList.add(cnLoggerResponseNew);
                 }
                 if (maGiangVienCu != null && maGiangVienMoi != null && !maGiangVienCu.equals(maGiangVienMoi)) {
@@ -464,7 +464,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
                     GiangVienHuongDan giangVienMoi = mapGiangVienKeyId.get(maGiangVienMoi);
                     CnLoggerResponse cnLoggerResponseNew = new CnLoggerResponse();
                     cnLoggerResponseNew.setMaNhom(item.getValue().getMaNhom());
-                    cnLoggerResponseNew.setValue(" Chủ nhiệm bộ môn đã chuyển giảng viên của nhóm '" + item.getValue().getMaNhom() + "' từ " + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + " sang " + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + ".");
+                    cnLoggerResponseNew.setValue(" Đã chuyển giảng viên của nhóm '" + item.getValue().getMaNhom() + "' từ " + giangVienCu.getTenGvhd() + "-" + giangVienCu.getTenTaiKhoan() + " sang " + giangVienMoi.getTenGvhd() + "-" + giangVienMoi.getTenTaiKhoan() + ".");
                     loggerResponseList.add(cnLoggerResponseNew);
                 }
                 String tenDetaiMoi = item.getValue().getTenDeTai();
@@ -472,19 +472,19 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
                 if (tenDetaiCu != null && tenDetaiMoi != null && !tenDetaiCu.trim().equals(tenDetaiMoi.trim())) {
                     CnLoggerResponse cnLoggerResponseNew = new CnLoggerResponse();
                     cnLoggerResponseNew.setMaNhom(item.getValue().getMaNhom());
-                    cnLoggerResponseNew.setValue(" Chủ nhiệm bộ môn đã đổi tên đề tài của nhóm '" + item.getValue().getMaNhom() + "' từ '" + tenDetaiCu + "' sang '" + tenDetaiMoi + "'" + ".");
+                    cnLoggerResponseNew.setValue(" Đã đổi tên đề tài của nhóm '" + item.getValue().getMaNhom() + "' từ '" + tenDetaiCu + "' sang '" + tenDetaiMoi + "'" + ".");
                     loggerResponseList.add(cnLoggerResponseNew);
                 }
                 if (tenDetaiCu == null && tenDetaiMoi != null) {
                     CnLoggerResponse cnLoggerResponseNew = new CnLoggerResponse();
                     cnLoggerResponseNew.setMaNhom(item.getValue().getMaNhom());
-                    cnLoggerResponseNew.setValue(" Chủ nhiệm bộ môn đã đặt đề tài của nhóm '" + item.getValue().getMaNhom() + "' là: " + tenDetaiMoi + ".");
+                    cnLoggerResponseNew.setValue(" Đã đặt đề tài của nhóm '" + item.getValue().getMaNhom() + "' là: " + tenDetaiMoi + ".");
                     loggerResponseList.add(cnLoggerResponseNew);
                 }
                 if (tenDetaiCu != null && tenDetaiMoi == null) {
                     CnLoggerResponse cnLoggerResponseNew = new CnLoggerResponse();
                     cnLoggerResponseNew.setMaNhom(item.getValue().getMaNhom());
-                    cnLoggerResponseNew.setValue(" Chủ nhiệm bộ môn đã xóa tên đề tài của nhóm '" + item.getValue().getMaNhom() + "'" + ".");
+                    cnLoggerResponseNew.setValue(" Đã xóa tên đề tài của nhóm '" + item.getValue().getMaNhom() + "'" + ".");
                     loggerResponseList.add(cnLoggerResponseNew);
                 }
             }

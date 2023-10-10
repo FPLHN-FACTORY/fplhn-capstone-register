@@ -130,7 +130,7 @@ public class GvNhomDatnRestController extends BaseController {
             object.setTenNhom(maNhom);
             object.setPathFile(pathFile);
             list = writerFileCSV.readFileCSVLuong(object);
-            Collections.reverse(list);
+
             List<LoggerObject> pagedSanPhamList = list.stream()
                     .skip(page * size)
                     .limit(size)

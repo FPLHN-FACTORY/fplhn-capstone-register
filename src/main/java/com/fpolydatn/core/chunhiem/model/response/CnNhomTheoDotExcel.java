@@ -17,9 +17,15 @@ public interface CnNhomTheoDotExcel extends IsIdentified {
     @Value("#{target.ten_de_tai}")
     String getTenDeTai();
 
+    @Value("#{target.chuyen_nganh}")
+    String getChuyenNganh();
+
     @Value("#{target.ten_tai_khoan}")
     String getGvhd();
 
     @Value("#{target.so_thanh_vien}")
     Integer getSoThanhVien();
+
+    @Value("#{target.so_nhom_dang_huong_dan}")
+    String getSoNhomDangHuongDan();
 }

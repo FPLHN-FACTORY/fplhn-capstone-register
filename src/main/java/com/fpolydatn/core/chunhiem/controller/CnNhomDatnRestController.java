@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -227,5 +228,70 @@ public class CnNhomDatnRestController extends BaseController {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
+    }
+
+    @GetMapping("/download-log-luong")
+    public ResponseEntity<Resource> downloadCsvLuong(
+            @RequestParam(name = "dotDangKyId", defaultValue = "") String idDotDangKy
+    ) throws IOException {
+        if (idDotDangKy.equals("")) {
+            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            if (dotDangKyHienTai != null) {
+                idDotDangKy = dotDangKyHienTai;
+            } else {
+                throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
+            }
+        }
+        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.findDotDangKyById(idDotDangKy).getTenDotDangKy());
+
+        File file = new File(pathFile);
+
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+
+    @GetMapping("/history-detail")
+    public ResponseObject getAllHistoryDetail(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size,
+            @RequestParam(name = "maNhom", defaultValue = "") String maNhom,
+            @RequestParam(name = "dotDangKyId", defaultValue = "") String dotDangKyId
+    ) {
+        List<LoggerObject> list = new ArrayList<>();
+        if (maNhom != null) {
+            LoggerObject object = new LoggerObject();
+            if (dotDangKyId.equals("")) {
+                String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+                if (dotDangKyHienTai != null) {
+                    dotDangKyId = dotDangKyHienTai;
+                } else {
+                    throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
+                }
+            }
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.findDotDangKyById(dotDangKyId).getTenDotDangKy());
+
+            object.setTenNhom(maNhom);
+            object.setPathFile(pathFile);
+            List<String> listIdChuyenNganh = cnChuyenNganhService.getAllIdChuyenNganhByIdChuNhiem(session.getCoSoId(), session.getUserId());
+            list = writerFileCSV.readFileCSVLuongChuNhiem(object, listIdChuyenNganh);
+
+            List<LoggerObject> pagedSanPhamList = list.stream()
+                    .skip(page * size)
+                    .limit(size)
+                    .collect(Collectors.toList());
+            return new ResponseObject(new PageImpl<>(pagedSanPhamList, PageRequest.of(page, size), list.size()));
+        }
+        return new ResponseObject(new PageImpl<>(list, PageRequest.of(page, size), list.size()));
     }
 }

@@ -925,4 +925,104 @@ function loadDataNhomDatn(count) {
     });
 }
 
+function openModalHistoryDetail(page, check, maNhom) {
+    let dotDangKyId = $("#dotDangKyId").val();
+    let size = check;
+    if (check === 0) {
+        size = parseInt($("#sizeHistoryDetail").val());
+    } else {
+        $("#sizeHistoryDetail").val("20");
+    }
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: CNNhomDatnApi + "/history-detail?page=" + page + "&size=" + size + "&maNhom=" + maNhom + "&dotDangKyId=" + dotDangKyId,
+        dataType: 'json',
+        success: function (responseData) {
+            $("#historyDetail").modal('show')
+            if (responseData.data.content.length == 0) {
+                $("#listHistoryDetail").html(``);
+                $("#pageHistoryDetail").html('');
+                $("#emptyHistoryDetail").html(`<h3>Không có dữ liệu</h3>`);
+            } else {
+                $("#emptyHistoryDetail").html(``);
+                $("#listHistoryDetail").html(responseData.data.content.map(function (element, index) {
+                    return `
+                <tr class="table-light">                 
+                      <td class="text-center align-middle">${element.stt}</td>
+                      <td class="text-center align-middle">${element.mail}</td>
+                      <td class="text-center align-middle">${element.createDate}</td>
+                      <td class="text-center align-middle">${element.content}</td>
+                      <td class="text-center align-middle">${element.author}</td>
+                </tr>
+               `
+                }));
 
+                var count = responseData.data.totalPages;
+                if (responseData.data.totalPages <= 1) {
+                    $("#pageHistoryDetail").html('');
+                } else {
+                    let templatePageMid = ``;
+                    let templatePageBefore = page === 0 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page - 1}, ${size}, '')"><img src="/img/back.svg"></a>
+                </li>
+                `;
+                    templatePageMid = `
+                             <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
+                    let templatePageAfter = page === Number(count) - 1 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="openModalHistoryDetail(${page + 1}, ${size}, '')"><img src="/img/next.svg"></a>
+                </li>
+                `;
+                    let templateHtml = ``;
+                    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+                    $("#pageHistoryDetail").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+                }
+            }
+            ;
+        },
+        error: function (e) {
+            if (e.responseJSON.message === 'File log khong ton tai') {
+                bootbox.alert({
+                    message: 'File log không tồn tại',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
+        }
+    });
+}
+
+function openModalHistoryDownloadDetail() {
+    let dotDangKyId = $("#dotDangKyId").val()
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: CNNhomDatnApi + "/download-log-luong?dotDangKyId=" + dotDangKyId,
+        success: function (responseData) {
+            var blob = new Blob([responseData], {type: "text/csv"});
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "danh_sach_nhom_datn.csv";
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        },
+        error: function (e) {
+            if (e.status === 404) {
+                bootbox.alert({
+                    message: "Không tìm thấy file trong hệ thống",
+                    backdrop: true
+                });
+            } else {
+                console.error("Lỗi khi tải file CSV: " + e.statusText);
+            }
+        }
+    });
+}
