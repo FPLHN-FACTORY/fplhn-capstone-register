@@ -150,7 +150,13 @@ function openModalCreateHocKy() {
     $("#ngay_ket_thuc_add_error").text("")
 }
 
-function openModalHistory(page, size) {
+function openModalHistory(page, check) {
+    let size = check;
+    if (check === 0) {
+        size = parseInt($("#sizeHistory").val());
+    } else {
+        $("#sizeHistory").val("20");
+    }
     $.ajax({
         type: "GET",
         contentType: "application/json",

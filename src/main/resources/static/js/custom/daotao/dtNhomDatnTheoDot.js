@@ -7,14 +7,13 @@ $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 });
 
-function openModalHistory(page, size) {
+function openModalHistory(page, check) {
     let dotDangKy = $("#dotDangKy").val()
-    if (dotDangKy.trim().length === 0) {
-        bootbox.alert({
-            message: "Bạn chưa chọn đợt đăng ký",
-            backdrop: true
-        });
-        return;
+    let size = check;
+    if (check === 0) {
+        size = parseInt($("#sizeHistory").val());
+    } else {
+        $("#sizeHistory").val("20");
     }
     $.ajax({
         type: "GET",
@@ -75,20 +74,21 @@ function openModalHistory(page, size) {
                     }
                 });
             }
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }
 
 function openModalHistoryDownload() {
-
     let dotDangKy = $("#dotDangKy").val();
-    if (dotDangKy.trim().length === 0) {
-        bootbox.alert({
-            message: "Bạn chưa chọn đợt đăng ký",
-            backdrop: true
-        });
-        return;
-    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -105,6 +105,8 @@ function openModalHistoryDownload() {
             window.URL.revokeObjectURL(url);
         },
         error: function (e) {
+            console.log(e.responseJSON.message)
+            console.log(e.status )
             if (e.status === 404) {
                 bootbox.alert({
                     message: "Không tìm thấy file trong hệ thống",
@@ -113,13 +115,28 @@ function openModalHistoryDownload() {
             } else {
                 console.error("Lỗi khi tải file CSV: " + e.statusText);
             }
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }
 
-function openModalHistoryDetail(page, size, maNhom, dotDangKyId) {
+function openModalHistoryDetail(page, check, maNhom, dotDangKyId) {
     if (dotDangKyId.trim().length === 0) {
         dotDangKyId = $("#dotDangKy").val();
+    }
+    let size = check;
+    if (check === 0) {
+        size = parseInt($("#sizeHistoryDetail").val());
+    } else {
+        $("#sizeHistoryDetail").val("20");
     }
     $.ajax({
         type: "GET",
@@ -180,19 +197,21 @@ function openModalHistoryDetail(page, size, maNhom, dotDangKyId) {
                     }
                 });
             }
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }
 
 function openModalHistoryDownloadDetail() {
     let dotDangKy = $("#dotDangKy").val()
-    if (dotDangKy.trim().length === 0) {
-        bootbox.alert({
-            message: "Bạn chưa chọn đợt đăng ký",
-            backdrop: true
-        });
-        return;
-    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -216,6 +235,15 @@ function openModalHistoryDownloadDetail() {
                 });
             } else {
                 console.error("Lỗi khi tải file CSV: " + e.statusText);
+            }
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
             }
         }
     });
@@ -488,24 +516,15 @@ function loadDataNhomDatn(count) {
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {
                 $("#empty").html(``)
-                var templateString;
                 $("#listNhomDatn").html(array.map(function (item) {
-                    templateString = item.trangThai == 4 | item.trangThai == 0 ? `
+                    return `
+                <tr class="table-light">
                 <td class="text-center align-middle">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" data-toggle="tooltip" title="Chọn một" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()">
                         <input hidden id="check-trang-thai" value="${item.trangThai}">
                     </div>
-                </td>` : `
-                <td class="text-center align-middle">
-                    <div class="form-check">
-                        <input disabled type="checkbox" data-toggle="tooltip" title="Chọn một" class="form-check-input" id="checkbox_son" value="${item.id}" onchange="checkBoxSonListener()">
-                        <input hidden id="check-trang-thai" value="${item.trangThai}">
-                    </div>
-                </td>`
-                    return `
-                <tr class="table-light">
-                 ` + templateString + `
+                </td>
                 <td class="text-center align-middle">${item.stt}</td>
                 <td class="text-center align-middle">${item.maNhom}</td>
                 <td class="text-center align-middle">${item.tenMonDatn}</td>
@@ -538,9 +557,9 @@ function loadDataNhomDatn(count) {
                         </button>
                     </div>
                 </td>
-                </tr>
-                `
-                }))
+                </tr>`
+                }
+                ))
                 genPagzing();
             }
         },
