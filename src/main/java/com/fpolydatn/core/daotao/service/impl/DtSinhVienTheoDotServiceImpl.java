@@ -629,6 +629,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         String emailCu = sinhVienCu.getEmail();
         String khoaCu = sinhVienCu.getKhoa();
         TrangThaiSinhVien trangThaiCu = sinhVienCu.getTrangThai();
+        String dieuKien = trangThaiCu.toString();
         String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSVUpdate(command.getMaSinhVien(),
                 command.getId(), command.getCoSoId(), command.getDotDangKyId());
         if (idSinhVienCheckMaSV != null) {
@@ -693,9 +694,16 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                     .append("' thành '").append(monMoi.get().getMaMon()).append("'. ");
         }
         if (!trangThaiCu.equals(sinhVien.getTrangThai())) {
-            logMessage.append("Đào tạo đã sửa trạng thái của sinh viên '").append(sinhVien.getMaSinhVien())
-                    .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(trangThaiCu)
-                    .append("' thành '").append(sinhVien.getTrangThai()).append("'. ");
+            if(dieuKien.equals("DU_DIEU_KIEN")){
+                logMessage.append("Đào tạo đã sửa trạng thái của sinh viên '").append(sinhVien.getMaSinhVien())
+                        .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append("Đủ điều kiện")
+                        .append("' thành '").append("Không đủ điều kiện").append("'. ");
+            }
+            else{
+                logMessage.append("Đào tạo đã sửa trạng thái của sinh viên '").append(sinhVien.getMaSinhVien())
+                        .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append("Không đủ điều kiện")
+                        .append("' thành '").append("Đủ điều kiện").append("'. ");
+            }
         }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(sinhVien.getDotDangKyId()).get().getTenDotDangKy());

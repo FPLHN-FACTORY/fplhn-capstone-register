@@ -160,10 +160,6 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         }
         Map<String, ChuyenNganh> chuyenNganhMap = fillMapChuyenNganh();
         List<SinhVien>listSinhVienAll = new ArrayList<>();
-//        List<String> listIdTruongNhom = listNhomDatn.stream()
-//                .map(NhomDatn::getTruongNhomId)
-//                .collect(Collectors.toList());
-//        List<ChuyenNganh>listChuyenNganh = new ArrayList<>();
         for (NhomDatn nhomDatn : listNhomDatn) {
             List<SinhVien> listSinhVien = sinhVienTheoDotRepository.getAllSinhVien(nhomDatn.getId(), commonHelper.getDotDangKyHienTai());
             listSinhVienAll.addAll(listSinhVien);
