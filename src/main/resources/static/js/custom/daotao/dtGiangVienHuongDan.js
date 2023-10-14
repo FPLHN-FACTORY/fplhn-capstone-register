@@ -13,14 +13,13 @@ $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 })
 
-function openModalHistory(page, size) {
+function openModalHistory(page, check) {
     let dotDangKy = $("#search_dot_dang_ky").val();
-    if (dotDangKy.trim().length === 0) {
-        bootbox.alert({
-            message: "Bạn chưa chọn đợt đăng ký",
-            backdrop: true
-        });
-        return;
+    let size = check;
+    if (check === 0) {
+        size = parseInt($("#sizeHistory").val());
+    } else {
+        $("#sizeHistory").val("20");
     }
     $.ajax({
         type: "GET",
@@ -81,19 +80,21 @@ function openModalHistory(page, size) {
                     }
                 });
             }
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
+            }
         }
     });
 }
 
 function openModalHistoryDownload() {
     var dotDangKy = $("#search_dot_dang_ky").val();
-    if (dotDangKy.trim().length === 0) {
-        bootbox.alert({
-            message: "Bạn chưa chọn đợt đăng ký",
-            backdrop: true
-        });
-        return;
-    }
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -117,6 +118,15 @@ function openModalHistoryDownload() {
                 });
             } else {
                 console.error("Lỗi khi tải file CSV: " + e.statusText);
+            }
+            if (e.responseJSON.message === 'Khong co dot hien tai vui long chon dot') {
+                bootbox.alert({
+                    message: 'Không có đợt hiện tại. Vui lòng chọn đợt',
+                    backdrop: true,
+                    callback: function () {
+
+                    }
+                });
             }
         }
     });

@@ -220,7 +220,20 @@
                                                                     </tbody>
                                                                 </table>
 
-                                                                <div id="pageHistory">
+                                                                <div style="text-align: right">
+                                                                    <div id="pageHistory" style="float: right;">
+                                                                    </div>
+                                                                    <div style="float: right; margin-right: 20px">
+                                                                        <select id="sizeHistory"
+                                                                                th:attr="onchange=|openModalHistory(0, 0)|"
+                                                                                class="form-control-sm">
+                                                                            <option value="20">20</option>
+                                                                            <option value="50">50</option>
+                                                                            <option value="100">100</option>
+                                                                            <option value="500">500</option>
+                                                                            <option value="1000">1000</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                                 <div id="emptyHistory">
                                                                 </div>
@@ -265,8 +278,20 @@
 
                                                                     </tbody>
                                                                 </table>
-
-                                                                <div id="pageHistoryDetail">
+                                                                <div style="text-align: right">
+                                                                    <div id="pageHistoryDetail" style="float: right;">
+                                                                    </div>
+                                                                    <div style="float: right; margin-right: 20px">
+                                                                        <select id="sizeHistoryDetail"
+                                                                                th:attr="onchange=|openModalHistory(0, 0)|"
+                                                                                class="form-control-sm">
+                                                                            <option value="20">20</option>
+                                                                            <option value="50">50</option>
+                                                                            <option value="100">100</option>
+                                                                            <option value="500">500</option>
+                                                                            <option value="1000">1000</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                                 <div id="emptyHistoryDetail">
                                                                 </div>
@@ -351,7 +376,6 @@
                                                         <div class="d-flex justify-content-center align-items-center">
                                                             <div class="form-check">
                                                                 <input
-                                                                        th:disabled="${nhomDatn.getTrangThai()}==4 or ${nhomDatn.getTrangThai()}==0?'false':'true'"
                                                                         type="checkbox" class="form-check-input"
                                                                         data-toggle="tooltip"
                                                                         title="Chọn một"
