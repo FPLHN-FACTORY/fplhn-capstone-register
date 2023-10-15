@@ -295,6 +295,8 @@
                                                                         <option value="6">6 thành viên</option>
                                                                         <option value="7">7 thành viên</option>
                                                                     </select>
+                                                                    <br/>
+                                                                    <span style="color: red">(*) Lưu ý: Chức năng dùng để tạo nhóm tự động. Random các sinh viên chưa có nhóm vào 1 nhóm theo số thành viên được chỉ định.</span>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -343,9 +345,9 @@
                                                         <td class="text-center align-middle"
                                                             th:text="${sinhVien.tenChuyenNganh}"></td>
                                                         <td class="text-center align-middle"
-                                                            th:text="${sinhVien.maMonChuongTrinh}==null ? 'Chưa có' : (${sinhVien.maMonChuongTrinh})"></td>
+                                                            th:text="${sinhVien.maMonChuongTrinh}==null ? '-' : (${sinhVien.maMonChuongTrinh})"></td>
                                                         <td class="text-center align-middle"
-                                                            th:text="${sinhVien.maMonDuAn}==null ? 'Chưa có' : (${sinhVien.maMonDuAn})"></td>
+                                                            th:text="${sinhVien.maMonDuAn}==null ? '-' : (${sinhVien.maMonDuAn})"></td>
                                                         <td th:switch="${sinhVien.maNhom}"
                                                             class="text-center align-middle">
                                                             <div class="d-flex justify-content-center align-items-center"
@@ -361,9 +363,9 @@
                                                             </div>
                                                         </td>
                                                         <td class="text-center align-middle"
-                                                            th:text="${sinhVien.tenDeTai}==null?'Chưa có':${sinhVien.tenDeTai}"></td>
+                                                            th:text="${sinhVien.tenDeTai}==null?'-':${sinhVien.tenDeTai}"></td>
                                                         <td class="text-center align-middle"
-                                                            th:text="${sinhVien.tenGvhd}==null?'Chưa có':${sinhVien.tenGvhd}"></td>
+                                                            th:text="${sinhVien.tenGvhd}==null?'-':${sinhVien.tenGvhd}"></td>
                                                     </tr>
                                                 </th:block>
                                                 </tbody>

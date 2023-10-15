@@ -76,7 +76,7 @@ function loadDashBoard() {
                                             <td>${indexNhomDatn + 1}</td>
                                             <td>${nhomDatn.maNhom + ' - ' + nhomDatn.monDatn}</td>
                                             <td>${nhomDatn.soLuongThanhVien + '/7'}</td>
-                                            <td>${(nhomDatn.tenDeTai == null || nhomDatn.tenDeTai == "") ? 'Chưa có' : nhomDatn.tenDeTai}</td>
+                                            <td>${(nhomDatn.tenDeTai == null || nhomDatn.tenDeTai == "") ? '-' : nhomDatn.tenDeTai}</td>
                                         </tr>
                                     `;
                 }).join('')}
@@ -151,7 +151,7 @@ function loadDashBoardGvhd() {
                                             <td class="text-center align-middle">${indexNhomDatn + 1}</td>
                                             <td class="text-center align-middle">${nhomDatn.maNhom + ' - ' + nhomDatn.monDatn}</td>
                                             <td class="text-center align-middle">${nhomDatn.soLuongThanhVien + '/7'}</td>
-                                            <td class="text-center align-middle">${(nhomDatn.tenDeTai == null || nhomDatn.tenDeTai == "") ? 'Chưa có' : nhomDatn.tenDeTai}</td>
+                                            <td class="text-center align-middle">${(nhomDatn.tenDeTai == null || nhomDatn.tenDeTai == "") ? '-' : nhomDatn.tenDeTai}</td>
                                         </tr>
                                     `;
                 }).join('')}

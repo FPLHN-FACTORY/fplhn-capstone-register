@@ -167,8 +167,8 @@ function loadDataToTable(count) {
                 $("#empty").html(``)
                 totalPages = responseData.data.totalPages
                 array.map(function (sinhVien) {
-                    var tenDeTai = sinhVien.tenDeTai == null ? 'Chưa có' : sinhVien.tenDeTai;
-                    var tenGvhd = sinhVien.tenGvhd == null ? 'Chưa có' : sinhVien.tenGvhd;
+                    var tenDeTai = sinhVien.tenDeTai == null ? '-' : sinhVien.tenDeTai;
+                    var tenGvhd = sinhVien.tenGvhd == null ? '-' : sinhVien.tenGvhd;
                     var maSinhVien = sinhVien.maSinhVien;
                     text1 = `
                       <tr class="table-light">
@@ -176,8 +176,8 @@ function loadDataToTable(count) {
                             <td class="text-center align-middle"> ${sinhVien.maSinhVien}</td>
                             <td class="text-center align-middle"> ${sinhVien.tenSinhVien}</td>
                             <td class="text-center align-middle"> ${sinhVien.tenChuyenNganh}</td>
-                            <td class="text-center align-middle"> ${sinhVien.maMonChuongTrinh == null ? 'Chưa có' : sinhVien.maMonChuongTrinh}</td>
-                            <td class="text-center align-middle"> ${sinhVien.maMonDuAn == null ? 'Chưa có' : sinhVien.maMonDuAn}</td>
+                            <td class="text-center align-middle"> ${sinhVien.maMonChuongTrinh == null ? '-' : sinhVien.maMonChuongTrinh}</td>
+                            <td class="text-center align-middle"> ${sinhVien.maMonDuAn == null ? '-' : sinhVien.maMonDuAn}</td>
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td class="text-center align-middle">

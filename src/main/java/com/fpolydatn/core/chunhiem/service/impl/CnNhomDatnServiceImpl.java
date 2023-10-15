@@ -770,9 +770,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         } else {
                             nhomDatn.setGiangVienId(null);
                         }
-                        if (nhomDatn.getTrangThai() == TrangThaiNhom.MOI_THANH_LAP) {
-                            nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
-                        }
+//                        if (nhomDatn.getTrangThai() == TrangThaiNhom.MOI_THANH_LAP) {
+//                            nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
+//                        }
                     }
                     sv.setNhomId(nhomDatn.getId());
                     SinhVien truongNhom = mapSinhVien.get(nhomDatn.getId());
@@ -956,7 +956,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     nhomDatn.setMaNhom(maNhomCreateAuto);
                     nhomDatn.setCoSoId(coSoId);
                     nhomDatn.setDotDangKyId(dotDangKyId);
-                    nhomDatn.setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
+                    nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
                     CnLoggerResponse cnLoggerResponseNew = new CnLoggerResponse();
                     cnLoggerResponseNew.setMaNhom(maNhomCreateAuto);
                     cnLoggerResponseNew.setValue(" Đã tạo nhóm '" + nhomDatn.getMaNhom() + "'" + ".");

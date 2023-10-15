@@ -487,9 +487,9 @@
                                                         <td class="text-center align-middle"
                                                             th:text="${nhomDatn.getStt()}"></td>
                                                         <td class="text-center align-middle"
-                                                            th:text="${nhomDatn.getMaNhom()}==null ? 'Chưa có' : (${nhomDatn.getMaNhom()})"></td>
+                                                            th:text="${nhomDatn.getMaNhom()}==null ? '-' : (${nhomDatn.getMaNhom()})"></td>
                                                         <td class="text-center align-middle"
-                                                            th:text="${nhomDatn.getTenDeTai()}==null ? 'Chưa có' : (${nhomDatn.getTenDeTai()})"></td>
+                                                            th:text="${nhomDatn.getTenDeTai()}==null ? '-' : (${nhomDatn.getTenDeTai()})"></td>
                                                         <td class="text-center align-middle"
                                                             th:text="${nhomDatn.getMaMonDatn()}"></td>
                                                         <td class="text-center align-middle"
@@ -501,7 +501,7 @@
                                                         <td class="text-center align-middle"
                                                             th:switch="${nhomDatn.getTenGvhd()}">
                                                             <div class="d-flex justify-content-center align-items-center">
-                                                                <p th:case=null>Chưa có</p>
+                                                                <p th:case=null>-</p>
                                                                 <p th:case="*"
                                                                    th:text="${nhomDatn.getTenGvhd()} + ' - ' + ${nhomDatn.getTenTaiKhoan()} + ' (' + ${nhomDatn.getSoNhomDangHuongDan()} + '/' + ${nhomDatn.getSoNhomHuongDanToiDa()} + ')'"></p>
                                                             </div>
