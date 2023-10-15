@@ -87,6 +87,7 @@ public class CnNhomDatnRestController extends BaseController {
     @GetMapping("/search-list-nhom")
     public ResponseObject searchMaNhom(final CnSearchNhomInputRequest request) {
         request.setCoSoId(session.getCoSoId());
+        request.setIdChuNhiem(session.getUserId());
         return new ResponseObject(nhomDatnService.searchNhomDatnInput(request));
     }
 

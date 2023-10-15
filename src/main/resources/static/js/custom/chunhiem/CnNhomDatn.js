@@ -885,7 +885,8 @@ function loadDataNhomDatn(count) {
                 <td class="text-center align-middle">${item.maNhom == null ? 'Chưa có' : item.maNhom}</td>
                 <td class="text-center align-middle">${item.tenDeTai == null ? 'Chưa có' : item.tenDeTai}</td>
                 <td class="text-center align-middle">${item.maMonDatn == null ? 'Chưa có' : item.maMonDatn}</td>
-                <td class="text-center align-middle">${item.total}</td>
+                <td class="text-center align-middle">${item.chuyenNganh == null ? 'Chưa có' : item.chuyenNganh}</td>
+                <td class="text-center align-middle">${item.total + "/7"}</td>
                 <td class="text-center align-middle">${item.truongNhom}</td>
                 <td class="text-center align-middle"> 
                 <div class="d-flex justify-content-center align-items-center">

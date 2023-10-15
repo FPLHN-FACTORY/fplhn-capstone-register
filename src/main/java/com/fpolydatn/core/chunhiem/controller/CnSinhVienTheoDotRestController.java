@@ -66,8 +66,10 @@ public class CnSinhVienTheoDotRestController extends BaseController {
     }
 
     @PostMapping("/addSinhVien")
-    public ResponseObject addSinhVienByNhom(@RequestParam("id") String maNhom, @RequestParam("maSinhVien") String maSinhVien) {
-        return new ResponseObject(cnSinhVienTheoDotService.addSinhVienTheoNhom(maNhom, maSinhVien));
+    public ResponseObject addSinhVienByNhom(@RequestParam("id") String maNhom,
+                                            @RequestParam("maSinhVien") String maSinhVien,
+                                            @RequestParam("idSinhVien") String idSinhVien) {
+        return new ResponseObject(cnSinhVienTheoDotService.addSinhVienTheoNhom(maNhom, maSinhVien, idSinhVien));
     }
 
     @PostMapping("/random-nhom-datn")

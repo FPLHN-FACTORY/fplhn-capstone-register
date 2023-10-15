@@ -26,6 +26,9 @@ public interface CnNhomDatnResponse extends IsIdentified {
     @Value("#{target.ma_mon_datn}")
     String getMaMonDatn();
 
+    @Value("#{target.chuyen_nganh}")
+    String getChuyenNganh();
+
     @Value("#{target.total_ma_sinh_vien}")
     String getTotal();
 

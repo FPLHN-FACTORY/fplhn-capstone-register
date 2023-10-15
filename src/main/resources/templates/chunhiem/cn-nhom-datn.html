@@ -456,6 +456,7 @@
                                                 <th class="text-center align-middle">Mã nhóm</th>
                                                 <th class="text-center align-middle">Tên đề tài</th>
                                                 <th class="text-center align-middle">Mã môn</th>
+                                                <th class="text-center align-middle">Chuyên ngành</th>
                                                 <th class="text-center align-middle">SL thành viên</th>
                                                 <th class="text-center align-middle">Trưởng nhóm</th>
                                                 <th class="text-center align-middle">GVHD</th>
@@ -492,7 +493,9 @@
                                                         <td class="text-center align-middle"
                                                             th:text="${nhomDatn.getMaMonDatn()}"></td>
                                                         <td class="text-center align-middle"
-                                                            th:text="${nhomDatn.getTotal()}"></td>
+                                                            th:text="${nhomDatn.getChuyenNganh()}"></td>
+                                                        <td class="text-center align-middle"
+                                                            th:text="${nhomDatn.getTotal()} + '/7'"></td>
                                                         <td class="text-center align-middle"
                                                             th:text="${nhomDatn.getTruongNhom()}"></td>
                                                         <td class="text-center align-middle"

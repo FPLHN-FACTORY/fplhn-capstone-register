@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -48,7 +47,7 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             SELECT b.id, ROW_NUMBER() OVER(
             ORDER BY b.last_modified_date DESC
             ) AS stt, b.ma_nhom
-            ,b.ten_de_tai, k.ma_mon AS ma_mon_datn, ndaSTV.so_thanh_vien
+            ,b.ten_de_tai, k.ma_mon AS ma_mon_datn, f.ten_chuyen_nganh AS chuyen_nganh, ndaSTV.so_thanh_vien
             AS total_ma_sinh_vien, CONCAT(c.ma_sinh_vien, '_', c.ten_sinh_vien) as truong_nhom,e.ten_gvhd, e.ten_tai_khoan,
             gvhdNhom.so_nhom_dang_huong_dan AS so_nhom_dang_huong_dan,
             e.so_nhom_huong_dan_toi_da,
@@ -260,17 +259,20 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             FROM nhom_datn a LEFT JOIN giang_vien_huong_dan b 
             ON a.giang_vien_id = b.id LEFT JOIN sinh_vien c 
             ON a.truong_nhom_id = c.id LEFT JOIN sinh_vien d ON a.id = d.nhom_id
+            LEFT JOIN chuyen_nganh e ON e.id = c.chuyen_nganh_id
+            LEFT JOIN can_bo f ON e.chu_nhiem_bo_mon = f.id
             WHERE a.co_so_id = :#{#req.coSoId} 
             AND a.dot_dang_ky_id = :#{#req.dotDangKyId}
             AND (a.ma_nhom LIKE %:#{#req.maNhom}% OR b.ten_tai_khoan LIKE %:#{#req.maNhom}%
             OR b.ten_gvhd LIKE %:#{#req.maNhom}% OR c.ma_sinh_vien LIKE %:#{#req.maNhom}% 
             OR c.ten_sinh_vien LIKE %:#{#req.maNhom}%)
+            AND f.id = :#{#req.idChuNhiem}
             GROUP BY a.id
             """, nativeQuery = true)
     List<String> searchNhomDatnInput(@Param("req") CnSearchNhomInputRequest req);
 
     @Query(value = """
-            SELECT a.ma_nhom, a.ten_nhom, a.ten_de_tai,
+            SELECT a.id, a.ma_nhom, a.ten_nhom, a.ten_de_tai,
             CONCAT(e.ten_tai_khoan, '_', e.ten_gvhd) as gvhd,
             CONCAT(d.ma_mon, '_', d.ten_mon_datn) as mon_datn, a.trang_thai, a.dot_dang_ky_id
             FROM nhom_datn a JOIN sinh_vien b ON a.truong_nhom_id = b.id

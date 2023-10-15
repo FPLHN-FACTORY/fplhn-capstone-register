@@ -15,4 +15,6 @@ public class CnSearchNhomInputRequest {
     private String coSoId;
 
     private String dotDangKyId;
+
+    private String idChuNhiem;
 }

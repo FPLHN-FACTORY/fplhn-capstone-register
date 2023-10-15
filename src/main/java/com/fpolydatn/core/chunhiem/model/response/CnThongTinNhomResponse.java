@@ -1,11 +1,12 @@
 package com.fpolydatn.core.chunhiem.model.response;
 
+import com.fpolydatn.entity.base.IsIdentified;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author thangncph26123
  */
-public interface CnThongTinNhomResponse {
+public interface CnThongTinNhomResponse extends IsIdentified {
 
     @Value("#{target.ma_nhom}")
     String getMaNhom();

@@ -173,8 +173,12 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
+        Integer soThanhVien = getSizeListSinhVien(idNhom, coSoId);
+        if(soThanhVien <= 4) {
+            throw new RestApiException(Message.NHOM_CON_4_THANH_VIEN_NEU_XOA_NHOM_SE_THANH_NHOM_KHONG_HOP_LE);
+        }
         cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien, commonHelper.getDotDangKyHienTai());
-        if (getSizeListSinhVien(idNhom, coSoId) == 0) {
+        if (soThanhVien == 0) {
             cnNhomDatnRepository.deleteById(idNhom);
         }
         SinhVien sinhVienFind = cnSinhVienTheoNhomRepository.getIdSinhVienByMaSinhVien(maSinhVien, commonHelper.getDotDangKyHienTai());
