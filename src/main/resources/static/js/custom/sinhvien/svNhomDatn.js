@@ -21,7 +21,6 @@ function openModalHistory(page, size, maNhom) {
                     return `
                 <tr class="table-light">                 
                       <td class="text-center align-middle">${element.stt}</td>
-                      <td class="text-center align-middle">${element.mail}</td>
                       <td class="text-center align-middle">${element.createDate}</td>
                       <td class="text-center align-middle">${element.content}</td>
                       <td class="text-center align-middle">${element.author}</td>

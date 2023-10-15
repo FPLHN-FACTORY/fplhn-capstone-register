@@ -404,7 +404,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
                 if (chuyenNganhs.values().size() != 0) {
                     List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.saveAll(chuyenNganhs.values());
-                    chuyenNganhList.parallelStream().forEach(el -> {
+                    chuyenNganhList.forEach(el -> {
                         chuyenNganhHashMap.put(el.getTenChuyenNganh().toUpperCase(), el);
                         try {
                             String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_CHUYEN_NGANH);
@@ -420,7 +420,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
                 if (nhomMons.values().size() != 0) {
                     List<MonDatn> nhoMonDatnList = monDatnRepository.saveAll(nhomMons.values());
-                    nhoMonDatnList.parallelStream().forEach(el -> {
+                    nhoMonDatnList.forEach(el -> {
                         el.setChuyenNganhId(chuyenNganhHashMap.get(el.getChuyenNganhId()).getId());
                         nhomMonDatnHashMap.put(el.getMaMon(), el);
                         monDatnRepository.save(el);
@@ -439,7 +439,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
 
                 List<MonDatn> datnList = monDatnRepository.saveAll(list.values());
-                datnList.parallelStream().forEach(el -> {
+                datnList.forEach(el -> {
                     el.setChuyenNganhId(chuyenNganhHashMap.get(el.getChuyenNganhId()).getId());
                     if (el.getNhomMonDatnId().trim().length() == 0) {
                         el.setNhomMonDatnId(el.getId());

@@ -445,10 +445,7 @@ function importExcel() {
                     bootbox.alert({
                         title: "Thất bại",
                         message: '<strong>' + response.data.message + '</strong>',
-                        backdrop: true,
-                        callback: function () {
-                            window.open(monDatnView, '_self');
-                        }
+                        backdrop: true
                     });
                 }
             },
