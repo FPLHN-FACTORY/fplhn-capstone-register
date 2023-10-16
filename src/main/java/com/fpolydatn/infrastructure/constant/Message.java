@@ -91,7 +91,9 @@ public enum Message {
     DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC(PropertiesReader.getProperty(PropertyKeys.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC)),
     FILE_LOG_IS_EXIST(PropertiesReader.getProperty(PropertyKeys.FILE_LOG_IS_EXIST)),
     FILE_LOG_NOT_EXISTS(PropertiesReader.getProperty(PropertyKeys.FILE_LOG_NOT_EXISTS)),
-    KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT(PropertiesReader.getProperty(PropertyKeys.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT));
+    KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT(PropertiesReader.getProperty(PropertyKeys.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT)),
+    NHOM_CON_4_THANH_VIEN_NEU_XOA_NHOM_SE_THANH_NHOM_KHONG_HOP_LE(PropertiesReader.getProperty(PropertyKeys.NHOM_CON_4_THANH_VIEN_NEU_XOA_NHOM_SE_THANH_NHOM_KHONG_HOP_LE)),
+    CHUYEN_NGANH_CUA_SINH_VIEN_KHONG_PHU_HOP_VOI_NHOM(PropertiesReader.getProperty(PropertyKeys.CHUYEN_NGANH_CUA_SINH_VIEN_KHONG_PHU_HOP_VOI_NHOM));
 
     private String message;
 

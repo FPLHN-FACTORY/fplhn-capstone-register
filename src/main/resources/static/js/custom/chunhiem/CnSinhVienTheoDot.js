@@ -8,11 +8,12 @@ $(document).ready(function () {
     $('[data-toggle = "tooltip"]').tooltip();
 });
 
-function openModalAddSinhVien(maSinhVien, count) {
+function openModalAddSinhVien(maSinhVien, idSinhVien, count) {
     $("#idNhom_error").html('')
     $("#maNhom").val("")
     $("#modal_create_nhom").modal('show');
     $("#addSinhVienTheoNhom").val(maSinhVien);
+    $("#addSinhVienTheoNhomId").val(idSinhVien);
     $("#currentPaging").val(count)
 }
 
@@ -41,11 +42,12 @@ function createSinhVienVaoNhom() {
         $("#idNhom_error").html('Nhóm không hợp lệ')
     }
     let maSinhVien = $("#addSinhVienTheoNhom").val().trim();
+    let idSinhVien = $("#addSinhVienTheoNhomId").val().trim();
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: sinhVienApi + "/addSinhVien?id=" + desiredResult + "&maSinhVien=" + maSinhVien,
-        data: JSON.stringify(maSinhVien, maNhom),
+        url: sinhVienApi + "/addSinhVien?id=" + desiredResult + "&maSinhVien=" + maSinhVien + "&idSinhVien=" + idSinhVien,
+        data: JSON.stringify(maSinhVien, idSinhVien, maNhom),
         success: function (responseData) {
             $("#modal_create_nhom").modal('hide');
             bootbox.alert({
@@ -62,6 +64,9 @@ function createSinhVienVaoNhom() {
             }
             if (e.responseJSON.message.trim() == 'nhom da du so luong thanh vien') {
                 $("#idNhom_error").html('Nhóm đã đủ số lượng thành viên')
+            }
+            if (e.responseJSON.message.trim() == 'Chuyen nganh cua sinh vien khong phu hop voi nhom') {
+                $("#idNhom_error").html('Chuyên ngành của sinh viên không phù hợp với nhóm')
             }
         }
     });
@@ -162,8 +167,8 @@ function loadDataToTable(count) {
                 $("#empty").html(``)
                 totalPages = responseData.data.totalPages
                 array.map(function (sinhVien) {
-                    var tenDeTai = sinhVien.tenDeTai == null ? 'Chưa có' : sinhVien.tenDeTai;
-                    var tenGvhd = sinhVien.tenGvhd == null ? 'Chưa có' : sinhVien.tenGvhd;
+                    var tenDeTai = sinhVien.tenDeTai == null ? '-' : sinhVien.tenDeTai;
+                    var tenGvhd = sinhVien.tenGvhd == null ? '-' : sinhVien.tenGvhd;
                     var maSinhVien = sinhVien.maSinhVien;
                     text1 = `
                       <tr class="table-light">
@@ -171,8 +176,8 @@ function loadDataToTable(count) {
                             <td class="text-center align-middle"> ${sinhVien.maSinhVien}</td>
                             <td class="text-center align-middle"> ${sinhVien.tenSinhVien}</td>
                             <td class="text-center align-middle"> ${sinhVien.tenChuyenNganh}</td>
-                            <td class="text-center align-middle"> ${sinhVien.maMonChuongTrinh == null ? 'Chưa có' : sinhVien.maMonChuongTrinh}</td>
-                            <td class="text-center align-middle"> ${sinhVien.maMonDuAn == null ? 'Chưa có' : sinhVien.maMonDuAn}</td>
+                            <td class="text-center align-middle"> ${sinhVien.maMonChuongTrinh == null ? '-' : sinhVien.maMonChuongTrinh}</td>
+                            <td class="text-center align-middle"> ${sinhVien.maMonDuAn == null ? '-' : sinhVien.maMonDuAn}</td>
                                                         `
                     text2 = sinhVien.maNhom == null ? `
                 <td class="text-center align-middle">
@@ -293,25 +298,25 @@ function exportFile() {
     let maNhomSearch = $("#maNhomSearch").val().trim();
     let trangThai = $("#trangThai").val().trim();
 
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: CNNhomDatnApi + "/export?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
-                + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
-                + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: CNNhomDatnApi + "/export?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+            + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
+            + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
+            + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
+        ,
+        success: function () {
+            window.open(CNNhomDatnApi + "/export?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+                + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&tenGvhd=" + tenGvhd
+                + "&monChuongTrinh=" + monChuongTrinh
                 + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
-            ,
-            success: function () {
-                window.open(CNNhomDatnApi + "/export?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
-                    + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&tenGvhd=" + tenGvhd
-                    + "&monChuongTrinh=" + monChuongTrinh
-                    + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
-                    , '_self');
-                $("#modal_excel").modal('hide')
-            },
-            error: function (e) {
-            }
-        });
+                , '_self');
+            $("#modal_excel").modal('hide')
+        },
+        error: function (e) {
+        }
+    });
 
 }
 
@@ -412,25 +417,25 @@ function exportFileExcelSapGvhd() {
     let maNhomSearch = $("#maNhomSearch").val().trim();
     let trangThai = $("#trangThai").val().trim();
 
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: sinhVienApi + "/export-sap-gvhd?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
-                + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
-                + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: sinhVienApi + "/export-sap-gvhd?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+            + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn
+            + "&tenGvhd=" + tenGvhd + "&monChuongTrinh=" + monChuongTrinh
+            + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
+        ,
+        success: function () {
+            window.open(sinhVienApi + "/export-sap-gvhd?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
+                + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&tenGvhd=" + tenGvhd
+                + "&monChuongTrinh=" + monChuongTrinh
                 + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
-            ,
-            success: function () {
-                window.open(sinhVienApi + "/export-sap-gvhd?idDotDangKy=" + dotDangKyId + "&chuyenNganhId=" + chuyenNganhId
-                    + "&tenSinhVien=" + tenSinhVien + "&monDatn=" + monDatn + "&tenGvhd=" + tenGvhd
-                    + "&monChuongTrinh=" + monChuongTrinh
-                    + "&maNhomSearch=" + maNhomSearch + "&trangThai=" + trangThai
-                    , '_self');
-                $("#modal_excel").modal('hide')
-            },
-            error: function (e) {
-            }
-        });
+                , '_self');
+            $("#modal_excel").modal('hide')
+        },
+        error: function (e) {
+        }
+    });
 
 }
 

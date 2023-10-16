@@ -88,4 +88,6 @@ public class PropertyKeys {
     public static final String FILE_LOG_IS_EXIST = "file.log.is.exists";
     public static final String FILE_LOG_NOT_EXISTS = "file.log.not.exists";
     public static final String KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT = "khong.co.dot.hien.tai.vui.long.chon.dot";
+    public static final String NHOM_CON_4_THANH_VIEN_NEU_XOA_NHOM_SE_THANH_NHOM_KHONG_HOP_LE = "nhom.con.4.thanh.vien.neu.xoa.nhom.se.thanh.nhom.khong.hop.le";
+    public static final String CHUYEN_NGANH_CUA_SINH_VIEN_KHONG_PHU_HOP_VOI_NHOM = "chuyen.nganh.cua.sinh.vien.khong.phu.hop.voi.nhom";
 }

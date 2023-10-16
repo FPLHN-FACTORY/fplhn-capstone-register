@@ -99,17 +99,17 @@
                                                 <div class="info-value">
                                                     <span class="info-label">Tên nhóm:</span><span
                                                         class="info-label-content"
-                                                        th:text="${thongTinNhom.tenNhom == null ? 'Chưa có' : thongTinNhom.tenNhom}"> </span>
+                                                        th:text="${thongTinNhom.tenNhom == null ? '-' : thongTinNhom.tenNhom}"> </span>
                                                 </div>
                                                 <div class="info-value">
                                                     <span class="info-label" style="flex: 3">Tên đề tài:</span> <span
                                                         class="info-label-content"
-                                                        th:text="${thongTinNhom.tenDeTai == null ? 'Chưa có' : thongTinNhom.tenDeTai}"></span>
+                                                        th:text="${thongTinNhom.tenDeTai == null ? '-' : thongTinNhom.tenDeTai}"></span>
                                                 </div>
                                                 <div class="info-value">
                                                     <span class="info-label">Giảng viên HD:</span> <span
                                                         class="info-label-content"
-                                                        th:text="${thongTinNhom.gvhd == null ? 'Chưa có' : thongTinNhom.gvhd}"></span>
+                                                        th:text="${thongTinNhom.gvhd == null ? '-' : thongTinNhom.gvhd}"></span>
                                                 </div>
                                                 <div class="info-value">
                                                     <span class="info-label">Môn DATN:</span> <span
@@ -214,6 +214,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <button
+                                                        th:attr="onclick=|openModalRemoveNhomDatn('${thongTinNhom.id}')|"
+                                                        class="btn btn-danger">
+                                                    Xóa nhóm
+                                                </button>
                                             </div>
                                             <div class="modal fade "
                                                  id="modal_create"

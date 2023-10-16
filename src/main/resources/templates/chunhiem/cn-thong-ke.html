@@ -349,7 +349,7 @@
                                                                 <td th:text="${i.count}"></td>
                                                                 <td th:text="${nhomDatn.maNhom} + ' - ' + ${nhomDatn.monDatn}"></td>
                                                                 <td th:text="${nhomDatn.soLuongThanhVien} + '/7'"></td>
-                                                                <td th:text="${(nhomDatn.getTenDeTai() == null || nhomDatn.getTenDeTai() == '') ? 'Chưa có' : nhomDatn.getTenDeTai()}"></td>
+                                                                <td th:text="${(nhomDatn.getTenDeTai() == null || nhomDatn.getTenDeTai() == '') ? '-' : nhomDatn.getTenDeTai()}"></td>
                                                             </tr>
                                                         </th:block>
                                                         </tbody>

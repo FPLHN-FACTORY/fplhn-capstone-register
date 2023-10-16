@@ -1,6 +1,8 @@
 const sinhVienApi = '/api/chu-nhiem/sinh-vien';
+const CNNhomDatnApi = '/api/chu-nhiem/nhom-datn';
 const sinhVienTheoNhomView = '/chu-nhiem/sinh-vien';
 const CnNhomDatnView = '/chu-nhiem/nhom-datn';
+const CNNhomDatnView = '/chu-nhiem/nhom-datn';
 let idOldCaptain;
 
 $(document).ready(function () {
@@ -159,6 +161,13 @@ function openModalRemoveNhom(maSinhVien) {
                         }
                     },
                     error: function (e) {
+                        if (e.responseJSON.message === 'Nhom con 4 thanh vien neu kick thanh vien tiep ra khoi nhom nhom se thanh nhom khong hop le') {
+                            bootbox.alert({
+                                message: "Nhóm chỉ còn từ 4 thành viên trở xuống nếu kick tiếp thành viên ra thì nhóm sẽ trở thành nhóm không hợp lệ",
+                                backdrop: true
+                            });
+                            return;
+                        }
                     }
                 });
             }
@@ -312,7 +321,7 @@ function loadData() {
         contentType: "application/json",
         url: sinhVienApi + "/oldCaptain?idGroup=" + idGroup,
         success: function (captain) {
-            if(captain.data != null) {
+            if (captain.data != null) {
                 idOldCaptain = captain.data.maSinhVien;
             }
         },
@@ -392,6 +401,54 @@ function openModalHistoryDetail(page, check, maNhom, dotDangKyId) {
     });
 }
 
+function openModalRemoveNhomDatn(nhomDatnId) {
+    bootbox.confirm({
+        title: "Xóa nhóm dự án tốt nghiệp",
+        message: "Bạn muốn xóa vĩnh viễn nhóm này không?",
+        backdrop: true,
+        buttons: {
+            cancel: {
+                className: 'btn-outline-secondary btn btn-light',
+                label: '<i class="fa fa-times"></i> Quay lại'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Xác nhận'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    type: "DELETE",
+                    contentType: "application/json",
+                    url: CNNhomDatnApi + "/" + nhomDatnId,
+                    data: JSON.stringify(nhomDatnId),
+                    dataType: 'json',
+                    success: function () {
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                window.open(CNNhomDatnView, '_self');
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        if (e.responseJSON.message === 'Nhom du an tot nghiep not exist') {
+                            bootbox.alert({
+                                message: 'Nhóm dự án tốt nghiệp không tồn tại',
+                                backdrop: true,
+                                callback: function () {
+
+                                }
+                            });
+                        }
+                        return;
+                    }
+                });
+            }
+        }
+    });
+}
 
 
 

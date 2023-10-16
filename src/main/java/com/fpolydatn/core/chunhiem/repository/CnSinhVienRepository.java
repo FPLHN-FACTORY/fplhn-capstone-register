@@ -83,7 +83,7 @@ public interface CnSinhVienRepository extends SinhVienRepository {
             SELECT a.id, IF(:#{#req.currentTime} BETWEEN a.ngay_bat_dau AND a.ngay_ket_thuc, 1, 0) 
             AS check_dot_dang_ky FROM dot_dang_ky a WHERE a.id = :#{#req.idDotDangKy}
             )
-            SELECT ROW_NUMBER() OVER(ORDER BY d.ma_nhom) AS STT,a.ma_sinh_vien,a.ten_sinh_vien,
+            SELECT ROW_NUMBER() OVER(ORDER BY d.ma_nhom) AS STT, a.id, a.ma_sinh_vien, a.ten_sinh_vien,
             b.ten_chuyen_nganh,
             m.ma_mon as 'ma_mon_chuong_trinh',
             c.ma_mon as 'ma_mon_du_an'

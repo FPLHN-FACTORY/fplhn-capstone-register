@@ -17,7 +17,7 @@ public interface CnSinhVienTheoDotService {
 
     PageableObject<CnSinhVienTheoDotResponse> searchByIdDotDangKy(final CnFindSinhVienTheoDotRequest req);
 
-    boolean addSinhVienTheoNhom(String maNhom,String maSinhVien);
+    boolean addSinhVienTheoNhom(String maNhom,String maSinhVien, String idSinhVien);
 
     List<CnSinhVienTheoDotResponse> getSinhVienByTenSinhVien(String tenSinhVien,String coSoId);
 

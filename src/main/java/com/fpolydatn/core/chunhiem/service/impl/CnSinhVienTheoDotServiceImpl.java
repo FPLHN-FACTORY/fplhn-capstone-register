@@ -139,7 +139,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
     }
 
     @Override
-    public boolean addSinhVienTheoNhom(String maNhom, String maSinhVien) {
+    public boolean addSinhVienTheoNhom(String maNhom, String maSinhVien, String idSinhVien) {
         String idNhom = nhomDatnRepository.getIdByMaNhom(maNhom, commonHelper.getDotDangKyHienTai());
         if (idNhom == null) {
             throw new RestApiException(Message.GROUP_NO_EXIST);
@@ -151,14 +151,18 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
         if (numberOfGroup >= 7) {
             throw new RestApiException(Message.OVERLOADED_GROUP);
         }
+        SinhVien sinhVienFind = cnSinhVienTheoNhomRepository.findById(idSinhVien).get();
         String captainId = nhomDatnRepository.findIDTruongNhom(idNhom, commonHelper.getDotDangKyHienTai());
         String idMonDatn = cnSinhVienTheoNhomRepository.findIdMonDatnByIdCaptain(captainId, commonHelper.getDotDangKyHienTai());
         Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(captainId);
         String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(captain.get().getChuyenNganhId());
+        if(!sinhVienFind.getChuyenNganhId().equals(captain.get().getChuyenNganhId())) {
+            throw new RestApiException(Message.CHUYEN_NGANH_CUA_SINH_VIEN_KHONG_PHU_HOP_VOI_NHOM);
+        }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Đã thêm sinh viên '" + maSinhVien + "' vào nhóm '" + maNhom + "'",
+                    createLoggerObject("Đã thêm sinh viên '" + sinhVienFind.getTenSinhVien() + "-" + sinhVienFind.getMaSinhVien() + "' vào nhóm '" + maNhom + "'",
                             pathFileLogActive, "Thành công");
             loggerObjectActive.setIdChuyenNganh(captain.get().getChuyenNganhId());
             loggerObjectActive.setTenChuyenNganh(tenChuyenNganh);
@@ -166,7 +170,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObject = writerFileCSV.
-                    createLoggerObject("Đã thêm sinh viên '" + maSinhVien + "' vào nhóm '" + maNhom + "'",
+                    createLoggerObject("Đã thêm sinh viên '" + sinhVienFind.getTenSinhVien() + "-" + sinhVienFind.getMaSinhVien() + "' vào nhóm '" + maNhom + "'",
                             pathFile, "Thành công");
             loggerObject.setTenNhom(maNhom);
             loggerObject.setIdChuyenNganh(captain.get().getChuyenNganhId());
