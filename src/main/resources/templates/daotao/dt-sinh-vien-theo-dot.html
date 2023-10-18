@@ -329,6 +329,17 @@
                                                                     </div>
                                                                     <span class="text-danger"
                                                                           id="import_excel_error"></span>
+                                                                    <br>
+                                                                    <label class="col-form-label">Đợt đăng ký</label>
+                                                                    <select class="form-control"
+                                                                            id="dot_dang_ky_import">
+                                                                        <option value="">Chọn đợt đăng ký</option>
+                                                                        <option th:each="item : ${listDotDangKy}"
+                                                                                th:value="${item.getId()}"
+                                                                                th:text="${item.getName()}"></option>
+                                                                    </select>
+                                                                    <span class="text-danger"
+                                                                          id="choose_ddk_error"></span>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">

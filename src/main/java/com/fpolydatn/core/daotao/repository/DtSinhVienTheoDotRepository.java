@@ -106,6 +106,15 @@ public interface DtSinhVienTheoDotRepository extends SinhVienRepository {
             """, nativeQuery = true)
     List<SimpleEntityProj> getAllMaSV(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
 
+    @Query(value = """
+                    SELECT 
+                    s.id,
+                    s.email AS 'name'
+                    FROM do_an_tot_nghiep.sinh_vien s
+                    WHERE s.co_so_id = :coSoId AND dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
+    List<SimpleEntityProj> getAllEmailByDotDangKyId(@Param("coSoId") String coSoId, @Param("dotDangKyId") String dotDangKyId);
+
     @Query(value = "SELECT * FROM sinh_vien WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId", nativeQuery = true)
     List<SinhVien> findAllSinhVienByDotDangKyId(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
 

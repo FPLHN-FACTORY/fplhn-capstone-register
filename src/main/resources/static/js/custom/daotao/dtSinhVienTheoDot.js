@@ -667,13 +667,16 @@ function importExcel() {
     let typeExcel = $("#inputGroupFile01").val();
     let fileName = typeExcel.split(".");
     let typeFile = fileName[fileName.length - 1];
+    let dotDangKyId = $("#dot_dang_ky_import").val();
     if (typeExcel.length <= 0) {
         $("#import_excel_error").text("Chọn file");
+    } else if (dotDangKyId == '') {
+        $("#choose_ddk_error").text("Vui lòng chọn đợt đăng ký cần import");
     } else if ((typeFile == 'xls') || (typeFile == 'xlsx')) {
         var form = $('#form_import_excel')[0];
         $.ajax({
                 type: 'POST',
-                url: '/api/dao-tao/sinh-vien/import',
+                url: '/api/dao-tao/sinh-vien/import/' + dotDangKyId,
                 enctype: 'multipart/form-data',
                 data: new FormData(form),
                 processData: false,

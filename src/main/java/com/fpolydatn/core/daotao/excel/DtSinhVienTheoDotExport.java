@@ -98,8 +98,8 @@ public class DtSinhVienTheoDotExport {
         createCell(row, 4, "Email", cellStyle);
         createCell(row, 5, "Khóa", cellStyle);
         createCell(row, 6, "Tên chuyên ngành", cellStyle);
-        createCell(row, 7, "Đợt đăng ký", cellStyle);
-        createCell(row, 8, "Mã môn chương trình", cellStyle);
+//        createCell(row, 7, "Đợt đăng ký", cellStyle);
+        createCell(row, 7, "Mã môn chương trình", cellStyle);
         writeDataLines();
         ServletOutputStream outputStream = response.getOutputStream();
         xssfWorkbook.write(outputStream);

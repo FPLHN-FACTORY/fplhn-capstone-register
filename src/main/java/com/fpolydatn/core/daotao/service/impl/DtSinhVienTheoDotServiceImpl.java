@@ -170,7 +170,9 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Override
     public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId, String dotDangKyId) throws IOException {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
-
+		if (!dotDangKyRepository.existsById(dotDangKyId)) {
+            throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
+        }
         try {
             response.setStatus(true);
             DtSinhVienTheoDotImport sinhVienTheoDotImport = new DtSinhVienTheoDotImport();
@@ -186,45 +188,37 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 SinhVien sinhVienEntity = new SinhVien();
                 if (sinhVien.getTenSinhVien().isEmpty() || sinhVien.getMaSinhVien().isEmpty() ||
                         sinhVien.getEmail().isEmpty() ||
-                        sinhVien.getChuyenNganh().isEmpty() ||
-                        sinhVien.getDotDangKy().isEmpty()) {
+                        sinhVien.getChuyenNganh().isEmpty()) {
                     response.setStatus(false);
-                    response.setMessage("Không để trống (Mã, tên, email, tên chuyên ngành, đợt đăng ký)");
-                    return;
-                }
-                if (map.containsKey(sinhVien.getMaSinhVien())) {
-                    response.setStatus(false);
-                    response.setMessage("Mã sinh viên " + sinhVien.getMaSinhVien() + " không được trùng");
+                    response.setMessage("Không để trống (Mã, tên, email, tên chuyên ngành,)");
                     return;
                 }
 
-                if (map.containsKey(sinhVien.getChuyenNganh())) {
-                    sinhVienEntity.setChuyenNganhId(map.get(sinhVien.getChuyenNganh()));
+                if (map.containsKey(sinhVien.getMaSinhVien().toLowerCase())) {
+                    response.setStatus(false);
+                    response.setMessage("Mã sinh viên " + sinhVien.getMaSinhVien() + " đã tồn tại");
+                    return;
+                }
+
+                if (map.containsKey(sinhVien.getChuyenNganh().toLowerCase())) {
+                    sinhVienEntity.setChuyenNganhId(map.get(sinhVien.getChuyenNganh().toLowerCase()));
                 } else {
                     response.setStatus(false);
                     response.setMessage("Tên chuyên ngành \"" + sinhVien.getChuyenNganh() + "\" không tồn tại");
                     return;
                 }
 
-                if (map.containsKey(sinhVien.getDotDangKy())) {
-                    sinhVienEntity.setDotDangKyId(map.get(sinhVien.getDotDangKy()));
-                } else {
-                    response.setStatus(false);
-                    response.setMessage("Tên đợt đăng ký \"" + sinhVien.getDotDangKy() + "\" không tồn tại");
-                    return;
-                }
-
-                if (map.containsKey(sinhVien.getMonDATN())) {
-                    sinhVienEntity.setMonChuongTrinhId(map.get(sinhVien.getMonDATN()));
+                if (map.containsKey(sinhVien.getMonDATN().toLowerCase())) {
+                    sinhVienEntity.setMonChuongTrinhId(map.get(sinhVien.getMonDATN().toLowerCase()));
                 } else {
                     response.setStatus(false);
                     response.setMessage("Mã môn chương trình \"" + sinhVien.getMonDATN() + "\" không tồn tại");
                     return;
                 }
 
-                if (map.containsKey(sinhVien.getEmail())) {
+                if (map.containsKey(sinhVien.getEmail().toLowerCase())) {
                     response.setStatus(false);
-                    response.setMessage("Email " + sinhVien.getEmail() + " không được trùng");
+                    response.setMessage("Email " + sinhVien.getEmail() + " đã tồn tại");
                     return;
                 }
 
@@ -241,12 +235,13 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 } else {
                     sinhVienEntity.setSoDienThoai(sinhVien.getSoDienThoai());
                 }
+                sinhVienEntity.setDotDangKyId(dotDangKyId);
                 sinhVienEntity.setEmail(sinhVien.getEmail());
                 sinhVienEntity.setKhoa(sinhVien.getKhoa());
                 sinhVienEntity.setCoSoId(coSoId);
 
-                map.put(sinhVien.getMaSinhVien(), sinhVien.getMaSinhVien());
-                map.put(sinhVien.getEmail(), sinhVien.getEmail());
+                map.put(sinhVien.getMaSinhVien().toLowerCase(), sinhVien.getMaSinhVien());
+                map.put(sinhVien.getEmail().toLowerCase(), sinhVien.getEmail());
                 listSinhVienEntity.put(sinhVienEntity.getMaSinhVien(), sinhVienEntity);
             });
             if (response.getStatus()) {
@@ -263,27 +258,30 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId, String dotDangKyId) {
-
         //lấy id, MaSv của tất cả sv theo cơ sở
         List<SimpleEntityProj> getAllMaSV = sinhVienRepository.getAllMaSV(coSoId, dotDangKyId);
         getAllPutMap(mapAll, getAllMaSV);
-        // lấy id, MaNhom tất cả nhóm theo cơ sở
-//        List<SimpleEntityProj> getAllMaNhom = nhomDatnTheoDotRepository.getAllMaNhom(coSoId);
-//        getAllPutMap(mapAll, getAllMaNhom);
+        // Lấy id, email của tất cả các sv theo cơ sở và đợt đăng ký
+        List<SimpleEntityProj> getAllEmail = sinhVienRepository.getAllEmailByDotDangKyId(coSoId, dotDangKyId);
+        getAllPutMap(mapAll, getAllEmail);
         // lấy id, tenChuyenNganh tất cả chuyên ngành theo cơ sở
         List<SimpleEntityProj> getAllTenCN = chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
         getAllPutMap(mapAll, getAllTenCN);
-        // lấy id, tenDotDangKy tất cả đợt đăng ký theo cơ sở
-        List<SimpleEntityProj> getAllTenDDK = dotDangKyRepository.findAllSimpleEntity(coSoId);
-        getAllPutMap(mapAll, getAllTenDDK);
         // lấy id, monDatn tất cả đợt đăng ký theo cơ sở
         List<SimpleEntityProj> getAllMaMon = monDatnRepository.getAllMaMon(coSoId);
         getAllPutMap(mapAll, getAllMaMon);
+
+        // lấy id, MaNhom tất cả nhóm theo cơ sở
+//        List<SimpleEntityProj> getAllMaNhom = nhomDatnTheoDotRepository.getAllMaNhom(coSoId);
+//        getAllPutMap(mapAll, getAllMaNhom);
+        // lấy id, tenDotDangKy tất cả đợt đăng ký theo cơ sở
+//        List<SimpleEntityProj> getAllTenDDK = dotDangKyRepository.findAllSimpleEntity(coSoId);
+//        getAllPutMap(mapAll, getAllTenDDK);
     }
 
     public void getAllPutMap(ConcurrentHashMap<String, String> mapSimple, List<SimpleEntityProj> getAllSimpleEntityProjs) {
         for (SimpleEntityProj simpleEntityProj : getAllSimpleEntityProjs) {
-            mapSimple.put(simpleEntityProj.getName(), simpleEntityProj.getId());
+            mapSimple.put(simpleEntityProj.getName().toLowerCase(), simpleEntityProj.getId());
         }
     }
 

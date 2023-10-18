@@ -81,10 +81,9 @@ public class DtSinhVienTheoDotRestController extends BaseController {
         sinhVienService.MauImportExcel(response, typeExcel, request);
     }
 
-    @PostMapping("/import")
-    public ResponseObject importEcel(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping("/import/{dotDangKyId}")
+    public ResponseObject importEcel(@RequestParam("file") MultipartFile file, @PathVariable("dotDangKyId") String dotDangKyId) throws IOException {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
         DtLoaiSinhVienResponse response = sinhVienService.DtSinhVienImport(file, coSoId, dotDangKyId);
         return new ResponseObject(response);
     }

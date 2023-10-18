@@ -25,8 +25,6 @@ public class DtCreateSinhVienTheoDotRequest {
 
     private String chuyenNganh;
 
-    private String dotDangKy;
-
     private String monDATN;
 
 }

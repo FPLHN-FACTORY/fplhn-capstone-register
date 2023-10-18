@@ -443,23 +443,23 @@ function openModalRemoveGiangVien(giangVienId, item) {
                     data: JSON.stringify(giangVienId),
                     dataType: 'json',
                     success: function (responseData) {
-                        if (responseData.data.message != null) {
+                        bootbox.alert({
+                            message: 'Xóa thành công',
+                            backdrop: true,
+                            callback: function () {
+                                window.open(giangVienHuongDanView, '_self');
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        console.log("ERROR : ", e);
+                        if (e.responseJSON.message === 'Giang vien dang con nhom huong dan khong the xoa') {
                             bootbox.alert({
                                 message: 'Giảng viên đang có nhóm hướng dẫn không thể xóa',
                                 backdrop: true,
                             });
-                        } else {
-                            bootbox.alert({
-                                message: 'Xóa thành công',
-                                backdrop: true,
-                                callback: function () {
-                                    window.open(giangVienHuongDanView, '_self');
-                                }
-                            });
                         }
-                    },
-                    error: function (e) {
-                        console.log("ERROR : ", e);
+
                     }
                 });
             }
