@@ -102,8 +102,10 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
-    public List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId, final DtFindPhanCongHuongDanRequest req) {
-        return phanCongHuongDanRepository.getPhanCongGiaoVien(coSoId, maMonId, req);
+    public PageableObject<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId, final DtFindPhanCongHuongDanRequest req) {
+        Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
+        Page<DtPhanCongHuongDanResponse> res = phanCongHuongDanRepository.getPhanCongGiaoVien(coSoId, maMonId, req, pageable);
+        return new PageableObject<>(res);
     }
 
     @Override
@@ -141,8 +143,9 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
-    public List<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatnList(String coSoId, String giangVienHuongDanId) {
-        return phanCongHuongDanRepository.getPhanCongMonDatn(coSoId, giangVienHuongDanId);
+    public  PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatnList(String coSoId, String giangVienHuongDanId, DtFindPhanMonGiangVienHuongDanRequest req) {
+        Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
+        return new PageableObject<>(phanCongHuongDanRepository.getPhanCongMonDatn(coSoId, giangVienHuongDanId, req, pageable));
     }
 
 }

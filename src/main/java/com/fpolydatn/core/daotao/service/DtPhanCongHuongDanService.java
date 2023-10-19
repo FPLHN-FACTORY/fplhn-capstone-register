@@ -24,7 +24,7 @@ public interface DtPhanCongHuongDanService {
 
     Boolean delete(String idMon, String idGV);
 
-    List<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId, final DtFindPhanCongHuongDanRequest req);
+    PageableObject<DtPhanCongHuongDanResponse> getPhanCongGiaoVien(String coSoId, String maMonId, final DtFindPhanCongHuongDanRequest req);
 
     List<PhanCongHuongDan> addAll(List<PhanCongHuongDan> list);
 
@@ -33,6 +33,6 @@ public interface DtPhanCongHuongDanService {
 
     DtGiangVienHDResponse getGiangVienHuongDan(String id, String coSoId);
 
-    List<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatnList(String coSoId, String maMonId);
+    PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanMonDatnList(String coSoId, String maMonId, final DtFindPhanMonGiangVienHuongDanRequest req);
 
 }

@@ -6,6 +6,8 @@ import com.fpolydatn.core.daotao.model.request.DtFindPhanCongHuongDanRequest;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
+import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
+import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,9 @@ public final class DtPhanCongHuongDanController extends BaseController {
     @Autowired
     private CommonHelper commonHelper;
 
+    @Autowired
+    private DtSvDotDangKyService dotDangKyService;
+
     @GetMapping("/{id}")
     public String viewPhanCongHuongDan(Model model
             , final DtFindPhanCongHuongDanRequest req
@@ -36,13 +41,13 @@ public final class DtPhanCongHuongDanController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setDotDangKy(commonHelper.getDotDangKyHienTai());
         req.setCoSoId(coSoId);
+        List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(req.getCoSoId());
         PageableObject<DtPhanCongHuongDanResponse> listPhanCong = phanCongHuongDanService.search(id, req, req.getPage());
         DtPhanCongHuongDanMonDatnResponse monDatnResponse = phanCongHuongDanService.getMon(id);
-        List<DtPhanCongHuongDanResponse> phanCongHuongDanGiaoViens = phanCongHuongDanService.getPhanCongGiaoVien(coSoId, id, req);
 
+        model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("page", listPhanCong);
         model.addAttribute("monDatn", monDatnResponse);
-        model.addAttribute("phanCongHuongDanGiaoViens", phanCongHuongDanGiaoViens);
         return "daotao/dt-phan-cong-huong-dan";
     }
 

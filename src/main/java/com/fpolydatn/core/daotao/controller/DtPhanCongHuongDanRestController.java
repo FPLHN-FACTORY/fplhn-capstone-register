@@ -7,9 +7,12 @@ import com.fpolydatn.core.daotao.model.request.DtFindPhanCongHuongDanRequest;
 import com.fpolydatn.core.daotao.model.request.DtFindPhanMonGiangVienHuongDanRequest;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanMonDatnChoGiangVienHuongDanResponse;
+import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
+import com.fpolydatn.infrastructure.constant.Message;
+import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.WriterFileCSV;
@@ -50,6 +53,9 @@ public class DtPhanCongHuongDanRestController extends BaseController {
     private CommonHelper commonHelper;
 
     @Autowired
+    private DtDotDangKyService dotDangKyService;
+
+    @Autowired
     private WriterFileCSV writerFileCSV;
 
     // tìm kiếm giảng viên => phân công giảng viên
@@ -57,10 +63,11 @@ public class DtPhanCongHuongDanRestController extends BaseController {
     public ResponseObject searchAddPhanCongHuongDan(final DtFindPhanCongHuongDanRequest req
             , @PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        req.setDotDangKy(commonHelper.getDotDangKyHienTai());
+        if (req.getDotDangKy() == null || req.getDotDangKy().trim().length() == 0) {
+            req.setDotDangKy(commonHelper.getDotDangKyHienTai());
+        }
         req.setCoSoId(coSoId);
-        List<DtPhanCongHuongDanResponse> phanCongHuongDanGiaoViens = phanCongHuongDanService.getPhanCongGiaoVien(coSoId, id, req);
-        return new ResponseObject(phanCongHuongDanGiaoViens);
+        return new ResponseObject(phanCongHuongDanService.getPhanCongGiaoVien(coSoId, id, req));
     }
 
     // tìm kiếm giảng viên hướng dẫn tham gia hướng dẫn môn
@@ -68,9 +75,19 @@ public class DtPhanCongHuongDanRestController extends BaseController {
     public ResponseObject searchHomePhanCongHuongDan(final DtFindPhanCongHuongDanRequest req
             , @PathVariable("id") String id, @RequestParam("page") int page) {
         String coSoId = session.getCoSoId();
-        req.setDotDangKy(commonHelper.getDotDangKyHienTai());
+        if (req.getDotDangKy() == null || req.getDotDangKy().trim().length() == 0) {
+            req.setDotDangKy(commonHelper.getDotDangKyHienTai());
+        }
         req.setCoSoId(coSoId);
         PageableObject<DtPhanCongHuongDanResponse> listPhanCong = phanCongHuongDanService.search(id, req, page);
+        return new ResponseObject(listPhanCong);
+    }
+
+    @GetMapping("/phan-mon-add/{id}")
+    public ResponseObject viewPhanCongHuongDanAdd(final DtFindPhanMonGiangVienHuongDanRequest req
+            , @PathVariable("id") String id) {
+        String coSoid = session.getCoSoId();
+        PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> listPhanCong = phanCongHuongDanService.getPhanMonDatn(coSoid, id, req);
         return new ResponseObject(listPhanCong);
     }
 
@@ -78,7 +95,8 @@ public class DtPhanCongHuongDanRestController extends BaseController {
     public ResponseObject viewPhanCongHuongDan(final DtFindPhanMonGiangVienHuongDanRequest req
             , @PathVariable("id") String id) {
         String coSoid = session.getCoSoId();
-        PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> listPhanCong = phanCongHuongDanService.getPhanMonDatn(coSoid, id, req);
+
+        PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> listPhanCong = phanCongHuongDanService.getPhanMonDatnList(coSoid, id, req);
         return new ResponseObject(listPhanCong);
     }
 
@@ -100,9 +118,18 @@ public class DtPhanCongHuongDanRestController extends BaseController {
     @GetMapping("/history")
     public ResponseObject getAllHistory(
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "50") int size
+            @RequestParam(name = "size", defaultValue = "50") int size,
+            @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy
     ) {
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_PHAN_CONG_HUONG_DAN);
+        if (idDotDangKy.equals("")) {
+            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            if (dotDangKyHienTai != null) {
+                idDotDangKy = dotDangKyHienTai;
+            } else {
+                throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
+            }
+        }
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_PHAN_CONG_HUONG_DAN);
         LoggerObject loggerObject = new LoggerObject();
         loggerObject.setPathFile(pathFile);
         List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
@@ -114,8 +141,18 @@ public class DtPhanCongHuongDanRestController extends BaseController {
     }
 
     @GetMapping("/download-log")
-    public ResponseEntity<Resource> downloadCsv() throws IOException {
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_PHAN_CONG_HUONG_DAN);
+    public ResponseEntity<Resource> downloadCsv(
+            @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy) throws IOException {
+
+        if (idDotDangKy.equals("")) {
+            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            if (dotDangKyHienTai != null) {
+                idDotDangKy = dotDangKyHienTai;
+            } else {
+                throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
+            }
+        }
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_PHAN_CONG_HUONG_DAN);
 
         File file = new File(pathFile);
 

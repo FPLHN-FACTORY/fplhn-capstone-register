@@ -181,9 +181,9 @@ input::-webkit-inner-spin-button {
 }
 
 div#history .modal-dialog {
-    max-width: 1400px !important;
+    min-width: 1400px !important;
 }
 
 div#historyDetail .modal-dialog {
-    max-width: 1400px !important;
+    min-width: 1400px !important;
 }

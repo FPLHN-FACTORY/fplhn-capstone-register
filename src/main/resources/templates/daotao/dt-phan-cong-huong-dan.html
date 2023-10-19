@@ -179,10 +179,24 @@
                                                     <div>
                                                         <div class="row justify-content-between align-items-center">
                                                             <span for="" class="fillter-name col-3 text-end">Tên tài khoản, tên của GVHD:</span>
-                                                            <div class="col-7">
+                                                            <div class="col-9">
                                                                 <input type="text" class="form-control" name="keyword"
                                                                        id="keyword">
                                                             </div>
+                                                        </div>
+                                                        <div class="row justify-content-between align-items-center mt-3">
+                                                            <span for="" class="fillter-name col-3 text-end">Đợt đăng ký:</span>
+                                                            <div class="col-9">
+                                                                <select class="form-control" id="search_dot_dang_ky">
+                                                                    <option value="">Chọn đợt đăng ký</option>
+                                                                    <option th:each="item : ${listDotDangKy}"
+                                                                            th:value="${item.getId()}"
+                                                                            th:text="${item.getName()}"></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row justify-content-center align-items-center mt-3">
                                                             <div class="col-2">
                                                                 <button type="button" data-bs-dismiss="modal"
                                                                         class="btn btn-success" onclick="viewTable(0)">
@@ -191,7 +205,6 @@
                                                                 </button>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                                 <div class="table-responsive mt-3">
@@ -271,13 +284,18 @@
                     <input type="text" id="getMonDatnId" th:value="${monDatn.getId()}" hidden>
                     <div class="modal-body">
                         <div class="row g-2 align-items-center pb-4">
-                            <div class="col-auto col-4">
+                            <div class="col-auto col-3">
                                 <span for="" class="fillter-name text-center">Tên tài khoản, tên của GVHD:</span>
                             </div>
-                            <div class="col-auto col-8">
+                            <div class="col-auto col-7">
                                 <input type="text" class="form-control" name="keyword" id="searchPhanCong"
-                                       onkeyup="viewTablePhanCongHuongDan()"
                                 >
+                            </div>
+                            <div class="col-auto col-2">
+                                <button type="button"
+                                        class="btn btn-primary" th:attr="onclick=|viewTablePhanCongHuongDan(0, 0)|"
+                                >Tìm kiếm
+                                </button>
                             </div>
                         </div>
                         <div class="form-group">
@@ -291,25 +309,30 @@
                                 <th>Đợt đăng ký</th>
                                 <th width="100px" align="center">Chọn</th>
                                 </thead>
-                                <tbody id="importGiangVien">
-                                <th:block th:each="phanCongHuongDanGiaoVien : ${phanCongHuongDanGiaoViens}">
-                                    <tr class="table-light">
-                                        <td th:text="${phanCongHuongDanGiaoVien.stt}"></td>
-                                        <td th:text="${phanCongHuongDanGiaoVien.getTenTaiKhoan()}" class="giangVienId"
-                                            th:value="${phanCongHuongDanGiaoVien.id}"></td>
-                                        <td th:text="${phanCongHuongDanGiaoVien.getTenGV()}"></td>
-                                        <td th:text="${phanCongHuongDanGiaoVien.dotDangKy}"></td>
-                                        <td class="text-center align-middle">
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <input type="checkbox" name="checkThemTatCa" id=""
-                                                       class="checkThemTatCa"></div>
-                                        </td>
-                                    </tr>
-                                </th:block>
+                                <tbody id="add-giang-vien">
                                 </tbody>
+
                             </table>
                         </div>
                         <div id="errLoi" style="color:red"></div>
+
+                        <div style="text-align: right">
+                            <div id="pageAdd" style="float: right;">
+                            </div>
+                            <div>
+                                <select id="sizeAdd"
+                                        th:attr="onchange=|viewTablePhanCongHuongDan(0, 0)|"
+                                        class="form-control-sm">
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="500">500</option>
+                                    <option value="1000">1000</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="emptyAdd">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal">

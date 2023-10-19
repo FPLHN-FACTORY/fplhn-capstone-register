@@ -18,6 +18,9 @@ public interface DtGiangVienHDResponse extends IsIdentified {
     @Value("#{target.ten_co_so}")
     String getTenCoSo();
 
+    @Value("#{target.id_dot_dang_ky}")
+    String getIdDotDangKy();
+
     @Value("#{target.ten_dot_dang_ky}")
     String getTenDotDangKy();
 

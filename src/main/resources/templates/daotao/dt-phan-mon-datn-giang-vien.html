@@ -290,16 +290,22 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <input type="text" id="getDotDangKyId" th:value="${giangVienHuongDan.getIdDotDangKy()}" hidden>
                     <input type="text" id="getGiangVienHuongDanId" th:value="${giangVienHuongDan.getId()}" hidden>
                     <div class="modal-body">
                         <div class="row g-2 align-items-center pb-4">
-                            <div class="col-auto col-4">
+                            <div class="col-auto col-3">
                                 <span for="" class="fillter-name text-center">Tìm mã, tên môn</span>
                             </div>
-                            <div class="col-auto col-8">
+                            <div class="col-auto col-7">
                                 <input type="text" class="form-control" name="keyword" id="searchPhanCong"
-                                       onkeyup="viewTablePhanCongHuongDan()"
                                 >
+                            </div>
+                            <div class="col-auto col-2">
+                                <button type="button"
+                                        class="btn btn-primary" th:attr="onclick=|viewTablePhanCongHuongDan(0, 0)|"
+                                >Tìm kiếm
+                                </button>
                             </div>
                         </div>
                         <div class="form-group">
@@ -312,24 +318,29 @@
                                 <th>Tên môn</th>
                                 <th width="100px">Chọn</th>
                                 </thead>
-                                <tbody>
-                                <th:block th:each="phanMonDatn : ${phanMonDatns}">
-                                    <tr class="table-light">
-                                        <td th:text="${phanMonDatn.stt}"></td>
-                                        <td th:text="${phanMonDatn.getMaMonDatn()}"></td>
-                                        <td th:text="${phanMonDatn.getMonDatn()}" class="giangVienId"
-                                            th:value="${phanMonDatn.id}"></td>
-                                        <td class="text-center align-middle">
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <input type="checkbox" name="checkThemTatCa" id=""
-                                                       class="checkThemTatCa"></div>
-                                        </td>
-                                    </tr>
-                                </th:block>
+                                <tbody id="add-giang-vien">
                                 </tbody>
                             </table>
                         </div>
                         <div id="errLoi" style="color:red"></div>
+
+                        <div style="text-align: right">
+                            <div id="pageAdd" style="float: right;">
+                            </div>
+                            <div>
+                                <select id="sizeAdd"
+                                        th:attr="onchange=|viewTablePhanCongHuongDan(0, 0)|"
+                                        class="form-control-sm">
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="500">500</option>
+                                    <option value="1000">1000</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="emptyAdd">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary btn btn-light" data-bs-dismiss="modal">

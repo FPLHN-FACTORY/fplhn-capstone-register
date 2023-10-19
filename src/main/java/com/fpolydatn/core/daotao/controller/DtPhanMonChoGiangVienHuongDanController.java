@@ -35,11 +35,9 @@ public class DtPhanMonChoGiangVienHuongDanController extends BaseController {
         String coSoId = session.getCoSoId();
         PageableObject<DtPhanMonDatnChoGiangVienHuongDanResponse> listPhanCong = phanCongHuongDanService.getPhanMonDatn(coSoId, id, req);
         DtGiangVienHDResponse giangVienHuongDan = phanCongHuongDanService.getGiangVienHuongDan(id, coSoId);
-        List<DtPhanMonDatnChoGiangVienHuongDanResponse> phanMonDatns = phanCongHuongDanService.getPhanMonDatnList(coSoId, id);
 
         model.addAttribute("page", listPhanCong);
         model.addAttribute("giangVienHuongDan", giangVienHuongDan);
-        model.addAttribute("phanMonDatns", phanMonDatns);
         return "daotao/dt-phan-mon-datn-giang-vien";
     }
 

@@ -5,6 +5,7 @@ let totalPages = $("#totalPages").val()
 let currentPage = $("#currentPage").val()
 
 function openModalHistory(page, check) {
+    let dotDangKyId = $("#search_dot_dang_ky").val();
     let size = check;
     if (check === 0) {
         size = parseInt($("#sizeHistory").val());
@@ -14,7 +15,7 @@ function openModalHistory(page, check) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: phanCongHuongDanApi + "/history?page=" + page + "&size=" + size + "&dotDangKy=" ,
+        url: phanCongHuongDanApi + "/history?page=" + page + "&size=" + size + "&dotDangKy=" + dotDangKyId,
         dataType: 'json',
         success: function (responseData) {
             $("#history").modal('show')
@@ -75,10 +76,11 @@ function openModalHistory(page, check) {
 }
 
 function openModalHistoryDownload() {
+    let dotDangKyId = $("#search_dot_dang_ky").val();
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: phanCongHuongDanApi + "/download-log?dotDangKy=" ,
+        url: phanCongHuongDanApi + "/download-log?dotDangKy=" + dotDangKyId ,
         success: function (responseData) {
             var blob = new Blob([responseData], {type: "text/csv"});
             var url = window.URL.createObjectURL(blob);
@@ -105,6 +107,7 @@ function openModalHistoryDownload() {
 
 function openPhanCong() {
     $("#modal_create").modal("show")
+    viewTablePhanCongHuongDan(0, 0);
 }
 
 $(document).ready(function () {
@@ -195,13 +198,14 @@ function viewTable(page) {
         page = 0;
     }
     currentPage = page;
+    let dotDangKyId = $("#search_dot_dang_ky").val();
     $("#valueInput").val(page + 1);
     let keyword = $("#keyword").val().trim();
     let monDatnId = $("#getMonDatnId").attr('value');
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: phanCongHuongDanApi + "/search-home/" + monDatnId + "?tenGV=" + keyword + "&page=" + page,
+        url: phanCongHuongDanApi + "/search-home/" + monDatnId + "?tenGV=" + keyword + "&page=" + page + "&dotDangKy=" + dotDangKyId,
         dataType: 'json',
         success: function (responseData) {
             totalPages = responseData.data.totalPages;
@@ -245,25 +249,72 @@ function viewTable(page) {
 }
 
 // search giảng viên trong modal
-function viewTablePhanCongHuongDan() {
-    let table = $("#table-add");
-    let row = table.get(0).lastElementChild.children;
+function viewTablePhanCongHuongDan(page, check) {
     let search = $("#searchPhanCong");
-    let searchValue = search.val().trim().toUpperCase();
-    let dem = 0;
+    let dotDangKyId = $("#search_dot_dang_ky").val();
+    let searchValue = search.val().trim();
 
-    for (const a of row) {
-        let tenTaiKhoan = a.children[1].textContent.trim().toUpperCase();
-        let hoVaTen = a.children[2].textContent.trim().toUpperCase();
-        let stt = a.children[0];
-        if (!tenTaiKhoan.includes(searchValue) && !hoVaTen.includes(searchValue)) {
-            a.style.display = "none";
-        } else {
-            dem++;
-            stt.textContent = dem;
-            a.style.display = "";
-        }
+    let monDatnId = $("#getMonDatnId").attr('value');
+    let size = check;
+    if (check === 0) {
+        size = parseInt($("#sizeAdd").val());
+    } else {
+        $("#sizeAdd").val("20");
     }
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: phanCongHuongDanApi + "/search-add/"+ monDatnId +"?page=" + page + "&size=" + size + "&tenGV="+ searchValue + "&dotDangKy=" + dotDangKyId ,
+        dataType: 'json',
+        success: function (responseData) {
+            if (responseData.data.data.length == 0) {
+                $("#add-giang-vien").html(``);
+                $("#pageAdd").html('');
+                $("#emptyAdd").html(`<h3>Không có dữ liệu</h3>`);
+            } else {
+                $("#emptyAdd").html(``);
+                $("#add-giang-vien").html(responseData.data.data.map(function (element, index) {
+                    return `
+                <tr class="table-light">                 
+                      <td class="text-center align-middle">${element.stt}</td>
+                      <td class="text-center align-middle giangVienId"
+                            value="${element.id}">${element.tenTaiKhoan}</td>
+                      <td class="text-center align-middle">${element.tenGV}</td>
+                      <td class="text-center align-middle">${element.dotDangKy}</td>
+                        <td class="text-center align-middle">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <input type="checkbox" name="checkThemTatCa" id=""
+                                       class="checkThemTatCa"></div>
+                        </td>
+                </tr>
+               `
+                }));
+
+                var count = responseData.data.totalPages;
+                if (responseData.data.totalPages <= 1) {
+                    $("#pageAdd").html('');
+                } else {
+                    let templatePageMid = ``;
+                    let templatePageBefore = page === 0 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="viewTablePhanCongHuongDan(${page - 1}, ${size})"><img src="/img/back.svg"></a>
+                </li>
+                `;
+                    templatePageMid = `
+                             <input style="border: none; text-align: center; width: 100px" value="${Number(page) + 1} / ${Number(count)}" readonly>`
+                    let templatePageAfter = page === Number(count) - 1 ? "" : `
+                <li style="color: #0a8cf0" class="page-item">
+                     <a style="border: none" class="page-link" onclick="viewTablePhanCongHuongDan(${page + 1}, ${size})"><img src="/img/next.svg"></a>
+                </li>
+                `;
+                    let templateHtml = ``;
+                    templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+                    $("#pageAdd").html('<ul class="pagination justify-content-end">' + templateHtml + '</ul>');
+                }
+            }
+            ;
+        }
+    });
 }
 
 genPaging();
