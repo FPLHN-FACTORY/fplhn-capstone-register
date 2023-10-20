@@ -478,7 +478,7 @@ function getNhomMon(chuyenNganhId, type, nhomMonHienTai) {
     })
 }
 
-$('#chuyenNganh').change(function () {
+$('#chuyenNganhAdd').change(function () {
     var chuyenNganhId = $(this).val();
     getNhomMon(chuyenNganhId, 1, null);
 })
