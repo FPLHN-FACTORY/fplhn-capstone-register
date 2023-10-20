@@ -170,7 +170,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     @Override
     public DtLoaiSinhVienResponse DtSinhVienImport(MultipartFile file, String coSoId, String dotDangKyId) throws IOException {
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
-		if (!dotDangKyRepository.existsById(dotDangKyId)) {
+        if (!dotDangKyRepository.existsById(dotDangKyId)) {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
         try {
@@ -182,6 +182,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 response.setMessage("Import file không thành công");
             }
             ConcurrentMap<String, SinhVien> listSinhVienEntity = new ConcurrentHashMap<>();
+            StringBuilder logMessage = new StringBuilder();
             map = new ConcurrentHashMap<>();
             addDataInMap(map, coSoId, dotDangKyId);
             sinhVienList.parallelStream().forEach(sinhVien -> {
@@ -243,9 +244,20 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 map.put(sinhVien.getMaSinhVien().toLowerCase(), sinhVien.getMaSinhVien());
                 map.put(sinhVien.getEmail().toLowerCase(), sinhVien.getEmail());
                 listSinhVienEntity.put(sinhVienEntity.getMaSinhVien(), sinhVienEntity);
+
+                logMessage.append("Đào tạo đã thêm sinh viên '").append(sinhVien.getMaSinhVien())
+                            .append(" - ").append(sinhVien.getTenSinhVien()).append("'. ");
             });
             if (response.getStatus()) {
                 sinhVienRepository.saveAll(listSinhVienEntity.values());
+                try {
+                    String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(dotDangKyId).get().getTenDotDangKy());
+                    LoggerObject loggerObjectActive = writerFileCSV.createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
+                    logService.sendLogMessage(loggerObjectActive);
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -660,47 +672,46 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         StringBuilder logMessage = new StringBuilder();
         if (!(sinhVien.getMaSinhVien()).equals(maSVCu)) {
             logMessage.append("Đào tạo đã sửa mã sinh viên từ '").append(maSVCu)
-                    .append("' thành '").append(sinhVien.getMaSinhVien()).append("'. ");
+                    .append("' thành '").append(sinhVien.getMaSinhVien()).append("'.");
         }
         if (!(sinhVien.getTenSinhVien()).equals(tenSVCu)) {
             logMessage.append("Đào tạo đã sửa tên sinh viên từ '").append(tenSVCu)
-                    .append("' thành '").append(sinhVien.getTenSinhVien()).append("'. ");
+                    .append("' thành '").append(sinhVien.getTenSinhVien()).append("'.");
         }
         if (!(sinhVien.getSoDienThoai()).equals(sdtCu)) {
             logMessage.append("Đào tạo đã sửa số điện thoại sinh viên '").append(sinhVien.getMaSinhVien())
                     .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(sdtCu)
-                    .append("' thành '").append(sinhVien.getSoDienThoai()).append("'. ");
+                    .append("' thành '").append(sinhVien.getSoDienThoai()).append("'.");
         }
         if (!(sinhVien.getEmail()).equals(emailCu)) {
             logMessage.append("Đào tạo đã sửa email sinh viên '").append(sinhVien.getMaSinhVien())
                     .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(emailCu)
-                    .append("' thành '").append(sinhVien.getEmail()).append("'. ");
+                    .append("' thành '").append(sinhVien.getEmail()).append("'.");
         }
         if (!(sinhVien.getKhoa()).equals(khoaCu)) {
             logMessage.append("Đào tạo đã sửa khóa của sinh viên '").append(sinhVien.getMaSinhVien())
                     .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(khoaCu)
-                    .append("' thành '").append(sinhVien.getKhoa()).append("'. ");
+                    .append("' thành '").append(sinhVien.getKhoa()).append("'.");
         }
         if (!chuyenNganhCu.get().getId().equals(chuyenNganhMoi.get().getId())) {
             logMessage.append("Đào tạo đã sửa chuyên ngành của sinh viên '").append(sinhVien.getMaSinhVien())
                     .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(chuyenNganhCu.get().getTenChuyenNganh())
-                    .append("' thành '").append(chuyenNganhMoi.get().getTenChuyenNganh()).append("'. ");
+                    .append("' thành '").append(chuyenNganhMoi.get().getTenChuyenNganh()).append("'.");
         }
         if (!monCu.get().getId().equals(monMoi.get().getId())) {
             logMessage.append("Đào tạo đã sửa môn chương trình của sinh viên '").append(sinhVien.getMaSinhVien())
                     .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append(monCu.get().getMaMon())
-                    .append("' thành '").append(monMoi.get().getMaMon()).append("'. ");
+                    .append("' thành '").append(monMoi.get().getMaMon()).append("'.");
         }
         if (!trangThaiCu.equals(sinhVien.getTrangThai())) {
-            if(dieuKien.equals("DU_DIEU_KIEN")){
+            if (dieuKien.equals("DU_DIEU_KIEN")) {
                 logMessage.append("Đào tạo đã sửa trạng thái của sinh viên '").append(sinhVien.getMaSinhVien())
                         .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append("Đủ điều kiện")
-                        .append("' thành '").append("Không đủ điều kiện").append("'. ");
-            }
-            else{
+                        .append("' thành '").append("Không đủ điều kiện").append("'.");
+            } else {
                 logMessage.append("Đào tạo đã sửa trạng thái của sinh viên '").append(sinhVien.getMaSinhVien())
                         .append(" - ").append(sinhVien.getTenSinhVien()).append("' từ '").append("Không đủ điều kiện")
-                        .append("' thành '").append("Đủ điều kiện").append("'. ");
+                        .append("' thành '").append("Đủ điều kiện").append("'.");
             }
         }
         try {
