@@ -412,7 +412,6 @@ function xoaNhom(count) {
                         if (xx.checked) {
                             arrayId.push(xx.value)
                         }
-                        console.log(arrayId)
                     }
                     $.ajax({
                         type: "DELETE",

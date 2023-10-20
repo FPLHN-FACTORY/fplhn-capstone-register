@@ -504,7 +504,6 @@ function createFileLog(tenDotDangKy) {
         url: dotDangKyApi + "/create-file-log?tenDotDangKy=" + tenDotDangKy,
         dataType: 'json',
         success: function (responseData) {
-            console.log(responseData.data)
             if (responseData.data) {
                 bootbox.alert({
                     message: 'Tạo file log thành công',
@@ -519,10 +518,12 @@ function createFileLog(tenDotDangKy) {
 
         },
         error: function (e) {
-            bootbox.alert({
-                message: 'Lỗi ' + e.responseJSON.message,
-                backdrop: true
-            });
+            if(e.responseJSON.message== 'File log da duoc tao') {
+                bootbox.alert({
+                    message: 'File log đã tồn tại',
+                    backdrop: true
+                });
+            }
         }
     });
 }

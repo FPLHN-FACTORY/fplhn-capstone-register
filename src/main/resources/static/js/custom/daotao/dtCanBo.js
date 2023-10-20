@@ -485,7 +485,7 @@ function importCanBo() {
 
 function openModalRemoveCanBo(canBoId) {
     bootbox.confirm({
-        title: "Xóa nhóm môn",
+        title: "Xóa cán bộ",
         message: "Bạn muốn xóa cán bộ này?",
         backdrop: true,
         buttons: {
