@@ -483,6 +483,7 @@ function genPagzing() {
                 `;
         let templateHtml = ``;
         templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
+        $("#checkbox_father").prop("checked", false);
         $("#page").html(templateHtml);
     }
 }

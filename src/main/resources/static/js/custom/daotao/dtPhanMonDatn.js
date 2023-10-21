@@ -352,7 +352,7 @@ function viewTablePhanCongHuongDan(page, check) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: phanCongHuongDanApi + "/phan-mon-add/"+ monDatnId +"?page=" + page + "&size=" + size + "&tenMonDatn="+ searchValue ,
+        url: phanCongHuongDanApi + "/phan-mon/"+ monDatnId +"?page=" + page + "&size=" + size + "&tenMonDatn="+ searchValue ,
         dataType: 'json',
         success: function (responseData) {
             if (responseData.data.data.length == 0) {
