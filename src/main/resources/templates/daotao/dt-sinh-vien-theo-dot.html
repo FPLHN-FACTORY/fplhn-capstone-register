@@ -509,6 +509,17 @@
                         </div>
                         <span class="text-danger"
                               id="errorImportFile"></span>
+                        <br>
+                        <label class="col-form-label">Đợt đăng ký</label>
+                        <select class="form-control"
+                                id="dotDangKyImportLoaiSV">
+                            <option value="">Chọn đợt đăng ký</option>
+                            <option th:each="item : ${listDotDangKy}"
+                                    th:value="${item.getId()}"
+                                    th:text="${item.getName()}"></option>
+                        </select>
+                        <span class="text-danger"
+                              id="dotDangKyImportLoaiSVError"></span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary btn btn-light"

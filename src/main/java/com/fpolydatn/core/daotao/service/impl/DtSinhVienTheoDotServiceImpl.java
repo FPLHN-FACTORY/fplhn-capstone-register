@@ -299,12 +299,16 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
     @Override
     public DtLoaiSinhVienResponse importSinhVienKhongDuDieukien(DtLoaiSinhVienKhongDatRequest request) {
+        Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(request.getDotDangKyId());
+        if (!dotDangKy.isPresent()) {
+            throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
+        }
         DtLoaiSinhVienResponse response = new DtLoaiSinhVienResponse();
         response.setStatus(true);
         ConcurrentMap<String, String> mapMsvLoai = new ConcurrentHashMap<>();
         CopyOnWriteArrayList<LoggerObject> loggerObjects = new CopyOnWriteArrayList<>();
-        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
-        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKy.get().getTenDotDangKy());
+        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(dotDangKy.get().getTenDotDangKy());
 
         int columnIndex = -1;
         try {
@@ -328,11 +332,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                         if (columnIndex != -1 &&
                                 cell.getColumnIndex() == columnIndex &&
                                 type == CellType.STRING) {
-                            if (!val.matches("[a-zA-Z]{2}\\d+")) {
-                                response.setStatus(false);
-                                response.setMessage("Mã sinh viên " + val + " không đúng định dạng");
-                                return response;
-                            } else if (mapMsvLoai.containsKey(val)) {
+                            if (mapMsvLoai.containsKey(val)) {
                                 continue;
                             }
                             mapMsvLoai.put(val, val);
@@ -486,9 +486,10 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public SinhVien loaiSinhVien(String id, String coSoId, String dotDangKyId) {
+    public SinhVien loaiSinhVien(String id) {
         Map<String, NhomDatn> map = new HashMap<>();
         Optional<SinhVien> sv = sinhVienRepository.findById(id);
+        Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(sv.get().getDotDangKyId());
         Optional<ChuyenNganh> chuyenNganh = chuyenNganhRepository.findById(sv.get().getChuyenNganhId());
         if (!sv.isPresent()) {
             throw new RestApiException(Message.SINH_VIEN_NOT_EXISTS);
@@ -500,7 +501,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         } else {
             Optional<NhomDatn> nhomDatn = nhomDatnTheoDotRepository.findById(sinhVien.getNhomId());
             try {
-                String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                String pathFile = writerFileCSV.getPathFileLuongNhomDatn(dotDangKy.get().getTenDotDangKy());
                 LoggerObject loggerObject = writerFileCSV.
                         createLoggerObject("Đào tạo đã xóa sinh viên '" + sinhVien.getMaSinhVien()
                                         + "' ra khỏi nhóm '" + nhomDatn.get().getMaNhom() + "' do không đủ điều kiện",
@@ -510,7 +511,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                 loggerObject.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
                 logService.sendLogMessage(loggerObject);
 
-                String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKy.get().getTenDotDangKy());
                 LoggerObject loggerObjectActive = writerFileCSV.
                         createLoggerObject("Đào tạo đã xóa sinh viên '" + sinhVien.getMaSinhVien()
                                         + "' ra khỏi nhóm '" + nhomDatn.get().getMaNhom() + "' do không đủ điều kiện",
@@ -528,7 +529,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
             } else {
                 //nếu là nhóm trưởng thì chuyển quyền cho sinh viên trong nhóm
                 SinhVien motSVtrongNhom = sinhVienRepository.motSVTrongNhom(sinhVien.getId(),
-                        sinhVien.getNhomId(), coSoId, dotDangKyId);
+                        sinhVien.getNhomId(), sinhVien.getCoSoId(), sinhVien.getDotDangKyId());
 //                chuyenTruongNhom = map.get(sinhVien.getId());
                 if (motSVtrongNhom == null) {
                     nhomDatnTheoDotRepository.delete(nhomDatn.get());
@@ -536,7 +537,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                     sinhVien.setMonDatnId(null);
                     sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
                     try {
-                        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKy.get().getTenDotDangKy());
                         LoggerObject loggerObjectActive = writerFileCSV.
                                 createLoggerObject("Đào tạo đã xóa nhóm '" + nhomDatn.get().getMaNhom() + "'" +
                                                 " do không có thành viên nào trong nhóm",
@@ -545,7 +546,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                         loggerObjectActive.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
                         logService.sendLogMessage(loggerObjectActive);
 
-                        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(dotDangKy.get().getTenDotDangKy());
                         LoggerObject loggerObject = writerFileCSV.
                                 createLoggerObject("Đào tạo đã xóa nhóm '" + nhomDatn.get().getMaNhom() + "'" +
                                                 " do không có thành viên nào trong nhóm",
@@ -564,7 +565,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                     sinhVien.setMonDatnId(null);
                     sinhVien.setTrangThai(TrangThaiSinhVien.KHONG_DU_DIEU_KIEN);
                     try {
-                        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+                        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKy.get().getTenDotDangKy());
                         LoggerObject loggerObjectActive = writerFileCSV.
                                 createLoggerObject("Đào tạo đổi quyền trưởng nhóm '" + nhomDatn.get().getMaNhom() + "' " +
                                                 "cho sinh viên '" + motSVtrongNhom.getMaSinhVien() + "' do sinh viên '"
@@ -574,7 +575,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
                         loggerObjectActive.setTenChuyenNganh(chuyenNganh.get().getTenChuyenNganh());
                         logService.sendLogMessage(loggerObjectActive);
 
-                        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
+                        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(dotDangKy.get().getTenDotDangKy());
                         LoggerObject loggerObject = writerFileCSV.
                                 createLoggerObject("Đào tạo đổi quyền trưởng nhóm '" + nhomDatn.get().getMaNhom() + "' " +
                                                 "cho sinh viên '" + motSVtrongNhom.getMaSinhVien() + "' do sinh viên '"
@@ -592,7 +593,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         }
         SinhVien svKhongDuDK = sinhVienRepository.save(sinhVien);
         try {
-            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKy.get().getTenDotDangKy());
             LoggerObject loggerObjectActive = writerFileCSV.
                     createLoggerObject("Sinh viên '" + sinhVien.getMaSinhVien() + "' bị loại vì không đủ điều kiện.",
                             pathFileLogActive, "Thành công");
