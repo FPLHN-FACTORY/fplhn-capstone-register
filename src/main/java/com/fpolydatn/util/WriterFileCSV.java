@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,6 +46,9 @@ public class WriterFileCSV {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private HttpServletResponse httpServletResponse;
 
     @Autowired
     private DtDotDangKyRepository dotDangKyRepository;
@@ -97,6 +102,35 @@ public class WriterFileCSV {
             csvPrinter.printRecord(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString(),
                     httpServletRequest.getRemoteAddr(), new Date().toString(), httpServletRequest.getMethod(), content, switchAuthor(httpServletRequest.getRequestURI()), status);
             System.out.println("================= Nội dung file: " + content);
+            csvPrinter.flush();
+            csvPrinter.close();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writerFileBugCSV(LoggerObject bug) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE)+ "file_bug.csv", true));
+             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+            csvPrinter.printRecord(
+                    // Email người thực hiện
+                    bug.getMail()
+                    ,
+                    // địa chỉ ip
+                    bug.getIP(),
+                    // thời gian thực hiện
+                    new Date().toString(),
+                    // method
+                    bug.getMethod(),
+                    // api
+                    bug.getApi(),
+                    // nội dung
+                    bug.getContent(),
+                    // param
+                    bug.getParam(),
+                    // request body
+                    bug.getRequest());
             csvPrinter.flush();
             csvPrinter.close();
             writer.close();
