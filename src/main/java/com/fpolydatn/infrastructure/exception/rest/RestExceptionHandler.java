@@ -1,8 +1,5 @@
 package com.fpolydatn.infrastructure.exception.rest;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
@@ -20,11 +17,11 @@ import java.util.stream.Collectors;
 public final class RestExceptionHandler extends
         FpolyDatnExceptionRestHandler<ConstraintViolationException> {
 
-    @ExceptionHandler(RestApiException.class)
-    public ResponseEntity<?> handlerException(RestApiException restApiException) {
-        ApiError apiError = new ApiError(restApiException.getMessage());
-        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(RestApiException.class)
+//    public ResponseEntity<?> handlerException(RestApiException restApiException) {
+//        ApiError apiError = new ApiError(restApiException.getMessage());
+//        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+//    }
 
     @Override
     protected Object wrapApi(ConstraintViolationException ex) {

@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -111,7 +110,7 @@ public class WriterFileCSV {
     }
 
     public void writerFileBugCSV(LoggerObject bug) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE)+ "file_bug.csv", true));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "file_bug.csv", true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             csvPrinter.printRecord(
                     // Email người thực hiện
@@ -457,6 +456,10 @@ public class WriterFileCSV {
     // trỏ đến file ghi luông nhóm datn
     public String getPathFileLuongNhomDatn(String tenDotDangKy) {
         return getPathFileByDotDangKyAndCoSo(tenDotDangKy) + getPropertiesRead(ConfigurationsConstant.NAME_FILE_DANG_KY_DATN);
+    }
+
+    public String getPathFileLogBug() {
+        return getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "file_bug.csv";
     }
 
     public String getPropertiesRead(String constant) {
