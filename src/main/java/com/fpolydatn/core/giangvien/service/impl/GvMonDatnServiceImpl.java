@@ -5,6 +5,7 @@ import com.fpolydatn.core.giangvien.service.GvMonDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  */
 
 @Service
+@Validated
 public class GvMonDatnServiceImpl implements GvMonDatnService {
 
     @Autowired

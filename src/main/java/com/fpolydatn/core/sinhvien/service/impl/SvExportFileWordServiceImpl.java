@@ -41,6 +41,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.swing.text.html.Option;
 import java.io.ByteArrayOutputStream;
@@ -58,6 +59,7 @@ import java.util.Optional;
  * @author thangncph26123
  */
 @Service
+@Validated
 public class SvExportFileWordServiceImpl implements SvExportFileWordService {
 
     @Autowired

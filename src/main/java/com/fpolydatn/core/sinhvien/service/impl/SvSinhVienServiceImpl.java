@@ -5,6 +5,7 @@ import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.entity.SinhVien;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import java.util.Optional;
  */
 
 @Service
+@Validated
 public class SvSinhVienServiceImpl implements SvSinhVienService {
 
     @Autowired

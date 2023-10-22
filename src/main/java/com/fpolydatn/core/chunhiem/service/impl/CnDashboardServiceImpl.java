@@ -10,6 +10,7 @@ import com.fpolydatn.core.chunhiem.service.CnDashboardService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  * @author thangncph26123
  */
 @Service
+@Validated
 public class CnDashboardServiceImpl implements CnDashboardService {
 
     @Autowired

@@ -15,8 +15,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author thangncph26123
@@ -44,6 +50,13 @@ public final class GlobalExceptionHandler {
         if (ex instanceof RestApiException) {
             ApiError apiError = new ApiError(ex.getMessage());
             return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+        } else if (ex instanceof ConstraintViolationException) {
+            Set<ConstraintViolation<?>> violations = ((ConstraintViolationException) ex).getConstraintViolations();
+            List<ErrorModel> errors = violations.stream()
+                    .map(violation ->
+                            new ErrorModel(getPropertyName(violation.getPropertyPath()), violation.getMessage()))
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         } else {
             Gson gson = new Gson();
             BufferedReader reader = httpServletRequest.getReader();
@@ -77,6 +90,16 @@ public final class GlobalExceptionHandler {
             Thread myThread = new Thread(myRunnable);
             myThread.start();
             return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private String getPropertyName(Path path) {
+        String pathStr = path.toString();
+        String[] comps = pathStr.split("\\.");
+        if (comps.length > 0) {
+            return comps[comps.length - 1];
+        } else {
+            return pathStr;
         }
     }
 }

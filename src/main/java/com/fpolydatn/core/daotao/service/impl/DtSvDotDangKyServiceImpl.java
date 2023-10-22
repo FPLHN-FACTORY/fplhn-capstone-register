@@ -5,6 +5,7 @@ import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author thepvph20110
  */
 @Service
+@Validated
 public class DtSvDotDangKyServiceImpl implements DtSvDotDangKyService {
     @Autowired
     private DtDotDangKyRepository dotDangKyRepository;

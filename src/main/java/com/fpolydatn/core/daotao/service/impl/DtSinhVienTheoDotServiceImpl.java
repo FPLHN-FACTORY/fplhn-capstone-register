@@ -43,6 +43,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -64,6 +65,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author thepvph20110
  */
 @Service
+@Validated
 public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
 
     @Autowired

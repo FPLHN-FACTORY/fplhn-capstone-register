@@ -8,6 +8,7 @@ import com.fpolydatn.repository.CanBoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.Optional;
  * @author thangncph26123
  */
 @Service
+@Validated
 public class CnMonDatnServiceImpl implements CnMonDatnService {
 
     @Autowired

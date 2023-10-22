@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Validated
 public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     @Autowired
     private DtNhomMonDatnRepository dtNhomMonDatnRepository;
