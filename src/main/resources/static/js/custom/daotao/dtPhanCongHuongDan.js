@@ -210,6 +210,7 @@ function viewTable(page) {
         success: function (responseData) {
             totalPages = responseData.data.totalPages;
             if (responseData.data.data.length > 0) {
+                $("#is_empty").html(``)
                 $("#list").html(responseData.data.data.map(function (item) {
                     return ` 
                         <tr class="table-light">
