@@ -35,7 +35,7 @@ public class CnSinhVienTheoNhomController extends BaseController {
     @GetMapping
     public String viewSinhVienTheoNhom(Model model, @RequestParam("id") String id, final CnFindSinhVienTheoNhomRequest req, final CnFindSinhVienNoGroupRequest request) {
         String coSoId = session.getCoSoId();
-        req.setIdNhom(id);
+        req.setIdNhom(null);
         req.setCoSoId(coSoId);
         request.setCoSoId(session.getCoSoId());
         request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
