@@ -607,6 +607,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 request.setDotDangKyId("");
             }
         }
+        System.out.println(cnNhomDatnRepository.searchNhomDatnInput(request) + " aaaaaaaa");
         return cnNhomDatnRepository.searchNhomDatnInput(request);
     }
 
