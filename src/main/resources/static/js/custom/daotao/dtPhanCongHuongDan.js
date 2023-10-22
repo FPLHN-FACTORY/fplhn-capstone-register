@@ -191,6 +191,7 @@ function changeInput() {
 
 // search giảng viên
 function viewTable(page) {
+    $("#is_empty").html(``)
     if (page == -1) {
         page = totalPages - 1;
     }
@@ -210,7 +211,6 @@ function viewTable(page) {
         success: function (responseData) {
             totalPages = responseData.data.totalPages;
             if (responseData.data.data.length > 0) {
-                $("#is_empty").html(``)
                 $("#list").html(responseData.data.data.map(function (item) {
                     return ` 
                         <tr class="table-light">
@@ -236,11 +236,11 @@ function viewTable(page) {
                         return ``
                     })
                 }
-            } else ($("#list").html(''), $("#list_page").html(function () {
-                return ``
-            }), $("#is_empty").html(function () {
-                return `<span>Không có dữ liệu</span>`
-            }))
+            } else {
+                $("#list").html('');
+                $("#list_page").html('');
+                $("#is_empty").html(`<span>Không có dữ liệu</span>`)
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
