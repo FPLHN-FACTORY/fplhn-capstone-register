@@ -142,7 +142,17 @@ public interface DtPhanCongHuongDanRepository extends PhanCongHuongDanRepository
                     OR :#{#req.tenMonDatn} LIKE '' 
                     OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% OR m.ma_mon LIKE %:#{#req.tenMonDatn}% )
             """
-            , nativeQuery = true)
+            , countQuery = """
+            SELECT m.id FROM do_an_tot_nghiep.mon_datn m
+            WHERE m.co_so_id = :coSoId AND nhom_mon_datn_id IS NOT NULL
+            AND m.id NOT IN (SELECT mon_datn_id FROM do_an_tot_nghiep.phan_cong_huong_dan WHERE giang_vien_id = :maGiangVienHuongDan)
+                        
+             AND
+                ( :#{#req.tenMonDatn} IS NULL 
+                    OR :#{#req.tenMonDatn} LIKE '' 
+                    OR m.ten_mon_datn LIKE %:#{#req.tenMonDatn}% OR m.ma_mon LIKE %:#{#req.tenMonDatn}% )
+            """,
+    nativeQuery = true)
     Page<DtPhanMonDatnChoGiangVienHuongDanResponse> getPhanCongMonDatn(@Param("coSoId") String coSoId, @Param("maGiangVienHuongDan") String maMonId, @Param("req") DtFindPhanMonGiangVienHuongDanRequest req, Pageable page);
 
 }

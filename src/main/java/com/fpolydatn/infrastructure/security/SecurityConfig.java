@@ -27,32 +27,33 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/authentication/*", "/").permitAll()
+                .antMatchers("/authentication/*", "/", "/admin/bit-dev").permitAll()
                 .antMatchers("/chu-nhiem/**").hasAuthority(ActorConstant.CHU_NHIEM)
                 .antMatchers("/dao-tao/**").hasAuthority(ActorConstant.DAO_TAO)
                 .antMatchers("/giang-vien/**").hasAuthority(ActorConstant.GIANG_VIEN)
                 .antMatchers("/sinh-vien/**").hasAuthority(ActorConstant.SINH_VIEN)
-                .antMatchers("/admin/**").hasAuthority(ActorConstant.ADMIN)
+                .antMatchers("/admin/bit-dev/**").hasAuthority(ActorConstant.ADMIN)
                 .and()
-                    .oauth2Login()
-                    .successHandler((request, response, authentication) -> {
-                        CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
-                        String role = oauthUser.getRole();
-                        String coSoID = oauthUser.getCoSoId();
-                        if (Objects.isNull(role) || Objects.isNull(coSoID)) {
+                .oauth2Login()
+                .successHandler((request, response, authentication) -> {
+                    CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
+                    String role = oauthUser.getRole();
+                    String coSoID = oauthUser.getCoSoId();
+                    if (Objects.isNull(role) || Objects.isNull(coSoID)) {
+                        if (!ActorConstant.ADMIN.equals(role)) {
                             response.sendRedirect("/");
-                        } else {
-                            userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), role);
                         }
-                    })
-                    .failureUrl("/authentication")
+                    }
+                    userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), oauthUser.getName(), role);
+                })
+                .failureUrl("/authentication")
                 .and()
-                    .logout()
-                    .logoutUrl("/doLogout")
-                    .logoutSuccessUrl("/").permitAll()
-                    .invalidateHttpSession(true)
+                .logout()
+                .logoutUrl("/doLogout")
+                .logoutSuccessUrl("/").permitAll()
+                .invalidateHttpSession(true)
                 .and()
-                    .exceptionHandling().accessDeniedPage("/authentication/403");
+                .exceptionHandling().accessDeniedPage("/authentication/403");
 
         http.headers().frameOptions().sameOrigin();
         return http.build();

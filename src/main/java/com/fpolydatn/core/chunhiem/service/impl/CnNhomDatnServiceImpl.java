@@ -51,6 +51,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -73,6 +74,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author thangncph26123
  */
 @Service
+@Validated
 public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Autowired
@@ -605,6 +607,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 request.setDotDangKyId("");
             }
         }
+        System.out.println(cnNhomDatnRepository.searchNhomDatnInput(request) + " aaaaaaaa");
         return cnNhomDatnRepository.searchNhomDatnInput(request);
     }
 

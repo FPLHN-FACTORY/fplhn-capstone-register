@@ -24,6 +24,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/authentication")
 public final class AuthenticationController {
+
     @Autowired
     @Qualifier(CoSoRepository.NAME)
     private CoSoRepository coSoRepository;

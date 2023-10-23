@@ -1,5 +1,6 @@
 package com.fpolydatn.infrastructure.rabbit;
 
+import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.RabbitConstant;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.util.WriterFileCSV;
@@ -21,10 +22,14 @@ public class LogConsumer {
         try {
             System.out.println("Connect !!!");
             WriterFileCSV writerFileCSV = new WriterFileCSV();
-            if (object.getTenNhom() == null) {
-                writerFileCSV.writerFileCSV(object);
+            if (object.getStatus() != null && object.getStatus().equals(ConfigurationsConstant.FALSE)) {
+                writerFileCSV.writerFileBugCSV(object);
             } else {
-                writerFileCSV.writerFileCSVLuong(object);
+                if (object.getTenNhom() == null) {
+                    writerFileCSV.writerFileCSV(object);
+                } else {
+                    writerFileCSV.writerFileCSVLuong(object);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();

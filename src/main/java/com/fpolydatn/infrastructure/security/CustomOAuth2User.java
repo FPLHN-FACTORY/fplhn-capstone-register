@@ -32,13 +32,14 @@ public class CustomOAuth2User implements OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-
-        switch (role) {
-            case ActorConstant.CHU_NHIEM -> authorities.add(new SimpleGrantedAuthority(ActorConstant.CHU_NHIEM));
-            case ActorConstant.DAO_TAO -> authorities.add(new SimpleGrantedAuthority(ActorConstant.DAO_TAO));
-            case ActorConstant.GIANG_VIEN -> authorities.add(new SimpleGrantedAuthority(ActorConstant.GIANG_VIEN));
-            case ActorConstant.SINH_VIEN -> authorities.add(new SimpleGrantedAuthority(ActorConstant.SINH_VIEN));
-            //case ActorConstant.ADMIN -> authorities.add(new SimpleGrantedAuthority(ActorConstant.ADMIN));
+        if (role != null) {
+            switch (role) {
+                case ActorConstant.CHU_NHIEM -> authorities.add(new SimpleGrantedAuthority(ActorConstant.CHU_NHIEM));
+                case ActorConstant.DAO_TAO -> authorities.add(new SimpleGrantedAuthority(ActorConstant.DAO_TAO));
+                case ActorConstant.GIANG_VIEN -> authorities.add(new SimpleGrantedAuthority(ActorConstant.GIANG_VIEN));
+                case ActorConstant.SINH_VIEN -> authorities.add(new SimpleGrantedAuthority(ActorConstant.SINH_VIEN));
+                case ActorConstant.ADMIN -> authorities.add(new SimpleGrantedAuthority(ActorConstant.ADMIN));
+            }
         }
         return authorities;
     }

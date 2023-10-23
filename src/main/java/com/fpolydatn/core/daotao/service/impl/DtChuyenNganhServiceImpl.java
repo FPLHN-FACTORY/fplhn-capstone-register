@@ -23,6 +23,7 @@ import com.fpolydatn.util.FormUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.Objects;
@@ -33,6 +34,7 @@ import java.util.List;
  * @author hungpv
  */
 @Service
+@Validated
 public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     @Autowired
     private DtChuyenNganhRepository dtChuyenNganhRepository;

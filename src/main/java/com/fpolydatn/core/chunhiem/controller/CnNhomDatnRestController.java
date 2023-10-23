@@ -199,7 +199,6 @@ public class CnNhomDatnRestController extends BaseController {
         return new ResponseObject(new PageImpl<>(pagedSanPhamList, PageRequest.of(page, size), list.size()));
     }
 
-
     @GetMapping("/download-log")
     public ResponseEntity<Resource> downloadCsv(
             @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy

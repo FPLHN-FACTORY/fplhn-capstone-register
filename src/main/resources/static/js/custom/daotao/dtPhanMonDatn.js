@@ -232,6 +232,7 @@ function openModalRemovePhanCongHuongDan(giangVienHuongDanId, monDatnId) {
 
 // search giảng viên
 function viewTable(page) {
+    $("#is_empty").html(``)
     if (page == -1) {
         page = totalPages - 1;
     }
@@ -271,15 +272,13 @@ function viewTable(page) {
                 if (responseData.data.totalPages > 1) {
                     genPaging();
                 } else {
-                    $("#list_page").html(function () {
-                        return ``
-                    })
+                    $("#list_page").html(``)
                 }
-            } else ($("#list").html(''), $("#list_page").html(function () {
-                return ``
-            }), $("#is_empty").html(function () {
-                return `<span>Không có dữ liệu</span>`
-            }))
+            } else {
+                $("#list").html('');
+                $("#list_page").html(``)
+                $("#is_empty").html(`<span>Không có dữ liệu</span>`)
+            }
         },
         error: function (e) {
             console.log("ERROR : ", e);
@@ -352,7 +351,7 @@ function viewTablePhanCongHuongDan(page, check) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: phanCongHuongDanApi + "/phan-mon-add/"+ monDatnId +"?page=" + page + "&size=" + size + "&tenMonDatn="+ searchValue ,
+        url: phanCongHuongDanApi + "/phan-mon/"+ monDatnId +"?page=" + page + "&size=" + size + "&tenMonDatn="+ searchValue ,
         dataType: 'json',
         success: function (responseData) {
             if (responseData.data.data.length == 0) {

@@ -727,13 +727,16 @@ function openModalLoaiSinhVien() {
 function loaiSinhVien() {
     let typeExcel = $("#fileLoaiSv").val();
     let fileName = typeExcel.split(".");
+    let dotDangKyId = $("#dotDangKyImportLoaiSV").val();
     if (typeExcel.length <= 0) {
         $("#errorImportFile").text("Chọn file");
+    } else if (dotDangKyId == '') {
+    	$("#dotDangKyImportLoaiSVError").text("Vui lòng chọn đợt đăng ký cần import danh sách sinh viên không đủ điều kiện");
     } else if (fileName[fileName.length - 1] == 'xlsx') {
         var form = $('#form_loai_sinh_vien')[0];
         $.ajax({
                 type: 'POST',
-                url: '/api/dao-tao/sinh-vien/loai-sinh-vien',
+                url: '/api/dao-tao/sinh-vien/loai-sinh-vien/' + dotDangKyId,
                 enctype: 'multipart/form-data',
                 processData: false,
                 data: new FormData(form),

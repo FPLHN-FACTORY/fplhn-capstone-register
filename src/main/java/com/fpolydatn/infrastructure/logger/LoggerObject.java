@@ -40,4 +40,10 @@ public class LoggerObject implements Serializable {
     private String idChuyenNganh;
 
     private String tenChuyenNganh;
+
+    private String request;
+
+    private String api;
+
+    private String param;
 }

@@ -88,10 +88,10 @@ public class DtSinhVienTheoDotRestController extends BaseController {
         return new ResponseObject(response);
     }
 
-    @PostMapping("/loai-sinh-vien")
-    public ResponseObject loaiSinhVienKhongDat(@ModelAttribute DtLoaiSinhVienKhongDatRequest request) {
+    @PostMapping("/loai-sinh-vien/{dotDangKyId}")
+    public ResponseObject loaiSinhVienKhongDat(@ModelAttribute DtLoaiSinhVienKhongDatRequest request, @PathVariable("dotDangKyId") String dotDangKyId) {
         request.setCoSoId(session.getCoSoId());
-        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        request.setDotDangKyId(dotDangKyId);
         DtLoaiSinhVienResponse response = sinhVienService.importSinhVienKhongDuDieukien(request);
         return new ResponseObject(response);
     }
@@ -105,9 +105,7 @@ public class DtSinhVienTheoDotRestController extends BaseController {
 
     @PutMapping("/loai-sv/{id}")
     public ResponseObject loaiSinhVien(@PathVariable("id") String id) {
-        String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        return new ResponseObject(sinhVienService.loaiSinhVien(id, coSoId, dotDangKyId));
+        return new ResponseObject(sinhVienService.loaiSinhVien(id));
     }
 
     @DeleteMapping("/{id}")

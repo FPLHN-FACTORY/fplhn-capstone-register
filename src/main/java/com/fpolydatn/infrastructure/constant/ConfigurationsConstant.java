@@ -5,6 +5,7 @@ public final class ConfigurationsConstant {
     private ConfigurationsConstant() {
     }
 
+    public static final String PATH_FILE_TEMPLATE = "csv_logger_folder_template";
     public static final String PATH_FILE_CO_SO_HA_NOI = "csv_logger_folder_path_ha_noi";
     public static final String PATH_FILE_CO_SO_HA_NOI_CAN_BO = "csv_logger_folder_path_ha_noi_can_bo";
     public static final String PATH_FILE_CO_SO_HA_NOI_DOT_DANG_KY = "csv_logger_folder_path_ha_noi_do_dang_ky";

@@ -6,6 +6,7 @@ import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @author ToanNT
  */
 @Service
+@Validated
 public class SvGiangVienHuongDanServiceImpl implements SvGiangVienHuongDanService {
     @Autowired
     SvGiangVienHuongDanRepository giangVienHuongDanRepository;
