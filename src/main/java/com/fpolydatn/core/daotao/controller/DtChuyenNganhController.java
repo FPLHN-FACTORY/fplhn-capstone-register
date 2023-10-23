@@ -10,6 +10,8 @@ import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,8 @@ import java.util.List;
 /**
  * @author hoangnt
  */
+
+@PropertySource("classpath:application.properties")
 @Controller
 @RequestMapping("/dao-tao/chuyen-nganh")
 public class DtChuyenNganhController extends BaseController {
@@ -33,6 +37,9 @@ public class DtChuyenNganhController extends BaseController {
     @Autowired
     private DtCanBoService canBoService;
 
+    @Value("${youtube.daotao.chuyennganh}")
+    private String youtubeLink;
+
     @GetMapping
     public String viewChuyenNganh(Model model, final DtFindChuyenNganhRequest request) {
         String coSoId = session.getCoSoId();
@@ -42,6 +49,7 @@ public class DtChuyenNganhController extends BaseController {
         List<SimpleEntityProj> listTenCanBo = canBoService.findAllSimpleEntityByTenCanBo(coSoId, vaiTro);
         model.addAttribute("page", listChuyenNganh);
         model.addAttribute("listCanBo", listTenCanBo);
+        model.addAttribute("youtubeLink", youtubeLink);
         return "daotao/dt-chuyen-nganh";
     }
 }
