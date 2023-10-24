@@ -23,7 +23,7 @@ import java.util.List;
  * @author hoangnt
  */
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/chuyen-nganh")
 public class DtChuyenNganhController extends BaseController {

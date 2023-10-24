@@ -33,7 +33,7 @@ import java.util.List;
  * @author hoangnt
  */
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/sinh-vien")
 public class SvNhomDatnController extends BaseController {

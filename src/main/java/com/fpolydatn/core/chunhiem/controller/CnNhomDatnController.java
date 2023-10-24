@@ -25,7 +25,7 @@ import java.util.List;
  * @author thangncph26123
  */
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/chu-nhiem/nhom-datn")
 public class CnNhomDatnController extends BaseController {

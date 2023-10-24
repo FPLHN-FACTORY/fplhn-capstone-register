@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/chu-nhiem/dot-dang-ky/sinh-vien")
 public class CnSinhVienTheoDotController extends BaseController {

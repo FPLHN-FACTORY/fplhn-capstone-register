@@ -22,7 +22,7 @@ import java.util.List;
  * @author thangncph26123
  */
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/chu-nhiem/thong-ke-chi-so")
 public class CnDashboardController extends BaseController {
