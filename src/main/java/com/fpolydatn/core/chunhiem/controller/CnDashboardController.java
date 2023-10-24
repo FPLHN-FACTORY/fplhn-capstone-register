@@ -9,6 +9,8 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import java.util.List;
 /**
  * @author thangncph26123
  */
+
+@PropertySource("classpath:application.properties")
 @Controller
 @RequestMapping("/chu-nhiem/thong-ke-chi-so")
 public class CnDashboardController extends BaseController {
@@ -31,6 +35,9 @@ public class CnDashboardController extends BaseController {
 
     @Autowired
     private CnDotDangKyService dotDangKyService;
+
+    @Value("${youtube.cnbm.gvhdtk}")
+    private String youtubeLink;
 
     @GetMapping
     public String viewDashboard(Model model, final CnFindDashboardRequest req) {
@@ -60,6 +67,7 @@ public class CnDashboardController extends BaseController {
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("listMonDatn", listMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
+        model.addAttribute("youtubeLink", youtubeLink);
         return "chunhiem/cn-thong-ke";
     }
 }

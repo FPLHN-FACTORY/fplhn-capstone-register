@@ -11,6 +11,8 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+@PropertySource("classpath:application.properties")
 @Controller
 @RequestMapping("/chu-nhiem/sinh-vien")
 public class CnSinhVienTheoNhomController extends BaseController {
@@ -31,6 +34,9 @@ public class CnSinhVienTheoNhomController extends BaseController {
 
     @Autowired
     private CommonHelper commonHelper;
+
+    @Value("${youtube.cnbm.nhomdatn}")
+    private String youtubeLink;
 
     @GetMapping
     public String viewSinhVienTheoNhom(Model model, @RequestParam("id") String id, final CnFindSinhVienTheoNhomRequest req, final CnFindSinhVienNoGroupRequest request) {
@@ -50,6 +56,7 @@ public class CnSinhVienTheoNhomController extends BaseController {
         model.addAttribute("idNhom",req.getIdNhom());
         model.addAttribute("listSinhVienNoGroup", listSinhVienNoGroup);
         model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
+        model.addAttribute("youtubeLink", youtubeLink);
         return "chunhiem/cn-sinh-vien-theo-nhom";
     }
 

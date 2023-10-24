@@ -16,6 +16,8 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@PropertySource("classpath:application.properties")
 @Controller
 @RequestMapping("/chu-nhiem/giang-vien-huong-dan")
 public class CnGiangVienHuongDanController extends BaseController {
@@ -38,6 +41,9 @@ public class CnGiangVienHuongDanController extends BaseController {
 
     @Autowired
     private CnChuyenNganhService chuyenNganhService;
+
+    @Value("${youtube.cnbm.gvhdtk}")
+    private String youtubeLink;
 
     @GetMapping
     public String view(Model model, final CnFindListGvhdRequest req) {
@@ -67,6 +73,7 @@ public class CnGiangVienHuongDanController extends BaseController {
         model.addAttribute("listMonDatn", listMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("listGvhd", listGvhd);
+        model.addAttribute("youtubeLink", youtubeLink);
         return "chunhiem/cn-giang-vien-huong-dan";
     }
 
