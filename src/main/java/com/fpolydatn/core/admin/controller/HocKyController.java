@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author HangNT
  */
 
-@PropertySource("classpath:application.properties")
-
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/hoc-ky")
 public final class HocKyController extends BaseController {

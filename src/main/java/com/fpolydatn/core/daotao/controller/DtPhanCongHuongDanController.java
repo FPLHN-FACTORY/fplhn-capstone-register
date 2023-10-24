@@ -24,7 +24,7 @@ import java.util.List;
  * @author huynq
  */
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/mon-datn")
 public final class DtPhanCongHuongDanController extends BaseController {

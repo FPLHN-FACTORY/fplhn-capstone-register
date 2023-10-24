@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/nhom-mon-datn")
 public class DtNhomMonController extends BaseController {

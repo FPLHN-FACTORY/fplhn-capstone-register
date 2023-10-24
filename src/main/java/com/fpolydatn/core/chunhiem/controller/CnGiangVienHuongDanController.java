@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/chu-nhiem/giang-vien-huong-dan")
 public class CnGiangVienHuongDanController extends BaseController {

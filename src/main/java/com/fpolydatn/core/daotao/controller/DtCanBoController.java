@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author caodinh
  */
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/can-bo")
 public final class DtCanBoController extends BaseController {

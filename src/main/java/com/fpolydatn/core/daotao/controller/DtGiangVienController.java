@@ -23,7 +23,7 @@ import java.util.List;
  * @author Vinhnv
  */
 
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/giang-vien-huong-dan")
 public class DtGiangVienController extends BaseController {
