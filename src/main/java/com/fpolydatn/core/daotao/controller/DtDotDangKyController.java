@@ -35,6 +35,9 @@ public final class DtDotDangKyController extends BaseController {
     @Value("${youtube.daotao.dotdangky}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewDotDangKy(Model model, final DtFindDotDangKyRequest request) {
         request.setCoSoId(session.getCoSoId());
@@ -43,6 +46,7 @@ public final class DtDotDangKyController extends BaseController {
         model.addAttribute("page", listDotDangKy);
         model.addAttribute("listHocKy", listHocKy);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-dot-dang-ky";
     }
 

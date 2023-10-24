@@ -28,11 +28,15 @@ public final class HocKyController extends BaseController {
     @Value("${youtube.daotao.hocky}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewHocKy(Model model, final FindHocKyRequest req) {
         PageableObject<HocKyResponse> listHocKy = hocKyService.search(req);
         model.addAttribute("page", listHocKy);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "admin/hoc-ky";
     }
 

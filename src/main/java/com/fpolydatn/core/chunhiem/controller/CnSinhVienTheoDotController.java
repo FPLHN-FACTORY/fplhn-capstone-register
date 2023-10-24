@@ -47,6 +47,9 @@ public class CnSinhVienTheoDotController extends BaseController {
     @Value("${youtube.cnbm.sinhvien}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewSinhVienTheoDot(Model model, final CnFindSinhVienTheoDotRequest req){
         req.setIdDotDangKy(commonHelper.getDotDangKyHienTai());
@@ -68,6 +71,7 @@ public class CnSinhVienTheoDotController extends BaseController {
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "chunhiem/cn-sinh-vien-theo-dot";
     }
 }

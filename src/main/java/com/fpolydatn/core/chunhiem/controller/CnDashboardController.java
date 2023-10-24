@@ -39,6 +39,9 @@ public class CnDashboardController extends BaseController {
     @Value("${youtube.cnbm.gvhdtk}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewDashboard(Model model, final CnFindDashboardRequest req) {
         String coSoId = session.getCoSoId();
@@ -68,6 +71,7 @@ public class CnDashboardController extends BaseController {
         model.addAttribute("listMonDatn", listMonDatn);
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "chunhiem/cn-thong-ke";
     }
 }

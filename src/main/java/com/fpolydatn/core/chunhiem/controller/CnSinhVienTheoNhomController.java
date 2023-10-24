@@ -38,6 +38,9 @@ public class CnSinhVienTheoNhomController extends BaseController {
     @Value("${youtube.cnbm.nhomdatn}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewSinhVienTheoNhom(Model model, @RequestParam("id") String id, final CnFindSinhVienTheoNhomRequest req, final CnFindSinhVienNoGroupRequest request) {
         String coSoId = session.getCoSoId();
@@ -57,6 +60,7 @@ public class CnSinhVienTheoNhomController extends BaseController {
         model.addAttribute("listSinhVienNoGroup", listSinhVienNoGroup);
         model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "chunhiem/cn-sinh-vien-theo-nhom";
     }
 

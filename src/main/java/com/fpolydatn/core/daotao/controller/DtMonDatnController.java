@@ -42,6 +42,9 @@ public class DtMonDatnController extends BaseController {
     @Value("${youtube.daotao.mondatn}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewMonDatn(Model model, final DtFindMonDatnRequest req) {
         String coSoId = session.getCoSoId();
@@ -54,6 +57,7 @@ public class DtMonDatnController extends BaseController {
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-mon-datn";
     }
 

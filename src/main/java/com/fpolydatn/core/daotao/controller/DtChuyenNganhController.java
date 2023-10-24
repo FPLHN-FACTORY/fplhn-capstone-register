@@ -40,6 +40,9 @@ public class DtChuyenNganhController extends BaseController {
     @Value("${youtube.daotao.chuyennganh}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewChuyenNganh(Model model, final DtFindChuyenNganhRequest request) {
         String coSoId = session.getCoSoId();
@@ -50,6 +53,7 @@ public class DtChuyenNganhController extends BaseController {
         model.addAttribute("page", listChuyenNganh);
         model.addAttribute("listCanBo", listTenCanBo);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-chuyen-nganh";
     }
 }

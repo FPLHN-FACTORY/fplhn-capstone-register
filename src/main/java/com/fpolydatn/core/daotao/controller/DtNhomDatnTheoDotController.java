@@ -39,6 +39,9 @@ public class DtNhomDatnTheoDotController extends BaseController {
     @Value("${youtube.daotao.nhomdatn}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String findAllNhomDatn(Model model, final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
@@ -57,6 +60,7 @@ public class DtNhomDatnTheoDotController extends BaseController {
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-nhom-datn";
     }
 

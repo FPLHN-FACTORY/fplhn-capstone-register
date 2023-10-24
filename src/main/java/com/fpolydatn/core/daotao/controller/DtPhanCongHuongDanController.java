@@ -41,6 +41,9 @@ public final class DtPhanCongHuongDanController extends BaseController {
     @Value("${youtube.daotao.mondatn}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping("/{id}")
     public String viewPhanCongHuongDan(Model model
             , final DtFindPhanCongHuongDanRequest req
@@ -56,6 +59,7 @@ public final class DtPhanCongHuongDanController extends BaseController {
         model.addAttribute("page", listPhanCong);
         model.addAttribute("monDatn", monDatnResponse);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-phan-cong-huong-dan";
     }
 

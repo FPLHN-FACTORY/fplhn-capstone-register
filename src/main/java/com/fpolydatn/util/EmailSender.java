@@ -31,11 +31,11 @@ public class EmailSender {
 
     @Async
     public void sendEmail(String[] toEmails, String subject, String titleEmail, String[] bodyEmail) {
-        Map<String, Object> model = new HashMap<>();
-        model.put("bodyEmail", bodyEmail);
-        model.put("titleEmail", titleEmail);
-        String htmlBody = loadMailBody(MailConstant.TEMPLATE_MAIL, model);
-        sendSimpleMail(toEmails, htmlBody, subject);
+//        Map<String, Object> model = new HashMap<>();
+//        model.put("bodyEmail", bodyEmail);
+//        model.put("titleEmail", titleEmail);
+//        String htmlBody = loadMailBody(MailConstant.TEMPLATE_MAIL, model);
+//        sendSimpleMail(toEmails, htmlBody, subject);
     }
 
     private String loadMailBody(String templateName, Map<String, Object> model) {

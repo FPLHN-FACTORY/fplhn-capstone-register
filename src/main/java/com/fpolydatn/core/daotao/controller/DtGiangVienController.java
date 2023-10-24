@@ -40,6 +40,9 @@ public class DtGiangVienController extends BaseController {
     @Value("${youtube.daotao.giangvien}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping("")
     public String viewGiangVienHD(Model model, final DtFindGiangVienHDRequest rep) {
         String coSoId = session.getCoSoId();
@@ -52,6 +55,7 @@ public class DtGiangVienController extends BaseController {
         model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("page", listGiangVien);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-giang-vien-huong-dan";
     }
 

@@ -48,6 +48,9 @@ public class CnNhomDatnController extends BaseController {
     @Value("${youtube.cnbm.nhomdatn}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewNhomDatn(Model model, final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
@@ -68,6 +71,7 @@ public class CnNhomDatnController extends BaseController {
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "chunhiem/cn-nhom-datn";
     }
 }

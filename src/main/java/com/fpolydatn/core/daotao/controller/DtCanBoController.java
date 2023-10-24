@@ -28,12 +28,16 @@ public final class DtCanBoController extends BaseController {
     @Value("${youtube.daotao.canbo}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewHocKy(Model model, final DtFindCanBoRequest canBoRequest) {
         canBoRequest.setCoSoId(session.getCoSoId());
         PageableObject<DtCanBoResponse> listCanBo = canBoService.search(canBoRequest);
         model.addAttribute("page", listCanBo);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-can-bo";
     }
 

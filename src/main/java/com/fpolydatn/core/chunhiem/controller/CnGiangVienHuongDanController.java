@@ -45,6 +45,9 @@ public class CnGiangVienHuongDanController extends BaseController {
     @Value("${youtube.cnbm.gvhdtk}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String view(Model model, final CnFindListGvhdRequest req) {
         String coSoId = session.getCoSoId();
@@ -74,6 +77,7 @@ public class CnGiangVienHuongDanController extends BaseController {
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("listGvhd", listGvhd);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "chunhiem/cn-giang-vien-huong-dan";
     }
 

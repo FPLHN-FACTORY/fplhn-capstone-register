@@ -36,6 +36,9 @@ public class DtPhanMonChoGiangVienHuongDanController extends BaseController {
     @Value("${youtube.daotao.giangvien}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping("/{id}")
     public String viewPhanCongHuongDan(Model model
             , final DtFindPhanMonGiangVienHuongDanRequest req
@@ -47,6 +50,7 @@ public class DtPhanMonChoGiangVienHuongDanController extends BaseController {
         model.addAttribute("page", listPhanCong);
         model.addAttribute("giangVienHuongDan", giangVienHuongDan);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-phan-mon-datn-giang-vien";
     }
 

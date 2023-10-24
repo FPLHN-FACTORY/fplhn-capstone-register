@@ -39,6 +39,9 @@ public class DtSinhVienTheoDotController extends BaseController {
     @Value("${youtube.daotao.sinhvien}")
     private String youtubeLink;
 
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String findAllSinhVien(Model model, final FindDtSinhVienTheoDotRequest req) {
         req.setCoSoId(session.getCoSoId());
@@ -53,6 +56,7 @@ public class DtSinhVienTheoDotController extends BaseController {
         model.addAttribute("listMonChuongTrinh", listMonChuongTrinh);
         model.addAttribute("listNhomDatn", listNhomDatn);
         model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-sinh-vien-theo-dot";
     }
 

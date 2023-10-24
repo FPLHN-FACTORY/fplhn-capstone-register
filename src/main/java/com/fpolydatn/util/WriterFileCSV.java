@@ -367,7 +367,7 @@ public class WriterFileCSV {
                         continue;
                     }
                 }
-                if (object.getIdChuyenNganh() != null) {
+                if (loggerObject.getIdChuyenNganh() != null && object.getIdChuyenNganh() != null) {
                     if (!loggerObject.getIdChuyenNganh().equals(object.getIdChuyenNganh())) {
                         continue;
                     }
