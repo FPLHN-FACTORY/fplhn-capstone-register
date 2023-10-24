@@ -138,11 +138,11 @@ public class WriterFileCSV {
         }
     }
 
-    private String getPathFile500() {
+    public String getPathFile500() {
         return getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "file_bug.csv";
     }
 
-    private String getPathFileBadRequest() {
+    public String getPathFileBadRequest() {
         return getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "log_bug_bad_request.csv";
     }
 

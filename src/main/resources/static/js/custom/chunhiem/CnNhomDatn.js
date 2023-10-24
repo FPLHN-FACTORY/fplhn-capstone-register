@@ -102,7 +102,7 @@ function openModalHistoryDownload() {
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement("a");
             a.href = url;
-            a.download = "nhom_datn.csv";
+            a.download = "file_log.csv";
             document.body.appendChild(a);
             a.click();
 
@@ -1009,7 +1009,7 @@ function openModalHistoryDownloadDetail() {
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement("a");
             a.href = url;
-            a.download = "danh_sach_nhom_datn.csv";
+            a.download = "file_log_luong.csv";
             document.body.appendChild(a);
             a.click();
 

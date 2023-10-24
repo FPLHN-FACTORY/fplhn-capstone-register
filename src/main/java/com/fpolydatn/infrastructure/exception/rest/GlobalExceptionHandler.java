@@ -5,6 +5,7 @@ import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.logger.LogService;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.util.EmailSender;
+import com.fpolydatn.util.WriterFileCSV;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -45,37 +47,43 @@ public final class GlobalExceptionHandler {
     @Value("${spring.mail.username}")
     private String mailUsername;
 
+    @Autowired
+    private WriterFileCSV writerFileCSV;
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handlerException(Exception ex) throws IOException {
         if (ex instanceof RestApiException) {
             ApiError apiError = new ApiError(ex.getMessage());
-            return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
-        } else if (ex instanceof ConstraintViolationException) {
-            Set<ConstraintViolation<?>> violations = ((ConstraintViolationException) ex).getConstraintViolations();
-            List<ErrorModel> errors = violations.stream()
-                    .map(violation ->
-                            new ErrorModel(getPropertyName(violation.getPropertyPath()), violation.getMessage()))
-                    .collect(Collectors.toList());
-            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-        } else {
-            Gson gson = new Gson();
+            String requestBodyContent = "";
             BufferedReader reader = httpServletRequest.getReader();
             StringBuilder requestBody = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 requestBody.append(line);
             }
-            String requestBodyContent = requestBody.toString();
-            LoggerObject loggerObject = new LoggerObject();
-            loggerObject.setStatus(ConfigurationsConstant.FALSE);
-            loggerObject.setContent(ex.toString());
-            loggerObject.setMail(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString());
-            loggerObject.setIP(httpServletRequest.getRemoteAddr());
-            loggerObject.setRequest(requestBodyContent);
-            loggerObject.setMethod(httpServletRequest.getMethod());
-            loggerObject.setApi(httpServletRequest.getRequestURI());
-            loggerObject.setParam(gson.toJson(httpServletRequest.getParameterMap()));
-            service.sendLogMessage(loggerObject);
+            requestBodyContent = requestBody.toString();
+            ghiLogCSVBug(ex, writerFileCSV.getPathFileBadRequest(), requestBodyContent);
+            return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+        } else if (ex instanceof ConstraintViolationException) {
+            HttpServletRequest requestWrapper = new ContentCachingRequestWrapper(httpServletRequest);
+            String requestBodyContentCopy = new String(((ContentCachingRequestWrapper) requestWrapper).getContentAsByteArray());
+            Set<ConstraintViolation<?>> violations = ((ConstraintViolationException) ex).getConstraintViolations();
+            List<ErrorModel> errors = violations.stream()
+                    .map(violation ->
+                            new ErrorModel(getPropertyName(violation.getPropertyPath()), violation.getMessage()))
+                    .collect(Collectors.toList());
+            ghiLogCSVBug(ex, writerFileCSV.getPathFileBadRequest(), requestBodyContentCopy);
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        } else {
+            String requestBodyContent = "";
+            BufferedReader reader = httpServletRequest.getReader();
+            StringBuilder requestBody = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                requestBody.append(line);
+            }
+            requestBodyContent = requestBody.toString();
+            ghiLogCSVBug(ex, writerFileCSV.getPathFile500(), requestBodyContent);
             System.out.println(ex + " có bug có bug.");
             String[] emailArray = new String[1];
             emailArray[0] = mailUsername;
@@ -91,6 +99,22 @@ public final class GlobalExceptionHandler {
             myThread.start();
             return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private void ghiLogCSVBug(Exception ex, String pathFile, String requestBodyContent) throws IOException {
+        Gson gson = new Gson();
+        LoggerObject loggerObject = new LoggerObject();
+        loggerObject.setStatus(ConfigurationsConstant.FALSE);
+        loggerObject.setPathFile(pathFile);
+        loggerObject.setContent(ex.toString());
+        loggerObject.setMail(session.getAttribute(SessionConstant.EMAIL) == null ? "" : session.getAttribute(SessionConstant.EMAIL).toString());
+        loggerObject.setIP(httpServletRequest.getRemoteAddr());
+        loggerObject.setRequest(requestBodyContent);
+        loggerObject.setMethod(httpServletRequest.getMethod());
+        loggerObject.setApi(httpServletRequest.getRequestURI());
+        loggerObject.setParam(gson.toJson(httpServletRequest.getParameterMap()));
+        service.sendLogMessage(loggerObject);
+        System.out.println(" Đã ghi log");
     }
 
     private String getPropertyName(Path path) {

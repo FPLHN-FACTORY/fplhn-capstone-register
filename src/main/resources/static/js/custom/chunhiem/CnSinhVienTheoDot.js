@@ -593,7 +593,7 @@ function openModalHistoryDownload() {
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement("a");
             a.href = url;
-            a.download = "nhom_datn.csv";
+            a.download = "file_log_quan_ly_sinh_vien.csv";
             document.body.appendChild(a);
             a.click();
 
