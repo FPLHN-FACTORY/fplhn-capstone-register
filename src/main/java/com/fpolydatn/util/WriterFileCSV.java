@@ -110,7 +110,7 @@ public class WriterFileCSV {
     }
 
     public void writerFileBugCSV(LoggerObject bug) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "file_bug.csv", true));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(bug.getPathFile(), true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             csvPrinter.printRecord(
                     // Email người thực hiện
@@ -138,33 +138,12 @@ public class WriterFileCSV {
         }
     }
 
-    public void writerFileBugBadRequestCSV(LoggerObject bug) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "log_bug_bad_request.csv", true));
-             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-            csvPrinter.printRecord(
-                    // Email người thực hiện
-                    bug.getMail()
-                    ,
-                    // địa chỉ ip
-                    bug.getIP(),
-                    // thời gian thực hiện
-                    new Date().toString(),
-                    // method
-                    bug.getMethod(),
-                    // api
-                    bug.getApi(),
-                    // nội dung
-                    bug.getContent(),
-                    // param
-                    bug.getParam(),
-                    // request body
-                    bug.getRequest());
-            csvPrinter.flush();
-            csvPrinter.close();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private String getPathFile500() {
+        return getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "file_bug.csv";
+    }
+
+    private String getPathFileBadRequest() {
+        return getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "log_bug_bad_request.csv";
     }
 
     public void writerFileCSV(LoggerObject loggerObject) {
