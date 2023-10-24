@@ -20,6 +20,8 @@ import com.fpolydatn.util.MocThoiGianCommon;
 import com.fpolydatn.util.WriterFileCSV;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,8 @@ import java.util.List;
 /**
  * @author hoangnt
  */
+
+@PropertySource("classpath:application.properties")
 @Controller
 @RequestMapping("/sinh-vien")
 public class SvNhomDatnController extends BaseController {
@@ -45,10 +49,15 @@ public class SvNhomDatnController extends BaseController {
 
     @Autowired
     private SvGiangVienHuongDanService svGiangVienHuongDanService;
+
     @Autowired
     private CommonHelper commonHelper;
+
     @Autowired
     MocThoiGianCommon mocThoiGianCommon;
+
+    @Value("${youtube.sinhvien}")
+    private String youtubeLink;
 
     @GetMapping
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
@@ -70,6 +79,7 @@ public class SvNhomDatnController extends BaseController {
 
             model.addAttribute("listDataMonDatn", svMonDatnService.getAllMonDatnByIdUser(idUSer, coSoId, dotDangKyHienTai));
             model.addAttribute("page", listNhomDatn);
+            model.addAttribute("youtubeLink", youtubeLink);
             return "sinhvien/sv-join-nhom-datn";
         } else {
             Boolean checkTruongNhom = svNhomDatnService.checkTruongNhom(
@@ -88,6 +98,7 @@ public class SvNhomDatnController extends BaseController {
             model.addAttribute("listGiangVien", listGiangVien);
             model.addAttribute("checkTruongNhom", checkTruongNhom);
             model.addAttribute("nhomDatnThamGia", svDetailNhomDatnResponse);
+            model.addAttribute("youtubeLink", youtubeLink);
             return "sinhvien/sv-nhom-datn";
         }
     }

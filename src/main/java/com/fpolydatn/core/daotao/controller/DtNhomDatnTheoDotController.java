@@ -10,6 +10,9 @@ import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@PropertySource("classpath:application.properties")
 @Controller
 @RequestMapping("/dao-tao/nhom-datn")
 public class DtNhomDatnTheoDotController extends BaseController {
@@ -31,6 +35,9 @@ public class DtNhomDatnTheoDotController extends BaseController {
 
     @Autowired
     private CommonHelper commonHelper;
+
+    @Value("${youtube.daotao.nhomdatn}")
+    private String youtubeLink;
 
     @GetMapping
     public String findAllNhomDatn(Model model, final FindDtNhomDatnTheoDotRequest req) {
@@ -49,6 +56,7 @@ public class DtNhomDatnTheoDotController extends BaseController {
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
+        model.addAttribute("youtubeLink", youtubeLink);
         return "daotao/dt-nhom-datn";
     }
 

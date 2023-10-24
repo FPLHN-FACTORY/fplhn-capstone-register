@@ -11,6 +11,8 @@ import com.fpolydatn.core.daotao.service.DtMonDatnService;
 import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,8 @@ import java.util.List;
 /**
  * @author hungpv
  */
+
+@PropertySource("classpath:application.properties")
 @Controller
 @RequestMapping("/dao-tao/mon-datn")
 public class DtMonDatnController extends BaseController {
@@ -35,6 +39,9 @@ public class DtMonDatnController extends BaseController {
     @Autowired
     private DtSvDotDangKyService dotDangKyService;
 
+    @Value("${youtube.daotao.mondatn}")
+    private String youtubeLink;
+
     @GetMapping
     public String viewMonDatn(Model model, final DtFindMonDatnRequest req) {
         String coSoId = session.getCoSoId();
@@ -46,6 +53,7 @@ public class DtMonDatnController extends BaseController {
         model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
+        model.addAttribute("youtubeLink", youtubeLink);
         return "daotao/dt-mon-datn";
     }
 

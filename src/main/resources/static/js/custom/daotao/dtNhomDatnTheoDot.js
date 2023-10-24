@@ -485,6 +485,7 @@ function genPagzing() {
         templateHtml = templatePageBefore + templatePageMid + templatePageAfter;
         $("#checkbox_father").prop("checked", false);
         $("#page").html(templateHtml);
+        $("#checkbox_father").prop("checked", false);
     }
 }
 

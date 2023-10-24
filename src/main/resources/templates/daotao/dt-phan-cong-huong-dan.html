@@ -29,8 +29,18 @@
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
             <!-- END: Subheader -->
             <div>
-                <div>
-                    <h3 style="margin: 50px 0 0 50px;">Phân công hướng dẫn</h3>
+                <div >
+                    <div class="row">
+                        <div class="col-6">
+                            <h3 style="margin: 50px 0 0 50px;">Phân công hướng dẫn</h3>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <a target="_blank" th:href="${youtubeLink}" class="btn btn-success" data-toggle="tooltip"
+                               title="Hướng dẫn sử dụng" style="margin: 50px 50px 0 50px;">
+                                HDSD
+                            </a>
+                        </div>
+                    </div>
                     <div class="m-content" style="margin: 50px; background-color: #fff;">
                         <div>
                             <div class="kt-grid__item kt-grid__item--fluid kt-app__content">

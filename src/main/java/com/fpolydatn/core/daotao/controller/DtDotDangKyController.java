@@ -8,6 +8,8 @@ import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtHocKyService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import java.util.List;
  * @author SonPT
  */
 
+@PropertySource("classpath:application.properties")
 @Controller
 @RequestMapping("/dao-tao/dot-dang-ky")
 public final class DtDotDangKyController extends BaseController {
@@ -29,6 +32,9 @@ public final class DtDotDangKyController extends BaseController {
     @Autowired
     private DtHocKyService dtHocKyService;
 
+    @Value("${youtube.daotao.dotdangky}")
+    private String youtubeLink;
+
     @GetMapping
     public String viewDotDangKy(Model model, final DtFindDotDangKyRequest request) {
         request.setCoSoId(session.getCoSoId());
@@ -36,6 +42,7 @@ public final class DtDotDangKyController extends BaseController {
         List<SimpleEntityProj> listHocKy = dtHocKyService.findAllSimpleEntiry();
         model.addAttribute("page", listDotDangKy);
         model.addAttribute("listHocKy", listHocKy);
+        model.addAttribute("youtubeLink", youtubeLink);
         return "daotao/dt-dot-dang-ky";
     }
 
