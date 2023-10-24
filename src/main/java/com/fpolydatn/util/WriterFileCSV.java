@@ -110,7 +110,7 @@ public class WriterFileCSV {
     }
 
     public void writerFileBugCSV(LoggerObject bug) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "file_bug.csv", true));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(bug.getPathFile(), true));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             csvPrinter.printRecord(
                     // Email người thực hiện
@@ -136,6 +136,14 @@ public class WriterFileCSV {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getPathFile500() {
+        return getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "file_bug.csv";
+    }
+
+    public String getPathFileBadRequest() {
+        return getPropertiesRead(ConfigurationsConstant.PATH_FILE_TEMPLATE) + "log_bug_bad_request.csv";
     }
 
     public void writerFileCSV(LoggerObject loggerObject) {

@@ -52,8 +52,23 @@
                                 <div style="padding: 30px">
                                     <div style="font-size: 18px">Phiên bản hiện tại: <span th:text="${version}"></span>
                                     </div>
-                                    <div style="margin-top: 15px">
-                                        <button class="btn btn-primary" th:attr="onclick=|openModalHistoryDownload()|">Dowload file log</button>
+                                    <div style="width: 100%; margin-top: 20px">File log lỗi 500:</div>
+                                    <div style="margin-top: 5px">
+                                        <button class="btn btn-primary" th:attr="onclick=|openModalHistoryDownload()|">
+                                            Dowload file log 500
+                                        </button>
+                                        <button class="btn btn-danger" th:attr="onclick=|deleteFileLog500()|">
+                                            Xóa file log 500
+                                        </button>
+                                    </div>
+                                    <div style="width: 100%; margin-top: 20px">File log lỗi Bad Request:</div>
+                                    <div style="margin-top: 5px">
+                                        <button class="btn btn-primary" th:attr="onclick=|openModalHistoryDownloadBadRequest()|">
+                                            Dowload file log Bad Request
+                                        </button>
+                                        <button class="btn btn-danger" th:attr="onclick=|deleteFileLogBadRequest()|">
+                                            Xóa file log Bad Request
+                                        </button>
                                     </div>
                                 </div>
                             </div>
