@@ -31,11 +31,11 @@ public class EmailSender {
 
     @Async
     public void sendEmail(String[] toEmails, String subject, String titleEmail, String[] bodyEmail) {
-//        Map<String, Object> model = new HashMap<>();
-//        model.put("bodyEmail", bodyEmail);
-//        model.put("titleEmail", titleEmail);
-//        String htmlBody = loadMailBody(MailConstant.TEMPLATE_MAIL, model);
-//        sendSimpleMail(toEmails, htmlBody, subject);
+        Map<String, Object> model = new HashMap<>();
+        model.put("bodyEmail", bodyEmail);
+        model.put("titleEmail", titleEmail);
+        String htmlBody = loadMailBody(MailConstant.TEMPLATE_MAIL, model);
+        sendSimpleMail(toEmails, htmlBody, subject);
     }
 
     private String loadMailBody(String templateName, Map<String, Object> model) {
@@ -45,18 +45,18 @@ public class EmailSender {
     }
 
     private void sendSimpleMail(String[] recipients, String msgBody, String subject) {
-//        try {
-//            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-//            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.toString());
-//            ClassPathResource resource = new ClassPathResource(MailConstant.LOGO_PATH);
-//            mimeMessageHelper.setFrom(sender);
-//            mimeMessageHelper.setBcc(recipients);
-//            mimeMessageHelper.setText(msgBody, true);
-//            mimeMessageHelper.setSubject(subject);
-//            mimeMessageHelper.addInline("logoImage", resource);
-//            javaMailSender.send(mimeMessage);
-//        } catch (Exception e) {
-//            log.error("ERROR WHILE SENDING MAIL: {}", e.getMessage());
-//        }
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.toString());
+            ClassPathResource resource = new ClassPathResource(MailConstant.LOGO_PATH);
+            mimeMessageHelper.setFrom(sender);
+            mimeMessageHelper.setBcc(recipients);
+            mimeMessageHelper.setText(msgBody, true);
+            mimeMessageHelper.setSubject(subject);
+            mimeMessageHelper.addInline("logoImage", resource);
+            javaMailSender.send(mimeMessage);
+        } catch (Exception e) {
+            log.error("ERROR WHILE SENDING MAIL: {}", e.getMessage());
+        }
     }
 }
