@@ -134,7 +134,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     }
 
     @Override
-    public CanBo update(DtUpdateCanBoRequest canBoRequest) {
+    public CanBo update(@Valid DtUpdateCanBoRequest canBoRequest) {
         Optional<CanBo> canBo = dtCanBoRepository.findById(canBoRequest.getId());
         String tenTkCu = canBo.get().getTenTaiKhoan();
         String tenCBCu = canBo.get().getTenCanBo();

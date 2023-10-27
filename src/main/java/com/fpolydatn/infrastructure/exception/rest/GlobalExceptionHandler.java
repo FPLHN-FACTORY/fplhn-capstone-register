@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,8 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,7 +32,7 @@ import java.util.stream.Collectors;
 /**
  * @author thangncph26123
  */
-@ControllerAdvice
+@RestControllerAdvice
 public final class GlobalExceptionHandler {
 
     @Autowired
@@ -54,15 +57,9 @@ public final class GlobalExceptionHandler {
     public ResponseEntity<?> handlerException(Exception ex) throws IOException {
         if (ex instanceof RestApiException) {
             ApiError apiError = new ApiError(ex.getMessage());
-            String requestBodyContent = "";
-            BufferedReader reader = httpServletRequest.getReader();
-            StringBuilder requestBody = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                requestBody.append(line);
-            }
-            requestBodyContent = requestBody.toString();
-            ghiLogCSVBug(ex, writerFileCSV.getPathFileBadRequest(), requestBodyContent);
+            HttpServletRequest requestWrapper = new ContentCachingRequestWrapper(httpServletRequest);
+            String requestBodyContentCopy = new String(((ContentCachingRequestWrapper) requestWrapper).getContentAsByteArray());
+            ghiLogCSVBug(ex, writerFileCSV.getPathFileBadRequest(), requestBodyContentCopy);
             return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
         } else if (ex instanceof ConstraintViolationException) {
             HttpServletRequest requestWrapper = new ContentCachingRequestWrapper(httpServletRequest);
