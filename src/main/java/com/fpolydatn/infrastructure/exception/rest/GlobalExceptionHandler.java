@@ -57,19 +57,15 @@ public final class GlobalExceptionHandler {
     public ResponseEntity<?> handlerException(Exception ex) throws IOException {
         if (ex instanceof RestApiException) {
             ApiError apiError = new ApiError(ex.getMessage());
-            HttpServletRequest requestWrapper = new ContentCachingRequestWrapper(httpServletRequest);
-            String requestBodyContentCopy = new String(((ContentCachingRequestWrapper) requestWrapper).getContentAsByteArray());
-            ghiLogCSVBug(ex, writerFileCSV.getPathFileBadRequest(), requestBodyContentCopy);
+            ghiLogCSVBug(ex, writerFileCSV.getPathFileBadRequest(), "");
             return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
         } else if (ex instanceof ConstraintViolationException) {
-            HttpServletRequest requestWrapper = new ContentCachingRequestWrapper(httpServletRequest);
-            String requestBodyContentCopy = new String(((ContentCachingRequestWrapper) requestWrapper).getContentAsByteArray());
             Set<ConstraintViolation<?>> violations = ((ConstraintViolationException) ex).getConstraintViolations();
             List<ErrorModel> errors = violations.stream()
                     .map(violation ->
                             new ErrorModel(getPropertyName(violation.getPropertyPath()), violation.getMessage()))
                     .collect(Collectors.toList());
-            ghiLogCSVBug(ex, writerFileCSV.getPathFileBadRequest(), requestBodyContentCopy);
+            ghiLogCSVBug(ex, writerFileCSV.getPathFileBadRequest(), "");
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         } else {
             String requestBodyContent = "";

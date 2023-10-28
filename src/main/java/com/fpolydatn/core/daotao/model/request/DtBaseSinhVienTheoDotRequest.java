@@ -50,7 +50,6 @@ public class DtBaseSinhVienTheoDotRequest {
     @NotBlank
     private String dotDangKyId;
 
-    @NotEmpty
-    @NotBlank
-    private int trangThai;
+    @NotNull
+    private Integer trangThai;
 }
