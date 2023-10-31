@@ -47,6 +47,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -629,7 +630,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public SinhVien update(DtUpdateSinhVienTheoDotRequest command) {
+    public SinhVien update(@Valid DtUpdateSinhVienTheoDotRequest command) {
 
         Optional<SinhVien> checkSinhVien = sinhVienRepository.findById(command.getId());
         Optional<ChuyenNganh> chuyenNganhCu = chuyenNganhRepository.findById(checkSinhVien.get().getChuyenNganhId());
@@ -728,7 +729,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
-    public SinhVien create(DtCreateSinhVienRequest command) {
+    public SinhVien create(@Valid DtCreateSinhVienRequest command) {
         SinhVien sinhVien = new SinhVien();
 
         String idSinhVienCheckMaSV = sinhVienRepository.findSinhVienByMaSV(command.getMaSinhVien(),
