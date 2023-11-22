@@ -163,7 +163,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
             }
         }
         if (svNhomDatnRequest.getGiangVienId() != null) {
-            if (commonHelper.getSoNhomGiangVienDangHuongDan(svNhomDatnRequest.getGiangVienId()) >= 7) {
+            if (commonHelper.getSoNhomGiangVienDangHuongDan(svNhomDatnRequest.getGiangVienId()) >= giangVienHuongDan.get().getSoNhomHuongDanToiDa()) {
                 throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_ALREADY_HAVE_ENOUGH_GROUPS);
             }
         }
