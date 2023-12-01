@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cổng thông tin AP của sinh viên cao đẳng FPT Polytechnic">
+    <meta name="author" content="">
+    <meta name="csrf-token" content="iY6xINmZsAYBHgar05yKrQiWhIQtFmeZPE4vVQeS">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://ap.poly.edu.vn/images/favicon.ico">
+    <title>Cao đẳng FPT Polytechnic</title>
+    <link href="https://ap.poly.edu.vn/bootstrap-4.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://ap.poly.edu.vn/css/colors/blue_home.css" id="theme" rel="stylesheet">
+    <link href="https://ap.poly.edu.vn/css/web.css" rel="stylesheet">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100471794-5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-100471794-5');
+    </script>
+</head>
+<body class="fix-header card-no-border">
+<div id="main-wrapper">
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="#"><img src="https://ap.poly.edu.vn/images/logo.png" alt="homepage"
+                                              class="dark-logo" style="height:70px"/></a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExample09"
+                aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navbarsExample09" style="">
+            <ul class="navbar-nav mr-auto home-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/authentication/dao-tao}">Cán bộ đào tạo</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/authentication/chu-nhiem}">Chủ nhiệm bộ môn</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/authentication/giang-vien}">Giảng viên</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/authentication/sinh-vien}">Sinh viên</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid" style="margin-top:95px;padding:0">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+
+
+                <div class="carousel-item active">
+                    <a href="#"><img src="https://ap.poly.edu.vn/images/Banner-AP.png" class="d-block w-100" alt="..."></a>
+                </div>
+
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid" id="footer">
+        <div class="container">
+            <footer>
+                <div class="row">
+                    <div class="col-12 col-md-3 col-sm-12">
+                        <a class="navbar-brand" href="#">
+<span>
+<img src="https://i.imgur.com/5EK1lFm.png" alt="homepage" class="dark-logo" style="height:70px"/>
+</span>
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-9  col-sm-12" style="margin-top:10px">
+                        <h4>THÔNG TIN LIÊN HỆ</h4>
+                        <p>
+                            Trụ sở chính
+                            Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Nam Từ Liêm, Hà Nội
+                        </p>
+                        <div class="row">
+                            <div class="col-6">
+                                <div>
+                                    <h6>Cơ sở Hà Nội</h6>
+                                    <p>Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Nam Từ Liêm, Hà Nội</p>
+                                    <p>(024) 7300 1955</p>
+                                </div>
+                                <div>
+                                    <h6>Cơ sở Đà Nẵng</h6>
+                                    <p>Số 137 Nguyễn Thị Thập, Phường Hòa Minh, Quận Liên Chiểu, TP. Đà Nẵng</p>
+                                    <p>(0236) 3710 999</p>
+                                </div>
+                                <div>
+                                    <h6>Cơ sở Cần Thơ</h6>
+                                    <p>Số 288, Nguyễn Văn Linh, phường An Khánh, quận Ninh Kiều, Tp. Cần Thơ.</p>
+                                    <p>(0292) 7300 468</p>
+                                </div>
+                                <div>
+                                    <h6>Cơ sở Hải Phòng</h6>
+                                    <p>271 Lê Thánh Tông, phường Máy Chai, quận Ngô Quyền, TP Hải Phòng.</p>
+                                    <p>(0915) 431 313</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div>
+                                    <h6>Cơ sở Hồ Chí Minh</h6>
+                                    <p>391A Nam Kỳ Khởi Nghĩa, Q. 3, TP. Hồ Chí Minh</p>
+                                    <p>778/B1 Nguyễn Kiệm, P.4, Q. Phú Nhuận, TP. Hồ Chí Minh</p>
+                                    <p>Toà nhà Innovation, lô 24, Công viên phần mềm Quang Trung, Quận 12, Hồ Chí
+                                        Minh</p>
+                                    <p>(028) 3526 8799 – (028) 62523434</p>
+                                </div>
+                                <div>
+                                    <h6>Cơ sở Tây Nguyên</h6>
+                                    <p>Số 300/6 đường Hà Huy Tập, p. Tân An, TP. Buôn Ma Thuột, Đắk Lắk</p>
+                                    <p>(0262) 355 5678</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:1000px!important;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="font-size: 15px">Thông
+                        điệp học kỳ Summer 2020 Cao đẳng FPT Polytechnic: Sẵn sàng trở lại dạy-học tập trung ngay khi đủ
+                        điều kiện</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="font-size: 12px">
+                    <p class="font-weight-bold">Cao đẳng FPT Polytechnic chính thức bắt đầu học kỳ Summer 2020 vào ngày
+                        18/5. Trong bối cảnh diễn biến hiện tại của dịch Covid-19 tại Việt Nam, Cao đẳng FPT Polytechnic
+                        xác định cách thức triển khai học kỳ Summer 2020 theo tinh thần quay trở lại đào tạo tại trường
+                        ngay khi được phép, và đồng hành cùng quốc gia chống dịch, tuân thủ theo các chỉ đạo, hướng dẫn
+                        của cơ quan chức năng.</p>
+                    <p>Cụ thể, với học kỳ Summer 2020 (5/2020-8/2020), nhà trường dự kiến sẽ triển khai đào tạo tại
+                        trường, có áp dụng các biện pháp đảm bảo an toàn theo đúng hướng dẫn của các cơ quan chức năng.
+                        Trong trường hợp tình hình dịch bệnh tiếp tục diễn biến phức tạp, nhà trường sẽ đào tạo trực
+                        tuyến một thời gian ngắn rồi chuyển sang dạy-học tập trung tại trường khi được phép mở cửa trở
+                        lại.</p>
+                    <p>Như vậy, để bước vào học kỳ Summer 2020 trong bối cảnh dịch bệnh Covid-19 chưa hoàn toàn được
+                        khống chế, sinh viên Cao đẳng FPT Polytechnic cần chuẩn bị các điểm sau: Sẵn sàng tinh thần học
+                        tập học kỳ mới theo định hướng dù khó khăn đến đâu cũng cố gắng học tốt; Chuẩn bị cho cả 2
+                        phương án học tập nêu trên. Các hình thức học tập và kiểm tra phù hợp sẽ được triển khai theo 2
+                        cách thức đào tạo tương ứng. Các môn học hay các học phần sinh viên không thể học thông qua hình
+                        thức đào tạo từ xa sẽ được triển khai tiếp nối khi sinh viên quay trở lại học tập tại trường
+                        hoặc chuyển sang học kỳ tiếp theo.</p>
+                    <img class="text-center" style="margin: 5px auto 5px auto;display: block;"
+                         src="https://caodang.fpt.edu.vn/wp-content/uploads/xFPT_polytechnic_ky_summer2020-768x768.png.pagespeed.ic.m3Mx27hr6E.webp"
+                         alt="img" width="400">
+                    <p class="text-center">Sinh viên FPT Polytechnic sẵn sàng tinh thần học tập học kỳ mới theo định
+                        hướng dù khó khăn<br> đến đâu cũng cố gắng học tốt.</p>
+                    <p>Cao đẳng FPT Polytechnic cũng đã có thông báo về việc sử dụng 80 tỷ đồng trong quỹ đầu tư phát
+                        triển để hỗ trợ học phí cho sinh viên trong học kỳ Summer, nhằm giảm bớt khó khăn khi dịch bệnh
+                        ảnh hưởng đến việc làm và thu nhập của phụ huynh. Các nội dung chi tiết về học phí học kỳ Summer
+                        2020 sẽ được gửi tới sinh viên qua email.</p>
+                    <p>Trong trường hợp cần cung cấp và làm rõ hơn thông tin, sinh viên liên hệ trực tiếp với cơ sở mình
+                        đang theo học.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ap.poly.edu.vn/assets/plugins/jquery/jquery.min.js"></script>
+
+<script src="https://ap.poly.edu.vn/assets/plugins/bootstrap/js/tether.min.js"></script>
+<script src="https://ap.poly.edu.vn/bootstrap-4.1.3/js/bootstrap.min.js"></script>
+<script src="https://ap.poly.edu.vn/js/jquery.validate.min.js"></script>
+<script src="https://ap.poly.edu.vn/js/jquery.blockUI.js"></script>
+<script src="https://ap.poly.edu.vn/js/home.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194"
+        integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw=="
+        data-cf-beacon='{"rayId":"73af14cfae731975","version":"2022.6.0","r":1,"token":"4fdc460e0f724a4981c33d789f799610","si":100}'
+        crossorigin="anonymous"></script>
+</body>
+</html>

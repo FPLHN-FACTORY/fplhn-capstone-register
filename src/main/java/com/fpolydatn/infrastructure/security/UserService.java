@@ -64,7 +64,7 @@ public class UserService {
             case ActorConstant.GIANG_VIEN: {
                 account = gvhdRepository.findSimpleEntityByTenGiangVienHuongDan(coSoID, email, dotDangKyID);
                 if (Objects.isNull(account)) {
-                    response.sendRedirect("/authentication/" + ActorConstant.GIANG_VIEN);
+                    response.sendRedirect("/");
                 } else {
                     response.sendRedirect("/giang-vien/nhom-datn");
                 }
@@ -74,7 +74,7 @@ public class UserService {
                 account = sinhVienRepository.findSimpleEntityByTenSinhVien(coSoID, email, dotDangKyID,
                         TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
                 if (Objects.isNull(account)) {
-                    response.sendRedirect("/authentication/" + ActorConstant.SINH_VIEN);
+                    response.sendRedirect("/");
                 } else {
                     response.sendRedirect("/sinh-vien");
                 }
@@ -84,7 +84,7 @@ public class UserService {
                 account = canBoRepository.findSimpleEntityByTenCanBo(coSoID,
                         email, VaiTro.CHU_NHIEM_BO_MON.ordinal());
                 if (Objects.isNull(account)) {
-                    response.sendRedirect("/authentication/" + ActorConstant.CHU_NHIEM);
+                    response.sendRedirect("/");
                 } else {
                     response.sendRedirect("/chu-nhiem/nhom-datn");
                 }
@@ -94,7 +94,7 @@ public class UserService {
                 account = canBoRepository.findSimpleEntityByTenCanBo(coSoID,
                         email, VaiTro.DAO_TAO.ordinal());
                 if (Objects.isNull(account)) {
-                    response.sendRedirect("/authentication/" + ActorConstant.DAO_TAO);
+                    response.sendRedirect("/");
                 } else {
                     response.sendRedirect("/dao-tao/sinh-vien");
                 }
