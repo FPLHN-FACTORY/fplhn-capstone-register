@@ -51,6 +51,8 @@ import java.util.stream.Collectors;
 /**
  * @author thangncph26123
  */
+
+
 @RestController
 @RequestMapping("/api/chu-nhiem/nhom-datn")
 public class CnNhomDatnRestController extends BaseController {
@@ -198,7 +200,6 @@ public class CnNhomDatnRestController extends BaseController {
                 .collect(Collectors.toList());
         return new ResponseObject(new PageImpl<>(pagedSanPhamList, PageRequest.of(page, size), list.size()));
     }
-
 
     @GetMapping("/download-log")
     public ResponseEntity<Resource> downloadCsv(

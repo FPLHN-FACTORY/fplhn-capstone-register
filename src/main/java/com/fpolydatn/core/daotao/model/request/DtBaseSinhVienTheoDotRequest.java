@@ -26,15 +26,12 @@ public class DtBaseSinhVienTheoDotRequest {
     @Length(max = EntityProperties.LENGTH_NAME)
     private String tenSinhVien;
 
-    @NotNull
     private String sdt;
 
     @NotEmpty
     @NotBlank
     private String email;
 
-    @NotEmpty
-    @NotBlank
     @Length(max = 10)
     private String khoa;
 
@@ -50,7 +47,6 @@ public class DtBaseSinhVienTheoDotRequest {
     @NotBlank
     private String dotDangKyId;
 
-    @NotEmpty
-    @NotBlank
-    private int trangThai;
+    @NotNull
+    private Integer trangThai;
 }

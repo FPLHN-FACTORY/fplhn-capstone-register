@@ -29,7 +29,7 @@ public interface DtCanBoService {
 
     CanBo findById(String id);
 
-    CanBo update(DtUpdateCanBoRequest canBoRequest);
+    CanBo update(@Valid DtUpdateCanBoRequest canBoRequest);
 
     List<SimpleEntityProj> findAllSimpleEntityByTenCanBo(String id, int vaiTro);
 

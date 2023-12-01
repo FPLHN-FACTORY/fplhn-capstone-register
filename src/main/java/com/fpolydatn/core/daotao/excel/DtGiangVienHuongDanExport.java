@@ -92,10 +92,10 @@ public class DtGiangVienHuongDanExport {
                 empEmailCell.setCellValue(giangVien.getTenTaiKhoan());
 
                 Cell empTrangThaiCell = empDataRow.createCell(5);
-                empTrangThaiCell.setCellValue(giangVien.getSoNhomHuongDanToiDa());
+                empTrangThaiCell.setCellValue(giangVien.getSoNhomDangHuongDan());
 
                 Cell khoaCell = empDataRow.createCell(6);
-                khoaCell.setCellValue(giangVien.getSoNhomDangHuongDan());
+                khoaCell.setCellValue(giangVien.getSoNhomHuongDanToiDa());
 
                 Cell svTenMonDatnCell = empDataRow.createCell(7);
                 svTenMonDatnCell.setCellValue(giangVien.getSoNhomDangHuongDan() +"/"+ giangVien.getSoNhomHuongDanToiDa());

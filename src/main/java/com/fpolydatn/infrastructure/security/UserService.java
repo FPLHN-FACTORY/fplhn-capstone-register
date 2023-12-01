@@ -1,5 +1,6 @@
 package com.fpolydatn.infrastructure.security;
 
+import com.fpolydatn.core.common.base.SimpleUserCurrent;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
 import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
@@ -12,6 +13,7 @@ import com.fpolydatn.repository.SinhVienRepository;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -47,14 +49,17 @@ public class UserService {
     @Autowired
     private CommonHelper commonHelper;
 
-    public void processOAuthPostLogin(HttpServletResponse response,
-                                      String coSoID, String email, String role) throws IOException {
+    @Value("${spring.mail.username}")
+    private String mailUsername;
 
+    public void processOAuthPostLogin(HttpServletResponse response,
+                                      String coSoID, String email, String name, String role) throws IOException {
         String dotDangKyID = commonHelper.getDotDangKyHienTai();
         if (dotDangKyID != null) {
             session.setAttribute(SessionConstant.TEN_DOT_DANG_KY, dotDangKyRepository.findById(dotDangKyID).get().getTenDotDangKy());
         }
         SimpleEntityProj account = null;
+        Boolean checkAccountAdmin = email.equals(mailUsername);
         switch (role.toLowerCase()) {
             case ActorConstant.GIANG_VIEN: {
                 account = gvhdRepository.findSimpleEntityByTenGiangVienHuongDan(coSoID, email, dotDangKyID);
@@ -95,15 +100,33 @@ public class UserService {
                 }
                 break;
             }
+            case ActorConstant.ADMIN: {
+                if (checkAccountAdmin) {
+                    response.sendRedirect("/admin/bit-dev/home");
+                } else {
+                    response.sendRedirect("/admin/bit-dev");
+                }
+                break;
+            }
             default: {
                 response.sendRedirect("/");
             }
         }
 
-        if (Objects.nonNull(account)) {
-            session.setAttribute(SessionConstant.USER, account);
+        if (role.equals(ActorConstant.ADMIN)) {
+            if (checkAccountAdmin) {
+                SimpleUserCurrent simpleUserCurrent = new SimpleUserCurrent();
+                simpleUserCurrent.setName(name);
+                session.setAttribute(SessionConstant.USER, simpleUserCurrent);
+            } else {
+                session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thống");
+            }
         } else {
-            session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thống");
+            if (Objects.nonNull(account)) {
+                session.setAttribute(SessionConstant.USER, account);
+            } else {
+                session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thống");
+            }
         }
     }
 }

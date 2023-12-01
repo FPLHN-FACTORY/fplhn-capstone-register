@@ -10,6 +10,8 @@ import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,8 @@ import java.util.List;
 /**
  * @author Vinhnv
  */
+
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/giang-vien-huong-dan")
 public class DtGiangVienController extends BaseController {
@@ -33,6 +37,12 @@ public class DtGiangVienController extends BaseController {
     @Autowired
     private DtChuyenNganhService chuyenNganhService;
 
+    @Value("${youtube.daotao.giangvien}")
+    private String youtubeLink;
+
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping("")
     public String viewGiangVienHD(Model model, final DtFindGiangVienHDRequest rep) {
         String coSoId = session.getCoSoId();
@@ -44,6 +54,8 @@ public class DtGiangVienController extends BaseController {
         model.addAttribute("tenChuyenNganh", listChuyenNganh);
         model.addAttribute("file", new MuitiPathFile());
         model.addAttribute("page", listGiangVien);
+        model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-giang-vien-huong-dan";
     }
 

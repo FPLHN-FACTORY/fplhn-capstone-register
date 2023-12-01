@@ -19,6 +19,18 @@ function clearData() {
     $("#keyword").val("");
 }
 
+function debounce(func, delay) {
+    let timeoutId;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(function () {
+            func.apply(context, args);
+        }, delay);
+    };
+}
+
 function searchGvhd() {
     let text = $("#tags").val()
     let idNhom = $("#idNhom").val()
@@ -41,6 +53,9 @@ function searchGvhd() {
         }
     });
 }
+
+const debounceSearchGvhd = debounce(searchGvhd, 750);
+document.getElementById('tags').addEventListener('input', debounceSearchGvhd);
 
 loadData()
 

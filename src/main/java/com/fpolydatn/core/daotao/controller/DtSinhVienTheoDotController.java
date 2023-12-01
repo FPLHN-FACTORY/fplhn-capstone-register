@@ -10,6 +10,8 @@ import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-
 /**
  * @author thepvph20110
  */
+
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/sinh-vien")
 public class DtSinhVienTheoDotController extends BaseController {
@@ -32,6 +35,12 @@ public class DtSinhVienTheoDotController extends BaseController {
 
     @Autowired
     private DtSvDotDangKyService dotDangKyService;
+
+    @Value("${youtube.daotao.sinhvien}")
+    private String youtubeLink;
+
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
 
     @GetMapping
     public String findAllSinhVien(Model model, final FindDtSinhVienTheoDotRequest req) {
@@ -46,6 +55,8 @@ public class DtSinhVienTheoDotController extends BaseController {
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("listMonChuongTrinh", listMonChuongTrinh);
         model.addAttribute("listNhomDatn", listNhomDatn);
+        model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-sinh-vien-theo-dot";
     }
 

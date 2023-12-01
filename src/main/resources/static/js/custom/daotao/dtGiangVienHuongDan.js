@@ -637,7 +637,6 @@ function loadTable(count) {
             totalPages = responseData.data.totalPages;
             if (responseData.data.data.length == 0) {
                 $("#searchListGvhd").html(``);
-                2
                 $("#page").html(``);
                 $("#empty").html(`<h3>Không có dữ liệu</h3>`);
             } else {

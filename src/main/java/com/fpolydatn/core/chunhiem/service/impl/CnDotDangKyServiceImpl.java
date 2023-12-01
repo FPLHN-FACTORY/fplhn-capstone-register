@@ -6,6 +6,7 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @author thangncph26123
  */
 @Service
+@Validated
 public class CnDotDangKyServiceImpl implements CnDotDangKyService {
 
     @Autowired

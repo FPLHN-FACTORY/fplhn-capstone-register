@@ -26,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Transient;
 import java.util.List;
@@ -36,6 +37,7 @@ import java.util.Optional;
  * @author huynq
  */
 @Service
+@Validated
 public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService {
 
     @Autowired

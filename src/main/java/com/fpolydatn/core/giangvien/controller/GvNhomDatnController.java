@@ -10,6 +10,7 @@ import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.MocThoiGianCommon;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,9 @@ public class GvNhomDatnController extends BaseController {
     @Autowired
     private MocThoiGianCommon mocThoiGianCommon;
 
+    @Value("${youtube.giangvien.nhomdatn}")
+    private String youtubeLink;
+
     @GetMapping()
     public String viewNhomDatn(final GvFindNhomDatnRequest request, Model model) {
         String coSoId = session.getCoSoId();
@@ -47,6 +51,7 @@ public class GvNhomDatnController extends BaseController {
         List<SimpleEntityProj> listMon = monDatnService.findAllSimpleEntityByCoSoAndGvhd(idGiangVien, coSoId);
         model.addAttribute("page", listNhomDatn);
         model.addAttribute("listMon", listMon);
+        model.addAttribute("youtubeLink", youtubeLink);
         return "giangvien/gv-nhom-datn";
     }
 

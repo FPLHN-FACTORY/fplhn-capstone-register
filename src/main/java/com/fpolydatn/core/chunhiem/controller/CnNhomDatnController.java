@@ -12,6 +12,8 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,8 @@ import java.util.List;
 /**
  * @author thangncph26123
  */
+
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/chu-nhiem/nhom-datn")
 public class CnNhomDatnController extends BaseController {
@@ -40,6 +44,12 @@ public class CnNhomDatnController extends BaseController {
 
     @Autowired
     private CommonHelper commonHelper;
+
+    @Value("${youtube.cnbm.nhomdatn}")
+    private String youtubeLink;
+
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
 
     @GetMapping
     public String viewNhomDatn(Model model, final CnFindNhomDatnRequest req) {
@@ -60,6 +70,8 @@ public class CnNhomDatnController extends BaseController {
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
+        model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "chunhiem/cn-nhom-datn";
     }
 }

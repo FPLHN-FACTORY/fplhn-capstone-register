@@ -253,9 +253,14 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
     List<NhomDatn> getAllNhomDatnByIdChuNhiem(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId, @Param("idChuNhiem") String idChuNhiem);
 
     @Query(value = """
-            SELECT CONCAT(a.ma_nhom, '_', b.ten_gvhd, '_', b.ten_tai_khoan
-            , '_', c.ma_sinh_vien, '_', c.ten_sinh_vien,
-             '_(', COUNT(d.ma_sinh_vien), '/', 7, ')') as thong_tin
+           SELECT CONCAT(
+               COALESCE(a.ma_nhom, ''), '_',
+               COALESCE(b.ten_gvhd, 'Chưa có'), '_',
+               COALESCE(b.ten_tai_khoan, 'Chưa có'), '_',
+               COALESCE(c.ma_sinh_vien, ''), '_',
+               COALESCE(c.ten_sinh_vien, ''),
+               '_(', COUNT(d.ma_sinh_vien), '/', 7, ')'
+           ) as thong_tin
             FROM nhom_datn a LEFT JOIN giang_vien_huong_dan b 
             ON a.giang_vien_id = b.id LEFT JOIN sinh_vien c 
             ON a.truong_nhom_id = c.id LEFT JOIN sinh_vien d ON a.id = d.nhom_id
@@ -263,9 +268,10 @@ public interface CnNhomDatnRepository extends NhomDatnRepository {
             LEFT JOIN can_bo f ON e.chu_nhiem_bo_mon = f.id
             WHERE a.co_so_id = :#{#req.coSoId} 
             AND a.dot_dang_ky_id = :#{#req.dotDangKyId}
-            AND (a.ma_nhom LIKE %:#{#req.maNhom}% OR b.ten_tai_khoan LIKE %:#{#req.maNhom}%
-            OR b.ten_gvhd LIKE %:#{#req.maNhom}% OR c.ma_sinh_vien LIKE %:#{#req.maNhom}% 
-            OR c.ten_sinh_vien LIKE %:#{#req.maNhom}%)
+            AND (c.ma_sinh_vien LIKE %:#{#req.maNhom}% 
+            OR c.ten_sinh_vien LIKE %:#{#req.maNhom}% OR 
+            a.ma_nhom LIKE %:#{#req.maNhom}% OR b.ten_tai_khoan LIKE %:#{#req.maNhom}%
+            OR b.ten_gvhd LIKE %:#{#req.maNhom}%)
             AND f.id = :#{#req.idChuNhiem}
             GROUP BY a.id
             """, nativeQuery = true)

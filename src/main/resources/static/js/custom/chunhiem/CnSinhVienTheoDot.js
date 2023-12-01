@@ -352,6 +352,18 @@ function exportFileThongTinSinhVien() {
     });
 }
 
+function debounce(func, delay) {
+    let timeoutId;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(function () {
+            func.apply(context, args);
+        }, delay);
+    };
+}
+
 function searchMaNhom() {
     let text = $("#maNhom").val();
     $.ajax({
@@ -369,6 +381,9 @@ function searchMaNhom() {
         }
     });
 }
+
+const debounceSearchMaNhom = debounce(searchMaNhom, 750);
+document.getElementById('maNhom').addEventListener('input', debounceSearchMaNhom);
 
 function openModalRandomNhomDatn() {
     $("#modal_random_nhomdatn").modal('show')
@@ -578,7 +593,7 @@ function openModalHistoryDownload() {
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement("a");
             a.href = url;
-            a.download = "nhom_datn.csv";
+            a.download = "file_log_quan_ly_sinh_vien.csv";
             document.body.appendChild(a);
             a.click();
 

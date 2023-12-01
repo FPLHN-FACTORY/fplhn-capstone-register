@@ -7,11 +7,14 @@ import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
 import com.fpolydatn.core.daotao.service.DtNhomMonDatnService;
 import com.fpolydatn.core.daotao.service.DtSvChuyenNganhService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/nhom-mon-datn")
 public class DtNhomMonController extends BaseController {
@@ -21,6 +24,12 @@ public class DtNhomMonController extends BaseController {
     @Autowired
     private DtSvChuyenNganhService chuyenNganhService;
 
+    @Value("${youtube.daotao.nhommondatn}")
+    private String youtubeLink;
+
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewNhomMonDatn(Model model, final DtFindNhomMonDatnRequest req) {
         String coSoId = session.getCoSoId();
@@ -28,6 +37,8 @@ public class DtNhomMonController extends BaseController {
         PageableObject<DtNhomMonDatnResponse> pageNhomMonDatn = dtNhomMonDatnService.findAllByCoSo(req);
         model.addAttribute("listChuyenNganh", chuyenNganhService.getListChuyenNganh(coSoId));
         model.addAttribute("page", pageNhomMonDatn);
+        model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "daotao/dt-nhom-mon-datn";
     }
 

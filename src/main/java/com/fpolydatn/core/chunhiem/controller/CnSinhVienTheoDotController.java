@@ -13,6 +13,8 @@ import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/chu-nhiem/dot-dang-ky/sinh-vien")
 public class CnSinhVienTheoDotController extends BaseController {
@@ -41,6 +44,12 @@ public class CnSinhVienTheoDotController extends BaseController {
     @Autowired
     private CnChuyenNganhService chuyenNganhService;
 
+    @Value("${youtube.cnbm.sinhvien}")
+    private String youtubeLink;
+
+    @Value("${youtube.csv}")
+    private String hdsdCSV;
+
     @GetMapping
     public String viewSinhVienTheoDot(Model model, final CnFindSinhVienTheoDotRequest req){
         req.setIdDotDangKy(commonHelper.getDotDangKyHienTai());
@@ -61,6 +70,8 @@ public class CnSinhVienTheoDotController extends BaseController {
         model.addAttribute("listDotDangKy", listDotDangKy);
         model.addAttribute("listChuyenNganh", listChuyenNganh);
         model.addAttribute("checkDotDangKyHienTai", checkDotDangKyHienTai);
+        model.addAttribute("youtubeLink", youtubeLink);
+        model.addAttribute("hdsdCSV", hdsdCSV);
         return "chunhiem/cn-sinh-vien-theo-dot";
     }
 }

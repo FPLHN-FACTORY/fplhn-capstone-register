@@ -21,6 +21,7 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                 SELECT ROW_NUMBER() OVER(ORDER BY gvhd.last_modified_date DESC ) AS stt,
                 gvhd.id,
                 cs.ten_co_so,
+                ddk.id AS id_dot_dang_ky,
                 ddk.ten_dot_dang_ky,
                 gvhd.ten_gvhd ,
                 gvhd.so_nhom_huong_dan_toi_da,
