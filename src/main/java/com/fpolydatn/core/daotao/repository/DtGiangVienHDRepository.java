@@ -18,46 +18,50 @@ import java.util.List;
 public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
 
     @Query(value = """
-                SELECT ROW_NUMBER() OVER(ORDER BY gvhd.last_modified_date DESC ) AS stt,
-                gvhd.id,
-                cs.ten_co_so,
-                ddk.id AS id_dot_dang_ky,
-                ddk.ten_dot_dang_ky,
-                gvhd.ten_gvhd ,
-                gvhd.so_nhom_huong_dan_toi_da,
-                COUNT(nd.id) AS so_nhom_dang_huong_dan,
-                gvhd.ten_tai_khoan, 
-                gvhd.so_dien_thoai,
-                gvhd.email_fpt,
-                gvhd.email_fe,
-                GROUP_CONCAT(DISTINCT cn.ten_chuyen_nganh SEPARATOR ', ') AS danh_sach_chuyen_nganh
-                FROM giang_vien_huong_dan gvhd 
-                LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
-                LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
-                LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id  
-                LEFT JOIN phan_cong_huong_dan pc ON pc.giang_vien_id = gvhd.id  
-                LEFT JOIN mon_datn m ON m.id = pc.mon_datn_id  
-                LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id   
-                WHERE 
-                    ( :#{#req.tenTaiKhoan} IS NULL 
-                        OR :#{#req.tenTaiKhoan} LIKE '' 
-                        OR ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}% )
-                    AND (m.chuyen_nganh_id = :#{#req.chuyenNganhId} 
-                    OR :#{#req.chuyenNganhId} IS NULL 
-                    OR :#{#req.chuyenNganhId} LIKE '')
-                    AND cs.id = :#{#req.coSoId}
-                    AND ddk.id = :#{#req.dotDangKyId}
-                GROUP BY gvhd.id
-                ORDER BY gvhd.last_modified_date DESC 
+                WITH cte AS
+                (SELECT ROW_NUMBER() OVER(ORDER BY gvhd.last_modified_date DESC ) AS stt,
+                    gvhd.id,
+                    cs.ten_co_so,
+                    ddk.id AS id_dot_dang_ky,
+                    ddk.ten_dot_dang_ky,
+                    gvhd.ten_gvhd ,
+                    gvhd.so_nhom_huong_dan_toi_da,
+                    gvhd.ten_tai_khoan,
+                    gvhd.so_dien_thoai,
+                    gvhd.email_fpt,
+                    gvhd.email_fe,
+                    GROUP_CONCAT(DISTINCT cn.ten_chuyen_nganh SEPARATOR ', ') AS danh_sach_chuyen_nganh
+                    FROM giang_vien_huong_dan gvhd
+                    LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id
+                    LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id
+                    LEFT JOIN phan_cong_huong_dan pc ON pc.giang_vien_id = gvhd.id
+                    LEFT JOIN mon_datn m ON m.id = pc.mon_datn_id
+                    LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id
+                    WHERE 
+                        ( :#{#req.tenTaiKhoan} IS NULL 
+                            OR :#{#req.tenTaiKhoan} LIKE '' 
+                            OR ten_tai_khoan LIKE %:#{#req.tenTaiKhoan}% )
+                        AND (m.chuyen_nganh_id = :#{#req.chuyenNganhId} 
+                            OR :#{#req.chuyenNganhId} IS NULL 
+                            OR :#{#req.chuyenNganhId} LIKE '')
+                        AND cs.id = :#{#req.coSoId}
+                        AND ddk.id = :#{#req.dotDangKyId}
+                    GROUP BY gvhd.id
+                    ORDER BY gvhd.last_modified_date DESC 
+                )
+                SELECT cte.*, COUNT(nd.id) AS so_nhom_dang_huong_dan FROM cte
+                    LEFT JOIN nhom_datn nd ON nd.giang_vien_id = cte.id
+                    GROUP BY cte.id
+                    ORDER BY cte.stt
             """, countQuery = """
                 SELECT COUNT(gvhd.id)
                 FROM giang_vien_huong_dan gvhd 
                 LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id 
-                LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
+                -- LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
                 LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id   
                 LEFT JOIN phan_cong_huong_dan pc ON pc.giang_vien_id = gvhd.id
                 LEFT JOIN mon_datn m ON m.id = pc.mon_datn_id  
-                LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id                       
+                -- LEFT JOIN chuyen_nganh cn ON m.chuyen_nganh_id = cn.id                       
                 WHERE 
                      ( :#{#req.tenTaiKhoan} IS NULL 
                         OR :#{#req.tenTaiKhoan} LIKE '' 
@@ -68,7 +72,7 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
                     AND cs.id = :#{#req.coSoId}
                     AND ddk.id = :#{#req.dotDangKyId}
                 GROUP BY gvhd.id
-                ORDER BY gvhd.last_modified_date DESC 
+                -- ORDER BY gvhd.last_modified_date DESC 
             """, nativeQuery = true)
     Page<DtGiangVienHDResponse> findByName(@Param("req") DtFindGiangVienHDRequest req, Pageable page);
 

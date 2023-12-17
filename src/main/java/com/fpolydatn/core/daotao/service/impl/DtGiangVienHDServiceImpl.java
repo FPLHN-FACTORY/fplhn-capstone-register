@@ -228,20 +228,32 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
 
     @Override
     public PageableObject<DtGiangVienHDResponse> search(final DtFindGiangVienHDRequest request) {
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        if (request.getDotDangKyId() == null) {
-            if (dotDangKyId != null) {
-                request.setDotDangKyId(dotDangKyId);
-            } else {
-                request.setDotDangKyId("");
-            }
-        } else if (request.getDotDangKyId().equalsIgnoreCase("")) {
+        /// START HOPELESS :(((
+        //        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        //        if (request.getDotDangKyId() == null) {
+        //            if (dotDangKyId != null) {
+        //                request.setDotDangKyId(dotDangKyId);
+        //            } else {
+        //                request.setDotDangKyId("");
+        //            }
+        //        } else if (request.getDotDangKyId().equalsIgnoreCase("")) {
+        //            if (dotDangKyId != null) {
+        //                request.setDotDangKyId(dotDangKyId);
+        //            } else {
+        //                request.setDotDangKyId("");
+        //            }
+        //        }
+        /// END OF HOPELESS
+        if (request.getDotDangKyId() == null
+            || request.getDotDangKyId().equalsIgnoreCase("")) {
+            String dotDangKyId = commonHelper.getDotDangKyHienTai();
             if (dotDangKyId != null) {
                 request.setDotDangKyId(dotDangKyId);
             } else {
                 request.setDotDangKyId("");
             }
         }
+
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<DtGiangVienHDResponse> res = dtGiangVienHDRepository.findByName(request, pageable);
         return new PageableObject<>(res);
