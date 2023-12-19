@@ -1,0 +1,62 @@
+version: '2'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  db:
+    image: mysql:latest
+    restart: always
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+    hostname: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Aa123456
+    volumes:
+    # - .mysql/storage/mysql:/logs
+      - ./db:/var/lib/mysql
+    ports:
+      - 3310:3306
+  app:
+    build: app
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/do_an_tot_nghiep
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Aa123456
+      #LOGGING_FILE_PATH: /logs
+      #LOGGING_FILE_NAME: /logs/app.log
+      spring.security.oauth2.client.registration.google.client-id: ${GG_CLIENT_ID}
+      spring.security.oauth2.client.registration.google.client-secret: ${GG_CLIENT_SECRET}
+      server.ssl.key-store: /udpmbit.p12
+      server.ssl.key-store-password: udpmbit
+      # PKCS12 or JKS
+      server.ssl.keyStoreType: PKCS12
+      #logging.level.org.springframework.security: DEBUG
+      spring.security.oauth2.client.registration.google.scope: email,profile
+      spring.jpa.properties.hibernate.order_updates: "true"
+      spring.jpa.properties.hibernate.batch_versioned_data: "true"
+      spring.jpa.properties.hibernate.jdbc.batch_size: 100
+      spring.mail.host: smtp.gmail.com
+      spring.mail.port: 587
+      spring.mail.username: ${MAIL_USERNAME}
+      spring.mail.password: ${MAIL_PASSWORD}
+      spring.mail.properties.mail.smtp.ssl.trust: smtp.gmail.com
+      spring.mail.properties.mail.smtp.auth: "true"
+      spring.mail.properties.mail.smtp.starttls.enable: "true"
+      spring.mail.properties.mail.smtp.starttls.required: 1e
+      spring.mail.properties.mail.smtp.ssl.protocols: TLSv1.2
+    volumes:
+      - ./storage/datn:/logs
+      - ./udpmbit.p12:/udpmbit.p12
+      - ./datn/log:/datn/log
+    links:
+      - db
+      - rabbitmq

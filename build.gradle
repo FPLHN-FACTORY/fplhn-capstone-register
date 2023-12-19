@@ -2,11 +2,12 @@ plugins {
     id 'org.springframework.boot' version '2.7.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'application'
 }
 
 group = 'com'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+mainClassName = 'com.fpolydatn.FpolyDatnApplication'
 
 configurations {
     compileOnly {
@@ -62,8 +63,4 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-s tarter-amqp
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: '2.7.8'
 
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }

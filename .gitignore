@@ -5,6 +5,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+*.jar
+*.env
+docker/db/*
+
 temp/**
 
 ### STS ###
