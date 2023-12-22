@@ -3,7 +3,7 @@
 //import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 //import com.fpolydatn.infrastructure.constant.RabbitConstant;
 //import com.fpolydatn.infrastructure.logger.LoggerObject;
-//import com.fpolydatn.util.WriterFileCSV;
+//import com.fpolydatn.core.common.WriterFileCSV;
 //import org.springframework.amqp.rabbit.annotation.RabbitListener;
 //import org.springframework.stereotype.Component;
 //

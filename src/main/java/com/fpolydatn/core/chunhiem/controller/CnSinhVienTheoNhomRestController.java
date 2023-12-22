@@ -9,11 +9,9 @@ import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
-import com.fpolydatn.repository.DotDangKyRepository;
-import com.fpolydatn.util.CommonHelper;
-import com.fpolydatn.util.WriterFileCSV;
+import com.fpolydatn.core.common.CommonHelper;
+import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,5 +1,6 @@
-package com.fpolydatn.util;
+package com.fpolydatn.core.common;
 
+import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.infrastructure.session.FpolyDatnSession;
 import com.fpolydatn.repository.NhomDatnRepository;
 import lombok.Synchronized;

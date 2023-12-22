@@ -1,4 +1,4 @@
-package com.fpolydatn.util;
+package com.fpolydatn.core.common;
 
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.repository.NhomDatnRepository;

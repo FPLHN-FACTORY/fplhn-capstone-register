@@ -6,7 +6,7 @@ import com.fpolydatn.core.daotao.model.request.DtFindPhanMonGiangVienHuongDanReq
 import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanMonDatnChoGiangVienHuongDanResponse;
 import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
-import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.core.common.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -15,8 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 /**
  * @author huynq

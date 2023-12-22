@@ -1,6 +1,6 @@
 package com.fpolydatn.infrastructure.constant;
 
-import com.fpolydatn.util.PropertiesReader;
+import com.fpolydatn.core.common.PropertiesReader;
 
 /**
  * @author nguyenvv4

@@ -520,7 +520,7 @@
                                                         <td class="text-center align-middle"
                                                             th:text="${nhomDatn.getTenDotDangKy()}"></td>
                                                         <td class="text-center align-middle"
-                                                            th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).ConvertToTrangThai(nhomDatn.getTrangThai())}"></td>
+                                                            th:text="${T(com.fpolydatn.util.TrangThaiNhomConverter).convertToTrangThai(nhomDatn.getTrangThai())}"></td>
                                                         <td class="text-center align-middle">
                                                             <div class="d-flex justify-content-center align-items-center">
                                                                 <a th:href="@{/chu-nhiem/sinh-vien(id=${nhomDatn.getId()})}"

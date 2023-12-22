@@ -1,4 +1,4 @@
-package com.fpolydatn.util;
+package com.fpolydatn.core.common;
 
 import com.fpolydatn.infrastructure.constant.MailConstant;
 import lombok.extern.slf4j.Slf4j;

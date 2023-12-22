@@ -10,7 +10,7 @@ import com.fpolydatn.repository.CanBoRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.GiangVienHuongDanRepository;
 import com.fpolydatn.repository.SinhVienRepository;
-import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.core.common.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

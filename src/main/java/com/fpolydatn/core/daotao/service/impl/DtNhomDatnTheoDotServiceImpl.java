@@ -21,9 +21,9 @@ import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.NhomDatnRepository;
 import com.fpolydatn.repository.SinhVienRepository;
-import com.fpolydatn.util.CommonHelper;
-import com.fpolydatn.util.EmailSender;
-import com.fpolydatn.util.WriterFileCSV;
+import com.fpolydatn.core.common.CommonHelper;
+import com.fpolydatn.core.common.EmailSender;
+import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -43,7 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Validated

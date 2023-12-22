@@ -3,7 +3,7 @@ package com.fpolydatn.util;
 /**
  * @author phongtt35
  */
-public class PaginationUtil {
+public final class PaginationUtil {
 
     private PaginationUtil() {}
 

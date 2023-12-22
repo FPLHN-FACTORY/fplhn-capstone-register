@@ -20,7 +20,7 @@ import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LogService;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
-import com.fpolydatn.util.WriterFileCSV;
+import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

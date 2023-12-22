@@ -13,7 +13,7 @@ import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
-import com.fpolydatn.util.WriterFileCSV;
+import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -34,7 +34,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

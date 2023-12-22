@@ -1,7 +1,7 @@
-package com.fpolydatn.util;
+package com.fpolydatn.core.common;
 
+import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.core.daotao.model.response.KhoangThoiGianResponse;
-import com.fpolydatn.infrastructure.session.FpolyDatnSession;
 import com.fpolydatn.repository.DotDangKyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

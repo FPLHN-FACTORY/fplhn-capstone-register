@@ -9,7 +9,7 @@ import com.fpolydatn.core.chunhiem.service.CnNhomDatnService;
 import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.core.common.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

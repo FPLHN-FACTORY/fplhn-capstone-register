@@ -1,4 +1,4 @@
-package com.fpolydatn.util;
+package com.fpolydatn.core.common;
 
 import com.fpolydatn.infrastructure.session.FpolyDatnSession;
 import com.fpolydatn.repository.DotDangKyRepository;
@@ -13,7 +13,7 @@ import static com.fpolydatn.util.DateTimeUtil.convertDateToTimeStampSecond;
  * @author thangncph26123
  */
 @Component
-public class CommonHelper {
+public final class CommonHelper {
 
     @Autowired
     private FpolyDatnSession session;

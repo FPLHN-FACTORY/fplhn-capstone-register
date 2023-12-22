@@ -8,7 +8,7 @@ import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.core.daotao.service.DtPhanCongHuongDanService;
 import com.fpolydatn.core.daotao.service.DtSvDotDangKyService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import com.fpolydatn.util.CommonHelper;
+import com.fpolydatn.core.common.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

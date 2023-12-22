@@ -1,4 +1,4 @@
-package com.fpolydatn.util;
+package com.fpolydatn.core.common;
 
 import com.fpolydatn.infrastructure.constant.Constants;
 import lombok.extern.slf4j.Slf4j;

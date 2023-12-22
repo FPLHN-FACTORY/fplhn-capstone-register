@@ -1,4 +1,4 @@
-package com.fpolydatn.util;
+package com.fpolydatn.core.common;
 
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.repository.DtDotDangKyRepository;
