@@ -12,8 +12,7 @@ import com.fpolydatn.core.giangvien.service.GvSinhVienService;
 import com.fpolydatn.core.sinhvien.model.request.SvFindSinhVienRequest;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
-import com.fpolydatn.core.common.WriterFileCSV;
+import com.fpolydatn.core.common.log.LogObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -99,10 +98,10 @@ public class GvNhomDatnRestController extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_GIANG_VIEN) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-        LoggerObject loggerObject = new LoggerObject();
-        loggerObject.setPathFile(pathFile);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
-        List<LoggerObject> pagedSanPhamList = list.stream()
+        LogObject logObject = new LogObject();
+        logObject.setPathFile(pathFile);
+        List<LogObject> list = writerFileCSV.readFileCSV(logObject);
+        List<LogObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)
                 .collect(Collectors.toList());
@@ -115,8 +114,8 @@ public class GvNhomDatnRestController extends BaseController {
             @RequestParam(name = "maNhom", defaultValue = "") String maNhom,
             @RequestParam(name = "dotDangKyId", defaultValue = "") String dotDangKyId
     ) {
-        List<LoggerObject> list = new ArrayList<>();
-            LoggerObject object = new LoggerObject();
+        List<LogObject> list = new ArrayList<>();
+            LogObject object = new LogObject();
             String tenDotHienTai = writerFileCSV.tenDotDangKyHienTai();
             String pathTenDot = "";
             if (dotDangKyId.trim().length() != 0) {
@@ -130,7 +129,7 @@ public class GvNhomDatnRestController extends BaseController {
             object.setPathFile(pathFile);
             list = writerFileCSV.readFileCSVLuong(object);
 
-            List<LoggerObject> pagedSanPhamList = list.stream()
+            List<LogObject> pagedSanPhamList = list.stream()
                     .skip(page * size)
                     .limit(size)
                     .collect(Collectors.toList());

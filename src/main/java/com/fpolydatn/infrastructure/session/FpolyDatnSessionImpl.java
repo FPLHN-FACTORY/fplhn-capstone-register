@@ -27,4 +27,19 @@ class FpolyDatnSessionImpl implements FpolyDatnSession {
         SimpleEntityProj account = (SimpleEntityProj) session.getAttribute(SessionConstant.USER);
         return account.getId();
     }
+
+    @Override
+    public String getRole() {
+        return String.valueOf(session.getAttribute(SessionConstant.ROLE));
+    }
+
+    @Override
+    public String getEmail() {
+        return String.valueOf(session.getAttribute(SessionConstant.EMAIL));
+    }
+
+    @Override
+    public String getDotDangKy() {
+        return String.valueOf(session.getAttribute(SessionConstant.TEN_DOT_DANG_KY));
+    }
 }

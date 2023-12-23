@@ -1,4 +1,4 @@
-package com.fpolydatn.infrastructure.listener;
+package com.fpolydatn.entity.listener;
 
 import com.fpolydatn.entity.base.AuditEntity;
 

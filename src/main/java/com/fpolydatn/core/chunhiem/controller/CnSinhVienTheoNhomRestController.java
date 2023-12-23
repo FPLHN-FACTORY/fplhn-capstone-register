@@ -8,9 +8,8 @@ import com.fpolydatn.core.chunhiem.service.CnSinhVienTheoNhomService;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
 import com.fpolydatn.entity.SinhVien;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -84,7 +83,7 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @GetMapping("/listNhomDatnNoGroup")
     public ResponseObject getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem) {
         req.setCoSoId(session.getCoSoId());
-        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        req.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         return new ResponseObject(sinhVienTheoNhomService.getListSinhVienNoGroup(req, idChuNhiem));
     }
 
@@ -97,7 +96,7 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
     @GetMapping("/listGvhd")
     public ResponseObject getListGvhd(final CnFindGvhdRequest req) {
         req.setCoSoId(session.getCoSoId());
-        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        req.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         return new ResponseObject(cnGiangVienHuongDanService.getListGvhd(req));
     }
 
@@ -108,16 +107,16 @@ public class CnSinhVienTheoNhomRestController extends BaseController {
             @RequestParam(name = "maNhom", defaultValue = "") String maNhom,
             @RequestParam(name = "dotDangKyId", defaultValue = "") String dotDangKyId
     ) {
-        List<LoggerObject> list = new ArrayList<>();
+        List<LogObject> list = new ArrayList<>();
         if (maNhom != null && maNhom.trim().length() != 0) {
-            LoggerObject object = new LoggerObject();
+            LogObject object = new LogObject();
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(cnDotDangKyService.findById(dotDangKyId).getTenDotDangKy());
 
             object.setTenNhom(maNhom);
             object.setPathFile(pathFile);
             list = writerFileCSV.readFileCSVLuong(object);
 
-            List<LoggerObject> pagedSanPhamList = list.stream()
+            List<LogObject> pagedSanPhamList = list.stream()
                     .skip(page * size)
                     .limit(size)
                     .collect(Collectors.toList());

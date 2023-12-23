@@ -15,15 +15,14 @@ import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LogService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.infrastructure.logger.RabbitLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.repository.NhomDatnRepository;
 import com.fpolydatn.repository.SinhVienRepository;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.EmailSender;
-import com.fpolydatn.core.common.WriterFileCSV;
+import com.fpolydatn.infrastructure.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -79,13 +78,13 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     private WriterFileCSV writerFileCSV;
 
     @Autowired
-    private LogService logService;
+    private RabbitLogger rabbitLogger;
 
     private List<DtNhomDatnTheoDotResponse> listNhomDatn;
 
     @Override
     public PageableObject<DtNhomDatnTheoDotResponse> findAllNhomDatn(FindDtNhomDatnTheoDotRequest request) {
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         if (request.getDotDangKyId() == null) {
             if (dotDangKyId != null) {
                 request.setDotDangKyId(dotDangKyId);
@@ -162,7 +161,7 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         Map<String, ChuyenNganh> chuyenNganhMap = fillMapChuyenNganh();
         List<SinhVien>listSinhVienAll = new ArrayList<>();
         for (NhomDatn nhomDatn : listNhomDatn) {
-            List<SinhVien> listSinhVien = sinhVienTheoDotRepository.getAllSinhVien(nhomDatn.getId(), commonHelper.getDotDangKyHienTai());
+            List<SinhVien> listSinhVien = sinhVienTheoDotRepository.getAllSinhVien(nhomDatn.getId(), commonHelper.getIdDotDangKyHienTai());
             listSinhVienAll.addAll(listSinhVien);
         }
         for (SinhVien yy : listSinhVienAll) {
@@ -188,19 +187,19 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
                 SinhVien truongNhom = sinhVienRepository.findById(el.getTruongNhomId()).get();
                 ChuyenNganh chuyenNganh = chuyenNganhMap.get(truongNhom.getChuyenNganhId());
                 String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
-                LoggerObject loggerObjectActive = writerFileCSV.
+                LogObject logObjectActive = writerFileCSV.
                         createLoggerObject("Đào tạo đã xóa nhóm '" + el.getMaNhom() + "'",
                                 pathFileLogActive, "Thành công");
-                logService.sendLogMessage(loggerObjectActive);
+                rabbitLogger.log(logObjectActive);
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-                LoggerObject loggerObject = writerFileCSV.
+                LogObject logObject = writerFileCSV.
                         createLoggerObject("Đào tạo đã xóa nhóm '" + el.getMaNhom() + "'",
                                 pathFile, "Thành công");
-                loggerObject.setTenNhom(el.getMaNhom());
-                loggerObject.setIdChuyenNganh(chuyenNganh.getId());
-                loggerObject.setTenChuyenNganh(chuyenNganh.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObject);
+                logObject.setTenNhom(el.getMaNhom());
+                logObject.setIdChuyenNganh(chuyenNganh.getId());
+                logObject.setTenChuyenNganh(chuyenNganh.getTenChuyenNganh());
+                rabbitLogger.log(logObject);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

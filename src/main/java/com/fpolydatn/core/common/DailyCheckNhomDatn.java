@@ -1,6 +1,7 @@
 package com.fpolydatn.core.common;
 
 import com.fpolydatn.entity.SinhVien;
+import com.fpolydatn.infrastructure.EmailSender;
 import com.fpolydatn.repository.NhomDatnRepository;
 import com.fpolydatn.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;

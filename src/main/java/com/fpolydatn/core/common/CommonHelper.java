@@ -27,11 +27,11 @@ public final class CommonHelper {
     private GiangVienHuongDanRepository giangVienHuongDanRepository;
 
     public int getSoNhomGiangVienDangHuongDan(String id){
-        String dotDangKyHienTai = getDotDangKyHienTai();
-        return giangVienHuongDanRepository.getSoNhomGiangVienDangHuongDan(id, dotDangKyHienTai);
+        String dotDangKyHienTaiId = getIdDotDangKyHienTai();
+        return giangVienHuongDanRepository.getSoNhomGiangVienDangHuongDan(id, dotDangKyHienTaiId);
     }
 
-    public String getDotDangKyHienTai() {
+    public String getIdDotDangKyHienTai() {
         String coSoId = session.getCoSoId();
         return dotDangKyRepository.findDotDangKyID(coSoId, convertDateToTimeStampSecond());
     }

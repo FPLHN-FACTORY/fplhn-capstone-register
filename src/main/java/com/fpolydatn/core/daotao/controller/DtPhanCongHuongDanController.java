@@ -49,7 +49,7 @@ public final class DtPhanCongHuongDanController extends BaseController {
             , final DtFindPhanCongHuongDanRequest req
             , @PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        req.setDotDangKy(commonHelper.getDotDangKyHienTai());
+        req.setDotDangKy(commonHelper.getIdDotDangKyHienTai());
         req.setCoSoId(coSoId);
         List<SimpleEntityProj> listDotDangKy = dotDangKyService.listDotDangKy(req.getCoSoId());
         PageableObject<DtPhanCongHuongDanResponse> listPhanCong = phanCongHuongDanService.search(id, req, req.getPage());

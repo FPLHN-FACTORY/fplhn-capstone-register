@@ -13,9 +13,8 @@ import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse
 import com.fpolydatn.core.sinhvien.service.SvExportFileWordService;
 import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.PageImpl;
@@ -70,7 +69,7 @@ public class SvNhomDatnRestController extends BaseController {
         String idUser = session.getUserId();
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        req.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUser);
         return new ResponseObject(listNhomDatn);
     }
@@ -78,7 +77,7 @@ public class SvNhomDatnRestController extends BaseController {
     @GetMapping("")
     public ResponseObject showDanhSachSinhVien(@RequestParam("id") String id) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         List<SvShowSinhVienTheoNhomResponse> listDanhSachSinhVien = svNhomDatnService.showDanhSachSinhVien(id,
                 coSoId, dotDangKyId);
         return new ResponseObject(listDanhSachSinhVien);
@@ -88,7 +87,7 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject addSinhVien(@RequestBody SvAddSinhVienRequest req) {
         req.setIdUser(session.getUserId());
         req.setCoSoId(session.getCoSoId());
-        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        req.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         return new ResponseObject(svNhomDatnService.addSinhVienTheoNhom(req));
     }
 
@@ -96,7 +95,7 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject createNhomDatn(@RequestBody SvCreateNhomDatnRequest svNhomDatnRequest) {
         String coSoid = session.getCoSoId();
         svNhomDatnRequest.setCoSoId(coSoid);
-        svNhomDatnRequest.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        svNhomDatnRequest.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         return new ResponseObject(svNhomDatnService.createNhomDatn(svNhomDatnRequest, session.getUserId()));
     }
 
@@ -110,7 +109,7 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject roiNhom() {
         String idUser = session.getUserId();
         String coSoid = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         return new ResponseObject(svNhomDatnService.roiNhom(idUser, coSoid, dotDangKyId));
     }
 
@@ -123,7 +122,7 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject chonGvhd(@RequestParam String idGiangVien) {
         String userId = session.getUserId();
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         return new ResponseObject(svNhomDatnService.chonGvhd(userId, idGiangVien, coSoId, dotDangKyId));
     }
 
@@ -145,7 +144,7 @@ public class SvNhomDatnRestController extends BaseController {
     public ResponseObject doiTenNhom(@RequestBody SvUpdateTenNhomRequest request) {
         request.setUserId(session.getUserId());
         request.setCoSoId(session.getCoSoId());
-        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        request.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         return new ResponseObject(svNhomDatnService.doiTenNhom(request));
     }
 
@@ -155,14 +154,14 @@ public class SvNhomDatnRestController extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size,
             @RequestParam(name = "maNhom", defaultValue = "") String maNhom
     ) {
-        List<LoggerObject> list = new ArrayList<>();
+        List<LogObject> list = new ArrayList<>();
         if (maNhom != null && maNhom.trim().length() != 0) {
-            LoggerObject object = new LoggerObject();
+            LogObject object = new LogObject();
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
             object.setTenNhom(maNhom);
             object.setPathFile(pathFile);
             list = writerFileCSV.readFileCSVLuong(object);
-            List<LoggerObject> pagedSanPhamList = list.stream()
+            List<LogObject> pagedSanPhamList = list.stream()
                     .skip(page * size)
                     .limit(size)
                     .collect(Collectors.toList());

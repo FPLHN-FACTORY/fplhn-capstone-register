@@ -52,11 +52,11 @@ public class CnSinhVienTheoDotController extends BaseController {
 
     @GetMapping
     public String viewSinhVienTheoDot(Model model, final CnFindSinhVienTheoDotRequest req){
-        req.setIdDotDangKy(commonHelper.getDotDangKyHienTai());
+        req.setIdDotDangKy(commonHelper.getIdDotDangKyHienTai());
         req.setIdChuNhiem(session.getUserId());
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+        String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
         Boolean checkDotDangKyHienTai = false;
         if(dotDangKyHienTai != null) {
             checkDotDangKyHienTai = true;

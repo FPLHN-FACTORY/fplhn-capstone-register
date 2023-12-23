@@ -16,11 +16,10 @@ import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LogService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.infrastructure.logger.RabbitLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.util.FormUtils;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,7 +55,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     private WriterFileCSV writerFileCSV;
 
     @Autowired
-    private LogService logService;
+    private RabbitLogger rabbitLogger;
 
     private FormUtils formUtils = new FormUtils();
 
@@ -72,7 +71,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
     @Override
     public PageableObject<DtMonDatnResponse> search(@Valid final DtFindMonDatnRequest req) {
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         if (req.getDotDangKyId() == null) {
             if (dotDangKyId != null) {
                 req.setDotDangKyId(dotDangKyId);
@@ -109,10 +108,10 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Môn '" + monCheck.get().getMaMon() + " - " + monCheck.get().getTenMonDatn() + "' đã bị xóa khỏi hệ thống.",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.log(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -212,8 +211,8 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         if (logMessage.length() > 0) {
             try {
                 String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-                LoggerObject loggerObjectActive = writerFileCSV.createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
-                logService.sendLogMessage(loggerObjectActive);
+                LogObject logObjectActive = writerFileCSV.createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
+                rabbitLogger.log(logObjectActive);
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -258,10 +257,10 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Môn '" + monDatn.getMaMon() + " - " + monDatn.getTenMonDatn() + "' đã được thêm vào hệ thống.",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.log(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -280,7 +279,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
         ConcurrentMap<String, MonDatn> list = new ConcurrentHashMap<>();
         ConcurrentMap<String, ChuyenNganh> chuyenNganhs = new ConcurrentHashMap<>();
         ConcurrentMap<String, MonDatn> nhomMons = new ConcurrentHashMap<>();
-        CopyOnWriteArrayList<LoggerObject> loggerObjectList = new CopyOnWriteArrayList<>();
+        CopyOnWriteArrayList<LogObject> logObjectList = new CopyOnWriteArrayList<>();
         if (!checkTypeFile(file)) {
             return new DtMessMonDatnReponse(false, "File không đúng định dạng XLSX");
         }
@@ -407,10 +406,10 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                         chuyenNganhHashMap.put(el.getTenChuyenNganh().toUpperCase(), el);
                         try {
                             String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_CHUYEN_NGANH);
-                            LoggerObject loggerObjectActive = writerFileCSV.
+                            LogObject logObjectActive = writerFileCSV.
                                     createLoggerObject("Chuyên ngành '" + el.getTenChuyenNganh() + "' đã được thêm vào hệ thống.",
                                             pathFileLogActive, "Thành công");
-                            loggerObjectList.add(loggerObjectActive);
+                            logObjectList.add(logObjectActive);
                         } catch (Exception exception) {
                             exception.printStackTrace();
                         }
@@ -426,10 +425,10 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
 
                         try {
                             String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_MON_DATN);
-                            LoggerObject loggerObjectActive = writerFileCSV.
+                            LogObject logObjectActive = writerFileCSV.
                                     createLoggerObject("Nhóm môn '" + el.getMaMon() + " - " + el.getTenMonDatn() + "' đã được thêm vào hệ thống.",
                                             pathFileLogActive, "Thành công");
-                            loggerObjectList.add(loggerObjectActive);
+                            logObjectList.add(logObjectActive);
                         } catch (Exception exception) {
                             exception.printStackTrace();
                         }
@@ -449,18 +448,18 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
                     }
                     try {
                         String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_MON_DATN);
-                        LoggerObject loggerObjectActive = writerFileCSV.
+                        LogObject logObjectActive = writerFileCSV.
                                 createLoggerObject("Môn '" + el.getMaMon() + " - " + el.getTenMonDatn() + "' đã được thêm vào hệ thống.",
                                         pathFileLogActive, "Thành công");
-                        loggerObjectList.add(loggerObjectActive);
+                        logObjectList.add(logObjectActive);
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
                 });
                 mess.setStatus(true);
             }
-            for (LoggerObject el: loggerObjectList) {
-                logService.sendLogMessage(el);
+            for (LogObject el: logObjectList) {
+                rabbitLogger.log(el);
             }
         } catch (Exception e) {
             e.printStackTrace();

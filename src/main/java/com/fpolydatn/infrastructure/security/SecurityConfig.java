@@ -21,7 +21,7 @@ import java.util.Objects;
 public class SecurityConfig {
 
     @Autowired
-    private UserService userService;
+    private AuthenProcessor authenProcessor;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,7 +44,7 @@ public class SecurityConfig {
                             response.sendRedirect("/");
                         }
                     }
-                    userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), oauthUser.getName(), role);
+                    authenProcessor.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), oauthUser.getName(), role);
                 })
                 .failureUrl("/authentication")
                 .and()

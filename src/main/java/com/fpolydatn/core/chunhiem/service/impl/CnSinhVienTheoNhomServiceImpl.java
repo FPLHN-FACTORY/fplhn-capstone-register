@@ -22,12 +22,11 @@ import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LogService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.infrastructure.logger.RabbitLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.core.common.MocThoiGianCommon;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -70,7 +69,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     private WriterFileCSV writerFileCSV;
 
     @Autowired
-    private LogService logService;
+    private RabbitLogger rabbitLogger;
 
     @Autowired
     @Qualifier(DotDangKyRepository.NAME)
@@ -88,7 +87,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
 
     @Override
     public boolean addSinhVienTheoNhom(String idNhom, String maSinhViens) {
-        List<LoggerObject> loggerObjectList = new ArrayList<>();
+        List<LogObject> logObjectList = new ArrayList<>();
         String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
         String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
         Optional<NhomDatn> nhomDatnFind = cnNhomDatnRepository.findById(idNhom);
@@ -100,9 +99,9 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         }
         String listMaSinhVien[] = maSinhViens.split("-");
         int soSinhVienDangLuaChon = listMaSinhVien.length;
-        int soThanhVienTrongNhom = cnNhomDatnRepository.getSoLuongThanhVienNhom(idNhom, commonHelper.getDotDangKyHienTai());
-        String idTruongNhom = cnNhomDatnRepository.findIDTruongNhom(idNhom, commonHelper.getDotDangKyHienTai());
-        String idMonDatn = cnSinhVienTheoNhomRepository.findIdMonDatnByIdCaptain(idTruongNhom, commonHelper.getDotDangKyHienTai());
+        int soThanhVienTrongNhom = cnNhomDatnRepository.getSoLuongThanhVienNhom(idNhom, commonHelper.getIdDotDangKyHienTai());
+        String idTruongNhom = cnNhomDatnRepository.findIDTruongNhom(idNhom, commonHelper.getIdDotDangKyHienTai());
+        String idMonDatn = cnSinhVienTheoNhomRepository.findIdMonDatnByIdCaptain(idTruongNhom, commonHelper.getIdDotDangKyHienTai());
         String idNhomMonDatn = cnMonDatnRepository.findIdNhomMonDatn(idMonDatn);
         if ((soThanhVienTrongNhom + soSinhVienDangLuaChon) > 7) {
             throw new RestApiException(Message.VUOT_QUA_SO_LUONG_CHO_PHEP);
@@ -110,13 +109,13 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         List<CnLoggerResponse> loggerResponseList = new ArrayList<>();
 
         for (String maSinhVien : listMaSinhVien) {
-            String idMonChuongTrinh = cnSinhVienTheoNhomRepository.findIdMonChuongTrinh(maSinhVien, commonHelper.getDotDangKyHienTai());
+            String idMonChuongTrinh = cnSinhVienTheoNhomRepository.findIdMonChuongTrinh(maSinhVien, commonHelper.getIdDotDangKyHienTai());
             String check = cnMonDatnRepository.checkMonChuongTrinh(idNhomMonDatn, idMonChuongTrinh);
             if (check == null) {
                 throw new RestApiException(Message.MON_KHONG_TUONG_DUONG);
             }
 
-            cnSinhVienTheoNhomRepository.addSinhVienInGroup(idNhom, maSinhVien, idMonDatn, commonHelper.getDotDangKyHienTai());
+            cnSinhVienTheoNhomRepository.addSinhVienInGroup(idNhom, maSinhVien, idMonDatn, commonHelper.getIdDotDangKyHienTai());
             CnLoggerResponse cnLoggerResponse = new CnLoggerResponse();
             cnLoggerResponse.setMaNhom(nhomDatnFind.get().getMaNhom());
             cnLoggerResponse.setValue("" + maSinhVien + ", ");
@@ -128,28 +127,28 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         loggerResponseList.forEach(logger -> {
             stringBuffer.append(logger.getValue());
         });
-        SinhVien sinhVienFind = cnSinhVienTheoNhomRepository.getIdSinhVienByMaSinhVien(listMaSinhVien[0], commonHelper.getDotDangKyHienTai());
+        SinhVien sinhVienFind = cnSinhVienTheoNhomRepository.getIdSinhVienByMaSinhVien(listMaSinhVien[0], commonHelper.getIdDotDangKyHienTai());
         ChuyenNganh chuyenNganhFind = cnChuyenNganhRepository.findById(sinhVienFind.getChuyenNganhId()).get();
         try {
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject(stringBuffer.toString(),
                             fileSinhVienCsv, "Thành công");
-            loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
-            loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-            loggerObjectList.add(loggerObjectActive);
+            logObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
+            logObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+            logObjectList.add(logObjectActive);
 
-            LoggerObject loggerObject = writerFileCSV.
+            LogObject logObject = writerFileCSV.
                     createLoggerObject(stringBuffer.toString(),
                             pathFile, "Thành công");
-            loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
-            loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
-            loggerObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-            loggerObjectList.add(loggerObject);
+            logObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+            logObject.setIdChuyenNganh(chuyenNganhFind.getId());
+            logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+            logObjectList.add(logObject);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        loggerObjectList.forEach(el -> {
-            logService.sendLogMessage(el);
+        logObjectList.forEach(el -> {
+            rabbitLogger.sendLogMessage(el);
         });
         return true;
     }
@@ -163,7 +162,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             return null;
         }
-        return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom, coSoId, commonHelper.getDotDangKyHienTai());
+        return cnSinhVienTheoNhomRepository.countListSinhVien(idNhom, coSoId, commonHelper.getIdDotDangKyHienTai());
     }
 
     @Override
@@ -179,29 +178,29 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if(soThanhVien <= 4) {
             throw new RestApiException(Message.NHOM_CON_4_THANH_VIEN_NEU_XOA_NHOM_SE_THANH_NHOM_KHONG_HOP_LE);
         }
-        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien, commonHelper.getDotDangKyHienTai());
+        cnSinhVienTheoNhomRepository.deleteSinhVienOutGroup(maSinhVien, commonHelper.getIdDotDangKyHienTai());
         if (soThanhVien == 0) {
             cnNhomDatnRepository.deleteById(idNhom);
         }
-        SinhVien sinhVienFind = cnSinhVienTheoNhomRepository.getIdSinhVienByMaSinhVien(maSinhVien, commonHelper.getDotDangKyHienTai());
+        SinhVien sinhVienFind = cnSinhVienTheoNhomRepository.getIdSinhVienByMaSinhVien(maSinhVien, commonHelper.getIdDotDangKyHienTai());
         ChuyenNganh chuyenNganhFind = cnChuyenNganhRepository.findById(sinhVienFind.getChuyenNganhId()).get();
         try {
             String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Đã xóa sinh viên '" + sinhVienFind.getMaSinhVien() + "-" + sinhVienFind.getTenSinhVien() + "' ra khỏi nhóm " + nhomDatnFind.get().getMaNhom(),
                             fileSinhVienCsv, "Thành công");
-            loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
-            loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-            logService.sendLogMessage(loggerObjectActive);
+            logObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
+            logObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+            rabbitLogger.sendLogMessage(logObjectActive);
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-            LoggerObject loggerObject = writerFileCSV.
+            LogObject logObject = writerFileCSV.
                     createLoggerObject("Đã xóa sinh viên '" + sinhVienFind.getMaSinhVien() + "-" + sinhVienFind.getTenSinhVien() + "' ra khỏi nhóm " + nhomDatnFind.get().getMaNhom(),
                             pathFile, "Thành công");
-            loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
-            loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
-            loggerObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-            logService.sendLogMessage(loggerObject);
+            logObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+            logObject.setIdChuyenNganh(chuyenNganhFind.getId());
+            logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+            rabbitLogger.sendLogMessage(logObject);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -221,42 +220,42 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if (nhomDatnFind.get().getGiangVienId() != null) {
             giangVienHuongDanCu = cnGiangVienHuongDanReponsitory.findById(nhomDatnFind.get().getGiangVienId());
         }
-        String idGiangVien = cnGiangVienHuongDanReponsitory.getIdFromGiangVienId(tenTaiKhoan, commonHelper.getDotDangKyHienTai());
+        String idGiangVien = cnGiangVienHuongDanReponsitory.getIdFromGiangVienId(tenTaiKhoan, commonHelper.getIdDotDangKyHienTai());
         if (idGiangVien == null) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
         }
         Optional<GiangVienHuongDan> giangVienHuongDanMoi = cnGiangVienHuongDanReponsitory.findById(idGiangVien);
-        if (cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien, commonHelper.getDotDangKyHienTai()) ==
+        if (cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien, commonHelper.getIdDotDangKyHienTai()) ==
                 commonHelper.getSoNhomGiangVienDangHuongDan(idGiangVien)) {
             throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
         }
-        String idTruongNhom = cnNhomDatnRepository.findIDTruongNhom(idNhom, commonHelper.getDotDangKyHienTai());
-        String idMonDatn = cnSinhVienTheoNhomRepository.findIdMonDatnByIdCaptain(idTruongNhom, commonHelper.getDotDangKyHienTai());
-        String check = cnGiangVienHuongDanReponsitory.checkIdGiangVienAndMonDatn(idGiangVien, idMonDatn, commonHelper.getDotDangKyHienTai());
+        String idTruongNhom = cnNhomDatnRepository.findIDTruongNhom(idNhom, commonHelper.getIdDotDangKyHienTai());
+        String idMonDatn = cnSinhVienTheoNhomRepository.findIdMonDatnByIdCaptain(idTruongNhom, commonHelper.getIdDotDangKyHienTai());
+        String check = cnGiangVienHuongDanReponsitory.checkIdGiangVienAndMonDatn(idGiangVien, idMonDatn, commonHelper.getIdDotDangKyHienTai());
         if (check == null) {
             throw new RestApiException(Message.GIANG_VIEN_KHONG_DAY_MON_NAY);
         }
-        cnNhomDatnRepository.addGvhd(idGiangVien, idNhom, commonHelper.getDotDangKyHienTai());
+        cnNhomDatnRepository.addGvhd(idGiangVien, idNhom, commonHelper.getIdDotDangKyHienTai());
         SinhVien sinhVienFind = cnSinhVienTheoNhomRepository.findById(nhomDatnFind.get().getTruongNhomId()).get();
         ChuyenNganh chuyenNganhFind = cnChuyenNganhRepository.findById(sinhVienFind.getChuyenNganhId()).get();
         if (giangVienHuongDanCu == null && giangVienHuongDanMoi.isPresent()) {
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-                LoggerObject loggerObjectActive = writerFileCSV.
+                LogObject logObjectActive = writerFileCSV.
                         createLoggerObject("Đã phân công giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' là: " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
                                 fileSinhVienCsv, "Thành công");
-                loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObjectActive);
+                logObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObjectActive);
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-                LoggerObject loggerObject = writerFileCSV.
+                LogObject logObject = writerFileCSV.
                         createLoggerObject("Đã phân công giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' là: " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
                                 pathFile, "Thành công");
-                loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
-                loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObject);
+                logObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+                logObject.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObject);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -264,21 +263,21 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if (giangVienHuongDanCu != null && giangVienHuongDanCu.isPresent() && giangVienHuongDanMoi.isPresent() && !giangVienHuongDanCu.get().getId().equals(giangVienHuongDanMoi.get().getId())) {
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-                LoggerObject loggerObjectActive = writerFileCSV.
+                LogObject logObjectActive = writerFileCSV.
                         createLoggerObject("Đã đổi giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + giangVienHuongDanCu.get().getTenTaiKhoan() + " - " + giangVienHuongDanCu.get().getTenGvhd() + " sang " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
                                 fileSinhVienCsv, "Thành công");
-                loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObjectActive);
+                logObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObjectActive);
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-                LoggerObject loggerObject = writerFileCSV.
+                LogObject logObject = writerFileCSV.
                         createLoggerObject("Đã đổi giảng viên cho nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + giangVienHuongDanCu.get().getTenTaiKhoan() + " - " + giangVienHuongDanCu.get().getTenGvhd() + " sang " + giangVienHuongDanMoi.get().getTenTaiKhoan() + " - " + giangVienHuongDanMoi.get().getTenGvhd(),
                                 pathFile, "Thành công");
-                loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
-                loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObject);
+                logObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+                logObject.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObject);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -297,27 +296,27 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         }
         Optional<SinhVien> truongNhomMoi = cnSinhVienTheoNhomRepository.findById(idCaptain);
         Optional<SinhVien> truongNhomCu = cnSinhVienTheoNhomRepository.findById(nhomDatnFind.get().getTruongNhomId());
-        cnNhomDatnRepository.changeCaptainByTruongNhomId(idCaptain, idNhom, commonHelper.getDotDangKyHienTai());
+        cnNhomDatnRepository.changeCaptainByTruongNhomId(idCaptain, idNhom, commonHelper.getIdDotDangKyHienTai());
         ChuyenNganh chuyenNganhFind = cnChuyenNganhRepository.findById(truongNhomMoi.get().getChuyenNganhId()).get();
 
         if (!truongNhomMoi.get().getId().equals(truongNhomCu.get().getId())) {
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-                LoggerObject loggerObjectActive = writerFileCSV.
+                LogObject logObjectActive = writerFileCSV.
                         createLoggerObject("Đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.get().getTenSinhVien() + "-" + truongNhomCu.get().getMaSinhVien() + "' thành " + truongNhomMoi.get().getTenSinhVien() + "-" + truongNhomMoi.get().getTenSinhVien(),
                                 fileSinhVienCsv, "Thành công");
-                loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObjectActive);
+                logObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObjectActive);
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-                LoggerObject loggerObject = writerFileCSV.
+                LogObject logObject = writerFileCSV.
                         createLoggerObject("Đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.get().getTenSinhVien() + "-" + truongNhomCu.get().getMaSinhVien() + "' thành " + truongNhomMoi.get().getTenSinhVien() + "-" + truongNhomMoi.get().getTenSinhVien(),
                                 pathFile, "Thành công");
-                loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
-                loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObject);
+                logObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+                logObject.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObject);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -334,30 +333,30 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
-        String idCapTainOld = cnSinhVienTheoNhomRepository.getIdByMaSinhVienAndIdNhom(maSinhVien, idNhom, commonHelper.getDotDangKyHienTai());
-        String idCapTainNew = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCapTainOld, idNhom, commonHelper.getDotDangKyHienTai()).get(0).getId();
+        String idCapTainOld = cnSinhVienTheoNhomRepository.getIdByMaSinhVienAndIdNhom(maSinhVien, idNhom, commonHelper.getIdDotDangKyHienTai());
+        String idCapTainNew = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCapTainOld, idNhom, commonHelper.getIdDotDangKyHienTai()).get(0).getId();
 
         SinhVien truongNhomCu = cnSinhVienTheoNhomRepository.findById(idCapTainOld).get();
         SinhVien truongNhomMoi = cnSinhVienTheoNhomRepository.findById(idCapTainNew).get();
         ChuyenNganh chuyenNganhFind = cnChuyenNganhRepository.findById(truongNhomMoi.getChuyenNganhId()).get();
-        cnNhomDatnRepository.changeCaptainByTruongNhomId(idCapTainNew, idNhom, commonHelper.getDotDangKyHienTai());
+        cnNhomDatnRepository.changeCaptainByTruongNhomId(idCapTainNew, idNhom, commonHelper.getIdDotDangKyHienTai());
         try {
             String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + "' thành " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getTenSinhVien(),
                             fileSinhVienCsv, "Thành công");
-            loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
-            loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-            logService.sendLogMessage(loggerObjectActive);
+            logObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
+            logObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+            rabbitLogger.sendLogMessage(logObjectActive);
 
             String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-            LoggerObject loggerObject = writerFileCSV.
+            LogObject logObject = writerFileCSV.
                     createLoggerObject("Đã đổi trưởng nhóm của nhóm '" + nhomDatnFind.get().getMaNhom() + " từ '" + truongNhomCu.getTenSinhVien() + "-" + truongNhomCu.getMaSinhVien() + "' thành " + truongNhomMoi.getTenSinhVien() + "-" + truongNhomMoi.getTenSinhVien(),
                             pathFile, "Thành công");
-            loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
-            loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
-            loggerObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-            logService.sendLogMessage(loggerObject);
+            logObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+            logObject.setIdChuyenNganh(chuyenNganhFind.getId());
+            logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+            rabbitLogger.sendLogMessage(logObject);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -373,7 +372,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             return null;
         }
-        String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup, commonHelper.getDotDangKyHienTai());
+        String idOldCaptain = cnNhomDatnRepository.findIDTruongNhom(idGroup, commonHelper.getIdDotDangKyHienTai());
         Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(idOldCaptain);
         return captain.get();
     }
@@ -387,7 +386,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if (!checkDotDangKy(nhomDatnFind.get().getDotDangKyId())) {
             return null;
         }
-        List<SinhVien> listStudentNotCaptain = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCaptain, idGroup, commonHelper.getDotDangKyHienTai());
+        List<SinhVien> listStudentNotCaptain = cnSinhVienTheoNhomRepository.getListSinhVienNotCaptain(idCaptain, idGroup, commonHelper.getIdDotDangKyHienTai());
         return listStudentNotCaptain;
     }
 
@@ -432,21 +431,21 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if (tenDeTaiCu == null && tenDeTai != null) {
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-                LoggerObject loggerObjectActive = writerFileCSV.
+                LogObject logObjectActive = writerFileCSV.
                         createLoggerObject("Đã đặt tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenDeTai,
                                 fileSinhVienCsv, "Thành công");
-                loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObjectActive);
+                logObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObjectActive);
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-                LoggerObject loggerObject = writerFileCSV.
+                LogObject logObject = writerFileCSV.
                         createLoggerObject("Đã đặt tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' thành " + tenDeTai,
                                 pathFile, "Thành công");
-                loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
-                loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObject);
+                logObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+                logObject.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObject);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -454,21 +453,21 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
         if (tenDeTaiCu != null && tenDeTai != null && !tenDeTai.equals(tenDeTaiCu)) {
             try {
                 String fileSinhVienCsv = writerFileCSV.getPathFileByDotDangKyAndCoSo(writerFileCSV.tenDotDangKyHienTai()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-                LoggerObject loggerObjectActive = writerFileCSV.
+                LogObject logObjectActive = writerFileCSV.
                         createLoggerObject("Đã đổi tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + tenDeTaiCu + " thành " + tenDeTai,
                                 fileSinhVienCsv, "Thành công");
-                loggerObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObjectActive);
+                logObjectActive.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObjectActive.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObjectActive);
 
                 String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-                LoggerObject loggerObject = writerFileCSV.
+                LogObject logObject = writerFileCSV.
                         createLoggerObject("Đã đổi tên đề tài của nhóm '" + nhomDatnFind.get().getMaNhom() + "' từ " + tenDeTaiCu + " thành " + tenDeTai,
                                 pathFile, "Thành công");
-                loggerObject.setTenNhom(nhomDatnFind.get().getMaNhom());
-                loggerObject.setIdChuyenNganh(chuyenNganhFind.getId());
-                loggerObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-                logService.sendLogMessage(loggerObject);
+                logObject.setTenNhom(nhomDatnFind.get().getMaNhom());
+                logObject.setIdChuyenNganh(chuyenNganhFind.getId());
+                logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
+                rabbitLogger.sendLogMessage(logObject);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

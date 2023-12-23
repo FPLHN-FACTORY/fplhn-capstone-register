@@ -47,7 +47,7 @@ public class CnDashboardController extends BaseController {
         req.setCoSoId(coSoId);
         String idUser = session.getUserId();
         req.setIdChuNhiem(idUser);
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         if (req.getDotDangKyId() == null) {
             if (dotDangKyId != null) {
                 req.setDotDangKyId(dotDangKyId);

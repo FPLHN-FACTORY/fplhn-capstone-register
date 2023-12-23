@@ -14,7 +14,7 @@ import com.fpolydatn.core.common.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,8 +24,8 @@ import java.util.Objects;
 /**
  * @author HangNT
  */
-@Service
-public class UserService {
+@Component
+public class AuthenProcessor {
 
     @Autowired
     private HttpSession session;
@@ -54,12 +54,14 @@ public class UserService {
 
     public void processOAuthPostLogin(HttpServletResponse response,
                                       String coSoID, String email, String name, String role) throws IOException {
-        String dotDangKyID = commonHelper.getDotDangKyHienTai();
+        String dotDangKyID = commonHelper.getIdDotDangKyHienTai();
         if (dotDangKyID != null) {
-            session.setAttribute(SessionConstant.TEN_DOT_DANG_KY, dotDangKyRepository.findById(dotDangKyID).get().getTenDotDangKy());
+            session.setAttribute(SessionConstant.TEN_DOT_DANG_KY,
+                    dotDangKyRepository.findById(dotDangKyID).orElse(null).getTenDotDangKy());
         }
         SimpleEntityProj account = null;
         Boolean checkAccountAdmin = email.equals(mailUsername);
+
         switch (role.toLowerCase()) {
             case ActorConstant.GIANG_VIEN: {
                 account = gvhdRepository.findSimpleEntityByTenGiangVienHuongDan(coSoID, email, dotDangKyID);

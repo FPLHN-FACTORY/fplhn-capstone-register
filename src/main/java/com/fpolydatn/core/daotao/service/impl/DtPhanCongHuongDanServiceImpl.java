@@ -18,9 +18,8 @@ import com.fpolydatn.entity.PhanCongHuongDanId;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LogService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
-import com.fpolydatn.core.common.WriterFileCSV;
+import com.fpolydatn.infrastructure.logger.RabbitLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +52,7 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     private WriterFileCSV writerFileCSV;
 
     @Autowired
-    private LogService logService;
+    private RabbitLogger rabbitLogger;
 
     @Override
     public PageableObject<DtPhanCongHuongDanResponse> search(String id, final DtFindPhanCongHuongDanRequest req, int page) {
@@ -93,10 +92,10 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
             Optional<MonDatn> monDatn = monDatnRepository.findById(idMon);
             Optional<GiangVienHuongDan> giangVienHuongDan = giangVienHDRepository.findById(idGV);
 //            loggerObject.setContent("Giảng viên: '" + giangVienHuongDan.get().getTenTaiKhoan() + "' đã bị xóa khỏi môn '" + monDatn.get().getTenMonDatn() + " - " + monDatn.get().getMaMon() + "'.");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Giảng viên: '" + giangVienHuongDan.get().getTenTaiKhoan() + "' đã bị xóa khỏi môn '" + monDatn.get().getTenMonDatn() + " - " + monDatn.get().getMaMon() + "'.",
                             pathFile, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -125,10 +124,10 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
             Optional<GiangVienHuongDan> giangVienHuongDan = giangVienHDRepository.findById(el.getGiangVienId());
             content.append("Giảng viên: '" + giangVienHuongDan.get().getTenTaiKhoan() + "' đã được phân công vào môn '" + monDatn.get().getTenMonDatn() + " - " + monDatn.get().getMaMon() + "'. ");
         });
-        LoggerObject loggerObjectActive = writerFileCSV.
+        LogObject logObjectActive = writerFileCSV.
                 createLoggerObject(content.toString(),
                         pathFile, "Thành công");
-        logService.sendLogMessage(loggerObjectActive);
+        rabbitLogger.sendLogMessage(logObjectActive);
         return phanCongHuongDans;
     }
 

@@ -18,9 +18,8 @@ import com.fpolydatn.core.daotao.service.DtDotDangKyService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -96,7 +95,7 @@ public class CnNhomDatnRestController extends BaseController {
     @PostMapping
     public ResponseObject create(@RequestBody CnCreateNhomDatnRequest cnCreateNhomDatnRequest) {
         cnCreateNhomDatnRequest.setCoSoId(session.getCoSoId());
-        cnCreateNhomDatnRequest.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        cnCreateNhomDatnRequest.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         return new ResponseObject(nhomDatnService.create(cnCreateNhomDatnRequest));
     }
 
@@ -138,7 +137,7 @@ public class CnNhomDatnRestController extends BaseController {
     @GetMapping("/list-sinh-vien-no-group")
     public ResponseObject getlistNhomDatnNoGroup(final CnFindSinhVienNoGroupRequest req) {
         req.setCoSoId(session.getCoSoId());
-        req.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        req.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         return new ResponseObject(nhomDatnService.getListSinhVienNoGroup(req, session.getUserId()));
     }
 
@@ -151,7 +150,7 @@ public class CnNhomDatnRestController extends BaseController {
     @GetMapping("/list-gvhd")
     public ResponseObject getAllGvhdByIdMon(@RequestParam("idMon") String idMon) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         return new ResponseObject(cnGiangVienHuongDanService.getGiangVienHuongDanByIdMonDatn(idMon, coSoId, dotDangKyId));
     }
 
@@ -170,7 +169,7 @@ public class CnNhomDatnRestController extends BaseController {
     @PostMapping("/import")
     public ResponseObject importExcel(@RequestParam("file") MultipartFile file) throws IOException {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         CnSinhVienImport response = nhomDatnService.CnSinhVienImport(file, dotDangKyId, coSoId, session.getUserId());
         return new ResponseObject(response);
     }
@@ -181,20 +180,14 @@ public class CnNhomDatnRestController extends BaseController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        if (idDotDangKy.equals("")) {
-            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
-            if (dotDangKyHienTai != null) {
-                idDotDangKy = dotDangKyHienTai;
-            } else {
-                throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
-            }
-        }
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
-        LoggerObject loggerObject = new LoggerObject();
-        loggerObject.setPathFile(pathFile);
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(getTenDotDangKy(idDotDangKy))
+                + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM)
+                + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+        LogObject logObject = new LogObject();
+        logObject.setPathFile(pathFile);
         List<String> listIdChuyenNganh = cnChuyenNganhService.getAllIdChuyenNganhByIdChuNhiem(session.getCoSoId(), session.getUserId());
-        List<LoggerObject> list = writerFileCSV.readFileCSVByListChuyenNganh(loggerObject, listIdChuyenNganh);
-        List<LoggerObject> pagedSanPhamList = list.stream()
+        List<LogObject> list = writerFileCSV.readFileCSVByListChuyenNganh(logObject, listIdChuyenNganh);
+        List<LogObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)
                 .collect(Collectors.toList());
@@ -205,15 +198,9 @@ public class CnNhomDatnRestController extends BaseController {
     public ResponseEntity<Resource> downloadCsv(
             @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy
     ) throws IOException {
-        if (idDotDangKy.equals("")) {
-            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
-            if (dotDangKyHienTai != null) {
-                idDotDangKy = dotDangKyHienTai;
-            } else {
-                throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
-            }
-        }
-        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
+        String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(getTenDotDangKy(idDotDangKy))
+                + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CHU_NHIEM)
+                + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_DATN);
 
         File file = new File(pathFile);
 
@@ -236,15 +223,7 @@ public class CnNhomDatnRestController extends BaseController {
     public ResponseEntity<Resource> downloadCsvLuong(
             @RequestParam(name = "dotDangKyId", defaultValue = "") String idDotDangKy
     ) throws IOException {
-        if (idDotDangKy.equals("")) {
-            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
-            if (dotDangKyHienTai != null) {
-                idDotDangKy = dotDangKyHienTai;
-            } else {
-                throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
-            }
-        }
-        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.findDotDangKyById(idDotDangKy).getTenDotDangKy());
+        String pathFile = writerFileCSV.getPathFileLuongNhomDatn(getTenDotDangKy(idDotDangKy));
 
         File file = new File(pathFile);
 
@@ -270,30 +249,35 @@ public class CnNhomDatnRestController extends BaseController {
             @RequestParam(name = "maNhom", defaultValue = "") String maNhom,
             @RequestParam(name = "dotDangKyId", defaultValue = "") String dotDangKyId
     ) {
-        List<LoggerObject> list = new ArrayList<>();
+        List<LogObject> list = new ArrayList<>();
         if (maNhom != null) {
-            LoggerObject object = new LoggerObject();
-            if (dotDangKyId.equals("")) {
-                String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
-                if (dotDangKyHienTai != null) {
-                    dotDangKyId = dotDangKyHienTai;
-                } else {
-                    throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
-                }
-            }
-            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.findDotDangKyById(dotDangKyId).getTenDotDangKy());
+            LogObject object = new LogObject();
+
+            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(getTenDotDangKy(dotDangKyId));
 
             object.setTenNhom(maNhom);
             object.setPathFile(pathFile);
             List<String> listIdChuyenNganh = cnChuyenNganhService.getAllIdChuyenNganhByIdChuNhiem(session.getCoSoId(), session.getUserId());
             list = writerFileCSV.readFileCSVLuongChuNhiem(object, listIdChuyenNganh);
 
-            List<LoggerObject> pagedSanPhamList = list.stream()
+            List<LogObject> pagedSanPhamList = list.stream()
                     .skip(page * size)
                     .limit(size)
                     .collect(Collectors.toList());
             return new ResponseObject(new PageImpl<>(pagedSanPhamList, PageRequest.of(page, size), list.size()));
         }
         return new ResponseObject(new PageImpl<>(list, PageRequest.of(page, size), list.size()));
+    }
+
+    private String getTenDotDangKy(String id) {
+        if ("".equals(id)) {
+            String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
+            if (dotDangKyHienTai != null) {
+                id = dotDangKyHienTai;
+            } else {
+                throw new RestApiException(Message.KHONG_CO_DOT_HIEN_TAI_VUI_LONG_CHON_DOT);
+            }
+        }
+        return dotDangKyService.findById(id).getTenDotDangKy();
     }
 }

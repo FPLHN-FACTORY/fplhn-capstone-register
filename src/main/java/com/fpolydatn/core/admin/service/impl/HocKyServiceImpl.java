@@ -12,9 +12,8 @@ import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
 import com.fpolydatn.entity.HocKy;
 import com.fpolydatn.core.admin.service.HocKyService;
-import com.fpolydatn.infrastructure.logger.LogService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
-import com.fpolydatn.core.common.WriterFileCSV;
+import com.fpolydatn.infrastructure.logger.RabbitLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,7 +45,7 @@ public class HocKyServiceImpl implements HocKyService {
     private WriterFileCSV writerFileCSV;
 
     @Autowired
-    private LogService logService;
+    private RabbitLogger rabbitLogger;
 
     @Override
     public PageableObject<HocKyResponse> search(final FindHocKyRequest request) {
@@ -84,10 +83,10 @@ public class HocKyServiceImpl implements HocKyService {
         hocKy.setNgayKetThuc(ngayKetThucLong);
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Học kỳ '" + hocKy.getTenHocKy() + "' đã được tạo",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -106,10 +105,10 @@ public class HocKyServiceImpl implements HocKyService {
         }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Học kỳ '" + hocKyCheck.get().getTenHocKy() + "' đã bị xóa",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -178,10 +177,10 @@ public class HocKyServiceImpl implements HocKyService {
         }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject(logMessage.toString(),
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

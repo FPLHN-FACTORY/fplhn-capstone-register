@@ -14,10 +14,9 @@ import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.HocKy;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LogService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.infrastructure.logger.RabbitLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +50,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     private WriterFileCSV writerFileCSV;
 
     @Autowired
-    private LogService logService;
+    private RabbitLogger rabbitLogger;
 
     @Override
     public PageableObject<DtDotDangKyResponse> findByCoSo(DtFindDotDangKyRequest request) {
@@ -88,10 +87,10 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
             // gen file tự động
             writerFileCSV.genFolderLogger(dotDangKy.getTenDotDangKy());
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKy.getTenDotDangKy());
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Đợt đăng ký '" + dotDangKy.getTenDotDangKy() + "' đã được tạo",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -166,10 +165,10 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
             writerFileCSV.updateFolder(writerFileCSV.covertFileName(dotDangKyCheck.get().getTenDotDangKy()), writerFileCSV.covertFileName(dtUpdateDotDangKyRequest.getTenDotDangKy()));
             // ghi log vào trong file chức năng từng màn
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dtUpdateDotDangKyRequest.getTenDotDangKy());
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject(logMessage.toString(),
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

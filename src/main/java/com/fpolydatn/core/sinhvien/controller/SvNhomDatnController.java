@@ -56,7 +56,7 @@ public class SvNhomDatnController extends BaseController {
     public String viewNhomDatn(Model model, final SvFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         String idUSer = session.getUserId();
-        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+        String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
         String nhomId = svSinhVienService.getNhomIdById(coSoId,
                 dotDangKyHienTai,
                 idUSer);

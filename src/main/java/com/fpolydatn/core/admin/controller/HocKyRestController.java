@@ -6,8 +6,7 @@ import com.fpolydatn.core.admin.model.request.CreateHocKyRequest;
 import com.fpolydatn.core.admin.model.request.UpdateHocKyRequest;
 import com.fpolydatn.core.admin.service.HocKyService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
-import com.fpolydatn.core.common.WriterFileCSV;
+import com.fpolydatn.core.common.log.LogObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -79,10 +78,10 @@ public final class HocKyRestController extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_HOC_KY);
-        LoggerObject loggerObject = new LoggerObject();
-        loggerObject.setPathFile(pathFileLogActive);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
-        List<LoggerObject> pagedSanPhamList = list.stream()
+        LogObject logObject = new LogObject();
+        logObject.setPathFile(pathFileLogActive);
+        List<LogObject> list = writerFileCSV.readFileCSV(logObject);
+        List<LogObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)
                 .collect(Collectors.toList());

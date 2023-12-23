@@ -1,15 +1,13 @@
 package com.fpolydatn.infrastructure.logger;
 
-import com.fpolydatn.infrastructure.constant.RabbitConstant;
+import com.fpolydatn.core.common.log.IDatnLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import com.google.gson.Gson;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
-@Service
-public class LogService {
+public class RabbitLogger implements IDatnLogger {
 
     private final RabbitTemplate amqpTemplate;
 
@@ -20,17 +18,22 @@ public class LogService {
     private String exchangeQueue;
 
     @Autowired
-    public LogService(RabbitTemplate amqpTemplate) {
+    public RabbitLogger(RabbitTemplate amqpTemplate) {
         this.amqpTemplate = amqpTemplate;
     }
 
-    // Gửi log thông điệp vào RabbitMQ
-    public void sendLogMessage(LoggerObject loggerObject) {
+    @Override
+    public void log(LogObject data) {
         Gson gson = new Gson();
-        String message = gson.toJson(loggerObject);
+        String message = gson.toJson(data);
         amqpTemplate.convertAndSend(exchangeQueue, routeQueue, message, messagePostProcessor -> {
             messagePostProcessor.getMessageProperties();
             return messagePostProcessor;
         });
+    }
+
+    @Override
+    public void log(String content, String status) {
+
     }
 }

@@ -1,6 +1,6 @@
 package com.fpolydatn.entity.base;
 
-import com.fpolydatn.infrastructure.listener.AuditEntityListener;
+import com.fpolydatn.entity.listener.AuditEntityListener;
 import lombok.Getter;
 import lombok.Setter;
 

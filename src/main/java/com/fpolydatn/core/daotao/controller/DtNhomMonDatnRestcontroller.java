@@ -10,8 +10,7 @@ import com.fpolydatn.core.daotao.model.response.DtDetailNhomMonResponse;
 import com.fpolydatn.core.daotao.model.response.DtNhomMonDatnResponse;
 import com.fpolydatn.core.daotao.service.DtNhomMonDatnService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
-import com.fpolydatn.core.common.WriterFileCSV;
+import com.fpolydatn.core.common.log.LogObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -91,10 +90,10 @@ public class DtNhomMonDatnRestcontroller extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         String pathFile = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_NHOM_MON_DATN);
-        LoggerObject loggerObject = new LoggerObject();
-        loggerObject.setPathFile(pathFile);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
-        List<LoggerObject> pagedSanPhamList = list.stream()
+        LogObject logObject = new LogObject();
+        logObject.setPathFile(pathFile);
+        List<LogObject> list = writerFileCSV.readFileCSV(logObject);
+        List<LogObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)
                 .collect(Collectors.toList());

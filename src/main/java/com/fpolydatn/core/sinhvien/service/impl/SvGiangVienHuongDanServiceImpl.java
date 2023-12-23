@@ -24,7 +24,7 @@ public class SvGiangVienHuongDanServiceImpl implements SvGiangVienHuongDanServic
 
     @Override
     public List<SvGiangVienHuongDanResponse> getGvhdByMonDatnId(String maMon, String coSoId) {
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         return giangVienHuongDanRepository.getGiangVienHuongDanByIdMonDatn(maMon, coSoId, dotDangKyId);
     }
 

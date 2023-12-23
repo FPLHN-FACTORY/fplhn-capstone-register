@@ -7,9 +7,8 @@ import com.fpolydatn.core.daotao.model.request.DtUpdateChuyenNganhRequest;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.ChuyenNganh;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -84,10 +83,10 @@ public class DtChuyenNganhRestController extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         String pathFileLogActive = writerFileCSV.getSwitchCoSo() + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_CHUYEN_NGANH);
-        LoggerObject loggerObject = new LoggerObject();
-        loggerObject.setPathFile(pathFileLogActive);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
-        List<LoggerObject> pagedSanPhamList = list.stream()
+        LogObject logObject = new LogObject();
+        logObject.setPathFile(pathFileLogActive);
+        List<LogObject> list = writerFileCSV.readFileCSV(logObject);
+        List<LogObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)
                 .collect(Collectors.toList());

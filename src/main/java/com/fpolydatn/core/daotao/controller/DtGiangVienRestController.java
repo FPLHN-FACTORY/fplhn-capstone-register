@@ -13,9 +13,8 @@ import com.fpolydatn.core.daotao.service.DtGiangVienHDService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -68,7 +67,7 @@ public class DtGiangVienRestController extends BaseController {
         String coSoid = session.getCoSoId();
         cmd.setCoSoId(coSoid);
         if (cmd.getDotDangKyId().equalsIgnoreCase("")) {
-            cmd.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+            cmd.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         }
         return new ResponseObject(giangVienHDService.create(cmd));
     }
@@ -109,7 +108,7 @@ public class DtGiangVienRestController extends BaseController {
     public void exportExcel(HttpServletResponse response, @RequestParam("typeExcel") String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
         request.setCoSoId(session.getCoSoId());
         if (request != null && (request.getDotDangKyId() == null || request.getDotDangKyId().trim().length() == 0)) {
-            request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+            request.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         }
         giangVienHDService.DtGiangVienHDExportExcel(response, typeExcel, request);
     }
@@ -127,7 +126,7 @@ public class DtGiangVienRestController extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         if (idDotDangKy.equals("")) {
-            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
             if (dotDangKyHienTai != null) {
                 idDotDangKy = dotDangKyHienTai;
             } else {
@@ -135,11 +134,11 @@ public class DtGiangVienRestController extends BaseController {
             }
         }
         String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_GIANG_VIEN_HUONG_DAN);
-        LoggerObject loggerObject = new LoggerObject();
-        loggerObject.setPathFile(pathFile);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
+        LogObject logObject = new LogObject();
+        logObject.setPathFile(pathFile);
+        List<LogObject> list = writerFileCSV.readFileCSV(logObject);
         Collections.reverse(list);
-        List<LoggerObject> pagedSanPhamList = list.stream()
+        List<LogObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)
                 .collect(Collectors.toList());
@@ -151,7 +150,7 @@ public class DtGiangVienRestController extends BaseController {
             @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy
     ) throws IOException {
         if (idDotDangKy.equals("")) {
-            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
             if (dotDangKyHienTai != null) {
                 idDotDangKy = dotDangKyHienTai;
             } else {

@@ -14,9 +14,8 @@ import com.fpolydatn.core.daotao.service.DtSinhVienTheoDotService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -99,7 +98,7 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     @GetMapping("/search/{id}")
     public ResponseObject searchStudentById(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         return new ResponseObject(sinhVienService.searchStudentById(id));
     }
 
@@ -111,7 +110,7 @@ public class DtSinhVienTheoDotRestController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseObject delete(@PathVariable("id") String id) {
         String coSoId = session.getCoSoId();
-        String dotDangKyId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
         return new ResponseObject(sinhVienService.delete(id, coSoId, dotDangKyId));
     }
 
@@ -144,7 +143,7 @@ public class DtSinhVienTheoDotRestController extends BaseController {
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
         if (idDotDangKy.equals("")) {
-            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
             if (dotDangKyHienTai != null) {
                 idDotDangKy = dotDangKyHienTai;
             } else {
@@ -152,10 +151,10 @@ public class DtSinhVienTheoDotRestController extends BaseController {
             }
         }
         String pathFile = writerFileCSV.getPathFileByDotDangKyAndCoSo(dotDangKyService.findById(idDotDangKy).getTenDotDangKy()) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.FOLDER_ACTOR_CAN_BO_DAO_TAO) + writerFileCSV.getPropertiesRead(ConfigurationsConstant.NAME_FILE_SINH_VIEN);
-        LoggerObject loggerObject = new LoggerObject();
-        loggerObject.setPathFile(pathFile);
-        List<LoggerObject> list = writerFileCSV.readFileCSV(loggerObject);
-        List<LoggerObject> pagedSanPhamList = list.stream()
+        LogObject logObject = new LogObject();
+        logObject.setPathFile(pathFile);
+        List<LogObject> list = writerFileCSV.readFileCSV(logObject);
+        List<LogObject> pagedSanPhamList = list.stream()
                 .skip(page * size)
                 .limit(size)
                 .collect(Collectors.toList());
@@ -167,7 +166,7 @@ public class DtSinhVienTheoDotRestController extends BaseController {
             @RequestParam(name = "dotDangKy", defaultValue = "") String idDotDangKy
     ) throws IOException {
         if (idDotDangKy.equals("")) {
-            String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+            String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
             if (dotDangKyHienTai != null) {
                 idDotDangKy = dotDangKyHienTai;
             } else {

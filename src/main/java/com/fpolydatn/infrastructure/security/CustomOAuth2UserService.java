@@ -27,7 +27,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String email = user.getAttribute("email");
         session.setAttribute(SessionConstant.AVATAR, avatar);
         session.setAttribute(SessionConstant.EMAIL, email);
-        System.out.println(email);
 
         String role = (String) session.getAttribute(SessionConstant.ROLE);
         String coSoId = (String) session.getAttribute(SessionConstant.CO_SO_ID);

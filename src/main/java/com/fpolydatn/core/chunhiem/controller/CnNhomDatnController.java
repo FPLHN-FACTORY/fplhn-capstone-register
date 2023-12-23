@@ -55,7 +55,7 @@ public class CnNhomDatnController extends BaseController {
     public String viewNhomDatn(Model model, final CnFindNhomDatnRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+        String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
         req.setDotDangKyId(dotDangKyHienTai);
         Boolean checkDotDangKyHienTai = false;
         if(dotDangKyHienTai != null) {

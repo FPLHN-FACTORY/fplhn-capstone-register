@@ -4,10 +4,9 @@ import com.fpolydatn.core.daotao.repository.DtCanBoRepository;
 import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.CanBo;
-import com.fpolydatn.infrastructure.logger.LogService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.infrastructure.logger.RabbitLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fpolydatn.core.common.base.PageableObject;
@@ -47,7 +46,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     private WriterFileCSV writerFileCSV;
 
     @Autowired
-    private LogService logService;
+    private RabbitLogger rabbitLogger;
 
     @Override
     public List<SimpleEntityProj> findAllSimpleEntityByCoSo(String id) {
@@ -94,9 +93,9 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
 
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -119,10 +118,10 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         dtChuyenNganhRepository.save(chuyenNganh);
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Chuyên ngành '" + chuyenNganh.getTenChuyenNganh() + "' đã được thêm vào hệ thống.",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -146,10 +145,10 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         dtChuyenNganhRepository.delete(chuyenNganhCheck.get());
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Chuyên ngành '" + chuyenNganhCheck.get().getTenChuyenNganh() + "' đã bị xóa khỏi hệ thống.",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

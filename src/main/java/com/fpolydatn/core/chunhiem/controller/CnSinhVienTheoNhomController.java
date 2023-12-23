@@ -47,7 +47,7 @@ public class CnSinhVienTheoNhomController extends BaseController {
         req.setIdNhom(id);
         req.setCoSoId(coSoId);
         request.setCoSoId(session.getCoSoId());
-        request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
+        request.setDotDangKyId(commonHelper.getIdDotDangKyHienTai());
         request.setIdNhom(req.getIdNhom());
         PageableObject<CnSinhVienTheoNhomResponse> pageSinhVien = sinhVienTheoNhomService.searchByIdNhom(req);
         List<CnSinhVienSearchResponse> listSinhVienNoGroup = sinhVienTheoNhomService.getListSinhVienNoGroup(request, session.getUserId());

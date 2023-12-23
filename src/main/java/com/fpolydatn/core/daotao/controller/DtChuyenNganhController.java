@@ -8,7 +8,6 @@ import com.fpolydatn.core.daotao.service.DtCanBoService;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import com.fpolydatn.core.common.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -30,9 +29,6 @@ public class DtChuyenNganhController extends BaseController {
 
     @Autowired
     private DtChuyenNganhService chuyenNganhService;
-
-    @Autowired
-    private CommonHelper commonHelper;
 
     @Autowired
     private DtCanBoService canBoService;

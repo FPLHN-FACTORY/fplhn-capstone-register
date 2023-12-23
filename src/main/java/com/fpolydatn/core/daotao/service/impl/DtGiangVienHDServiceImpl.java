@@ -19,11 +19,10 @@ import com.fpolydatn.entity.MonDatn;
 import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LogService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.infrastructure.logger.RabbitLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.util.FormUtils;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -76,7 +75,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     private WriterFileCSV writerFileCSV;
 
     @Autowired
-    private LogService logService;
+    private RabbitLogger rabbitLogger;
 
     @Autowired
     private DtDotDangKyRepository dotDangKyRepository;
@@ -98,10 +97,10 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         GiangVienHuongDan gvhd = formUtils.convertToObject(GiangVienHuongDan.class, command);
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(gvhd.getDotDangKyId()).get().getTenDotDangKy());
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Giảng viên '" + gvhd.getTenTaiKhoan() + "' đã được thêm vào hệ thống.",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -121,10 +120,10 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         dtGiangVienHDRepository.delete(gvhdCheck.get());
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(gvhdCheck.get().getDotDangKyId()).get().getTenDotDangKy());
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Giảng viên '" + gvhdCheck.get().getTenTaiKhoan() + "' đã bị xóa khỏi hệ thống.",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -202,10 +201,10 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(dotDangKyRepository.findById(giangVien.getDotDangKyId()).get().getTenDotDangKy());
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject(logMessage.toString(),
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -246,7 +245,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         /// END OF HOPELESS
         if (request.getDotDangKyId() == null
             || request.getDotDangKyId().equalsIgnoreCase("")) {
-            String dotDangKyId = commonHelper.getDotDangKyHienTai();
+            String dotDangKyId = commonHelper.getIdDotDangKyHienTai();
             if (dotDangKyId != null) {
                 request.setDotDangKyId(dotDangKyId);
             } else {

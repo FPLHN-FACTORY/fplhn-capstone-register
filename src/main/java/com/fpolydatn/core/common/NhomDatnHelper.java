@@ -1,6 +1,5 @@
 package com.fpolydatn.core.common;
 
-import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.infrastructure.session.FpolyDatnSession;
 import com.fpolydatn.repository.NhomDatnRepository;
 import lombok.Synchronized;
@@ -27,7 +26,7 @@ public class NhomDatnHelper {
     public String genMaNhomTuDong() {
         String coSoId = session.getCoSoId();
         String text = nhomDatnRepository.getMaCoSo(coSoId);
-        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+        String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
         String maNhomGanNhat = nhomDatnRepository.getNhomTaoGanNhat(dotDangKyHienTai, coSoId);
         Integer count = 0;
         try {

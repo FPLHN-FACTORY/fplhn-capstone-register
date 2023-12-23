@@ -45,7 +45,7 @@ public class DtNhomDatnTheoDotController extends BaseController {
     public String findAllNhomDatn(Model model, final FindDtNhomDatnTheoDotRequest req) {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
-        String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
+        String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
         req.setDotDangKyId(dotDangKyHienTai);
         Boolean checkDotDangKyHienTai = false;
         if (dotDangKyHienTai != null) {

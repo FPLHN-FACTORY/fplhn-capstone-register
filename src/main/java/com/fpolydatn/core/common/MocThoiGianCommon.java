@@ -1,6 +1,5 @@
 package com.fpolydatn.core.common;
 
-import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.core.daotao.model.response.KhoangThoiGianResponse;
 import com.fpolydatn.repository.DotDangKyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class MocThoiGianCommon {
 
     public boolean checkMocThoiGianSinhVien() {
         boolean check = false;
-        String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyHienTaiId = commonHelper.getIdDotDangKyHienTai();
         if(dotDangKyHienTaiId != null) {
             KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianSinhVien(dotDangKyHienTaiId);
             Long currentTime = convertDateToTimeStampSecond();
@@ -38,7 +37,7 @@ public class MocThoiGianCommon {
 
     public boolean checkMocThoiGianGiangVien() {
         boolean check = false;
-        String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyHienTaiId = commonHelper.getIdDotDangKyHienTai();
         if(dotDangKyHienTaiId != null) {
             KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianGiangVien(dotDangKyHienTaiId);
             Long currentTime = convertDateToTimeStampSecond();
@@ -52,7 +51,7 @@ public class MocThoiGianCommon {
 
     public boolean checkMocThoiGianChuNhiem() {
         boolean check = false;
-        String dotDangKyHienTaiId = commonHelper.getDotDangKyHienTai();
+        String dotDangKyHienTaiId = commonHelper.getIdDotDangKyHienTai();
         if(dotDangKyHienTaiId != null) {
             KhoangThoiGianResponse khoangThoiGianResponse = dotDangKyRepository.findMocThoiGianChuNhiem(dotDangKyHienTaiId);
             Long currentTime = convertDateToTimeStampSecond();

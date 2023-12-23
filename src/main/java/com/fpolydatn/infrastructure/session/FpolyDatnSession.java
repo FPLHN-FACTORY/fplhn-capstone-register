@@ -8,4 +8,10 @@ public interface FpolyDatnSession {
     String getCoSoId();
 
     String getUserId();
+
+    String getRole();
+
+    String getEmail();
+
+    String getDotDangKy();
 }

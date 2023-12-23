@@ -6,17 +6,6 @@ public final class ConfigurationsConstant {
     }
 
     public static final String PATH_FILE_TEMPLATE = "csv_logger_folder_template";
-//    public static final String PATH_FILE_CO_SO_HA_NOI = "csv_logger_folder_path_ha_noi";
-//
-//    public static final String PATH_FILE_CO_SO_HCM = "csv_logger_folder_path_ho_chi_minh";
-//
-//    public static final String PATH_FILE_CO_SO_DA_NANG = "csv_logger_folder_path_da_nang";
-//
-//    public static final String PATH_FILE_CO_SO_TAY_NGUYEN = "csv_logger_folder_path_tay_nguyen";
-//
-//    public static final String PATH_FILE_CO_SO_CAN_THO = "csv_logger_folder_path_can_tho";
-//
-//    public static final String PATH_FILE_CO_SO_KHAC = "csv_logger_folder_path_khac";
 
     public static final String NAME_FILE_CAN_BO = "can_bo_csv";
     public static final String NAME_FILE_CHUYEN_NGANH = "chuyen_nganh_csv";

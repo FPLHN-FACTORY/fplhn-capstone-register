@@ -17,11 +17,10 @@ import com.fpolydatn.entity.CoSo;
 import com.fpolydatn.infrastructure.constant.Message;
 import com.fpolydatn.infrastructure.constant.VaiTro;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
-import com.fpolydatn.infrastructure.logger.LogService;
-import com.fpolydatn.infrastructure.logger.LoggerObject;
+import com.fpolydatn.infrastructure.logger.RabbitLogger;
+import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.util.FormUtils;
-import com.fpolydatn.core.common.WriterFileCSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,7 +59,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     private WriterFileCSV writerFileCSV;
 
     @Autowired
-    private LogService logService;
+    private RabbitLogger rabbitLogger;
 
     @Override
     public PageableObject<DtCanBoResponse> search(final DtFindCanBoRequest canBoRequest) {
@@ -87,10 +86,10 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         dtCanBoRepository.save(canBo);
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Cán bộ '" + canBo.getTenTaiKhoan() + "' đã được thêm vào hệ thống.",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -112,10 +111,10 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject("Cán bộ '" + canBoCheck.get().getTenTaiKhoan() + "' đã bị xóa khỏi hệ thống.",
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -199,10 +198,10 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         }
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
+            LogObject logObjectActive = writerFileCSV.
                     createLoggerObject(logMessage.toString(),
                             pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
+            rabbitLogger.sendLogMessage(logObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -288,10 +287,10 @@ public class DtCanBoServiceImpl implements DtCanBoService {
                 listCanBo.values().forEach(el -> {
                     try {
                         String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-                        LoggerObject loggerObjectActive = writerFileCSV.
+                        LogObject logObjectActive = writerFileCSV.
                                 createLoggerObject("Cán bộ '" + el.getTenTaiKhoan() + "' đã được thêm vào hệ thống.",
                                         pathFileLogActive, "Thành công");
-                        logService.sendLogMessage(loggerObjectActive);
+                        rabbitLogger.sendLogMessage(logObjectActive);
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
