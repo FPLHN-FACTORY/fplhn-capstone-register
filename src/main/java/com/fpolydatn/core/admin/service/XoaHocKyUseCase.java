@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * @author phongtt35
  */
 @Service
-public class XoaHocKyUseCase implements IUseCase<String, Boolean> {
+public final class XoaHocKyUseCase implements IUseCase<String, Boolean> {
 
     private final AdHocKyRepository repository;
 

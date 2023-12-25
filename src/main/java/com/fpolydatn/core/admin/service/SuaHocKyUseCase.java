@@ -18,7 +18,7 @@ import java.util.Optional;
  * @author : PhongTT35
  **/
 @Service
-public class SuaHocKyUseCase implements IUseCase<UpdateHocKyRequest, HocKy> {
+public final class SuaHocKyUseCase implements IUseCase<UpdateHocKyRequest, HocKy> {
 
     private final AdHocKyRepository repository;
 

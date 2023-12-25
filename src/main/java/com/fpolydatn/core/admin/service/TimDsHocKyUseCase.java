@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @author : PhongTT35
  **/
 @Service
-public class TimDsHocKyUseCase implements IUseCase<FindHocKyRequest, PageableObject<HocKyResponse>> {
+public final class TimDsHocKyUseCase implements IUseCase<FindHocKyRequest, PageableObject<HocKyResponse>> {
 
     private final AdHocKyRepository repository;
 

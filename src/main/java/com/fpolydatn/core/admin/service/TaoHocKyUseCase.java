@@ -19,7 +19,7 @@ import java.util.List;
  * @author : PhongTT35
  **/
 @Service
-public class TaoHocKyUseCase implements IUseCase<CreateHocKyRequest, HocKy> {
+public final class TaoHocKyUseCase implements IUseCase<CreateHocKyRequest, HocKy> {
 
     private final AdHocKyRepository repository;
 

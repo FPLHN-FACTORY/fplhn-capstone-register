@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @author : PhongTT35
  **/
 @Service
-public class XemChiTietHocKyUseCase implements IUseCase<String, HocKy> {
+public final class XemChiTietHocKyUseCase implements IUseCase<String, HocKy> {
 
     private final AdHocKyRepository repository;
 
