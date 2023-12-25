@@ -8,7 +8,7 @@ import com.fpolydatn.core.giangvien.service.GvMonDatnService;
 import com.fpolydatn.core.giangvien.service.GvNhomDatnService;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.MocThoiGianCommon;
+import com.fpolydatn.core.common.MocThoiGianHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ public class GvNhomDatnController extends BaseController {
     private CommonHelper commonHelper;
 
     @Autowired
-    private MocThoiGianCommon mocThoiGianCommon;
+    private MocThoiGianHelper mocThoiGianHelper;
 
     @Value("${youtube.giangvien.nhomdatn}")
     private String youtubeLink;

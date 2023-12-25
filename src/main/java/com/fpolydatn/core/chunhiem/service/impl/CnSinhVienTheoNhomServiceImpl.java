@@ -26,7 +26,7 @@ import com.fpolydatn.infrastructure.logger.RabbitLogger;
 import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.MocThoiGianCommon;
+import com.fpolydatn.core.common.MocThoiGianHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -63,7 +63,7 @@ public class CnSinhVienTheoNhomServiceImpl implements CnSinhVienTheoNhomService 
     private CommonHelper commonHelper;
 
     @Autowired
-    private MocThoiGianCommon mocThoiGianCommon;
+    private MocThoiGianHelper mocThoiGianHelper;
 
     @Autowired
     private WriterFileCSV writerFileCSV;

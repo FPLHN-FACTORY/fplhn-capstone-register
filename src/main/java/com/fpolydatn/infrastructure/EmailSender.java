@@ -1,9 +1,8 @@
 package com.fpolydatn.infrastructure;
 
 import com.fpolydatn.infrastructure.constant.MailConstant;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,17 +16,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
 @Service
+@Scope(value = "singleton")
 public class EmailSender {
-    @Autowired
-    private JavaMailSender javaMailSender;
+
+    private final JavaMailSender javaMailSender;
+    private final SpringTemplateEngine thymeleafTemplateEngine;
 
     @Value("${spring.mail.username}")
     private String sender;
 
-    @Autowired
-    private SpringTemplateEngine thymeleafTemplateEngine;
+    public EmailSender(JavaMailSender javaMailSender,
+                       SpringTemplateEngine thymeleafTemplateEngine) {
+        this.javaMailSender = javaMailSender;
+        this.thymeleafTemplateEngine = thymeleafTemplateEngine;
+    }
 
     @Async
     public void sendEmail(String[] toEmails, String subject, String titleEmail, String[] bodyEmail) {
@@ -56,7 +59,6 @@ public class EmailSender {
             mimeMessageHelper.addInline("logoImage", resource);
             javaMailSender.send(mimeMessage);
         } catch (Exception e) {
-            log.error("ERROR WHILE SENDING MAIL: {}", e.getMessage());
         }
     }
 }

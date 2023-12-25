@@ -2,33 +2,36 @@ package com.fpolydatn.core.common;
 
 import com.fpolydatn.infrastructure.session.FpolyDatnSession;
 import com.fpolydatn.repository.NhomDatnRepository;
-import lombok.Synchronized;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 /**
  * @author hungpv
  */
-@Component
-public class NhomDatnHelper {
-    @Autowired
-    @Qualifier(NhomDatnRepository.NAME)
-    private NhomDatnRepository nhomDatnRepository;
+@Service
+@Scope(value = "singleton")
+public final class NhomDatnHelper {
 
-    @Autowired
-    private CommonHelper commonHelper;
+    private final NhomDatnRepository nhomDatnRepository;
+    private final CommonHelper commonHelper;
+    private final FpolyDatnSession session;
 
-    @Autowired
-    private FpolyDatnSession session;
+    public NhomDatnHelper(CommonHelper commonHelper,
+                          FpolyDatnSession session,
+                          @Qualifier(NhomDatnRepository.NAME)
+                                  NhomDatnRepository nhomDatnRepository) {
+        this.commonHelper = commonHelper;
+        this.nhomDatnRepository = nhomDatnRepository;
+        this.session = session;
+    }
 
-    @Synchronized
-    public String genMaNhomTuDong() {
+    public synchronized String genMaNhomTuDong() {
         String coSoId = session.getCoSoId();
         String text = nhomDatnRepository.getMaCoSo(coSoId);
         String dotDangKyHienTai = commonHelper.getIdDotDangKyHienTai();
         String maNhomGanNhat = nhomDatnRepository.getNhomTaoGanNhat(dotDangKyHienTai, coSoId);
-        Integer count = 0;
+        Integer count;
         try {
             if (maNhomGanNhat != null) {
                 String[] splitStr = maNhomGanNhat.split("_");

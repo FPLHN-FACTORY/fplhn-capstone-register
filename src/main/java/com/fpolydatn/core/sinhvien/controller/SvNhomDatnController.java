@@ -6,12 +6,12 @@ import com.fpolydatn.core.sinhvien.model.request.SvFindNhomDatnRequest;
 import com.fpolydatn.core.sinhvien.model.response.SvDetailNhomDatnResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvGiangVienHuongDanResponse;
 import com.fpolydatn.core.sinhvien.model.response.SvNhomDatnResponse;
-import com.fpolydatn.core.sinhvien.service.SvGiangVienHuongDanService;
 import com.fpolydatn.core.sinhvien.service.SvMonDatnService;
 import com.fpolydatn.core.sinhvien.service.SvNhomDatnService;
 import com.fpolydatn.core.sinhvien.service.SvSinhVienService;
 import com.fpolydatn.core.common.CommonHelper;
-import com.fpolydatn.core.common.MocThoiGianCommon;
+import com.fpolydatn.core.common.MocThoiGianHelper;
+import com.fpolydatn.core.sinhvien.service.TimGvCoTheHuongDanUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -31,6 +31,13 @@ import java.util.List;
 @RequestMapping("/sinh-vien")
 public class SvNhomDatnController extends BaseController {
 
+    private final TimGvCoTheHuongDanUseCase timGvCoTheHuongDanUseCase;
+
+    @Autowired
+    public SvNhomDatnController(TimGvCoTheHuongDanUseCase timGvCoTheHuongDanUseCase) {
+        this.timGvCoTheHuongDanUseCase = timGvCoTheHuongDanUseCase;
+    }
+
     @Autowired
     private SvNhomDatnService svNhomDatnService;
 
@@ -41,13 +48,10 @@ public class SvNhomDatnController extends BaseController {
     private SvMonDatnService svMonDatnService;
 
     @Autowired
-    private SvGiangVienHuongDanService svGiangVienHuongDanService;
-
-    @Autowired
     private CommonHelper commonHelper;
 
     @Autowired
-    MocThoiGianCommon mocThoiGianCommon;
+    MocThoiGianHelper mocThoiGianHelper;
 
     @Value("${youtube.sinhvien}")
     private String youtubeLink;
@@ -60,9 +64,9 @@ public class SvNhomDatnController extends BaseController {
         String nhomId = svSinhVienService.getNhomIdById(coSoId,
                 dotDangKyHienTai,
                 idUSer);
-        model.addAttribute("checkMocThoiGian", mocThoiGianCommon.checkMocThoiGianSinhVien());
+        model.addAttribute("checkMocThoiGian", mocThoiGianHelper.checkMocThoiGianSinhVien());
         if (nhomId == null || nhomId.trim().isEmpty()) {
-            req.setCoSoId(coSoId );
+            req.setCoSoId(coSoId);
             req.setDotDangKyId(dotDangKyHienTai);
             PageableObject<SvNhomDatnResponse> listNhomDatn = svNhomDatnService.findAllNhomDatn(req, idUSer);
             // Truyền thời gian rời nhóm gần nhất -> validate chờ 12 tiếng sau thời điểm rời nhóm gần nhất
@@ -82,7 +86,7 @@ public class SvNhomDatnController extends BaseController {
             String monDatnId = svSinhVienService.getMonDatnIdBySinhVienId(idUSer);
             List<SvGiangVienHuongDanResponse> listGiangVien = null;
             if (svDetailNhomDatnResponse.get(0).getTrangThai() == 0) {
-                listGiangVien = svGiangVienHuongDanService.getGvhdByMonDatnId(monDatnId, coSoId);
+                listGiangVien = timGvCoTheHuongDanUseCase.execute(monDatnId);
             }
             Boolean checkThoiDiemJoinNhom = svNhomDatnService.checkThoiDiemJoinNhomGanNhat(idUSer);
 

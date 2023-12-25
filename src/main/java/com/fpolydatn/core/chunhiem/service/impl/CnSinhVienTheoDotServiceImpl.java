@@ -30,7 +30,7 @@ import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.util.FormUtils;
-import com.fpolydatn.core.common.MocThoiGianCommon;
+import com.fpolydatn.core.common.MocThoiGianHelper;
 import com.fpolydatn.core.common.NhomDatnHelper;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +79,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
     private CnSinhVienRepository cnSinhVienRepository;
 
     @Autowired
-    private MocThoiGianCommon mocThoiGianCommon;
+    private MocThoiGianHelper mocThoiGianHelper;
 
     @Autowired
     private CnChuyenNganhRepository cnChuyenNganhRepository;

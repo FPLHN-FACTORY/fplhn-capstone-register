@@ -54,7 +54,10 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
                            @Param("coSoId") String coSoId,
                            @Param("dotDangKyId") String dotDangKyId);
 
-    @Query(value = "SELECT CONVERT(trang_thai , UNSIGNED) FROM nhom_datn WHERE id = :id AND co_so_id = :coSoId", nativeQuery = true)
+    @Query(value = """
+        SELECT CONVERT(trang_thai , UNSIGNED) 
+        FROM nhom_datn WHERE id = :id AND co_so_id = :coSoId
+        """, nativeQuery = true)
     int getTrangThai(@Param("id") String id, @Param("coSoId") String coSoId);
 
     @Query(value = """
@@ -130,5 +133,6 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
     String checkNhomDatnSinhVien(@Param("idUser") String idUser,
                                  @Param("coSoId") String coSoId,
                                  @Param("dotDangKyId") String dotDangKyId);
+
 
 }

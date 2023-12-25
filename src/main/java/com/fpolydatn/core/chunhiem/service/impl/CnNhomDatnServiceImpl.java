@@ -42,7 +42,7 @@ import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.infrastructure.EmailSender;
 import com.fpolydatn.util.FormUtils;
-import com.fpolydatn.core.common.MocThoiGianCommon;
+import com.fpolydatn.core.common.MocThoiGianHelper;
 import com.fpolydatn.core.common.NhomDatnHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -86,7 +86,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     private CommonHelper commonHelper;
 
     @Autowired
-    private MocThoiGianCommon mocThoiGianCommon;
+    private MocThoiGianHelper mocThoiGianHelper;
 
     @Autowired
     private NhomDatnHelper nhomDatnHelper;
@@ -584,7 +584,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean checkHanChuNhiem() {
-        return mocThoiGianCommon.checkMocThoiGianChuNhiem();
+        return mocThoiGianHelper.checkMocThoiGianChuNhiem();
     }
 
     @Override

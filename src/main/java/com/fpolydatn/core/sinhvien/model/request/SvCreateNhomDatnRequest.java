@@ -2,6 +2,8 @@ package com.fpolydatn.core.sinhvien.model.request;
 
 import com.fpolydatn.infrastructure.constant.EntityProperties;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -11,8 +13,8 @@ import javax.validation.constraints.NotNull;
 /**
  * @author SonPT
  */
-
-@Data
+@Getter
+@Setter
 public class SvCreateNhomDatnRequest {
 
     private String giangVienId;
@@ -24,7 +26,7 @@ public class SvCreateNhomDatnRequest {
     private String tenNhom;
 
     @NotNull
-    private Boolean matKhau;
+    private Boolean laNhomBiMat;
 
     @Length(max = 255)
     private String moTa;
@@ -40,5 +42,7 @@ public class SvCreateNhomDatnRequest {
     @NotBlank
     @NotEmpty
     private String idMonDatn;
+
+    private String nguoiTaoId;
 
 }

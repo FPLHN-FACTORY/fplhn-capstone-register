@@ -29,7 +29,7 @@ import com.fpolydatn.infrastructure.session.FpolyDatnSession;
 import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.core.common.CommonHelper;
 import com.fpolydatn.infrastructure.EmailSender;
-import com.fpolydatn.core.common.MocThoiGianCommon;
+import com.fpolydatn.core.common.MocThoiGianHelper;
 import com.fpolydatn.core.common.NhomDatnHelper;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     private CommonHelper commonHelper;
 
     @Autowired
-    private MocThoiGianCommon mocThoiGianCommon;
+    private MocThoiGianHelper mocThoiGianHelper;
 
     @Autowired
     @Qualifier(ChuyenNganhRepository.NAME)
@@ -117,180 +117,8 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
 
     @Override
     @Synchronized
-    public boolean addSinhVienTheoNhom(final SvAddSinhVienRequest req) {
-        boolean check = mocThoiGianCommon.checkMocThoiGianSinhVien();
-        if (!check) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
-        }
-        Optional<NhomDatn> nhomDatn = svNhomDatnRepository.findById(req.getIdNhom());
-        if (!nhomDatn.isPresent()) {
-            throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
-        }
-
-        String matKhau = nhomDatn.get().getMatKhau();
-        if (!(matKhau == null)) {
-            if (!matKhau.trim().equals(req.getInputPassword().trim())) {
-                throw new RestApiException(Message.MAT_KHAU_KHONG_CHINH_XAC);
-            }
-        }
-
-        // Logic cũ: Phải đủ 12 tiếng sau thời điểm rời nhóm gần nhất mới được tham gia nhóm mới
-//        if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null // Có dấu vết rời nhóm
-//                && // Chưa rời nhóm đủ 12 tiếng
-//                Calendar.getInstance().getTimeInMillis() - Constants.TIME_RESET
-//                        < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
-//            throw new RestApiException(Message.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG);
-//        }
-
-        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(req.getIdUser());
-        Integer soLuongThanhVien = svSinhVienRepository.getSoLuongThanhVienById(req.getIdNhom(),
-                req.getCoSoId(), req.getDotDangKyId());
-        if (soLuongThanhVien == Constants.SO_THANH_VIEN_TOI_DA) {
-            throw new RestApiException(Message.NHOM_DA_DU_THANH_VIEN);
-        }
-
-        Optional<SinhVien> truongNhom = svSinhVienRepository.findById(nhomDatn.get().getTruongNhomId());
-        sinhVien.get().setMonDatnId(truongNhom.get().getMonDatnId());
-        sinhVien.get().setNhomId(nhomDatn.get().getId());
-        sinhVien.get().setThoiDiemJoinNhomGanNhat(Calendar.getInstance().getTimeInMillis());
-        svSinhVienRepository.save(sinhVien.get());
-        ChuyenNganh chuyenNganhFind = chuyenNganhRepository.findById(sinhVien.get().getChuyenNganhId()).get();
-        try {
-            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-            LogObject logObject = writerFileCSV.
-                    createLoggerObject("Sinh viên '" + sinhVien.get().getMaSinhVien()
-                                    + "' đã tham gia nhóm '" + nhomDatn.get().getMaNhom() + "'",
-                            pathFile, "Thành công");
-            logObject.setTenNhom(nhomDatn.get().getMaNhom());
-            logObject.setIdChuyenNganh(chuyenNganhFind.getId());
-            logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-            rabbitLogger.log(logObject);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return true;
-    }
-
-    @Override
-    @Synchronized
-    public NhomDatn createNhomDatn(@Valid SvCreateNhomDatnRequest svNhomDatnRequest, String idUser) {
-        StringBuilder stringBuilder = new StringBuilder();
-        Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
-        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
-            throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
-        }
-        // Logic cũ: Phải đủ 12 tiếng sau thời gian rời nhóm gần nhất mới được tạo nhóm
-//        if (sinhVien.get().getThoiDiemRoiNhomGanNhat() != null) {
-//            if (Calendar.getInstance().getTimeInMillis() - Constants.TIME_RESET < sinhVien.get().getThoiDiemRoiNhomGanNhat()) {
-//                throw new RestApiException(Message.THOI_GIAN_ROI_NHOM_CHUA_DU_12_TIENG);
-//            }
-//        }
-        String giangVienId = svNhomDatnRequest.getGiangVienId();
-        Optional<GiangVienHuongDan> giangVienHuongDan = null;
-        if (giangVienId != null && giangVienId.trim().length() != 0) {
-            giangVienHuongDan = svGiangVienHuongDanRepository.findById(giangVienId);
-            if (!giangVienHuongDan.isPresent()) {
-                throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
-            }
-        }
-        if (svNhomDatnRequest.getGiangVienId() != null && svNhomDatnRequest.getGiangVienId().trim().length() != 0) {
-            if (commonHelper.getSoNhomGiangVienDangHuongDan(svNhomDatnRequest.getGiangVienId()) >= giangVienHuongDan.get().getSoNhomHuongDanToiDa()) {
-                throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_ALREADY_HAVE_ENOUGH_GROUPS);
-            }
-        }
-        Optional<MonDatn> monDatn = svMonDatnRepository.findById(svNhomDatnRequest.getIdMonDatn());
-        if (!monDatn.isPresent()) {
-            throw new RestApiException(Message.MON_DATN_NOT_EXIST);
-        }
-        String idUserCheck = svNhomDatnRepository.checkNhomDatnSinhVien(idUser, svNhomDatnRequest.getCoSoId(), svNhomDatnRequest.getDotDangKyId());
-        if (idUserCheck != null) {
-            throw new RestApiException(Message.SINH_VIEN_DA_CO_NHOM);
-        }
-        NhomDatn nhomDatn = new NhomDatn();
-        if (giangVienHuongDan != null) {
-            nhomDatn.setGiangVienId(giangVienHuongDan.get().getId());
-            stringBuilder.append(". Có ghvd được chọn là '" + giangVienHuongDan.get().getTenTaiKhoan() + "'");
-        }
-        String tenDeTai = svNhomDatnRequest.getTenDeTai();
-        if (tenDeTai == null) {
-            nhomDatn.setTenDeTai(null);
-        } else {
-            if ("".equals(tenDeTai.trim())) {
-                nhomDatn.setTenDeTai(null);
-            } else {
-                nhomDatn.setTenDeTai(tenDeTai.trim());
-                stringBuilder.append(". Có tên đề tài là '" + tenDeTai + "'");
-            }
-        }
-        String tenNhom = svNhomDatnRequest.getTenNhom();
-        if (tenNhom == null) {
-            nhomDatn.setTenNhom(null);
-        } else {
-            if ("".equals(tenDeTai.trim())) {
-                nhomDatn.setTenNhom(null);
-            } else {
-                nhomDatn.setTenNhom(tenNhom.trim());
-                stringBuilder.append(". Có tên nhóm là '" + tenNhom + "'");
-            }
-        }
-        String moTa = svNhomDatnRequest.getMoTa();
-        if (moTa == null) {
-            nhomDatn.setMoTa(null);
-        } else {
-            if ("".equals(tenDeTai.trim())) {
-                nhomDatn.setMoTa(null);
-            } else {
-                nhomDatn.setMoTa(moTa.trim());
-            }
-        }
-        nhomDatn.setDotDangKyId(svNhomDatnRequest.getDotDangKyId());
-        nhomDatn.setCoSoId(svNhomDatnRequest.getCoSoId());
-        if (svNhomDatnRequest.getMatKhau()) {
-            nhomDatn.setMatKhau(String.valueOf((int) (Math.random() * 100000000)));
-        } else {
-            nhomDatn.setMatKhau(null);
-        }
-        nhomDatn.setTruongNhomId(idUser);
-        nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
-        String maNhom = nhomDatnHelper.genMaNhomTuDong();
-        if (maNhom == null) {
-            throw new RestApiException(Message.TAO_NHOM_THAT_BAI);
-        }
-        nhomDatn.setMaNhom(maNhom);
-        nhomDatn = svNhomDatnRepository.save(nhomDatn);
-        sinhVien.get().setNhomId(nhomDatn.getId());
-        sinhVien.get().setMonDatnId(svNhomDatnRequest.getIdMonDatn());
-        sinhVien.get().setThoiDiemJoinNhomGanNhat(Calendar.getInstance().getTimeInMillis());
-        svSinhVienRepository.save(sinhVien.get());
-        if (nhomDatn.getMatKhau() != null) {
-            String[] email = new String[]{sinhVien.get().getEmail()};
-            String[] message = new String[]{"Mật khẩu nhóm DATN của bạn là: " + nhomDatn.getMatKhau()};
-            emailSender.sendEmail(email, "[FCR] Thông báo mật khẩu nhóm",
-                    "Tạo nhóm thành công", message);
-        }
-        ChuyenNganh chuyenNganhFind = chuyenNganhRepository.findById(sinhVien.get().getChuyenNganhId()).get();
-        try {
-            stringBuilder.insert(0, "Trưởng nhóm '" + sinhVien.get().getMaSinhVien()
-                    + "' đã tạo nhóm '" + nhomDatn.getMaNhom() + "'");
-
-            String pathFile = writerFileCSV.getPathFileLuongNhomDatn(writerFileCSV.tenDotDangKyHienTai());
-            LogObject logObject = writerFileCSV.
-                    createLoggerObject(stringBuilder.toString(),
-                            pathFile, "Thành công");
-            logObject.setTenNhom(nhomDatn.getMaNhom());
-            logObject.setIdChuyenNganh(chuyenNganhFind.getId());
-            logObject.setTenChuyenNganh(chuyenNganhFind.getTenChuyenNganh());
-            rabbitLogger.log(logObject);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return nhomDatn;
-    }
-
-    @Override
-    @Synchronized
     public String updateTenDeTai(@Valid SvUpdateTenDeTaiRequest svUpdateTenDeTaiRequest) {
-        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+        if (!mocThoiGianHelper.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(svUpdateTenDeTaiRequest.getIdUser());
@@ -340,7 +168,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     @Synchronized
     public Boolean roiNhom(String idUser, String coSoId, String dotDangKyId) {
-        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+        if (!mocThoiGianHelper.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
         Optional<SinhVien> sinhVien = svSinhVienRepository.findById(idUser);
@@ -396,7 +224,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     @Synchronized
     public Boolean chuyenQuyenTruongNhom(String idUser, String idTruongNhomMoi) {
-        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+        if (!mocThoiGianHelper.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
         Optional<SinhVien> truongNhom = svSinhVienRepository.findById(idUser);
@@ -453,7 +281,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
     @Override
     @Synchronized
     public String chonGvhd(String idUser, String idGiangVien, String coSoId, String dotDangKyId) {
-        if (!mocThoiGianCommon.checkMocThoiGianSinhVien()) {
+        if (!mocThoiGianHelper.checkMocThoiGianSinhVien()) {
             throw new RestApiException(Message.HET_HAN_QUYEN_SINH_VIEN);
         }
         Optional<GiangVienHuongDan> giangVienHuongDan = svGiangVienHuongDanRepository.findById(idGiangVien);
