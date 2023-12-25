@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/admin/bit-dev")
-public class HomeController extends BaseController {
+public final class HomeController extends BaseController {
 
     @GetMapping("/home")
     public String home(Model model) {

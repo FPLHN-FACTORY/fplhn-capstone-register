@@ -5,7 +5,6 @@ import com.fpolydatn.core.daotao.repository.DtChuyenNganhRepository;
 import com.fpolydatn.core.daotao.service.DtChuyenNganhService;
 import com.fpolydatn.entity.CanBo;
 import com.fpolydatn.infrastructure.logger.RabbitLogger;
-import com.fpolydatn.core.common.log.LogObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,9 +42,6 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     private DtCanBoRepository dtCanBoRepository;
 
     @Autowired
-    private WriterFileCSV writerFileCSV;
-
-    @Autowired
     private RabbitLogger rabbitLogger;
 
     @Override
@@ -75,30 +71,30 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
         chuyenNganhUpdate.setTenChuyenNganh(req.getTenChuyenNganh());
         chuyenNganhUpdate.setChuNhiemBoMon(req.getChuNhiemBoMon());
         dtChuyenNganhRepository.save(chuyenNganhUpdate);
-        StringBuilder logMessage = new StringBuilder();
-        if (!(chuyenNganhUpdate.getTenChuyenNganh()).equals(tenCu)) {
-            logMessage.append("Đào tạo đã sửa tên chuyên ngành từ '").append(tenCu)
-                    .append("' thành '").append(chuyenNganhUpdate.getTenChuyenNganh()).append("'. ");
-        }
-        if (!(idCNBM == null)) {
-            Optional<CanBo> chuNhiemBoMon = dtCanBoRepository.findById(idCNBM);
-            logMessage.append("Đào tạo đã sửa tên chủ nhiệm bộ môn từ '").append(chuNhiemBoMon.get().getTenCanBo())
-                    .append("' thành '").append("Chưa có").append("'. ");
-        }
-        if (req.getChuNhiemBoMon() != null) {
-            Optional<CanBo> chuNhiemBoMon = dtCanBoRepository.findById(req.getChuNhiemBoMon());
-            logMessage.append("Đào tạo đã sửa tên chủ nhiệm bộ môn từ '").append("Chưa có")
-                    .append("' thành '").append(chuNhiemBoMon.get().getTenCanBo()).append("'. ");
-        }
-
-        try {
-            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LogObject logObjectActive = writerFileCSV.
-                    createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
-            rabbitLogger.sendLogMessage(logObjectActive);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+//        StringBuilder logMessage = new StringBuilder();
+//        if (!(chuyenNganhUpdate.getTenChuyenNganh()).equals(tenCu)) {
+//            logMessage.append("Đào tạo đã sửa tên chuyên ngành từ '").append(tenCu)
+//                    .append("' thành '").append(chuyenNganhUpdate.getTenChuyenNganh()).append("'. ");
+//        }
+//        if (!(idCNBM == null)) {
+//            Optional<CanBo> chuNhiemBoMon = dtCanBoRepository.findById(idCNBM);
+//            logMessage.append("Đào tạo đã sửa tên chủ nhiệm bộ môn từ '").append(chuNhiemBoMon.get().getTenCanBo())
+//                    .append("' thành '").append("Chưa có").append("'. ");
+//        }
+//        if (req.getChuNhiemBoMon() != null) {
+//            Optional<CanBo> chuNhiemBoMon = dtCanBoRepository.findById(req.getChuNhiemBoMon());
+//            logMessage.append("Đào tạo đã sửa tên chủ nhiệm bộ môn từ '").append("Chưa có")
+//                    .append("' thành '").append(chuNhiemBoMon.get().getTenCanBo()).append("'. ");
+//        }
+//
+//        try {
+//            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+//            LogObject logObjectActive = writerFileCSV.
+//                    createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
+//            rabbitLogger.sendLogMessage(logObjectActive);
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
         return chuyenNganhUpdate;
     }
 
@@ -116,15 +112,15 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
             }
         }
         dtChuyenNganhRepository.save(chuyenNganh);
-        try {
-            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LogObject logObjectActive = writerFileCSV.
-                    createLoggerObject("Chuyên ngành '" + chuyenNganh.getTenChuyenNganh() + "' đã được thêm vào hệ thống.",
-                            pathFileLogActive, "Thành công");
-            rabbitLogger.sendLogMessage(logObjectActive);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+//        try {
+//            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+//            LogObject logObjectActive = writerFileCSV.
+//                    createLoggerObject("Chuyên ngành '" + chuyenNganh.getTenChuyenNganh() + "' đã được thêm vào hệ thống.",
+//                            pathFileLogActive, "Thành công");
+//            rabbitLogger.sendLogMessage(logObjectActive);
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
         return chuyenNganh;
     }
 
@@ -143,15 +139,15 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
             throw new RestApiException(Message.CHUYEN_NGANH_KHONG_DUOC_XOA);
         }
         dtChuyenNganhRepository.delete(chuyenNganhCheck.get());
-        try {
-            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LogObject logObjectActive = writerFileCSV.
-                    createLoggerObject("Chuyên ngành '" + chuyenNganhCheck.get().getTenChuyenNganh() + "' đã bị xóa khỏi hệ thống.",
-                            pathFileLogActive, "Thành công");
-            rabbitLogger.sendLogMessage(logObjectActive);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+//        try {
+//            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+//            LogObject logObjectActive = writerFileCSV.
+//                    createLoggerObject("Chuyên ngành '" + chuyenNganhCheck.get().getTenChuyenNganh() + "' đã bị xóa khỏi hệ thống.",
+//                            pathFileLogActive, "Thành công");
+//            rabbitLogger.sendLogMessage(logObjectActive);
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
         return true;
     }
 

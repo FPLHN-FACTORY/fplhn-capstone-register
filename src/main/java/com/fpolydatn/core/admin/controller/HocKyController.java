@@ -2,7 +2,7 @@ package com.fpolydatn.core.admin.controller;
 
 import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
 import com.fpolydatn.core.admin.model.response.HocKyResponse;
-import com.fpolydatn.core.admin.service.HocKyService;
+import com.fpolydatn.core.admin.service.TimDsHocKyUseCase;
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.PageableObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * @author HangNT
  */
-
 @PropertySource("classpath:linkyoutube.properties")
 @Controller
 @RequestMapping("/dao-tao/hoc-ky")
 public final class HocKyController extends BaseController {
 
+    private final TimDsHocKyUseCase timDsHocKyUseCase;
     @Autowired
-    private HocKyService hocKyService;
+    public HocKyController(TimDsHocKyUseCase timDsHocKyUseCase) {
+        this.timDsHocKyUseCase = timDsHocKyUseCase;
+    }
 
     @Value("${youtube.daotao.hocky}")
     private String youtubeLink;
@@ -33,7 +35,7 @@ public final class HocKyController extends BaseController {
 
     @GetMapping
     public String viewHocKy(Model model, final FindHocKyRequest req) {
-        PageableObject<HocKyResponse> listHocKy = hocKyService.search(req);
+        PageableObject<HocKyResponse> listHocKy = timDsHocKyUseCase.execute(req);
         model.addAttribute("page", listHocKy);
         model.addAttribute("youtubeLink", youtubeLink);
         model.addAttribute("hdsdCSV", hdsdCSV);
