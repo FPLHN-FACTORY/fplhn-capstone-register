@@ -10,11 +10,13 @@ import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
+import com.fpolydatn.repository.CoSoRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +56,10 @@ public class WriterFileCSV {
 
     @Autowired
     private DtChuyenNganhRepository chuyenNganhRepository;
+
+    @Autowired
+    @Qualifier(CoSoRepository.NAME)
+    private CoSoRepository coSoRepository;
 
     public ChuyenNganh findChuyenNganhById(String idChuyenNganh) {
         return chuyenNganhRepository.findById(idChuyenNganh).get();
@@ -418,7 +424,9 @@ public class WriterFileCSV {
     // trỏ đến đường dẫn đến folder /cơ sở
     public String getSwitchCoSo() {
         List<SimpleEntityProj> listCoSo = (List<SimpleEntityProj>) session.getAttribute("listCoSo");
-
+        if (listCoSo == null) {
+            listCoSo = coSoRepository.findAllSimpleEntity();
+        }
         String idCoSo = session.getAttribute(SessionConstant.CO_SO_ID).toString();
         String coSo = "";
         Iterator<SimpleEntityProj> iterator = listCoSo.stream().filter(el -> el.getId().equals(idCoSo)).iterator();
