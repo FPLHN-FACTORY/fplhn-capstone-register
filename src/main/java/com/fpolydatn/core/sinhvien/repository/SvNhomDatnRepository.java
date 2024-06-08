@@ -30,12 +30,9 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id 
             LEFT JOIN giang_vien_huong_dan c ON c.id = a.giang_vien_id 
             JOIN mon_datn f ON f.id = b.mon_datn_id 
-            LEFT JOIN dot_dang_ky d ON d.id = a.dot_dang_ky_id 
-            WHERE a.id = :nhomDatnId AND a.co_so_id = :coSoId AND a.dot_dang_ky_id = :dotDangKyId
+            WHERE a.id = :nhomDatnId 
             """, nativeQuery = true)
-    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(@Param("nhomDatnId") String nhomDatnId,
-                                                         @Param("coSoId") String coSoId,
-                                                         @Param("dotDangKyId") String dotDangKyId);
+    List<SvDetailNhomDatnResponse> getDetailNhomDatnById(@Param("nhomDatnId") String nhomDatnId);
 
     @Query(value = """
             SELECT id, created_date, last_modified_date, co_so_id, dot_dang_ky_id, giang_vien_id, ma_nhom, 
@@ -78,7 +75,6 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             OR c.ten_sinh_vien LIKE %:#{#req.truongNhom}% OR c.ma_sinh_vien LIKE %:#{#req.truongNhom}%) 
             AND (:#{#req.giangVien} IS NULL OR :#{#req.giangVien} LIKE '' 
             OR e.ten_gvhd LIKE %:#{#req.giangVien}% OR e.ten_tai_khoan LIKE %:#{#req.giangVien}%) 
-            AND b.co_so_id = :#{#req.coSoId} 
             AND g.id = :#{#req.dotDangKyId} 
             AND b.trang_thai = 0 
             AND i.nhom_mon_datn_id = :idNhomMon 
@@ -100,7 +96,6 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             OR c.ten_sinh_vien LIKE %:#{#req.truongNhom}% OR c.ma_sinh_vien LIKE %:#{#req.truongNhom}%) 
             AND (:#{#req.giangVien} IS NULL OR :#{#req.giangVien} LIKE '' 
             OR e.ten_gvhd LIKE %:#{#req.giangVien}% OR e.ten_tai_khoan LIKE %:#{#req.giangVien}%) 
-            AND b.co_so_id = :#{#req.coSoId} 
             AND g.id = :#{#req.dotDangKyId} 
             AND b.trang_thai = 0 
             AND i.nhom_mon_datn_id = :idNhomMon 
@@ -111,17 +106,6 @@ public interface SvNhomDatnRepository extends NhomDatnRepository {
             """, nativeQuery = true)
     Page<SvNhomDatnResponse> findAllNhomDatn(Pageable page, @Param("req") SvFindNhomDatnRequest req,
                                              @Param("idNhomMon") String idNhomMon);
-
-    @Query(value = """
-            SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt,
-            a.ma_sinh_vien, a.ten_sinh_vien, b.ma_nhom, b.ten_nhom, b.mo_ta, 
-            IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu 
-            FROM sinh_vien a LEFT JOIN nhom_datn b ON a.nhom_id = b.id 
-            WHERE a.nhom_id = :nhomDatnId AND a.co_so_id = :coSoId AND b.dot_dang_ky_id = :dotDangKyId
-            """, nativeQuery = true)
-    List<SvShowSinhVienTheoNhomResponse> getAllSinhVienByNhomDatnId(@Param("nhomDatnId") String nhomDatnId,
-                                                                    @Param("coSoId") String coSoId,
-                                                                    @Param("dotDangKyId") String dotDangKyId);
 
     @Query(value = """
             SELECT a.id

@@ -19,6 +19,8 @@ public class SvUpdateTenDeTaiRequest{
 
     private String idUser;
 
+    private String nhomDatnId;
+
     @Length(max = EntityProperties.LENGTH_NAME)
     private String tenDeTai;
 }

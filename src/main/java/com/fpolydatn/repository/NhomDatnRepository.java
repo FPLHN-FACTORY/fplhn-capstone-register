@@ -1,5 +1,6 @@
 package com.fpolydatn.repository;
 
+import com.fpolydatn.core.sinhvien.model.response.SvShowSinhVienTheoNhomResponse;
 import com.fpolydatn.entity.NhomDatn;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,16 +26,6 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
             """, nativeQuery = true)
     String getNhomTaoGanNhat(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
 
-//    SELECT ma_nhom FROM do_an_tot_nghiep.nhom_datn
-//    WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId
-//    ORDER BY created_date DESC LIMIT 1
-
-    @Query(value = """
-                SELECT c.ma_co_so FROM  co_so c 
-                WHERE  c.id = :coSoId
-            """, nativeQuery = true)
-    String getMaCoSo(@Param("coSoId") String coSoId);
-
     @Query(value = """
             SELECT a.id FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id
             WHERE a.created_date + :period < :currentTime
@@ -42,4 +33,21 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
             """, nativeQuery = true)
     List<String> listNhomKhongDuDieuKien(@Param("currentTime") Long currentTime,
                                          @Param("period") Long period);
+
+    @Query(value = """
+            SELECT COUNT(1) FROM nhom_datn nd 
+                LEFT JOIN sinh_vien sv ON nd.id = sv.nhom_id
+                WHERE nd.id = :nhomId
+                GROUP BY nd.id 
+            """, nativeQuery = true)
+    Integer countSoLuongThanhVien(@Param("nhomId") String nhomId);
+
+    @Query(value = """
+            SELECT a.id, ROW_NUMBER() OVER(ORDER BY b.last_modified_date DESC) AS stt,
+            a.ma_sinh_vien, a.ten_sinh_vien, b.ma_nhom, b.ten_nhom, b.mo_ta, 
+            IF(a.id = b.truong_nhom_id, 1, 0) AS chuc_vu 
+            FROM sinh_vien a LEFT JOIN nhom_datn b ON a.nhom_id = b.id 
+            WHERE a.nhom_id = :nhomDatnId AND a.co_so_id = :coSoId AND b.dot_dang_ky_id = :dotDangKyId
+            """, nativeQuery = true)
+    List<SvShowSinhVienTheoNhomResponse> getDsSinhVienTrongNhom(@Param("nhomDatnId") String nhomDatnId);
 }

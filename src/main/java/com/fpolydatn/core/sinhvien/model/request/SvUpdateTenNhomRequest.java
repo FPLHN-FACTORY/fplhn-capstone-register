@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-
 /**
  * @author SonPT
  */
@@ -16,11 +13,9 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class SvUpdateTenNhomRequest {
 
-    private String coSoId;
-
-    private String dotDangKyId;
-
     private String userId;
+
+    private String nhomDatnId;
 
     @Length(max = EntityProperties.LENGTH_NAME)
     private String tenNhom;

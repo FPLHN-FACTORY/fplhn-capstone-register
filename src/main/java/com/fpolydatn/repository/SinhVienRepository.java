@@ -40,4 +40,11 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
             """, nativeQuery = true)
     List<SinhVien> getListSinhVienByNhomId(@Param("currentTime") Long currentTime,
                                            @Param("period") Long period);
+
+    @Query(value = """
+        SELECT md.nhom_mon_datn_id FROM sinh_vien sv 
+            LEFT JOIN mon_datn md ON sv.mon_datn_id = md.id
+            WHERE sv.id LIKE :sinhVienId
+        """, nativeQuery = true)
+    String getNhomMonIdOfSinhVien(@Param("sinhVienId") String sinhVienId);
 }

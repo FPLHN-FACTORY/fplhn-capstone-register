@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author phongtt35
@@ -24,4 +25,5 @@ public interface MonDatnRepository extends JpaRepository<MonDatn, String> {
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntityByCoSoAndChuyenNganh(
             @Param("coSoId") String coSoId, @Param("chuyenNganhId") String chuyenNganhId);
+
 }

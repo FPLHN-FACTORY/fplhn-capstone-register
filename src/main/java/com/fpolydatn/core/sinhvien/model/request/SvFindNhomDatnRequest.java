@@ -12,7 +12,6 @@ public class SvFindNhomDatnRequest extends PageableRequest{
     private String truongNhom;
     private String soLuong;
     private String giangVien;
-    private String coSoId;
     private String dotDangKyId;
 
 }
