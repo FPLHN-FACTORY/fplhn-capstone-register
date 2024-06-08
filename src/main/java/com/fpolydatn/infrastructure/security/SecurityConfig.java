@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Objects;
@@ -26,7 +27,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.cors().and().csrf().disable().authorizeRequests()
+        http
+                .headers()
+                .contentSecurityPolicy("default-src 'self'; script-src 'self' 'unsafe-inline' https://trustedscripts.example.com; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://trustedimages.example.com; frame-ancestors 'none';")
+                .and().and()
+                .cors().and().csrf(AbstractHttpConfigurer::disable)
+//                .disable()
+                .authorizeRequests()
                 .antMatchers("/authentication/*", "/", "/admin/bit-dev").permitAll()
                 .antMatchers("/chu-nhiem/**").hasAuthority(ActorConstant.CHU_NHIEM)
                 .antMatchers("/dao-tao/**").hasAuthority(ActorConstant.DAO_TAO)
