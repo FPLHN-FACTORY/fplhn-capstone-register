@@ -13,6 +13,6 @@ public class SameSiteConfiguration {
 
     @Bean
     public CookieSameSiteSupplier applicationCookieSameSiteSupplier() {
-        return CookieSameSiteSupplier.ofStrict();
+        return CookieSameSiteSupplier.ofLax();
     }
 }

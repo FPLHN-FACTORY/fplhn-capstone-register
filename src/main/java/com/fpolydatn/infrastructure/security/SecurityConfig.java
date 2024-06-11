@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import java.util.Objects;
 
@@ -21,17 +22,16 @@ import java.util.Objects;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
-    @Autowired
     private UserService userService;
+
+    public SecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http
-                .headers()
-                .contentSecurityPolicy("default-src 'self'; script-src 'self' 'unsafe-inline' https://trustedscripts.example.com; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://trustedimages.example.com; frame-ancestors 'none';")
-                .and().and()
-                .cors().and().csrf(AbstractHttpConfigurer::disable)
+        http.cors().and().csrf(AbstractHttpConfigurer::disable)
 //                .disable()
                 .authorizeRequests()
                 .antMatchers("/authentication/*", "/", "/admin/bit-dev").permitAll()
@@ -62,7 +62,9 @@ public class SecurityConfig {
                 .and()
                 .exceptionHandling().accessDeniedPage("/authentication/403");
 
-        http.headers().frameOptions().sameOrigin();
+        http.headers()
+                .addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy","script-src 'self'"))
+                .frameOptions().sameOrigin();
         return http.build();
     }
 
