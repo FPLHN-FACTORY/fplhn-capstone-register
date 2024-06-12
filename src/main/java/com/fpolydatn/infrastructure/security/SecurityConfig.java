@@ -1,7 +1,6 @@
 package com.fpolydatn.infrastructure.security;
 
 import com.fpolydatn.infrastructure.constant.ActorConstant;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -63,7 +62,18 @@ public class SecurityConfig {
                 .exceptionHandling().accessDeniedPage("/authentication/403");
 
         http.headers()
-                .addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy","script-src 'self'"))
+                .addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy", "script-src 'self'"))
+                //Content Security Policy (CSP) Header Not Set
+                .addHeaderWriter(
+                        new StaticHeadersWriter(
+                                "Content-Security-Policy",
+                                "default-src 'self'; " +
+                                "style-src 'self' https://cdnjs.cloudflare.com https://maxcdn.bootstrapcdn.com https://fonts.googleapis.com https://harvesthq.github.io/chosen/ http://code.jquery.com/ui/1.13.2/themes/base/ 'unsafe-inline'; " +
+                                "font-src 'self' https://cdnjs.cloudflare.com; " +
+                                "img-src 'self' https://ap.poly.edu.vn https://lh3.googleusercontent.com https://gv.poly.edu.vn; " + // Added https://gv.poly.edu.vn
+                                "script-src 'self' https://code.jquery.com https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js https://gv.poly.edu.vn 'unsafe-inline'" // Added https://gv.poly.edu.vn
+                        )
+                )
                 .frameOptions().sameOrigin();
         return http.build();
     }
