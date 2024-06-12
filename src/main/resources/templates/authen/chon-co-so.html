@@ -3,7 +3,8 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>FPT Polytechnic</title>
     <meta name="description" content="Login page example">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -79,12 +80,18 @@
     $("#form-chon-co-so").submit(function (event) {
         event.preventDefault();
         let coSoSelected = $("#campus_id option:selected").val();
+        let csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        let csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
         $.ajax({
             type: "GET",
             contentType: "application/json",
             url: "/authentication/" + coSoSelected,
             data: JSON.stringify(coSoSelected),
             dataType: 'json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
             success: function () {
                 window.open("/oauth2/authorization/google", '_self');
             },

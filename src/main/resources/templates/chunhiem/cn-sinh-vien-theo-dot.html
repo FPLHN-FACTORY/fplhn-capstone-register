@@ -283,6 +283,7 @@
                                                      role="document">
                                                     <div class="modal-content">
                                                         <form id="form_create_nhom_datn">
+                                                            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Random nhóm DATN</h5>
                                                                 <button type="button" class="close"
