@@ -13,6 +13,8 @@ public class SameSiteConfiguration {
 
     @Bean
     public CookieSameSiteSupplier applicationCookieSameSiteSupplier() {
-        return CookieSameSiteSupplier.ofLax();
+        // Cookie without SameSite Attribute - Low
+        // Resolved: change lax to strict
+        return CookieSameSiteSupplier.ofStrict();
     }
 }
