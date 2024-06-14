@@ -3,6 +3,7 @@ package com.fpolydatn.infrastructure.security;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,10 +24,16 @@ import java.util.Objects;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
-    private UserService userService;
+    private final UserService userService;
 
-    public SecurityConfig(UserService userService) {
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+    public SecurityConfig(
+            UserService userService,
+            OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler
+    ) {
         this.userService = userService;
+        this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
     }
 
     @Bean
@@ -54,10 +61,10 @@ public class SecurityConfig {
                     }
                     userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), oauthUser.getName(), role);
                 })
-                .failureUrl("/authentication")
+                .failureHandler(oAuth2AuthenticationFailureHandler)
                 .and()
                 .logout()
-                .logoutUrl("/doLogout")
+                .logoutUrl("/doLogout").permitAll()
                 .logoutSuccessUrl("/").permitAll()
                 .invalidateHttpSession(true)
                 .and()
@@ -75,6 +82,16 @@ public class SecurityConfig {
 //                                "img-src 'self' https://ap.poly.edu.vn https://lh3.googleusercontent.com https://gv.poly.edu.vn; " + // Added https://gv.poly.edu.vn
 //                                "script-src 'self' https://code.jquery.com https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js https://gv.poly.edu.vn 'unsafe-inline'" // Added https://gv.poly.edu.vn
 //                        )
+//                )
+                .xssProtection(Customizer.withDefaults())
+//                .contentSecurityPolicy(
+//                        contentSecurityPolicyConfig -> contentSecurityPolicyConfig
+//                                .policyDirectives("default-src 'self'; " +
+//                                                  "style-src 'self' https://cdnjs.cloudflare.com https://maxcdn.bootstrapcdn.com https://fonts.googleapis.com https://harvesthq.github.io/chosen/ https://code.jquery.com/ui/1.13.2/themes/base/; " +
+//                                                  "font-src 'self' https://cdnjs.cloudflare.com; " +
+//                                                  "img-src 'self' https://ap.poly.edu.vn https://lh3.googleusercontent.com https://gv.poly.edu.vn; " +
+//                                                  "script-src 'self' https://code.jquery.com https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js https://gv.poly.edu.vn"
+//                                )
 //                )
                 .frameOptions().sameOrigin();
         return http.build();
