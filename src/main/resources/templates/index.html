@@ -2,8 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta name="_csrf" th:content="${_csrf.token}"/>
-  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <meta http-equiv="Content-Security-Policy" content="form-action 'self' *">
   <title>Capstone Register</title>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -112,7 +111,6 @@
 
   <div class="container">
     <form action="/authentication" method="POST">
-      <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
       <div class="campus-section">
         <div class="dropdown-container">
           <label for="campusSelect" class="dropdown-label">Chọn cơ sở</label>

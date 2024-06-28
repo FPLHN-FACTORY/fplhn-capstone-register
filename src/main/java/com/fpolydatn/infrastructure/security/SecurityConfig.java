@@ -3,15 +3,14 @@ package com.fpolydatn.infrastructure.security;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import java.util.Objects;
 
@@ -32,8 +31,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.cors(AbstractHttpConfigurer::disable)
-                .csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository()))
+        http.cors().and()
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/authentication/*", "/", "/admin/bit-dev").permitAll()
                 .antMatchers("/chu-nhiem/**").hasAuthority(ActorConstant.CHU_NHIEM)
@@ -64,18 +63,17 @@ public class SecurityConfig {
                 .exceptionHandling().accessDeniedPage("/authentication/403");
 
         http.headers()
-                .addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy", "script-src 'self'"))
-                //Content Security Policy (CSP) Header Not Set
-//                .addHeaderWriter(
-//                        new StaticHeadersWriter(
-//                                "Content-Security-Policy",
-//                                "default-src 'self'; " +
-//                                "style-src 'self' https://cdnjs.cloudflare.com https://maxcdn.bootstrapcdn.com https://fonts.googleapis.com https://harvesthq.github.io/chosen/ http://code.jquery.com/ui/1.13.2/themes/base/ 'unsafe-inline'; " +
-//                                "font-src 'self' https://cdnjs.cloudflare.com; " +
-//                                "img-src 'self' https://ap.poly.edu.vn https://lh3.googleusercontent.com https://gv.poly.edu.vn; " + // Added https://gv.poly.edu.vn
-//                                "script-src 'self' https://code.jquery.com https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js https://gv.poly.edu.vn 'unsafe-inline'" // Added https://gv.poly.edu.vn
-//                        )
-//                )
+                .xssProtection(Customizer.withDefaults())
+//                .contentSecurityPolicy(contentSecurityPolicyConfig ->
+//                        contentSecurityPolicyConfig.policyDirectives("""
+//                base-uri 'none'; default-src 'self' http://localhost:8080 https://dangky.poly.edu.vn;
+//                child-src 'none'; connect-src 'self';
+//                font-src 'self' https://fonts.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://fonts.gstatic.com;
+//                form-action 'self' http://localhost:8080/authentication https://dangky.poly.edu.vn; frame-ancestors 'none';
+//                img-src 'self' data:; media-src 'self'; object-src 'none';
+//                script-src 'self' http://localhost:8080 https://dangky.poly.edu.vn 'unsafe-inline' 'unsafe-eval';
+//                style-src 'self' https://fonts.googleapis.com http://localhost:8080 https://dangky.poly.edu.vn https://cdnjs.cloudflare.com https://maxcdn.bootstrapcdn.com 'unsafe-inline'
+//                                """.replace("\n", "")))
                 .frameOptions().sameOrigin();
         return http.build();
     }
