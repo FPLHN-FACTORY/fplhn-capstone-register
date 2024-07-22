@@ -13,7 +13,7 @@ services:
   db:
     image: mysql:latest
     restart: always
-    command: --character-set-server=utf8 --collation-server=utf8_general_ci --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
     hostname: mysql
     environment:
       MYSQL_ROOT_PASSWORD: Aa123456
@@ -23,7 +23,7 @@ services:
     ports:
       - 3310:3306
   app:
-    build: app
+    image: fplhnfcr/dk-datn-app:latest
     ports:
       - 8080:8080
     restart: always
@@ -53,6 +53,8 @@ services:
       spring.mail.properties.mail.smtp.starttls.enable: "true"
       spring.mail.properties.mail.smtp.starttls.required: 1e
       spring.mail.properties.mail.smtp.ssl.protocols: TLSv1.2
+      fcr.admin.username: admin
+      fcr.admin.password: admin
     volumes:
       - ./storage/datn:/logs
       - ./udpmbit.p12:/udpmbit.p12
