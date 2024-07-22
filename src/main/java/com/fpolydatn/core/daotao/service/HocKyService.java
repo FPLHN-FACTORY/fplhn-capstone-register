@@ -1,12 +1,11 @@
-package com.fpolydatn.core.admin.service;
+package com.fpolydatn.core.daotao.service;
 
-import com.fpolydatn.core.admin.model.request.CreateHocKyRequest;
-import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
-import com.fpolydatn.core.admin.model.request.UpdateHocKyRequest;
-import com.fpolydatn.core.admin.model.response.HocKyResponse;
+import com.fpolydatn.core.daotao.model.request.CreateHocKyRequest;
+import com.fpolydatn.core.daotao.model.request.FindHocKyRequest;
+import com.fpolydatn.core.daotao.model.request.UpdateHocKyRequest;
+import com.fpolydatn.core.daotao.model.response.HocKyResponse;
 import com.fpolydatn.core.common.base.PageableObject;
 import com.fpolydatn.entity.HocKy;
-import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 
 import javax.validation.Valid;
 import java.util.List;

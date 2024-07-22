@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NhomDatn Form</title>
+</head>
+<body>
+<h1>NhomDatn Form</h1>
+<form th:action="@{/admin/nhomdatns}" th:object="${nhomDatn}" method="post">
+    <div>
+        <label for="maNhom">Ma Nhom:</label>
+        <input type="text" id="maNhom" th:field="*{maNhom}" required/>
+    </div>
+    <div>
+        <label for="tenNhom">Ten Nhom:</label>
+        <input type="text" id="tenNhom" th:field="*{tenNhom}" />
+    </div>
+    <div>
+        <label for="tenDeTai">Ten De Tai:</label>
+        <input type="text" id="tenDeTai" th:field="*{tenDeTai}" />
+    </div>
+    <div>
+        <label for="moTa">Mo Ta:</label>
+        <textarea id="moTa" th:field="*{moTa}"></textarea>
+    </div>
+    <div>
+        <label for="matKhau">Mat Khau:</label>
+        <input type="text" id="matKhau" th:field="*{matKhau}" />
+    </div>
+    <div>
+        <label for="trangThai">Trang Thai:</label>
+        <input type="text" id="trangThai" th:field="*{trangThai}" />
+    </div>
+    <div>
+        <label for="truongNhomId">Truong Nhom ID:</label>
+        <input type="text" id="truongNhomId" th:field="*{truongNhomId}" />
+    </div>
+    <div>
+        <label for="giangVienId">Giang Vien ID:</label>
+        <input type="text" id="giangVienId" th:field="*{giangVienId}" />
+    </div>
+    <div>
+        <label for="nhanXet">Nhan Xet:</label>
+        <textarea id="nhanXet" th:field="*{nhanXet}"></textarea>
+    </div>
+    <div>
+        <label for="dotDangKyId">Dot Dang Ky ID:</label>
+        <input type="text" id="dotDangKyId" th:field="*{dotDangKyId}" />
+    </div>
+    <div>
+        <label for="coSoId">Co So ID:</label>
+        <input type="text" id="coSoId" th:field="*{coSoId}" />
+    </div>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>

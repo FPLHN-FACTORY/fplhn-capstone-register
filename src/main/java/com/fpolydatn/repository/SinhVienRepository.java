@@ -3,6 +3,8 @@ package com.fpolydatn.repository;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
 import org.apache.commons.math3.analysis.function.Sinh;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -40,4 +42,6 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
             """, nativeQuery = true)
     List<SinhVien> getListSinhVienByNhomId(@Param("currentTime") Long currentTime,
                                            @Param("period") Long period);
+
+    Page<SinhVien> findByCoSoIdAndDotDangKyId(String coSoId, String dotDangKyId, Pageable pageable);
 }

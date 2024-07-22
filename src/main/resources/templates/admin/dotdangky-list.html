@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DotDangKy List</title>
+</head>
+<body>
+<h1>DotDangKy List</h1>
+<a th:href="@{/admin/dotdangkys/new}">Create New DotDangKy</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ten Dot Dang Ky</th>
+        <th>Ngay Bat Dau</th>
+        <th>Ngay Ket Thuc</th>
+        <th>Han Sinh Vien</th>
+        <th>Han Giang Vien</th>
+        <th>Han Chu Nhiem Bo Mon</th>
+        <th>Hoc Ky ID</th>
+        <th>Co So ID</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="dotDangKy : ${dotDangKys}">
+        <td th:text="${dotDangKy.id}"></td>
+        <td th:text="${dotDangKy.tenDotDangKy}"></td>
+        <td th:text="${dotDangKy.ngayBatDau}"></td>
+        <td th:text="${dotDangKy.ngayKetThuc}"></td>
+        <td th:text="${dotDangKy.hanSinhVien}"></td>
+        <td th:text="${dotDangKy.hanGiangVien}"></td>
+        <td th:text="${dotDangKy.hanChuNhiemBoMon}"></td>
+        <td th:text="${dotDangKy.hocKyId}"></td>
+        <td th:text="${dotDangKy.coSoId}"></td>
+        <td>
+            <a th:href="@{/admin/dotdangkys/edit/{id}(id=${dotDangKy.id})}">Edit</a>
+            <a th:href="@{/admin/dotdangkys/delete/{id}(id=${dotDangKy.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

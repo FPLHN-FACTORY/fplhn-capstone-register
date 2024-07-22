@@ -1,4 +1,4 @@
-package com.fpolydatn.core.admin.model.response;
+package com.fpolydatn.core.daotao.model.response;
 
 import com.fpolydatn.entity.base.IsIdentified;
 import com.fpolydatn.entity.HocKy;

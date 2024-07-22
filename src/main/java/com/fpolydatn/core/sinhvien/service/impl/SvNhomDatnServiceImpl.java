@@ -461,7 +461,7 @@ public class SvNhomDatnServiceImpl implements SvNhomDatnService {
         if (!giangVienHuongDan.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_NOT_EXIST);
         }
-        Integer countSoNhomDangHuongDan = svGiangVienHuongDanRepository.countSoNhomGiangVienDangHuongDan(idGiangVien, coSoId, dotDangKyId);
+        Integer countSoNhomDangHuongDan = commonHelper.getSoNhomGiangVienDangHuongDan(idGiangVien);
         if (countSoNhomDangHuongDan >= giangVienHuongDan.get().getSoNhomHuongDanToiDa()) {
             throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
         }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CoSo Form</title>
+</head>
+<body>
+<h1>CoSo Form</h1>
+<form th:action="@{/admin/coso}" th:object="${coSo}" method="post">
+    <div>
+        <label for="maCoSo">Ma CoSo:</label>
+        <input type="text" id="maCoSo" th:field="*{maCoSo}" required/>
+    </div>
+    <div>
+        <label for="tenCoSo">Ten CoSo:</label>
+        <input type="text" id="tenCoSo" th:field="*{tenCoSo}" required/>
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>

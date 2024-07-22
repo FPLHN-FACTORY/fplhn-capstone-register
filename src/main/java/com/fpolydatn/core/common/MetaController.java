@@ -35,6 +35,11 @@ public final class MetaController {
         return "index";
     }
 
+    @GetMapping("/admin-login")
+    public String loginAdmin() {
+        return "admin-login";
+    }
+
     @GetMapping("/403")
     public String prohibitedAccess() {
         return "403";

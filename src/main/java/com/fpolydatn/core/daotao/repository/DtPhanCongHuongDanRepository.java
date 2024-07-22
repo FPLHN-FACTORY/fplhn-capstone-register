@@ -6,7 +6,6 @@ import com.fpolydatn.core.daotao.model.response.DtGiangVienHDResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanMonDatnResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanCongHuongDanResponse;
 import com.fpolydatn.core.daotao.model.response.DtPhanMonDatnChoGiangVienHuongDanResponse;
-import com.fpolydatn.entity.PhanCongHuongDan;
 import com.fpolydatn.repository.PhanCongHuongDanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

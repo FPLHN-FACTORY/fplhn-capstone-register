@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MonDatn Form</title>
+</head>
+<body>
+<h1>MonDatn Form</h1>
+<form th:action="@{/admin/mondatns}" th:object="${monDatn}" method="post">
+    <div>
+        <label for="maMon">Ma Mon:</label>
+        <input type="text" id="maMon" th:field="*{maMon}" required/>
+    </div>
+    <div>
+        <label for="tenMonDatn">Ten Mon Datn:</label>
+        <input type="text" id="tenMonDatn" th:field="*{tenMonDatn}" required/>
+    </div>
+    <div>
+        <label for="nhomMonDatnId">Nhom Mon Datn ID:</label>
+        <input type="text" id="nhomMonDatnId" th:field="*{nhomMonDatnId}" />
+    </div>
+    <div>
+        <label for="chuyenNganhId">Chuyen Nganh ID:</label>
+        <input type="text" id="chuyenNganhId" th:field="*{chuyenNganhId}" required/>
+    </div>
+    <div>
+        <label for="coSoId">Co So ID:</label>
+        <input type="text" id="coSoId" th:field="*{coSoId}" required/>
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>

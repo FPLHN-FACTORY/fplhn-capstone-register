@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CanBo List</title>
+</head>
+<body>
+<h1>CanBo List</h1>
+<a th:href="@{/admin/canbo/new}">Add New CanBo</a>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Account</th>
+        <th>Phone</th>
+        <th>Email FPT</th>
+        <th>Email FE</th>
+        <th>Role</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="canbo : ${canbos}">
+        <td th:text="${canbo.tenCanBo}"></td>
+        <td th:text="${canbo.tenTaiKhoan}"></td>
+        <td th:text="${canbo.soDienThoai}"></td>
+        <td th:text="${canbo.emailFpt}"></td>
+        <td th:text="${canbo.emailFe}"></td>
+        <td th:text="${canbo.vaiTro}"></td>
+        <td>
+            <a th:href="@{/admin/canbo/edit/{id}(id=${canbo.id})}">Edit</a>
+            <a th:href="@{/admin/canbo/delete/{id}(id=${canbo.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -30,6 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpServletResponse;
@@ -152,6 +153,7 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     }
 
     @Override
+    @Transactional
     public Boolean deleteNhomDatn(List<String> listIdNhom) {
         List<NhomDatn> listNhomDatn = dtNhomDatnTheoDotRepository.findAllById(listIdNhom);
         if (listNhomDatn.size() == 0) {

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MonDatn List</title>
+</head>
+<body>
+<h1>MonDatn List</h1>
+<a th:href="@{/admin/mondatns/new}">Create New MonDatn</a>
+
+<form th:action="@{/admin/mondatns}" method="get">
+    <label for="coSoId">Filter by CoSo ID:</label>
+    <input type="text" id="coSoId" name="coSoId" th:value="${coSoId}" />
+    <button type="submit">Filter</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ma Mon</th>
+        <th>Ten Mon Datn</th>
+        <th>Nhom Mon Datn ID</th>
+        <th>Chuyen Nganh ID</th>
+        <th>Co So ID</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="monDatn : ${monDatns}">
+        <td th:text="${monDatn.id}"></td>
+        <td th:text="${monDatn.maMon}"></td>
+        <td th:text="${monDatn.tenMonDatn}"></td>
+        <td th:text="${monDatn.nhomMonDatnId}"></td>
+        <td th:text="${monDatn.chuyenNganhId}"></td>
+        <td th:text="${monDatn.coSoId}"></td>
+        <td>
+            <a th:href="@{/admin/mondatns/edit/{id}(id=${monDatn.id})}">Edit</a>
+            <a th:href="@{/admin/mondatns/delete/{id}(id=${monDatn.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

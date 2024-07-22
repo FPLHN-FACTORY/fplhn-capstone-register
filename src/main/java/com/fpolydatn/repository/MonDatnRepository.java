@@ -24,4 +24,6 @@ public interface MonDatnRepository extends JpaRepository<MonDatn, String> {
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntityByCoSoAndChuyenNganh(
             @Param("coSoId") String coSoId, @Param("chuyenNganhId") String chuyenNganhId);
+
+    List<MonDatn> findByCoSoId(String coSoId);
 }

@@ -100,16 +100,6 @@ public interface DtGiangVienHDRepository extends GiangVienHuongDanRepository {
     String getIdUpdateByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan, @Param("id") String id, @Param("coSoId") String coSoId, @Param("dotDangkyId") String dotDangkyId);
 
     @Query(value = """
-                  SELECT  COUNT(nd.id) AS so_nhom_dang_huong_dan
-                  FROM giang_vien_huong_dan gvhd 
-                  LEFT JOIN dot_dang_ky ddk ON gvhd.dot_dang_ky_id = ddk.id
-                  LEFT JOIN nhom_datn nd ON nd.giang_vien_id = gvhd.id
-                  LEFT JOIN co_so cs ON gvhd.co_so_id = cs.id             
-                  WHERE gvhd.id = :idGiangVien GROUP BY gvhd.id 
-            """, nativeQuery = true)
-    int getCountSoNhomDangHuongDan(@Param("idGiangVien") String idGiangVien);
-
-    @Query(value = """
                 SELECT ROW_NUMBER() OVER(ORDER BY gvhd.last_modified_date DESC ) AS stt,
                 gvhd.id,
                 cs.ten_co_so,

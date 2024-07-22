@@ -1,7 +1,7 @@
 package com.fpolydatn.core.admin.repository;
 
-import com.fpolydatn.core.admin.model.request.FindHocKyRequest;
-import com.fpolydatn.core.admin.model.response.HocKyResponse;
+import com.fpolydatn.core.daotao.model.request.FindHocKyRequest;
+import com.fpolydatn.core.daotao.model.response.HocKyResponse;
 import com.fpolydatn.repository.HocKyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

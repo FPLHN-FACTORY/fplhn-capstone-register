@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create/Update SinhVien</title>
+</head>
+<body>
+<h1>Create/Update SinhVien</h1>
+
+<form th:action="@{/admin/sinhviens}" th:object="${sinhVien}" method="post">
+    <div>
+        <label for="tenSinhVien">Ten Sinh Vien:</label>
+        <input type="text" id="tenSinhVien" th:field="*{tenSinhVien}" />
+    </div>
+    <div>
+        <label for="maSinhVien">Ma Sinh Vien:</label>
+        <input type="text" id="maSinhVien" th:field="*{maSinhVien}" />
+    </div>
+    <div>
+        <label for="soDienThoai">So Dien Thoai:</label>
+        <input type="text" id="soDienThoai" th:field="*{soDienThoai}" />
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="text" id="email" th:field="*{email}" />
+    </div>
+    <div>
+        <label for="khoa">Khoa:</label>
+        <input type="text" id="khoa" th:field="*{khoa}" />
+    </div>
+    <div>
+        <label for="trangThai">Trang Thai:</label>
+        <select id="trangThai" th:field="*{trangThai}">
+            <!-- Add options for Trang Thai -->
+            <option value="DU_DIEU_KIEN">Du Dieu Kien</option>
+            <option value="KHONG_DU_DIEU_KIEN">Khong Du Dieu Kien</option>
+        </select>
+    </div>
+    <div>
+        <label for="nhomId">Nhom ID:</label>
+        <input type="text" id="nhomId" th:field="*{nhomId}" />
+    </div>
+    <div>
+        <label for="monChuongTrinhId">Mon Chuong Trinh ID:</label>
+        <input type="text" id="monChuongTrinhId" th:field="*{monChuongTrinhId}" />
+    </div>
+    <div>
+        <label for="monDatnId">Mon Datn ID:</label>
+        <input type="text" id="monDatnId" th:field="*{monDatnId}" />
+    </div>
+    <div>
+        <label for="chuyenNganhId">Chuyen Nganh ID:</label>
+        <input type="text" id="chuyenNganhId" th:field="*{chuyenNganhId}" />
+    </div>
+    <div>
+        <label for="dotDangKyId">Dot Dang Ky ID:</label>
+        <input type="text" id="dotDangKyId" th:field="*{dotDangKyId}" />
+    </div>
+    <div>
+        <label for="thoiDiemRoiNhomGanNhat">Thoi Diem Roi Nhom Gan Nhat:</label>
+        <input type="text" id="thoiDiemRoiNhomGanNhat" th:field="*{thoiDiemRoiNhomGanNhat}" />
+    </div>
+    <div>
+        <label for="thoiDiemJoinNhomGanNhat">Thoi Diem Join Nhom Gan Nhat:</label>
+        <input type="text" id="thoiDiemJoinNhomGanNhat" th:field="*{thoiDiemJoinNhomGanNhat}" />
+    </div>
+    <div>
+        <label for="coSoId">Co So ID:</label>
+        <input type="text" id="coSoId" th:field="*{coSoId}" />
+    </div>
+    <button type="submit">Save</button>
+</form>
+
+<a href="/admin/sinhviens">Back to List</a>
+</body>
+</html>

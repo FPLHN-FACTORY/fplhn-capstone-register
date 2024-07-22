@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ChuyenNganh Form</title>
+</head>
+<body>
+<h1>ChuyenNganh Form</h1>
+<form th:action="@{/admin/chuyennganhs}" th:object="${chuyenNganh}" method="post">
+    <div>
+        <label for="tenChuyenNganh">Ten Chuyen Nganh:</label>
+        <input type="text" id="tenChuyenNganh" th:field="*{tenChuyenNganh}" required/>
+    </div>
+    <div>
+        <label for="chuNhiemBoMon">Chu Nhiem Bo Mon:</label>
+        <input type="text" id="chuNhiemBoMon" th:field="*{chuNhiemBoMon}" />
+    </div>
+    <div>
+        <label for="coSoId">Co So ID:</label>
+        <input type="text" id="coSoId" th:field="*{coSoId}" required/>
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>

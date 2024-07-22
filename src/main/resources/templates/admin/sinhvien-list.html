@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SinhVien List</title>
+</head>
+<body>
+<h1>SinhVien List</h1>
+<a th:href="@{/admin/sinhviens/new}">Create New SinhVien</a>
+
+<form th:action="@{/admin/sinhviens}" method="get">
+    <label for="coSoId">Filter by CoSo ID:</label>
+    <input type="text" id="coSoId" name="coSoId" th:value="${coSoId}" />
+
+    <label for="dotDangKyId">Filter by DotDangKy ID:</label>
+    <input type="text" id="dotDangKyId" name="dotDangKyId" th:value="${dotDangKyId}" />
+
+    <button type="submit">Filter</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ten Sinh Vien</th>
+        <th>Ma Sinh Vien</th>
+        <th>So Dien Thoai</th>
+        <th>Email</th>
+        <th>Khoa</th>
+        <th>Trang Thai</th>
+        <th>Nhom ID</th>
+        <th>Mon Chuong Trinh ID</th>
+        <th>Mon Datn ID</th>
+        <th>Chuyen Nganh ID</th>
+        <th>Dot Dang Ky ID</th>
+        <th>Thoi Diem Roi Nhom Gan Nhat</th>
+        <th>Thoi Diem Join Nhom Gan Nhat</th>
+        <th>Co So ID</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="sinhVien : ${sinhViens.content}">
+        <td th:text="${sinhVien.id}"></td>
+        <td th:text="${sinhVien.tenSinhVien}"></td>
+        <td th:text="${sinhVien.maSinhVien}"></td>
+        <td th:text="${sinhVien.soDienThoai}"></td>
+        <td th:text="${sinhVien.email}"></td>
+        <td th:text="${sinhVien.khoa}"></td>
+        <td th:text="${sinhVien.trangThai}"></td>
+        <td th:text="${sinhVien.nhomId}"></td>
+        <td th:text="${sinhVien.monChuongTrinhId}"></td>
+        <td th:text="${sinhVien.monDatnId}"></td>
+        <td th:text="${sinhVien.chuyenNganhId}"></td>
+        <td th:text="${sinhVien.dotDangKyId}"></td>
+        <td th:text="${sinhVien.thoiDiemRoiNhomGanNhat}"></td>
+        <td th:text="${sinhVien.thoiDiemJoinNhomGanNhat}"></td>
+        <td th:text="${sinhVien.coSoId}"></td>
+        <td>
+            <a th:href="@{/admin/sinhviens/edit/{id}(id=${sinhVien.id})}">Edit</a>
+            <a th:href="@{/admin/sinhviens/delete/{id}(id=${sinhVien.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Pagination controls -->
+<div>
+    <span th:text="'Page ' + ${sinhViens.number + 1} + ' of ' + ${sinhViens.totalPages}"></span>
+    <a th:if="${sinhViens.hasPrevious()}" th:href="@{/admin/sinhviens(coSoId=${coSoId}, dotDangKyId=${dotDangKyId}, page=${sinhViens.number - 1}, size=${sinhViens.size})}">Previous</a>
+    <a th:if="${sinhViens.hasNext()}" th:href="@{/admin/sinhviens(coSoId=${coSoId}, dotDangKyId=${dotDangKyId}, page=${sinhViens.number + 1}, size=${sinhViens.size})}">Next</a>
+</div>
+</body>
+</html>

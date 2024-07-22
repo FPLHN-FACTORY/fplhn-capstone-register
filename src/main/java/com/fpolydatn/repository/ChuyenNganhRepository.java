@@ -28,4 +28,6 @@ public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh, String
             WHERE id = :id
             """, nativeQuery = true)
     String getTenChuyenNganhById(@Param("id") String id);
+
+    List<ChuyenNganh> findByCoSoId(String coSoId);
 }

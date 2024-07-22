@@ -1,6 +1,8 @@
 package com.fpolydatn.repository;
 
 import com.fpolydatn.entity.NhomDatn;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,10 +27,6 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
             """, nativeQuery = true)
     String getNhomTaoGanNhat(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
 
-//    SELECT ma_nhom FROM do_an_tot_nghiep.nhom_datn
-//    WHERE dot_dang_ky_id = :dotDangKyId AND co_so_id = :coSoId
-//    ORDER BY created_date DESC LIMIT 1
-
     @Query(value = """
                 SELECT c.ma_co_so FROM  co_so c 
                 WHERE  c.id = :coSoId
@@ -42,4 +40,6 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
             """, nativeQuery = true)
     List<String> listNhomKhongDuDieuKien(@Param("currentTime") Long currentTime,
                                          @Param("period") Long period);
+
+    Page<NhomDatn> findByCoSoIdAndDotDangKyId(String coSoId, String dotDangKyId, Pageable pageable);
 }

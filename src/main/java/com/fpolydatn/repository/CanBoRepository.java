@@ -36,4 +36,5 @@ public interface CanBoRepository extends JpaRepository<CanBo, String> {
                                                 @Param("vaiTro") int vaiTro);
 
 
+    List<CanBo> findByCoSoId(String coSoId);
 }

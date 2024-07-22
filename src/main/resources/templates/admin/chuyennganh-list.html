@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ChuyenNganh List</title>
+</head>
+<body>
+<h1>ChuyenNganh List</h1>
+<a th:href="@{/admin/chuyennganhs/new}">Create New ChuyenNganh</a>
+
+<form th:action="@{/admin/chuyennganhs}" method="get">
+    <label for="coSoId">Filter by CoSo ID:</label>
+    <input type="text" id="coSoId" name="coSoId" th:value="${coSoId}" />
+    <button type="submit">Filter</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ten Chuyen Nganh</th>
+        <th>Chu Nhiem Bo Mon</th>
+        <th>Co So ID</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="chuyenNganh : ${chuyenNganhs}">
+        <td th:text="${chuyenNganh.id}"></td>
+        <td th:text="${chuyenNganh.tenChuyenNganh}"></td>
+        <td th:text="${chuyenNganh.chuNhiemBoMon}"></td>
+        <td th:text="${chuyenNganh.coSoId}"></td>
+        <td>
+            <a th:href="@{/admin/chuyennganhs/edit/{id}(id=${chuyenNganh.id})}">Edit</a>
+            <a th:href="@{/admin/chuyennganhs/delete/{id}(id=${chuyenNganh.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

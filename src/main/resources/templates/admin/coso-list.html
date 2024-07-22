@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CoSo List</title>
+</head>
+<body>
+<h1>CoSo List</h1>
+<a th:href="@{/admin/coso/new}">Create New CoSo</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ma CoSo</th>
+        <th>Ten CoSo</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="coSo : ${coSos}">
+        <td th:text="${coSo.id}"></td>
+        <td th:text="${coSo.maCoSo}"></td>
+        <td th:text="${coSo.tenCoSo}"></td>
+        <td>
+            <a th:href="@{/admin/cosos/edit/{id}(id=${coSo.id})}">Edit</a>
+            <a th:href="@{/admin/cosos/delete/{id}(id=${coSo.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

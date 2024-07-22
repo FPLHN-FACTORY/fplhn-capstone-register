@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CanBo Form</title>
+</head>
+<body>
+<h1 th:text="${canbo.id == null ? 'New CanBo' : 'Edit CanBo'}"></h1>
+<form th:action="@{/admin/canbo}" th:object="${canbo}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <div>
+        <label>Name</label>
+        <input type="text" th:field="*{tenCanBo}" />
+    </div>
+    <div>
+        <label>Account</label>
+        <input type="text" th:field="*{tenTaiKhoan}" />
+    </div>
+    <div>
+        <label>Phone</label>
+        <input type="text" th:field="*{soDienThoai}" />
+    </div>
+    <div>
+        <label>Email FPT</label>
+        <input type="email" th:field="*{emailFpt}" />
+    </div>
+    <div>
+        <label>Email FE</label>
+        <input type="email" th:field="*{emailFe}" />
+    </div>
+    <div>
+        <label>Role</label>
+        <input type="text" th:field="*{vaiTro}" />
+    </div>
+    <div>
+        <label for="coSoId">Coso ID:</label>
+        <input type="text" id="coSoId" th:field="*{coSoId}" />
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>

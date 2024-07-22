@@ -49,4 +49,5 @@ public interface DotDangKyRepository extends JpaRepository<DotDangKy, String> {
             """, nativeQuery = true)
     KhoangThoiGianResponse findMocThoiGianChuNhiem(@Param("id") String id);
 
+    List<DotDangKy> findByCoSoId(String coSoId);
 }

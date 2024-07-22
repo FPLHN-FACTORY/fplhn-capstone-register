@@ -111,7 +111,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     @Override
     public Boolean delete(String id) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(id);
-        int countSoNhomDangHuongDan = dtGiangVienHDRepository.getCountSoNhomDangHuongDan(id);
+        int countSoNhomDangHuongDan = commonHelper.getSoNhomGiangVienDangHuongDan(id);
         if (!gvhdCheck.isPresent()) {
             throw new RestApiException(Message.GIANG_VIEN_HUONG_DAN_EXIST);
         }

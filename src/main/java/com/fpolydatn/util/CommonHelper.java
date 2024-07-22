@@ -27,8 +27,7 @@ public class CommonHelper {
     private GiangVienHuongDanRepository giangVienHuongDanRepository;
 
     public int getSoNhomGiangVienDangHuongDan(String id){
-        String dotDangKyHienTai = getDotDangKyHienTai();
-        return giangVienHuongDanRepository.getSoNhomGiangVienDangHuongDan(id, dotDangKyHienTai);
+        return giangVienHuongDanRepository.getSoNhomGiangVienDangHuongDan(id);
     }
 
     public String getDotDangKyHienTai() {

@@ -1,10 +1,10 @@
-package com.fpolydatn.core.admin.controller;
+package com.fpolydatn.core.daotao.controller;
 
 import com.fpolydatn.core.common.base.BaseController;
 import com.fpolydatn.core.common.base.ResponseObject;
-import com.fpolydatn.core.admin.model.request.CreateHocKyRequest;
-import com.fpolydatn.core.admin.model.request.UpdateHocKyRequest;
-import com.fpolydatn.core.admin.service.HocKyService;
+import com.fpolydatn.core.daotao.model.request.CreateHocKyRequest;
+import com.fpolydatn.core.daotao.model.request.UpdateHocKyRequest;
+import com.fpolydatn.core.daotao.service.HocKyService;
 import com.fpolydatn.infrastructure.constant.ConfigurationsConstant;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.util.WriterFileCSV;

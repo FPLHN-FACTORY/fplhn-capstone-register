@@ -59,7 +59,6 @@ public class UserService {
             session.setAttribute(SessionConstant.TEN_DOT_DANG_KY, dotDangKyRepository.findById(dotDangKyID).get().getTenDotDangKy());
         }
         SimpleEntityProj account = null;
-        Boolean checkAccountAdmin = email.equals(mailUsername);
         switch (role.toLowerCase()) {
             case ActorConstant.GIANG_VIEN: {
                 account = gvhdRepository.findSimpleEntityByTenGiangVienHuongDan(coSoID, email, dotDangKyID);
@@ -100,33 +99,15 @@ public class UserService {
                 }
                 break;
             }
-            case ActorConstant.ADMIN: {
-                if (checkAccountAdmin) {
-                    response.sendRedirect("/admin/bit-dev/home");
-                } else {
-                    response.sendRedirect("/admin/bit-dev");
-                }
-                break;
-            }
             default: {
                 response.sendRedirect("/");
             }
         }
 
-        if (role.equals(ActorConstant.ADMIN)) {
-            if (checkAccountAdmin) {
-                SimpleUserCurrent simpleUserCurrent = new SimpleUserCurrent();
-                simpleUserCurrent.setName(name);
-                session.setAttribute(SessionConstant.USER, simpleUserCurrent);
-            } else {
-                session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thống");
-            }
-        } else {
             if (Objects.nonNull(account)) {
                 session.setAttribute(SessionConstant.USER, account);
             } else {
                 session.setAttribute("messageError", "Tài khoản không được phép đăng nhập vào hệ thống");
             }
-        }
     }
 }

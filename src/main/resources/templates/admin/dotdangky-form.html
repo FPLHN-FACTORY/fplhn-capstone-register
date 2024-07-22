@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DotDangKy Form</title>
+</head>
+<body>
+<h1>DotDangKy Form</h1>
+<form th:action="@{/admin/dotdangkys}" th:object="${dotDangKy}" method="post">
+    <div>
+        <label for="tenDotDangKy">Ten Dot Dang Ky:</label>
+        <input type="text" id="tenDotDangKy" th:field="*{tenDotDangKy}" required/>
+    </div>
+    <div>
+        <label for="ngayBatDau">Ngay Bat Dau:</label>
+        <input type="number" id="ngayBatDau" th:field="*{ngayBatDau}" required/>
+    </div>
+    <div>
+        <label for="ngayKetThuc">Ngay Ket Thuc:</label>
+        <input type="number" id="ngayKetThuc" th:field="*{ngayKetThuc}" required/>
+    </div>
+    <div>
+        <label for="hanSinhVien">Han Sinh Vien:</label>
+        <input type="number" id="hanSinhVien" th:field="*{hanSinhVien}" required/>
+    </div>
+    <div>
+        <label for="hanGiangVien">Han Giang Vien:</label>
+        <input type="number" id="hanGiangVien" th:field="*{hanGiangVien}" required/>
+    </div>
+    <div>
+        <label for="hanChuNhiemBoMon">Han Chu Nhiem Bo Mon:</label>
+        <input type="number" id="hanChuNhiemBoMon" th:field="*{hanChuNhiemBoMon}" required/>
+    </div>
+    <div>
+        <label for="hocKyId">Hoc Ky ID:</label>
+        <input type="text" id="hocKyId" th:field="*{hocKyId}" required/>
+    </div>
+    <div>
+        <label for="coSoId">Co So ID:</label>
+        <input type="text" id="coSoId" th:field="*{coSoId}" required/>
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>
+</body>
+</html>

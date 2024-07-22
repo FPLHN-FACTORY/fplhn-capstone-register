@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NhomDatn List</title>
+</head>
+<body>
+<h1>NhomDatn List</h1>
+<a th:href="@{/admin/nhomdatns/new}">Create New NhomDatn</a>
+
+<form th:action="@{/admin/nhomdatns}" method="get">
+    <label for="coSoId">Filter by CoSo ID:</label>
+    <input type="text" id="coSoId" name="coSoId" th:value="${coSoId}" />
+
+    <label for="dotDangKyId">Filter by DotDangKy ID:</label>
+    <input type="text" id="dotDangKyId" name="dotDangKyId" th:value="${dotDangKyId}" />
+
+    <button type="submit">Filter</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ma Nhom</th>
+        <th>Ten Nhom</th>
+        <th>Ten De Tai</th>
+        <th>Mo Ta</th>
+        <th>Mat Khau</th>
+        <th>Trang Thai</th>
+        <th>Truong Nhom ID</th>
+        <th>Giang Vien ID</th>
+        <th>Nhan Xet</th>
+        <th>Dot Dang Ky ID</th>
+        <th>Co So ID</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="nhomDatn : ${nhomDatns.content}">
+        <td th:text="${nhomDatn.id}"></td>
+        <td th:text="${nhomDatn.maNhom}"></td>
+        <td th:text="${nhomDatn.tenNhom}"></td>
+        <td th:text="${nhomDatn.tenDeTai}"></td>
+        <td th:text="${nhomDatn.moTa}"></td>
+        <td th:text="${nhomDatn.matKhau}"></td>
+        <td th:text="${nhomDatn.trangThai}"></td>
+        <td th:text="${nhomDatn.truongNhomId}"></td>
+        <td th:text="${nhomDatn.giangVienId}"></td>
+        <td th:text="${nhomDatn.nhanXet}"></td>
+        <td th:text="${nhomDatn.dotDangKyId}"></td>
+        <td th:text="${nhomDatn.coSoId}"></td>
+        <td>
+            <a th:href="@{/admin/nhomdatns/edit/{id}(id=${nhomDatn.id})}">Edit</a>
+            <a th:href="@{/admin/nhomdatns/delete/{id}(id=${nhomDatn.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Pagination controls -->
+<div>
+    <span th:text="'Page ' + ${nhomDatns.number + 1} + ' of ' + ${nhomDatns.totalPages}"></span>
+    <a th:if="${nhomDatns.hasPrevious()}" th:href="@{/admin/nhomdatns(coSoId=${coSoId}, dotDangKyId=${dotDangKyId}, page=${nhomDatns.number - 1}, size=${nhomDatns.size})}">Previous</a>
+    <a th:if="${nhomDatns.hasNext()}" th:href="@{/admin/nhomdatns(coSoId=${coSoId}, dotDangKyId=${dotDangKyId}, page=${nhomDatns.number + 1}, size=${nhomDatns.size})}">Next</a>
+</div>
+</body>
+</html>

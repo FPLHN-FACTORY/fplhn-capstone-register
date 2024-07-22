@@ -12,8 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
-import java.util.Objects;
-
 /**
  * @author HangNT
  */
@@ -23,9 +21,11 @@ import java.util.Objects;
 public class SecurityConfig {
 
     private UserService userService;
+    private AdminAuthProvider adminAuthProvider;
 
-    public SecurityConfig(UserService userService) {
+    public SecurityConfig(UserService userService, AdminAuthProvider adminAuthProvider) {
         this.userService = userService;
+        this.adminAuthProvider = adminAuthProvider;
     }
 
     @Bean
@@ -33,34 +33,40 @@ public class SecurityConfig {
 
         http.cors().and()
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/authentication/*", "/", "/admin/bit-dev").permitAll()
-                .antMatchers("/chu-nhiem/**").hasAuthority(ActorConstant.CHU_NHIEM)
-                .antMatchers("/dao-tao/**").hasAuthority(ActorConstant.DAO_TAO)
-                .antMatchers("/giang-vien/**").hasAuthority(ActorConstant.GIANG_VIEN)
-                .antMatchers("/sinh-vien/**").hasAuthority(ActorConstant.SINH_VIEN)
-                .antMatchers("/admin/bit-dev/**").hasAuthority(ActorConstant.ADMIN)
-                .and()
-                .oauth2Login()
-                .successHandler((request, response, authentication) -> {
-                    CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
-                    String role = oauthUser.getRole();
-                    String coSoID = oauthUser.getCoSoId();
-                    if (Objects.isNull(role) || Objects.isNull(coSoID)) {
-                        if (!ActorConstant.ADMIN.equals(role)) {
-                            response.sendRedirect("/");
-                        }
-                    }
-                    userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), oauthUser.getName(), role);
-                })
-                .failureUrl("/authentication")
-                .and()
-                .logout()
-                .logoutUrl("/doLogout")
-                .logoutSuccessUrl("/").permitAll()
-                .invalidateHttpSession(true)
-                .and()
-                .exceptionHandling().accessDeniedPage("/authentication/403");
+                .authorizeRequests(authReq -> authReq
+                        .antMatchers("/authentication/*", "/").permitAll()
+                        .antMatchers("/chu-nhiem/**").hasAuthority(ActorConstant.CHU_NHIEM)
+                        .antMatchers("/dao-tao/**").hasAuthority(ActorConstant.DAO_TAO)
+                        .antMatchers("/giang-vien/**").hasAuthority(ActorConstant.GIANG_VIEN)
+                        .antMatchers("/sinh-vien/**").hasAuthority(ActorConstant.SINH_VIEN)
+                        .antMatchers("/admin/**", "/admin").hasAuthority(ActorConstant.ADMIN)
+                )
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/")
+                        .loginProcessingUrl("/admin-login")
+                        .successHandler((req, response, auth) -> {
+                            response.sendRedirect("/admin");
+                        })
+                        .permitAll()
+                )
+                .authenticationProvider(adminAuthProvider)
+                .oauth2Login(oauth -> oauth
+                        .successHandler((request, response, authentication) -> {
+                            CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
+                            String role = oauthUser.getRole();
+                            String coSoID = oauthUser.getCoSoId();
+                            userService.processOAuthPostLogin(response, coSoID, oauthUser.getEmail(), oauthUser.getName(), role);
+                        })
+                        .failureUrl("/authentication")
+                )
+                .logout(out -> out
+                        .logoutUrl("/doLogout")
+                        .logoutSuccessUrl("/").permitAll()
+                        .invalidateHttpSession(true)
+                )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/authentication/403")
+                );
 
         http.headers()
                 .xssProtection(Customizer.withDefaults())
@@ -75,6 +81,7 @@ public class SecurityConfig {
 //                style-src 'self' https://fonts.googleapis.com http://localhost:8080 https://dangky.poly.edu.vn https://cdnjs.cloudflare.com https://maxcdn.bootstrapcdn.com 'unsafe-inline'
 //                                """.replace("\n", "")))
                 .frameOptions().sameOrigin();
+
         return http.build();
     }
 
