@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -56,6 +57,7 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
+    @Transactional
     public HocKy create(@Valid final CreateHocKyRequest request) {
         HocKy hocKy = new HocKy();
         hocKy.setTenHocKy(request.getTenHocKy().trim());
@@ -95,6 +97,7 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
+    @Transactional
     public Boolean delete(final String id) {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
         if (!hocKyCheck.isPresent()) {
@@ -118,6 +121,7 @@ public class HocKyServiceImpl implements HocKyService {
     }
 
     @Override
+    @Transactional
     public HocKy update(@Valid final UpdateHocKyRequest request) {
         Optional<HocKy> hocKyCheck = hocKyRepository.findById(request.getId());
         String tenCu = hocKyCheck.get().getTenHocKy();

@@ -1,5 +1,6 @@
-package com.fpolydatn.core.admin;
+package com.fpolydatn.core.admin.controller;
 
+import com.fpolydatn.core.admin.service.SinhVienService;
 import com.fpolydatn.entity.SinhVien;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -43,6 +43,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -272,7 +273,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
         return response;
     }
 
-    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId, String dotDangKyId) {
+    private void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId, String dotDangKyId) {
         //lấy id, MaSv của tất cả sv theo cơ sở
         List<SimpleEntityProj> getAllMaSV = sinhVienRepository.getAllMaSV(coSoId, dotDangKyId);
         getAllPutMap(mapAll, getAllMaSV);
@@ -301,6 +302,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
+    @Transactional
     public DtLoaiSinhVienResponse importSinhVienKhongDuDieukien(DtLoaiSinhVienKhongDatRequest request) {
         Optional<DotDangKy> dotDangKy = dotDangKyRepository.findById(request.getDotDangKyId());
         if (!dotDangKy.isPresent()) {
@@ -489,6 +491,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
+    @Transactional
     public SinhVien loaiSinhVien(String id) {
         Map<String, NhomDatn> map = new HashMap<>();
         Optional<SinhVien> sv = sinhVienRepository.findById(id);
@@ -610,6 +613,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
+    @Transactional
     public Boolean delete(String id, String coSoId, String dotDangKyId) {
         Optional<SinhVien> checkSV = sinhVienRepository.findById(id);
         if (Objects.isNull(checkSV)) {
@@ -630,6 +634,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
+    @Transactional
     public SinhVien update(@Valid DtUpdateSinhVienTheoDotRequest command) {
 
         Optional<SinhVien> checkSinhVien = sinhVienRepository.findById(command.getId());
@@ -729,6 +734,7 @@ public class DtSinhVienTheoDotServiceImpl implements DtSinhVienTheoDotService {
     }
 
     @Override
+    @Transactional
     public SinhVien create(@Valid DtCreateSinhVienRequest command) {
         SinhVien sinhVien = new SinhVien();
 

@@ -6,6 +6,7 @@
 <body>
 <h1>MonDatn Form</h1>
 <form th:action="@{/admin/mondatns}" th:object="${monDatn}" method="post">
+    <input type="hidden" th:field="*{id}" />
     <div>
         <label for="maMon">Ma Mon:</label>
         <input type="text" id="maMon" th:field="*{maMon}" required/>

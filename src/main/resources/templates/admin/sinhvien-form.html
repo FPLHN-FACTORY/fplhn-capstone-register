@@ -7,6 +7,7 @@
 <h1>Create/Update SinhVien</h1>
 
 <form th:action="@{/admin/sinhviens}" th:object="${sinhVien}" method="post">
+    <input type="hidden" th:field="*{id}" />
     <div>
         <label for="tenSinhVien">Ten Sinh Vien:</label>
         <input type="text" id="tenSinhVien" th:field="*{tenSinhVien}" />

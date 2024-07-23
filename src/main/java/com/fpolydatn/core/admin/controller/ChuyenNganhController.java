@@ -1,5 +1,6 @@
-package com.fpolydatn.core.admin;
+package com.fpolydatn.core.admin.controller;
 
+import com.fpolydatn.core.admin.service.ChuyenNganhService;
 import com.fpolydatn.entity.ChuyenNganh;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

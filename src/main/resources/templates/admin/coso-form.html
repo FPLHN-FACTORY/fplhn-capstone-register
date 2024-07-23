@@ -5,7 +5,8 @@
 </head>
 <body>
 <h1>CoSo Form</h1>
-<form th:action="@{/admin/coso}" th:object="${coSo}" method="post">
+<form th:action="@{/admin/cosos}" th:object="${coSo}" method="post">
+    <input type="hidden" id="id" th:field="*{id}"/>
     <div>
         <label for="maCoSo">Ma CoSo:</label>
         <input type="text" id="maCoSo" th:field="*{maCoSo}" required/>

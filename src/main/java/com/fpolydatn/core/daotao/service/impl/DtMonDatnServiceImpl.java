@@ -26,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -93,6 +94,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
+    @Transactional
     public Boolean delete(final String id, String coSoId) {
         Optional<MonDatn> monCheck = monDatnRepository.findById(id);
         Integer countInPhanCongHuongDan = monDatnRepository.countInPhanCongHuongDan(id);
@@ -135,6 +137,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
+    @Transactional
     public MonDatn update(@Valid final DtUpdateMonDatnRequest command) {
         Optional<MonDatn> monDatn = monDatnRepository.findById(command.getId());
         MonDatn monDatnCu = monDatn.get();
@@ -224,6 +227,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
+    @Transactional
     public Boolean add(@Valid final DtCreateMonDatnRequest command) {
         String maMon = "";
         try {
@@ -270,6 +274,7 @@ public class DtMonDatnServiceImpl implements DtMonDatnService {
     }
 
     @Override
+    @Transactional
     public DtMessMonDatnReponse importExcel(MultipartFile file, String coSoId) {
         monDatnHashMap = new ConcurrentHashMap<>();
         chuyenNganhHashMap = new ConcurrentHashMap<>();

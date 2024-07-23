@@ -28,6 +28,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -72,6 +73,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     }
 
     @Override
+    @Transactional
     public boolean create(@Valid final DtCreateCanBoRequest canBoRequest) {
         String idByEmailFpt = dtCanBoRepository.getIdByEmailFpt(canBoRequest.getEmailFpt().trim(), canBoRequest.getCoSoId());
         if (idByEmailFpt != null) {
@@ -100,6 +102,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     }
 
     @Override
+    @Transactional
     public Boolean delete(String id, String coSoId) {
         Optional<CanBo> canBoCheck = dtCanBoRepository.findById(id);
         if (Objects.isNull(canBoCheck)) {
@@ -134,6 +137,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     }
 
     @Override
+    @Transactional
     public CanBo update(@Valid DtUpdateCanBoRequest canBoRequest) {
         Optional<CanBo> canBo = dtCanBoRepository.findById(canBoRequest.getId());
         String tenTkCu = canBo.get().getTenTaiKhoan();
@@ -218,6 +222,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
 
 
     @Override
+    @Transactional
     public DtCanBoResponseMessage DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
         DtCanBoResponseMessage dtCanBoResponseMessage = new DtCanBoResponseMessage();
         ConcurrentMap<String, CanBo> listCanBo = new ConcurrentHashMap<>();
@@ -330,7 +335,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         setDataInMap(mapAll, listTenTaiKhoan);
     }
 
-    public void setDataInMap(Map<String, String> mapSimple, List<String> listStr) {
+    private void setDataInMap(Map<String, String> mapSimple, List<String> listStr) {
         for (String s : listStr) {
             mapSimple.put(s, s);
         }

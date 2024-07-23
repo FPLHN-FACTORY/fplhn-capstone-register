@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CanBo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"] {
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td a {
+            margin-right: 10px;
+            color: #007bff;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>CanBo List</h1>
+<a th:href="@{/admin/canbos/new}">Add New CanBo</a>
+<form th:action="@{/admin/canbos}" method="get">
+    <label for="cosoId">Coso ID:</label>
+    <input type="text" id="cosoId" name="cosoId" th:value="${cosoId}"/>
+    <button type="submit">Filter</button>
+</form>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Account</th>
+        <th>Phone</th>
+        <th>Email FPT</th>
+        <th>Email FE</th>
+        <th>Role</th>
+        <th>Coso ID</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="canbo : ${canbos}">
+        <td th:text="${canbo.tenCanBo}"></td>
+        <td th:text="${canbo.tenTaiKhoan}"></td>
+        <td th:text="${canbo.soDienThoai}"></td>
+        <td th:text="${canbo.emailFpt}"></td>
+        <td th:text="${canbo.emailFe}"></td>
+        <td th:text="${canbo.vaiTro}"></td>
+        <td th:text="${canbo.coSoId}"></td>
+        <td>
+            <a th:href="@{/admin/canbos/edit/{id}(id=${canbo.id})}">Edit</a>
+            <a th:href="@{/admin/canbos/delete/{id}(id=${canbo.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

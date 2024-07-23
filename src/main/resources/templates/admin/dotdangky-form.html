@@ -6,6 +6,7 @@
 <body>
 <h1>DotDangKy Form</h1>
 <form th:action="@{/admin/dotdangkys}" th:object="${dotDangKy}" method="post">
+    <input type="hidden" th:field="*{id}" />
     <div>
         <label for="tenDotDangKy">Ten Dot Dang Ky:</label>
         <input type="text" id="tenDotDangKy" th:field="*{tenDotDangKy}" required/>

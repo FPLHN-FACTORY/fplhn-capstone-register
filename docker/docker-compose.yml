@@ -23,7 +23,8 @@ services:
     ports:
       - 3310:3306
   app:
-    image: fplhnfcr/dk-datn-app:latest
+    #image: fplhnfcr/dk-datn-app:v1
+    image: dk-datn
     ports:
       - 8080:8080
     restart: always
@@ -62,3 +63,5 @@ services:
     links:
       - db
       - rabbitmq
+    depends_on:
+      - db

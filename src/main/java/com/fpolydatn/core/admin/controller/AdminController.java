@@ -1,4 +1,4 @@
-package com.fpolydatn.core.admin;
+package com.fpolydatn.core.admin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

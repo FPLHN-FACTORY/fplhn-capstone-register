@@ -6,6 +6,7 @@
 <body>
 <h1>NhomDatn Form</h1>
 <form th:action="@{/admin/nhomdatns}" th:object="${nhomDatn}" method="post">
+    <input type="hidden" th:field="*{id}" />
     <div>
         <label for="maNhom">Ma Nhom:</label>
         <input type="text" id="maNhom" th:field="*{maNhom}" required/>

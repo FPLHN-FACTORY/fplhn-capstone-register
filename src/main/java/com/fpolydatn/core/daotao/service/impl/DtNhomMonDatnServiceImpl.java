@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -51,6 +52,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     }
 
     @Override
+    @Transactional
     public Boolean delete(String id, String coSoId) {
         Optional<MonDatn> nhomMonDatn = dtNhomMonDatnRepository.findById(id);
         if (!nhomMonDatn.isPresent()) {
@@ -75,6 +77,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     }
 
     @Override
+    @Transactional
     public Boolean update(@Valid DtUpdateNhomMonDatnRequest command) {
         Optional<MonDatn> nhomMonDatnFind = dtNhomMonDatnRepository.findById(command.getId());
         Optional<ChuyenNganh> chuyenNganhCu = dtChuyenNganhRepository.findById(nhomMonDatnFind.get().getChuyenNganhId());
@@ -127,6 +130,7 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     }
 
     @Override
+    @Transactional
     public Boolean add(@Valid DtCreateNhomMonDatnRequest command) {
         String maNhomMon = command.getMaNhomMon().toUpperCase().trim();
         MonDatn monDatnCheck = dtNhomMonDatnRepository.findByMaNhomMon(maNhomMon, command.getCoSoId());

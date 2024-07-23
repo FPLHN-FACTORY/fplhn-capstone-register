@@ -23,6 +23,7 @@ import com.fpolydatn.util.FormUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -56,6 +57,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     }
 
     @Override
+    @Transactional
     public ChuyenNganh update(@Valid DtUpdateChuyenNganhRequest req) {
         Optional<ChuyenNganh> chuyenNganhById = dtChuyenNganhRepository.findById(req.getId());
         String tenCu = chuyenNganhById.get().getTenChuyenNganh();
@@ -105,6 +107,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     }
 
     @Override
+    @Transactional
     public ChuyenNganh add(@Valid DtCreateChuyenNganhRequest req) {
         ChuyenNganh chuyenNganh = formUtils.convertToObject(ChuyenNganh.class, req);
         ChuyenNganh chuyenNganhCheck = dtChuyenNganhRepository.findByTenChuyenNganh(chuyenNganh.getTenChuyenNganh(), req.getCoSoId());
@@ -131,6 +134,7 @@ public class DtChuyenNganhServiceImpl implements DtChuyenNganhService {
     }
 
     @Override
+    @Transactional
     public Boolean delete(String id, String coSoId) {
         Optional<ChuyenNganh> chuyenNganhCheck = dtChuyenNganhRepository.findById(id);
         Integer countInSinhVien = dtChuyenNganhRepository.countChuyenNganhInSinhVien(id, coSoId);

@@ -1,5 +1,6 @@
-package com.fpolydatn.core.admin;
+package com.fpolydatn.core.admin.controller;
 
+import com.fpolydatn.core.admin.service.NhomDatnService;
 import com.fpolydatn.entity.NhomDatn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,8 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author PhongTT35
@@ -49,7 +48,7 @@ public class NhomDatnController {
     @PostMapping
     public String saveNhomDatn(@ModelAttribute("nhomDatn") NhomDatn nhomDatn) {
         nhomDatnService.saveNhomDatn(nhomDatn);
-        return "redirect:/nhomdatns";
+        return "redirect:/admin/nhomdatns";
     }
 
     @GetMapping("/edit/{id}")

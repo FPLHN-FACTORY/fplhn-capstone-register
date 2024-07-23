@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .authenticationProvider(adminAuthProvider)
                 .oauth2Login(oauth -> oauth
                         .successHandler((request, response, authentication) -> {
+                            System.out.println(authentication);
                             CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
                             String role = oauthUser.getRole();
                             String coSoID = oauthUser.getCoSoId();

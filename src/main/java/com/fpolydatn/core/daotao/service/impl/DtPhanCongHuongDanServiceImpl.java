@@ -26,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Transient;
@@ -80,6 +81,7 @@ public class DtPhanCongHuongDanServiceImpl implements DtPhanCongHuongDanService 
     }
 
     @Override
+    @Transactional
     public Boolean delete(String idGV, String idMon) {
         PhanCongHuongDan phanCongHuongDan = findId(idGV, idMon);
         if (Objects.isNull(phanCongHuongDan)) {

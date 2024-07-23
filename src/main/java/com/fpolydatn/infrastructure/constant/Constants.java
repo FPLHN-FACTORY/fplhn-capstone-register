@@ -5,7 +5,7 @@ public final class Constants {
     private Constants() {
     }
 
-    public static final String VERSION = "v2.3";
+    public static final String VERSION = "v2.3.1";
 
     public static final String ENCODING_UTF8 = "UTF-8";
 

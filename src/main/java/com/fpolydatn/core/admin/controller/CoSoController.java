@@ -1,6 +1,6 @@
-package com.fpolydatn.core.admin;
+package com.fpolydatn.core.admin.controller;
 
-import com.fpolydatn.core.admin.CoSoService;
+import com.fpolydatn.core.admin.service.CoSoService;
 import com.fpolydatn.entity.CoSo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,7 @@ import java.util.List;
  * @description N/A
  **/
 @Controller
-@RequestMapping("/admin/coso")
+@RequestMapping("/admin/cosos")
 public class CoSoController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class CoSoController {
     @PostMapping
     public String saveCoSo(@ModelAttribute("coSo") CoSo coSo) {
         coSoService.saveCoSo(coSo);
-        return "redirect:/admin/coso";
+        return "redirect:/admin/cosos";
     }
 
     @GetMapping("/edit/{id}")
@@ -49,6 +49,6 @@ public class CoSoController {
     @GetMapping("/delete/{id}")
     public String deleteCoSo(@PathVariable String id) {
         coSoService.deleteCoSo(id);
-        return "redirect:/admin/coso";
+        return "redirect:/admin/cosos";
     }
 }

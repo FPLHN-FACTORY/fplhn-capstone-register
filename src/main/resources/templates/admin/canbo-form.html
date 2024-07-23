@@ -2,34 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>CanBo Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <h1 th:text="${canbo.id == null ? 'New CanBo' : 'Edit CanBo'}"></h1>
-<form th:action="@{/admin/canbo}" th:object="${canbo}" method="post">
+<form th:action="@{/admin/canbos}" th:object="${canbo}" method="post">
     <input type="hidden" th:field="*{id}" />
     <div>
-        <label>Name</label>
-        <input type="text" th:field="*{tenCanBo}" />
+        <label for="tenCanBo">Name</label>
+        <input type="text" id="tenCanBo" th:field="*{tenCanBo}" />
     </div>
     <div>
-        <label>Account</label>
-        <input type="text" th:field="*{tenTaiKhoan}" />
+        <label for="tenTaiKhoan">Account</label>
+        <input type="text" id="tenTaiKhoan" th:field="*{tenTaiKhoan}" />
     </div>
     <div>
-        <label>Phone</label>
-        <input type="text" th:field="*{soDienThoai}" />
+        <label for="soDienThoai">Phone</label>
+        <input type="text" id="soDienThoai" th:field="*{soDienThoai}" />
     </div>
     <div>
-        <label>Email FPT</label>
-        <input type="email" th:field="*{emailFpt}" />
+        <label for="emailFpt">Email FPT</label>
+        <input type="email" id="emailFpt" th:field="*{emailFpt}" />
     </div>
     <div>
-        <label>Email FE</label>
-        <input type="email" th:field="*{emailFe}" />
+        <label for="emailFe">Email FE</label>
+        <input type="email" id="emailFe" th:field="*{emailFe}" />
     </div>
     <div>
-        <label>Role</label>
-        <input type="text" th:field="*{vaiTro}" />
+        <label for="vaiTro">Role</label>
+        <input type="text" id="vaiTro" th:field="*{vaiTro}" />
     </div>
     <div>
         <label for="coSoId">Coso ID:</label>

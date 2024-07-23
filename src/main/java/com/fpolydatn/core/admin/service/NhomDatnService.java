@@ -1,4 +1,4 @@
-package com.fpolydatn.core.admin;
+package com.fpolydatn.core.admin.service;
 
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.repository.NhomDatnRepository;

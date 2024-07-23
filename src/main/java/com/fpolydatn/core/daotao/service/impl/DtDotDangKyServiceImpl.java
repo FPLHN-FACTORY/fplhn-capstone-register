@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -62,6 +63,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     }
 
     @Override
+    @Transactional
     public DotDangKy create(@Valid final DtCreateDotDangKyRequest createDotDangKyRequest) {
         DtBaseDotDangKyRequest request = new DtCreateDotDangKyRequest();
         request.setNgayBatDau(createDotDangKyRequest.getNgayBatDau());
@@ -100,6 +102,7 @@ public class DtDotDangKyServiceImpl implements DtDotDangKyService {
     }
 
     @Override
+    @Transactional
     public DotDangKy update(@Valid final DtUpdateDotDangKyRequest dtUpdateDotDangKyRequest) {
         Optional<DotDangKy> dotDangKyCheck = dtDotDangKyRepository.findById(dtUpdateDotDangKyRequest.getId());
         String tenDotCu = dotDangKyCheck.get().getTenDotDangKy();

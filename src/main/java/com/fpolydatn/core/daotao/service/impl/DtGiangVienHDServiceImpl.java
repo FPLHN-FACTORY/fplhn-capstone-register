@@ -29,6 +29,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -82,6 +83,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     private DtDotDangKyRepository dotDangKyRepository;
 
     @Override
+    @Transactional
     public GiangVienHuongDan create(@Valid DtCreateGiangVienHDRequest command) {
         String idByEmailFpt = dtGiangVienHDRepository.getIdByEmailFpt(command.getEmailFpt().trim(), command.getCoSoId(), command.getDotDangKyId());
         if (idByEmailFpt != null) {
@@ -109,6 +111,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
+    @Transactional
     public Boolean delete(String id) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(id);
         int countSoNhomDangHuongDan = commonHelper.getSoNhomGiangVienDangHuongDan(id);
@@ -132,6 +135,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
+    @Transactional
     public GiangVienHuongDan update(DtUpdateGiangVienHDRequest command) {
         Optional<GiangVienHuongDan> gvhdCheck = dtGiangVienHDRepository.findById(command.getId());
         String tenGvCu = gvhdCheck.get().getTenGvhd();
@@ -301,6 +305,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
+    @Transactional
     public void DtGiangVienHDExportExcel(HttpServletResponse response, String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -315,6 +320,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
+    @Transactional
     public void DtGiangVienHDMauExportExcel(HttpServletResponse response, String typeExcel, DtFindGiangVienHDRequest request) throws IOException {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -328,6 +334,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
     }
 
     @Override
+    @Transactional
     public DtGiangVienHDResponseMessage DtGiangVienHDImport(MultipartFile file, String coSoId, String doDangKyId) {
         DtGiangVienHDResponseMessage dtGiangVienHDResponseMessage = new DtGiangVienHDResponseMessage();
         ConcurrentMap<String, DtGiagVienHDImportResquest> listGiangVien = new ConcurrentHashMap<>();
@@ -437,7 +444,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         return dtGiangVienHDResponseMessage;
     }
 
-    public void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId, String dotDangKyId) {
+    private void addDataInMap(ConcurrentHashMap<String, String> mapAll, String coSoId, String dotDangKyId) {
         List<String> listEmailFe = dtGiangVienHDRepository.findAllEmailFe(coSoId, dotDangKyId);
         setDataInMap(mapAll, listEmailFe);
 
@@ -448,7 +455,7 @@ public class DtGiangVienHDServiceImpl implements DtGiangVienHDService {
         setDataInMap(mapAll, listTenTaiKhoan);
     }
 
-    public void setDataInMap(ConcurrentHashMap<String, String> mapSimple, List<String> listStr) {
+    private void setDataInMap(ConcurrentHashMap<String, String> mapSimple, List<String> listStr) {
         for (String s : listStr) {
             mapSimple.put(s, s);
         }
