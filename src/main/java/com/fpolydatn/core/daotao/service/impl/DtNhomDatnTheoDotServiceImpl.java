@@ -10,7 +10,6 @@ import com.fpolydatn.core.daotao.repository.DtNhomDatnTheoDotRepository;
 import com.fpolydatn.core.daotao.repository.DtSinhVienTheoDotRepository;
 import com.fpolydatn.core.daotao.service.DtNhomDatnTheoDotService;
 import com.fpolydatn.entity.ChuyenNganh;
-import com.fpolydatn.entity.DotDangKy;
 import com.fpolydatn.entity.NhomDatn;
 import com.fpolydatn.entity.SinhVien;
 import com.fpolydatn.infrastructure.constant.Message;
@@ -18,9 +17,6 @@ import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LogService;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.repository.ChuyenNganhRepository;
-import com.fpolydatn.repository.DotDangKyRepository;
-import com.fpolydatn.repository.NhomDatnRepository;
-import com.fpolydatn.repository.SinhVienRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.EmailSender;
 import com.fpolydatn.util.WriterFileCSV;
@@ -37,8 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,22 +43,10 @@ import java.util.Optional;
 @Validated
 public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     @Autowired
-    private DtNhomDatnTheoDotRepository dtNhomDatnTheoDotRepository;
+    private DtNhomDatnTheoDotRepository nhomDatnRepository;
 
     @Autowired
-    private DtSinhVienTheoDotRepository sinhVienTheoDotRepository;
-
-    @Autowired
-    @Qualifier(SinhVienRepository.NAME)
-    private SinhVienRepository sinhVienRepository;
-
-    @Autowired
-    @Qualifier(NhomDatnRepository.NAME)
-    private NhomDatnRepository nhomDatnRepository;
-
-    @Autowired
-    @Qualifier(DotDangKyRepository.NAME)
-    private DotDangKyRepository dotDangKyRepository;
+    private DtSinhVienTheoDotRepository sinhVienRepository;
 
     @Autowired
     @Qualifier(ChuyenNganhRepository.NAME)
@@ -90,17 +72,17 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         }
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<DtNhomDatnTheoDotResponse> res = dtNhomDatnTheoDotRepository.findAllNhomDatn(pageable, request);
+        Page<DtNhomDatnTheoDotResponse> res = nhomDatnRepository.findAllNhomDatn(pageable, request);
         return new PageableObject<>(res);
     }
 
     @Override
     public List<DtSinhVienResponse> showDanhSachSinhVien(String idNhom, String coSoId) {
-        Optional<NhomDatn> nhomDatnFind = dtNhomDatnTheoDotRepository.findById(idNhom);
+        Optional<NhomDatn> nhomDatnFind = nhomDatnRepository.findById(idNhom);
         if (!nhomDatnFind.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        List<DtSinhVienResponse> res = dtNhomDatnTheoDotRepository.showDanhSachSinhVien(idNhom, coSoId, nhomDatnFind.get().getDotDangKyId());
+        List<DtSinhVienResponse> res = nhomDatnRepository.showDanhSachSinhVien(idNhom, coSoId, nhomDatnFind.get().getDotDangKyId());
         return res;
     }
 
@@ -113,7 +95,7 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         String headerValue = "attachment; filename=NhomDatn" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
 
-        List<DtNhomDatnTheoDotResponse> nhomDatnList = dtNhomDatnTheoDotRepository.findAllNhomDatnToExcel(request);
+        List<DtNhomDatnTheoDotResponse> nhomDatnList = nhomDatnRepository.findAllNhomDatnToExcel(request);
         NhomDatnExportHelper.exportData(response, nhomDatnList);
     }
 
@@ -124,15 +106,15 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         String headerValue = "attachment; filename=NhomDatn.xlsx";
         response.setHeader(headerKey, headerValue);
         DsSinhVienExporter mau = new DsSinhVienExporter(
-                sinhVienTheoDotRepository.getSinhVienNhomDatnExportExcel(request),
-                sinhVienTheoDotRepository.getNhomDatnExportExcel(request));
+                sinhVienRepository.getSinhVienNhomDatnExportExcel(request),
+                sinhVienRepository.getNhomDatnExportExcel(request));
         mau.exportData(response);
     }
 
     @Override
     @Transactional
     public Boolean deleteNhomDatn(List<String> listIdNhom) {
-        List<NhomDatn> listNhomDatn = dtNhomDatnTheoDotRepository.findAllById(listIdNhom);
+        List<NhomDatn> listNhomDatn = nhomDatnRepository.findAllById(listIdNhom);
         if (listNhomDatn.size() == 0) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
@@ -140,11 +122,7 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         Map<String, ChuyenNganh> chuyenNganhMap = fillMapChuyenNganh();
-        List<SinhVien> listSinhVienAll = new ArrayList<>();
-        for (NhomDatn nhomDatn : listNhomDatn) {
-            List<SinhVien> listSinhVien = sinhVienTheoDotRepository.getAllSinhVien(nhomDatn.getId(), commonHelper.getDotDangKyHienTai());
-            listSinhVienAll.addAll(listSinhVien);
-        }
+        List<SinhVien> listSinhVienAll = sinhVienRepository.findSinhVienByNhomIdIn(listIdNhom);
         for (SinhVien yy : listSinhVienAll) {
             yy.setMonDatnId(null);
             yy.setNhomId(null);
