@@ -157,7 +157,7 @@ public class CnSinhVienTheoDotServiceImpl implements CnSinhVienTheoDotService {
         String captainId = nhomDatnRepository.findIDTruongNhom(idNhom, commonHelper.getDotDangKyHienTai());
         String idMonDatn = cnSinhVienTheoNhomRepository.findIdMonDatnByIdCaptain(captainId, commonHelper.getDotDangKyHienTai());
         Optional<SinhVien> captain = cnSinhVienTheoNhomRepository.findById(captainId);
-        String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(captain.get().getChuyenNganhId());
+        String tenChuyenNganh = chuyenNganhRepository.findTenChuyenNganhById(captain.get().getChuyenNganhId());
         if(!sinhVienFind.getChuyenNganhId().equals(captain.get().getChuyenNganhId())) {
             throw new RestApiException(Message.CHUYEN_NGANH_CUA_SINH_VIEN_KHONG_PHU_HOP_VOI_NHOM);
         }

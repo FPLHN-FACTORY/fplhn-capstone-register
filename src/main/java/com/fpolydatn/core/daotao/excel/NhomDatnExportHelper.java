@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class DtNhomDatnTheoDotExport {
-    public void exportData(HttpServletResponse response, List<DtNhomDatnTheoDotResponse> listNhomDatn) {
+public class NhomDatnExportHelper {
+    public static void exportData(HttpServletResponse response, List<DtNhomDatnTheoDotResponse> listNhomDatn) {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Nhóm DATN");
             CellStyle cellStyle = workbook.createCellStyle();

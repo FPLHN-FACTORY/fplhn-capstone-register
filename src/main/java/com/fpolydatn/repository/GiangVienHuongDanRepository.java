@@ -11,9 +11,10 @@ import org.springframework.stereotype.Repository;
  * @author phongtt35
  */
 @Repository(GiangVienHuongDanRepository.NAME)
-public interface GiangVienHuongDanRepository extends JpaRepository<GiangVienHuongDan, String> {
+public interface GiangVienHuongDanRepository extends JpaRepository<GiangVienHuongDan, String>
+    , IMultiTenantRepository<GiangVienHuongDan> {
 
-    public static final String NAME = "BaseGiangVienHuongDanRepository";
+    String NAME = "BaseGiangVienHuongDanRepository";
 
     @Query(value = """
             SELECT gvhd.id, gvhd.ten_gvhd AS 'name'

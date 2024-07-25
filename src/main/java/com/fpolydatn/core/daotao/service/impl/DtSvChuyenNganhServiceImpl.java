@@ -24,9 +24,4 @@ public class DtSvChuyenNganhServiceImpl implements DtSvChuyenNganhService {
         return chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
     }
 
-    @Override
-    public List<SimpleEntityProj> getListChuyenNganh(String coSoId) {
-        return chuyenNganhRepository.findAllSimpleEntityByCoSo(coSoId);
-    }
-
 }

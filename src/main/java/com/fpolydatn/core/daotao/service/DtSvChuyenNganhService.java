@@ -11,6 +11,4 @@ public interface DtSvChuyenNganhService {
 
     List<SimpleEntityProj> findAllSimpleEntityByCoSo(String coSoId);
 
-    List<SimpleEntityProj> getListChuyenNganh(String coSoId);
-
 }

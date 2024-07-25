@@ -1,6 +1,5 @@
 package com.fpolydatn.infrastructure.security;
 
-import com.fpolydatn.core.common.base.SimpleUserCurrent;
 import com.fpolydatn.infrastructure.constant.ActorConstant;
 import com.fpolydatn.infrastructure.constant.SessionConstant;
 import com.fpolydatn.infrastructure.constant.TrangThaiSinhVien;
@@ -13,7 +12,6 @@ import com.fpolydatn.repository.SinhVienRepository;
 import com.fpolydatn.util.CommonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -49,8 +47,8 @@ public class UserService {
     @Autowired
     private CommonHelper commonHelper;
 
-    @Value("${spring.mail.username}")
-    private String mailUsername;
+//    @Value("${spring.mail.username}")
+//    private String mailUsername;
 
     public void processOAuthPostLogin(HttpServletResponse response,
                                       String coSoID, String email, String name, String role) throws IOException {
@@ -81,7 +79,7 @@ public class UserService {
             }
             case ActorConstant.CHU_NHIEM: {
                 account = canBoRepository.findSimpleEntityByTenCanBo(coSoID,
-                        email, VaiTro.CHU_NHIEM_BO_MON.ordinal());
+                        email, VaiTro.CHU_NHIEM_BO_MON);
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/");
                 } else {
@@ -91,7 +89,7 @@ public class UserService {
             }
             case ActorConstant.DAO_TAO: {
                 account = canBoRepository.findSimpleEntityByTenCanBo(coSoID,
-                        email, VaiTro.DAO_TAO.ordinal());
+                        email, VaiTro.DAO_TAO);
                 if (Objects.isNull(account)) {
                     response.sendRedirect("/");
                 } else {

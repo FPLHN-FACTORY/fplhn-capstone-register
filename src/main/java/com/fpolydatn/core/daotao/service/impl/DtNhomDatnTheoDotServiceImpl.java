@@ -1,8 +1,8 @@
 package com.fpolydatn.core.daotao.service.impl;
 
 import com.fpolydatn.core.common.base.PageableObject;
-import com.fpolydatn.core.daotao.excel.DtNhomDatnExportExcel;
-import com.fpolydatn.core.daotao.excel.DtNhomDatnTheoDotExport;
+import com.fpolydatn.core.daotao.excel.DsSinhVienExporter;
+import com.fpolydatn.core.daotao.excel.NhomDatnExportHelper;
 import com.fpolydatn.core.daotao.model.request.FindDtNhomDatnTheoDotRequest;
 import com.fpolydatn.core.daotao.model.response.DtNhomDatnTheoDotResponse;
 import com.fpolydatn.core.daotao.model.response.DtSinhVienResponse;
@@ -44,7 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Validated
@@ -83,27 +82,15 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     @Autowired
     private LogService logService;
 
-    private List<DtNhomDatnTheoDotResponse> listNhomDatn;
-
     @Override
     public PageableObject<DtNhomDatnTheoDotResponse> findAllNhomDatn(FindDtNhomDatnTheoDotRequest request) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
-        if (request.getDotDangKyId() == null) {
-            if (dotDangKyId != null) {
-                request.setDotDangKyId(dotDangKyId);
-            } else {
-                request.setDotDangKyId("");
-            }
-        } else if (request.getDotDangKyId().equalsIgnoreCase("")) {
-            if (dotDangKyId != null) {
-                request.setDotDangKyId(dotDangKyId);
-            } else {
-                request.setDotDangKyId("");
-            }
+        if (request.getDotDangKyId() == null || request.getDotDangKyId().equalsIgnoreCase("")) {
+            request.setDotDangKyId(dotDangKyId != null ? dotDangKyId : "");
         }
+
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<DtNhomDatnTheoDotResponse> res = dtNhomDatnTheoDotRepository.findAllNhomDatn(pageable, request);
-        listNhomDatn = res.toList();
         return new PageableObject<>(res);
     }
 
@@ -118,38 +105,28 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
     }
 
     @Override
-    public void DTNhomDatnExport(HttpServletResponse response, String typeExcel, FindDtNhomDatnTheoDotRequest request) throws IOException {
+    public void exportNhomDatn(HttpServletResponse response, String typeExcel, FindDtNhomDatnTheoDotRequest request) throws IOException {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=NhomDatn" + currentDateTime + "." + typeExcel;
         response.setHeader(headerKey, headerValue);
-        listNhomDatn = dtNhomDatnTheoDotRepository.findAllNhomDatnToExcel(request);
-        DtNhomDatnTheoDotExport dtNhomDatnTheoDotExport = new DtNhomDatnTheoDotExport();
-        dtNhomDatnTheoDotExport.exportData(response, listNhomDatn);
+
+        List<DtNhomDatnTheoDotResponse> nhomDatnList = dtNhomDatnTheoDotRepository.findAllNhomDatnToExcel(request);
+        NhomDatnExportHelper.exportData(response, nhomDatnList);
     }
 
     @Override
-    public void DTNhomDatnSinhVienExport(HttpServletResponse response, FindDtNhomDatnTheoDotRequest request) throws IOException {
+    public void exportDsSinhVien(HttpServletResponse response, FindDtNhomDatnTheoDotRequest request) throws IOException {
         response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=NhomDatn.xlsx";
         response.setHeader(headerKey, headerValue);
-        DtNhomDatnExportExcel mau = new DtNhomDatnExportExcel(sinhVienTheoDotRepository.getSinhVienNhomDatnExportExcel(request), sinhVienTheoDotRepository.getNhomDatnExportExcel(request));
+        DsSinhVienExporter mau = new DsSinhVienExporter(
+                sinhVienTheoDotRepository.getSinhVienNhomDatnExportExcel(request),
+                sinhVienTheoDotRepository.getNhomDatnExportExcel(request));
         mau.exportData(response);
-    }
-
-    private Boolean checkDotDangKyHienTai(String dotDangKyId) {
-        Optional<DotDangKy> dotDangKyFind = dotDangKyRepository.findById(dotDangKyId);
-        if (!dotDangKyFind.isPresent()) {
-            throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
-        }
-        Long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime >= dotDangKyFind.get().getNgayBatDau() && currentTime <= dotDangKyFind.get().getNgayKetThuc()) {
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -159,11 +136,11 @@ public class DtNhomDatnTheoDotServiceImpl implements DtNhomDatnTheoDotService {
         if (listNhomDatn.size() == 0) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        if (checkDotDangKyHienTai(listNhomDatn.get(0).getDotDangKyId())) {
+        if (commonHelper.isDotDangKyDangDienRa(listNhomDatn.get(0).getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         Map<String, ChuyenNganh> chuyenNganhMap = fillMapChuyenNganh();
-        List<SinhVien>listSinhVienAll = new ArrayList<>();
+        List<SinhVien> listSinhVienAll = new ArrayList<>();
         for (NhomDatn nhomDatn : listNhomDatn) {
             List<SinhVien> listSinhVien = sinhVienTheoDotRepository.getAllSinhVien(nhomDatn.getId(), commonHelper.getDotDangKyHienTai());
             listSinhVienAll.addAll(listSinhVien);

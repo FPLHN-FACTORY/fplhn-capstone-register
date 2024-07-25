@@ -52,121 +52,130 @@ public class DtNhomMonDatnServiceImpl implements DtNhomMonDatnService {
     }
 
     @Override
-    @Transactional
-    public Boolean delete(String id, String coSoId) {
-        Optional<MonDatn> nhomMonDatn = dtNhomMonDatnRepository.findById(id);
-        if (!nhomMonDatn.isPresent()) {
-            throw new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST);
-        }
-        List<DtDetailNhomMonResponse> listMonDatn = dtNhomMonDatnRepository.findMonById(id, coSoId);
-        if (listMonDatn.size() != 0) {
-            throw new RestApiException(Message.NHOM_MON_DANG_TON_TAI_MON);
-        }
-        dtNhomMonDatnRepository.delete(nhomMonDatn.get());
-        try {
-            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
-            LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Nhóm môn '" + nhomMonDatn.get().getMaMon() + " - " + nhomMonDatn.get().getTenMonDatn() + "' đã bị xóa trên hệ thống.",
-                            pathFileLogActive, "Thành công");
-
-            logService.sendLogMessage(loggerObjectActive);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return true;
+@Transactional
+public Boolean delete(String id, String coSoId) {
+    Optional<MonDatn> nhomMonDatn = dtNhomMonDatnRepository.findById(id);
+    if (!nhomMonDatn.isPresent()) {
+        throw new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST);
     }
+
+    List<DtDetailNhomMonResponse> listMonDatn = dtNhomMonDatnRepository.findMonById(id, coSoId);
+    if (!listMonDatn.isEmpty()) {
+        throw new RestApiException(Message.NHOM_MON_DANG_TON_TAI_MON);
+    }
+
+    dtNhomMonDatnRepository.delete(nhomMonDatn.get());
+
+    try {
+        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+        LoggerObject loggerObjectActive = writerFileCSV.
+                createLoggerObject("Nhóm môn '" + nhomMonDatn.get().getMaMon() + " - " + nhomMonDatn.get().getTenMonDatn() + "' đã bị xóa trên hệ thống.",
+                        pathFileLogActive, "Thành công");
+
+        logService.sendLogMessage(loggerObjectActive);
+    } catch (Exception exception) {
+        exception.printStackTrace();
+    }
+
+    return true;
+}
 
     @Override
-    @Transactional
-    public Boolean update(@Valid DtUpdateNhomMonDatnRequest command) {
-        Optional<MonDatn> nhomMonDatnFind = dtNhomMonDatnRepository.findById(command.getId());
-        Optional<ChuyenNganh> chuyenNganhCu = dtChuyenNganhRepository.findById(nhomMonDatnFind.get().getChuyenNganhId());
-        String maNhomMonCu = nhomMonDatnFind.get().getMaMon();
-        String tenCu = nhomMonDatnFind.get().getTenMonDatn();
-        if (Objects.isNull(nhomMonDatnFind)) {
-            throw new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST);
-        }
-        String maNhomMon = command.getMaNhomMon().trim().toUpperCase();
-        MonDatn monDatnCheck = dtNhomMonDatnRepository.findByMaNhomMon(maNhomMon, command.getCoSoId());
-        if (monDatnCheck != null) {
-            if (!monDatnCheck.getId().equals(command.getId())) {
-                throw new RestApiException(Message.MA_NHOM_MON_DATN_ALREADY_EXIST);
-            }
-        }
-        Optional<ChuyenNganh> chuyenNganh = dtChuyenNganhRepository.findById(command.getChuyenNganhId());
-        if (!chuyenNganh.isPresent()) {
-            throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
-        }
-        Optional<MonDatn> nhomMonDatn = dtNhomMonDatnRepository.findById(command.getId());
-        nhomMonDatn.get().setMaMon(maNhomMon);
-        nhomMonDatn.get().setChuyenNganhId(command.getChuyenNganhId());
-        nhomMonDatn.get().setTenMonDatn(command.getTenNhomMon());
-        dtNhomMonDatnRepository.save(nhomMonDatn.get());
+@Transactional
+public Boolean update(@Valid DtUpdateNhomMonDatnRequest command) {
+    Optional<MonDatn> nhomMonDatnFind = dtNhomMonDatnRepository.findById(command.getId());
+    Optional<ChuyenNganh> chuyenNganhCu = dtChuyenNganhRepository.findById(nhomMonDatnFind.get().getChuyenNganhId());
+    String maNhomMonCu = nhomMonDatnFind.get().getMaMon();
+    String tenCu = nhomMonDatnFind.get().getTenMonDatn();
 
-        StringBuilder logMessage = new StringBuilder();
-        if (!(nhomMonDatn.get().getMaMon()).equals(maNhomMonCu)) {
-            logMessage.append("Đào tạo đã sửa mã nhóm môn từ '").append(maNhomMonCu)
-                    .append("' thành '").append(nhomMonDatn.get().getMaMon()).append("'. ");
-        }
-
-        if (!(nhomMonDatn.get().getTenMonDatn()).equals(tenCu)) {
-            logMessage.append("Đào tạo đã sửa tên nhóm môn từ '").append(tenCu)
-                    .append("' thành '").append(nhomMonDatn.get().getTenMonDatn()).append("'. ");
-        }
-        if (!chuyenNganhCu.get().getId().equals(chuyenNganh.get().getId())) {
-            logMessage.append("Đào tạo đã sửa chuyên ngành của môn '")
-                    .append(nhomMonDatn.get().getMaMon()).append(" - ").append(nhomMonDatn.get().getTenMonDatn())
-                    .append("' từ chuyên ngành '").append(chuyenNganhCu.get().getTenChuyenNganh())
-                    .append("' sang chuyên ngành '").append(chuyenNganh.get().getTenChuyenNganh()).append("'. ");
-        }
-        try {
-            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
-            LoggerObject loggerObjectActive = writerFileCSV.createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return true;
+    if (Objects.isNull(nhomMonDatnFind)) {
+        throw new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST);
     }
+
+    String maNhomMon = command.getMaNhomMon().trim().toUpperCase();
+    MonDatn monDatnCheck = dtNhomMonDatnRepository.findByMaNhomMon(maNhomMon, command.getCoSoId());
+    if (monDatnCheck != null && !monDatnCheck.getId().equals(command.getId())) {
+        throw new RestApiException(Message.MA_NHOM_MON_DATN_ALREADY_EXIST);
+    }
+
+    Optional<ChuyenNganh> chuyenNganh = dtChuyenNganhRepository.findById(command.getChuyenNganhId());
+    if (!chuyenNganh.isPresent()) {
+        throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
+    }
+
+    nhomMonDatnFind.get().setMaMon(maNhomMon);
+    nhomMonDatnFind.get().setChuyenNganhId(command.getChuyenNganhId());
+    nhomMonDatnFind.get().setTenMonDatn(command.getTenNhomMon());
+    dtNhomMonDatnRepository.save(nhomMonDatnFind.get());
+
+    StringBuilder logMessage = new StringBuilder();
+    if (!nhomMonDatnFind.get().getMaMon().equals(maNhomMonCu)) {
+        logMessage.append("Đào tạo đã sửa mã nhóm môn từ '").append(maNhomMonCu)
+                .append("' thành '").append(nhomMonDatnFind.get().getMaMon()).append("'. ");
+    }
+
+    if (!nhomMonDatnFind.get().getTenMonDatn().equals(tenCu)) {
+        logMessage.append("Đào tạo đã sửa tên nhóm môn từ '").append(tenCu)
+                .append("' thành '").append(nhomMonDatnFind.get().getTenMonDatn()).append("'. ");
+    }
+
+    if (!chuyenNganhCu.get().getId().equals(chuyenNganh.get().getId())) {
+        logMessage.append("Đào tạo đã sửa chuyên ngành của môn '")
+                .append(nhomMonDatnFind.get().getMaMon()).append(" - ").append(nhomMonDatnFind.get().getTenMonDatn())
+                .append("' từ chuyên ngành '").append(chuyenNganhCu.get().getTenChuyenNganh())
+                .append("' sang chuyên ngành '").append(chuyenNganh.get().getTenChuyenNganh()).append("'. ");
+    }
+
+    try {
+        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+        LoggerObject loggerObjectActive = writerFileCSV.createLoggerObject(logMessage.toString(), pathFileLogActive, "Thành công");
+        logService.sendLogMessage(loggerObjectActive);
+    } catch (Exception exception) {
+        exception.printStackTrace();
+    }
+
+    return true;
+}
 
     @Override
-    @Transactional
-    public Boolean add(@Valid DtCreateNhomMonDatnRequest command) {
-        String maNhomMon = command.getMaNhomMon().toUpperCase().trim();
-        MonDatn monDatnCheck = dtNhomMonDatnRepository.findByMaNhomMon(maNhomMon, command.getCoSoId());
-        if (monDatnCheck != null) {
-            throw new RestApiException(Message.MA_NHOM_MON_DATN_ALREADY_EXIST);
-        }
-        Optional<ChuyenNganh> chuyenNganh = dtChuyenNganhRepository.findById(command.getChuyenNganhId());
-        if (!chuyenNganh.isPresent()) {
-            throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
-        }
-        MonDatn nhoMonDatn = new MonDatn();
-        nhoMonDatn.setMaMon(maNhomMon);
-        nhoMonDatn.setTenMonDatn(command.getTenNhomMon());
-        nhoMonDatn.setChuyenNganhId(command.getChuyenNganhId());
-        nhoMonDatn.setCoSoId(command.getCoSoId());
-        dtNhomMonDatnRepository.save(nhoMonDatn);
-        try {
-            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
-            LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Nhóm môn '" + nhoMonDatn.getMaMon() + " - " + nhoMonDatn.getTenMonDatn() + "' đã được thêm vào hệ thống.",
-                            pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return true;
+@Transactional
+public Boolean add(@Valid DtCreateNhomMonDatnRequest command) {
+    String maNhomMon = command.getMaNhomMon().toUpperCase().trim();
+    MonDatn monDatnCheck = dtNhomMonDatnRepository.findByMaNhomMon(maNhomMon, command.getCoSoId());
+    if (monDatnCheck != null) {
+        throw new RestApiException(Message.MA_NHOM_MON_DATN_ALREADY_EXIST);
     }
 
-    @Override
-    public MonDatn findById(String id) {
-        Optional<MonDatn> monDatn = dtNhomMonDatnRepository.findById(id);
-        if (Objects.isNull(monDatn)) {
-            throw new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST);
-        }
-        return monDatn.get();
+    Optional<ChuyenNganh> chuyenNganh = dtChuyenNganhRepository.findById(command.getChuyenNganhId());
+    if (!chuyenNganh.isPresent()) {
+        throw new RestApiException(Message.CHUYEN_NGANH_NOT_EXIST);
     }
+
+    MonDatn nhomMonDatn = new MonDatn();
+    nhomMonDatn.setMaMon(maNhomMon);
+    nhomMonDatn.setTenMonDatn(command.getTenNhomMon());
+    nhomMonDatn.setChuyenNganhId(command.getChuyenNganhId());
+    nhomMonDatn.setCoSoId(command.getCoSoId());
+    dtNhomMonDatnRepository.save(nhomMonDatn);
+
+    try {
+        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
+        LoggerObject loggerObjectActive = writerFileCSV.
+                createLoggerObject("Nhóm môn '" + nhomMonDatn.getMaMon() + " - " + nhomMonDatn.getTenMonDatn() + "' đã được thêm vào hệ thống.",
+                        pathFileLogActive, "Thành công");
+        logService.sendLogMessage(loggerObjectActive);
+    } catch (Exception exception) {
+        exception.printStackTrace();
+    }
+
+    return true;
+}
+
+    @Override
+public MonDatn findById(String id) {
+    MonDatn monDatn = dtNhomMonDatnRepository.findById(id).orElseThrow(() -> new RestApiException(Message.NHOM_MON_DATN_NOT_EXIST));
+    return monDatn;
+}
 
     @Override
     public List<DtDetailNhomMonResponse> detail(String id, String coSoId) {

@@ -14,7 +14,8 @@ import java.util.List;
  * @author phongtt35
  */
 @Repository(DotDangKyRepository.NAME)
-public interface DotDangKyRepository extends JpaRepository<DotDangKy, String> {
+public interface DotDangKyRepository extends JpaRepository<DotDangKy, String>
+    , IMultiTenantRepository<DotDangKy> {
 
     String NAME = "BaseDotDangKyRepository";
 
@@ -48,6 +49,4 @@ public interface DotDangKyRepository extends JpaRepository<DotDangKy, String> {
             WHERE ddk.id = :id
             """, nativeQuery = true)
     KhoangThoiGianResponse findMocThoiGianChuNhiem(@Param("id") String id);
-
-    List<DotDangKy> findByCoSoId(String coSoId);
 }

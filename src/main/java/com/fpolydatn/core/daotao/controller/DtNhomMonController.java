@@ -35,7 +35,7 @@ public class DtNhomMonController extends BaseController {
         String coSoId = session.getCoSoId();
         req.setCoSoId(coSoId);
         PageableObject<DtNhomMonDatnResponse> pageNhomMonDatn = dtNhomMonDatnService.findAllByCoSo(req);
-        model.addAttribute("listChuyenNganh", chuyenNganhService.getListChuyenNganh(coSoId));
+        model.addAttribute("listChuyenNganh", chuyenNganhService.findAllSimpleEntityByCoSo(coSoId));
         model.addAttribute("page", pageNhomMonDatn);
         model.addAttribute("youtubeLink", youtubeLink);
         model.addAttribute("hdsdCSV", hdsdCSV);

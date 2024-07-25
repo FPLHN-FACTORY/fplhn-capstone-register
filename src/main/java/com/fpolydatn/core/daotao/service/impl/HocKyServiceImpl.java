@@ -1,5 +1,6 @@
 package com.fpolydatn.core.daotao.service.impl;
 
+import com.fpolydatn.core.daotao.model.request.BaseHocKyRequest;
 import com.fpolydatn.core.daotao.model.request.CreateHocKyRequest;
 import com.fpolydatn.core.daotao.model.request.FindHocKyRequest;
 import com.fpolydatn.core.daotao.model.request.UpdateHocKyRequest;
@@ -28,7 +29,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author vinhnv
@@ -53,42 +53,53 @@ public class HocKyServiceImpl implements HocKyService {
     public PageableObject<HocKyResponse> search(final FindHocKyRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<HocKyResponse> res = hocKyRepository.findByName(request, pageable);
-        return new PageableObject(res);
+        return new PageableObject<>(res);
     }
 
     @Override
     @Transactional
     public HocKy create(@Valid final CreateHocKyRequest request) {
+        HocKy hocKy = createHocKy(request);
+        checkOverlap(hocKy);
+        return saveHocKy(hocKy, "Học kỳ '" + hocKy.getTenHocKy() + "' đã được tạo");
+    }
+
+    private HocKy createHocKy(CreateHocKyRequest request) {
         HocKy hocKy = new HocKy();
         hocKy.setTenHocKy(request.getTenHocKy().trim());
+        setHocKyDates(hocKy, request);
+        return hocKy;
+    }
+
+    private void setHocKyDates(HocKy hocKy, BaseHocKyRequest request) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date ngayBatDau = null;
-        Date ngayKetThuc = null;
         try {
-            ngayBatDau = sdf.parse(request.getNgayBatDau());
-            ngayKetThuc = sdf.parse(request.getNgayKetThuc());
+            hocKy.setNgayBatDau(sdf.parse(request.getNgayBatDau()).getTime());
+            hocKy.setNgayKetThuc(sdf.parse(request.getNgayKetThuc()).getTime());
         } catch (ParseException e) {
             throw new RestApiException(Message.INVALID_DATE);
         }
-        Long ngayBatDauLong = ngayBatDau.getTime();
-        Long ngayKetThucLong = ngayKetThuc.getTime();
-        if(ngayKetThucLong < ngayBatDauLong) {
-            throw new RestApiException(Message.INVALID_NGAY_KET_THUC);
-        }
-        List<HocKy> listHocKy = hocKyRepository.findAll();
-        listHocKy.forEach(item -> {
-            if (ngayBatDauLong < item.getNgayKetThuc()
-                    && ngayKetThucLong > item.getNgayBatDau()) {
+    }
+
+    private void checkOverlap(HocKy hocKy) {
+        List<HocKy> allHocKies = hocKyRepository.findAll();
+        for (HocKy item : allHocKies) {
+            if (isHocKyDatesOverlapping(hocKy, item)) {
                 throw new RestApiException(Message.HOC_KY_OVERLAP);
             }
-        });
-        hocKy.setNgayBatDau(ngayBatDauLong);
-        hocKy.setNgayKetThuc(ngayKetThucLong);
+        }
+    }
+
+    private boolean isHocKyDatesOverlapping(HocKy hocKy, HocKy otherHocKy) {
+        return (hocKy.getNgayBatDau() < otherHocKy.getNgayKetThuc()
+                && hocKy.getNgayKetThuc() > otherHocKy.getNgayBatDau());
+    }
+
+    private HocKy saveHocKy(HocKy hocKy, String logMessage) {
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Học kỳ '" + hocKy.getTenHocKy() + "' đã được tạo",
-                            pathFileLogActive, "Thành công");
+                    createLoggerObject(logMessage, pathFileLogActive, "Thành công");
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -99,106 +110,70 @@ public class HocKyServiceImpl implements HocKyService {
     @Override
     @Transactional
     public Boolean delete(final String id) {
-        Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if (!hocKyCheck.isPresent()) {
-            throw new RestApiException(Message.HOC_KY_NOT_EXIST);
-        }
-        DotDangKy dotDangKy = dotDangKyRepository.findByHocKyId(hocKyCheck.get().getId());
+        HocKy hocKy = findById(id);
+        DotDangKy dotDangKy = dotDangKyRepository.findByHocKyId(hocKy.getId());
         if (dotDangKy != null) {
             throw new RestApiException(Message.TON_TAI_DOT_DANG_KY);
         }
+        deleteHocKy(hocKy, "Học kỳ '" + hocKy.getTenHocKy() + "' đã bị xóa");
+        return true;
+    }
+
+    private void deleteHocKy(HocKy hocKy, String logMessage) {
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
             LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject("Học kỳ '" + hocKyCheck.get().getTenHocKy() + "' đã bị xóa",
-                            pathFileLogActive, "Thành công");
+                    createLoggerObject(logMessage, pathFileLogActive, "Thành công");
             logService.sendLogMessage(loggerObjectActive);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        hocKyRepository.delete(hocKyCheck.get());
-        return true;
+        hocKyRepository.delete(hocKy);
     }
 
     @Override
     @Transactional
     public HocKy update(@Valid final UpdateHocKyRequest request) {
-        Optional<HocKy> hocKyCheck = hocKyRepository.findById(request.getId());
-        String tenCu = hocKyCheck.get().getTenHocKy();
-        Long ngayBatDauCu = hocKyCheck.get().getNgayBatDau();
-        Long ngayKetThucCu = hocKyCheck.get().getNgayKetThuc();
-        if (!hocKyCheck.isPresent()) {
-            throw new RestApiException(Message.HOC_KY_NOT_EXIST);
-        }
+        HocKy hocKy = findById(request.getId());
+        updateHocKyFields(hocKy, request);
+        checkOverlap(hocKy);
+        String logMessage = createUpdateLogMessage(hocKy);
+        return saveHocKy(hocKy, logMessage);
+    }
 
-        HocKy hocKy = hocKyCheck.get();
+    private void updateHocKyFields(HocKy hocKy, UpdateHocKyRequest request) {
         hocKy.setTenHocKy(request.getTenHocKy().trim());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date ngayBatDau = null;
-        Date ngayKetThuc = null;
-        try {
-            ngayBatDau = sdf.parse(request.getNgayBatDau());
-            ngayKetThuc = sdf.parse(request.getNgayKetThuc());
+        setHocKyDates(hocKy, request);
+    }
 
-        } catch (ParseException e) {
-            throw new RestApiException(Message.INVALID_DATE);
-        }
-        Long ngayBatDauLong = ngayBatDau.getTime();
-        Long ngayKetThucLong = ngayKetThuc.getTime();
-        if(ngayKetThucLong < ngayBatDauLong) {
-            throw new RestApiException(Message.INVALID_NGAY_KET_THUC);
-        }
-        List<HocKy> listHocKy = hocKyRepository.findAll();
-        for (HocKy item :listHocKy) {
-            if (item.getId().equals(request.getId())) {
-                continue;
-            }
-            if (ngayBatDauLong < item.getNgayKetThuc()
-                    && ngayKetThucLong > item.getNgayBatDau()) {
-                throw new RestApiException(Message.HOC_KY_OVERLAP);
-            }
-        }
-        hocKy.setNgayBatDau(ngayBatDauLong);
-        hocKy.setNgayKetThuc(ngayKetThucLong);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String ngayBatDauCuFormatted = dateFormat.format(new Date(ngayBatDauCu));
-        String ngayKetThucCuFormatted = dateFormat.format(new Date(ngayKetThucCu));
-        String ngayBatDauMoiFormatted = dateFormat.format(new Date(hocKy.getNgayBatDau()));
-        String ngayKetThucMoiFormatted = dateFormat.format(new Date(hocKy.getNgayKetThuc()));
-
+    private String createUpdateLogMessage(HocKy hocKy) {
         StringBuilder logMessage = new StringBuilder();
-        if (!(hocKy.getTenHocKy()).equals(tenCu)) {
-            logMessage.append("Đào tạo đã sửa tên học kỳ từ '").append(tenCu)
+        HocKy originalHocKy = hocKyRepository.findById(hocKy.getId()).get();
+        if (!hocKy.getTenHocKy().equals(originalHocKy.getTenHocKy())) {
+            logMessage.append("Đào tạo đã sửa tên học kỳ từ '").append(originalHocKy.getTenHocKy())
                     .append("' thành '").append(hocKy.getTenHocKy()).append("'. ");
         }
-        if (!(hocKy.getNgayBatDau()).equals(ngayBatDauCu)) {
-            logMessage.append("Đào tạo đã sửa ngày bắt đầu học kỳ '").append(hocKy.getTenHocKy()).append("' từ ngày '")
-                    .append(ngayBatDauCuFormatted).append("' thành '").append(ngayBatDauMoiFormatted).append("'. ");
+        if (hocKy.getNgayBatDau() != originalHocKy.getNgayBatDau()) {
+            logMessage.append("Đào tạo đã sửa ngày bắt đầu học kỳ '").append(hocKy.getTenHocKy())
+                    .append("' từ ngày '").append(formatDate(originalHocKy.getNgayBatDau()))
+                    .append("' thành '").append(formatDate(hocKy.getNgayBatDau())).append("'. ");
         }
-        if (!(hocKy.getNgayKetThuc()).equals(ngayKetThucCu)) {
-            logMessage.append("Đào tạo đã sửa ngày bắt đầu học kỳ '").append(hocKy.getTenHocKy()).append("' từ ngày '")
-                    .append(ngayKetThucCuFormatted).append("' thành '").append(ngayKetThucMoiFormatted).append("'. ");
+        if (hocKy.getNgayKetThuc() != originalHocKy.getNgayKetThuc()) {
+            logMessage.append("Đào tạo đã sửa ngày kết thúc học kỳ '").append(hocKy.getTenHocKy())
+                    .append("' từ ngày '").append(formatDate(originalHocKy.getNgayKetThuc()))
+                    .append("' thành '").append(formatDate(hocKy.getNgayKetThuc())).append("'. ");
         }
-        try {
-            String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-            LoggerObject loggerObjectActive = writerFileCSV.
-                    createLoggerObject(logMessage.toString(),
-                            pathFileLogActive, "Thành công");
-            logService.sendLogMessage(loggerObjectActive);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return hocKyRepository.save(hocKy);
+        return logMessage.toString();
+    }
+
+    private String formatDate(Long date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        return dateFormat.format(new Date(date));
     }
 
     @Override
     public HocKy findById(String id) {
-        Optional<HocKy> hocKyCheck = hocKyRepository.findById(id);
-        if (!hocKyCheck.isPresent()) {
-            throw new RestApiException(Message.HOC_KY_NOT_EXIST);
-        }
-        return hocKyCheck.get();
+        return hocKyRepository.findById(id).orElseThrow(() -> new RestApiException(Message.HOC_KY_NOT_EXIST));
     }
 
     @Override
@@ -210,5 +185,4 @@ public class HocKyServiceImpl implements HocKyService {
     public List<HocKy> getAll() {
         return hocKyRepository.findAll();
     }
-
 }

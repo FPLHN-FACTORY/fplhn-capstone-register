@@ -16,7 +16,7 @@ import java.util.List;
 @Repository(NhomDatnRepository.NAME)
 public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
 
-    public static final String NAME = "BaseNhomDatnRepository";
+    String NAME = "BaseNhomDatnRepository";
 
     @Query(value = """
             SELECT ma_nhom
@@ -27,19 +27,19 @@ public interface NhomDatnRepository extends JpaRepository<NhomDatn, String> {
             """, nativeQuery = true)
     String getNhomTaoGanNhat(@Param("dotDangKyId") String dotDangKyId, @Param("coSoId") String coSoId);
 
-    @Query(value = """
-                SELECT c.ma_co_so FROM  co_so c 
-                WHERE  c.id = :coSoId
-            """, nativeQuery = true)
-    String getMaCoSo(@Param("coSoId") String coSoId);
+//    @Query(value = """
+//                SELECT c.ma_co_so FROM  co_so c
+//                WHERE  c.id = :coSoId
+//            """, nativeQuery = true)
+//    String getMaCoSo(@Param("coSoId") String coSoId);
 
-    @Query(value = """
-            SELECT a.id FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id
-            WHERE a.created_date + :period < :currentTime
-            GROUP BY a.id HAVING COUNT(b.id) <= 3
-            """, nativeQuery = true)
-    List<String> listNhomKhongDuDieuKien(@Param("currentTime") Long currentTime,
-                                         @Param("period") Long period);
+//    @Query(value = """
+//            SELECT a.id FROM nhom_datn a LEFT JOIN sinh_vien b ON a.id = b.nhom_id
+//            WHERE a.created_date + :period < :currentTime
+//            GROUP BY a.id HAVING COUNT(b.id) <= 3
+//            """, nativeQuery = true)
+//    List<String> listNhomKhongDuDieuKien(@Param("currentTime") Long currentTime,
+//                                         @Param("period") Long period);
 
     Page<NhomDatn> findByCoSoIdAndDotDangKyId(String coSoId, String dotDangKyId, Pageable pageable);
 }

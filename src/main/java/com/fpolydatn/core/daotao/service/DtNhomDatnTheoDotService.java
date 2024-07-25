@@ -15,9 +15,9 @@ public interface DtNhomDatnTheoDotService {
 
     List<DtSinhVienResponse> showDanhSachSinhVien(String idNhom, String coSoId);
 
-    void DTNhomDatnExport(HttpServletResponse response, String typeExcel, final FindDtNhomDatnTheoDotRequest request) throws IOException;
+    void exportNhomDatn(HttpServletResponse response, String typeExcel, final FindDtNhomDatnTheoDotRequest request) throws IOException;
 
-    void DTNhomDatnSinhVienExport(HttpServletResponse response, final FindDtNhomDatnTheoDotRequest request) throws IOException;
+    void exportDsSinhVien(HttpServletResponse response, final FindDtNhomDatnTheoDotRequest request) throws IOException;
 
     Boolean deleteNhomDatn(List<String>listIdNhom);
 }

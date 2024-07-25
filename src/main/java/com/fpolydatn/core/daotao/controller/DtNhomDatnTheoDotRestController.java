@@ -79,7 +79,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         if (request != null && (request.getDotDangKyId() == null || request.getDotDangKyId().trim().length() == 0)) {
             request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         }
-        dtNhomDatnTheoDotService.DTNhomDatnExport(response, typeExcel, request);
+        dtNhomDatnTheoDotService.exportNhomDatn(response, typeExcel, request);
     }
 
     @GetMapping("/export-excel")
@@ -88,7 +88,7 @@ public class DtNhomDatnTheoDotRestController extends BaseController {
         if (request != null && (request.getDotDangKyId() == null || request.getDotDangKyId().trim().length() == 0)) {
             request.setDotDangKyId(commonHelper.getDotDangKyHienTai());
         }
-        dtNhomDatnTheoDotService.DTNhomDatnSinhVienExport(response, request);
+        dtNhomDatnTheoDotService.exportDsSinhVien(response, request);
     }
 
     @GetMapping("/history")

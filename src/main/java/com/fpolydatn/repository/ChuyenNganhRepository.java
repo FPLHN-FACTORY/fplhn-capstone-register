@@ -13,9 +13,10 @@ import java.util.List;
  * @author phongtt35
  */
 @Repository(ChuyenNganhRepository.NAME)
-public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh, String> {
+public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh, String>
+    , IMultiTenantRepository<ChuyenNganh> {
 
-    public static final String NAME = "BaseChuyenNganhRepository";
+    String NAME = "BaseChuyenNganhRepository";
 
     @Query(value = """
             SELECT id, ten_chuyen_nganh AS 'name' FROM chuyen_nganh
@@ -23,11 +24,5 @@ public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh, String
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntityByCoSo(@Param("coSoId") String coSoId);
 
-    @Query(value = """
-            SELECT ten_chuyen_nganh AS 'name' FROM chuyen_nganh
-            WHERE id = :id
-            """, nativeQuery = true)
-    String getTenChuyenNganhById(@Param("id") String id);
-
-    List<ChuyenNganh> findByCoSoId(String coSoId);
+    String findTenChuyenNganhById(String id);
 }

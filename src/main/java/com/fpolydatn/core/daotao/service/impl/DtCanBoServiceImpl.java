@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +113,7 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         if (check != null && check > 0) {
             throw new RestApiException(Message.CHU_NHIEM_NAY_DANG_CHU_NHIEM_1_CHUYEN_NGANH);
         }
-        if(check == null || check == 0) {
+        if (check == null || check == 0) {
             dtCanBoRepository.delete(canBoCheck.get());
         }
         try {
@@ -147,62 +148,41 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         String mailFptCu = canBo.get().getEmailFpt();
         VaiTro vaiTroCu = canBo.get().getVaiTro();
         String tenVaiTro = vaiTroCu.toString();
+
         if (Objects.isNull(canBo)) {
             throw new RestApiException(Message.CAN_BO_NOT_EXIST);
         }
+
         Optional<CoSo> coSo = dtCoSoRepository.findById(canBoRequest.getCoSoId());
         if (Objects.isNull(coSo)) {
             throw new RestApiException(Message.CO_SO_NOT_EXIST);
         }
+
         String idByEmailFpt = dtCanBoRepository.getIdUpdateByEmailFpt(canBoRequest.getEmailFpt().trim(), canBo.get().getId(), canBoRequest.getCoSoId());
         if (idByEmailFpt != null) {
             throw new RestApiException(Message.EMAIL_FPT_EXIST);
         }
+
         String idByEmailFe = dtCanBoRepository.getIdUpdateByEmailFe(canBoRequest.getEmailFe().trim(), canBo.get().getId(), canBoRequest.getCoSoId());
         if (idByEmailFe != null) {
             throw new RestApiException(Message.EMAIL_FE_EXIST);
         }
+
         String idByTenTaiKhoan = dtCanBoRepository.getIdUpdateByTenTaiKhoan(canBoRequest.getTenTaiKhoan(), canBo.get().getId(), canBoRequest.getCoSoId());
         if (idByTenTaiKhoan != null) {
             throw new RestApiException(Message.TEN_TAI_KHOAN_CAN_BO_EXIST);
         }
+
         CanBo updateCanBo = formUtils.convertToObject(CanBo.class, canBoRequest);
         StringBuilder logMessage = new StringBuilder();
-        if (!(updateCanBo.getTenTaiKhoan()).equals(tenTkCu)) {
-            logMessage.append("Đào tạo đã sửa tên tài khoản cán bộ từ '").append(tenTkCu)
-                    .append("' thành '").append(updateCanBo.getTenTaiKhoan()).append("'. ");
-        }
-        if (!(updateCanBo.getTenCanBo()).equals(tenCBCu)) {
-            logMessage.append("Đào tạo đã sửa tên cán bộ từ '").append(tenCBCu)
-                    .append("' thành '").append(updateCanBo.getTenCanBo()).append("'. ");
-        }
-        if (!(updateCanBo.getSoDienThoai()).equals(sdtCu)) {
-            logMessage.append("Đào tạo đã sửa số điện thoại của cán bộ '").append(updateCanBo.getTenCanBo())
-                    .append(" - ").append(updateCanBo.getTenTaiKhoan()).append("' từ '").append(sdtCu)
-                    .append("' thành '").append(updateCanBo.getSoDienThoai()).append("'. ");
-        }
-        if (!(updateCanBo.getEmailFe()).equals(mailFeCu)) {
-            logMessage.append("Đào tạo đã sửa mail FE của cán bộ '").append(updateCanBo.getTenCanBo())
-                    .append(" - ").append(updateCanBo.getTenTaiKhoan()).append("' từ '").append(mailFeCu)
-                    .append("' thành '").append(updateCanBo.getEmailFe()).append("'. ");
-        }
-        if (!(updateCanBo.getEmailFpt()).equals(mailFptCu)) {
-            logMessage.append("Đào tạo đã sửa mail FPT của cán bộ '").append(updateCanBo.getTenCanBo())
-                    .append(" - ").append(updateCanBo.getTenTaiKhoan()).append("' từ '").append(mailFptCu)
-                    .append("' thành '").append(updateCanBo.getEmailFpt()).append("'. ");
-        }
-        if (!(updateCanBo.getVaiTro()).equals(vaiTroCu)) {
-            if(tenVaiTro.equals("DAO_TAO")){
-                logMessage.append("Đào tạo đã sửa vai trò của cán bộ '").append(updateCanBo.getTenCanBo())
-                        .append(" - ").append(updateCanBo.getTenTaiKhoan()).append("' từ '").append("Đào tạo")
-                        .append("' thành '").append("Chủ nhiệm bộ môn").append("'. ");
-            }
-            else {
-                logMessage.append("Đào tạo đã sửa vai trò của cán bộ '").append(updateCanBo.getTenCanBo())
-                        .append(" - ").append(updateCanBo.getTenTaiKhoan()).append("' từ '").append("Chủ nhiệm bộ môn")
-                        .append("' thành '").append("Đào tạo").append("'. ");
-            }
-        }
+
+        logMessage.append(createLogMessageIfChanged("Tên tài khoản", tenTkCu, updateCanBo.getTenTaiKhoan()));
+        logMessage.append(createLogMessageIfChanged("Tên cán bộ", tenCBCu, updateCanBo.getTenCanBo()));
+        logMessage.append(createLogMessageIfChanged("Số điện thoại", sdtCu, updateCanBo.getSoDienThoai()));
+        logMessage.append(createLogMessageIfChanged("Email FE", mailFeCu, updateCanBo.getEmailFe()));
+        logMessage.append(createLogMessageIfChanged("Email FPT", mailFptCu, updateCanBo.getEmailFpt()));
+        logMessage.append(createLogMessageIfChanged("Vai trò", tenVaiTro, updateCanBo.getVaiTro().toString()));
+
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
             LoggerObject loggerObjectActive = writerFileCSV.
@@ -212,7 +192,15 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+
         return dtCanBoRepository.save(updateCanBo);
+    }
+
+    private String createLogMessageIfChanged(String fieldName, String oldValue, String newValue) {
+        if (!oldValue.equals(newValue)) {
+            return String.format("Đào tạo đã sửa %s của cán bộ từ '%s' thành '%s'. ", fieldName, oldValue, newValue);
+        }
+        return "";
     }
 
     @Override
@@ -224,93 +212,125 @@ public class DtCanBoServiceImpl implements DtCanBoService {
     @Override
     @Transactional
     public DtCanBoResponseMessage DtCanBoImport(MultipartFile file, String coSoId) throws IOException {
-        DtCanBoResponseMessage dtCanBoResponseMessage = new DtCanBoResponseMessage();
-        ConcurrentMap<String, CanBo> listCanBo = new ConcurrentHashMap<>();
+        DtCanBoResponseMessage responseMessage = new DtCanBoResponseMessage();
+        ConcurrentMap<String, CanBo> canBos = new ConcurrentHashMap<>();
+
         try {
-            dtCanBoResponseMessage.setStatus(true);
-            DtCanBoImportExcel dtCanBoImportExcel = new DtCanBoImportExcel();
-            List<DtCanBoExcelImport> listCB = dtCanBoImportExcel.importData(file, coSoId);
-            if (listCB.size() == 0) {
-                dtCanBoResponseMessage.setStatus(false);
-                dtCanBoResponseMessage.setMessage("Import không đúng định dạng của file excel mẫu");
+            List<DtCanBoExcelImport> importedCanBos = DtCanBoImportExcel.importData(file, coSoId);
+
+            if (importedCanBos.isEmpty()) {
+                responseMessage.setStatus(false);
+                responseMessage.setMessage("Import không đúng định dạng của file excel mẫu");
+                return responseMessage;
             }
-            Map<String, String> map = new HashMap<>();
-            addDataInMap(map, coSoId);
 
-            listCB.parallelStream().forEach(canbo -> {
+            Map<String, String> existingData = getExistingData(coSoId);
 
-                if (canbo.getEmailFE().isEmpty() || canbo.getEmailFPT().isEmpty() ||
-                        canbo.getSoDienThoai().isEmpty() || canbo.getTenTaiKhoan().isEmpty() ||
-                        canbo.getTenCanBo().isEmpty() || canbo.getVaiTro().isEmpty()) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Không được để trống");
-                    return;
+            for (DtCanBoExcelImport canBo : importedCanBos) {
+                if (isDataEmpty(canBo)) {
+                    responseMessage.setStatus(false);
+                    responseMessage.setMessage("Không được để trống");
+                    return responseMessage;
                 }
 
-                if (map.get(canbo.getEmailFE()) != null) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Email Fe bị trùng");
-                    return;
+                if (isDuplicateData(existingData, canBo)) {
+                    responseMessage.setStatus(false);
+                    responseMessage.setMessage("Dữ liệu bị trùng");
+                    return responseMessage;
                 }
 
-                if (map.get(canbo.getEmailFPT()) != null) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Email Fpt bị trùng");
-                    return;
+                if (!isValidVaiTro(canBo.getVaiTro())) {
+                    responseMessage.setStatus(false);
+                    responseMessage.setMessage("Vai trò không đúng định dạng");
+                    return responseMessage;
                 }
 
-                if (map.get(canbo.getTenTaiKhoan()) != null) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Tên tài khoản bị trùng");
-                    return;
-                }
+                CanBo newCanBo = createCanBo(canBo, coSoId);
+                canBos.put(newCanBo.getTenTaiKhoan(), newCanBo);
+            }
 
-                if (!canbo.getVaiTro().equals("DAO_TAO")
-                        && !canbo.getVaiTro().equals("CHU_NHIEM_BO_MON")
-                        && !canbo.getVaiTro().equals("QUAN_TRI_VIEN")
-                ) {
-                    dtCanBoResponseMessage.setStatus(false);
-                    dtCanBoResponseMessage.setMessage("Vai trò không đúng định dạng");
-                    return;
-                }
-
-                CanBo cb = new CanBo();
-                cb.setEmailFe(canbo.getEmailFE());
-                cb.setEmailFpt(canbo.getEmailFPT());
-                cb.setTenCanBo(canbo.getTenCanBo());
-                cb.setSoDienThoai(canbo.getSoDienThoai());
-                if (canbo.getVaiTro().equals("DAO_TAO")) {
-                    cb.setVaiTro(VaiTro.DAO_TAO);
-                } else if (canbo.getVaiTro().equals("CHU_NHIEM_BO_MON")) {
-                    cb.setVaiTro(VaiTro.CHU_NHIEM_BO_MON);
-                } else if (canbo.getVaiTro().equals("QUAN_TRI_VIEN")) {
-                    cb.setVaiTro(VaiTro.QUAN_TRI_VIEN);
-                }
-                cb.setCoSoId(coSoId);
-                cb.setTenTaiKhoan(canbo.getTenTaiKhoan());
-                listCanBo.put(cb.getTenTaiKhoan(), cb);
-            });
-            if (dtCanBoResponseMessage.getStatus() == true) {
-                dtCanBoRepository.saveAll(listCanBo.values());
-                listCanBo.values().forEach(el -> {
-                    try {
-                        String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
-                        LoggerObject loggerObjectActive = writerFileCSV.
-                                createLoggerObject("Cán bộ '" + el.getTenTaiKhoan() + "' đã được thêm vào hệ thống.",
-                                        pathFileLogActive, "Thành công");
-                        logService.sendLogMessage(loggerObjectActive);
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
-                });
+            if (responseMessage.getStatus()) {
+                dtCanBoRepository.saveAll(canBos.values());
+                logSuccessfulImport(canBos.values());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            dtCanBoResponseMessage.setStatus(false);
-            dtCanBoResponseMessage.setMessage("Lỗi hệ thống");
-            return dtCanBoResponseMessage;
+            responseMessage.setStatus(false);
+            responseMessage.setMessage("Lỗi hệ thống");
         }
-        return dtCanBoResponseMessage;
+
+        return responseMessage;
+    }
+
+    private Map<String, String> getExistingData(String coSoId) {
+        Map<String, String> existingData = new HashMap<>();
+        List<String> emailFes = dtCanBoRepository.findAllEmailFe(coSoId);
+        List<String> emailFpts = dtCanBoRepository.findAllByEmailFPT(coSoId);
+        List<String> tenTaiKhoans = dtCanBoRepository.finAllTenTaiKhoan(coSoId);
+
+        addDataToList(existingData, emailFes);
+        addDataToList(existingData, emailFpts);
+        addDataToList(existingData, tenTaiKhoans);
+
+        return existingData;
+    }
+
+    private void addDataToList(Map<String, String> data, List<String> list) {
+        for (String item : list) {
+            data.put(item, item);
+        }
+    }
+
+    private boolean isDataEmpty(DtCanBoExcelImport canBo) {
+        return canBo.getEmailFE().isEmpty() || canBo.getEmailFPT().isEmpty() ||
+                canBo.getSoDienThoai().isEmpty() || canBo.getTenTaiKhoan().isEmpty() ||
+                canBo.getTenCanBo().isEmpty() || canBo.getVaiTro().isEmpty();
+    }
+
+    private boolean isDuplicateData(Map<String, String> existingData, DtCanBoExcelImport canBo) {
+        return existingData.containsKey(canBo.getEmailFE()) ||
+                existingData.containsKey(canBo.getEmailFPT()) ||
+                existingData.containsKey(canBo.getTenTaiKhoan());
+    }
+
+    private boolean isValidVaiTro(String vaiTro) {
+        return "DAO_TAO".equals(vaiTro) || "CHU_NHIEM_BO_MON".equals(vaiTro) || "QUAN_TRI_VIEN".equals(vaiTro);
+    }
+
+    private CanBo createCanBo(DtCanBoExcelImport canBo, String coSoId) {
+        CanBo newCanBo = new CanBo();
+        newCanBo.setEmailFe(canBo.getEmailFE());
+        newCanBo.setEmailFpt(canBo.getEmailFPT());
+        newCanBo.setTenCanBo(canBo.getTenCanBo());
+        newCanBo.setSoDienThoai(canBo.getSoDienThoai());
+        newCanBo.setVaiTro(getVaiTro(canBo.getVaiTro()));
+        newCanBo.setCoSoId(coSoId);
+        newCanBo.setTenTaiKhoan(canBo.getTenTaiKhoan());
+        return newCanBo;
+    }
+
+    private VaiTro getVaiTro(String vaiTro) {
+        if ("DAO_TAO".equals(vaiTro)) {
+            return VaiTro.DAO_TAO;
+        } else if ("CHU_NHIEM_BO_MON".equals(vaiTro)) {
+            return VaiTro.CHU_NHIEM_BO_MON;
+        } else if ("QUAN_TRI_VIEN".equals(vaiTro)) {
+            return VaiTro.QUAN_TRI_VIEN;
+        }
+        return null;
+    }
+
+    private void logSuccessfulImport(Collection<CanBo> canBos) {
+        canBos.forEach(canBo -> {
+            try {
+                String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi("");
+                LoggerObject loggerObjectActive = writerFileCSV.
+                        createLoggerObject("Cán bộ '" + canBo.getTenTaiKhoan() + "' đã được thêm vào hệ thống.",
+                                pathFileLogActive, "Thành công");
+                logService.sendLogMessage(loggerObjectActive);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -324,16 +344,16 @@ public class DtCanBoServiceImpl implements DtCanBoService {
         dtCanBoExportExcel.exportData(response);
     }
 
-    public void addDataInMap(Map<String, String> mapAll, String coSoId) {
-        List<String> listEmailFE = dtCanBoRepository.findAllEmailFe(coSoId);
-        setDataInMap(mapAll, listEmailFE);
-
-        List<String> listEmailFpt = dtCanBoRepository.findAllByEmailFPT(coSoId);
-        setDataInMap(mapAll, listEmailFpt);
-
-        List<String> listTenTaiKhoan = dtCanBoRepository.finAllTenTaiKhoan(coSoId);
-        setDataInMap(mapAll, listTenTaiKhoan);
-    }
+//    public void addDataInMap(Map<String, String> mapAll, String coSoId) {
+//        List<String> listEmailFE = dtCanBoRepository.findAllEmailFe(coSoId);
+//        setDataInMap(mapAll, listEmailFE);
+//
+//        List<String> listEmailFpt = dtCanBoRepository.findAllByEmailFPT(coSoId);
+//        setDataInMap(mapAll, listEmailFpt);
+//
+//        List<String> listTenTaiKhoan = dtCanBoRepository.finAllTenTaiKhoan(coSoId);
+//        setDataInMap(mapAll, listTenTaiKhoan);
+//    }
 
     private void setDataInMap(Map<String, String> mapSimple, List<String> listStr) {
         for (String s : listStr) {

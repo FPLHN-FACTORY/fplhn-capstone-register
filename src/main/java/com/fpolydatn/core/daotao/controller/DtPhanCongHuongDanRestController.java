@@ -105,7 +105,7 @@ public class DtPhanCongHuongDanRestController extends BaseController {
 
     @GetMapping()
     public ResponseObject detail(@RequestParam("idGiangVien") String idGiangVien, @RequestParam("idMon") String idMon) {
-        return new ResponseObject(phanCongHuongDanService.findId(idGiangVien, idMon));
+        return new ResponseObject(phanCongHuongDanService.findById(idGiangVien, idMon));
     }
 
     @DeleteMapping()

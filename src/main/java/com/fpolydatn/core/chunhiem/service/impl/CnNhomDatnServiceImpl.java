@@ -37,7 +37,6 @@ import com.fpolydatn.infrastructure.exception.rest.RestApiException;
 import com.fpolydatn.infrastructure.logger.LogService;
 import com.fpolydatn.infrastructure.logger.LoggerObject;
 import com.fpolydatn.infrastructure.projection.SimpleEntityProj;
-import com.fpolydatn.repository.ChuyenNganhRepository;
 import com.fpolydatn.repository.DotDangKyRepository;
 import com.fpolydatn.util.CommonHelper;
 import com.fpolydatn.util.EmailSender;
@@ -78,10 +77,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Autowired
-    private CnNhomDatnRepository cnNhomDatnRepository;
+    private CnNhomDatnRepository nhomDatnRepository;
 
     @Autowired
-    private CnSinhVienRepository cnSinhVienRepository;
+    private CnSinhVienRepository sinhVienRepository;
 
     @Autowired
     private CommonHelper commonHelper;
@@ -93,7 +92,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     private NhomDatnHelper nhomDatnHelper;
 
     @Autowired
-    private CnMonDatnRepository cnMonDatnRepository;
+    private CnMonDatnRepository monDatnRepository;
 
     @Autowired
     private CnGiangVienHuongDanReponsitory cnGiangVienHuongDanReponsitory;
@@ -103,11 +102,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     private DotDangKyRepository dotDangKyRepository;
 
     @Autowired
-    @Qualifier(ChuyenNganhRepository.NAME)
-    private ChuyenNganhRepository chuyenNganhRepository;
-
-    @Autowired
-    private CnChuyenNganhRepository cnChuyenNganhRepository;
+    private CnChuyenNganhRepository chuyenNganhRepository;
 
     @Autowired
     private EmailSender emailSender;
@@ -152,20 +147,10 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     public PageableObject<CnNhomDatnResponse> search(CnFindNhomDatnRequest request, String idChuNhiem) {
         String dotDangKyId = commonHelper.getDotDangKyHienTai();
         if (request.getDotDangKyId() == null) {
-            if (dotDangKyId != null) {
-                request.setDotDangKyId(dotDangKyId);
-            } else {
-                request.setDotDangKyId("");
-            }
-        } else if (request.getDotDangKyId().equalsIgnoreCase("")) {
-            if (dotDangKyId != null) {
-                request.setDotDangKyId(dotDangKyId);
-            } else {
-                request.setDotDangKyId("");
-            }
+            request.setDotDangKyId(dotDangKyId);
         }
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        Page<CnNhomDatnResponse> res = cnNhomDatnRepository.findNhomDatn(request, pageable, idChuNhiem);
+        Page<CnNhomDatnResponse> res = nhomDatnRepository.findNhomDatn(request, pageable, idChuNhiem);
         return new PageableObject(res);
     }
 
@@ -175,29 +160,31 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             throw new RestApiException(Message.DOT_DANG_KY_NOT_EXIST);
         }
         Long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (currentTime >= dotDangKyFind.get().getNgayBatDau() && currentTime <= dotDangKyFind.get().getNgayKetThuc()) {
-            return false;
-        }
-        return true;
+        return currentTime >= dotDangKyFind.get().getNgayBatDau() && currentTime <= dotDangKyFind.get().getNgayKetThuc();
     }
 
     @Override
     public boolean chotDeTai(String id) {
-        Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
-        if (Objects.isNull(nhomDatnCheck)) {
+        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(id);
+        if (!nhomDatnCheck.isPresent()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
+
         if (checkDotDangKyHienTai(nhomDatnCheck.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
+
         if (nhomDatnCheck.get().getTrangThai() != TrangThaiNhom.GVHD_CHOT) {
             throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
         }
+
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CNBM_CHOT);
         nhomDatnCheck.get().setNhanXet(null);
-        cnNhomDatnRepository.save(nhomDatnCheck.get());
-        SinhVien truongNhomFind = cnSinhVienRepository.findById(nhomDatnCheck.get().getTruongNhomId()).get();
-        String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
+        nhomDatnRepository.save(nhomDatnCheck.get());
+
+        SinhVien truongNhomFind = sinhVienRepository.findById(nhomDatnCheck.get().getTruongNhomId()).orElseThrow(() -> new RestApiException(Message.SINH_VIEN_NOT_EXISTS));
+        String tenChuyenNganh = chuyenNganhRepository.findTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
+
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
@@ -220,33 +207,50 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+
         return true;
     }
 
     @Override
     public boolean chotNhieuDeTai(List<String> listIdNhom) {
-        List<NhomDatn> listNhomDatn = cnNhomDatnRepository.findAllById(listIdNhom);
-        List<LoggerObject> loggerObjectList = new ArrayList<>();
+        // Fetch the list of NhomDatn based on the provided list of IDs
+        List<NhomDatn> listNhomDatn = nhomDatnRepository.findAllById(listIdNhom);
+        
+        // Check if the list of NhomDatn matches the provided list of IDs
         if (listIdNhom.size() != listNhomDatn.size()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        SinhVien truongNhomFind = cnSinhVienRepository.findById(listNhomDatn.get(0).getTruongNhomId()).get();
-        String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
+        
+        // Get the truongNhomFind and tenChuyenNganh for logging purposes
+        SinhVien truongNhomFind = sinhVienRepository.findById(listNhomDatn.get(0).getTruongNhomId()).get();
+        String tenChuyenNganh = chuyenNganhRepository.findTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
+        
+        // Create a list to store LoggerObjects for logging
+        List<LoggerObject> loggerObjectList = new ArrayList<>();
+        
+        // Iterate through the list of NhomDatn
         for (NhomDatn nhomDatn : listNhomDatn) {
+            // Check if the NhomDatn is in the correct state to be chot
             if (nhomDatn.getTrangThai() != TrangThaiNhom.GVHD_CHOT) {
                 throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
             }
+            
+            // Check if the NhomDatn is in the correct DotDangKy
             if (checkDotDangKyHienTai(nhomDatn.getDotDangKyId())) {
                 throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
             }
+            
+            // Reset the NhomDatn's nhanXet and set its trangThai to CNBM_CHOT
             nhomDatn.setNhanXet(null);
             nhomDatn.setTrangThai(TrangThaiNhom.CNBM_CHOT);
+            
+            // Create LoggerObjects for logging and add them to the list
             try {
                 String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
                 LoggerObject loggerObjectActive = writerFileCSV.
                         createLoggerObject("Đã chốt tên đề tài nhóm '" + nhomDatn.getMaNhom() + "' thành '"
                                         + nhomDatn.getTenDeTai() + "'",
-                                pathFileLogActive, "Thành công");
+                                        pathFileLogActive, "Thành công");
                 loggerObjectActive.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
                 loggerObjectActive.setTenChuyenNganh(tenChuyenNganh);
                 loggerObjectList.add(loggerObjectActive);
@@ -255,7 +259,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 LoggerObject loggerObject = writerFileCSV.
                         createLoggerObject("Đã chốt tên đề tài nhóm '" + nhomDatn.getMaNhom() + "' thành '"
                                         + nhomDatn.getTenDeTai() + "'",
-                                pathFile, "Thành công");
+                                        pathFile, "Thành công");
                 loggerObject.setTenNhom(nhomDatn.getMaNhom());
                 loggerObject.setIdChuyenNganh(truongNhomFind.getChuyenNganhId());
                 loggerObject.setTenChuyenNganh(tenChuyenNganh);
@@ -265,16 +269,21 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 exception.printStackTrace();
             }
         }
-        cnNhomDatnRepository.saveAll(listNhomDatn);
+        
+        // Save the updated list of NhomDatn
+        nhomDatnRepository.saveAll(listNhomDatn);
+        
+        // Send the list of LoggerObjects for logging
         loggerObjectList.forEach(el -> {
             logService.sendLogMessage(el);
         });
+        
         return true;
     }
 
     @Override
     public boolean xacNhanNhom(String id) {
-        Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
+        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
@@ -285,9 +294,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CHU_NHIEM_DA_XAC_NHAN);
-        cnNhomDatnRepository.save(nhomDatnCheck.get());
+        nhomDatnRepository.save(nhomDatnCheck.get());
         Optional<GiangVienHuongDan> gvhd = null;
-        List<SinhVien> listSinhVien = cnSinhVienRepository.getAllSinhVien(nhomDatnCheck.get().getId(), commonHelper.getDotDangKyHienTai());
+        List<SinhVien> listSinhVien = sinhVienRepository.getAllSinhVien(nhomDatnCheck.get().getId(), commonHelper.getDotDangKyHienTai());
         int soThanhvien = listSinhVien.size();
         String[] email = new String[soThanhvien];
         for (int i = 0; i < soThanhvien; i++) {
@@ -324,8 +333,8 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         emailSender.sendEmail(email, "[FCR] Chủ nhiệm bộ môn xác nhận nhóm",
                 "Xác nhận nhóm thành lập", messageSV);
-        SinhVien truongNhomFind = cnSinhVienRepository.findById(nhomDatnCheck.get().getTruongNhomId()).get();
-        String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
+        SinhVien truongNhomFind = sinhVienRepository.findById(nhomDatnCheck.get().getTruongNhomId()).get();
+        String tenChuyenNganh = chuyenNganhRepository.findTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
@@ -351,13 +360,13 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean xacNhanNhieuNhom(List<String> listIdNhom) {
-        List<NhomDatn> listNhomDatn = cnNhomDatnRepository.findAllById(listIdNhom);
+        List<NhomDatn> listNhomDatn = nhomDatnRepository.findAllById(listIdNhom);
         List<LoggerObject> loggerObjectList = new ArrayList<>();
         if (listIdNhom.size() != listNhomDatn.size()) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
-        SinhVien truongNhomFind = cnSinhVienRepository.findById(listNhomDatn.get(0).getTruongNhomId()).get();
-        String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
+        SinhVien truongNhomFind = sinhVienRepository.findById(listNhomDatn.get(0).getTruongNhomId()).get();
+        String tenChuyenNganh = chuyenNganhRepository.findTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
         for (NhomDatn nhomDatn : listNhomDatn) {
             if (nhomDatn.getTrangThai() != TrangThaiNhom.MOI_THANH_LAP) {
                 throw new RestApiException(Message.TRANG_THAI_KHONG_THOA_MAN);
@@ -387,7 +396,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 exception.printStackTrace();
             }
         }
-        cnNhomDatnRepository.saveAll(listNhomDatn);
+        nhomDatnRepository.saveAll(listNhomDatn);
         loggerObjectList.forEach(el -> {
             logService.sendLogMessage(el);
         });
@@ -396,7 +405,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public boolean tuChoiChotDeTai(String id, String nhanXet) {
-        Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
+        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
@@ -408,9 +417,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         nhomDatnCheck.get().setTrangThai(TrangThaiNhom.CAN_SUA);
         nhomDatnCheck.get().setNhanXet(nhanXet);
-        cnNhomDatnRepository.save(nhomDatnCheck.get());
-        SinhVien truongNhomFind = cnSinhVienRepository.findById(nhomDatnCheck.get().getTruongNhomId()).get();
-        String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
+        nhomDatnRepository.save(nhomDatnCheck.get());
+        SinhVien truongNhomFind = sinhVienRepository.findById(nhomDatnCheck.get().getTruongNhomId()).get();
+        String tenChuyenNganh = chuyenNganhRepository.findTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
@@ -436,22 +445,22 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public Boolean delete(String id) {
-        Optional<NhomDatn> nhomDatnCheck = cnNhomDatnRepository.findById(id);
+        Optional<NhomDatn> nhomDatnCheck = nhomDatnRepository.findById(id);
         if (Objects.isNull(nhomDatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
         if (checkDotDangKyHienTai(nhomDatnCheck.get().getDotDangKyId())) {
             throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
         }
-        cnNhomDatnRepository.delete(nhomDatnCheck.get());
-        List<SinhVien> listSinhVien = cnSinhVienRepository.getAllSinhVien(id, commonHelper.getDotDangKyHienTai());
+        nhomDatnRepository.delete(nhomDatnCheck.get());
+        List<SinhVien> listSinhVien = sinhVienRepository.getAllSinhVien(id, commonHelper.getDotDangKyHienTai());
         StringBuffer stringBuffer = new StringBuffer();
         for (SinhVien xx : listSinhVien) {
-            cnSinhVienRepository.deleteSinhVienOutGroup(xx.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
+            sinhVienRepository.deleteSinhVienOutGroup(xx.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
             stringBuffer.append(" Đã xóa sinh viên " + xx.getTenSinhVien() + "-" + xx.getMaSinhVien() + ".");
         }
-        SinhVien truongNhomFind = cnSinhVienRepository.findById(nhomDatnCheck.get().getTruongNhomId()).get();
-        String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
+        SinhVien truongNhomFind = sinhVienRepository.findById(nhomDatnCheck.get().getTruongNhomId()).get();
+        String tenChuyenNganh = chuyenNganhRepository.findTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
         try {
             String pathFileLogActive = writerFileCSV.getPathFileActiveWithApi(writerFileCSV.tenDotDangKyHienTai());
             LoggerObject loggerObjectActive = writerFileCSV.
@@ -488,7 +497,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     @Override
     public NhomDatn findById(String id) {
-        Optional<NhomDatn> nhomdatnCheck = cnNhomDatnRepository.findById(id);
+        Optional<NhomDatn> nhomdatnCheck = nhomDatnRepository.findById(id);
         if (Objects.isNull(nhomdatnCheck)) {
             throw new RestApiException(Message.NHOM_DATN_NOT_EXIST);
         }
@@ -509,23 +518,23 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         }
         if (!idGiangVien.equals("")) {
             if (commonHelper.getSoNhomGiangVienDangHuongDan(idGiangVien) ==
-                    cnNhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien, commonHelper.getDotDangKyHienTai())) {
+                    nhomDatnRepository.getSoNhomGiangVienHuongDan(idGiangVien, commonHelper.getDotDangKyHienTai())) {
                 throw new RestApiException(Message.GIANG_VIEN_DA_HUONG_DAN_DU_SO_NHOM);
             }
         }
-        String idTruongNhomCheck = cnNhomDatnRepository.getSinhVienByMaSinhVien(cnCreateNhomDatnRequest.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
+        String idTruongNhomCheck = nhomDatnRepository.getSinhVienByMaSinhVien(cnCreateNhomDatnRequest.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
         if (idTruongNhomCheck == null) {
             throw new RestApiException(Message.STUDENT_NOT_EXIST);
         }
-        String idTruongNhom = cnNhomDatnRepository.getSinhVienByMaSinhVienAndMaNhom(cnCreateNhomDatnRequest.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
+        String idTruongNhom = nhomDatnRepository.getSinhVienByMaSinhVienAndMaNhom(cnCreateNhomDatnRequest.getMaSinhVien(), commonHelper.getDotDangKyHienTai());
         if (idTruongNhom == null) {
             throw new RestApiException(Message.STUDENT_HAVE_GROUP);
         }
         String monDatnId = cnCreateNhomDatnRequest.getMonDatnId();
-        if (cnMonDatnRepository.findById(monDatnId) == null) {
+        if (monDatnRepository.findById(monDatnId) == null) {
             throw new RestApiException(Message.MON_DATN_NOT_EXIST);
         }
-        String checkMonTuongDuong = cnSinhVienRepository.checkMonTuongDuong(monDatnId, idTruongNhom, commonHelper.getDotDangKyHienTai());
+        String checkMonTuongDuong = sinhVienRepository.checkMonTuongDuong(monDatnId, idTruongNhom, commonHelper.getDotDangKyHienTai());
         if (checkMonTuongDuong == null) {
             throw new RestApiException(Message.MON_DATN_KHONG_THOA_MAN_VOI_SINH_VIEN);
         }
@@ -545,9 +554,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         nhomDatn.setTrangThai(TrangThaiNhom.MOI_THANH_LAP);
         nhomDatn.setCoSoId(cnCreateNhomDatnRequest.getCoSoId());
         nhomDatn.setDotDangKyId(cnCreateNhomDatnRequest.getDotDangKyId());
-        nhomDatn.setId(cnNhomDatnRepository.save(nhomDatn).getId());
-        SinhVien truongNhomFind = cnSinhVienRepository.findById(nhomDatn.getTruongNhomId()).get();
-        String tenChuyenNganh = chuyenNganhRepository.getTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
+        nhomDatn.setId(nhomDatnRepository.save(nhomDatn).getId());
+        SinhVien truongNhomFind = sinhVienRepository.findById(nhomDatn.getTruongNhomId()).get();
+        String tenChuyenNganh = chuyenNganhRepository.findTenChuyenNganhById(truongNhomFind.getChuyenNganhId());
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("Đã tạo nhóm " + nhomDatn.getMaNhom() + ".");
         if (nhomDatn.getGiangVienId() != null) {
@@ -577,13 +586,13 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        cnNhomDatnRepository.setNhomForTruongNhom(nhomDatn.getId(), monDatnId, idTruongNhom, commonHelper.getDotDangKyHienTai());
+        nhomDatnRepository.setNhomForTruongNhom(nhomDatn.getId(), monDatnId, idTruongNhom, commonHelper.getDotDangKyHienTai());
         return true;
     }
 
     @Override
     public List<String> getListSinhVienNoGroup(final CnFindSinhVienNoGroupRequest req, String idChuNhiem) {
-        return cnSinhVienRepository.getStringListSinhVienNoGroup(req, idChuNhiem);
+        return sinhVienRepository.getStringListSinhVienNoGroup(req, idChuNhiem);
     }
 
     @Override
@@ -607,13 +616,13 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                 request.setDotDangKyId("");
             }
         }
-        System.out.println(cnNhomDatnRepository.searchNhomDatnInput(request) + " aaaaaaaa");
-        return cnNhomDatnRepository.searchNhomDatnInput(request);
+        System.out.println(nhomDatnRepository.searchNhomDatnInput(request) + " aaaaaaaa");
+        return nhomDatnRepository.searchNhomDatnInput(request);
     }
 
     @Override
     public CnThongTinNhomResponse getThongTinNhom(String idNhom, String coSoId) {
-        return cnNhomDatnRepository.getThongTinNhom(idNhom, coSoId);
+        return nhomDatnRepository.getThongTinNhom(idNhom, coSoId);
     }
 
     @Override
@@ -644,7 +653,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
             if (checkDotDangKyHienTai(request.getIdDotDangKy())) {
                 throw new RestApiException(Message.DOT_DANG_KY_KHONG_PHAI_HIEN_TAI_KHONG_DUOC_THAO_TAC);
             }
-            list = cnNhomDatnRepository.findNhomDatnExport(request, request.getIdDotDangKy(), idChuNhiem, TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
+            list = nhomDatnRepository.findNhomDatnExport(request, request.getIdDotDangKy(), idChuNhiem, TrangThaiSinhVien.DU_DIEU_KIEN.ordinal());
             cnNhomDatnExport.employeeDetailReport(response, list);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -676,7 +685,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     request.setIdDotDangKy("");
                 }
             }
-            listThongTinSinhVien = cnSinhVienRepository.findThongTinSinhVien(request, request.getIdDotDangKy(), idChuNhiem);
+            listThongTinSinhVien = sinhVienRepository.findThongTinSinhVien(request, request.getIdDotDangKy(), idChuNhiem);
             cnThongTinSinhVienExport.exportThongTinSinhVien(response, listThongTinSinhVien);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -993,7 +1002,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                     listNhomDatnCreate.put(nhomDatn.getTruongNhomId(), nhomDatn);
 
                 }
-                cnNhomDatnRepository.saveAll(listNhomDatnCreate.values());
+                nhomDatnRepository.saveAll(listNhomDatnCreate.values());
                 addDataInMapNhomDatn(mapNhomDatn, mapNhomDatnKeyId, mapNhomDatnBefore, dotDangKyId, coSoId, idChuNhiem);
                 for (Map.Entry<String, String> item : listMaNhomCreate.entrySet()) {
                     String maNhomCreate = item.getValue();
@@ -1015,7 +1024,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
                         listSinhVienEntity.put(truongNhomCreate.getId(), truongNhomCreate);
                     }
                 }
-                cnSinhVienRepository.saveAll(listSinhVienEntity.values());
+                sinhVienRepository.saveAll(listSinhVienEntity.values());
 
                 for (Map.Entry<String, NhomDatn> nhomDatn : mapNhomDatn.entrySet()) {
                     boolean shouldCreateStringBuffer = false;
@@ -1120,9 +1129,9 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     public void addDataInMapSinhVien(ConcurrentHashMap<String, SinhVien> mapAll, ConcurrentHashMap<String, SinhVien> mapAllBefore, ConcurrentHashMap<String, SinhVien> mapAllKeyId, String dotDangKyId, String
             coSoId, String idChuNhiem) {
-        List<SinhVien> sinhVienList = cnSinhVienRepository.getALlSinhVienByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
-        List<SinhVien> truongNhomList = cnSinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
-        List<SinhVien> truongNhomCuList = cnSinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
+        List<SinhVien> sinhVienList = sinhVienRepository.getALlSinhVienByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
+        List<SinhVien> truongNhomList = sinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
+        List<SinhVien> truongNhomCuList = sinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
         getAllPutMapSinhVien(mapAll, mapAllBefore, mapAllKeyId, sinhVienList);
         getTruongNhomPutMapSinhVien(mapAll, truongNhomList);
         getTruongNhomCuPutMapSinhVien(mapAll, truongNhomCuList);
@@ -1130,13 +1139,13 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
 
     public void addDataInMapTruongNhomCu(ConcurrentHashMap<String, SinhVien> mapAll, String dotDangKyId, String
             coSoId, String idChuNhiem) {
-        List<SinhVien> truongNhomCuList = cnSinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
+        List<SinhVien> truongNhomCuList = sinhVienRepository.getALlTruongNhomByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
         getTruongNhomCuPutMapSinhVien(mapAll, truongNhomCuList);
     }
 
     public void addDataInMapNhomDatn(ConcurrentHashMap<String, NhomDatn> mapAll, ConcurrentHashMap<String, NhomDatn> mapAllKeyId, ConcurrentHashMap<String, NhomDatn> mapAllBefore, String dotDangKyId, String
             coSoId, String idChuNhiem) {
-        List<NhomDatn> nhomDatnList = cnNhomDatnRepository.getAllNhomDatnByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
+        List<NhomDatn> nhomDatnList = nhomDatnRepository.getAllNhomDatnByIdChuNhiem(dotDangKyId, coSoId, idChuNhiem);
         getALlPutMapNhomDatn(mapAll, mapAllKeyId, mapAllBefore, nhomDatnList);
     }
 
@@ -1160,7 +1169,7 @@ public class CnNhomDatnServiceImpl implements CnNhomDatnService {
     }
 
     public void addDataInMapChuyenNganh(ConcurrentHashMap<String, ChuyenNganh> mapAll, String idChuNhiem, String coSoId) {
-        List<ChuyenNganh> chuyenNganhList = cnChuyenNganhRepository.getAllChuyenNganhEntityByIdChuNhiem(coSoId, idChuNhiem);
+        List<ChuyenNganh> chuyenNganhList = chuyenNganhRepository.getAllChuyenNganhEntityByIdChuNhiem(coSoId, idChuNhiem);
         getAllPutMapChuyenNganh(mapAll, chuyenNganhList);
     }
 

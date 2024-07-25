@@ -1,6 +1,7 @@
 package com.fpolydatn.util;
 
 import com.fpolydatn.infrastructure.session.FpolyDatnSession;
+import com.fpolydatn.repository.CoSoRepository;
 import com.fpolydatn.repository.NhomDatnRepository;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ public class NhomDatnHelper {
     private NhomDatnRepository nhomDatnRepository;
 
     @Autowired
+    @Qualifier(CoSoRepository.NAME)
+    private CoSoRepository coSoRepository;
+
+    @Autowired
     private CommonHelper commonHelper;
 
     @Autowired
@@ -25,7 +30,8 @@ public class NhomDatnHelper {
     @Synchronized
     public String genMaNhomTuDong() {
         String coSoId = session.getCoSoId();
-        String text = nhomDatnRepository.getMaCoSo(coSoId);
+//        String text = nhomDatnRepository.getMaCoSo(coSoId);
+        String text = coSoRepository.findMaCoSoById(coSoId);
         String dotDangKyHienTai = commonHelper.getDotDangKyHienTai();
         String maNhomGanNhat = nhomDatnRepository.getNhomTaoGanNhat(dotDangKyHienTai, coSoId);
         Integer count = 0;

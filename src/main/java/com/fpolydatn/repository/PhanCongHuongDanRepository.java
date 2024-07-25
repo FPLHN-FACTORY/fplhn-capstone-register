@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository(PhanCongHuongDanRepository.NAME)
 public interface PhanCongHuongDanRepository extends JpaRepository<PhanCongHuongDan, PhanCongHuongDanId> {
 
-    public static final String NAME = "BasePhanCongHuongDanRepository";
+    String NAME = "BasePhanCongHuongDanRepository";
 }
