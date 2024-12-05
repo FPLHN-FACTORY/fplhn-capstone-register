@@ -21,5 +21,6 @@ public interface CoSoRepository extends JpaRepository<CoSo, String> {
             """, nativeQuery = true)
     List<SimpleEntityProj> findAllSimpleEntity();
 
+    @Query(value = "SELECT cs.maCoSo FROM CoSo cs WHERE cs.id = :coSoId")
     String findMaCoSoById(String coSoId);
 }

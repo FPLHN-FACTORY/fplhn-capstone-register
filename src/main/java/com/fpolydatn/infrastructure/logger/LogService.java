@@ -26,11 +26,11 @@ public class LogService {
 
     // Gửi log thông điệp vào RabbitMQ
     public void sendLogMessage(LoggerObject loggerObject) {
-        Gson gson = new Gson();
-        String message = gson.toJson(loggerObject);
-        amqpTemplate.convertAndSend(exchangeQueue, routeQueue, message, messagePostProcessor -> {
-            messagePostProcessor.getMessageProperties();
-            return messagePostProcessor;
-        });
+//        Gson gson = new Gson();
+//        String message = gson.toJson(loggerObject);
+//        amqpTemplate.convertAndSend(exchangeQueue, routeQueue, message, messagePostProcessor -> {
+//            messagePostProcessor.getMessageProperties();
+//            return messagePostProcessor;
+//        });
     }
 }
